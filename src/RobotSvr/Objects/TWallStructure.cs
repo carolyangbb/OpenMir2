@@ -102,6 +102,6 @@ namespace RobotSvr
             ClMain.g_PlayScene.SetActorDrawLevel(this, 0);
             base.Run();
         }
-    } 
+    }
 }
 

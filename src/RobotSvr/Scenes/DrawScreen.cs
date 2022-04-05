@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Drawing;
-using SystemModule;
 
 namespace RobotSvr
 {
@@ -90,7 +89,7 @@ namespace RobotSvr
             {
                 _mSysMsgListEx.Remove(0);
             }
-           // _mSysMsgListEx.Add(msg, MShare.GetTickCount() as Object);
+            // _mSysMsgListEx.Add(msg, MShare.GetTickCount() as Object);
         }
 
         public void AddSysMsgBottom2(string msg)
@@ -99,7 +98,7 @@ namespace RobotSvr
             {
                 _mSysMsgListEx2.Remove(0);
             }
-           // _mSysMsgListEx2.Add(msg, MShare.GetTickCount() as Object);
+            // _mSysMsgListEx2.Add(msg, MShare.GetTickCount() as Object);
         }
 
         public void AddSysMsgCenter(string msg, Color fc, Color bc, int sec)
@@ -109,7 +108,7 @@ namespace RobotSvr
 
         public void AddSysMsgCenter(string msg, int fc, int bc, int sec)
         {
-           
+
         }
 
         public void AddChatBoardString(string str, Color fcolor, Color bcolor)

@@ -197,7 +197,7 @@ namespace RobotSvr
 
         public TFireDragon() : base()
         {
- 
+
         }
 
         public void LightningTimerTimer(Object Sender)
@@ -255,12 +255,6 @@ namespace RobotSvr
         {
             int n8;
             int nc;
-            int n10;
-            int n14;
-            int n18;
-            bool bofly;
-            int i;
-            int iCount;
             if (this.m_boDeath)
             {
                 return;
@@ -297,7 +291,6 @@ namespace RobotSvr
             int prv;
             long m_dwEffectFrameTimetime;
             long m_dwFrameTimetime;
-            bool bofly;
             if ((this.m_btRace != 120) && this.m_boDeath)
             {
                 return;

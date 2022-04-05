@@ -210,7 +210,7 @@ namespace RobotSvr
         public int m_nActBeforeX = 0;
         public int m_nActBeforeY = 0;
         public TChrMsg m_ChrMsg = null;
-        public IList<string> m_MsgList = null;
+        public IList<TChrMsg> m_MsgList = null;
         public TChrMsg RealActionMsg = null;
         public ArrayList m_nMoveHpList = null;
 
@@ -219,7 +219,7 @@ namespace RobotSvr
             m_btTitleIndex = 0;
             m_nCurFocusFrame = 0;
             m_nWaitForRecogId = 0;
-            m_MsgList = new List<string>();
+            m_MsgList = new List<TChrMsg>();
             m_nRecogId = 0;
             m_wAppr = 0;
             m_btPoisonDecHealth = 0;
@@ -270,7 +270,6 @@ namespace RobotSvr
             m_nFootStepSound = -1;
             m_nAttackSound = -1;
             m_nWeaponSound = -1;
-            m_nStruckSound = SoundUtil.s_struck_body_longstick;
             m_nStruckWeaponSound = -1;
             m_nScreamSound = -1;
             m_nDieSound = -1;
@@ -486,18 +485,15 @@ namespace RobotSvr
                     case Grobal2.SM_WALK:
                     case Grobal2.SM_BACKSTEP:
                     case Grobal2.SM_RUSH:
-                    case Grobal2.SM_RUSHEX:
                     case Grobal2.SM_RUSHKUNG:
                     case Grobal2.SM_RUN:
                     case Grobal2.SM_HORSERUN:
                     case Grobal2.SM_DIGUP:
                     case Grobal2.SM_ALIVE:
-                        // m_nFeature := MakeHumanFeature(0, DRESSfeature(Msg.Feature), WEAPONfeature(Msg.Feature), 6 * 10 + 1 * 2 + 1); //Msg.Feature;
                         m_nFeature = Msg.Feature;
                         m_nState = Msg.State;
-                        //@ Unsupported function or procedure: 'HUtil32.HiByte'
                         m_RushStep = HUtil32.HiByte(Msg.Dir);
-                        if (m_nState & Grobal2.STATE_OPENHEATH != 0)
+                        if ((m_nState & Grobal2.STATE_OPENHEATH) != 0)
                         {
                             m_boOpenHealth = true;
                         }
@@ -569,9 +565,9 @@ namespace RobotSvr
                         case Grobal2.CM_THROW:
                             if (m_nFeature != 0)
                             {
-                                m_nTargetX = (Msg.Feature as TActor).m_nCurrX;
-                                m_nTargetY = (Msg.Feature as TActor).m_nCurrY;
-                                m_nTargetRecog = (Msg.Feature as TActor).m_nRecogId;
+                                //m_nTargetX = (Msg.Feature as TActor).m_nCurrX;
+                                //m_nTargetY = (Msg.Feature as TActor).m_nCurrY;
+                                //m_nTargetRecog = (Msg.Feature as TActor).m_nRecogId;
                             }
                             RealActionMsg = Msg;
                             Msg.Ident = Grobal2.SM_THROW;
@@ -614,7 +610,7 @@ namespace RobotSvr
                         m_dwLastStruckTime = MShare.GetTickCount();
                         break;
                     case Grobal2.SM_SPELL:
-                        m_btDir = Msg.Dir;
+                        m_btDir = (byte)Msg.Dir;
                         UseMagic = (TUseMagicInfo)Msg.Feature;
                         if (UseMagic != null)
                         {
@@ -636,16 +632,15 @@ namespace RobotSvr
                     case Grobal2.SM_POWERHIT:
                     case Grobal2.SM_LONGHIT:
                     case Grobal2.SM_WIDEHIT:
-                    case Grobal2.SM_PURSUEHIT:
                         m_nCurrX = Msg.X;
                         m_nCurrY = Msg.Y;
-                        m_btDir = Msg.Dir;
+                        m_btDir = (byte)Msg.Dir;
                         m_CurMagic.magfirelv = Msg.Saying;
                         break;
                     default:
                         m_nCurrX = Msg.X;
                         m_nCurrY = Msg.Y;
-                        m_btDir = Msg.Dir;
+                        m_btDir = (byte)Msg.Dir;
                         break;
                 }
                 m_nCurrentAction = Msg.Ident;
@@ -1130,76 +1125,76 @@ namespace RobotSvr
 
         public virtual void FeatureChanged()
         {
-            int haircount;
-            switch (m_btRace)
-            {
-                case 0:
-                    m_btHair = Grobal2.HAIRfeature(m_nFeature);
-                    m_btDress = Grobal2.DRESSfeature(m_nFeature);
-                    if (m_btDress >= 24 && m_btDress <= 27)
-                    {
-                        m_btDress = 18 + m_btSex;
-                    }
-                    m_btWeapon = Grobal2.WEAPONfeature(m_nFeature);
-                    m_btHorse = Grobal2.Horsefeature(m_nFeatureEx);
-                    m_btWeaponEffect = m_btHorse;
-                    m_btHorse = 0;
-                    m_btEffect = Grobal2.Effectfeature(m_nFeatureEx);
-                    m_nBodyOffset = Actor.HUMANFRAME * m_btDress;
-                    if (m_btHair >= 10)
-                    {
-                        m_btHairEx = m_btHair / 10;
-                        m_btHair = m_btHair % 10;
-                    }
-                    else
-                    {
-                        m_btHairEx = 0;
-                    }
-                    if (m_btHairEx > 0)
-                    {
-                        if (m_btHairEx > haircount)
-                        {
-                            m_btHairEx = haircount;
-                        }
-                        m_nHairOffsetEx = Actor.HUMANFRAME * ((m_btHairEx - 1) * 2 + m_btSex);
-                    }
-                    else
-                    {
-                        m_nHairOffsetEx = -1;
-                    }
-                    if (m_btHair > haircount - 1)
-                    {
-                        m_btHair = haircount - 1;
-                    }
-                    m_btHair = m_btHair * 2;
-                    if (m_btHair > 1)
-                    {
-                        m_nHairOffset = Actor.HUMANFRAME * (m_btHair + m_btSex);
-                    }
-                    else
-                    {
-                        m_nHairOffset = -1;
-                    }
-                    m_nWeaponOffset = Actor.HUMANFRAME * m_btWeapon;
-                    if (m_btEffect != 0)
-                    {
-                        if (m_btEffect == 50)
-                        {
-                            m_nHumWinOffset = 352;
-                        }
-                        else
-                        {
-                            m_nHumWinOffset = (m_btEffect - 1) * Actor.HUMANFRAME;
-                        }
-                    }
-                    break;
-                case 50:
-                    break;
-                default:
-                    m_wAppearance = Grobal2.APPRfeature(m_nFeature);
-                    m_nBodyOffset = Actor.GetOffset(m_wAppearance);
-                    break;
-            }
+            //int haircount;
+            //switch (m_btRace)
+            //{
+            //    case 0:
+            //        m_btHair = Grobal2.HAIRfeature(m_nFeature);
+            //        m_btDress = Grobal2.DRESSfeature(m_nFeature);
+            //        if (m_btDress >= 24 && m_btDress <= 27)
+            //        {
+            //            m_btDress = (byte)18 + m_btSex;
+            //        }
+            //        m_btWeapon = Grobal2.WEAPONfeature(m_nFeature);
+            //        m_btHorse = Grobal2.Horsefeature(m_nFeatureEx);
+            //        m_btWeaponEffect = m_btHorse;
+            //        m_btHorse = 0;
+            //        m_btEffect = Grobal2.Effectfeature(m_nFeatureEx);
+            //        m_nBodyOffset = Actor.HUMANFRAME * m_btDress;
+            //        if (m_btHair >= 10)
+            //        {
+            //            m_btHairEx = m_btHair / 10;
+            //            m_btHair = m_btHair % 10;
+            //        }
+            //        else
+            //        {
+            //            m_btHairEx = 0;
+            //        }
+            //        if (m_btHairEx > 0)
+            //        {
+            //            if (m_btHairEx > haircount)
+            //            {
+            //                m_btHairEx = haircount;
+            //            }
+            //            m_nHairOffsetEx = Actor.HUMANFRAME * ((m_btHairEx - 1) * 2 + m_btSex);
+            //        }
+            //        else
+            //        {
+            //            m_nHairOffsetEx = -1;
+            //        }
+            //        if (m_btHair > haircount - 1)
+            //        {
+            //            m_btHair = haircount - 1;
+            //        }
+            //        m_btHair = m_btHair * 2;
+            //        if (m_btHair > 1)
+            //        {
+            //            m_nHairOffset = Actor.HUMANFRAME * (m_btHair + m_btSex);
+            //        }
+            //        else
+            //        {
+            //            m_nHairOffset = -1;
+            //        }
+            //        m_nWeaponOffset = Actor.HUMANFRAME * m_btWeapon;
+            //        if (m_btEffect != 0)
+            //        {
+            //            if (m_btEffect == 50)
+            //            {
+            //                m_nHumWinOffset = 352;
+            //            }
+            //            else
+            //            {
+            //                m_nHumWinOffset = (m_btEffect - 1) * Actor.HUMANFRAME;
+            //            }
+            //        }
+            //        break;
+            //    case 50:
+            //        break;
+            //    default:
+            //        m_wAppearance = Grobal2.APPRfeature(m_nFeature);
+            //        m_nBodyOffset = Actor.GetOffset(m_wAppearance);
+            //        break;
+            //}
         }
 
         public virtual int light()
@@ -1316,7 +1311,7 @@ namespace RobotSvr
             int prv;
             long dwFrameTimetime;
             bool boFly;
-            if ((m_nCurrentAction == Grobal2.SM_WALK) || (m_nCurrentAction == Grobal2.SM_BACKSTEP) || (m_nCurrentAction == Grobal2.SM_RUN) || (m_nCurrentAction == Grobal2.SM_HORSERUN) || (m_nCurrentAction == Grobal2.SM_RUSH) || (m_nCurrentAction == Grobal2.SM_RUSHEX) || (m_nCurrentAction == Grobal2.SM_RUSHKUNG))
+            if ((m_nCurrentAction == Grobal2.SM_WALK) || (m_nCurrentAction == Grobal2.SM_BACKSTEP) || (m_nCurrentAction == Grobal2.SM_RUN) || (m_nCurrentAction == Grobal2.SM_HORSERUN) || (m_nCurrentAction == Grobal2.SM_RUSH) || (m_nCurrentAction == Grobal2.SM_RUSHKUNG))
             {
                 return;
             }
@@ -1467,7 +1462,7 @@ namespace RobotSvr
             {
                 fastmove = true;
             }
-            if ((m_nCurrentAction == Grobal2.SM_RUSH) || (m_nCurrentAction == Grobal2.SM_RUSHEX) || (m_nCurrentAction == Grobal2.SM_RUSHKUNG))
+            if ((m_nCurrentAction == Grobal2.SM_RUSH) || (m_nCurrentAction == Grobal2.SM_RUSHKUNG))
             {
                 normmove = true;
             }
@@ -1476,7 +1471,7 @@ namespace RobotSvr
                 m_boMoveSlow = false;
                 m_boAttackSlow = false;
                 m_nMoveSlowLevel = 0;
-                if (m_nState & 0x10000000 != 0)
+                if ((m_nState & 0x10000000) != 0)
                 {
                     m_nMoveSlowLevel = 1;
                     m_boMoveSlow = true;
@@ -1547,7 +1542,7 @@ namespace RobotSvr
                         m_boUseCboLib = false;
                     }
                 }
-                if ((m_nCurrentAction == Grobal2.SM_RUSH) || (m_nCurrentAction == Grobal2.SM_RUSHEX))
+                if ((m_nCurrentAction == Grobal2.SM_RUSH))
                 {
                     if (this == MShare.g_MySelf)
                     {
@@ -1567,55 +1562,6 @@ namespace RobotSvr
                         m_boUseCboLib = false;
                         m_boLockEndFrame = true;
                     }
-                }
-                result = true;
-            }
-            if (m_nCurrentAction == Grobal2.SM_RUSHEX)
-            {
-                if ((m_nCurrentFrame < m_nStartFrame) || (m_nCurrentFrame > m_nEndFrame))
-                {
-                    m_nCurrentFrame = m_nStartFrame - 1;
-                }
-                if (m_nCurrentFrame < m_nEndFrame)
-                {
-                    m_nCurrentFrame++;
-                    if (m_boMsgMuch && !normmove)
-                    {
-                        if (m_nCurrentFrame < m_nEndFrame)
-                        {
-                            m_nCurrentFrame++;
-                        }
-                    }
-                    curstep = m_nCurrentFrame - m_nStartFrame + 1;
-                    maxstep = m_nEndFrame - m_nStartFrame + 1;
-                    Shift(m_btDir, m_nMoveStep, curstep, maxstep);
-                    ReadyNextAction();
-                    ClMain.frmMain.LastHitTick = MShare.GetTickCount();
-                }
-                else if (m_nCurrentFrame >= m_nEndFrame)
-                {
-                    if (this == MShare.g_MySelf)
-                    {
-                        ActionEnded();
-                        m_nCurrentAction = 0;
-                        m_boLockEndFrame = true;
-                        m_dwSmoothMoveTime = MShare.GetTickCount() - 200;
-                        m_boUseCboLib = false;
-                    }
-                    else
-                    {
-                        ActionEnded();
-                        m_nCurrentAction = 0;
-                        m_boLockEndFrame = true;
-                        m_dwSmoothMoveTime = MShare.GetTickCount() - 200;
-                        m_boUseCboLib = false;
-                    }
-                    ClMain.frmMain.LastHitTick = 0;
-                }
-                if (this == MShare.g_MySelf)
-                {
-                    MShare.g_dwDizzyDelayStart = MShare.GetTickCount();
-                    MShare.g_dwDizzyDelayTime = 300;
                 }
                 result = true;
             }
@@ -1661,7 +1607,6 @@ namespace RobotSvr
             if (prv != m_nCurrentFrame)
             {
                 m_dwLoadSurfaceTime = MShare.GetTickCount();
-                LoadSurface();
             }
             return result;
         }
@@ -1672,14 +1617,13 @@ namespace RobotSvr
             m_boLockEndFrame = true;
             MShare.g_MySelf.m_nCurrX = m_nOldx;
             MShare.g_MySelf.m_nCurrY = m_nOldy;
-            MShare.g_MySelf.m_btDir = m_nOldDir;
+            MShare.g_MySelf.m_btDir = (byte)m_nOldDir;
             CleanUserMsgs();
         }
 
         public bool CanCancelAction()
         {
-            bool result;
-            result = false;
+            bool result = false;
             if (m_nCurrentAction == Grobal2.SM_HIT)
             {
                 if (!m_boUseEffect)
@@ -1711,7 +1655,6 @@ namespace RobotSvr
 
         public void StruckShowDamage(string Str)
         {
-            int idx = 0;
             //m_StruckDamage.Add(Str, idx);
         }
 

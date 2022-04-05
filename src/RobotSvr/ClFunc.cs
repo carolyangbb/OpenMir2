@@ -377,7 +377,7 @@ namespace RobotSvr
             DropItems.Add(pc);
         }
 
-        public static void DelDropItem(string iname,int makeIndex)
+        public static void DelDropItem(string iname, int makeIndex)
         {
             for (var i = 0; i < DropItems.Count; i++)
             {

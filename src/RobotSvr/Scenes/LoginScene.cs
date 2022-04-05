@@ -41,7 +41,7 @@ namespace RobotSvr
 
         public void PassWdFail()
         {
- 
+
         }
 
         public void HideLoginBox()
@@ -95,7 +95,7 @@ namespace RobotSvr
 
         public void UpdateAccountInfos(TUserEntry ue)
         {
-            _mNewIdRetryUe = ue; 
+            _mNewIdRetryUe = ue;
             NewIdRetry(true);
         }
 
@@ -153,7 +153,7 @@ namespace RobotSvr
 
         public void ChgpwOk()
         {
-            
+
         }
 
         public void ChgpwCancel()

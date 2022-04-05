@@ -209,9 +209,6 @@ namespace RobotSvr
 
         public void SelChrNewOk()
         {
-            string shair;
-            string sjob;
-            string ssex;
             //string chrname = FrmDlg.DEditChrName.Text.Trim();
             //if (chrname != "")
             //{

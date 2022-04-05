@@ -4,8 +4,6 @@ namespace RobotSvr
 {
     public class TSculptureMon : TSkeletonOma
     {
-        private readonly int ax = 0;
-        private readonly int ay = 0;
         private int firedir = 0;
 
         public override void CalcActorFrame()

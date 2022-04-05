@@ -495,7 +495,7 @@ namespace RobotSvr
             result = 100000;
             for (i = 0; i < MShare.g_DropedItemList.Count; i++)
             {
-                d = (TDropItem)MShare.g_DropedItemList[i];
+                d = MShare.g_DropedItemList[i];
                 if (MShare.g_boPickUpAll || d.boPickUp)
                 {
                     // 如果拾取过滤，则判断是否过滤
@@ -605,7 +605,7 @@ namespace RobotSvr
             {
                 MShare.g_AutoPicupItem = null;
             }
-            
+
             if ((ItemDistance == 100000) && ((Mobdistance == 100000) || (Mobdistance == 0)))// 两者都没有发现
             {
                 return 3;// 没有发现怪物或物品，随机走

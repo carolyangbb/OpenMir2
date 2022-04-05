@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using SystemModule;
 using SystemModule.Packet;
 
@@ -50,10 +49,10 @@ namespace RobotSvr
         private string SocStr = String.Empty;
         private string BufferStr = String.Empty;
         // testSocStr, testBufferStr: string;
-        private TTimerCommand TimerCmd;
+        private readonly TTimerCommand TimerCmd;
         private readonly string MakeNewId = String.Empty;
         private long ActionLockTime = 0;
-        private short ActionKey = 0;
+        private readonly short ActionKey = 0;
         private long m_dwMouseDownTime = 0;
         private bool m_boMouseUpEnAble = false;
         private ClientPacket WaitingMsg = null;
@@ -341,9 +340,9 @@ namespace RobotSvr
             {
                 return;
             }
-            if (MShare.GetTickCount() - g_PlayScene.ProcMagic.dwTick > 5000)
+            if (MShare.GetTickCount() - g_PlayScene.ProcMagic.DwTick > 5000)
             {
-                g_PlayScene.ProcMagic.dwTick = MShare.GetTickCount();
+                g_PlayScene.ProcMagic.DwTick = MShare.GetTickCount();
                 g_PlayScene.ProcMagic.NTargetX = -1;
                 return;
             }
@@ -1299,10 +1298,10 @@ namespace RobotSvr
             {
                 if ((MShare.g_ItemArr[i].Item.Name != "") && (MShare.g_ItemArr[i].Item.NeedIdentify < 4))
                 {
-                    switch (MShare.g_ItemArr[i].Item.ItemtdMode)
+                    switch (MShare.g_ItemArr[i].Item.StdMode)
                     {
                         case 00:
-                            switch (MShare.g_ItemArr[i].Item.Itemhape)
+                            switch (MShare.g_ItemArr[i].Item.Shape)
                             {
                                 case 0:
                                     // 普通药
@@ -1565,11 +1564,11 @@ namespace RobotSvr
                 idx = -1;
                 for (i = MShare.MAXBAGITEMCL - 1; i >= 6; i--)
                 {
-                    if (MShare.g_ItemArr[i].Item.ItemtdMode == 31)
+                    if (MShare.g_ItemArr[i].Item.StdMode == 31)
                     {
                         if (MShare.g_ItemArr[i].Item.Name != "")
                         {
-                            if (MShare.g_ItemArr[i].Item.Itemhape == nType)
+                            if (MShare.g_ItemArr[i].Item.Shape == nType)
                             {
                                 idx = i;
                                 break;
@@ -1579,7 +1578,7 @@ namespace RobotSvr
                 }
                 if (idx > -1)
                 {
-                    SendEat(MShare.g_ItemArr[idx].MakeIndex, "", MShare.g_ItemArr[idx].Item.ItemtdMode);
+                    SendEat(MShare.g_ItemArr[idx].MakeIndex, "", MShare.g_ItemArr[idx].Item.StdMode);
                     if (MShare.g_ItemArr[idx].Dura > 1)
                     {
                         MShare.g_ItemArr[idx].Dura = MShare.g_ItemArr[idx].Dura - 1;
@@ -1641,7 +1640,7 @@ namespace RobotSvr
                 }
                 if ((MShare.g_EatingItem.Item.Name == "") && (MShare.g_ItemArr[idx].Item.Name != "") && (MShare.g_ItemArr[idx].Item.NeedIdentify < 4))
                 {
-                    if ((MShare.g_ItemArr[idx].Item.ItemtdMode <= 3) || (MShare.g_ItemArr[idx].Item.ItemtdMode == 31))
+                    if ((MShare.g_ItemArr[idx].Item.StdMode <= 3) || (MShare.g_ItemArr[idx].Item.StdMode == 31))
                     {
                         if (MShare.g_ItemArr[idx].Dura > 1)
                         {
@@ -1675,7 +1674,7 @@ namespace RobotSvr
                         else
                         {
                         lab1:
-                            if ((MShare.g_ItemArr[idx].Item.ItemtdMode == 46) && MShare.g_ItemArr[idx].Item.Itemhape >= 2 && MShare.g_ItemArr[idx].Item.Itemhape <= 6)
+                            if ((MShare.g_ItemArr[idx].Item.StdMode == 46) && MShare.g_ItemArr[idx].Item.Shape >= 2 && MShare.g_ItemArr[idx].Item.Shape <= 6)
                             {
                                 if (!MShare.g_RareBoxWindow.m_boKeyAvail && (MShare.g_OpenBoxItem.Item.Item.Name == "") && !FrmDlg.DWBoxBKGnd.Visible)
                                 {
@@ -1686,13 +1685,13 @@ namespace RobotSvr
                                 }
                                 return;
                             }
-                            if ((MShare.g_ItemArr[idx].Item.ItemtdMode == 41) && new ArrayList(new int[] { 10, 30 }).Contains(MShare.g_ItemArr[idx].Item.Itemhape) && (MShare.g_BuildAcusesStep != 1) && FrmDlg.DWBuildAcus.Visible && new ArrayList(new int[] { 1, 2 }).Contains(FrmDlg.DWBuildAcus.tag))
+                            if ((MShare.g_ItemArr[idx].Item.StdMode == 41) && new ArrayList(new int[] { 10, 30 }).Contains(MShare.g_ItemArr[idx].Item.Shape) && (MShare.g_BuildAcusesStep != 1) && FrmDlg.DWBuildAcus.Visible && new ArrayList(new int[] { 1, 2 }).Contains(FrmDlg.DWBuildAcus.tag))
                             {
                                 for (i = 0; i <= 7; i++)
                                 {
                                     if (MShare.g_BuildAcuses[i].Item.Item.Name == "")
                                     {
-                                        if ((MShare.g_ItemArr[idx].Item.Itemhape >= 30 && MShare.g_ItemArr[idx].Item.Itemhape <= 34 && i >= 5 && i <= 7) || (MShare.g_ItemArr[idx].Item.Itemhape >= 10 && MShare.g_ItemArr[idx].Item.Itemhape <= 14 && i >= 0 && i <= 4))
+                                        if ((MShare.g_ItemArr[idx].Item.Shape >= 30 && MShare.g_ItemArr[idx].Item.Shape <= 34 && i >= 5 && i <= 7) || (MShare.g_ItemArr[idx].Item.Shape >= 10 && MShare.g_ItemArr[idx].Item.Shape <= 14 && i >= 0 && i <= 4))
                                         {
                                             break;
                                         }
@@ -1736,9 +1735,8 @@ namespace RobotSvr
                             }
                         }
                         where = ClFunc.GetTakeOnPosition(MShare.g_ItemArr[idx].Item, MShare.g_UseItems, true);
-                        if (where >= 0 && where <= Grobal2.U_FASHION)
+                        if (where >= 0 && where <= 13)
                         {
-                            // takeon...
                             takeon = true;
                             MShare.g_EatingItem = MShare.g_ItemArr[idx];
                             MShare.g_ItemArr[idx].Item.Name = "";
@@ -1748,9 +1746,9 @@ namespace RobotSvr
             }
             else if ((idx == -1) && MShare.g_boItemMoving)
             {
-                if ((MShare.g_MovingItem.Item.Item.ItemtdMode <= 4) || (MShare.g_MovingItem.Item.Item.ItemtdMode == 31) && (MShare.g_MovingItem.Item.Item.NeedIdentify < 4))
+                if ((MShare.g_MovingItem.Item.Item.StdMode <= 4) || (MShare.g_MovingItem.Item.Item.StdMode == 31) && (MShare.g_MovingItem.Item.Item.NeedIdentify < 4))
                 {
-                    if (((MShare.g_MovingItem.Item.Item.ItemtdMode <= 3) || (MShare.g_MovingItem.Item.Item.ItemtdMode == 31)) && (MShare.g_MovingItem.Item.Item.Overlap >= 1) && (MShare.g_MovingItem.Item.Dura > 1))
+                    if (((MShare.g_MovingItem.Item.Item.StdMode <= 3) || (MShare.g_MovingItem.Item.Item.StdMode == 31)) && (MShare.g_MovingItem.Item.Item.Overlap >= 1) && (MShare.g_MovingItem.Item.Dura > 1))
                     {
                         MShare.g_MovingItem.Item.Dura = MShare.g_MovingItem.Item.Dura - 1;
                         MShare.g_boItemMoving = false;
@@ -1763,7 +1761,7 @@ namespace RobotSvr
                         MShare.g_EatingItem = MShare.g_MovingItem.Item;
                         MShare.g_MovingItem.Item.Item.Name = "";
                     }
-                    if ((MShare.g_EatingItem.Item.ItemtdMode == 4) && (MShare.g_EatingItem.Item.Itemhape < 50))
+                    if ((MShare.g_EatingItem.Item.StdMode == 4) && (MShare.g_EatingItem.Item.Shape < 50))
                     {
                         //if (System.Windows.Forms.DialogResult.Yes != DebugOutStr("是否确认开始练习 \"" + MShare.g_EatingItem.Item.Name + "\"？", new object[] { MessageBoxButtons.YesNo, MessageBoxButtons.YesNo }))
                         //{
@@ -1792,7 +1790,7 @@ namespace RobotSvr
                     else
                     {
                     lab2:
-                        if ((MShare.g_MovingItem.Item.Item.ItemtdMode == 46) && MShare.g_MovingItem.Item.Item.Itemhape >= 2 && MShare.g_MovingItem.Item.Item.Itemhape <= 6)
+                        if ((MShare.g_MovingItem.Item.Item.StdMode == 46) && MShare.g_MovingItem.Item.Item.Shape >= 2 && MShare.g_MovingItem.Item.Item.Shape <= 6)
                         {
                             if (!MShare.g_RareBoxWindow.m_boKeyAvail && (MShare.g_OpenBoxItem.Item.Item.Name == "") && !FrmDlg.DWBoxBKGnd.Visible)
                             {
@@ -1803,13 +1801,13 @@ namespace RobotSvr
                             }
                             return;
                         }
-                        if ((MShare.g_MovingItem.Item.Item.ItemtdMode == 41) && new ArrayList(new int[] { 10, 30 }).Contains(MShare.g_MovingItem.Item.Item.Itemhape) && (MShare.g_BuildAcusesStep != 1) && FrmDlg.DWBuildAcus.Visible && new ArrayList(new int[] { 1, 2 }).Contains(FrmDlg.DWBuildAcus.tag))
+                        if ((MShare.g_MovingItem.Item.Item.StdMode == 41) && new ArrayList(new int[] { 10, 30 }).Contains(MShare.g_MovingItem.Item.Item.Shape) && (MShare.g_BuildAcusesStep != 1) && FrmDlg.DWBuildAcus.Visible && new ArrayList(new int[] { 1, 2 }).Contains(FrmDlg.DWBuildAcus.tag))
                         {
                             for (i = 0; i <= 7; i++)
                             {
                                 if (MShare.g_BuildAcuses[i].Item.Item.Name == "")
                                 {
-                                    if ((MShare.g_MovingItem.Item.Item.Itemhape >= 30 && MShare.g_MovingItem.Item.Item.Itemhape <= 34 && i >= 5 && i <= 7) || (MShare.g_MovingItem.Item.Item.Itemhape >= 10 && MShare.g_MovingItem.Item.Item.Itemhape <= 14 && i >= 0 && i <= 4))
+                                    if ((MShare.g_MovingItem.Item.Item.Shape >= 30 && MShare.g_MovingItem.Item.Item.Shape <= 34 && i >= 5 && i <= 7) || (MShare.g_MovingItem.Item.Item.Shape >= 10 && MShare.g_MovingItem.Item.Item.Shape <= 14 && i >= 0 && i <= 4))
                                     {
                                         break;
                                     }
@@ -1861,7 +1859,7 @@ namespace RobotSvr
                 m_nEatRetIdx = idx;
                 m_boSupplyItem = true;
                 MShare.g_dwEatTime = MShare.GetTickCount();
-                SendEat(MShare.g_EatingItem.MakeIndex, MShare.g_EatingItem.Item.Name, MShare.g_EatingItem.Item.ItemtdMode);
+                SendEat(MShare.g_EatingItem.MakeIndex, MShare.g_EatingItem.Item.Name, MShare.g_EatingItem.Item.StdMode);
             }
             else if (takeon)
             {
@@ -2439,16 +2437,13 @@ namespace RobotSvr
             int i;
             for (i = 0; i < MShare.g_DropedItemList.Count; i++)
             {
-                this.Dispose((TDropItem)MShare.g_DropedItemList[i]);
+                this.Dispose(MShare.g_DropedItemList[i]);
             }
             MShare.g_DropedItemList.Clear();
         }
 
         private void ResetGameVariables()
         {
-            int i;
-            int ii;
-            ArrayList List;
             CloseAllWindows();
             ClearDropItems();
             //if (MShare.g_RareBoxWindow != null)
@@ -2550,9 +2545,6 @@ namespace RobotSvr
 
         private void ChangeServerClearGameVariables()
         {
-            int i;
-            int ii;
-            ArrayList List;
             CloseAllWindows();
             ClearDropItems();
             //for (i = Low(FrmDlg.m_MissionList); i <= High(FrmDlg.m_MissionList); i++)
@@ -3282,9 +3274,8 @@ namespace RobotSvr
 
         public void SendDealTry()
         {
-            ClientPacket msg;
             string who;
-            msg = Grobal2.MakeDefaultMsg(Grobal2.CM_DEALTRY, 0, 0, 0, 0);
+            ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_DEALTRY, 0, 0, 0, 0);
             SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(who));
         }
 
@@ -3409,7 +3400,6 @@ namespace RobotSvr
 
         public void SendFireSerieSkill()
         {
-            ClientPacket msg;
             if (MShare.g_MySelf == null)
             {
                 return;
@@ -3642,7 +3632,7 @@ namespace RobotSvr
             string Str = String.Empty;
             string Str2 = String.Empty;
             string str3 = String.Empty;
-            ClientPacket msg;
+            ClientPacket msg = null;
             TShortMessage sMsg;
             TMessageBodyW mbw;
             TCharDesc desc;
@@ -3653,7 +3643,6 @@ namespace RobotSvr
             TActor Actor;
             TActor Actor2;
             TClEvent __event;
-            int nFuncPos;
             TServerConfig svrcfg;
             if ((btPacket == 0) && (datablock[0] == '+'))
             {
@@ -3667,12 +3656,12 @@ namespace RobotSvr
             body = "";
             if (datablock.Length > Grobal2.DEFBLOCKSIZE)
             {
-                body = datablock.Substring(Grobal2.DEFBLOCKSIZE + 1 - 1, datablock.Length - Grobal2.DEFBLOCKSIZE);
+                body = datablock.Substring(Grobal2.DEFBLOCKSIZE, datablock.Length - Grobal2.DEFBLOCKSIZE);
             }
             if (btPacket == 0)
             {
-                head = datablock.Substring(1 - 1, Grobal2.DEFBLOCKSIZE);
-                msg = EDcode.DecodeMessage(head);
+                head = datablock.Substring(0, Grobal2.DEFBLOCKSIZE);
+                msg = EDcode.DeCodeMessage(head);
             }
             else
             {
@@ -4782,34 +4771,31 @@ namespace RobotSvr
                 case Grobal2.SM_STORAGE_OK:
                 case Grobal2.SM_STORAGE_FULL:
                 case Grobal2.SM_STORAGE_FAIL:
-                    LastestClickTime = MShare.GetTickCount();
-                    if (msg.Ident != Grobal2.SM_STORAGE_OK)
-                    {
-                        if (msg.Ident == Grobal2.SM_STORAGE_FULL)
-                        {
-                            DebugOutStr("您的个人仓库已经满了，不能再保管任何东西了");
-                        }
-                        else
-                        {
-                            if (msg.Recog == 2)
-                            {
-                                DebugOutStr("寄存物品失败,同类单个物品最高重叠数量是 " + Grobal2.MAX_OVERLAPITEM.ToString());
-                            }
-                            else if (msg.Recog == 3)
-                            {
-                                MShare.g_SellDlgItemSellWait.Item.Dura = MShare.g_SellDlgItemSellWait.Item.Dura - msg.Param;
-                                DScreen.AddChatBoardString(string.Format("成功寄存 %s %d个", MShare.g_SellDlgItemSellWait.Item.Item.Name, msg.Param), Color.Blue, Color.White);
-                            }
-                            else
-                            {
-                                DebugOutStr("您不能寄存物品");
-                            }
-                        }
-                        ClFunc.AddItemBag(MShare.g_SellDlgItemSellWait.Item);
-                    }
-                    else
-                    {
-                    }
+                    //LastestClickTime = MShare.GetTickCount();
+                    //if (msg.Ident != Grobal2.SM_STORAGE_OK)
+                    //{
+                    //    if (msg.Ident == Grobal2.SM_STORAGE_FULL)
+                    //    {
+                    //        DebugOutStr("您的个人仓库已经满了，不能再保管任何东西了");
+                    //    }
+                    //    else
+                    //    {
+                    //        if (msg.Recog == 2)
+                    //        {
+                    //            DebugOutStr("寄存物品失败,同类单个物品最高重叠数量是 " + Grobal2.MAX_OVERLAPITEM.ToString());
+                    //        }
+                    //        else if (msg.Recog == 3)
+                    //        {
+                    //            MShare.g_SellDlgItemSellWait.Item.Dura = MShare.g_SellDlgItemSellWait.Item.Dura - msg.Param;
+                    //            DScreen.AddChatBoardString(string.Format("成功寄存 %s %d个", MShare.g_SellDlgItemSellWait.Item.Item.Name, msg.Param), Color.Blue, Color.White);
+                    //        }
+                    //        else
+                    //        {
+                    //            DebugOutStr("您不能寄存物品");
+                    //        }
+                    //    }
+                    //    ClFunc.AddItemBag(MShare.g_SellDlgItemSellWait.Item);
+                    //}
                     MShare.g_SellDlgItemSellWait.Item.Item.Name = "";
                     break;
                 case Grobal2.SM_SAVEITEMLIST:
@@ -5468,7 +5454,7 @@ namespace RobotSvr
 
         private void ClientGetGameGoldName(ClientPacket msg, string sBody)
         {
-            string sData;
+            string sData = string.Empty;
             if (sBody != "")
             {
                 sBody = EDcode.DeCodeString(sBody);
@@ -5591,8 +5577,8 @@ namespace RobotSvr
         {
             int i;
             int iindex;
-            string Str;
-            string iname;
+            string Str = string.Empty;
+            string iname = string.Empty;
             TClientItem cu;
             body = EDcode.DeCodeString(body);
             while (body != "")
@@ -5700,7 +5686,6 @@ namespace RobotSvr
 
         private void ClientGetBagItmes(string body)
         {
-            int i;
             int k;
             string Str;
             TClientItem cu;
@@ -5800,10 +5785,9 @@ namespace RobotSvr
         {
             int i;
             TDropItem DropItem;
-            TCItemRule P;
             for (i = 0; i < MShare.g_DropedItemList.Count; i++)
             {
-                if (((TDropItem)MShare.g_DropedItemList[i]).id == itemid)
+                if (MShare.g_DropedItemList[i].id == itemid)
                 {
                     return;
                 }
@@ -5820,33 +5804,33 @@ namespace RobotSvr
             DropItem.FlashTime = MShare.GetTickCount() - new System.Random(3000).Next();
             DropItem.BoFlash = false;
             DropItem.boNonSuch = false;
-            DropItem.boShowName = MShare.g_ShowItemList.IndexOf(itmname) < 0;
+            DropItem.boShowName = MShare.g_ShowItemList.ContainsKey(itmname);
             DropItem.boPickUp = DropItem.boShowName;
             if (MShare.g_gcAss[5])
             {
                 DropItem.boNonSuch = false;
                 DropItem.boPickUp = false;
                 DropItem.boShowName = false;
-                i = MShare.g_APPickUpList.IndexOf(itmname);
-                if (i >= 0)
-                {
-                    DropItem.boNonSuch = ((int)MShare.g_APPickUpList.Values[i]) != 0;
-                    DropItem.boPickUp = true;
-                    if (!DropItem.boNonSuch)
-                    {
-                        DropItem.boShowName = true;
-                    }
-                }
+                //i = MShare.g_APPickUpList.IndexOf(itmname);
+                //if (i >= 0)
+                //{
+                //    DropItem.boNonSuch = ((int)MShare.g_APPickUpList.Values[i]) != 0;
+                //    DropItem.boPickUp = true;
+                //    if (!DropItem.boNonSuch)
+                //    {
+                //        DropItem.boShowName = true;
+                //    }
+                //}
             }
             else
             {
-                P = (TCItemRule)MShare.g_ItemsFilter_All.GetValues(itmname);
-                if (P != null)
-                {
-                    DropItem.boNonSuch = P.rare;
-                    DropItem.boPickUp = P.pick;
-                    DropItem.boShowName = P.Show;
-                }
+                //P = (TCItemRule)MShare.g_ItemsFilter_All.GetValues(itmname);
+                //if (P != null)
+                //{
+                //    DropItem.boNonSuch = P.rare;
+                //    DropItem.boPickUp = P.pick;
+                //    DropItem.boShowName = P.Show;
+                //}
             }
             MShare.g_DropedItemList.Add(DropItem);
         }
@@ -6076,7 +6060,7 @@ namespace RobotSvr
 
         private void ClientGetMyMagics(string body)
         {
-            string data;
+            string data = string.Empty;
             TClientMagic pcm;
             for (var i = 0; i < MShare.g_MagicList.Count; i++)
             {
@@ -6433,7 +6417,7 @@ namespace RobotSvr
 
         private void ClientGetSendNotice(string body)
         {
-            string data;
+            string data = string.Empty;
             string msgstr;
             MShare.g_boDoFastFadeOut = false;
             if (MShare.g_boOpenAutoPlay && (MShare.g_nAPReLogon == 3))
@@ -6458,7 +6442,7 @@ namespace RobotSvr
 
         private void ClientGetGroupMembers(string bodystr)
         {
-            string memb;
+            string memb = string.Empty;
             MShare.g_GroupMembers.Clear();
             while (true)
             {
@@ -6819,7 +6803,7 @@ namespace RobotSvr
             MShare.g_WaitingUseItem.Index = Grobal2.U_BUJUK;
             for (i = 6; i < MShare.MAXBAGITEMCL; i++)
             {
-                if ((MShare.g_ItemArr[i].Item.NeedIdentify < 4) && (MShare.g_ItemArr[i].Item.ItemtdMode == 25) && (MShare.g_ItemArr[i].Item.Itemhape != 6) && (MShare.g_ItemArr[i].Item.Name.IndexOf(Str) > 0) && (MShare.g_ItemArr[i].Item.Name.IndexOf(cStr) > 0))
+                if ((MShare.g_ItemArr[i].Item.NeedIdentify < 4) && (MShare.g_ItemArr[i].Item.StdMode == 25) && (MShare.g_ItemArr[i].Item.Shape != 6) && (MShare.g_ItemArr[i].Item.Name.IndexOf(Str) > 0) && (MShare.g_ItemArr[i].Item.Name.IndexOf(cStr) > 0))
                 {
                     MShare.g_WaitingUseItem.Item = MShare.g_ItemArr[i];
                     MShare.g_ItemArr[i].Item.Name = "";
@@ -7017,13 +7001,13 @@ namespace RobotSvr
 
         public void TimerAutoMoveTimer(System.Object Sender, System.EventArgs _e1)
         {
-            int ndir;
-            int X1;
-            int Y1;
-            int X2;
-            int Y2;
-            int X3;
-            int Y3;
+            int ndir = 0;
+            int X1=0;
+            int Y1=0;
+            int X2=0;
+            int Y2=0;
+            int X3=0;
+            int Y3 = 0;
             bool boCanRun;
             if ((MShare.g_MySelf == null) || (Map.m_MapBuf == null) || (!CSocket.Active))
             {

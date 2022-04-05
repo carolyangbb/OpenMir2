@@ -11,10 +11,9 @@ namespace RobotSvr
         private int m_nCurWeaponEffect = 0;
         private int m_nCurBubbleStruck = 0;
         private long m_dwWeaponpEffectTime = 0;
-        private bool m_boHideWeapon = false;
+        private readonly bool m_boHideWeapon = false;
         public int m_nFrame = 0;
         public long m_dwFrameTick = 0;
-        public long m_dwFrameTime = 0;
         public TStallMgr m_StallMgr;
         public ArrayList m_SlaveObject = null;
 
@@ -57,7 +56,7 @@ namespace RobotSvr
                     {
                         if (MShare.g_MagicArr[0][MShare.g_SeriesSkillArr[MShare.g_nCurrentMagic]] != null)
                         {
-                           // ClMain.frmMain.UseMagic(MShare.g_nMouseX, MShare.g_nMouseY, MShare.g_MagicArr[0][MShare.g_SeriesSkillArr[MShare.g_nCurrentMagic]], false, true);
+                            // ClMain.frmMain.UseMagic(MShare.g_nMouseX, MShare.g_nMouseY, MShare.g_MagicArr[0][MShare.g_SeriesSkillArr[MShare.g_nCurrentMagic]], false, true);
                         }
                         MShare.g_nCurrentMagic++;
                         if (MShare.g_nCurrentMagic > HUtil32._MIN(3, MShare.g_SeriesSkillStep))
@@ -78,7 +77,7 @@ namespace RobotSvr
                 {
                     if (MShare.g_MagicArr[0][MShare.g_SeriesSkillArr[MShare.g_nCurrentMagic2]] != null)
                     {
-                       // ClMain.frmMain.UseMagic(MShare.g_nMouseX, MShare.g_nMouseY, MShare.g_MagicArr[0][MShare.g_SeriesSkillArr[MShare.g_nCurrentMagic2]], false, true);
+                        // ClMain.frmMain.UseMagic(MShare.g_nMouseX, MShare.g_nMouseY, MShare.g_MagicArr[0][MShare.g_SeriesSkillArr[MShare.g_nCurrentMagic2]], false, true);
                     }
                     MShare.g_nCurrentMagic2++;
                     if (MShare.g_nCurrentMagic2 > HUtil32._MIN(4, MShare.g_SeriesSkillStep))
@@ -91,8 +90,6 @@ namespace RobotSvr
 
         public override void CalcActorFrame()
         {
-            int nHairEx;
-            int haircount;
             this.m_boUseMagic = false;
             this.m_boNewMagic = false;
             this.m_boUseCboLib = false;
@@ -829,23 +826,23 @@ namespace RobotSvr
             m_nCurWeaponEffect = 0;
         }
 
-        public bool Run_MagicTimeOut()
-        {
-            bool result;
-            if (this == MShare.g_MySelf)
-            {
-                result = MShare.GetTickCount() - this.m_dwWaitMagicRequest > 1800;
-            }
-            else
-            {
-                result = MShare.GetTickCount() - this.m_dwWaitMagicRequest > 850 + (byte)bss * 50;
-            }
-            if (!bss && result)
-            {
-                this.m_CurMagic.ServerMagicCode = 0;
-            }
-            return result;
-        }
+        //public bool Run_MagicTimeOut()
+        //{
+        //    bool result;
+        //    if (this == MShare.g_MySelf)
+        //    {
+        //        result = MShare.GetTickCount() - this.m_dwWaitMagicRequest > 1800;
+        //    }
+        //    else
+        //    {
+        //        result = MShare.GetTickCount() - this.m_dwWaitMagicRequest > 850 + (byte)bss * 50;
+        //    }
+        //    if (!bss && result)
+        //    {
+        //        this.m_CurMagic.ServerMagicCode = 0;
+        //    }
+        //    return result;
+        //}
 
         public override void Run()
         {

@@ -274,7 +274,7 @@ namespace RobotSvr
             inames = "";
             for (i = 0; i < MShare.g_DropedItemList.Count; i++)
             {
-                dropItem = (TDropItem)MShare.g_DropedItemList[i];
+                dropItem = MShare.g_DropedItemList[i];
                 if ((dropItem.X == ccx) && (dropItem.Y == ccy))
                 {
                     if (result == null)

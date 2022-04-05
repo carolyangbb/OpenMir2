@@ -28,7 +28,7 @@ namespace RobotSvr
         public static bool g_boPickUpAll = false;
         public static int g_ptItems_Pos = -1;
         public static int g_ptItems_Type = 0;
-        public static Dictionary<string,string> g_ItemsFilter_All = null;
+        public static Dictionary<string, string> g_ItemsFilter_All = null;
         public static Dictionary<string, string> g_ItemsFilter_All_Def = null;
         public static ArrayList g_ItemsFilter_Dress = null;
         public static ArrayList g_ItemsFilter_Weapon = null;
@@ -206,7 +206,7 @@ namespace RobotSvr
         public static ArrayList[] g_ShopListArr = new ArrayList[5 + 1];
         public static ArrayList g_SaveItemList = null;
         public static ArrayList g_MenuItemList = null;
-        public static ArrayList g_DropedItemList = null;
+        public static IList<TDropItem> g_DropedItemList = null;
         public static ArrayList g_ChangeFaceReadyList = null;
         public static IList<TActor> g_FreeActorList = null;
         public static int g_PoisonIndex = 0;
@@ -277,7 +277,7 @@ namespace RobotSvr
         public static int g_nTagCount = 0;
         public static long m_dwTargetFocusTick = 0;
         public static Dictionary<string, string> g_APPickUpList = null;
-        public static Dictionary<string,string> g_APMobList = null;
+        public static Dictionary<string, string> g_APMobList = null;
         public static int g_AttackInvTime = 900;
         public static TActor g_AttackTarget = null;
         public static long g_dwSearchEnemyTick = 0;
@@ -436,7 +436,6 @@ namespace RobotSvr
         public static string g_sSellPriceStr = string.Empty;
         public static TClientItem[] g_DealItems = new TClientItem[9 + 1];
         public static bool g_boYbDealing = false;
-        public static TClientPS g_YbDealInfo = null;
         public static TClientItem[] g_YbDealItems = new TClientItem[9 + 1];
         public static TClientItem[] g_DealRemoteItems = new TClientItem[19 + 1];
         public static int g_nDealGold = 0;
@@ -568,7 +567,7 @@ namespace RobotSvr
         public static bool g_boNextTimeSmiteWideHit2 = false;
         public static bool g_boCanSLonHit = false;
         public static bool g_boCanSquHit = false;
-        public static THStringList g_ShowItemList = null;
+        public static Dictionary<string, string> g_ShowItemList = null;
         public static bool g_boDrawTileMap = true;
         public static bool g_boDrawDropItem = true;
         public static int g_nTestX = 71;
@@ -768,7 +767,7 @@ namespace RobotSvr
 
         public static void ShowMsg(string Str)
         {
-          //  ClMain.DScreen.AddChatBoardString(Str, System.Drawing.Color.White, System.Drawing.Color.Black);
+            //  ClMain.DScreen.AddChatBoardString(Str, System.Drawing.Color.White, System.Drawing.Color.Black);
         }
 
         public static void LoadMapDesc()
@@ -1221,12 +1220,6 @@ namespace RobotSvr
 
         public static void LoadItemDesc()
         {
-            const string fItemDesc = ".\\data\\ItemDesc.dat";
-            int i;
-            string Name;
-            string desc;
-            string ps;
-            ArrayList temp;
             //if (File.Exists(fItemDesc))
             //{
             //    temp = new ArrayList();
@@ -1444,7 +1437,7 @@ namespace RobotSvr
             {
                 return result;
             }
-            switch (clientItem.Item.ItemtdMode)
+            switch (clientItem.Item.StdMode)
             {
                 case 10:
                 case 11:
@@ -1802,11 +1795,11 @@ namespace RobotSvr
 
         public static void AutoPutOntiBooks()
         {
-            //if ((g_TIItems[0].Item.Item.Name != "") && (g_TIItems[0].Item.Item.Eva.EvaTimesMax > 0) && (g_TIItems[0].Item.Item.Eva.EvaTimes < g_TIItems[0].Item.Item.Eva.EvaTimesMax) && ((g_TIItems[1].Item.Item.Name == "") || (g_TIItems[1].Item.Item.ItemtdMode != 56) || !(g_TIItems[1].Item.Item.Itemhape >= 1 && g_TIItems[1].Item.Item.Itemhape <= 3) || (g_TIItems[1].Item.Item.Itemhape != g_TIItems[0].Item.Item.Eva.EvaTimes + 1)))
+            //if ((g_TIItems[0].Item.Item.Name != "") && (g_TIItems[0].Item.Item.Eva.EvaTimesMax > 0) && (g_TIItems[0].Item.Item.Eva.EvaTimes < g_TIItems[0].Item.Item.Eva.EvaTimesMax) && ((g_TIItems[1].Item.Item.Name == "") || (g_TIItems[1].Item.Item.StdMode != 56) || !(g_TIItems[1].Item.Item.Shape >= 1 && g_TIItems[1].Item.Item.Shape <= 3) || (g_TIItems[1].Item.Item.Shape != g_TIItems[0].Item.Item.Eva.EvaTimes + 1)))
             //{
             //    for (i = MAXBAGITEMCL - 1; i >= 6; i--)
             //    {
-            //        if ((g_ItemArr[i].Item.Name != "") && (g_ItemArr[i].Item.ItemtdMode == 56) && (g_ItemArr[i].Item.Itemhape == g_TIItems[0].Item.Eva.EvaTimes + 1))
+            //        if ((g_ItemArr[i].Item.Name != "") && (g_ItemArr[i].Item.StdMode == 56) && (g_ItemArr[i].Item.Shape == g_TIItems[0].Item.Eva.EvaTimes + 1))
             //        {
             //            if (g_TIItems[1].Item.Item.Name != "")
             //            {
@@ -1829,7 +1822,7 @@ namespace RobotSvr
 
         public static void AutoPutOntiSecretBooks()
         {
-            //if (FrmDlg.DWSP.Visible && (FrmDlg.DWSP.tag == 1) && (g_spItems[0].Item.Item.Name != "") && (g_spItems[0].Item.Item.Eva.EvaTimesMax > 0) && ((g_spItems[1].Item.Item.Name == "") || (g_spItems[1].Item.Item.ItemtdMode != 56) || (g_spItems[1].Item.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             s.Shape != 0)))
+            //if (FrmDlg.DWSP.Visible && (FrmDlg.DWSP.tag == 1) && (g_spItems[0].Item.Item.Name != "") && (g_spItems[0].Item.Item.Eva.EvaTimesMax > 0) && ((g_spItems[1].Item.Item.Name == "") || (g_spItems[1].Item.Item.StdMode != 56) || (g_spItems[1].Item.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             s.Shape != 0)))
             //{
             //    for (i = MAXBAGITEMCL - 1; i >= 6; i--)
             //    {
@@ -1856,7 +1849,7 @@ namespace RobotSvr
 
         public static void AutoPutOntiCharms()
         {
-            //if ((g_TIItems[0].Item.Item.Name != "") && (g_TIItems[0].Item.Item.Eva.EvaTimesMax > 0) && (g_TIItems[0].Item.Item.Eva.EvaTimes > 0) && ((g_TIItems[1].Item.Item.Name == "") || (g_TIItems[1].Item.Item.ItemtdMode != 41) || (g_TIItems[1].Item.Item.Itemhape != 30)))
+            //if ((g_TIItems[0].Item.Item.Name != "") && (g_TIItems[0].Item.Item.Eva.EvaTimesMax > 0) && (g_TIItems[0].Item.Item.Eva.EvaTimes > 0) && ((g_TIItems[1].Item.Item.Name == "") || (g_TIItems[1].Item.Item.StdMode != 41) || (g_TIItems[1].Item.Item.Shape != 30)))
             //{
             //    for (i = MAXBAGITEMCL - 1; i >= 6; i--)
             //    {
