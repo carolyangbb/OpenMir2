@@ -1,12 +1,12 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using SystemModule;
 
 namespace RobotSvr
 {
     public class ClFunc
     {
-        public static ArrayList DropItems = null;
+        public static IList<TClientItem> DropItems = null;
 
         public static void GetNextHitPosition(int sX, int sY, ref int NewX, ref int NewY)
         {
@@ -377,16 +377,27 @@ namespace RobotSvr
             DropItems.Add(pc);
         }
 
+        public static void DelDropItem(string iname,int makeIndex)
+        {
+            for (var i = 0; i < DropItems.Count; i++)
+            {
+                if ((DropItems[i].Item.Name == iname) && (DropItems[i].MakeIndex == makeIndex))
+                {
+                    DropItems[i] = null;
+                    DropItems.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
         public static TClientItem GetDrosItem(string iname, int MakeIndex)
         {
-            TClientItem result;
-            int i;
-            result = null;
-            for (i = 0; i < DropItems.Count; i++)
+            TClientItem result = null;
+            for (var i = 0; i < DropItems.Count; i++)
             {
-                if ((((TClientItem)DropItems[i]).Item.Name == iname) && (((TClientItem)DropItems[i]).MakeIndex == MakeIndex))
+                if ((DropItems[i].Item.Name == iname) && (DropItems[i].MakeIndex == MakeIndex))
                 {
-                    result = (TClientItem)DropItems[i];
+                    result = DropItems[i];
                     break;
                 }
             }
@@ -398,9 +409,9 @@ namespace RobotSvr
             int i;
             for (i = 0; i < DropItems.Count; i++)
             {
-                if ((((TClientItem)DropItems[i]).Item.Name == iname) && (((TClientItem)DropItems[i]).MakeIndex == MakeIndex))
+                if ((DropItems[i].Item.Name == iname) && (DropItems[i].MakeIndex == MakeIndex))
                 {
-                    Dispose((TClientItem)DropItems[i]);
+                    Dispose(DropItems[i]);
                     DropItems.RemoveAt(i);
                     break;
                 }

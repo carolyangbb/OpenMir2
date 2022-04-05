@@ -29,7 +29,7 @@ namespace RobotSvr
         public static Rectangle g_SkidAD_Rect2 = null;
         public static Rectangle G_RC_SQUENGINER = null;
         public static Rectangle G_RC_IMEMODE = null;
-        // ====================================ÎïÆ·====================================
+        // ====================================ç‰©å“====================================
         public static byte g_BuildBotTex = 0;
         public static byte g_WinBottomType = 0;
         public static bool g_Windowed = false;
@@ -47,6 +47,7 @@ namespace RobotSvr
         public static ArrayList g_xMapDescList = null;
         public static ArrayList g_xCurMapDescList = null;
         public static byte[] g_pWsockAddr = new byte[4 + 1];
+        public static string[] g_sRenewBooks = new string[] { "éšæœºä¼ é€å·", "åœ°ç‰¢é€ƒè„±å·", "å›åŸå·", "è¡Œä¼šå›åŸå·", "ç›Ÿé‡ä¼ é€çŸ³", "æ¯”å¥‡ä¼ é€çŸ³", "éšæœºä¼ é€çŸ³", };
         public static int g_nMagicRange = 8;
         public static int g_TileMapOffSetX = 9;
         public static int g_TileMapOffSetY = 9;
@@ -160,32 +161,21 @@ namespace RobotSvr
         public static string g_sBookLabel = "";
         public static int g_MaxExpFilter = 2000;
         public static bool g_boDrawLevelRank = false;
-        public static THeroLevelRank[] g_HeroLevelRanks;
-        public static THumanLevelRank[] g_HumanLevelRanks;
-        public static string[] g_UnBindItems = { "ÍòÄêÑ©Ëª", "ÁÆÉËÒ©", "Ç¿Ğ§Ì«ÑôË®", "Ç¿Ğ§½ğ´´Ò©", "Ç¿Ğ§Ä§·¨Ò©", "½ğ´´Ò©(Ğ¡Á¿)", "Ä§·¨Ò©(Ğ¡Á¿)", "½ğ´´Ò©(ÖĞÁ¿)", "Ä§·¨Ò©(ÖĞÁ¿)", "µØÀÎÌÓÍÑ¾í", "Ëæ»ú´«ËÍ¾í", "»Ø³Ç¾í", "ĞĞ»á»Ø³Ç¾í" };
+        public static string[] g_UnBindItems = { "ä¸‡å¹´é›ªéœœ", "ç–—ä¼¤è¯", "å¼ºæ•ˆå¤ªé˜³æ°´", "å¼ºæ•ˆé‡‘åˆ›è¯", "å¼ºæ•ˆé­”æ³•è¯", "é‡‘åˆ›è¯(å°é‡)", "é­”æ³•è¯(å°é‡)", "é‡‘åˆ›è¯(ä¸­é‡)", "é­”æ³•è¯(ä¸­é‡)", "åœ°ç‰¢é€ƒè„±å·", "éšæœºä¼ é€å·", "å›åŸå·", "è¡Œä¼šå›åŸå·" };
         public static string g_sLogoText = "LegendSoft";
-        public static string g_sGoldName = "½ğ±Ò";
-        public static string g_sGameGoldName = "Ôª±¦";
-        public static string g_sGamePointName = "Åİµã";
-        public static string g_sWarriorName = "ÎäÊ¿";
-        // Ö°ÒµÃû³Æ
-        public static string g_sWizardName = "Ä§·¨Ê¦";
-        // Ö°ÒµÃû³Æ
-        public static string g_sTaoistName = "µÀÊ¿";
-        // Ö°ÒµÃû³Æ
-        public static string g_sUnKnowName = "Î´Öª";
+        public static string g_sGoldName = "é‡‘å¸";
+        public static string g_sGameGoldName = "å…ƒå®";
+        public static string g_sGamePointName = "æ³¡ç‚¹";
+        public static string g_sWarriorName = "æ­¦å£«";
+        public static string g_sWizardName = "é­”æ³•å¸ˆ";
+        public static string g_sTaoistName = "é“å£«";
+        public static string g_sUnKnowName = "æœªçŸ¥";
         public static string g_sMainParam1 = String.Empty;
-        // ¶ÁÈ¡ÉèÖÃ²ÎÊı
         public static string g_sMainParam2 = String.Empty;
-        // ¶ÁÈ¡ÉèÖÃ²ÎÊı
         public static string g_sMainParam3 = String.Empty;
-        // ¶ÁÈ¡ÉèÖÃ²ÎÊı
         public static string g_sMainParam4 = String.Empty;
-        // ¶ÁÈ¡ÉèÖÃ²ÎÊı
         public static string g_sMainParam5 = String.Empty;
-        // ¶ÁÈ¡ÉèÖÃ²ÎÊı
         public static string g_sMainParam6 = String.Empty;
-        // ¶ÁÈ¡ÉèÖÃ²ÎÊı
         public static bool g_boCanDraw = true;
         public static bool g_boInitialize = false;
         public static int g_nInitializePer = 0;
@@ -194,11 +184,8 @@ namespace RobotSvr
         public static int g_FontSize = 0;
         public static byte[] g_PowerBlock = { 0x55, 0x8B, 0xEC, 0x83, 0xC4, 0xE8, 0x89, 0x55, 0xF8, 0x89, 0x45, 0xFC, 0xC7, 0x45, 0xEC, 0xE8, 0x03, 0x00, 0x00, 0xC7, 0x45, 0xE8, 0x64, 0x00, 0x00, 0x00, 0xDB, 0x45, 0xEC, 0xDB, 0x45, 0xE8, 0xDE, 0xF9, 0xDB, 0x45, 0xFC, 0xDE, 0xC9, 0xDD, 0x5D, 0xF0, 0x9B, 0x8B, 0x45, 0xF8, 0x8B, 0x00, 0x8B, 0x55, 0xF8, 0x89, 0x02, 0xDD, 0x45, 0xF0, 0x8B, 0xE5, 0x5D, 0xC3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
         public static byte[] g_PowerBlock1 = { 0x55, 0x8B, 0xEC, 0x83, 0xC4, 0xE8, 0x89, 0x55, 0xF8, 0x89, 0x45, 0xFC, 0xC7, 0x45, 0xEC, 0x64, 0x00, 0x00, 0x00, 0xC7, 0x45, 0xE8, 0x64, 0x00, 0x00, 0x00, 0xDB, 0x45, 0xEC, 0xDB, 0x45, 0xE8, 0xDE, 0xF9, 0xDB, 0x45, 0xFC, 0xDE, 0xC9, 0xDD, 0x5D, 0xF0, 0x9B, 0x8B, 0x45, 0xF8, 0x8B, 0x00, 0x8B, 0x55, 0xF8, 0x89, 0x02, 0xDD, 0x45, 0xF0, 0x8B, 0xE5, 0x5D, 0xC3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-        // g_RegInfo                 : TRegInfo;
         public static string g_sServerName = String.Empty;
-        // ·şÎñÆ÷ÏÔÊ¾Ãû³Æ
         public static string g_sServerMiniName = String.Empty;
-        // ·şÎñÆ÷Ãû³Æ
         public static string g_psServerAddr = String.Empty;
         public static int g_pnServerPort = 0;
         public static string g_sSelChrAddr = String.Empty;
@@ -218,8 +205,6 @@ namespace RobotSvr
         public static bool g_boBGSound = true;
         public static bool g_boSound = true;
         public static bool g_DlgInitialize = false;
-        // g_HintSurface_W: TDirectDrawSurface;
-        // g_BotSurface: TDirectDrawSurface;
         public static bool g_boFirstActive = true;
         public static bool g_boFirstTime = false;
         public static string g_sMapTitle = String.Empty;
@@ -231,7 +216,7 @@ namespace RobotSvr
         public static ArrayList g_SoundList = null;
         public static ArrayList BGMusicList = null;
         public static long g_DxFontsMgrTick = 0;
-        public static TClientMagic[,] g_MagicArr = new TClientMagic[2 + 1, 255 + 1];
+        public static TClientMagic[][] g_MagicArr = new TClientMagic[3][] { new TClientMagic[] { }, new TClientMagic[] { }, new TClientMagic[] { } };
         public static ArrayList g_MagicList = null;
         public static ArrayList g_IPMagicList = null;
         public static ArrayList g_HeroMagicList = null;
@@ -252,17 +237,17 @@ namespace RobotSvr
         public static string g_sGuildName = String.Empty;
         public static string g_sGuildRankName = String.Empty;
         public static long g_dwLatestJoinAttackTick = 0;
-        // ×îºóÄ§·¨¹¥»÷Ê±¼ä
+        // æœ€åé­”æ³•æ”»å‡»æ—¶é—´
         public static long g_dwLastAttackTick = 0;
-        // ×îºó¹¥»÷Ê±¼ä(°üÀ¨ÎïÀí¹¥»÷¼°Ä§·¨¹¥»÷)
+        // æœ€åæ”»å‡»æ—¶é—´(åŒ…æ‹¬ç‰©ç†æ”»å‡»åŠé­”æ³•æ”»å‡»)
         public static long g_dwLastMoveTick = 0;
-        // ×îºóÒÆ¶¯Ê±¼ä
+        // æœ€åç§»åŠ¨æ—¶é—´
         public static long g_dwLatestSpellTick = 0;
-        // ×îºóÄ§·¨¹¥»÷Ê±¼ä
+        // æœ€åé­”æ³•æ”»å‡»æ—¶é—´
         public static long g_dwLatestFireHitTick = 0;
-        // ×îºóÁĞ»ğ¹¥»÷Ê±¼ä
+        // æœ€ååˆ—ç«æ”»å‡»æ—¶é—´
         public static long g_dwLatestSLonHitTick = 0;
-        // ×îºóÁĞ»ğ¹¥»÷Ê±¼ä
+        // æœ€ååˆ—ç«æ”»å‡»æ—¶é—´
         public static long g_dwLatestTwinHitTick = 0;
         public static long g_dwLatestPursueHitTick = 0;
         public static long g_dwLatestRushHitTick = 0;
@@ -276,17 +261,17 @@ namespace RobotSvr
         public static long g_dwMagicDelayTime = 0;
         public static long g_dwMagicPKDelayTime = 0;
         public static int g_nMouseCurrX = 0;
-        // Êó±êËùÔÚµØÍ¼Î»ÖÃ×ù±êX
+        // é¼ æ ‡æ‰€åœ¨åœ°å›¾ä½ç½®åº§æ ‡X
         public static int g_nMouseCurrY = 0;
-        // Êó±êËùÔÚµØÍ¼Î»ÖÃ×ù±êY
+        // é¼ æ ‡æ‰€åœ¨åœ°å›¾ä½ç½®åº§æ ‡Y
         public static int g_nMouseX = 0;
-        // Êó±êËùÔÚÆÁÄ»Î»ÖÃ×ù±êX
+        // é¼ æ ‡æ‰€åœ¨å±å¹•ä½ç½®åº§æ ‡X
         public static int g_nMouseY = 0;
-        // Êó±êËùÔÚÆÁÄ»Î»ÖÃ×ù±êY
+        // é¼ æ ‡æ‰€åœ¨å±å¹•ä½ç½®åº§æ ‡Y
         public static int g_nTargetX = 0;
-        // Ä¿±ê×ù±ê
+        // ç›®æ ‡åº§æ ‡
         public static int g_nTargetY = 0;
-        // Ä¿±ê×ù±ê
+        // ç›®æ ‡åº§æ ‡
         public static TActor g_TargetCret = null;
         public static TActor g_FocusCret = null;
         public static TActor g_MagicTarget = null;
@@ -339,27 +324,23 @@ namespace RobotSvr
         public static bool g_nApMiniMap = false;
         public static long g_dwBlinkTime = 0;
         public static bool g_boViewBlink = false;
-        // g_boAttackSlow            : Boolean;  //ÍóÁ¦²»¹»Ê±Âı¶¯×÷¹¥»÷.
-        // g_boAttackFast            : Byte = 0;
-        // g_boMoveSlow              : Boolean;  //¸ºÖØ²»¹»Ê±Âı¶¯×÷ÅÜ
-        // g_nMoveSlowLevel          : Integer;
         public static bool g_boMapMoving = false;
         public static bool g_boMapMovingWait = false;
         public static bool g_boCheckBadMapMode = false;
         public static bool g_boCheckSpeedHackDisplay = false;
         public static bool g_boViewMiniMap = false;
-        // ÊÇ·ñ¿ÉÊÓĞ¡µØÍ¼ Ä¬ÈÏÎªTrue
+        // æ˜¯å¦å¯è§†å°åœ°å›¾ é»˜è®¤ä¸ºTrue
         public static int g_nViewMinMapLv = 0;
-        // Ğ¡µØÍ¼ÏÔÊ¾µÈ¼¶
+        // å°åœ°å›¾æ˜¾ç¤ºç­‰çº§
         public static int g_nMiniMapIndex = 0;
-        // Ğ¡µØÍ¼Ë÷Òı±àºÅ
+        // å°åœ°å›¾ç´¢å¼•ç¼–å·
         public static int g_nMiniMapX = 0;
-        // Ğ¡Í¼Êó±êÖ¸Ïò×ø±êX
+        // å°å›¾é¼ æ ‡æŒ‡å‘åæ ‡X
         public static int g_nMiniMapY = 0;
-        // Ğ¡Í¼Êó±êÖ¸Ïò×ø±êY
-        // NPC Ïà¹Ø
+        // å°å›¾é¼ æ ‡æŒ‡å‘åæ ‡Y
+        // NPC ç›¸å…³
         public static int g_nCurMerchant = 0;
-        // NPC´ó¶Ô»°¿ò
+        // NPCå¤§å¯¹è¯æ¡†
         public static int g_nCurMerchantFaceIdx = 0;
         // Development 2019-01-14
         public static int g_nMDlgX = 0;
@@ -371,46 +352,43 @@ namespace RobotSvr
         public static long g_dwQueryMsgTick = 0;
         public static int g_nDupSelection = 0;
         public static bool g_boAllowGroup = false;
-        // ÈËÎïĞÅÏ¢Ïà¹Ø
+        // äººç‰©ä¿¡æ¯ç›¸å…³
         public static int g_nMySpeedPoint = 0;
-        // Ãô½İ
+        // æ•æ·
         public static int g_nMyHitPoint = 0;
-        // ×¼È·
+        // å‡†ç¡®
         public static int g_nMyAntiPoison = 0;
-        // Ä§·¨¶ã±Ü
+        // é­”æ³•èº²é¿
         public static int g_nMyPoisonRecover = 0;
-        // ÖĞ¶¾»Ö¸´
+        // ä¸­æ¯’æ¢å¤
         public static int g_nMyHealthRecover = 0;
-        // ÌåÁ¦»Ö¸´
+        // ä½“åŠ›æ¢å¤
         public static int g_nMySpellRecover = 0;
-        // Ä§·¨»Ö¸´
+        // é­”æ³•æ¢å¤
         public static int g_nMyAntiMagic = 0;
-        // Ä§·¨¶ã±Ü
+        // é­”æ³•èº²é¿
         public static int g_nMyHungryState = 0;
-        // ¼¢¶ö×´Ì¬
+        // é¥¥é¥¿çŠ¶æ€
         public static int g_nMyIPowerRecover = 0;
-        // ÖĞ¶¾»Ö¸´
+        // ä¸­æ¯’æ¢å¤
         public static int g_nMyAddDamage = 0;
         public static int g_nMyDecDamage = 0;
-        // g_nMyGameDiamd            : Integer = 0;
-        // g_nMyGameGird             : Integer = 0;
-        // g_nMyGameGold             : Integer = 0;
         public static int g_nHeroSpeedPoint = 0;
-        // Ãô½İ
+        // æ•æ·
         public static int g_nHeroHitPoint = 0;
-        // ×¼È·
+        // å‡†ç¡®
         public static int g_nHeroAntiPoison = 0;
-        // Ä§·¨¶ã±Ü
+        // é­”æ³•èº²é¿
         public static int g_nHeroPoisonRecover = 0;
-        // ÖĞ¶¾»Ö¸´
+        // ä¸­æ¯’æ¢å¤
         public static int g_nHeroHealthRecover = 0;
-        // ÌåÁ¦»Ö¸´
+        // ä½“åŠ›æ¢å¤
         public static int g_nHeroSpellRecover = 0;
-        // Ä§·¨»Ö¸´
+        // é­”æ³•æ¢å¤
         public static int g_nHeroAntiMagic = 0;
-        // Ä§·¨¶ã±Ü
+        // é­”æ³•èº²é¿
         public static int g_nHeroHungryState = 0;
-        // ¼¢¶ö×´Ì¬
+        // é¥¥é¥¿çŠ¶æ€
         public static int g_nHeroBagSize = 40;
         public static int g_nHeroIPowerRecover = 0;
         public static int g_nHeroAddDamage = 0;
@@ -422,13 +400,13 @@ namespace RobotSvr
         public static THumActor g_MySelf = null;
         public static THumActor g_MyDrawActor = null;
         public static string g_sAttackMode = "";
-        public static string sAttackModeOfAll = "[È«Ìå¹¥»÷Ä£Ê½]";
-        public static string sAttackModeOfPeaceful = "[ºÍÆ½¹¥»÷Ä£Ê½]";
-        public static string sAttackModeOfDear = "[·òÆŞ¹¥»÷Ä£Ê½]";
-        public static string sAttackModeOfMaster = "[Ê¦Í½¹¥»÷Ä£Ê½]";
-        public static string sAttackModeOfGroup = "[±à×é¹¥»÷Ä£Ê½]";
-        public static string sAttackModeOfGuild = "[ĞĞ»á¹¥»÷Ä£Ê½]";
-        public static string sAttackModeOfRedWhite = "[ÉÆ¶ñ¹¥»÷Ä£Ê½]";
+        public static string sAttackModeOfAll = "[å…¨ä½“æ”»å‡»æ¨¡å¼]";
+        public static string sAttackModeOfPeaceful = "[å’Œå¹³æ”»å‡»æ¨¡å¼]";
+        public static string sAttackModeOfDear = "[å¤«å¦»æ”»å‡»æ¨¡å¼]";
+        public static string sAttackModeOfMaster = "[å¸ˆå¾’æ”»å‡»æ¨¡å¼]";
+        public static string sAttackModeOfGroup = "[ç¼–ç»„æ”»å‡»æ¨¡å¼]";
+        public static string sAttackModeOfGuild = "[è¡Œä¼šæ”»å‡»æ¨¡å¼]";
+        public static string sAttackModeOfRedWhite = "[å–„æ¶æ”»å‡»æ¨¡å¼]";
         public static int g_RIWhere = 0;
         public static TMovingItem[] g_RefineItems = new TMovingItem[2 + 1];
         public static int g_BuildAcusesStep = 0;
@@ -444,11 +422,9 @@ namespace RobotSvr
         public static int g_BAFirstShape = -1;
         public static TClientItem[] g_tui = new TClientItem[13 + 1];
         public static TClientItem[] g_UseItems = new TClientItem[Grobal2.U_FASHION + 1];
-        public static TClientItem[] g_HeroUseItems = new TClientItem[Grobal2.U_FASHION + 1];
         public static TItemShine g_detectItemShine = null;
         public static TItemShine[] UserState1Shine = new TItemShine[Grobal2.U_FASHION + 1];
         public static TItemShine[] g_UseItemsShine = new TItemShine[Grobal2.U_FASHION + 1];
-        public static TItemShine[] g_HeroUseItemsShine = new TItemShine[Grobal2.U_FASHION + 1];
         public static TClientItem[] g_ItemArr = new TClientItem[MAXBAGITEMCL - 1 + 1];
         public static TClientItem[] g_HeroItemArr = new TClientItem[MAXBAGITEMCL - 1 + 1];
         public static TItemShine[] g_ItemArrShine = new TItemShine[MAXBAGITEMCL - 1 + 1];
@@ -521,42 +497,41 @@ namespace RobotSvr
         public static long g_dwDizzyDelayStart = 0;
         public static long g_dwDizzyDelayTime = 0;
         public static bool g_boDoFadeOut = false;
-        // ÓÉÁÁ±ä°µ
+        // ç”±äº®å˜æš—
         public static bool g_boDoFadeIn = false;
-        // ÓÉ°µ±äÁÁ
+        // ç”±æš—å˜äº®
         public static int g_nFadeIndex = 0;
         public static bool g_boDoFastFadeOut = false;
         public static bool g_boAutoDig = false;
         public static bool g_boAutoSit = false;
-        // ×Ô¶¯³ú¿ó
+        // è‡ªåŠ¨é”„çŸ¿
         public static bool g_boSelectMyself = false;
-        // Êó±êÊÇ·ñÖ¸µ½×Ô¼º
-        // ÓÎÏ·ËÙ¶È¼ì²âÏà¹Ø±äÁ¿
+        // é¼ æ ‡æ˜¯å¦æŒ‡åˆ°è‡ªå·±
+        // æ¸¸æˆé€Ÿåº¦æ£€æµ‹ç›¸å…³å˜é‡
         public static long g_dwFirstServerTime = 0;
         public static long g_dwFirstClientTime = 0;
         public static int g_nTimeFakeDetectCount = 0;
         public static long g_dwLatestClientTime2 = 0;
         public static long g_dwFirstClientTimerTime = 0;
-        // timer ½Ã°£
+        // timer çŸ«åŸƒ
         public static long g_dwLatestClientTimerTime = 0;
         public static long g_dwFirstClientGetTime = 0;
-        // gettickcount ½Ã°£
+        // gettickcount çŸ«åŸƒ
         public static long g_dwLatestClientGetTime = 0;
         public static int g_nTimeFakeDetectSum = 0;
         public static int g_nTimeFakeDetectTimer = 0;
         public static long g_dwLastestClientGetTime = 0;
-        // Íâ¹Ò¹¦ÄÜ±äÁ¿¿ªÊ¼
+        // å¤–æŒ‚åŠŸèƒ½å˜é‡å¼€å§‹
         public static long g_dwDropItemFlashTime = 5 * 1000;
-        // µØÃæÎïÆ·ÉÁÊ±¼ä¼ä¸ô
+        // åœ°é¢ç‰©å“é—ªæ—¶é—´é—´éš”
         public static int g_nHitTime = 1400;
-        // ¹¥»÷¼ä¸ôÊ±¼ä¼ä¸ô  0820
+        // æ”»å‡»é—´éš”æ—¶é—´é—´éš”  0820
         public static int g_nItemSpeed = 60;
         public static long g_dwSpellTime = 500;
-        // Ä§·¨¹¥¼ä¸ôÊ±¼ä
+        // é­”æ³•æ”»é—´éš”æ—¶é—´
         public static bool g_boHero = true;
         public static bool g_boOpenAutoPlay = true;
-        public static TColorEffect g_DeathColorEffect = WIL.TColorEffect.ceRed;
-        // ËÀÍöÑÕÉ«  Development 2018-12-29
+        // æ­»äº¡é¢œè‰²  Development 2018-12-29
         public static bool g_boClientCanSet = true;
         public static int g_nEatIteminvTime = 200;
         public static bool g_boCanRunSafeZone = true;
@@ -565,36 +540,36 @@ namespace RobotSvr
         public static bool g_boCanRunNpc = true;
         public static bool g_boCanRunAllInWarZone = false;
         public static bool g_boCanStartRun = true;
-        // ÊÇ·ñÔÊĞíÃâÖúÅÜ
+        // æ˜¯å¦å…è®¸å…åŠ©è·‘
         public static bool g_boParalyCanRun = false;
-        // Âé±ÔÊÇ·ñ¿ÉÒÔÅÜ
+        // éº»ç—¹æ˜¯å¦å¯ä»¥è·‘
         public static bool g_boParalyCanWalk = false;
-        // Âé±ÔÊÇ·ñ¿ÉÒÔ×ß
+        // éº»ç—¹æ˜¯å¦å¯ä»¥èµ°
         public static bool g_boParalyCanHit = false;
-        // Âé±ÔÊÇ·ñ¿ÉÒÔ¹¥»÷
+        // éº»ç—¹æ˜¯å¦å¯ä»¥æ”»å‡»
         public static bool g_boParalyCanSpell = false;
-        // Âé±ÔÊÇ·ñ¿ÉÒÔÄ§·¨
+        // éº»ç—¹æ˜¯å¦å¯ä»¥é­”æ³•
         public static bool g_boShowRedHPLable = true;
-        // ÏÔÊ¾ÑªÌõ
+        // æ˜¾ç¤ºè¡€æ¡
         public static bool g_boShowHPNumber = true;
-        // ÏÔÊ¾ÑªÁ¿Êı×Ö
+        // æ˜¾ç¤ºè¡€é‡æ•°å­—
         public static bool g_boShowJobLevel = true;
-        // ÏÔÊ¾Ö°ÒµµÈ¼¶
+        // æ˜¾ç¤ºèŒä¸šç­‰çº§
         public static bool g_boDuraAlert = true;
-        // ÎïÆ·³Ö¾Ã¾¯¸æ
+        // ç‰©å“æŒä¹…è­¦å‘Š
         public static bool g_boMagicLock = true;
-        // Ä§·¨Ëø¶¨
+        // é­”æ³•é”å®š
         public static bool g_boSpeedRate = false;
         public static bool g_boSpeedRateShow = false;
         // g_boAutoPuckUpItem        : Boolean = False;
         public static bool g_boShowHumanInfo = true;
         public static bool g_boShowMonsterInfo = false;
         public static bool g_boShowNpcInfo = false;
-        // Íâ¹Ò¹¦ÄÜ±äÁ¿½áÊø
+        // å¤–æŒ‚åŠŸèƒ½å˜é‡ç»“æŸ
         public static bool g_boQuickPickup = false;
         public static long g_dwAutoPickupTick = 0;
         /// <summary>
-        /// ×Ô¶¯¼ñÎïÆ·¼ä¸ô
+        /// è‡ªåŠ¨æ¡ç‰©å“é—´éš”
         /// </summary>
         public static long g_dwAutoPickupTime = 100;
         public static TActor g_MagicLockActor = null;
@@ -641,8 +616,8 @@ namespace RobotSvr
         public static string LocalModName_Ctrl = ModName_Ctrl;
         public static string LocalModName_Alt = ModName_Alt;
         public static string LocalModName_Win = ModName_Win;
-        public static int[] g_FSResolutionWidth = { 800, 1024, 1280, 1280, 1366, 1440, 1600, 1680, 1920 };// µçÄÔ·Ö±æÂÊ¿í¶È
-        public static int[] g_FSResolutionHeight = { 600, 768, 800, 1024, 768, 900, 900, 1050, 1080 };// µçÄÔ·Ö±æÂÊ¸ß¶È
+        public static int[] g_FSResolutionWidth = { 800, 1024, 1280, 1280, 1366, 1440, 1600, 1680, 1920 };// ç”µè„‘åˆ†è¾¨ç‡å®½åº¦
+        public static int[] g_FSResolutionHeight = { 600, 768, 800, 1024, 768, 900, 900, 1050, 1080 };// ç”µè„‘åˆ†è¾¨ç‡é«˜åº¦
         public static byte g_FScreenMode = 0;
         public static int g_FScreenWidth = SCREENWIDTH;
         public static int g_FScreenHeight = SCREENHEIGHT;
@@ -688,17 +663,17 @@ namespace RobotSvr
         // 1108 40;
         public const int HUMWINEFFECTTICK = 200;
         public const int WINLEFT = 100;
-        // ´°Ìå×ó±ß Í¼Æ¬ËØ²ÄÁôÔÚ×ó±ßÆÁÄ»ÄÚµÄ³ß´çÎª100
+        // çª—ä½“å·¦è¾¹ å›¾ç‰‡ç´ æç•™åœ¨å·¦è¾¹å±å¹•å†…çš„å°ºå¯¸ä¸º100
         public const int WINTOP = 100;
-        // ´°Ìå¶¥±ß Í¼Æ¬ËØ²ÄÁôÔÚ¶¥±ßÆÁÄ»ÄÚµÄ³ß´çÎª100
+        // çª—ä½“é¡¶è¾¹ å›¾ç‰‡ç´ æç•™åœ¨é¡¶è¾¹å±å¹•å†…çš„å°ºå¯¸ä¸º100
         public const int MINIMAPSIZE = 200;
-        // ÃÔÄãµØÍ¼¿í¶È
+        // è¿·ä½ åœ°å›¾å®½åº¦
         public const int DEFAULTCURSOR = 0;
-        // ÏµÍ³Ä¬ÈÏ¹â±ê
+        // ç³»ç»Ÿé»˜è®¤å…‰æ ‡
         public const int IMAGECURSOR = 1;
-        // Í¼ĞÎ¹â±ê
+        // å›¾å½¢å…‰æ ‡
         public const int USECURSOR = DEFAULTCURSOR;
-        // Ê¹ÓÃÊ²Ã´ÀàĞÍµÄ¹â±ê
+        // ä½¿ç”¨ä»€ä¹ˆç±»å‹çš„å…‰æ ‡
         public const int MAXBAGITEMCL = 52;
         public const int MAXFONT = 8;
         public const int ENEMYCOLOR = 69;
@@ -707,14 +682,14 @@ namespace RobotSvr
         public const int STALL_MIIDX_OFFSET = HERO_MIIDX_OFFSET + 500 + 50;
         public const int DETECT_MIIDX_OFFSET = HERO_MIIDX_OFFSET + 500 + 50 + 10 + 1;
         public const int MSGMUCH = 2;
-        public static string[] g_sHumAttr = { "½ğ", "Ä¾", "Ë®", "»ğ", "ÍÁ" };
-        public static string[] g_DBStateStrArr = { "×°", "Ê±", "×´", "Êô", "³Æ", "¼¼", "Æä" };
-        public static string[] g_DBStateStrArrW = { "±¸", "×°", "Ì¬", "ĞÔ", "ºÅ", "ÄÜ", "Ëû" };
-        public static string[] g_DBStateStrArrUS = { "×°", "Ê±", "³Æ" };
-        public static string[] g_DBStateStrArrUSW = { "±¸", "×°", "ºÅ" };
-        public static string[] g_DBStateStrArr2 = { "×´", "¼¼", "¾­", "Á¬", "Æä" };
-        public static string[] g_DBStateStrArr2W = { "Ì¬", "ÄÜ", "Âç", "»÷", "Ëû" };
-        public static string[] g_slegend = { "", "´«ÆæÉñ½£", "´«ÆæÑ«ÕÂ", "´«ÆæÏîÁ´", "´«ÆæÖ®¹Ú", "", "´«Ææ»¤Íó", "", "´«ÆæÖ®½ä", "", "´«ÆæÑü´ø", "´«ÆæÖ®Ñ¥", "", "´«ÆæÃæ½í" };
+        public static string[] g_sHumAttr = { "é‡‘", "æœ¨", "æ°´", "ç«", "åœŸ" };
+        public static string[] g_DBStateStrArr = { "è£…", "æ—¶", "çŠ¶", "å±", "ç§°", "æŠ€", "å…¶" };
+        public static string[] g_DBStateStrArrW = { "å¤‡", "è£…", "æ€", "æ€§", "å·", "èƒ½", "ä»–" };
+        public static string[] g_DBStateStrArrUS = { "è£…", "æ—¶", "ç§°" };
+        public static string[] g_DBStateStrArrUSW = { "å¤‡", "è£…", "å·" };
+        public static string[] g_DBStateStrArr2 = { "çŠ¶", "æŠ€", "ç»", "è¿", "å…¶" };
+        public static string[] g_DBStateStrArr2W = { "æ€", "èƒ½", "ç»œ", "å‡»", "ä»–" };
+        public static string[] g_slegend = { "", "ä¼ å¥‡ç¥å‰‘", "ä¼ å¥‡å‹‹ç« ", "ä¼ å¥‡é¡¹é“¾", "ä¼ å¥‡ä¹‹å† ", "", "ä¼ å¥‡æŠ¤è…•", "", "ä¼ å¥‡ä¹‹æˆ’", "", "ä¼ å¥‡è…°å¸¦", "ä¼ å¥‡ä¹‹é´", "", "ä¼ å¥‡é¢å·¾" };
         public const int MAX_GC_GENERAL = 16;
         public static Rectangle[] g_ptGeneral = new Rectangle[20] {
     {35 + 000, 70 + 23 * 0, 35 + 000 + 72 + 18, 70 + 23 * 0 + 16} ,
@@ -759,9 +734,9 @@ namespace RobotSvr
         public static Color[] g_clProtect = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Lime };
         // ====================================Tec====================================
         public const int MAX_GC_TEC = 14;
-        public static string[] g_HintTec = { "¹³Ñ¡´ËÏî½«¿ªÆôµ¶µ¶´ÌÉ±", "¹³Ñ¡´ËÏî½«¿ªÆôÖÇÄÜ°ëÔÂ", "¹³Ñ¡´ËÏî½«×Ô¶¯Äı¾ÛÁÒ»ğ½£·¨", "¹³Ñ¡´ËÏî½«×Ô¶¯Äı¾ÛÖğÈÕ½£·¨", "¹³Ñ¡´ËÏî½«×Ô¶¯¿ªÆôÄ§·¨¶Ü", "¹³Ñ¡´ËÏîÓ¢ĞÛ½«×Ô¶¯¿ªÆôÄ§·¨¶Ü", "¹³Ñ¡´ËÏîµÀÊ¿½«×Ô¶¯Ê¹ÓÃÒşÉíÊõ", "", "", "¹³Ñ¡´ËÏî½«×Ô¶¯Äı¾ÛÀ×öª½£·¨", "¹³Ñ¡´ËÏî½«×Ô¶¯½øĞĞ¸ôÎ»´ÌÉ±", "¹³Ñ¡´ËÏî½«×Ô¶¯Äı¾Û¶Ï¿ÕÕ¶", "¹³Ñ¡´ËÏîÓ¢ĞÛ½«²»Ê¹ÓÃÁ¬»÷´ò¹Ö\\·½±ãÍæ¼ÒÖ®¼ä½øĞĞPK", "¹³Ñ¡´ËÏî½«×Ô¶¯Äı¾Û¿ªÌìÕ¶", "¹³Ñ¡´ËÏî£ºÊ©Õ¹Ä§·¨³¬¹ıÔÊĞí¾àÀëÊ±£¬»á×Ô¶¯ÅÜ½üÄ¿±ê²¢ÊÍ·ÅÄ§·¨" };
-        public static string[] g_caTec = { "µ¶µ¶´ÌÉ±", "ÖÇÄÜ°ëÔÂ", "×Ô¶¯ÁÒ»ğ", "ÖğÈÕ½£·¨", "×Ô¶¯¿ª¶Ü", "³ÖĞø¿ª¶Ü(Ó¢ĞÛ)", "×Ô¶¯ÒşÉí", "Ê±¼ä¼ä¸ô", "", "×Ô¶¯À×öª", "¸ôÎ»´ÌÉ±", "×Ô¶¯¶Ï¿ÕÕ¶", "Ó¢ĞÛÁ¬»÷²»´ò¹Ö", "×Ô¶¯¿ªÌìÕ¶", "×Ô¶¯µ÷½ÚÄ§·¨¾àÀë" };
-        public static string[] g_sMagics = { "»ğÇòÊõ", "ÖÎÓúÊõ", "´ó»ğÇò", "Ê©¶¾Êõ", "¹¥É±½£Êõ", "¿¹¾Ü»ğ»·", "µØÓü»ğ", "¼²¹âµçÓ°", "À×µçÊõ", "À×µçÊõ", "À×µçÊõ", "À×µçÊõ", "À×µçÊõ", "¿ªÌìÕ¶", "¿ªÌìÕ¶" };
+        public static string[] g_HintTec = { "é’©é€‰æ­¤é¡¹å°†å¼€å¯åˆ€åˆ€åˆºæ€", "é’©é€‰æ­¤é¡¹å°†å¼€å¯æ™ºèƒ½åŠæœˆ", "é’©é€‰æ­¤é¡¹å°†è‡ªåŠ¨å‡èšçƒˆç«å‰‘æ³•", "é’©é€‰æ­¤é¡¹å°†è‡ªåŠ¨å‡èšé€æ—¥å‰‘æ³•", "é’©é€‰æ­¤é¡¹å°†è‡ªåŠ¨å¼€å¯é­”æ³•ç›¾", "é’©é€‰æ­¤é¡¹è‹±é›„å°†è‡ªåŠ¨å¼€å¯é­”æ³•ç›¾", "é’©é€‰æ­¤é¡¹é“å£«å°†è‡ªåŠ¨ä½¿ç”¨éšèº«æœ¯", "", "", "é’©é€‰æ­¤é¡¹å°†è‡ªåŠ¨å‡èšé›·éœ†å‰‘æ³•", "é’©é€‰æ­¤é¡¹å°†è‡ªåŠ¨è¿›è¡Œéš”ä½åˆºæ€", "é’©é€‰æ­¤é¡¹å°†è‡ªåŠ¨å‡èšæ–­ç©ºæ–©", "é’©é€‰æ­¤é¡¹è‹±é›„å°†ä¸ä½¿ç”¨è¿å‡»æ‰“æ€ª\\æ–¹ä¾¿ç©å®¶ä¹‹é—´è¿›è¡ŒPK", "é’©é€‰æ­¤é¡¹å°†è‡ªåŠ¨å‡èšå¼€å¤©æ–©", "é’©é€‰æ­¤é¡¹ï¼šæ–½å±•é­”æ³•è¶…è¿‡å…è®¸è·ç¦»æ—¶ï¼Œä¼šè‡ªåŠ¨è·‘è¿‘ç›®æ ‡å¹¶é‡Šæ”¾é­”æ³•" };
+        public static string[] g_caTec = { "åˆ€åˆ€åˆºæ€", "æ™ºèƒ½åŠæœˆ", "è‡ªåŠ¨çƒˆç«", "é€æ—¥å‰‘æ³•", "è‡ªåŠ¨å¼€ç›¾", "æŒç»­å¼€ç›¾(è‹±é›„)", "è‡ªåŠ¨éšèº«", "æ—¶é—´é—´éš”", "", "è‡ªåŠ¨é›·éœ†", "éš”ä½åˆºæ€", "è‡ªåŠ¨æ–­ç©ºæ–©", "è‹±é›„è¿å‡»ä¸æ‰“æ€ª", "è‡ªåŠ¨å¼€å¤©æ–©", "è‡ªåŠ¨è°ƒèŠ‚é­”æ³•è·ç¦»" };
+        public static string[] g_sMagics = { "ç«çƒæœ¯", "æ²»æ„ˆæœ¯", "å¤§ç«çƒ", "æ–½æ¯’æœ¯", "æ”»æ€å‰‘æœ¯", "æŠ—æ‹’ç«ç¯", "åœ°ç‹±ç«", "ç–¾å…‰ç”µå½±", "é›·ç”µæœ¯", "é›·ç”µæœ¯", "é›·ç”µæœ¯", "é›·ç”µæœ¯", "é›·ç”µæœ¯", "å¼€å¤©æ–©", "å¼€å¤©æ–©" };
         public const int g_gnTecPracticeKey = 0;
         public static bool[] g_gcTec = { true, true, true, true, true, true, false, false, false, false, false, false, false, true, false };
         public static int[] g_gnTecTime = { 0, 0, 0, 0, 0, 0, 0, 0, 4000, 0, 0, 0, 0, 0, 0 };
@@ -789,67 +764,67 @@ namespace RobotSvr
         public static TCItemRule[] g_caItems2 = { null, null, null, null, null, null, null, null };
         public static Color[] g_clItems = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver };
         public const int MAX_SERIESSKILL_POINT = 4;
-        public const int g_HitSpeedRate = 0;
-        public const int g_MagSpeedRate = 0;
-        public const int g_MoveSpeedRate = 0;
+        public static int g_HitSpeedRate = 0;
+        public static int g_MagSpeedRate = 0;
+        public static int g_MoveSpeedRate = 0;
         public const bool g_boFlashMission = false;
         public const bool g_boNewMission = false;
-        // ĞÂÈÎÎñ
+        // æ–°ä»»åŠ¡
         public const long g_dwNewMission = 0;
         public const int WH_KEYBOARD_LL = 13;
         public const int LLKHF_ALTDOWN = 0x20;
         public const string CONFIGFILE = "Config\\%s.ini";
-        public const string g_affiche0 = "ÓÎÏ·ÒôĞ§ÒÑ¹Ø±Õ£¡";
-        public const string g_affiche1 = "½¡¿µÓÎÏ·¹«¸æ";
-        public const string g_affiche2 = "µÖÖÆ²»Á¼ÓÎÏ· ¾Ü¾øµÁ°æÓÎÏ· ×¢Òâ×ÔÎÒ±£»¤ ½÷·ÀÊÜÆ­ÉÏµ± ÊÊ¶ÈÓÎÏ·ÒæÄÔ";
-        public const string g_affiche3 = "³ÁÃÔÓÎÏ·ÉËÉí ºÏÀí°²ÅÅÊ±¼ä ÏíÊÜ½¡¿µÉú»î ÑÏÀ÷´ò»÷¶Ä²© ÓªÔìºÍĞ³»·¾³";
+        public const string g_affiche0 = "æ¸¸æˆéŸ³æ•ˆå·²å…³é—­ï¼";
+        public const string g_affiche1 = "å¥åº·æ¸¸æˆå…¬å‘Š";
+        public const string g_affiche2 = "æŠµåˆ¶ä¸è‰¯æ¸¸æˆ æ‹’ç»ç›—ç‰ˆæ¸¸æˆ æ³¨æ„è‡ªæˆ‘ä¿æŠ¤ è°¨é˜²å—éª—ä¸Šå½“ é€‚åº¦æ¸¸æˆç›Šè„‘";
+        public const string g_affiche3 = "æ²‰è¿·æ¸¸æˆä¼¤èº« åˆç†å®‰æ’æ—¶é—´ äº«å—å¥åº·ç”Ÿæ´» ä¸¥å‰æ‰“å‡»èµŒåš è¥é€ å’Œè°ç¯å¢ƒ";
         public const int VK2_SHIFT = 32;
         public const int VK2_CONTROL = 64;
         public const int VK2_ALT = 128;
         public const int VK2_WIN = 256;
         public const int SCREENWIDTH = 800;
         public const int SCREENHEIGHT = 600;
-        public static string[] g_levelstring = { "Ò»", "¶ş", "Èı", "ËÄ", "Îå", "Áù", "Æß", "°Ë" };
+        public static string[] g_levelstring = { "ä¸€", "äºŒ", "ä¸‰", "å››", "äº”", "å…­", "ä¸ƒ", "å…«" };
 
         public string GetMySelfStringVar_GetVarTextFieldFunc(string VarText)
         {
             string result;
             result = "";
-            // ×ª»»Îª´óĞ´
+            // è½¬æ¢ä¸ºå¤§å†™
             VarText = VarText.UpperCase(VarText);
             if (VarText == "$SERVERNAME")
             {
-                // Ñ¡Ôñ½ÇÉ«½çÃæ±êÇ©±äÁ¿
+                // é€‰æ‹©è§’è‰²ç•Œé¢æ ‡ç­¾å˜é‡
                 result = MShare.g_sServerName;
             }
             else if (VarText == "$MAP")
             {
-                // µØÍ¼Ãû³Æ
+                // åœ°å›¾åç§°
                 result = MShare.g_sMapTitle;
             }
             else if (VarText == "$LOCALTIME")
             {
-                // ±¾µØÊ±¼ä
+                // æœ¬åœ°æ—¶é—´
                 result = FormatDateTime("HH:MM:SS", DateTime.Now);
             }
             else if (VarText == "$MAPAREASTATE")
             {
-                // µ±Ç°Î»ÖÃÇøÓò×´Ì¬
+                // å½“å‰ä½ç½®åŒºåŸŸçŠ¶æ€
                 if ((MShare.g_nAreaStateValue & 8) != 0)
                 {
                     result = "8";
                 }
                 else if ((MShare.g_nAreaStateValue & 4) != 0)
                 {
-                    result = "¹¥³ÇÇøÓò";
+                    result = "æ”»åŸåŒºåŸŸ";
                 }
                 else if ((MShare.g_nAreaStateValue & 2) != 0)
                 {
-                    result = "°²È«ÇøÓò";
+                    result = "å®‰å…¨åŒºåŸŸ";
                 }
                 else if ((MShare.g_nAreaStateValue & 1) != 0)
                 {
-                    result = "¾º¼¼ÇøÓò";
+                    result = "ç«æŠ€åŒºåŸŸ";
                 }
             }
             if (ClMain.SelectChrScene != null)
@@ -891,10 +866,10 @@ namespace RobotSvr
                     }
                 }
             }
-            // ÈËÎïĞÅÏ¢
+            // äººç‰©ä¿¡æ¯
             if (MShare.g_MySelf != null)
             {
-                // ÈËÎïÊôĞÔ±êÇ©±äÁ¿
+                // äººç‰©å±æ€§æ ‡ç­¾å˜é‡
                 if (VarText == "$USERNAME")
                 {
                     result = MShare.g_MySelf.m_sUserName;
@@ -928,7 +903,7 @@ namespace RobotSvr
                     result = MShare.g_MySelf.m_Abil.Level.ToString();
                 }
             }
-            // Ó¢ĞÛĞÅÏ¢
+            // è‹±é›„ä¿¡æ¯
             if ((MShare.g_MySelf != null) && (MShare.g_MySelf.m_HeroObject != null))
             {
                 if (VarText == "$HEROGLORY")
@@ -939,7 +914,7 @@ namespace RobotSvr
             return result;
         }
 
-        // ×Ô¶¨ÒåUI×Ö·û´®¸Ä±äÊÂ¼ş
+        // è‡ªå®šä¹‰UIå­—ç¬¦ä¸²æ”¹å˜äº‹ä»¶
         public static void GetMySelfStringVar(ref string Text)
         {
             string S;
@@ -980,7 +955,7 @@ namespace RobotSvr
             }
         }
 
-        // µÃµ½µØÍ¼ÎÄ¼şÃû³Æ×Ô¶¨ÒåÂ·¾¶
+        // å¾—åˆ°åœ°å›¾æ–‡ä»¶åç§°è‡ªå®šä¹‰è·¯å¾„
         public static string GetMapDirAndName(string sFileName)
         {
             string result;
@@ -1258,10 +1233,10 @@ namespace RobotSvr
             return result;
         }
 
-        // È¡µÃÖ°ÒµÃû³Æ
-        // 0 ÎäÊ¿
-        // 1 Ä§·¨Ê¦
-        // 2 µÀÊ¿
+        // å–å¾—èŒä¸šåç§°
+        // 0 æ­¦å£«
+        // 1 é­”æ³•å¸ˆ
+        // 2 é“å£«
         public static string GetJobName(int nJob)
         {
             string result;
@@ -1291,64 +1266,64 @@ namespace RobotSvr
             switch (ItemType)
             {
                 case TItemType.i_HPDurg:
-                    result = "½ğ´´Ò©";
+                    result = "é‡‘åˆ›è¯";
                     break;
                 case TItemType.i_MPDurg:
-                    result = "Ä§·¨Ò©";
+                    result = "é­”æ³•è¯";
                     break;
                 case TItemType.i_HPMPDurg:
-                    result = "¸ß¼¶Ò©";
+                    result = "é«˜çº§è¯";
                     break;
                 case TItemType.i_OtherDurg:
-                    result = "ÆäËüÒ©Æ·";
+                    result = "å…¶å®ƒè¯å“";
                     break;
                 case TItemType.i_Weapon:
-                    result = "ÎäÆ÷";
+                    result = "æ­¦å™¨";
                     break;
                 case TItemType.i_Dress:
-                    result = "ÒÂ·ş";
+                    result = "è¡£æœ";
                     break;
                 case TItemType.i_Helmet:
-                    result = "Í·¿ø";
+                    result = "å¤´ç›”";
                     break;
                 case TItemType.i_Necklace:
-                    result = "ÏîÁ´";
+                    result = "é¡¹é“¾";
                     break;
                 case TItemType.i_Armring:
-                    result = "ÊÖïí";
+                    result = "æ‰‹é•¯";
                     break;
                 case TItemType.i_Ring:
-                    result = "½äÖ¸";
+                    result = "æˆ’æŒ‡";
                     break;
                 case TItemType.i_Belt:
-                    result = "Ñü´ø";
+                    result = "è…°å¸¦";
                     break;
                 case TItemType.i_Boots:
-                    result = "Ğ¬×Ó";
+                    result = "é‹å­";
                     break;
                 case TItemType.i_Charm:
-                    result = "±¦Ê¯";
+                    result = "å®çŸ³";
                     break;
                 case TItemType.i_Book:
-                    result = "¼¼ÄÜÊé";
+                    result = "æŠ€èƒ½ä¹¦";
                     break;
                 case TItemType.i_PosionDurg:
-                    result = "¶¾Ò©";
+                    result = "æ¯’è¯";
                     break;
                 case TItemType.i_UseItem:
-                    result = "ÏûºÄÆ·";
+                    result = "æ¶ˆè€—å“";
                     break;
                 case TItemType.i_Scroll:
-                    result = "¾íÀà";
+                    result = "å·ç±»";
                     break;
                 case TItemType.i_Stone:
-                    result = "¿óÊ¯";
+                    result = "çŸ¿çŸ³";
                     break;
                 case TItemType.i_Gold:
-                    result = "½ğ±Ò";
+                    result = "é‡‘å¸";
                     break;
                 case TItemType.i_Other:
-                    result = "ÆäËü";
+                    result = "å…¶å®ƒ";
                     break;
             }
             return result;
@@ -1633,7 +1608,7 @@ namespace RobotSvr
                         default:
                             g_ItemsFilter_Other.Add(s0, p as Object);
                             break;
-                            // ·ş×°
+                            // æœè£…
                     }
                 }
                 ls.Free;
@@ -1700,7 +1675,7 @@ namespace RobotSvr
 
         public static void SaveItemFilter()
         {
-            // ÍË³öÔöÁ¿±£´æ
+            // é€€å‡ºå¢é‡ä¿å­˜
             //int i;
             //ArrayList ls;
             //TCItemRule p;
@@ -1823,8 +1798,6 @@ namespace RobotSvr
             //FillChar(g_TakeBackItemWait);           
             //FillChar(g_UseItems);           
             //FillChar(g_ItemArr);           
-            //FillChar(g_HeroUseItems);        
-            //FillChar(g_HeroItemArr);     
             //FillChar(g_RefineItems);     
             //FillChar(g_BuildAcuses);     
             //FillChar(g_DetectItem);    
@@ -1845,11 +1818,11 @@ namespace RobotSvr
             //switch (idx)
             //{
             //    case 0:
-            //        g_tiHintStr1 = "ÎÒÊÕ²ØÌìÏÂµÄÆæÕäÒì±¦£¬×ßÄÏ´³±±¼¸Ê®ÄêÁË£¬¸÷ÖÖÉñÆ÷¼û¹ı²»ÉÙ£¬°ÑÄãÒª¼ø¶¨µÄ×°±¸·ÅÔÚ×À×ÓÉÏ°É£¡";
+            //        g_tiHintStr1 = "æˆ‘æ”¶è—å¤©ä¸‹çš„å¥‡çå¼‚å®ï¼Œèµ°å—é—¯åŒ—å‡ åå¹´äº†ï¼Œå„ç§ç¥å™¨è§è¿‡ä¸å°‘ï¼ŒæŠŠä½ è¦é‰´å®šçš„è£…å¤‡æ”¾åœ¨æ¡Œå­ä¸Šå§ï¼";
             //        FrmDlg.DBTIbtn1.btnState = tdisable;
-            //        FrmDlg.DBTIbtn1.Caption = "ÆÕÍ¨¼ø¶¨";
+            //        FrmDlg.DBTIbtn1.Caption = "æ™®é€šé‰´å®š";
             //        FrmDlg.DBTIbtn2.btnState = tdisable;
-            //        FrmDlg.DBTIbtn2.Caption = "¸ß¼¶¼ø¶¨";
+            //        FrmDlg.DBTIbtn2.Caption = "é«˜çº§é‰´å®š";
             //        break;
             //    case 1:
             //        if ((ci == null) || (ci.s.Name == ""))
@@ -1858,11 +1831,11 @@ namespace RobotSvr
             //        }
             //        if (ci.Item.Eva.EvaTimesMax == 0)
             //        {
-            //            g_tiHintStr1 = "±êÖ¾ÁË²»¿É¼ø¶¨µÄÎïÆ·ÎÒÊÇ¼ø¶¨²»ÁËµÄ£¬Äã»»Ò»¸ö°É¡£";
+            //            g_tiHintStr1 = "æ ‡å¿—äº†ä¸å¯é‰´å®šçš„ç‰©å“æˆ‘æ˜¯é‰´å®šä¸äº†çš„ï¼Œä½ æ¢ä¸€ä¸ªå§ã€‚";
             //            FrmDlg.DBTIbtn1.btnState = tdisable;
-            //            FrmDlg.DBTIbtn1.Caption = "ÆÕÍ¨¼ø¶¨";
+            //            FrmDlg.DBTIbtn1.Caption = "æ™®é€šé‰´å®š";
             //            FrmDlg.DBTIbtn2.btnState = tdisable;
-            //            FrmDlg.DBTIbtn2.Caption = "¸ß¼¶¼ø¶¨";
+            //            FrmDlg.DBTIbtn2.Caption = "é«˜çº§é‰´å®š";
             //            return result;
             //        }
             //        if (ci.Item.Eva.EvaTimes < ci.Item.Eva.EvaTimesMax)
@@ -1872,97 +1845,97 @@ namespace RobotSvr
             //                switch (ci.Item.Eva.EvaTimes)
             //                {
             //                    case 0:
-            //                        g_tiHintStr1 = "µÚÒ»´Î¼ø¶¨ÎÒĞèÒªÒ»¸öÒ»¼¶¼ø¶¨¾íÖá£¬Äã¿ìÈ¥ÊÕ¼¯Ò»¸ö°É£¡";
+            //                        g_tiHintStr1 = "ç¬¬ä¸€æ¬¡é‰´å®šæˆ‘éœ€è¦ä¸€ä¸ªä¸€çº§é‰´å®šå·è½´ï¼Œä½ å¿«å»æ”¶é›†ä¸€ä¸ªå§ï¼";
             //                        FrmDlg.DBTIbtn1.btnState = tnor;
-            //                        FrmDlg.DBTIbtn1.Caption = "ÆÕÍ¨Ò»¼ø";
+            //                        FrmDlg.DBTIbtn1.Caption = "æ™®é€šä¸€é‰´";
             //                        FrmDlg.DBTIbtn2.btnState = tnor;
-            //                        FrmDlg.DBTIbtn2.Caption = "¸ß¼¶Ò»¼ø";
+            //                        FrmDlg.DBTIbtn2.Caption = "é«˜çº§ä¸€é‰´";
             //                        break;
             //                    case 1:
-            //                        g_tiHintStr1 = "µÚ¶ş´Î¼ø¶¨ÎÒĞèÒªÒ»¸ö¶ş¼¶¼ø¶¨¾íÖá£¬Äã¿ìÈ¥ÊÕ¼¯Ò»¸ö°É£¡";
+            //                        g_tiHintStr1 = "ç¬¬äºŒæ¬¡é‰´å®šæˆ‘éœ€è¦ä¸€ä¸ªäºŒçº§é‰´å®šå·è½´ï¼Œä½ å¿«å»æ”¶é›†ä¸€ä¸ªå§ï¼";
             //                        FrmDlg.DBTIbtn1.btnState = tnor;
-            //                        FrmDlg.DBTIbtn1.Caption = "ÆÕÍ¨¶ş¼ø";
+            //                        FrmDlg.DBTIbtn1.Caption = "æ™®é€šäºŒé‰´";
             //                        FrmDlg.DBTIbtn2.btnState = tnor;
-            //                        FrmDlg.DBTIbtn2.Caption = "¸ß¼¶¶ş¼ø";
+            //                        FrmDlg.DBTIbtn2.Caption = "é«˜çº§äºŒé‰´";
             //                        break;
             //                    case 2:
-            //                        g_tiHintStr1 = "µÚÈı´Î¼ø¶¨ÎÒĞèÒªÒ»¸öÈı¼¶¼ø¶¨¾íÖá£¬Äã¿ìÈ¥ÊÕ¼¯Ò»¸ö°É£¡";
+            //                        g_tiHintStr1 = "ç¬¬ä¸‰æ¬¡é‰´å®šæˆ‘éœ€è¦ä¸€ä¸ªä¸‰çº§é‰´å®šå·è½´ï¼Œä½ å¿«å»æ”¶é›†ä¸€ä¸ªå§ï¼";
             //                        FrmDlg.DBTIbtn1.btnState = tnor;
-            //                        FrmDlg.DBTIbtn1.Caption = "ÆÕÍ¨Èı¼ø";
+            //                        FrmDlg.DBTIbtn1.Caption = "æ™®é€šä¸‰é‰´";
             //                        FrmDlg.DBTIbtn2.btnState = tnor;
-            //                        FrmDlg.DBTIbtn2.Caption = "¸ß¼¶Èı¼ø";
+            //                        FrmDlg.DBTIbtn2.Caption = "é«˜çº§ä¸‰é‰´";
             //                        break;
             //                    default:
-            //                        g_tiHintStr1 = "ÎÒĞèÒªÒ»¸öÈı¼¶¼ø¶¨¾íÖáÀ´¼ø¶¨ÄãÕâ¸ö×°±¸¡£";
+            //                        g_tiHintStr1 = "æˆ‘éœ€è¦ä¸€ä¸ªä¸‰çº§é‰´å®šå·è½´æ¥é‰´å®šä½ è¿™ä¸ªè£…å¤‡ã€‚";
             //                        FrmDlg.DBTIbtn1.btnState = tnor;
-            //                        FrmDlg.DBTIbtn1.Caption = "ÆÕÍ¨Èı¼ø";
+            //                        FrmDlg.DBTIbtn1.Caption = "æ™®é€šä¸‰é‰´";
             //                        FrmDlg.DBTIbtn2.btnState = tnor;
-            //                        FrmDlg.DBTIbtn2.Caption = "¸ß¼¶Èı¼ø";
+            //                        FrmDlg.DBTIbtn2.Caption = "é«˜çº§ä¸‰é‰´";
             //                        break;
             //                }
             //            }
             //            else if (FrmDlg.DWTI.tag == 2)
             //            {
             //                FrmDlg.DBTIbtn1.btnState = tnor;
-            //                FrmDlg.DBTIbtn1.Caption = "¸ü»»";
+            //                FrmDlg.DBTIbtn1.Caption = "æ›´æ¢";
             //            }
             //            result = ci.Item.Eva.EvaTimes;
             //        }
             //        else
             //        {
-            //            g_tiHintStr1 = string.Format("ÄãµÄÕâ¼ş%sÒÑ¾­²»ÄÜÔÙ¼ø¶¨ÁË¡£", new string[] { ci.s.Name });
+            //            g_tiHintStr1 = string.Format("ä½ çš„è¿™ä»¶%så·²ç»ä¸èƒ½å†é‰´å®šäº†ã€‚", new string[] { ci.s.Name });
             //            FrmDlg.DBTIbtn1.btnState = tdisable;
-            //            FrmDlg.DBTIbtn1.Caption = "ÆÕÍ¨¼ø¶¨";
+            //            FrmDlg.DBTIbtn1.Caption = "æ™®é€šé‰´å®š";
             //            FrmDlg.DBTIbtn2.btnState = tdisable;
-            //            FrmDlg.DBTIbtn2.Caption = "¸ß¼¶¼ø¶¨";
+            //            FrmDlg.DBTIbtn2.Caption = "é«˜çº§é‰´å®š";
             //        }
             //        break;
             //    case 2:
-            //        g_tiHintStr1 = string.Format("½èÖú¾íÖáµÄÁ¦Á¿£¬ÎÒÒÑ¾­°ïÄã·¢ÏÖÁËÄãÕâ%sµÄÇ±ÄÜ¡£", new string[] { iname });
+            //        g_tiHintStr1 = string.Format("å€ŸåŠ©å·è½´çš„åŠ›é‡ï¼Œæˆ‘å·²ç»å¸®ä½ å‘ç°äº†ä½ è¿™%sçš„æ½œèƒ½ã€‚", new string[] { iname });
             //        break;
             //    case 3:
-            //        g_tiHintStr1 = string.Format("½èÖú¾íÖáµÄÁ¦Á¿£¬ÎÒÒÑ¾­°ïÄã·¢ÏÖÁËÄãÕâ%sµÄÉñÃØÇ±ÄÜ¡£", new string[] { iname });
+            //        g_tiHintStr1 = string.Format("å€ŸåŠ©å·è½´çš„åŠ›é‡ï¼Œæˆ‘å·²ç»å¸®ä½ å‘ç°äº†ä½ è¿™%sçš„ç¥ç§˜æ½œèƒ½ã€‚", new string[] { iname });
             //        break;
             //    case 4:
-            //        g_tiHintStr1 = string.Format("Õâ%sËäÈ»Ã»ÄÜ·¢ÏÖ¸ü´óµÄÇ±ÄÜ£¬µ«ÊÇËûÓµÓĞ¸ĞÓ¦ÆäËû±¦Îï´æÔÚµÄÌØÊâÄÜÁ¦¡£", new string[] { iname });
+            //        g_tiHintStr1 = string.Format("è¿™%sè™½ç„¶æ²¡èƒ½å‘ç°æ›´å¤§çš„æ½œèƒ½ï¼Œä½†æ˜¯ä»–æ‹¥æœ‰æ„Ÿåº”å…¶ä»–å®ç‰©å­˜åœ¨çš„ç‰¹æ®Šèƒ½åŠ›ã€‚", new string[] { iname });
             //        break;
             //    case 5:
-            //        g_tiHintStr1 = string.Format("ÎÒ²¢Ã»ÄÜ´ÓÄãµÄÕâ¸ö%sÉÏ·¢ÏÖ¸ü¶àµÄÇ±ÄÜ¡£Äã²»Òª¾ÚÉ¥£¬ÎÒ»á¸øÄã¶îÍâµÄ²¹³¥¡£", new string[] { iname });
+            //        g_tiHintStr1 = string.Format("æˆ‘å¹¶æ²¡èƒ½ä»ä½ çš„è¿™ä¸ª%sä¸Šå‘ç°æ›´å¤šçš„æ½œèƒ½ã€‚ä½ ä¸è¦æ²®ä¸§ï¼Œæˆ‘ä¼šç»™ä½ é¢å¤–çš„è¡¥å¿ã€‚", new string[] { iname });
             //        break;
             //    case 6:
-            //        g_tiHintStr1 = string.Format("ÎÒ²¢Ã»ÄÜ´ÓÄãµÄÕâ¸ö%sÉÏ·¢ÏÖ¸ü¶àµÄÇ±ÄÜ¡£", new string[] { iname });
+            //        g_tiHintStr1 = string.Format("æˆ‘å¹¶æ²¡èƒ½ä»ä½ çš„è¿™ä¸ª%sä¸Šå‘ç°æ›´å¤šçš„æ½œèƒ½ã€‚", new string[] { iname });
             //        break;
             //    case 7:
-            //        g_tiHintStr1 = string.Format("ÎÒ²¢Ã»ÄÜ´ÓÄãµÄÕâ¸ö%sÉÏ·¢ÏÖ¸ü¶àµÄÇ±ÄÜ¡£ÄãµÄ±¦ÎïÒÑ¾­²»¿É¼ø¶¨¡£", new string[] { iname });
+            //        g_tiHintStr1 = string.Format("æˆ‘å¹¶æ²¡èƒ½ä»ä½ çš„è¿™ä¸ª%sä¸Šå‘ç°æ›´å¤šçš„æ½œèƒ½ã€‚ä½ çš„å®ç‰©å·²ç»ä¸å¯é‰´å®šã€‚", new string[] { iname });
             //        break;
             //    case 8:
-            //        g_tiHintStr1 = "ÄãÈ±ÉÙ±¦Îï»òÕß¾íÖá¡£";
+            //        g_tiHintStr1 = "ä½ ç¼ºå°‘å®ç‰©æˆ–è€…å·è½´ã€‚";
             //        break;
             //    case 9:
-            //        g_tiHintStr1 = string.Format("¹§Ï²ÄãµÄ±¦Îï±»¼ø¶¨ÎªÖ÷Ô××°±¸£¬Äã»ñµÃÁË%s¡£", new string[] { iname });
+            //        g_tiHintStr1 = string.Format("æ­å–œä½ çš„å®ç‰©è¢«é‰´å®šä¸ºä¸»å®°è£…å¤‡ï¼Œä½ è·å¾—äº†%sã€‚", new string[] { iname });
             //        break;
             //    case 10:
-            //        g_tiHintStr1 = "´ı¼øÎïÆ·´íÎó»ò²»´æÔÚ£¡";
+            //        g_tiHintStr1 = "å¾…é‰´ç‰©å“é”™è¯¯æˆ–ä¸å­˜åœ¨ï¼";
             //        break;
             //    case 11:
-            //        g_tiHintStr1 = string.Format("ÄãµÄÕâ¼ş%s²»¿ÉÒÔ¼ø¶¨£¡", new string[] { iname });
+            //        g_tiHintStr1 = string.Format("ä½ çš„è¿™ä»¶%sä¸å¯ä»¥é‰´å®šï¼", new string[] { iname });
             //        break;
             //    case 12:
             //        FrmDlg.DBTIbtn1.btnState = tdisable;
             //        FrmDlg.DBTIbtn2.btnState = tdisable;
-            //        g_tiHintStr1 = string.Format("ÒÔÎÒÄ¿Ç°µÄÄÜÁ¦£¬%sÖ»ÄÜÏÈ¼ø¶¨µ½ÕâÀïÁË¡£", new string[] { iname });
+            //        g_tiHintStr1 = string.Format("ä»¥æˆ‘ç›®å‰çš„èƒ½åŠ›ï¼Œ%såªèƒ½å…ˆé‰´å®šåˆ°è¿™é‡Œäº†ã€‚", new string[] { iname });
             //        break;
             //    case 30:
-            //        g_tiHintStr1 = "¼ø¶¨¾íÖá´íÎó»ò²»´æÔÚ£¡";
+            //        g_tiHintStr1 = "é‰´å®šå·è½´é”™è¯¯æˆ–ä¸å­˜åœ¨ï¼";
             //        break;
             //    case 31:
-            //        g_tiHintStr1 = string.Format("ÎÒĞèÒªÒ»¸ö%s¼¶¼ø¶¨¾íÖá£¬ÄãµÄ¾íÖá²»·ûºÏÒªÇó£¡", new string[] { iname });
+            //        g_tiHintStr1 = string.Format("æˆ‘éœ€è¦ä¸€ä¸ª%sçº§é‰´å®šå·è½´ï¼Œä½ çš„å·è½´ä¸ç¬¦åˆè¦æ±‚ï¼", new string[] { iname });
             //        break;
             //    case 32:
-            //        g_tiHintStr1 = string.Format("¸ß¼¶¼ø¶¨Ê§°Ü£¬ÄãµÄ%sÏûÊ§ÁË£¡", new string[] { iname });
+            //        g_tiHintStr1 = string.Format("é«˜çº§é‰´å®šå¤±è´¥ï¼Œä½ çš„%sæ¶ˆå¤±äº†ï¼", new string[] { iname });
             //        break;
             //    case 33:
-            //        g_tiHintStr1 = string.Format("·şÎñÆ÷Ã»ÓĞ%sµÄÊı¾İ£¬¸ß¼¶¼ø¶¨Ê§°Ü£¡", new string[] { iname });
+            //        g_tiHintStr1 = string.Format("æœåŠ¡å™¨æ²¡æœ‰%sçš„æ•°æ®ï¼Œé«˜çº§é‰´å®šå¤±è´¥ï¼", new string[] { iname });
             //        break;
             //}
             return result;
@@ -1986,33 +1959,33 @@ namespace RobotSvr
             switch (idx)
             {
                 case 0:
-                    g_tiHintStr1 = "Èç¹ûÄã²»Ï²»¶ÒÑ¾­¼ø¶¨¹ıÁËµÄ±¦Îï£¬Äã¿ÉÒÔ°ÑËû¸øÎÒ£¬ÎÒÆ½ËØ×î°®ÊÕ²Ø¸÷ÖÖ±¦Îï£¬ÎÒ»á¸øÄãÒ»¸öÒ»Ä£Ò»ÑùµÄÃ»¼ø¶¨¹ıµÄ×°±¸×÷Îª²¹³¥¡£";
+                    g_tiHintStr1 = "å¦‚æœä½ ä¸å–œæ¬¢å·²ç»é‰´å®šè¿‡äº†çš„å®ç‰©ï¼Œä½ å¯ä»¥æŠŠä»–ç»™æˆ‘ï¼Œæˆ‘å¹³ç´ æœ€çˆ±æ”¶è—å„ç§å®ç‰©ï¼Œæˆ‘ä¼šç»™ä½ ä¸€ä¸ªä¸€æ¨¡ä¸€æ ·çš„æ²¡é‰´å®šè¿‡çš„è£…å¤‡ä½œä¸ºè¡¥å¿ã€‚";
                     FrmDlg.DBTIbtn1.btnState = tdisable;
                     break;
                 case 1:
-                    g_tiHintStr1 = string.Format("Õâ¸ö%s£¬¿´ÉÏÈ¥²»´í£¬ÎÒÕâÀïÕıºÃÓĞÃ»ÓĞ¼ø¶¨¹ıµÄ¸÷ÖÖ%sÄã¿ÉÒÔÌôÒ»°Ñ£¬Òª»»µÄ»°£¬ÄãÒª¸øÎÒÒ»¸öĞÒÔË·û¡£", new string[] { ci.s.Name, ci.s.Name });
+                    g_tiHintStr1 = string.Format("è¿™ä¸ª%sï¼Œçœ‹ä¸Šå»ä¸é”™ï¼Œæˆ‘è¿™é‡Œæ­£å¥½æœ‰æ²¡æœ‰é‰´å®šè¿‡çš„å„ç§%sä½ å¯ä»¥æŒ‘ä¸€æŠŠï¼Œè¦æ¢çš„è¯ï¼Œä½ è¦ç»™æˆ‘ä¸€ä¸ªå¹¸è¿ç¬¦ã€‚", new string[] { ci.s.Name, ci.s.Name });
                     FrmDlg.DBTIbtn1.btnState = tnor;
                     break;
                 case 2:
-                    g_tiHintStr1 = string.Format("ÎÒÒÑ¾­¸øÁËÄãÒ»°ÑÃ»¼ø¶¨¹ıµÄ%s£¬¸úÄãÔ­À´µÄ%sÃ»¼ø¶¨¹ıÖ®Ç°ÊÇÒ»Ä£Ò»ÑùµÄ£¡", new string[] { iname, iname });
+                    g_tiHintStr1 = string.Format("æˆ‘å·²ç»ç»™äº†ä½ ä¸€æŠŠæ²¡é‰´å®šè¿‡çš„%sï¼Œè·Ÿä½ åŸæ¥çš„%sæ²¡é‰´å®šè¿‡ä¹‹å‰æ˜¯ä¸€æ¨¡ä¸€æ ·çš„ï¼", new string[] { iname, iname });
                     break;
                 case 3:
-                    g_tiHintStr1 = "È±ÉÙ±¦Îï»ò²ÄÁÏ¡£";
+                    g_tiHintStr1 = "ç¼ºå°‘å®ç‰©æˆ–ææ–™ã€‚";
                     break;
                 case 4:
-                    g_tiHintStr1 = string.Format("ÄãµÄÕâ¼ş%s²¢Ã»ÓĞ¼ø¶¨¹ı¡£", new string[] { iname });
+                    g_tiHintStr1 = string.Format("ä½ çš„è¿™ä»¶%så¹¶æ²¡æœ‰é‰´å®šè¿‡ã€‚", new string[] { iname });
                     break;
                 case 5:
-                    g_tiHintStr1 = "²ÄÁÏ²»·ûºÏ£¬Çë·ÅÈëĞÒÔË·û¡£";
+                    g_tiHintStr1 = "ææ–™ä¸ç¬¦åˆï¼Œè¯·æ”¾å…¥å¹¸è¿ç¬¦ã€‚";
                     break;
                 case 6:
-                    g_tiHintStr1 = "¸ÃÎïÆ·¿òÖ»ÄÜ·Å¼ø¶¨¹ıµÄ±¦Îï£¬ÄãµÄ¶«Î÷²»·ûºÏ£¬ÎÒÒÑ¾­½«Ëü·Å»ØÄãµÄ°ü¹üÁË¡£";
+                    g_tiHintStr1 = "è¯¥ç‰©å“æ¡†åªèƒ½æ”¾é‰´å®šè¿‡çš„å®ç‰©ï¼Œä½ çš„ä¸œè¥¿ä¸ç¬¦åˆï¼Œæˆ‘å·²ç»å°†å®ƒæ”¾å›ä½ çš„åŒ…è£¹äº†ã€‚";
                     break;
                 case 7:
-                    g_tiHintStr1 = "¸ÃÎïÆ·¿òÖ»ÄÜ·ÅĞÒÔË·û£¬ÄãµÄ¶«Î÷²»·ûºÏ£¬ÎÒÒÑ¾­½«Ëü·Å»ØÄãµÄ°ü¹üÁË¡£";
+                    g_tiHintStr1 = "è¯¥ç‰©å“æ¡†åªèƒ½æ”¾å¹¸è¿ç¬¦ï¼Œä½ çš„ä¸œè¥¿ä¸ç¬¦åˆï¼Œæˆ‘å·²ç»å°†å®ƒæ”¾å›ä½ çš„åŒ…è£¹äº†ã€‚";
                     break;
                 case 8:
-                    g_tiHintStr1 = "±¦Îï¸ü»»Ê§°Ü¡£";
+                    g_tiHintStr1 = "å®ç‰©æ›´æ¢å¤±è´¥ã€‚";
                     break;
             }*/
             return result;
@@ -2036,47 +2009,47 @@ namespace RobotSvr
             switch (idx)
             {
                 case 0:
-                    g_spHintStr1 = "Äã¿ÉÒÔ¸ú±ğÈË¹ºÂòÉñÃØ¾íÖá£¬Ò²¿ÉÒÔ×Ô¼ºÖÆ×÷ÉñÃØ¾íÖáÀ´½â¶Á±¦ÎïµÄÉñÃØÊôĞÔ¡£";
+                    g_spHintStr1 = "ä½ å¯ä»¥è·Ÿåˆ«äººè´­ä¹°ç¥ç§˜å·è½´ï¼Œä¹Ÿå¯ä»¥è‡ªå·±åˆ¶ä½œç¥ç§˜å·è½´æ¥è§£è¯»å®ç‰©çš„ç¥ç§˜å±æ€§ã€‚";
                     break;
                 case 1:
-                    g_spHintStr1 = "Õâ´Î½â¶Á²»ĞÒÊ§°Ü£¬½â¶ÁĞÒÔËÖµ¡¢ÉñÃØ¾íÖá" + "µÄµÈ¼¶ºÍÊìÁ·¶È¹ıµÍ¿ÉÄÜµ¼ÖÂ½â¶ÁÊ§°Ü£¬²»" + "ÒªÊ§Íû£¬ÔÙ½ÓÔÙÀ÷°É¡£";
+                    g_spHintStr1 = "è¿™æ¬¡è§£è¯»ä¸å¹¸å¤±è´¥ï¼Œè§£è¯»å¹¸è¿å€¼ã€ç¥ç§˜å·è½´" + "çš„ç­‰çº§å’Œç†Ÿç»ƒåº¦è¿‡ä½å¯èƒ½å¯¼è‡´è§£è¯»å¤±è´¥ï¼Œä¸" + "è¦å¤±æœ›ï¼Œå†æ¥å†å‰å§ã€‚";
                     break;
                 case 2:
-                    g_spHintStr1 = "ÕÒ²»µ½¼ø¶¨ÎïÆ·»ò¾íÖá";
+                    g_spHintStr1 = "æ‰¾ä¸åˆ°é‰´å®šç‰©å“æˆ–å·è½´";
                     break;
                 case 3:
                     FrmDlg.DBSP.btnState = tdisable;
-                    g_spHintStr1 = "Ã»ÓĞ¿É¼ø¶¨µÄÉñÃØÊôĞÔ";
+                    g_spHintStr1 = "æ²¡æœ‰å¯é‰´å®šçš„ç¥ç§˜å±æ€§";
                     break;
                 case 4:
-                    g_spHintStr1 = "×°±¸²»·ûºÏÉñÃØ½â¶ÁÒªÇó";
+                    g_spHintStr1 = "è£…å¤‡ä¸ç¬¦åˆç¥ç§˜è§£è¯»è¦æ±‚";
                     break;
                 case 5:
-                    g_spHintStr1 = "¾íÖáÀàĞÍ²»·ûºÏ";
+                    g_spHintStr1 = "å·è½´ç±»å‹ä¸ç¬¦åˆ";
                     break;
                 case 6:
-                    g_spHintStr1 = "¾íÖáµÈ¼¶²»·ûºÏ";
+                    g_spHintStr1 = "å·è½´ç­‰çº§ä¸ç¬¦åˆ";
                     break;
                 case 7:
-                    g_spHintStr1 = "½èÖúÉñÃØ¾íÖáµÄ°ïÖú£¬ÒÑ¾­°ïÄã½â¶Á³öÁËÒ»¸öÉñÃØÊôĞÔ";
+                    g_spHintStr1 = "å€ŸåŠ©ç¥ç§˜å·è½´çš„å¸®åŠ©ï¼Œå·²ç»å¸®ä½ è§£è¯»å‡ºäº†ä¸€ä¸ªç¥ç§˜å±æ€§";
                     break;
                 case 10:
-                    g_spHintStr1 = "ÉñÃØ¾íÖáÖÆ×÷³É¹¦¡£";
+                    g_spHintStr1 = "ç¥ç§˜å·è½´åˆ¶ä½œæˆåŠŸã€‚";
                     break;
                 case 11:
-                    g_spHintStr1 = "Õâ´ÎÖÆ×÷²»ĞÒµÄÊ§°ÜÁË£¬¿ÉÄÜÊÇÒòÎªÄãµÄÉñ" + "ÃØ½â¶Á¼¼ÄÜµÈ¼¶»¹²»¹»¸ß£¬»òÕßÊÇÄãÖÆ×÷µÄ" + "¾íÖáµÈ¼¶Ì«¸ßÁË";
+                    g_spHintStr1 = "è¿™æ¬¡åˆ¶ä½œä¸å¹¸çš„å¤±è´¥äº†ï¼Œå¯èƒ½æ˜¯å› ä¸ºä½ çš„ç¥" + "ç§˜è§£è¯»æŠ€èƒ½ç­‰çº§è¿˜ä¸å¤Ÿé«˜ï¼Œæˆ–è€…æ˜¯ä½ åˆ¶ä½œçš„" + "å·è½´ç­‰çº§å¤ªé«˜äº†";
                     break;
                 case 12:
-                    g_spHintStr1 = "ÕÒ²»µ½ÑòÆ¤¾í¡£";
+                    g_spHintStr1 = "æ‰¾ä¸åˆ°ç¾Šçš®å·ã€‚";
                     break;
                 case 13:
-                    g_spHintStr1 = "Çë·ÅÈëÑòÆ¤¾í¡£";
+                    g_spHintStr1 = "è¯·æ”¾å…¥ç¾Šçš®å·ã€‚";
                     break;
                 case 14:
-                    g_spHintStr1 = "¾«Á¦Öµ²»¹»¡£";
+                    g_spHintStr1 = "ç²¾åŠ›å€¼ä¸å¤Ÿã€‚";
                     break;
                 case 15:
-                    g_spHintStr1 = "Ã»ÓĞ½â¶Á¼¼ÄÜ£¬ÖÆ×÷Ê§°Ü¡£";
+                    g_spHintStr1 = "æ²¡æœ‰è§£è¯»æŠ€èƒ½ï¼Œåˆ¶ä½œå¤±è´¥ã€‚";
                     break;
             }*/
             return result;
@@ -2100,7 +2073,7 @@ namespace RobotSvr
             switch (idx)
             {
                 case 0:
-                    g_spHintStr1 = "Äã¿ÉÒÔ°ÑÄã¶Ô¼ø±¦µÄĞÄµÃ»¹ÓĞÄãµÄ¼ø¶¨¾­ÑéĞ´ÔÚÉñÃØ¾íÖáÉÏ£¬ÕâÑùµÄ»°£¬¾Í¿ÉÒÔ°ïÖú¸ü¶àÈË½â¶ÁÉñÃØÊôĞÔ¡£";
+                    g_spHintStr1 = "ä½ å¯ä»¥æŠŠä½ å¯¹é‰´å®çš„å¿ƒå¾—è¿˜æœ‰ä½ çš„é‰´å®šç»éªŒå†™åœ¨ç¥ç§˜å·è½´ä¸Šï¼Œè¿™æ ·çš„è¯ï¼Œå°±å¯ä»¥å¸®åŠ©æ›´å¤šäººè§£è¯»ç¥ç§˜å±æ€§ã€‚";
                     break;
             }
             return result;
@@ -2239,7 +2212,7 @@ namespace RobotSvr
 
         public static void InitScreenConfig()
         {
-            // ÆÁÄ»¶¥²¿¹ö¶¯¹«¸æ-·¶Î§
+            // å±å¹•é¡¶éƒ¨æ»šåŠ¨å…¬å‘Š-èŒƒå›´
             //g_SkidAD_Rect.Left = 5;
             //g_SkidAD_Rect.Top = 7;
             //g_SkidAD_Rect.Right = SCREENWIDTH - 5;

@@ -28,7 +28,7 @@ public class Scene
     {
 
     }
- 
+
     public virtual void PlayScene()
     {
 

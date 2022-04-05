@@ -128,14 +128,12 @@ namespace RobotSvr
             }
         }
 
-        public bool ReLoadMapData(bool IntActor)
+        public bool ReLoadMapData(bool IntActor = false)
         {
-            bool result;
-            int i;
             int nX;
             int nY;
             TActor Actor;
-            result = false;
+            bool result = false;
             if ((MShare.g_MySelf != null) && (m_nCurrentMap != 0) && (this.m_MapBuf != null))
             {
                 for (nX = MShare.g_MySelf.m_nCurrX - 32; nX <= MShare.g_MySelf.m_nCurrX + 32; nX++)
@@ -148,7 +146,7 @@ namespace RobotSvr
                         }
                     }
                 }
-                for (i = 0; i < ClMain.g_PlayScene.m_ActorList.Count; i++)
+                for (var i = 0; i < ClMain.g_PlayScene.m_ActorList.Count; i++)
                 {
                     Actor = (TActor)ClMain.g_PlayScene.m_ActorList[i];
                     if (Actor == MShare.g_MySelf)

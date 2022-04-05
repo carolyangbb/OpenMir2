@@ -46,7 +46,7 @@ namespace RobotSvr
         public bool m_boItemExplore = false;
         public bool m_boDelActor = false;
         public bool m_boDelActionAfterFinished = false;
-        public string[] m_sDescUserName;
+        public string m_sDescUserName;
         public string m_sUserName = String.Empty;
         public int m_sUserNameOffSet = 0;
         public string m_sLoyaly;
@@ -291,7 +291,7 @@ namespace RobotSvr
             m_fHideMode = false;
         }
 
-        public void SendMsg(short wIdent, int nX, int nY, int ndir, int nFeature, int nState, string sStr, int nSound, long dwDelay = 0)
+        public void SendMsg(int wIdent, int nX, int nY, int ndir, int nFeature, int nState, string sStr, int nSound, long dwDelay = 0)
         {
             TChrMsg Msg;
             Msg = new TChrMsg();
@@ -1153,9 +1153,7 @@ namespace RobotSvr
                     m_btWeapon = Grobal2.WEAPONfeature(m_nFeature);
                     m_btHorse = Grobal2.Horsefeature(m_nFeatureEx);
                     m_btWeaponEffect = m_btHorse;
-                    // div 51;
                     m_btHorse = 0;
-                    // m_btHorse mod 51;
                     m_btEffect = Grobal2.Effectfeature(m_nFeatureEx);
                     m_nBodyOffset = Actor.HUMANFRAME * m_btDress;
                     if (m_btHair >= 10)
@@ -1169,7 +1167,6 @@ namespace RobotSvr
                     }
                     if (m_btHairEx > 0)
                     {
-                        haircount = WMFile.Units.WMFile.g_WHair2ImgImages.ImageCount / Actor.HUMANFRAME / 2;
                         if (m_btHairEx > haircount)
                         {
                             m_btHairEx = haircount;
@@ -1180,7 +1177,6 @@ namespace RobotSvr
                     {
                         m_nHairOffsetEx = -1;
                     }
-                    haircount = WMFile.Units.WMFile.g_WHairImgImages.ImageCount / Actor.HUMANFRAME / 2;
                     if (m_btHair > haircount - 1)
                     {
                         m_btHair = haircount - 1;
@@ -1210,7 +1206,6 @@ namespace RobotSvr
                 case 50:
                     break;
                 default:
-                    // npc
                     m_wAppearance = Grobal2.APPRfeature(m_nFeature);
                     m_nBodyOffset = Actor.GetOffset(m_wAppearance);
                     break;
@@ -1219,9 +1214,7 @@ namespace RobotSvr
 
         public virtual int light()
         {
-            int result;
-            result = m_nChrLight;
-            return result;
+            return m_nChrLight;
         }
 
         public int CharWidth()
@@ -1297,14 +1290,17 @@ namespace RobotSvr
 
         public virtual void RunFrameAction(int frame)
         {
+
         }
 
         public virtual void ActionEnded()
         {
+
         }
 
         public virtual void ReadyNextAction()
         {
+
         }
 
         public bool Run_MagicTimeOut()
@@ -1725,9 +1721,8 @@ namespace RobotSvr
 
         public void StruckShowDamage(string Str)
         {
-            int idx;
-            idx = 0;
-            m_StruckDamage.Add(Str, idx as Object);
+            int idx = 0;
+            //m_StruckDamage.Add(Str, idx);
         }
 
         public void GetMoveHPShow(int nCount)
