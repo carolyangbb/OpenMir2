@@ -3,20 +3,19 @@ using SystemModule;
 
 namespace RobotSvr
 {
-    public class TSkeletonKingMon: TGasKuDeGi
+    public class TSkeletonKingMon : TGasKuDeGi
     {
-        // TSkeletonKingMon
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
-            this.m_nCurrentFrame =  -1;
+            this.m_nCurrentFrame = -1;
             this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
             pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
             }
-            switch(this.m_nCurrentAction)
+            switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_BACKSTEP:
                 case Grobal2.SM_WALK:
@@ -117,35 +116,6 @@ namespace RobotSvr
             }
         }
 
-        public override void LoadSurface()
-        {
-            base.LoadSurface();
-            if ((this.m_btRace == 63) && this.m_boUseEffect)
-            {
-                switch(this.m_nCurrentAction)
-                {
-                    case Grobal2.SM_WALK:
-                        this.AttackEffectSurface = WMFile.Units.WMFile.g_WMons[20].GetCachedImage(3060 + (this.m_btDir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-                        break;
-                    case Grobal2.SM_HIT:
-                        this.AttackEffectSurface = WMFile.Units.WMFile.g_WMons[20].GetCachedImage(3140 + (this.firedir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-                        break;
-                    case Grobal2.SM_FLYAXE:
-                        this.AttackEffectSurface = WMFile.Units.WMFile.g_WMons[20].GetCachedImage(3300 + (this.firedir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-                        break;
-                    case Grobal2.SM_LIGHTING:
-                        this.AttackEffectSurface = WMFile.Units.WMFile.g_WMons[20].GetCachedImage(3220 + (this.firedir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-                        break;
-                    case Grobal2.SM_STRUCK:
-                        this.AttackEffectSurface = WMFile.Units.WMFile.g_WMons[20].GetCachedImage(3380 + (this.m_btDir * 2) + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-                        break;
-                    case Grobal2.SM_NOWDEATH:
-                        this.AttackEffectSurface = WMFile.Units.WMFile.g_WMons[20].GetCachedImage(3400 + (this.m_btDir * 4) + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-                        break;
-                }
-            }
-        }
-
         public override void Run()
         {
             int prv;
@@ -178,7 +148,7 @@ namespace RobotSvr
                     this.m_dwEffectStartTime = MShare.GetTickCount();
                     if (this.m_nEffectFrame < this.m_nEffectEnd)
                     {
-                        this.m_nEffectFrame ++;
+                        this.m_nEffectFrame++;
                     }
                     else
                     {
@@ -205,7 +175,7 @@ namespace RobotSvr
                 {
                     if (this.m_nCurrentFrame < this.m_nEndFrame)
                     {
-                        this.m_nCurrentFrame ++;
+                        this.m_nCurrentFrame++;
                         this.m_dwStartTime = MShare.GetTickCount();
                     }
                     else
@@ -235,7 +205,7 @@ namespace RobotSvr
                     if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
                     {
                         this.m_dwDefFrameTime = MShare.GetTickCount();
-                        this.m_nCurrentDefFrame ++;
+                        this.m_nCurrentDefFrame++;
                         if (this.m_nCurrentDefFrame >= this.m_nDefFrameCount)
                         {
                             this.m_nCurrentDefFrame = 0;
@@ -250,8 +220,6 @@ namespace RobotSvr
                 LoadSurface();
             }
         }
-
-    } // end TSkeletonKingMon
-
-    } // end TBanyaGuardMon
+    }
+}
 

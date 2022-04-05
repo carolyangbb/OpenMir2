@@ -1,8 +1,7 @@
 ﻿namespace RobotSvr
 {
-    public class TSculptureKingMon: TSculptureMon
+    public class TSculptureKingMon : TSculptureMon
     {
-    } // end TSculptureKingMon
 
-    } // end TBanyaGuardMon
-
+    }
+}

@@ -49,22 +49,17 @@ namespace RobotSvr
         public string[] m_sDescUserName;
         public string m_sUserName = String.Empty;
         public int m_sUserNameOffSet = 0;
-        // m_sDrawName: array[0..10] of string;
         public string[] m_sLoyaly;
         public string[] m_sAutoSayMsg;
         public byte m_btNameColor = 0;
-        public int m_nNameColor = 0;
+        public int m_nNameColor = 0; 
         public TAbility m_Abil = null;
         public TOAbility m_Abils = null;
         public int m_nGold = 0;
-        // 金币数量
         public int m_nGameGold = 0;
-        // 元宝数量
         public short m_nGameGird = 0;
-        // 灵符数量
         public int m_nGamePoint = 0;
         public short m_nGameDiamd = 0;
-        // 金刚石数量
         public short m_nHitSpeed = 0;
         public bool m_boVisible = false;
         public bool m_boHoldPlace = false;
@@ -204,7 +199,6 @@ namespace RobotSvr
         protected int m_nSkipTick = 0;
         protected long m_dwSmoothMoveTime = 0;
         protected long m_dwGenAnicountTime = 0;
-        // m_dwLoadSurfaceTime: LongWord;
         protected int m_nOldx = 0;
         protected int m_nOldy = 0;
         protected int m_nOldDir = 0;
@@ -217,10 +211,9 @@ namespace RobotSvr
         public int m_nActBeforeY = 0;
         public TChrMsg m_ChrMsg = null;
         public TGList m_MsgList = null;
-        // list of PTChrMsg
         public TChrMsg RealActionMsg = null;
         public ArrayList m_nMoveHpList = null;
-        //Constructor  Create()
+
         public TActor() : base()
         {
             m_btTitleIndex = 0;
@@ -228,14 +221,14 @@ namespace RobotSvr
             //@ Unsupported function or procedure: 'FillChar'
             FillChar(m_Abil);            //@ Unsupported function or procedure: 'FillChar'
             FillChar(m_Abils);            //@ Unsupported function or procedure: 'FillChar'
-            FillChar(m_Action);            m_nWaitForRecogId = 0;
+            FillChar(m_Action); m_nWaitForRecogId = 0;
             m_MsgList = new TGList();
             m_nRecogId = 0;
             m_wAppr = 0;
             m_btPoisonDecHealth = 0;
             n_boState = false;
             m_btAFilter = false;
-            m_nIPower =  -1;
+            m_nIPower = -1;
             m_nIPowerLvl = 0;
             m_nIPowerExp = 0;
             m_btAttribute = 0;
@@ -249,8 +242,8 @@ namespace RobotSvr
             m_nShiftX = 0;
             m_nShiftY = 0;
             m_nDownDrawLevel = 0;
-            m_nCurrentFrame =  -1;
-            m_nEffectFrame =  -1;
+            m_nCurrentFrame = -1;
+            m_nEffectFrame = -1;
             RealActionMsg.Ident = 0;
             m_sUserName = "";
             m_sUserNameOffSet = 0;
@@ -277,16 +270,16 @@ namespace RobotSvr
             m_boOpenHealth = false;
             m_noInstanceOpenHealth = false;
             m_CurMagic.ServerMagicCode = 0;
-            m_nSpellFrame = Units.Actor.DEFSPELLFRAME;
-            m_nNormalSound =  -1;
-            m_nFootStepSound =  -1;
-            m_nAttackSound =  -1;
-            m_nWeaponSound =  -1;
+            m_nSpellFrame = Actor.DEFSPELLFRAME;
+            m_nNormalSound = -1;
+            m_nFootStepSound = -1;
+            m_nAttackSound = -1;
+            m_nWeaponSound = -1;
             m_nStruckSound = SoundUtil.s_struck_body_longstick;
-            m_nStruckWeaponSound =  -1;
-            m_nScreamSound =  -1;
-            m_nDieSound =  -1;
-            m_nDie2Sound =  -1;
+            m_nStruckWeaponSound = -1;
+            m_nScreamSound = -1;
+            m_nDieSound = -1;
+            m_nDie2Sound = -1;
             m_btIsHero = 0;
             m_boFisrShopItem = true;
             m_boSmiteLongHit = 0;
@@ -303,31 +296,8 @@ namespace RobotSvr
             m_nTempState = 1;
             m_fHideMode = false;
         }
-        //@ Destructor  Destroy()
-        ~TActor()
-        {
-            int i;
-            TChrMsg Msg;
-            TMoveHMShow MoveShow;
-            for (i = 0; i < m_MsgList.Count; i ++ )
-            {
-                Msg = m_MsgList[i];
-                //@ Unsupported function or procedure: 'Dispose'
-                Dispose(Msg);
-            }
-                        m_MsgList.Free;
-                        m_StruckDamage.Free;
-            for (i = 0; i < m_nMoveHpList.Count; i ++ )
-            {
-                MoveShow = m_nMoveHpList[i];
-                                MoveShow.Surface.Free;
-                //@ Unsupported function or procedure: 'Dispose'
-                Dispose(MoveShow);
-            }
-                        m_nMoveHpList.Free;
-            base.Destroy();
-        }
-        public void SendMsg(short wIdent, int nX, int nY, int ndir, int nFeature, int nState, string sStr, int nSound, long dwDelay)
+
+        public void SendMsg(short wIdent, int nX, int nY, int ndir, int nFeature, int nState, string sStr, int nSound, long dwDelay = 0)
         {
             TChrMsg Msg;
             Msg = new TChrMsg();
@@ -348,10 +318,12 @@ namespace RobotSvr
                 Msg.dwDelay = 0;
             }
             m_MsgList.__Lock();
-            try {
-                // 111
+            try
+            {
                 m_MsgList.Add(Msg);
-            } finally {
+            }
+            finally
+            {
                 m_MsgList.UnLock();
             }
         }
@@ -361,7 +333,8 @@ namespace RobotSvr
             int i;
             TChrMsg Msg;
             m_MsgList.__Lock();
-            try {
+            try
+            {
                 i = 0;
                 while (true)
                 {
@@ -377,9 +350,11 @@ namespace RobotSvr
                         m_MsgList.RemoveAt(i);
                         continue;
                     }
-                    i ++;
+                    i++;
                 }
-            } finally {
+            }
+            finally
+            {
                 m_MsgList.UnLock();
             }
             SendMsg(wIdent, nX, nY, ndir, nFeature, nState, sStr, nSound);
@@ -390,7 +365,8 @@ namespace RobotSvr
             int i;
             TChrMsg Msg;
             m_MsgList.__Lock();
-            try {
+            try
+            {
                 i = 0;
                 while (true)
                 {
@@ -406,9 +382,11 @@ namespace RobotSvr
                         m_MsgList.RemoveAt(i);
                         continue;
                     }
-                    i ++;
+                    i++;
                 }
-            } finally {
+            }
+            finally
+            {
                 m_MsgList.UnLock();
             }
         }
@@ -418,14 +396,14 @@ namespace RobotSvr
             m_boUseCboLib = false;
             m_boUseMagic = false;
             m_boNewMagic = false;
-            m_nCurrentFrame =  -1;
-            m_nBodyOffset = Units.Actor.GetOffset(m_wAppearance);
-            m_Action = Units.Actor.GetRaceByPM(m_btRace, m_wAppearance);
+            m_nCurrentFrame = -1;
+            m_nBodyOffset = Actor.GetOffset(m_wAppearance);
+            m_Action = Actor.GetRaceByPM(m_btRace, m_wAppearance);
             if (m_Action == null)
             {
                 return;
             }
-            switch(m_nCurrentAction)
+            switch (m_nCurrentAction)
             {
                 case Grobal2.SM_TURN:
                     m_nStartFrame = m_Action.ActStand.start + m_btDir * (m_Action.ActStand.frame + m_Action.ActStand.skip);
@@ -516,7 +494,7 @@ namespace RobotSvr
             }
             if (!m_boDeath)
             {
-                switch(Msg.Ident)
+                switch (Msg.Ident)
                 {
                     case Grobal2.SM_TURN:
                     case Grobal2.SM_WALK:
@@ -531,8 +509,8 @@ namespace RobotSvr
                         // m_nFeature := MakeHumanFeature(0, DRESSfeature(Msg.Feature), WEAPONfeature(Msg.Feature), 6 * 10 + 1 * 2 + 1); //Msg.Feature;
                         m_nFeature = Msg.Feature;
                         m_nState = Msg.State;
-                        //@ Unsupported function or procedure: 'HiByte'
-                        m_RushStep = HiByte(Msg.Dir);
+                        //@ Unsupported function or procedure: 'HUtil32.HiByte'
+                        m_RushStep = HUtil32.HiByte(Msg.Dir);
                         if (m_nState & Grobal2.STATE_OPENHEATH != 0)
                         {
                             m_boOpenHealth = true;
@@ -568,7 +546,7 @@ namespace RobotSvr
                             return;
                         }
                     }
-                    switch(Msg.Ident)
+                    switch (Msg.Ident)
                     {
                         case Grobal2.CM_TURN:
                         case Grobal2.CM_WALK:
@@ -579,35 +557,23 @@ namespace RobotSvr
                         case Grobal2.CM_BIGHIT:
                         case Grobal2.CM_POWERHIT:
                         case Grobal2.CM_LONGHIT:
-                        case Grobal2.CM_SQUHIT:
                         case Grobal2.CM_WIDEHIT:
                         case Grobal2.CM_CRSHIT:
-                        case Grobal2.CM_TWNHIT:
-                        case Grobal2.CM_PURSUEHIT:
-                        case Grobal2.CM_SMITEHIT:
-                        case Grobal2.CM_SMITELONGHIT:
-                        case Grobal2.CM_SMITELONGHIT2:
-                        case Grobal2.CM_SMITELONGHIT3:
-                        case Grobal2.CM_SMITEWIDEHIT:
-                        case Grobal2.CM_SMITEWIDEHIT2:
-                        case Grobal2.CM_HERO_LONGHIT2:
                             if (Msg.Ident == Grobal2.CM_POWERHIT)
                             {
-                                Msg.Saying =ClMain.GetMagicLv(this, 7);
-                            // Format('%d', [GetMagicLv(Self, 7)]);
+                                Msg.Saying = ClMain.GetMagicLv(this, 7);
                             }
                             else if (Msg.Ident == Grobal2.CM_LONGHIT)
                             {
-                                // Format('%d', [GetMagicLv(Self, 12)])
-                                Msg.Saying =ClMain.GetMagicLv(this, 12);
+                                Msg.Saying = ClMain.GetMagicLv(this, 12);
                             }
                             else if (Msg.Ident == Grobal2.CM_WIDEHIT)
                             {
-                                Msg.Saying =ClMain.GetMagicLv(this, 25);
+                                Msg.Saying = ClMain.GetMagicLv(this, 25);
                             }
                             else if (Msg.Ident == Grobal2.CM_PURSUEHIT)
                             {
-                                Msg.Saying =ClMain.GetMagicLv(this, 56);
+                                Msg.Saying = ClMain.GetMagicLv(this, 56);
                             }
                             RealActionMsg = Msg;
                             Msg.Ident = Msg.Ident - 3000;
@@ -627,8 +593,7 @@ namespace RobotSvr
                             Msg.Ident = Grobal2.SM_THROW;
                             break;
                         case Grobal2.CM_FIREHIT:
-                            Msg.Saying =ClMain.GetMagicLv(this, 26);
-                            // Format('%d', [GetMagicLv(Self, 26)]);
+                            Msg.Saying = ClMain.GetMagicLv(this, 26);
                             RealActionMsg = Msg;
                             Msg.Ident = Grobal2.SM_FIREHIT;
                             break;
@@ -641,7 +606,7 @@ namespace RobotSvr
                             UseMagic = ((TUseMagicInfo)(Msg.Feature));
                             RealActionMsg.Dir = UseMagic.MagicSerial;
                             Msg.Ident = Msg.Ident - 3000;
-                            Msg.X =ClMain.GetMagicLv(this, UseMagic.MagicSerial);
+                            Msg.X = ClMain.GetMagicLv(this, UseMagic.MagicSerial);
                             Msg.Y = m_btPoisonDecHealth;
                             break;
                     }
@@ -649,7 +614,7 @@ namespace RobotSvr
                     m_nOldy = m_nCurrY;
                     m_nOldDir = m_btDir;
                 }
-                switch(Msg.Ident)
+                switch (Msg.Ident)
                 {
                     case Grobal2.SM_STRUCK:
                         m_nMagicStruckSound = Msg.X;
@@ -670,17 +635,14 @@ namespace RobotSvr
                         if (UseMagic != null)
                         {
                             m_CurMagic = UseMagic;
-                            m_CurMagic.ServerMagicCode =  -1;
+                            m_CurMagic.ServerMagicCode = -1;
                             m_CurMagic.targx = Msg.X;
                             m_CurMagic.targy = Msg.Y;
                             m_CurMagic.spelllv = Msg.X;
                             m_CurMagic.Poison = Msg.Y;
-                            //@ Unsupported function or procedure: 'Dispose'
                             Dispose(UseMagic);
-                            // ///////////////
-                            if (m_CurMagic.EffectNumber >= 60 && m_CurMagic.EffectNumber<= 66)
+                            if (m_CurMagic.EffectNumber >= 60 && m_CurMagic.EffectNumber <= 66)
                             {
-                                // m_CurMagic.ServerMagicCode := 0;
                                 MShare.g_SeriesSkillFire = false;
                                 MShare.g_SeriesSkillFire_100 = false;
                             }
@@ -697,7 +659,6 @@ namespace RobotSvr
                         m_CurMagic.magfirelv = Msg.Saying;
                         break;
                     default:
-                        // Str_ToInt(Msg.saying, 0);
                         m_nCurrX = Msg.X;
                         m_nCurrY = Msg.Y;
                         m_btDir = Msg.Dir;
@@ -715,14 +676,12 @@ namespace RobotSvr
             if ((Msg.Ident == Grobal2.SM_DEATH) || (Msg.Ident == Grobal2.SM_NOWDEATH))
             {
                 m_boDeath = true;
-                //@ Unsupported function or procedure: 'HiByte'
-                if (HiByte(Msg.Dir) != 0)
+                if (HUtil32.HiByte(Msg.Dir) != 0)
                 {
                     m_boItemExplore = true;
                 }
-               ClMain.g_PlayScene.ActorDied(this);
+                ClMain.g_PlayScene.ActorDied(this);
             }
-            RunSound();
         }
 
         private bool GetMessage(TChrMsg ChrMsg)
@@ -732,14 +691,15 @@ namespace RobotSvr
             TChrMsg Msg;
             result = false;
             m_MsgList.__Lock();
-            try {
+            try
+            {
                 i = 0;
                 while (m_MsgList.Count > i)
                 {
                     Msg = m_MsgList[i];
                     if ((Msg.dwDelay != 0) && (MShare.GetTickCount() < Msg.dwDelay))
                     {
-                        i ++;
+                        i++;
                         continue;
                     }
                     ChrMsg = Msg;
@@ -748,7 +708,9 @@ namespace RobotSvr
                     result = true;
                     break;
                 }
-            } finally {
+            }
+            finally
+            {
                 m_MsgList.UnLock();
             }
             return result;
@@ -756,7 +718,6 @@ namespace RobotSvr
 
         public void ProcMsg()
         {
-            TMagicEff meff;
             while ((m_nCurrentAction == 0) && GetMessage(m_ChrMsg))
             {
                 switch (m_ChrMsg.Ident)
@@ -765,7 +726,6 @@ namespace RobotSvr
                         m_nHiterCode = m_ChrMsg.Sound;
                         ReadyAction(m_ChrMsg);
                         break;
-                    // Modify the A .. B: Grobal2.SM_DEATH, Grobal2.SM_NOWDEATH, Grobal2.SM_SKELETON, Grobal2.SM_ALIVE, Grobal2.SM_ACTION_MIN .. Grobal2.SM_ACTION_MAX, Grobal2.SM_ACTION2_MIN .. Grobal2.SM_ACTION2_MAX, 3000 .. 3099
                     case Grobal2.SM_DEATH:
                     case Grobal2.SM_NOWDEATH:
                     case Grobal2.SM_SKELETON:
@@ -775,26 +735,14 @@ namespace RobotSvr
                     case 3000:
                         ReadyAction(m_ChrMsg);
                         break;
-                    case Grobal2.SM_SPACEMOVE_HIDE:
-                        meff = new TScrollHideEffect(250, 10, m_nCurrX, m_nCurrY, this);
-                        ClMain.g_PlayScene.m_EffectList.Add(meff);
-                                                break;
-                    case Grobal2.SM_SPACEMOVE_HIDE2:
-                        meff = new TScrollHideEffect(1590, 10, m_nCurrX, m_nCurrY, this);
-                        ClMain.g_PlayScene.m_EffectList.Add(meff);
-                                                break;
                     case Grobal2.SM_SPACEMOVE_SHOW:
-                        meff = new TCharEffect(260, 10, this);
-                        ClMain.g_PlayScene.m_EffectList.Add(meff);
                         m_ChrMsg.Ident = Grobal2.SM_TURN;
                         ReadyAction(m_ChrMsg);
-                                                break;
+                        break;
                     case Grobal2.SM_SPACEMOVE_SHOW2:
-                        meff = new TCharEffect(1600, 10, this);
-                        ClMain.g_PlayScene.m_EffectList.Add(meff);
                         m_ChrMsg.Ident = Grobal2.SM_TURN;
                         ReadyAction(m_ChrMsg);
-                                                break;
+                        break;
                 }
             }
         }
@@ -805,7 +753,8 @@ namespace RobotSvr
             TChrMsg Msg;
             bool fin;
             m_MsgList.__Lock();
-            try {
+            try
+            {
                 n = 0;
                 while (true)
                 {
@@ -815,24 +764,21 @@ namespace RobotSvr
                     }
                     Msg = ((TChrMsg)(m_MsgList[n]));
                     fin = false;
-                    switch(Msg.Ident)
+                    switch (Msg.Ident)
                     {
                         case Grobal2.SM_MAGICFIRE:
                             if (m_CurMagic.ServerMagicCode != 0)
                             {
                                 m_CurMagic.ServerMagicCode = 255;
                                 m_CurMagic.target = Msg.X;
-                                if (Msg.Y >= 0 && Msg.Y<= magiceff.Units.magiceff.MAXMAGICTYPE - 1)
+                                if (Msg.Y >= 0 && Msg.Y <= magiceff.Units.magiceff.MAXMAGICTYPE - 1)
                                 {
                                     m_CurMagic.EffectType = ((TMagicType)(Msg.Y));
                                 }
-                                // EffectType
                                 m_CurMagic.EffectNumber = Msg.Dir % 255;
-                                // Effect
                                 m_CurMagic.targx = Msg.Feature;
                                 m_CurMagic.targy = Msg.State;
                                 m_CurMagic.magfirelv = Msg.Saying;
-                                // Str_ToInt(Msg.saying, 0);
                                 m_CurMagic.Recusion = true;
                                 fin = true;
                             }
@@ -847,30 +793,24 @@ namespace RobotSvr
                     }
                     if (fin)
                     {
-                        //@ Unsupported function or procedure: 'Dispose'
                         Dispose(((TChrMsg)(m_MsgList[n])));
                         m_MsgList.RemoveAt(n);
                     }
                     else
                     {
-                        n ++;
+                        n++;
                     }
                 }
-            } finally {
+            }
+            finally
+            {
                 m_MsgList.UnLock();
             }
         }
 
         public bool IsIdle()
         {
-            bool result;
-            result = (m_nCurrentAction == 0) && (m_MsgList.Count == 0);
-            // then
-            // Result := True
-            // else
-            // Result := False;
-
-            return result;
+            return (m_nCurrentAction == 0) && (m_MsgList.Count == 0); ;
         }
 
         public bool ActionFinished()
@@ -892,7 +832,7 @@ namespace RobotSvr
             int result;
             if ((MShare.GetTickCount() - MShare.g_dwLatestSpellTick < MShare.g_dwMagicPKDelayTime))
             {
-                result =  -1;
+                result = -1;
             }
             else
             {
@@ -903,25 +843,21 @@ namespace RobotSvr
 
         public int CanRun()
         {
-            int result;
-            result = 1;
-            if (m_Abil.HP < Units.Actor.RUN_MINHEALTH)
+            int result = 1;
+            if (m_Abil.HP < Actor.RUN_MINHEALTH)
             {
-                result =  -1;
-            // else if (GetTickCount - LastStruckTime < 3 * 1000) or (GetTickCount - LatestSpellTime < MagicPKDelayTime) then
-            // Result := -2;
+                result = -1;
             }
             return result;
         }
 
         public bool Strucked()
         {
-            bool result;
-            int i;
-            result = false;
+            bool result = false;
             m_MsgList.__Lock();
-            try {
-                for (i = 0; i < m_MsgList.Count; i ++ )
+            try
+            {
+                for (var i = 0; i < m_MsgList.Count; i++)
                 {
                     if (((TChrMsg)(m_MsgList[i])).Ident == Grobal2.SM_STRUCK)
                     {
@@ -929,13 +865,14 @@ namespace RobotSvr
                         break;
                     }
                 }
-            } finally {
+            }
+            finally
+            {
                 m_MsgList.UnLock();
             }
             return result;
         }
 
-        // Shift(m_btDir, m_nMoveStep, 0, m_nEndFrame - m_nStartFrame + 1);
         // 阴影闪烁修复  直接替换函数
         public void Shift(int dir, int step, int cur, int max)
         {
@@ -953,7 +890,7 @@ namespace RobotSvr
             }
             m_nRx = m_nCurrX;
             m_nRy = m_nCurrY;
-            switch(dir)
+            switch (dir)
             {
                 case Grobal2.DR_UP:
                     // ss := Round((max-cur-1) / max) * step;
@@ -961,7 +898,7 @@ namespace RobotSvr
                     m_nRy = m_nCurrY + ss;
                     if (ss == step)
                     {
-                        funx =  -Math.Round(uny / max * cur);
+                        funx = -Math.Round(uny / max * cur);
                         if ((funx % 2) != 0)
                         {
                             funx = funx + 1;
@@ -998,7 +935,7 @@ namespace RobotSvr
                             funx = funx + 1;
                         }
                         m_nShiftX = funx;
-                        funy =  -Math.Round(uny / max * cur);
+                        funy = -Math.Round(uny / max * cur);
                         if ((funy % 2) != 0)
                         {
                             funy = funy + 1;
@@ -1007,7 +944,7 @@ namespace RobotSvr
                     }
                     else
                     {
-                        funx =  -Math.Round(unx / max * (max - cur));
+                        funx = -Math.Round(unx / max * (max - cur));
                         if ((funx % 2) != 0)
                         {
                             funx = funx + 1;
@@ -1030,7 +967,7 @@ namespace RobotSvr
                     }
                     else
                     {
-                        m_nShiftX =  -Math.Round(unx / max * (max - cur));
+                        m_nShiftX = -Math.Round(unx / max * (max - cur));
                     }
                     m_nShiftY = 0;
                     break;
@@ -1063,13 +1000,13 @@ namespace RobotSvr
                     }
                     else
                     {
-                        funx =  -Math.Round(unx / max * (max - cur));
+                        funx = -Math.Round(unx / max * (max - cur));
                         if ((funx % 2) != 0)
                         {
                             funx = funx + 1;
                         }
                         m_nShiftX = funx;
-                        funy =  -Math.Round(uny / max * (max - cur));
+                        funy = -Math.Round(uny / max * (max - cur));
                         if ((funy % 2) != 0)
                         {
                             funy = funy + 1;
@@ -1100,7 +1037,7 @@ namespace RobotSvr
                     }
                     else
                     {
-                        funy =  -Math.Round(uny / max * (max - cur));
+                        funy = -Math.Round(uny / max * (max - cur));
                         if ((funy % 2) != 0)
                         {
                             funy = funy + 1;
@@ -1122,7 +1059,7 @@ namespace RobotSvr
                     m_nRy = m_nCurrY - ss;
                     if (ss == step)
                     {
-                        funx =  -Math.Round(unx / max * cur);
+                        funx = -Math.Round(unx / max * cur);
                         if ((funx % 2) != 0)
                         {
                             funx = funx + 1;
@@ -1143,7 +1080,7 @@ namespace RobotSvr
                             funx = funx + 1;
                         }
                         m_nShiftX = funx;
-                        funy =  -Math.Round(uny / max * (max - cur));
+                        funy = -Math.Round(uny / max * (max - cur));
                         if ((funy % 2) != 0)
                         {
                             funy = funy + 1;
@@ -1156,7 +1093,7 @@ namespace RobotSvr
                     m_nRx = m_nCurrX + ss;
                     if (ss == step)
                     {
-                        m_nShiftX =  -Math.Round(unx / max * cur);
+                        m_nShiftX = -Math.Round(unx / max * cur);
                     }
                     else
                     {
@@ -1178,13 +1115,13 @@ namespace RobotSvr
                     m_nRy = m_nCurrY + ss;
                     if (ss == step)
                     {
-                        funx =  -Math.Round(unx / max * cur);
+                        funx = -Math.Round(unx / max * cur);
                         if ((funx % 2) != 0)
                         {
                             funx = funx + 1;
                         }
                         m_nShiftX = funx;
-                        funy =  -Math.Round(uny / max * cur);
+                        funy = -Math.Round(uny / max * cur);
                         if ((funy % 2) != 0)
                         {
                             funy = funy + 1;
@@ -1213,12 +1150,12 @@ namespace RobotSvr
         public virtual void FeatureChanged()
         {
             int haircount;
-            switch(m_btRace)
+            switch (m_btRace)
             {
                 case 0:
                     m_btHair = Grobal2.HAIRfeature(m_nFeature);
                     m_btDress = Grobal2.DRESSfeature(m_nFeature);
-                    if (m_btDress >= 24 && m_btDress<= 27)
+                    if (m_btDress >= 24 && m_btDress <= 27)
                     {
                         m_btDress = 18 + m_btSex;
                     }
@@ -1229,7 +1166,7 @@ namespace RobotSvr
                     m_btHorse = 0;
                     // m_btHorse mod 51;
                     m_btEffect = Grobal2.Effectfeature(m_nFeatureEx);
-                    m_nBodyOffset = Units.Actor.HUMANFRAME * m_btDress;
+                    m_nBodyOffset = Actor.HUMANFRAME * m_btDress;
                     if (m_btHair >= 10)
                     {
                         m_btHairEx = m_btHair / 10;
@@ -1241,18 +1178,18 @@ namespace RobotSvr
                     }
                     if (m_btHairEx > 0)
                     {
-                        haircount = WMFile.Units.WMFile.g_WHair2ImgImages.ImageCount / Units.Actor.HUMANFRAME / 2;
+                        haircount = WMFile.Units.WMFile.g_WHair2ImgImages.ImageCount / Actor.HUMANFRAME / 2;
                         if (m_btHairEx > haircount)
                         {
                             m_btHairEx = haircount;
                         }
-                        m_nHairOffsetEx = Units.Actor.HUMANFRAME * ((m_btHairEx - 1) * 2 + m_btSex);
+                        m_nHairOffsetEx = Actor.HUMANFRAME * ((m_btHairEx - 1) * 2 + m_btSex);
                     }
                     else
                     {
-                        m_nHairOffsetEx =  -1;
+                        m_nHairOffsetEx = -1;
                     }
-                    haircount = WMFile.Units.WMFile.g_WHairImgImages.ImageCount / Units.Actor.HUMANFRAME / 2;
+                    haircount = WMFile.Units.WMFile.g_WHairImgImages.ImageCount / Actor.HUMANFRAME / 2;
                     if (m_btHair > haircount - 1)
                     {
                         m_btHair = haircount - 1;
@@ -1260,13 +1197,13 @@ namespace RobotSvr
                     m_btHair = m_btHair * 2;
                     if (m_btHair > 1)
                     {
-                        m_nHairOffset = Units.Actor.HUMANFRAME * (m_btHair + m_btSex);
+                        m_nHairOffset = Actor.HUMANFRAME * (m_btHair + m_btSex);
                     }
                     else
                     {
-                        m_nHairOffset =  -1;
+                        m_nHairOffset = -1;
                     }
-                    m_nWeaponOffset = Units.Actor.HUMANFRAME * m_btWeapon;
+                    m_nWeaponOffset = Actor.HUMANFRAME * m_btWeapon;
                     if (m_btEffect != 0)
                     {
                         if (m_btEffect == 50)
@@ -1275,7 +1212,7 @@ namespace RobotSvr
                         }
                         else
                         {
-                            m_nHumWinOffset = (m_btEffect - 1) * Units.Actor.HUMANFRAME;
+                            m_nHumWinOffset = (m_btEffect - 1) * Actor.HUMANFRAME;
                         }
                     }
                     break;
@@ -1284,7 +1221,7 @@ namespace RobotSvr
                 default:
                     // npc
                     m_wAppearance = Grobal2.APPRfeature(m_nFeature);
-                    m_nBodyOffset = Units.Actor.GetOffset(m_wAppearance);
+                    m_nBodyOffset = Actor.GetOffset(m_wAppearance);
                     break;
             }
         }
@@ -1296,29 +1233,12 @@ namespace RobotSvr
             return result;
         }
 
-        public virtual void LoadSurface()
-        {
-            TWMBaseImages mimg;
-            mimg = MShare.GetMonImg(m_wAppearance);
-            if (mimg != null)
-            {
-                if (!m_boReverseFrame)
-                {
-                    m_BodySurface = mimg.GetCachedImage(Units.Actor.GetOffset(m_wAppearance) + m_nCurrentFrame, ref m_nPx, ref m_nPy);
-                }
-                else
-                {
-                    m_BodySurface = mimg.GetCachedImage(Units.Actor.GetOffset(m_wAppearance) + m_nEndFrame - (m_nCurrentFrame - m_nStartFrame), ref m_nPx, ref m_nPy);
-                }
-            }
-        }
-
         public int CharWidth()
         {
             int result;
             if (m_BodySurface != null)
             {
-                                result = m_BodySurface.Width;
+                result = m_BodySurface.Width;
             }
             else
             {
@@ -1332,7 +1252,7 @@ namespace RobotSvr
             int result;
             if (m_BodySurface != null)
             {
-                                result = m_BodySurface.Height;
+                result = m_BodySurface.Height;
             }
             else
             {
@@ -1348,138 +1268,13 @@ namespace RobotSvr
             result = false;
             if (m_BodySurface != null)
             {
-                                c = m_BodySurface.Pixels[dx, dy];
-                                                                                if ((c != 0) && ((m_BodySurface.Pixels[dx - 1, dy] != 0) && (m_BodySurface.Pixels[dx + 1, dy] != 0) && (m_BodySurface.Pixels[dx, dy - 1] != 0) && (m_BodySurface.Pixels[dx, dy + 1] != 0)))
+                c = m_BodySurface.Pixels[dx, dy];
+                if ((c != 0) && ((m_BodySurface.Pixels[dx - 1, dy] != 0) && (m_BodySurface.Pixels[dx + 1, dy] != 0) && (m_BodySurface.Pixels[dx, dy - 1] != 0) && (m_BodySurface.Pixels[dx, dy + 1] != 0)))
                 {
                     result = true;
                 }
             }
             return result;
-        }
-
-        // 人物显示颜色，中毒
-        public TColorEffect GetDrawEffectValue()
-        {
-            TColorEffect result;
-            TColorEffect ceff;
-            ceff = WIL.TColorEffect.ceNone;
-            if ((MShare.g_FocusCret == this) || (MShare.g_MagicTarget == this))
-            {
-                ceff = WIL.TColorEffect.ceBright;
-            }
-            if (m_nState != 0)
-            {
-                if (m_nState & 0x80000000 != 0)
-                {
-                    ceff = WIL.TColorEffect.ceGreen;
-                }
-                if (m_nState & 0x40000000 != 0)
-                {
-                    ceff = WIL.TColorEffect.ceRed;
-                }
-                if (m_nState & 0x20000000 != 0)
-                {
-                    ceff = WIL.TColorEffect.ceBlue;
-                }
-                if (m_nState & 0x10000000 != 0)
-                {
-                    ceff = WIL.TColorEffect.ceYellow;
-                }
-                if (m_nState & 0x08000000 != 0)
-                {
-                    ceff = WIL.TColorEffect.ceFuchsia;
-                }
-                if (m_nState & 0x04000000 != 0)
-                {
-                    ceff = ceGrayScale;
-                }
-            }
-            result = ceff;
-            return result;
-        }
-
-        public virtual void DrawChr(TDirectDrawSurface dsurface, int dx, int dy, bool blend, bool boFlag, bool DrawOnSale)
-        {
-            long dwTime;
-            int idx;
-            int ax;
-            int ay;
-            TDirectDrawSurface d;
-            TColorEffect ceff;
-            TWMBaseImages wimg;
-            d = null;
-            if (!(m_btDir >= 0 && m_btDir<= 7))
-            {
-                return;
-            }
-            dwTime = MShare.GetTickCount();
-                        if (dwTime - m_dwLoadSurfaceTime > g_dwLoadSurfaceTime)
-            {
-                m_dwLoadSurfaceTime = dwTime;
-                LoadSurface();
-            }
-            // if m_sUserName = '' then Exit;  //1015
-            if ((this != MShare.g_MySelf) && (this != MShare.g_MySelf.m_HeroObject) && (m_sUserName == "") && (MShare.GetTickCount() - m_dwSendQueryUserNameTime > 15 * 1000))
-            {
-                m_dwSendQueryUserNameTime = MShare.GetTickCount();
-               ClMain.frmMain.SendQueryUserName(m_nRecogId, m_nCurrX, m_nCurrY);
-            }
-            ceff = GetDrawEffectValue();
-            if (m_BodySurface != null)
-            {
-                DrawEffSurface(dsurface, m_BodySurface, dx + m_nPx + m_nShiftX, dy + m_nPy + m_nShiftY, blend, ceff);
-            }
-            if (m_boUseMagic && (m_CurMagic.EffectNumber > 0))
-            {
-                if (m_nCurEffFrame >= 0 && m_nCurEffFrame<= m_nSpellFrame - 1)
-                {
-                    magiceff.Units.magiceff.GetEffectBase(m_CurMagic.EffectNumber - 1, 0, ref wimg, ref idx);
-                    idx = idx + m_nCurEffFrame;
-                    if (wimg != null)
-                    {
-                        d = wimg.GetCachedImage(idx, ref ax, ref ay);
-                    }
-                    if (d != null)
-                    {
-                        cliUtil.Units.cliUtil.DrawBlend(dsurface, dx + ax + m_nShiftX, dy + ay + m_nShiftY, d, 1);
-                    }
-                }
-            }
-        }
-
-        public virtual void DrawEff(TDirectDrawSurface dsurface, int dx, int dy)
-        {
-        }
-
-        public void DrawFocus(TDirectDrawSurface dsurface)
-        {
-            // 魔法锁定
-            TDirectDrawSurface Tex;
-            int px;
-            int py;
-            int rx;
-            int ry;
-            int FlyX;
-            int FlyY;
-            if (MShare.GetTickCount() - m_dwFocusFrameTick > 100)
-            {
-                m_dwFocusFrameTick = MShare.GetTickCount();
-                m_nCurFocusFrame ++;
-                if (m_nCurFocusFrame >= 10)
-                {
-                    m_nCurFocusFrame = 0;
-                }
-            }
-            rx = m_nRx;
-            ry = m_nRy;
-           ClMain.g_PlayScene.ScreenXYfromMCXY(rx, ry, ref FlyX, ref FlyY);
-            FlyX = FlyX + m_nShiftX;
-            FlyY = FlyY + m_nShiftY;
-            Tex = WMFile.Units.WMFile.g_WMagic7Images2.GetCachedImage(860 + m_nCurFocusFrame, ref px, ref py);
-            if (Tex != null)
-            {
-                cliUtil.Units.cliUtil.DrawBlend(dsurface, FlyX + px - Grobal2.UNITX / 2, FlyY + py - Grobal2.UNITY / 2, Tex, 1);
-            }
         }
 
         public virtual int GetDefaultFrame(bool wmode)
@@ -1488,7 +1283,7 @@ namespace RobotSvr
             int cf;
             TMonsterAction pm;
             result = 0;
-            pm = Units.Actor.GetRaceByPM(m_btRace, m_wAppearance);
+            pm = Actor.GetRaceByPM(m_btRace, m_wAppearance);
             if (pm == null)
             {
                 return result;
@@ -1531,765 +1326,11 @@ namespace RobotSvr
             {
                 if ((MShare.GetTickCount() - m_dwWarModeTime > 4 * 1000))
                 {
-                    // and not BoNextTimeFireHit then
                     m_boWarMode = false;
                 }
             }
             m_nCurrentFrame = GetDefaultFrame(m_boWarMode);
             Shift(m_btDir, 0, 1, 1);
-        }
-
-        public virtual void SetSound()
-        {
-            int cx;
-            int cy;
-            int bidx;
-            int wunit;
-            int attackweapon;
-            TActor hiter;
-            if (m_btRace == 0)
-            {
-                if ((this == MShare.g_MySelf) && ((m_nCurrentAction == Grobal2.SM_WALK) || (m_nCurrentAction == Grobal2.SM_BACKSTEP) || (m_nCurrentAction == Grobal2.SM_RUN) || (m_nCurrentAction == Grobal2.SM_HORSERUN) || (m_nCurrentAction == Grobal2.SM_RUSH) || (m_nCurrentAction == Grobal2.SM_RUSHKUNG)))
-                {
-                    cx = MShare.g_MySelf.m_nCurrX -ClMain.Map.m_nBlockLeft;
-                    cy = MShare.g_MySelf.m_nCurrY -ClMain.Map.m_nBlockTop;
-                    cx = cx / 2 * 2;
-                    cy = cy / 2 * 2;
-                    bidx =ClMain.Map.m_MArr[cx, cy].wBkImg & 0x7FFF;
-                    wunit =ClMain.Map.m_MArr[cx, cy].btArea;
-                    bidx = wunit * 10000 + bidx - 1;
-                    switch(bidx)
-                    {
-                        // Modify the A .. B: 330 .. 349, 450 .. 454, 550 .. 554, 750 .. 754, 950 .. 954, 1250 .. 1254, 1400 .. 1424, 1455 .. 1474, 1500 .. 1524, 1550 .. 1574
-                        case 330:
-                        case 450:
-                        case 550:
-                        case 750:
-                        case 950:
-                        case 1250:
-                        case 1400:
-                        case 1455:
-                        case 1500:
-                        case 1550:
-                            m_nFootStepSound = SoundUtil.s_walk_lawn_l;
-                            break;
-                        // Modify the A .. B: 250 .. 254, 1005 .. 1009, 1050 .. 1054, 1060 .. 1064, 1450 .. 1454, 1650 .. 1654
-                        case 250:
-                        case 1005:
-                        case 1050:
-                        case 1060:
-                        case 1450:
-                        case 1650:
-                            m_nFootStepSound = SoundUtil.s_walk_rough_l;
-                            break;
-                        // Modify the A .. B: 605 .. 609, 650 .. 654, 660 .. 664, 2000 .. 2049, 3025 .. 3049, 2400 .. 2424, 4625 .. 4649, 4675 .. 4678
-                        case 605:
-                        case 650:
-                        case 660:
-                        case 2000:
-                        case 3025:
-                        case 2400:
-                        case 4625:
-                        case 4675:
-                            m_nFootStepSound = SoundUtil.s_walk_stone_l;
-                            break;
-                        // Modify the A .. B: 1825 .. 1924, 2150 .. 2174, 3075 .. 3099, 3325 .. 3349, 3375 .. 3399
-                        case 1825:
-                        case 2150:
-                        case 3075:
-                        case 3325:
-                        case 3375:
-                            m_nFootStepSound = SoundUtil.s_walk_cave_l;
-                            break;
-                        case 3230:
-                        case 3231:
-                        case 3246:
-                        case 3277:
-                            m_nFootStepSound = SoundUtil.s_walk_wood_l;
-                            break;
-                        // Modify the A .. B: 3780 .. 3799
-                        case 3780:
-                            m_nFootStepSound = SoundUtil.s_walk_wood_l;
-                            break;
-                        // Modify the A .. B: 3825 .. 4434
-                        case 3825:
-                            if ((bidx - 3825) % 25 == 0)
-                            {
-                                m_nFootStepSound = SoundUtil.s_walk_wood_l;
-                            }
-                            else
-                            {
-                                m_nFootStepSound = SoundUtil.s_walk_ground_l;
-                            }
-                            break;
-                        // Modify the A .. B: 2075 .. 2099, 2125 .. 2149
-                        case 2075:
-                        case 2125:
-                            m_nFootStepSound = SoundUtil.s_walk_room_l;
-                            break;
-                        // Modify the A .. B: 1800 .. 1824
-                        case 1800:
-                            m_nFootStepSound = SoundUtil.s_walk_water_l;
-                            break;
-                        default:
-                            m_nFootStepSound = SoundUtil.s_walk_ground_l;
-                            break;
-                    }
-                    if ((bidx >= 825) && (bidx <= 1349))
-                    {
-                        if (((bidx - 825) / 25) % 2 == 0)
-                        {
-                            m_nFootStepSound = SoundUtil.s_walk_stone_l;
-                        }
-                    }
-                    if ((bidx >= 1375) && (bidx <= 1799))
-                    {
-                        if (((bidx - 1375) / 25) % 2 == 0)
-                        {
-                            m_nFootStepSound = SoundUtil.s_walk_cave_l;
-                        }
-                    }
-                    switch(bidx)
-                    {
-                        case 1385:
-                        case 1386:
-                        case 1391:
-                        case 1392:
-                            m_nFootStepSound = SoundUtil.s_walk_wood_l;
-                            break;
-                    }
-                    bidx =ClMain.Map.m_MArr[cx, cy].wMidImg & 0x7FFF;
-                    bidx = bidx - 1;
-                    switch(bidx)
-                    {
-                        // Modify the A .. B: 0 .. 115
-                        case 0:
-                            m_nFootStepSound = SoundUtil.s_walk_ground_l;
-                            break;
-                        // Modify the A .. B: 120 .. 124
-                        case 120:
-                            m_nFootStepSound = SoundUtil.s_walk_lawn_l;
-                            break;
-                    }
-                    bidx =ClMain.Map.m_MArr[cx, cy].wFrImg & 0x7FFF;
-                    bidx = bidx - 1;
-                    switch(bidx)
-                    {
-                        // Modify the A .. B: 221 .. 289, 583 .. 658, 1183 .. 1206, 7163 .. 7295, 7404 .. 7414
-                        case 221:
-                        case 583:
-                        case 1183:
-                        case 7163:
-                        case 7404:
-                            m_nFootStepSound = SoundUtil.s_walk_stone_l;
-                            break;
-                        // 3319..3345, 3376..3433,
-                        // Modify the A .. B: 3125 .. 3267, 3757 .. 3948, 6030 .. 6999
-                        case 3125:
-                        case 3757:
-                        case 6030:
-                            m_nFootStepSound = SoundUtil.s_walk_wood_l;
-                            break;
-                        // Modify the A .. B: 3316 .. 3589
-                        case 3316:
-                            m_nFootStepSound = SoundUtil.s_walk_room_l;
-                            break;
-                    }
-                    if ((m_nCurrentAction == Grobal2.SM_RUN) || (m_nCurrentAction == Grobal2.SM_HORSERUN))
-                    {
-                        m_nFootStepSound = m_nFootStepSound + 2;
-                    }
-                }
-                if (m_btSex == 0)
-                {
-                    m_nScreamSound = SoundUtil.s_man_struck;
-                    m_nDieSound = SoundUtil.s_man_die;
-                }
-                else
-                {
-                    m_nScreamSound = SoundUtil.s_wom_struck;
-                    m_nDieSound = SoundUtil.s_wom_die;
-                }
-                switch(m_nCurrentAction)
-                {
-                    case Grobal2.SM_THROW:
-                    case Grobal2.SM_HIT:
-                    case Grobal2.SM_HIT + 1:
-                    case Grobal2.SM_HIT + 2:
-                    case Grobal2.SM_POWERHIT:
-                    case Grobal2.SM_LONGHIT:
-                    case Grobal2.SM_HERO_LONGHIT:
-                    case Grobal2.SM_HERO_LONGHIT2:
-                    case Grobal2.SM_SQUHIT:
-                    case Grobal2.SM_CRSHIT:
-                    case Grobal2.SM_TWNHIT:
-                    case Grobal2.SM_WIDEHIT:
-                    case Grobal2.SM_FIREHIT:
-                    case Grobal2.SM_SMITEHIT:
-                    case Grobal2.SM_PURSUEHIT:
-                    case Grobal2.SM_SMITELONGHIT:
-                    case Grobal2.SM_SMITELONGHIT2:
-                    case Grobal2.SM_SMITELONGHIT3:
-                    case Grobal2.SM_SMITEWIDEHIT:
-                    case Grobal2.SM_SMITEWIDEHIT2:
-                        switch((m_btWeapon / 2))
-                        {
-                            case 6:
-                            case 20:
-                                m_nWeaponSound = SoundUtil.s_hit_short;
-                                break;
-                            case 1:
-                            case 27:
-                            case 28:
-                            case 33:
-                                m_nWeaponSound = SoundUtil.s_hit_wooden;
-                                break;
-                            case 2:
-                            case 13:
-                            case 9:
-                            case 5:
-                            case 14:
-                            case 22:
-                            case 25:
-                            case 30:
-                            case 35:
-                            case 36:
-                            case 37:
-                                m_nWeaponSound = SoundUtil.s_hit_sword;
-                                break;
-                            case 4:
-                            case 17:
-                            case 10:
-                            case 15:
-                            case 16:
-                            case 23:
-                            case 26:
-                            case 29:
-                            case 31:
-                            case 34:
-                                m_nWeaponSound = SoundUtil.s_hit_do;
-                                break;
-                            case 3:
-                            case 7:
-                            case 11:
-                                m_nWeaponSound = SoundUtil.s_hit_axe;
-                                break;
-                            case 24:
-                                m_nWeaponSound = SoundUtil.s_hit_club;
-                                break;
-                            case 8:
-                            case 12:
-                            case 18:
-                            case 21:
-                            case 32:
-                                m_nWeaponSound = SoundUtil.s_hit_long;
-                                break;
-                            default:
-                                m_nWeaponSound = SoundUtil.s_hit_fist;
-                                break;
-                        }
-                        break;
-                    case Grobal2.SM_WWJATTACK:
-                        m_nWeaponSound = 122;
-                        break;
-                    case Grobal2.SM_WSJATTACK:
-                        m_nWeaponSound = 123;
-                        break;
-                    case Grobal2.SM_WTJATTACK:
-                        m_nWeaponSound = 124;
-                        break;
-                    case Grobal2.SM_STRUCK:
-                        if (m_nMagicStruckSound >= 1)
-                        {
-                        }
-                        else
-                        {
-                            hiter =ClMain.g_PlayScene.FindActor(m_nHiterCode);
-                            if (hiter != null)
-                            {
-                                attackweapon = hiter.m_btWeapon / 2;
-                                if (hiter.m_btRace == 0)
-                                {
-                                    switch((m_btDress / 2))
-                                    {
-                                        case 3:
-                                            switch(attackweapon)
-                                            {
-                                                case 6:
-                                                    m_nStruckSound = SoundUtil.s_struck_armor_sword;
-                                                    break;
-                                                case 1:
-                                                case 2:
-                                                case 4:
-                                                case 5:
-                                                case 9:
-                                                case 10:
-                                                case 13:
-                                                case 14:
-                                                case 15:
-                                                case 16:
-                                                case 17:
-                                                    m_nStruckSound = SoundUtil.s_struck_armor_sword;
-                                                    break;
-                                                case 3:
-                                                case 7:
-                                                case 11:
-                                                    m_nStruckSound = SoundUtil.s_struck_armor_axe;
-                                                    break;
-                                                case 8:
-                                                case 12:
-                                                case 18:
-                                                    m_nStruckSound = SoundUtil.s_struck_armor_longstick;
-                                                    break;
-                                                default:
-                                                    m_nStruckSound = SoundUtil.s_struck_armor_fist;
-                                                    break;
-                                            }
-                                            break;
-                                        default:
-                                            switch(attackweapon)
-                                            {
-                                                case 6:
-                                                    m_nStruckSound = SoundUtil.s_struck_body_sword;
-                                                    break;
-                                                case 1:
-                                                case 2:
-                                                case 4:
-                                                case 5:
-                                                case 9:
-                                                case 10:
-                                                case 13:
-                                                case 14:
-                                                case 15:
-                                                case 16:
-                                                case 17:
-                                                    m_nStruckSound = SoundUtil.s_struck_body_sword;
-                                                    break;
-                                                case 3:
-                                                case 7:
-                                                case 11:
-                                                    m_nStruckSound = SoundUtil.s_struck_body_axe;
-                                                    break;
-                                                case 8:
-                                                case 12:
-                                                case 18:
-                                                    m_nStruckSound = SoundUtil.s_struck_body_longstick;
-                                                    break;
-                                                default:
-                                                    m_nStruckSound = SoundUtil.s_struck_body_fist;
-                                                    break;
-                                            }
-                                            break;
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                }
-                if (m_boUseMagic && (m_CurMagic.MagicSerial > 0))
-                {
-                    m_nMagicStartSound = 10000 + m_CurMagic.MagicSerial * 10;
-                    m_nMagicFireSound = m_nMagicStartSound + 1;
-                    m_nMagicExplosionSound = m_nMagicStartSound + 2;
-                }
-            }
-            else
-            {
-                if (m_nCurrentAction == Grobal2.SM_STRUCK)
-                {
-                    if (m_nMagicStruckSound >= 1)
-                    {
-                    // strucksound := s_struck_magic;
-                    }
-                    else
-                    {
-                        hiter =ClMain.g_PlayScene.FindActor(m_nHiterCode);
-                        if (hiter != null)
-                        {
-                            attackweapon = hiter.m_btWeapon / 2;
-                            switch(attackweapon)
-                            {
-                                case 6:
-                                    m_nStruckSound = SoundUtil.s_struck_body_sword;
-                                    break;
-                                case 1:
-                                case 2:
-                                case 4:
-                                case 5:
-                                case 9:
-                                case 10:
-                                case 13:
-                                case 14:
-                                case 15:
-                                case 16:
-                                case 17:
-                                    m_nStruckSound = SoundUtil.s_struck_body_sword;
-                                    break;
-                                case 3:
-                                case 11:
-                                    m_nStruckSound = SoundUtil.s_struck_body_axe;
-                                    break;
-                                case 8:
-                                case 12:
-                                case 18:
-                                    m_nStruckSound = SoundUtil.s_struck_body_longstick;
-                                    break;
-                                default:
-                                    m_nStruckSound = SoundUtil.s_struck_body_fist;
-                                    break;
-                            }
-                        }
-                    }
-                }
-                if (m_btRace == 50)
-                {
-                }
-                else
-                {
-                    if ((m_wAppearance >= 700) && (m_wAppearance <= 702))
-                    {
-                        m_nAppearSound = 200 + 37 * 10;
-                        m_nNormalSound = 200 + 37 * 10 + 1;
-                        m_nAttackSound = 200 + 37 * 10 + 2;
-                        m_nWeaponSound = 200 + 37 * 10 + 3;
-                        m_nScreamSound = 200 + 37 * 10 + 4;
-                        m_nDieSound = 200 + 37 * 10 + 5;
-                        m_nDie2Sound = 200 + 37 * 10 + 6;
-                    }
-                    else if ((m_wAppearance == 703) || (m_wAppearance == 705) || (m_wAppearance == 707))
-                    {
-                        m_nAppearSound = 200 + 170 * 10;
-                        m_nNormalSound = 200 + 170 * 10 + 1;
-                        m_nAttackSound = 200 + 170 * 10 + 2;
-                        m_nWeaponSound = 200 + 170 * 10 + 3;
-                        m_nScreamSound = 200 + 170 * 10 + 4;
-                        m_nDieSound = 200 + 170 * 10 + 5;
-                        m_nDie2Sound = 200 + 170 * 10 + 6;
-                    }
-                    else if ((m_wAppearance == 704) || (m_wAppearance == 706) || (m_wAppearance == 708))
-                    {
-                        m_nAppearSound = 200 + 171 * 10;
-                        m_nNormalSound = 200 + 171 * 10 + 1;
-                        m_nAttackSound = 200 + 171 * 10 + 2;
-                        m_nWeaponSound = 200 + 171 * 10 + 3;
-                        m_nScreamSound = 200 + 171 * 10 + 4;
-                        m_nDieSound = 200 + 171 * 10 + 5;
-                        m_nDie2Sound = 200 + 171 * 10 + 6;
-                    }
-                    else
-                    {
-                        m_nAppearSound = 200 + m_wAppearance * 10;
-                        m_nNormalSound = 200 + m_wAppearance * 10 + 1;
-                        m_nAttackSound = 200 + m_wAppearance * 10 + 2;
-                        m_nWeaponSound = 200 + m_wAppearance * 10 + 3;
-                        m_nScreamSound = 200 + m_wAppearance * 10 + 4;
-                        m_nDieSound = 200 + m_wAppearance * 10 + 5;
-                        m_nDie2Sound = 200 + m_wAppearance * 10 + 6;
-                    }
-                }
-            }
-            if (m_nCurrentAction == Grobal2.SM_STRUCK)
-            {
-                hiter =ClMain.g_PlayScene.FindActor(m_nHiterCode);
-                if (hiter != null)
-                {
-                    attackweapon = hiter.m_btWeapon / 2;
-                    if (hiter.m_btRace == 0)
-                    {
-                        switch((attackweapon / 2))
-                        {
-                            case 6:
-                            case 20:
-                                m_nStruckWeaponSound = SoundUtil.s_struck_short;
-                                break;
-                            case 1:
-                                m_nStruckWeaponSound = SoundUtil.s_struck_wooden;
-                                break;
-                            case 2:
-                            case 13:
-                            case 9:
-                            case 5:
-                            case 14:
-                            case 22:
-                                m_nStruckWeaponSound = SoundUtil.s_struck_sword;
-                                break;
-                            case 4:
-                            case 17:
-                            case 10:
-                            case 15:
-                            case 16:
-                            case 23:
-                                m_nStruckWeaponSound = SoundUtil.s_struck_do;
-                                break;
-                            case 3:
-                            case 7:
-                            case 11:
-                                m_nStruckWeaponSound = SoundUtil.s_struck_axe;
-                                break;
-                            case 24:
-                                m_nStruckWeaponSound = SoundUtil.s_struck_club;
-                                break;
-                            case 8:
-                            case 12:
-                            case 18:
-                            case 21:
-                                m_nStruckWeaponSound = SoundUtil.s_struck_wooden;
-                                break;
-                        // else struckweaponsound := s_struck_fist;
-                        }
-                    }
-                }
-            }
-        }
-
-        public virtual void RunActSound(int frame)
-        {
-            if (m_boRunSound)
-            {
-                if (m_btRace == 0)
-                {
-                    switch (m_nCurrentAction)
-                    {
-                        case Grobal2.SM_THROW:
-                        case Grobal2.SM_HIT:
-                        case Grobal2.SM_HIT + 1:
-                        case Grobal2.SM_HIT + 2:
-                            if (frame == 2)
-                            {
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_POWERHIT:
-                            if (frame == 2)
-                            {
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_LONGHIT:
-                            if (frame == 2)
-                            {
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_HERO_LONGHIT:
-                        case Grobal2.SM_HERO_LONGHIT2:
-                            if (frame == 2)
-                            {
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_SQUHIT:
-                            if (frame == 2)
-                            {
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_WIDEHIT:
-                            if (frame == 2)
-                            {
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_FIREHIT:
-                            if (frame == 2)
-                            {
-                                if (m_CurMagic.magfirelv > MShare.MAXMAGICLV)
-                                {
-                                }
-                                else
-                                {
-                                }
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_PURSUEHIT:
-                            if (frame == 2)
-                            {
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_SMITEHIT:
-                            if (frame == 2)
-                            {
-                                if (m_btSex == 0)
-                                {
-                                }
-                                else
-                                {
-                                }
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_SMITELONGHIT:
-                            if (m_boSmiteLongHit == 1)
-                            {
-                                if (frame == 2)
-                                {
-                                    if (m_btSex == 0)
-                                    {
-                                    }
-                                    else
-                                    {
-                                    }
-                                    m_boRunSound = false;
-                                }
-                            }
-                            break;
-                        case Grobal2.SM_SMITELONGHIT3:
-                            if (frame == 2)
-                            {
-                                if (m_btSex == 0)
-                                {
-                                }
-                                else
-                                {
-                                }
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_SMITELONGHIT2:
-                        case Grobal2.SM_SMITEWIDEHIT2:
-                            if (frame == 2)
-                            {
-                                if (m_btSex == 0)
-                                {
-                                }
-                                else
-                                {
-                                }
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_SMITEWIDEHIT:
-                            if (frame == 2)
-                            {
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_RUSHEX:
-                            if (frame == 1)
-                            {
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_CRSHIT:
-                            if (frame == 2)
-                            {
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_TWNHIT:
-                            if (frame == 1)
-                            {
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_WWJATTACK:
-                            if (frame == 2)
-                            {
-                            }
-                            if (frame > 4)
-                            {
-                                m_boRunSound = false;
-                            }
-                            break;
-                        case Grobal2.SM_WSJATTACK:
-                            if (frame == 2)
-                            {
-                            }
-                            break;
-                        case Grobal2.SM_WTJATTACK:
-                            if (frame == 2)
-                            {
-                            }
-                            break;
-                        case Grobal2.SM_SPELL:
-                            // if self = g_myself then
-                            switch (m_CurMagic.EffectNumber)
-                            {
-                                case 61:
-                                    // 劈星斩
-                                    // 10
-                                    if (frame > 2)
-                                    {
-                                        m_boRunSound = false;
-                                    }
-                                    break;
-                                case 62:
-                                    // 雷霆一击
-                                    if (frame > 2)
-                                    {
-                                        m_boRunSound = false;
-                                    }
-                                    break;
-                                case 63:
-                                    // 噬魂沼泽
-                                    if (frame > 2)
-                                    {
-                                        m_boRunSound = false;
-                                    }
-                                    break;
-                                case 64:
-                                    // 末日审判
-                                    if (frame > 2)
-                                    {
-                                        m_boRunSound = false;
-                                    }
-                                    break;
-                                case 65:
-                                    // 火龙气焰
-                                    if (frame > 2)
-                                    {
-                                        m_boRunSound = false;
-                                    }
-                                    break;
-                            }
-                            break;
-                    }
-                }
-                else
-                {
-                    if (m_btRace == 50)
-                    {
-                    }
-                    else
-                    {
-                        if ((m_nCurrentAction == Grobal2.SM_WALK) || (m_nCurrentAction == Grobal2.SM_TURN))
-                        {
-                            if ((frame == 1) && ((new System.Random(8)).Next() == 1))
-                            {
-                                m_boRunSound = false;
-                            }
-                        }
-                        else if (m_nCurrentAction == Grobal2.SM_HIT)
-                        {
-                            if ((frame == 3) && (m_nAttackSound >= 0))
-                            {
-                                m_boRunSound = false;
-                            }
-                        }
-                        else if (m_nCurrentAction == Grobal2.SM_POWERHIT)
-                        {
-                            if (frame == 2)
-                            {
-                                m_boRunSound = false;
-                            }
-                        }
-                        switch (m_wAppearance)
-                        {
-                            case 80:
-                                if (m_nCurrentAction == Grobal2.SM_NOWDEATH)
-                                {
-                                    if ((frame == 2))
-                                    {
-                                        m_boRunSound = false;
-                                    }
-                                }
-                                break;
-                        }
-                    }
-                }
-            }
         }
 
         public virtual void RunFrameAction(int frame)
@@ -2339,7 +1380,6 @@ namespace RobotSvr
                     m_boMsgMuch = true;
                 }
             }
-            RunActSound(m_nCurrentFrame - m_nStartFrame);
             RunFrameAction(m_nCurrentFrame - m_nStartFrame);
             prv = m_nCurrentFrame;
             if (m_nCurrentAction != 0)
@@ -2350,12 +1390,10 @@ namespace RobotSvr
                 }
                 if ((this != MShare.g_MySelf) && m_boUseMagic)
                 {
-                    // 1.4
                     dwFrameTimetime = Math.Round(m_dwFrameTime / 1.8);
                 }
                 else if (m_boMsgMuch)
                 {
-                    // Round(m_dwFrameTime / 1.6)
                     dwFrameTimetime = Math.Round(m_dwFrameTime * 2 / 3);
                 }
                 else
@@ -2372,8 +1410,8 @@ namespace RobotSvr
                             {
                                 if ((m_CurMagic.ServerMagicCode >= 0) || (Run_MagicTimeOut()))
                                 {
-                                    m_nCurrentFrame ++;
-                                    m_nCurEffFrame ++;
+                                    m_nCurrentFrame++;
+                                    m_nCurEffFrame++;
                                     m_dwStartTime = MShare.GetTickCount();
                                 }
                             }
@@ -2381,15 +1419,15 @@ namespace RobotSvr
                             {
                                 if (m_nCurrentFrame < m_nEndFrame - 1)
                                 {
-                                    m_nCurrentFrame ++;
+                                    m_nCurrentFrame++;
                                 }
-                                m_nCurEffFrame ++;
+                                m_nCurEffFrame++;
                                 m_dwStartTime = MShare.GetTickCount();
                             }
                         }
                         else
                         {
-                            m_nCurrentFrame ++;
+                            m_nCurrentFrame++;
                             m_dwStartTime = MShare.GetTickCount();
                         }
                     }
@@ -2431,21 +1469,15 @@ namespace RobotSvr
                         {
                             if (m_CurMagic.ServerMagicCode > 0)
                             {
-                               ClMain.g_PlayScene.NewMagic(this, m_CurMagic.ServerMagicCode, m_CurMagic.EffectNumber, m_nCurrX, m_nCurrY, m_CurMagic.targx, m_CurMagic.targy, m_CurMagic.target, m_CurMagic.EffectType, m_CurMagic.Recusion, m_CurMagic.anitime, ref boFly, m_CurMagic.magfirelv);
-                                if (boFly)
-                                {
-                                                                    }
-                                else
-                                {
-                                                                    }
+                                ClMain.g_PlayScene.NewMagic(this, m_CurMagic.ServerMagicCode, m_CurMagic.EffectNumber, m_nCurrX, m_nCurrY, m_CurMagic.targx, m_CurMagic.targy, m_CurMagic.target, m_CurMagic.EffectType, m_CurMagic.Recusion, m_CurMagic.anitime, ref boFly, m_CurMagic.magfirelv);
                             }
                             m_CurMagic.ServerMagicCode = 0;
                         }
                     }
                 }
-                if (new ArrayList(new int[] {0, 1, 43}).Contains(m_wAppearance))
+                if (new ArrayList(new int[] { 0, 1, 43 }).Contains(m_wAppearance))
                 {
-                    m_nCurrentDefFrame =  -10;
+                    m_nCurrentDefFrame = -10;
                 }
                 else
                 {
@@ -2458,7 +1490,7 @@ namespace RobotSvr
                 if (MShare.GetTickCount() - m_dwDefFrameTime > 500)
                 {
                     m_dwDefFrameTime = MShare.GetTickCount();
-                    m_nCurrentDefFrame ++;
+                    m_nCurrentDefFrame++;
                     if (m_nCurrentDefFrame >= m_nDefFrameCount)
                     {
                         m_nCurrentDefFrame = 0;
@@ -2476,7 +1508,6 @@ namespace RobotSvr
         public bool Move()
         {
             bool result;
-            // step: Integer
             int prv;
             int curstep;
             int maxstep;
@@ -2496,35 +1527,16 @@ namespace RobotSvr
             if (!fastmove && !normmove)
             {
                 m_boMoveSlow = false;
-                // g_boMoveSlow := False;
                 m_boAttackSlow = false;
-                // g_boAttackSlow := False;
                 m_nMoveSlowLevel = 0;
-                // g_nMoveSlowLevel := 0;
                 if (m_nState & 0x10000000 != 0)
                 {
                     m_nMoveSlowLevel = 1;
                     m_boMoveSlow = true;
                 }
-                if ((m_btRace == 0) && (this == MShare.g_MySelf))
-                {
-                // if m_Abil.Weight > m_Abil.MaxWeight then begin
-                // m_nMoveSlowLevel := m_Abil.Weight div m_Abil.MaxWeight;
-                // m_boMoveSlow := True;
-                // end;
-                // 
-                // if m_Abil.WearWeight > m_Abil.MaxWearWeight then begin
-                // m_nMoveSlowLevel := m_nMoveSlowLevel + m_Abil.WearWeight div m_Abil.MaxWearWeight;
-                // m_boMoveSlow := True;
-                // end;
-                // 
-                // if m_Abil.HandWeight > m_Abil.MaxHandWeight then begin
-                // m_boAttackSlow := True;
-                // end;
-                }
                 if (m_boMoveSlow && (m_nSkipTick < m_nMoveSlowLevel))
                 {
-                    m_nSkipTick ++;
+                    m_nSkipTick++;
                     return result;
                 }
                 else
@@ -2533,14 +1545,14 @@ namespace RobotSvr
                 }
                 if ((m_btRace == 0) && (this == MShare.g_MySelf))
                 {
-                    if ((new ArrayList(new int[] {5, 9, 11, 13}).Contains(m_nCurrentAction)))
+                    if ((new ArrayList(new int[] { 5, 9, 11, 13 }).Contains(m_nCurrentAction)))
                     {
-                        switch((m_nCurrentFrame - m_nStartFrame))
+                        switch ((m_nCurrentFrame - m_nStartFrame))
                         {
                             case 1:
-                                                                break;
+                                break;
                             case 4:
-                                                                break;
+                                break;
                         }
                     }
                 }
@@ -2556,12 +1568,12 @@ namespace RobotSvr
                 }
                 if (m_nCurrentFrame < m_nEndFrame)
                 {
-                    m_nCurrentFrame ++;
+                    m_nCurrentFrame++;
                     if (m_boMsgMuch && !normmove)
                     {
                         if (m_nCurrentFrame < m_nEndFrame)
                         {
-                            m_nCurrentFrame ++;
+                            m_nCurrentFrame++;
                         }
                     }
                     curstep = m_nCurrentFrame - m_nStartFrame + 1;
@@ -2619,31 +1631,29 @@ namespace RobotSvr
                 }
                 if (m_nCurrentFrame < m_nEndFrame)
                 {
-                    m_nCurrentFrame ++;
+                    m_nCurrentFrame++;
                     if (m_boMsgMuch && !normmove)
                     {
                         if (m_nCurrentFrame < m_nEndFrame)
                         {
-                            m_nCurrentFrame ++;
+                            m_nCurrentFrame++;
                         }
                     }
                     curstep = m_nCurrentFrame - m_nStartFrame + 1;
                     maxstep = m_nEndFrame - m_nStartFrame + 1;
                     Shift(m_btDir, m_nMoveStep, curstep, maxstep);
                     ReadyNextAction();
-                   ClMain.frmMain.LastHitTick = MShare.GetTickCount();
+                    ClMain.frmMain.LastHitTick = MShare.GetTickCount();
                 }
                 else if (m_nCurrentFrame >= m_nEndFrame)
                 {
                     if (this == MShare.g_MySelf)
                     {
-                        // if frmMain.ServerAcceptNextAction then begin
                         ActionEnded();
                         m_nCurrentAction = 0;
                         m_boLockEndFrame = true;
                         m_dwSmoothMoveTime = MShare.GetTickCount() - 200;
                         m_boUseCboLib = false;
-                    // end;
                     }
                     else
                     {
@@ -2653,7 +1663,7 @@ namespace RobotSvr
                         m_dwSmoothMoveTime = MShare.GetTickCount() - 200;
                         m_boUseCboLib = false;
                     }
-                   ClMain.frmMain.LastHitTick = 0;
+                    ClMain.frmMain.LastHitTick = 0;
                 }
                 if (this == MShare.g_MySelf)
                 {
@@ -2709,7 +1719,6 @@ namespace RobotSvr
             return result;
         }
 
-        // step: Integer
         public void MoveFail()
         {
             m_nCurrentAction = 0;
@@ -2749,7 +1758,7 @@ namespace RobotSvr
             m_nOldx = X;
             m_nOldy = Y;
             m_nCurrentAction = 0;
-            m_nCurrentFrame =  -1;
+            m_nCurrentFrame = -1;
             CleanUserMsgs();
         }
 
@@ -2762,82 +1771,13 @@ namespace RobotSvr
 
         public void GetMoveHPShow(int nCount)
         {
-            
+
         }
 
         public void Say(string Str)
         {
-            const int MAXWIDTH = 200;
-            int i;
-            int Len;
-            int aline;
-            int n;
-            string temp;
-            bool loop;
-            m_dwSayTime = MShare.GetTickCount();
-            m_nSayLineCount = 0;
-            n = 0;
-            loop = true;
-            while (loop)
-            {
-                temp = "";
-                i = 1;
-                Len = Str.Length;
-                while (true)
-                {
-                    if (i > Len)
-                    {
-                        loop = false;
-                        break;
-                    }
-                    if (((byte)Str[i]) >= 128)
-                    {
-                        temp = temp + Str[i];
-                        i ++;
-                        if (i <= Len)
-                        {
-                            temp = temp + Str[i];
-                        }
-                        else
-                        {
-                            loop = false;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        temp = temp + Str[i];
-                    }
-                    aline = HGECanvas.Units.HGECanvas.g_DXCanvas.TextWidth(temp);
-                    if (aline > MAXWIDTH)
-                    {
-                        m_SayingArr[n] = temp;
-                        m_SayWidthsArr[n] = aline;
-                        m_nSayLineCount ++;
-                        n ++;
-                        if (n >= Units.Actor.MAXSAY)
-                        {
-                            loop = false;
-                            break;
-                        }
-                        Str = Str.Substring(i + 1 - 1 ,Len - i);
-                        temp = "";
-                        break;
-                    }
-                    i ++;
-                }
-                if (temp != "")
-                {
-                    if (n < MAXWIDTH)
-                    {
-                        m_SayingArr[n] = temp;
-                        m_SayWidthsArr[n] = HGECanvas.Units.HGECanvas.g_DXCanvas.TextWidth(temp);
-                        m_nSayLineCount ++;
-                    }
-                }
-            }
-        }
 
-    } // end TActor
+        }
+    }
 }
 

@@ -1230,7 +1230,7 @@ DDDD:
                         }
                     }
                     n = 0;
-                    if ((MShare.g_UseItems[Grobal2.U_ARMRINGL].s.StdMode == 25) && (MShare.g_UseItems[Grobal2.U_ARMRINGL].s.Shape != 6) && (MShare.g_UseItems[Grobal2.U_ARMRINGL].s.Name.IndexOf("药") > 0))
+                    if ((MShare.g_UseItems[Grobal2.U_ARMRINGL].Item.StdMode == 25) && (MShare.g_UseItems[Grobal2.U_ARMRINGL].Item.Shape != 6) && (MShare.g_UseItems[Grobal2.U_ARMRINGL].Item.Name.IndexOf("药") > 0))
                     {
                         n ++;
                     }
@@ -1254,7 +1254,7 @@ DDDD:
                         }
                     }
                     m = 0;
-                    if ((MShare.g_UseItems[Grobal2.U_ARMRINGL].s.StdMode == 25) && (MShare.g_UseItems[Grobal2.U_ARMRINGL].s.Shape != 6) && (MShare.g_UseItems[Grobal2.U_ARMRINGL].s.Name.IndexOf("符") > 0))
+                    if ((MShare.g_UseItems[Grobal2.U_ARMRINGL].Item.StdMode == 25) && (MShare.g_UseItems[Grobal2.U_ARMRINGL].Item.Shape != 6) && (MShare.g_UseItems[Grobal2.U_ARMRINGL].Item.Name.IndexOf("符") > 0))
                     {
                         m ++;
                     }

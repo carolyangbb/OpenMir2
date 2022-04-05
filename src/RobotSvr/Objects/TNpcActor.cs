@@ -276,7 +276,7 @@ namespace RobotSvr
             int cf;
             TMonsterAction pm;
             result = 0;
-            pm = Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return result;

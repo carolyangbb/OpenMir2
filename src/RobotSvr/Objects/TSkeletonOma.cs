@@ -4,7 +4,7 @@ using SystemModule;
 
 namespace RobotSvr
 {
-    public class TSkeletonOma: TActor
+    public class TSkeletonOma : TActor
     {
         protected int ax = 0;
         protected int ay = 0;
@@ -17,7 +17,7 @@ namespace RobotSvr
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
-            this.m_nCurrentFrame =  -1;
+            this.m_nCurrentFrame = -1;
             this.m_boReverseFrame = false;
             this.m_boUseEffect = false;
             this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
@@ -26,10 +26,10 @@ namespace RobotSvr
             {
                 return;
             }
-            switch(this.m_nCurrentAction)
+            switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_TURN:
-                    if (this.m_btRace >= 117 && this.m_btRace<= 119)
+                    if (this.m_btRace >= 117 && this.m_btRace <= 119)
                     {
                         this.m_nStartFrame = pm.ActStand.start;
                     }
@@ -42,7 +42,7 @@ namespace RobotSvr
                     this.m_dwStartTime = MShare.GetTickCount();
                     this.m_nDefFrameCount = pm.ActStand.frame;
                     this.Shift(this.m_btDir, 0, 0, 1);
-                    if (new ArrayList(new int[] {118, 119}).Contains(this.m_btRace))
+                    if (new ArrayList(new int[] { 118, 119 }).Contains(this.m_btRace))
                     {
                         this.m_boUseEffect = true;
                         this.m_dwEffectStartTime = MShare.GetTickCount();
@@ -50,7 +50,7 @@ namespace RobotSvr
                     break;
                 case Grobal2.SM_WALK:
                 case Grobal2.SM_BACKSTEP:
-                    if (this.m_btRace >= 117 && this.m_btRace<= 119)
+                    if (this.m_btRace >= 117 && this.m_btRace <= 119)
                     {
                         this.m_nStartFrame = pm.ActWalk.start;
                     }
@@ -65,7 +65,7 @@ namespace RobotSvr
                     this.m_nCurTick = 0;
                     // WarMode := FALSE;
                     this.m_nMoveStep = 1;
-                    if (new ArrayList(new int[] {118, 119}).Contains(this.m_btRace))
+                    if (new ArrayList(new int[] { 118, 119 }).Contains(this.m_btRace))
                     {
                         this.m_boUseEffect = true;
                         this.m_dwEffectStartTime = MShare.GetTickCount();
@@ -81,7 +81,7 @@ namespace RobotSvr
                     }
                     break;
                 case Grobal2.SM_DIGUP:
-                    switch(this.m_btRace)
+                    switch (this.m_btRace)
                     {
                         // Modify the A .. B: 23, 91 .. 93
                         case 23:
@@ -122,14 +122,14 @@ namespace RobotSvr
                         this.m_boUseEffect = true;
                     }
                     this.Shift(this.m_btDir, 0, 0, 1);
-                    if (new ArrayList(new int[] {118, 119}).Contains(this.m_btRace))
+                    if (new ArrayList(new int[] { 118, 119 }).Contains(this.m_btRace))
                     {
                         this.m_boUseEffect = true;
                         this.m_dwEffectStartTime = MShare.GetTickCount();
                     }
                     break;
                 case Grobal2.SM_STRUCK:
-                    if (this.m_btRace >= 117 && this.m_btRace<= 119)
+                    if (this.m_btRace >= 117 && this.m_btRace <= 119)
                     {
                         this.m_nStartFrame = pm.ActStruck.start;
                     }
@@ -143,7 +143,7 @@ namespace RobotSvr
                     this.m_dwStartTime = MShare.GetTickCount();
                     break;
                 case Grobal2.SM_DEATH:
-                    if (this.m_btRace >= 117 && this.m_btRace<= 119)
+                    if (this.m_btRace >= 117 && this.m_btRace <= 119)
                     {
                         this.m_nStartFrame = pm.ActDie.start;
                     }
@@ -157,7 +157,7 @@ namespace RobotSvr
                     this.m_dwStartTime = MShare.GetTickCount();
                     break;
                 case Grobal2.SM_NOWDEATH:
-                    if (this.m_btRace >= 117 && this.m_btRace<= 119)
+                    if (this.m_btRace >= 117 && this.m_btRace <= 119)
                     {
                         this.m_nStartFrame = pm.ActDie.start;
                     }
@@ -180,7 +180,7 @@ namespace RobotSvr
                     this.m_dwStartTime = MShare.GetTickCount();
                     break;
                 case Grobal2.SM_ALIVE:
-                    if (new ArrayList(new int[] {117}).Contains(this.m_btRace))
+                    if (new ArrayList(new int[] { 117 }).Contains(this.m_btRace))
                     {
                         this.m_nStartFrame = pm.ActDeath.start;
                     }
@@ -208,7 +208,7 @@ namespace RobotSvr
             }
             if (this.m_boDeath)
             {
-                if (new ArrayList(new int[] {30, 151}).Contains(this.m_wAppearance))
+                if (new ArrayList(new int[] { 30, 151 }).Contains(this.m_wAppearance))
                 {
                     this.m_nDownDrawLevel = 1;
                 }
@@ -221,7 +221,7 @@ namespace RobotSvr
                     result = 417;
                     this.m_boUseEffect = false;
                 }
-                else if (this.m_btRace >= 117 && this.m_btRace<= 119)
+                else if (this.m_btRace >= 117 && this.m_btRace <= 119)
                 {
                     result = pm.ActDie.start + (pm.ActDie.frame - 1);
                     this.m_boUseEffect = false;
@@ -248,7 +248,7 @@ namespace RobotSvr
                 }
                 if (this.m_btRace == 120)
                 {
-                    switch(this.m_nTempState)
+                    switch (this.m_nTempState)
                     {
                         case 1:
                             this.m_nStartFrame = 0;
@@ -268,7 +268,7 @@ namespace RobotSvr
                     }
                     result = this.m_nStartFrame + cf;
                 }
-                else if (this.m_btRace >= 117 && this.m_btRace<= 119)
+                else if (this.m_btRace >= 117 && this.m_btRace <= 119)
                 {
                     result = pm.ActStand.start + cf;
                 }
@@ -276,7 +276,7 @@ namespace RobotSvr
                 {
                     result = pm.ActStand.start + this.m_btDir * (pm.ActStand.frame + pm.ActStand.skip) + cf;
                 }
-                if (new ArrayList(new int[] {118, 119}).Contains(this.m_btRace))
+                if (new ArrayList(new int[] { 118, 119 }).Contains(this.m_btRace))
                 {
                     this.m_boUseEffect = true;
                     this.m_dwEffectStartTime = MShare.GetTickCount();
@@ -299,115 +299,6 @@ namespace RobotSvr
                 }
             }
             return result;
-        }
-
-        public override void LoadSurface()
-        {
-            if ((this.m_btRace == 117) && this.m_boDeath)
-            {
-                this.m_BodySurface = null;
-                return;
-            }
-            base.LoadSurface();
-            switch(this.m_btRace)
-            {
-                case 14:
-                case 15:
-                case 17:
-                case 22:
-                case 53:
-                    // 阁胶磐
-                    if (this.m_boUseEffect)
-                    {
-                        EffectSurface = WMFile.Units.WMFile.g_WMons[3].GetCachedImage(Units.AxeMon.DEATHEFFECTBASE + this.m_nCurrentFrame - this.m_nStartFrame, ref ax, ref ay);
-                    }
-                    break;
-                case 23:
-                    if (this.m_nCurrentAction == Grobal2.SM_DIGUP)
-                    {
-                        this.m_BodySurface = null;
-                        EffectSurface = WMFile.Units.WMFile.g_WMons[4].GetCachedImage(this.m_nBodyOffset + this.m_nCurrentFrame, ref ax, ref ay);
-                        this.m_boUseEffect = true;
-                    }
-                    else
-                    {
-                        this.m_boUseEffect = false;
-                    }
-                    break;
-                // Modify the A .. B: 91 .. 93
-                case 91:
-                    if (this.m_nCurrentAction == Grobal2.SM_DIGUP)
-                    {
-                        this.m_BodySurface = null;
-                        EffectSurface = WMFile.Units.WMFile.g_WMagic7Images.GetCachedImage(this.m_nCurrentFrame, ref ax, ref ay);
-                        this.m_boUseEffect = true;
-                    }
-                    else
-                    {
-                        this.m_boUseEffect = false;
-                    }
-                    break;
-            }
-            switch(this.m_wAppearance)
-            {
-                case 703:
-                    if ((this.m_nCurrentAction == Grobal2.SM_DIGUP))
-                    {
-                        this.m_boUseEffect = true;
-                        EffectSurface = WMFile.Units.WMFile.g_WMagic8Images.GetCachedImage(220 + this.m_nCurrentFrame - this.m_nStartFrame, ref ax, ref ay);
-                    }
-                    else if ((this.m_nCurrentAction == Grobal2.SM_NOWDEATH))
-                    {
-                        this.m_boUseEffect = true;
-                        EffectSurface = WMFile.Units.WMFile.g_WMagic8Images.GetCachedImage(1970 + this.m_nCurrentFrame - this.m_nStartFrame, ref ax, ref ay);
-                    }
-                    break;
-                case 705:
-                    if ((this.m_nCurrentAction == Grobal2.SM_DIGUP))
-                    {
-                        this.m_boUseEffect = true;
-                        EffectSurface = WMFile.Units.WMFile.g_WMagic8Images.GetCachedImage(230 + this.m_nCurrentFrame - this.m_nStartFrame, ref ax, ref ay);
-                    }
-                    else if ((this.m_nCurrentAction == Grobal2.SM_NOWDEATH))
-                    {
-                        this.m_boUseEffect = true;
-                        EffectSurface = WMFile.Units.WMFile.g_WMagic8Images.GetCachedImage(1980 + this.m_nCurrentFrame - this.m_nStartFrame, ref ax, ref ay);
-                    }
-                    break;
-                case 707:
-                    if ((this.m_nCurrentAction == Grobal2.SM_DIGUP))
-                    {
-                        this.m_boUseEffect = true;
-                        EffectSurface = WMFile.Units.WMFile.g_WMagic8Images.GetCachedImage(240 + this.m_nCurrentFrame - this.m_nStartFrame, ref ax, ref ay);
-                    }
-                    else if ((this.m_nCurrentAction == Grobal2.SM_NOWDEATH))
-                    {
-                        this.m_boUseEffect = true;
-                        EffectSurface = WMFile.Units.WMFile.g_WMagic8Images.GetCachedImage(1990 + this.m_nCurrentFrame - this.m_nStartFrame, ref ax, ref ay);
-                    }
-                    break;
-                case 704:
-                    if ((this.m_nCurrentAction == Grobal2.SM_NOWDEATH))
-                    {
-                        this.m_boUseEffect = true;
-                        EffectSurface = WMFile.Units.WMFile.g_WMagic8Images.GetCachedImage(1970 + this.m_nCurrentFrame - this.m_nStartFrame, ref ax, ref ay);
-                    }
-                    break;
-                case 706:
-                    if ((this.m_nCurrentAction == Grobal2.SM_NOWDEATH))
-                    {
-                        this.m_boUseEffect = true;
-                        EffectSurface = WMFile.Units.WMFile.g_WMagic8Images.GetCachedImage(1980 + this.m_nCurrentFrame - this.m_nStartFrame, ref ax, ref ay);
-                    }
-                    break;
-                case 708:
-                    if ((this.m_nCurrentAction == Grobal2.SM_NOWDEATH))
-                    {
-                        this.m_boUseEffect = true;
-                        EffectSurface = WMFile.Units.WMFile.g_WMagic8Images.GetCachedImage(1990 + this.m_nCurrentFrame - this.m_nStartFrame, ref ax, ref ay);
-                    }
-                    break;
-            }
         }
 
         public override void Run()
@@ -445,7 +336,7 @@ namespace RobotSvr
                 {
                     if (this.m_nCurrentFrame < this.m_nEndFrame)
                     {
-                        this.m_nCurrentFrame ++;
+                        this.m_nCurrentFrame++;
                         this.m_dwStartTime = MShare.GetTickCount();
                     }
                     else
@@ -466,7 +357,7 @@ namespace RobotSvr
                     if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
                     {
                         this.m_dwDefFrameTime = MShare.GetTickCount();
-                        this.m_nCurrentDefFrame ++;
+                        this.m_nCurrentDefFrame++;
                         if (this.m_nCurrentDefFrame >= this.m_nDefFrameCount)
                         {
                             this.m_nCurrentDefFrame = 0;
@@ -481,34 +372,6 @@ namespace RobotSvr
                 LoadSurface();
             }
         }
-
-        public override void DrawChr(TDirectDrawSurface dsurface, int dx, int dy, bool blend, bool boFlag, bool DrawOnSale)
-        {
-            TColorEffect ceff;
-            if (!(this.m_btDir >= 0 && this.m_btDir<= 7))
-            {
-                return;
-            }
-                        if (MShare.GetTickCount() - this.m_dwLoadSurfaceTime > g_dwLoadSurfaceTime)
-            {
-                this.m_dwLoadSurfaceTime = MShare.GetTickCount();
-                LoadSurface();
-            }
-            ceff = this.GetDrawEffectValue();
-            if (this.m_BodySurface != null)
-            {
-                this.DrawEffSurface(dsurface, this.m_BodySurface, dx + this.m_nPx + this.m_nShiftX, dy + this.m_nPy + this.m_nShiftY, blend, ceff);
-            }
-            if (this.m_boUseEffect)
-            {
-                if (EffectSurface != null)
-                {
-                    cliUtil.Units.cliUtil.DrawBlend(dsurface, dx + ax + this.m_nShiftX, dy + ay + this.m_nShiftY, EffectSurface, 1);
-                }
-            }
-        }
-
-    } // end TSkeletonOma
-
-    } // end TBanyaGuardMon
+    }
+}
 

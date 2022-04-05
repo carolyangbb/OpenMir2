@@ -7,7 +7,7 @@ namespace RobotSvr
     public class TFireDragon : TSkeletonArcherMon
     {
         public Timer LightningTimer = null;
-        public TDirectDrawSurface m_DrawEffect = null;
+
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
@@ -198,28 +198,16 @@ namespace RobotSvr
             }
         }
 
-        //Constructor  Create()
         public TFireDragon() : base()
         {
             m_DrawEffect = null;
             LightningTimer = new Timer(null);
-            // if m_btRace = 83 then
-            // LightningTimer.Interval := 70
-            // else if m_btRace = 120 then
             LightningTimer.Interval = 10;
             LightningTimer.Tag = 0;
             LightningTimer.onTimer = LightningTimerTimer;
             LightningTimer.Enabled = false;
         }
-        //@ Destructor  Destroy()
-        ~TFireDragon()
-        {
-            if (LightningTimer != null)
-            {
-                LightningTimer.Free;
-            }
-            base.Destroy();
-        }
+
         public void LightningTimerTimer(Object Sender)
         {
             int tx;
@@ -309,134 +297,6 @@ namespace RobotSvr
                         break;
                 }
                 // PlaySound(8206);
-            }
-        }
-
-        public override void DrawEff(TDirectDrawSurface dsurface, int dx, int dy)
-        {
-            if ((this.m_btRace != 120) && this.m_boDeath)
-            {
-                return;
-            }
-            base.DrawEff(dsurface, dx, dy);
-            if (this.m_boUseEffect && (m_DrawEffect != null))
-            {
-                cliUtil.Units.cliUtil.DrawBlend(dsurface, dx + this.ax + this.m_nShiftX, dy + this.ay + this.m_nShiftY, m_DrawEffect, 1);
-            }
-        }
-
-        public override void LoadSurface()
-        {
-            TWMBaseImages mimg;
-            mimg = WMFile.Units.WMFile.g_WDragonImg;
-            if (new ArrayList(new int[] { 120 }).Contains(this.m_btRace))
-            {
-                this.m_boUseEffect = true;
-                if (this.m_boDeath)
-                {
-                    this.m_boUseEffect = false;
-                }
-            }
-            else
-            {
-                if (this.m_boDeath)
-                {
-                    this.m_BodySurface = null;
-                    return;
-                }
-                if (mimg == null)
-                {
-                    return;
-                }
-            }
-            if ((!this.m_boReverseFrame))
-            {
-                if (this.m_btRace == 120)
-                {
-                    this.m_BodySurface = WMFile.Units.WMFile.g_WMons[33].GetCachedImage(2900 + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
-                }
-                else
-                {
-                    switch (this.m_nCurrentAction)
-                    {
-                        case Grobal2.SM_HIT:
-                            this.m_BodySurface = mimg.GetCachedImage(40 + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
-                            break;
-                        case 81:
-                            this.m_BodySurface = mimg.GetCachedImage(10 + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
-                            break;
-                        case 82:
-                            this.m_BodySurface = mimg.GetCachedImage(20 + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
-                            break;
-                        case 83:
-                            this.m_BodySurface = mimg.GetCachedImage(30 + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
-                            break;
-                        default:
-                            this.m_BodySurface = mimg.GetCachedImage(Actor.GetOffset(this.m_wAppearance) + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
-                            break;
-                    }
-                }
-            }
-            else
-            {
-                if (this.m_btRace == 120)
-                {
-                    // ???
-                    this.m_BodySurface = WMFile.Units.WMFile.g_WMons[33].GetCachedImage(2900 + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
-                }
-                else
-                {
-                    switch (this.m_nCurrentAction)
-                    {
-                        case Grobal2.SM_HIT:
-                            this.m_BodySurface = mimg.GetCachedImage(40 + this.m_nEndFrame - this.m_nCurrentFrame, ref this.ax, ref this.ay);
-                            break;
-                        case 81:
-                            this.m_BodySurface = mimg.GetCachedImage(10 + this.m_nEndFrame - this.m_nCurrentFrame, ref this.ax, ref this.ay);
-                            break;
-                        case 82:
-                            this.m_BodySurface = mimg.GetCachedImage(20 + this.m_nEndFrame - this.m_nCurrentFrame, ref this.ax, ref this.ay);
-                            break;
-                        case 83:
-                            this.m_BodySurface = mimg.GetCachedImage(30 + this.m_nEndFrame - this.m_nCurrentFrame, ref this.ax, ref this.ay);
-                            break;
-                        default:
-                            this.m_BodySurface = mimg.GetCachedImage(Actor.GetOffset(this.m_wAppearance) + this.m_nEndFrame - this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
-                            break;
-                    }
-                }
-            }
-            if (this.m_boUseEffect)
-            {
-                if (this.m_btRace == 120)
-                {
-                    if (((2900 + this.m_nCurrentFrame + 20) > 2900 + 419) && ((2900 + this.m_nCurrentFrame + 20) < 2900 + 438))
-                    {
-                        m_DrawEffect = WMFile.Units.WMFile.g_WMons[33].GetCachedImage(2900 + this.m_nCurrentFrame + 20, ref this.ax, ref this.ay);
-                    }
-                    else
-                    {
-                        m_DrawEffect = WMFile.Units.WMFile.g_WMons[33].GetCachedImage(2900 + this.m_nCurrentFrame + 40, ref this.ax, ref this.ay);
-                    }
-                }
-                else
-                {
-                    switch (this.m_nCurrentAction)
-                    {
-                        case Grobal2.SM_HIT:
-                            m_DrawEffect = mimg.GetCachedImage(60 + this.m_nEffectFrame, ref this.ax, ref this.ay);
-                            break;
-                        case 81:
-                            m_DrawEffect = mimg.GetCachedImage(90 + this.m_nEffectFrame, ref this.ax, ref this.ay);
-                            break;
-                        case 82:
-                            m_DrawEffect = mimg.GetCachedImage(100 + this.m_nEffectFrame, ref this.ax, ref this.ay);
-                            break;
-                        case 83:
-                            m_DrawEffect = mimg.GetCachedImage(110 + this.m_nEffectFrame, ref this.ax, ref this.ay);
-                            break;
-                    }
-                }
             }
         }
 

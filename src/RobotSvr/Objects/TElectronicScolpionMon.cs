@@ -2,21 +2,19 @@
 
 namespace RobotSvr
 {
-    // 大蜈蚣
-    public class TElectronicScolpionMon: TGasKuDeGi
+    public class TElectronicScolpionMon : TGasKuDeGi
     {
-        // TElectronicScolpionMon
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
-            this.m_nCurrentFrame =  -1;
+            this.m_nCurrentFrame = -1;
             this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
             pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
             }
-            switch(this.m_nCurrentAction)
+            switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_HIT:
                     this.m_nStartFrame = pm.ActAttack.start + this.m_btDir * (pm.ActAttack.frame + pm.ActAttack.skip);
@@ -46,17 +44,5 @@ namespace RobotSvr
                     break;
             }
         }
-
-        public override void LoadSurface()
-        {
-            base.LoadSurface();
-            if ((this.m_btRace == 60) && this.m_boUseEffect && (this.m_nCurrentAction == Grobal2.SM_LIGHTING))
-            {
-                this.AttackEffectSurface = WMFile.Units.WMFile.g_WMons[19].GetCachedImage(430 + (this.firedir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-            }
-        }
-
-    } // end TElectronicScolpionMon
-
-    } // end TBanyaGuardMon
-
+    }
+}

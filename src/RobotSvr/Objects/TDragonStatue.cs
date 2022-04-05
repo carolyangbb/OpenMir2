@@ -114,9 +114,6 @@ namespace RobotSvr
                     }
                     if ((this.m_nCurrentAction == Grobal2.SM_LIGHTING) && (this.m_nCurrentFrame == 4))
                     {
-                        // 74
-                        // 74
-                        // mtThunder
                         ClMain.g_PlayScene.NewMagic(this, 90, 90, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, 0, magiceff.TMagicType.mtExplosion, false, 30, ref bofly);
                     }
                 }

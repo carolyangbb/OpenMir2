@@ -1,5 +1,4 @@
-﻿using System;
-using SystemModule;
+﻿using SystemModule;
 
 namespace RobotSvr
 {
@@ -182,7 +181,6 @@ namespace RobotSvr
             if (prv != this.m_nCurrentFrame)
             {
                 this.m_dwLoadSurfaceTime = MShare.GetTickCount();
-                LoadSurface();
             }
         }
     }

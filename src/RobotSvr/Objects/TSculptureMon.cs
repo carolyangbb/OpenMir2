@@ -2,19 +2,16 @@
 
 namespace RobotSvr
 {
-    public class TSculptureMon: TSkeletonOma
+    public class TSculptureMon : TSkeletonOma
     {
-        private TDirectDrawSurface AttackEffectSurface = null;
         private int ax = 0;
         private int ay = 0;
         private int firedir = 0;
-        // -----------------------------------------------------------
-        // procedure TZombiLighting.Run;
-        // -----------------------------------------------------------
+
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
-            this.m_nCurrentFrame =  -1;
+            this.m_nCurrentFrame = -1;
             this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
             pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
@@ -22,7 +19,7 @@ namespace RobotSvr
                 return;
             }
             this.m_boUseEffect = false;
-            switch(this.m_nCurrentAction)
+            switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_TURN:
                     if ((this.m_nState & Grobal2.STATE_STONE_MODE) != 0)
@@ -129,21 +126,6 @@ namespace RobotSvr
             }
         }
 
-        public override void LoadSurface()
-        {
-            base.LoadSurface();
-            switch(this.m_btRace)
-            {
-                case 48:
-                case 49:
-                    if (this.m_boUseEffect)
-                    {
-                        AttackEffectSurface = WMFile.Units.WMFile.g_WMons[7].GetCachedImage(Units.AxeMon.SCULPTUREFIREBASE + (firedir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                    }
-                    break;
-            }
-        }
-
         public override int GetDefaultFrame(bool wmode)
         {
             int result;
@@ -163,7 +145,7 @@ namespace RobotSvr
             {
                 if ((this.m_nState & Grobal2.STATE_STONE_MODE) != 0)
                 {
-                    switch(this.m_btRace)
+                    switch (this.m_btRace)
                     {
                         case 47:
                             result = pm.ActDeath.start + this.m_btDir * (pm.ActDeath.frame + pm.ActDeath.skip);
@@ -195,17 +177,6 @@ namespace RobotSvr
             return result;
         }
 
-        public override void DrawEff(TDirectDrawSurface dsurface, int dx, int dy)
-        {
-            if (this.m_boUseEffect)
-            {
-                if (AttackEffectSurface != null)
-                {
-                    cliUtil.Units.cliUtil.DrawBlend(dsurface, dx + ax + this.m_nShiftX, dy + ay + this.m_nShiftY, AttackEffectSurface, 1);
-                }
-            }
-        }
-
         public override void Run()
         {
             long m_dwEffectFrameTimetime;
@@ -221,7 +192,7 @@ namespace RobotSvr
                     this.m_dwEffectStartTime = MShare.GetTickCount();
                     if (this.m_nEffectFrame < this.m_nEffectEnd)
                     {
-                        this.m_nEffectFrame ++;
+                        this.m_nEffectFrame++;
                     }
                     else
                     {
@@ -232,7 +203,6 @@ namespace RobotSvr
             base.Run();
         }
 
-    } // end TSculptureMon
-
-    } // end TBanyaGuardMon
+    }
+}
 

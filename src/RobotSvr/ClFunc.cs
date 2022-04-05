@@ -105,7 +105,7 @@ namespace RobotSvr
             //}
             //if (fhandle > 0)
             //{
-            //    FileWrite(fhandle, pbuf, sizeof(TClientItem) * MShare.MAXBAGITEMCL);
+            //    FileWrite(fhandle, pbuf * MShare.MAXBAGITEMCL);
             //    fhandle.Close();
             //}
         }
@@ -118,7 +118,7 @@ namespace RobotSvr
             //    fhandle = File.Open(flname, (FileMode) FileAccess.Read | FileShare.ReadWrite);
             //    if (fhandle > 0)
             //    {
-            //        FileRead(fhandle, pbuf, sizeof(TClientItem) * MShare.MAXBAGITEMCL);
+            //        FileRead(fhandle, pbuf * MShare.MAXBAGITEMCL);
             //        fhandle.Close();
             //    }
             //}
@@ -138,7 +138,7 @@ namespace RobotSvr
             int i;
             for (i = 0; i < MShare.MAXBAGITEMCL; i++)
             {
-                MShare.g_HeroItemArr[i].s.Name = "";
+                MShare.g_HeroItemArr[i].Item.Name = "";
             }
         }
 
@@ -149,7 +149,7 @@ namespace RobotSvr
             bool InputCheck;
             result = false;
             InputCheck = false;
-            if (cu.s.Name == "")
+            if (cu.Item.Name == "")
             {
                 return result;
             }
@@ -196,16 +196,16 @@ namespace RobotSvr
             }
             for (i = 0; i < MShare.MAXBAGITEMCL; i++)
             {
-                if ((MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex) && (MShare.g_ItemArr[i].Item.Name == cu.s.Name) && (MShare.g_ItemArr[i].Item.Overlap < 1))
+                if ((MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex) && (MShare.g_ItemArr[i].Item.Name == cu.Item.Name) && (MShare.g_ItemArr[i].Item.Overlap < 1))
                 {
                     return result;
                 }
             }
-            if (cu.s.Name == "")
+            if (cu.Item.Name == "")
             {
                 return result;
             }
-            if (cu.s.StdMode <= 3)
+            if (cu.Item.StdMode <= 3)
             {
                 for (i = 0; i <= 5; i++)
                 {
@@ -219,7 +219,7 @@ namespace RobotSvr
             }
             for (i = 6; i < MShare.MAXBAGITEMCL; i++)
             {
-                if ((MShare.g_ItemArr[i].Item.Overlap > 0) && (MShare.g_ItemArr[i].Item.Name == cu.s.Name) && (MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex))
+                if ((MShare.g_ItemArr[i].Item.Overlap > 0) && (MShare.g_ItemArr[i].Item.Name == cu.Item.Name) && (MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex))
                 {
                     MShare.g_ItemArr[i].Dura = MShare.g_ItemArr[i].Dura + cu.Dura;
                     cu.Dura = 0;
@@ -249,7 +249,7 @@ namespace RobotSvr
             result = false;
             for (i = MShare.MAXBAGITEMCL - 1; i >= 0; i--)
             {
-                if ((MShare.g_ItemArr[i].Item.Name == cu.s.Name) && (MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex))
+                if ((MShare.g_ItemArr[i].Item.Name == cu.Item.Name) && (MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex))
                 {
                     MShare.g_ItemArr[i] = cu;
                     result = true;
@@ -266,7 +266,7 @@ namespace RobotSvr
             result = false;
             for (i = MShare.MAXBAGITEMCL - 1; i >= 6; i--)
             {
-                if ((MShare.g_ItemArr[i].Item.Name == cu.s.Name) && (MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex))
+                if ((MShare.g_ItemArr[i].Item.Name == cu.Item.Name) && (MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex))
                 {
                     MShare.g_ItemArr[i].Item.NeedIdentify = ststus;
                     result = true;
@@ -300,7 +300,7 @@ namespace RobotSvr
             {
                 if ((MShare.g_ItemArr[i].Item.Name == iname) && (MShare.g_ItemArr[i].MakeIndex == iindex))
                 {
-                    FillChar(MShare.g_ItemArr[i], sizeof(TClientItem), '\0');
+                    //FillChar(MShare.g_ItemArr[i], '\0');
                     result = true;
                     break;
                 }
@@ -311,7 +311,7 @@ namespace RobotSvr
                 {
                     if ((MShare.g_MySelf.m_StallMgr.mBlock.Items[i].s.Name == iname) && (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].MakeIndex == iindex))
                     {
-                        FillChar(MShare.g_MySelf.m_StallMgr.mBlock.Items[i], sizeof(TClientItem), '\0');
+                        //FillChar(MShare.g_MySelf.m_StallMgr.mBlock.Items[i], '\0');
                         result = true;
                         break;
                     }
@@ -332,16 +332,16 @@ namespace RobotSvr
                     for (k = i + 1; k < MShare.MAXBAGITEMCL; k++)
                     {
                         // 清理复制
-                        if ((MShare.g_ItemArr[i].Item.Name == MShare.g_ItemArr[k].s.Name) && (MShare.g_ItemArr[i].MakeIndex == MShare.g_ItemArr[k].MakeIndex))
+                        if ((MShare.g_ItemArr[i].Item.Name == MShare.g_ItemArr[k].Item.Name) && (MShare.g_ItemArr[i].MakeIndex == MShare.g_ItemArr[k].MakeIndex))
                         {
                             if (MShare.g_ItemArr[i].Item.Overlap > 0)
                             {
                                 MShare.g_ItemArr[i].Dura = MShare.g_ItemArr[i].Dura + MShare.g_ItemArr[k].Dura;
-                                FillChar(MShare.g_ItemArr[k], sizeof(TClientItem), '\0');
+                                //FillChar(MShare.g_ItemArr[k], '\0');
                             }
                             else
                             {
-                                FillChar(MShare.g_ItemArr[k], sizeof(TClientItem), '\0');
+                                //FillChar(MShare.g_ItemArr[k], '\0');
                             }
                         }
                     }
@@ -359,7 +359,7 @@ namespace RobotSvr
                 {
                     for (k = 6; k <= 45; k++)
                     {
-                        if (MShare.g_ItemArr[k].s.Name == "")
+                        if (MShare.g_ItemArr[k].Item.Name == "")
                         {
                             MShare.g_ItemArr[k] = MShare.g_ItemArr[i];
                             MShare.g_ItemArr[i].Item.Name = "";
@@ -385,7 +385,7 @@ namespace RobotSvr
             result = null;
             for (i = 0; i < DropItems.Count; i++)
             {
-                if ((((TClientItem)(DropItems[i])).s.Name == iname) && (((TClientItem)(DropItems[i])).MakeIndex == MakeIndex))
+                if ((((TClientItem)(DropItems[i])).Item.Name == iname) && (((TClientItem)(DropItems[i])).MakeIndex == MakeIndex))
                 {
                     result = ((TClientItem)(DropItems[i]));
                     break;
@@ -399,7 +399,7 @@ namespace RobotSvr
             int i;
             for (i = 0; i < DropItems.Count; i++)
             {
-                if ((((TClientItem)(DropItems[i])).s.Name == iname) && (((TClientItem)(DropItems[i])).MakeIndex == MakeIndex))
+                if ((((TClientItem)(DropItems[i])).Item.Name == iname) && (((TClientItem)(DropItems[i])).MakeIndex == MakeIndex))
                 {
                     Dispose(((TClientItem)(DropItems[i])));
                     DropItems.RemoveAt(i);
@@ -414,12 +414,12 @@ namespace RobotSvr
             int i;
             for (i = 0; i < 10; i++)
             {
-                if ((MShare.g_DealItems[i].s.Name == ci.s.Name) && (MShare.g_DealItems[i].s.Overlap > 0))
+                if ((MShare.g_DealItems[i].Item.Name == ci.Item.Name) && (MShare.g_DealItems[i].Item.Overlap > 0))
                 {
                     MShare.g_DealItems[i].Dura = MShare.g_DealItems[i].Dura + ci.Dura;
                     break;
                 }
-                else if (MShare.g_DealItems[i].s.Name == "")
+                else if (MShare.g_DealItems[i].Item.Name == "")
                 {
                     MShare.g_DealItems[i] = ci;
                     break;
@@ -432,7 +432,7 @@ namespace RobotSvr
             int i;
             for (i = 0; i <= 10 - 2; i++)
             {
-                if (MShare.g_YbDealItems[i].s.Name == "")
+                if (MShare.g_YbDealItems[i].Item.Name == "")
                 {
                     MShare.g_YbDealItems[i] = ci;
                     break;
@@ -508,7 +508,7 @@ namespace RobotSvr
             result = false;
             for (i = 0; i < 10; i++)
             {
-                if ((MShare.g_MySelf.m_StallMgr.mBlock.Items[i].s.Name == ci.s.Name) && (ci.MakeIndex == MShare.g_MySelf.m_StallMgr.mBlock.Items[i].MakeIndex))
+                if ((MShare.g_MySelf.m_StallMgr.mBlock.Items[i].s.Name == ci.Item.Name) && (ci.MakeIndex == MShare.g_MySelf.m_StallMgr.mBlock.Items[i].MakeIndex))
                 {
                     MShare.g_MySelf.m_StallMgr.mBlock.Items[i].s.Name = "";
                     result = true;
@@ -523,9 +523,8 @@ namespace RobotSvr
             int i;
             for (i = 0; i < 10; i++)
             {
-                if ((MShare.g_DealItems[i].s.Name == ci.s.Name) && (MShare.g_DealItems[i].MakeIndex == ci.MakeIndex))
+                if ((MShare.g_DealItems[i].Item.Name == ci.Item.Name) && (MShare.g_DealItems[i].MakeIndex == ci.MakeIndex))
                 {
-                    FillChar(MShare.g_DealItems[i], sizeof(TClientItem), '\0');
                     break;
                 }
             }
@@ -536,15 +535,15 @@ namespace RobotSvr
             int i;
             for (i = 0; i < 10; i++)
             {
-                if (MShare.g_DealItems[i].s.Name != "")
+                if (MShare.g_DealItems[i].Item.Name != "")
                 {
-                    if (MShare.g_DealItems[i].s.Overlap <= 0)
+                    if (MShare.g_DealItems[i].Item.Overlap <= 0)
                     {
                         AddItemBag(MShare.g_DealItems[i]);
                     }
                 }
             }
-            FillChar(MShare.g_DealItems, sizeof(TClientItem) * 10, '\0');
+            //FillChar(MShare.g_DealItems * 10, '\0');
         }
 
         public static void AddDealRemoteItem(TClientItem ci)
@@ -552,11 +551,11 @@ namespace RobotSvr
             int i;
             for (i = 0; i < 20; i++)
             {
-                if ((MShare.g_DealRemoteItems[i].s.Name == ci.s.Name) && (ci.s.Overlap > 0))
+                if ((MShare.g_DealRemoteItems[i].Item.Name == ci.Item.Name) && (ci.Item.Overlap > 0))
                 {
                     MShare.g_DealRemoteItems[i].MakeIndex = ci.MakeIndex;
                 }
-                else if (MShare.g_DealRemoteItems[i].s.Name == "")
+                else if (MShare.g_DealRemoteItems[i].Item.Name == "")
                 {
                     MShare.g_DealRemoteItems[i] = ci;
                     break;
@@ -569,9 +568,9 @@ namespace RobotSvr
             int i;
             for (i = 0; i < 20; i++)
             {
-                if ((MShare.g_DealRemoteItems[i].s.Name == ci.s.Name) && (MShare.g_DealRemoteItems[i].MakeIndex == ci.MakeIndex))
+                if ((MShare.g_DealRemoteItems[i].Item.Name == ci.Item.Name) && (MShare.g_DealRemoteItems[i].MakeIndex == ci.MakeIndex))
                 {
-                    FillChar(MShare.g_DealRemoteItems[i], sizeof(TClientItem), '\0');
+                    //FillChar(MShare.g_DealRemoteItems[i], '\0');
                     break;
                 }
             }
@@ -581,7 +580,7 @@ namespace RobotSvr
         public static int GetDistance(int sX, int sY, int dx, int dy)
         {
             int result;
-            result = HUtil32.Units.HUtil32._MAX(Math.Abs(sX - dx), Math.Abs(sY - dy));
+            result = HUtil32._MAX(Math.Abs(sX - dx), Math.Abs(sY - dy));
             return result;
         }
 
@@ -1189,19 +1188,6 @@ namespace RobotSvr
                     break;
                 case 12:
                 case 13:
-#if !UI_0508
-                    result = Grobal2.U_FASHION;
-                    break;
-                case 17:
-                    result = Grobal2.U_DRUM;
-                    break;
-                case 18:
-                    result = Grobal2.U_HORSE;
-                    break;
-                case 19:
-                case 20:
-                case 21:
-#endif
                     result = Grobal2.U_NECKLACE;
                     break;
                 case 22:
@@ -1218,7 +1204,6 @@ namespace RobotSvr
                             result = Grobal2.U_RINGR;
                         }
                         MShare.g_boTakeOnPos = !MShare.g_boTakeOnPos;
-                        // if UseItems[Result].S.Name = '' then Result := U_RINGR;
                     }
                     break;
                 case 24:
@@ -1235,7 +1220,6 @@ namespace RobotSvr
                             result = Grobal2.U_ARMRINGL;
                         }
                         MShare.g_boTakeOnPos = !MShare.g_boTakeOnPos;
-                        // if UseItems[U_ARMRINGR].S.Name <> '' then Result := U_ARMRINGL;
                     }
                     break;
                 case 30:
@@ -1269,26 +1253,9 @@ namespace RobotSvr
             return result;
         }
 
-        public static int GetTakeOnPosition(TClientSt.Item.Itemmode, TClientItem[] UseItems)
+        public static int GetTakeOnPosition(TClientStdItem smode, TClientItem[] UseItems)
         {
             return GetTakeOnPosition(smode, UseItems, false);
-        }
-
-        public static bool IsKeyPressed(byte Key)
-        {
-            bool result;
-            TKeyBoardState keyvalue;
-            result = false;
-            //@ Undeclared identifier(3): 'TKeyBoardState'
-            FillChar(keyvalue, sizeof(TKeyBoardState), '\0');
-            if (GetKeyboardState(keyvalue))
-            {
-                if ((keyvalue[Key] && 0x80) != 0)
-                {
-                    result = true;
-                }
-            }
-            return result;
         }
 
         public static void AddChangeFace(int recogid)
@@ -1317,161 +1284,96 @@ namespace RobotSvr
         {
             int i;
             bool result = false;
-            for (i = MShare.g_TIItems.GetLowerBound(0); i <= MShare.g_TIItems.GetUpperBound(0); i++)
-            {
-                if ((MShare.g_TIItems[i].Item.Item.Name == iname) && (MShare.g_TIItems[i].Item.Item.Overlap > 0) && (MShare.g_TIItems[i].Item.MakeIndex == mindex))
-                {
-                    MShare.g_TIItems[i].Item.Dura = Count;
-                    result = true;
-                }
-            }
-            for (i = MShare.g_spItems.GetLowerBound(0); i <= MShare.g_spItems.GetUpperBound(0); i++)
-            {
-                if ((MShare.g_spItems[i].Item.Item.Name == iname) && (MShare.g_spItems[i].Item.Item.Overlap > 0) && (MShare.g_spItems[i].Item.MakeIndex == mindex))
-                {
-                    MShare.g_spItems[i].Item.Dura = Count;
-                    result = true;
-                }
-            }
-            if ((MShare.g_SellDl.Item.Item.Name == iname) && (MShare.g_SellDl.Item.Item.Overlap > 0) && (MShare.g_SellDlgItem.MakeIndex == mindex))
-            {
-                MShare.g_SellDlgItem.Dura = Count;
-                result = true;
-            }
-            if ((MShare.g_Eatin.Item.Item.Name == iname) && (MShare.g_Eatin.Item.Item.Overlap > 0) && (MShare.g_EatingItem.MakeIndex == mindex))
-            {
-                MShare.g_EatingItem.Dura = Count;
-                result = true;
-            }
-            if ((MShare.g_MovingItem.Item.Item.Name == iname) && (MShare.g_MovingItem.Item.Item.Overlap > 0) && (MShare.g_MovingItem.Item.MakeIndex == mindex))
-            {
-                MShare.g_MovingItem.Item.Dura = Count;
-                result = true;
-            }
-            if ((MShare.g_WaitingUseItem.Item.Item.Name == iname) && (MShare.g_WaitingUseItem.Item.Item.Overlap > 0) && (MShare.g_WaitingUseItem.Item.MakeIndex == mindex))
-            {
-                MShare.g_WaitingUseItem.Item.Dura = Count;
-                result = true;
-            }
-            MShare.g_WaitingUseItem.Item.Item.Name = "";
-            for (i = 0; i < MShare.MAXBAGITEMCL; i++)
-            {
-                if ((MShare.g_ItemArr[i].MakeIndex == mindex) && (MShare.g_ItemArr[i].Item.Name == iname) && (MShare.g_ItemArr[i].Item.Overlap > 0))
-                {
-                    if (Count < 1)
-                    {
-                        MShare.g_ItemArr[i].Item.Name = "";
-                        Count = 0;
-                    }
-                    MShare.g_ItemArr[i].Dura = Count;
-                    result = true;
-                    break;
-                }
-            }
-            ArrangeItembag();
-            if ((result == false) && (!MShare.g_boDealEnd))
-            {
-                for (i = 0; i < 10; i++)
-                {
-                    if ((MShare.g_DealItems[i].s.Name == iname) && (MShare.g_DealItems[i].s.Overlap > 0) && (MShare.g_DealItems[i].MakeIndex == mindex))
-                    {
-                        if (Count < 1)
-                        {
-                            MShare.g_DealItems[i].s.Name = "";
-                            Count = 0;
-                        }
-                        MShare.g_DealItems[i].Dura = Count;
-                        result = true;
-                        break;
-                    }
-                }
-            }
-            if ((result == false) && (!MShare.g_boDealEnd))
-            {
-                for (i = 0; i <= 19; i++)
-                {
-                    if ((MShare.g_DealRemoteItems[i].s.Name == iname) && (MShare.g_DealRemoteItems[i].s.Overlap > 0) && (MShare.g_DealRemoteItems[i].MakeIndex == mindex))
-                    {
-                        if (Count < 1)
-                        {
-                            MShare.g_DealRemoteItems[i].s.Name = "";
-                            Count = 0;
-                        }
-                        MShare.g_DealRemoteItems[i].Dura = Count;
-                        result = true;
-                        break;
-                    }
-                }
-            }
-            if (MsgNum == 1)
-            {
-                ClMain.Units.ClMain.DScreen.AddSysMsg(iname + " 被发现");
-            }
-            return result;
-        }
-
-        public static bool HEroChangeItemCount(int mindex, short Count, short MsgNum, string iname)
-        {
-            bool result;
-            int i;
-            result = false;
-            // if g_MovingItem.Item.Item.StdMode = 7 then FrmDlg.CancelItemMoving;
-            for (i = MShare.g_TIItems.GetLowerBound(0); i <= MShare.g_TIItems.GetUpperBound(0); i++)
-            {
-                if ((MShare.g_TIItems[i].Item.Item.Name == iname) && (MShare.g_TIItems[i].Item.Item.Overlap > 0) && (MShare.g_TIItems[i].Item.MakeIndex == mindex))
-                {
-                    MShare.g_TIItems[i].Item.Dura = Count;
-                    result = true;
-                }
-            }
-            for (i = MShare.g_spItems.GetLowerBound(0); i <= MShare.g_spItems.GetUpperBound(0); i++)
-            {
-                if ((MShare.g_spItems[i].Item.Item.Name == iname) && (MShare.g_spItems[i].Item.Item.Overlap > 0) && (MShare.g_spItems[i].Item.MakeIndex == mindex))
-                {
-                    MShare.g_spItems[i].Item.Dura = Count;
-                    result = true;
-                }
-            }
-            if ((MShare.g_SellDl.Item.Item.Name == iname) && (MShare.g_SellDl.Item.Item.Overlap > 0) && (MShare.g_SellDlgItem.MakeIndex == mindex))
-            {
-                MShare.g_SellDlgItem.Dura = Count;
-                result = true;
-            }
-            if ((MShare.g_Eatin.Item.Item.Name == iname) && (MShare.g_Eatin.Item.Item.Overlap > 0) && (MShare.g_EatingItem.MakeIndex == mindex))
-            {
-                MShare.g_EatingItem.Dura = Count;
-                result = true;
-            }
-            if ((MShare.g_MovingItem.Item.Item.Name == iname) && (MShare.g_MovingItem.Item.Item.Overlap > 0) && (MShare.g_MovingItem.Item.MakeIndex == mindex))
-            {
-                MShare.g_MovingItem.Item.Dura = Count;
-                result = true;
-            }
-            if ((MShare.g_WaitingUseItem.Item.Item.Name == iname) && (MShare.g_WaitingUseItem.Item.Item.Overlap > 0) && (MShare.g_WaitingUseItem.Item.MakeIndex == mindex))
-            {
-                MShare.g_WaitingUseItem.Item.Dura = Count;
-                result = true;
-            }
-            MShare.g_WaitingUseItem.Item.Item.Name = "";
-            for (i = 0; i < MShare.MAXBAGITEMCL; i++)
-            {
-                if ((MShare.g_HeroItemArr[i].MakeIndex == mindex) && (MShare.g_HeroItemArr[i].s.Name == iname) && (MShare.g_HeroItemArr[i].s.Overlap > 0))
-                {
-                    if (Count < 1)
-                    {
-                        MShare.g_HeroItemArr[i].s.Name = "";
-                        Count = 0;
-                    }
-                    MShare.g_HeroItemArr[i].Dura = Count;
-                    result = true;
-                    break;
-                }
-            }
-            ArrangeHeroItembag();
-            if (MsgNum == 1)
-            {
-                ClMain.Units.ClMain.DScreen.AddSysMsg(iname + " 在英雄包裹内被发现");
-            }
+            //for (i = MShare.g_TIItems.GetLowerBound(0); i <= MShare.g_TIItems.GetUpperBound(0); i++)
+            //{
+            //    if ((MShare.g_TIItems[i].Item.Item.Name == iname) && (MShare.g_TIItems[i].Item.Item.Overlap > 0) && (MShare.g_TIItems[i].Item.MakeIndex == mindex))
+            //    {
+            //        MShare.g_TIItems[i].Item.Dura = Count;
+            //        result = true;
+            //    }
+            //}
+            //for (i = MShare.g_spItems.GetLowerBound(0); i <= MShare.g_spItems.GetUpperBound(0); i++)
+            //{
+            //    if ((MShare.g_spItems[i].Item.Item.Name == iname) && (MShare.g_spItems[i].Item.Item.Overlap > 0) && (MShare.g_spItems[i].Item.MakeIndex == mindex))
+            //    {
+            //        MShare.g_spItems[i].Item.Dura = Count;
+            //        result = true;
+            //    }
+            //}
+            //if ((MShare.g_SellDl.Item.Item.Name == iname) && (MShare.g_SellDl.Item.Item.Overlap > 0) && (MShare.g_SellDlgItem.MakeIndex == mindex))
+            //{
+            //    MShare.g_SellDlgItem.Dura = Count;
+            //    result = true;
+            //}
+            //if ((MShare.g_Eatin.Item.Item.Name == iname) && (MShare.g_Eatin.Item.Item.Overlap > 0) && (MShare.g_EatingItem.MakeIndex == mindex))
+            //{
+            //    MShare.g_EatingItem.Dura = Count;
+            //    result = true;
+            //}
+            //if ((MShare.g_MovingItem.Item.Item.Name == iname) && (MShare.g_MovingItem.Item.Item.Overlap > 0) && (MShare.g_MovingItem.Item.MakeIndex == mindex))
+            //{
+            //    MShare.g_MovingItem.Item.Dura = Count;
+            //    result = true;
+            //}
+            //if ((MShare.g_WaitingUseItem.Item.Item.Name == iname) && (MShare.g_WaitingUseItem.Item.Item.Overlap > 0) && (MShare.g_WaitingUseItem.Item.MakeIndex == mindex))
+            //{
+            //    MShare.g_WaitingUseItem.Item.Dura = Count;
+            //    result = true;
+            //}
+            //MShare.g_WaitingUseItem.Item.Item.Name = "";
+            //for (i = 0; i < MShare.MAXBAGITEMCL; i++)
+            //{
+            //    if ((MShare.g_ItemArr[i].MakeIndex == mindex) && (MShare.g_ItemArr[i].Item.Name == iname) && (MShare.g_ItemArr[i].Item.Overlap > 0))
+            //    {
+            //        if (Count < 1)
+            //        {
+            //            MShare.g_ItemArr[i].Item.Name = "";
+            //            Count = 0;
+            //        }
+            //        MShare.g_ItemArr[i].Dura = Count;
+            //        result = true;
+            //        break;
+            //    }
+            //}
+            //ArrangeItembag();
+            //if ((result == false) && (!MShare.g_boDealEnd))
+            //{
+            //    for (i = 0; i < 10; i++)
+            //    {
+            //        if ((MShare.g_DealItems[i].Item.Name == iname) && (MShare.g_DealItems[i].Item.Overlap > 0) && (MShare.g_DealItems[i].MakeIndex == mindex))
+            //        {
+            //            if (Count < 1)
+            //            {
+            //                MShare.g_DealItems[i].Item.Name = "";
+            //                Count = 0;
+            //            }
+            //            MShare.g_DealItems[i].Dura = Count;
+            //            result = true;
+            //            break;
+            //        }
+            //    }
+            //}
+            //if ((result == false) && (!MShare.g_boDealEnd))
+            //{
+            //    for (i = 0; i <= 19; i++)
+            //    {
+            //        if ((MShare.g_DealRemoteItems[i].Item.Name == iname) && (MShare.g_DealRemoteItems[i].Item.Overlap > 0) && (MShare.g_DealRemoteItems[i].MakeIndex == mindex))
+            //        {
+            //            if (Count < 1)
+            //            {
+            //                MShare.g_DealRemoteItems[i].Item.Name = "";
+            //                Count = 0;
+            //            }
+            //            MShare.g_DealRemoteItems[i].Dura = Count;
+            //            result = true;
+            //            break;
+            //        }
+            //    }
+            //}
+            //if (MsgNum == 1)
+            //{
+            //    ClMain.Units.ClMain.DScreen.AddSysMsg(iname + " 被发现");
+            //}
             return result;
         }
 
@@ -1516,7 +1418,6 @@ namespace RobotSvr
                     }
                     else if (MShare.g_ItemArr[i].MakeIndex == iindex)
                     {
-                        FillChar(MShare.g_ItemArr[i], sizeof(TClientItem), '\0');
                         result = true;
                         break;
                     }
@@ -1531,16 +1432,16 @@ namespace RobotSvr
             int i;
             for (i = 0; i < 10; i++)
             {
-                if ((MShare.g_DealItems[i].s.Name == ci.s.Name) && (MShare.g_DealItems[i].s.Overlap > 0))
+                if ((MShare.g_DealItems[i].Item.Name == ci.Item.Name) && (MShare.g_DealItems[i].Item.Overlap > 0))
                 {
-                    if ((MShare.g_DealItems[i].s.Name == ci.s.Name) && (MShare.g_DealItems[i].MakeIndex == mindex))
+                    if ((MShare.g_DealItems[i].Item.Name == ci.Item.Name) && (MShare.g_DealItems[i].MakeIndex == mindex))
                     {
                         MShare.g_DealItems[i].Dura = MShare.g_DealItems[i].Dura + ci.Dura;
                     }
                     MShare.g_DealItems[i].MakeIndex = mindex;
                     break;
                 }
-                else if (MShare.g_DealItems[i].s.Name == "")
+                else if (MShare.g_DealItems[i].Item.Name == "")
                 {
                     MShare.g_DealItems[i] = ci;
                     MShare.g_DealItems[i].MakeIndex = mindex;
@@ -1549,7 +1450,7 @@ namespace RobotSvr
             }
             for (i = 0; i < MShare.MAXBAGITEMCL; i++)
             {
-                if ((MShare.g_ItemArr[i].Item.Name == ci.s.Name) && (MShare.g_ItemArr[i].Item.Overlap > 0) && (MShare.g_ItemArr[i].MakeIndex == ci.MakeIndex))
+                if ((MShare.g_ItemArr[i].Item.Name == ci.Item.Name) && (MShare.g_ItemArr[i].Item.Overlap > 0) && (MShare.g_ItemArr[i].MakeIndex == ci.MakeIndex))
                 {
                     if (Count < 1)
                     {

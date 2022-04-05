@@ -4,7 +4,7 @@ using SystemModule;
 
 namespace RobotSvr
 {
-    public class TGasKuDeGi: TActor
+    public class TGasKuDeGi : TActor
     {
         protected bool BoUseDieEffect = false;
         protected int firedir = 0;
@@ -24,18 +24,18 @@ namespace RobotSvr
         {
             TMonsterAction pm;
             TActor Actor;
-            int scx;
-            int scy;
-            int stx;
-            int sty;
-            this.m_nCurrentFrame =  -1;
+            int scx = 0;
+            int scy = 0;
+            int stx = 0;
+            int sty = 0;
+            this.m_nCurrentFrame = -1;
             this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
             pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
             }
-            switch(this.m_nCurrentAction)
+            switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_TURN:
                     this.m_nStartFrame = pm.ActStand.start + this.m_btDir * (pm.ActStand.frame + pm.ActStand.skip);
@@ -85,11 +85,9 @@ namespace RobotSvr
                     }
                     this.m_dwEffectStartTime = MShare.GetTickCount();
                     this.m_dwEffectFrameTime = this.m_dwFrameTime;
-                    Actor =ClMain.g_PlayScene.FindActor(this.m_nTargetRecog);
+                    Actor = ClMain.g_PlayScene.FindActor(this.m_nTargetRecog);
                     if (Actor != null)
                     {
-                       ClMain.g_PlayScene.ScreenXYfromMCXY(this.m_nCurrX, this.m_nCurrY, ref scx, ref scy);
-                       ClMain.g_PlayScene.ScreenXYfromMCXY(Actor.m_nCurrX, Actor.m_nCurrY, ref stx, ref sty);
                         fire16dir = ClFunc.GetFlyDirection16(scx, scy, stx, sty);
                     }
                     else
@@ -101,7 +99,6 @@ namespace RobotSvr
                     this.m_nStartFrame = pm.ActStruck.start + this.m_btDir * (pm.ActStruck.frame + pm.ActStruck.skip);
                     this.m_nEndFrame = this.m_nStartFrame + pm.ActStruck.frame - 1;
                     this.m_dwFrameTime = this.m_dwStruckFrameTime;
-                    // pm.ActStruck.ftime;
                     this.m_dwStartTime = MShare.GetTickCount();
                     break;
                 case Grobal2.SM_DEATH:
@@ -116,7 +113,7 @@ namespace RobotSvr
                     this.m_nEndFrame = this.m_nStartFrame + pm.ActDie.frame - 1;
                     this.m_dwFrameTime = pm.ActDie.ftime;
                     this.m_dwStartTime = MShare.GetTickCount();
-                    if ((new ArrayList(new int[] {40, 65}).Contains(this.m_btRace)))
+                    if ((new ArrayList(new int[] { 40, 65 }).Contains(this.m_btRace)))
                     {
                         BoUseDieEffect = true;
                     }
@@ -172,97 +169,6 @@ namespace RobotSvr
             return result;
         }
 
-        public override void LoadSurface()
-        {
-            base.LoadSurface();
-            switch(this.m_btRace)
-            {
-                case 16:
-                    // 攻击效果
-                    // //洞蛆
-                    if (this.m_boUseEffect)
-                    {
-                        AttackEffectSurface = WMFile.Units.WMFile.g_WMons[3].GetCachedImage(Units.AxeMon.KUDEGIGASBASE - 1 + (firedir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                    }
-                    break;
-                case 20:
-                    // //火焰沃玛
-                    if (this.m_boUseEffect)
-                    {
-                        AttackEffectSurface = WMFile.Units.WMFile.g_WMons[4].GetCachedImage(Units.AxeMon.COWMONFIREBASE + (firedir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                    }
-                    break;
-                case 21:
-                    // //沃玛教主
-                    if (this.m_boUseEffect)
-                    {
-                        AttackEffectSurface = WMFile.Units.WMFile.g_WMons[4].GetCachedImage(Units.AxeMon.COWMONLIGHTBASE + (firedir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                    }
-                    break;
-                case 24:
-                    if (this.m_boUseEffect)
-                    {
-                        AttackEffectSurface = WMFile.Units.WMFile.g_WMons[1].GetCachedImage(Units.AxeMon.SUPERIORGUARDBASE + (this.m_btDir * 8) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                    }
-                    break;
-                case 40:
-                    // //僵尸1
-                    if (this.m_boUseEffect)
-                    {
-                        AttackEffectSurface = WMFile.Units.WMFile.g_WMons[5].GetCachedImage(Units.AxeMon.ZOMBILIGHTINGBASE + (fire16dir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                    }
-                    if (BoUseDieEffect)
-                    {
-                        DieEffectSurface = WMFile.Units.WMFile.g_WMons[5].GetCachedImage(Units.AxeMon.ZOMBIDIEBASE + this.m_nCurrentFrame - this.m_nStartFrame, ref bx, ref by);
-                    }
-                    break;
-                case 52:
-                    // //楔蛾
-                    if (this.m_boUseEffect)
-                    {
-                        AttackEffectSurface = WMFile.Units.WMFile.g_WMons[4].GetCachedImage(Units.AxeMon.MOTHPOISONGASBASE + (firedir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                    }
-                    break;
-                case 53:
-                    // //粪虫
-                    if (this.m_boUseEffect)
-                    {
-                        AttackEffectSurface = WMFile.Units.WMFile.g_WMons[3].GetCachedImage(Units.AxeMon.DUNGPOISONGASBASE + (firedir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                    }
-                    break;
-                case 64:
-                    if (this.m_boUseEffect)
-                    {
-                        AttackEffectSurface = WMFile.Units.WMFile.g_WMons[20].GetCachedImage(720 + (firedir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                    }
-                    break;
-                case 65:
-                    if (BoUseDieEffect)
-                    {
-                        DieEffectSurface = WMFile.Units.WMFile.g_WMons[20].GetCachedImage(350 + this.m_nCurrentFrame - this.m_nStartFrame, ref bx, ref by);
-                    }
-                    break;
-                case 66:
-                    if (BoUseDieEffect)
-                    {
-                        DieEffectSurface = WMFile.Units.WMFile.g_WMons[20].GetCachedImage(1600 + this.m_nCurrentFrame - this.m_nStartFrame, ref bx, ref by);
-                    }
-                    break;
-                case 67:
-                    if (BoUseDieEffect)
-                    {
-                        DieEffectSurface = WMFile.Units.WMFile.g_WMons[20].GetCachedImage(1160 + (this.m_btDir * 10) + this.m_nCurrentFrame - this.m_nStartFrame, ref bx, ref by);
-                    }
-                    break;
-                case 68:
-                    if (BoUseDieEffect)
-                    {
-                        DieEffectSurface = WMFile.Units.WMFile.g_WMons[20].GetCachedImage(1600 + this.m_nCurrentFrame - this.m_nStartFrame, ref bx, ref by);
-                    }
-                    break;
-            }
-        }
-
         public override void Run()
         {
             int prv;
@@ -277,7 +183,6 @@ namespace RobotSvr
             {
                 this.m_boMsgMuch = true;
             }
-            this.RunActSound(this.m_nCurrentFrame - this.m_nStartFrame);
             this.RunFrameAction(this.m_nCurrentFrame - this.m_nStartFrame);
             if (this.m_boUseEffect)
             {
@@ -294,7 +199,7 @@ namespace RobotSvr
                     this.m_dwEffectStartTime = MShare.GetTickCount();
                     if (this.m_nEffectFrame < this.m_nEffectEnd)
                     {
-                        this.m_nEffectFrame ++;
+                        this.m_nEffectFrame++;
                     }
                     else
                     {
@@ -321,7 +226,7 @@ namespace RobotSvr
                 {
                     if (this.m_nCurrentFrame < this.m_nEndFrame)
                     {
-                        this.m_nCurrentFrame ++;
+                        this.m_nCurrentFrame++;
                         this.m_dwStartTime = MShare.GetTickCount();
                     }
                     else
@@ -340,7 +245,7 @@ namespace RobotSvr
                     if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
                     {
                         this.m_dwDefFrameTime = MShare.GetTickCount();
-                        this.m_nCurrentDefFrame ++;
+                        this.m_nCurrentDefFrame++;
                         if (this.m_nCurrentDefFrame >= this.m_nDefFrameCount)
                         {
                             this.m_nCurrentDefFrame = 0;
@@ -352,48 +257,7 @@ namespace RobotSvr
             if (prv != this.m_nCurrentFrame)
             {
                 this.m_dwLoadSurfaceTime = MShare.GetTickCount();
-                LoadSurface();
             }
         }
-
-        public override void DrawChr(TDirectDrawSurface dsurface, int dx, int dy, bool blend, bool boFlag, bool DrawOnSale)
-        {
-            TColorEffect ceff;
-            if (!(this.m_btDir >= 0 && this.m_btDir<= 7))
-            {
-                return;
-            }
-                        if (MShare.GetTickCount() - this.m_dwLoadSurfaceTime > g_dwLoadSurfaceTime)
-            {
-                this.m_dwLoadSurfaceTime = MShare.GetTickCount();
-                LoadSurface();
-            }
-            ceff = this.GetDrawEffectValue();
-            if (this.m_BodySurface != null)
-            {
-                this.DrawEffSurface(dsurface, this.m_BodySurface, dx + this.m_nPx + this.m_nShiftX, dy + this.m_nPy + this.m_nShiftY, blend, ceff);
-            }
-        }
-
-        public override void DrawEff(TDirectDrawSurface dsurface, int dx, int dy)
-        {
-            if (this.m_boUseEffect)
-            {
-                if (AttackEffectSurface != null)
-                {
-                    cliUtil.Units.cliUtil.DrawBlend(dsurface, dx + ax + this.m_nShiftX, dy + ay + this.m_nShiftY, AttackEffectSurface, 1);
-                }
-            }
-            if (BoUseDieEffect)
-            {
-                if (DieEffectSurface != null)
-                {
-                    cliUtil.Units.cliUtil.DrawBlend(dsurface, dx + bx + this.m_nShiftX, dy + by + this.m_nShiftY, DieEffectSurface, 1);
-                }
-            }
-        }
-
-    } // end TGasKuDeGi
-
-    } // end TBanyaGuardMon
-
+    }
+}

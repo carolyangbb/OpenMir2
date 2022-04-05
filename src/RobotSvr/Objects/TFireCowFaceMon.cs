@@ -1,8 +1,7 @@
 ﻿namespace RobotSvr
 {
-    public class TFireCowFaceMon: TGasKuDeGi
+    public class TFireCowFaceMon : TGasKuDeGi
     {
-        // -----------------------------------------------------------
         public override int light()
         {
             int result;
@@ -18,8 +17,5 @@
             result = L;
             return result;
         }
-
-    } // end TFireCowFaceMon
-
-    } // end TBanyaGuardMon
-
+    }
+}

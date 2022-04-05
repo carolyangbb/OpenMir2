@@ -6,101 +6,20 @@ namespace RobotSvr
 {
     public class TSnowMon : TActor
     {
-        protected TDirectDrawSurface AttackEffectSurface = null;
-        protected TDirectDrawSurface AttackEffectSurface2 = null;
-        protected TDirectDrawSurface DieEffectSurface = null;
-        protected TDirectDrawSurface ChrEffect = null;
         protected bool BoUseDieEffect = false;
-        // 0x258
         protected int firedir = 0;
-        // 0x25C
         protected int fire16dir = 0;
-        // 0c260
         protected int ax = 0;
-        // 0x264
         protected int ay = 0;
-        // 0x268
         protected int bx = 0;
         protected int by = 0;
         protected bool m_bowChrEffect = false;
-        //Constructor  Create()
+
         public TSnowMon() : base()
         {
-            AttackEffectSurface = null;
-            AttackEffectSurface2 = null;
-            DieEffectSurface = null;
-            ChrEffect = null;
             this.m_boUseEffect = false;
             BoUseDieEffect = false;
             m_bowChrEffect = false;
-        }
-        public override void SetSound()
-        {
-            base.SetSound();
-            if (this.m_boUseMagic && (this.m_CurMagic.MagicSerial > 0))
-            {
-                this.m_nMagicStartSound = 10000 + this.m_CurMagic.MagicSerial * 10;
-                this.m_nMagicFireSound = this.m_nMagicStartSound + 1;
-                this.m_nMagicExplosionSound = this.m_nMagicStartSound + 2;
-            }
-        }
-
-        public override void RunSound()
-        {
-            this.m_boRunSound = true;
-            SetSound();
-            switch (this.m_nCurrentAction)
-            {
-                case Grobal2.SM_STRUCK:
-                    if ((this.m_nStruckWeaponSound >= 0))
-                    {
-                    }
-                    if ((this.m_nStruckSound >= 0))
-                    {
-                    }
-                    if ((this.m_nScreamSound >= 0))
-                    {
-                    }
-                    break;
-                case Grobal2.SM_NOWDEATH:
-                    if ((this.m_nDieSound >= 0))
-                    {
-                    }
-                    break;
-                case Grobal2.SM_THROW:
-                case Grobal2.SM_HIT:
-                case Grobal2.SM_FLYAXE:
-                case Grobal2.SM_LIGHTING:
-                case Grobal2.SM_DIGDOWN:
-                    switch (this.m_wAppearance)
-                    {
-                        case 250:
-                        case 251:
-                        case 255:
-                        case 256:
-                            if (this.m_nCurrentAction == Grobal2.SM_LIGHTING)
-                            {
-                                if (this.m_nDie2Sound >= 0)
-                                {
-                                }
-                            }
-                            else if (this.m_nAttackSound >= 0)
-                            {
-                            }
-                            break;
-                        default:
-                            if (this.m_nAttackSound >= 0)
-                            {
-                            }
-                            break;
-                    }
-                    break;
-                case Grobal2.SM_ALIVE:
-                case Grobal2.SM_DIGUP:
-                    break;
-                case Grobal2.SM_SPELL:
-                    break;
-            }
         }
 
         public override void CalcActorFrame()

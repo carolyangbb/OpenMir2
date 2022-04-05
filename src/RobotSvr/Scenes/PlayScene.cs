@@ -59,7 +59,7 @@ public class PlayScene : Scene
         //for (i = MActorList.Count - 1; i >= 0; i--)
         //{
         //    // (TActor(m_ActorList[i]) <> g_MySelf.m_SlaveObject)
-        //    if ((((TActor)(MActorList[i])) != MShare.g_MySelf) && (((TActor)(MActorList[i])) != MShare.g_MySelf.m_HeroObject) && !Units.PlayScn.IsMySlaveObject(((TActor)(MActorList[i]))))
+        //    if ((((TActor)(MActorList[i])) != MShare.g_MySelf) && (((TActor)(MActorList[i])) != MShare.g_MySelf.m_HeroObject) && !PlayScn.IsMySlaveObject(((TActor)(MActorList[i]))))
         //    {
         //        // BLUE
         //        ((TActor)(MActorList[i])).Free;
@@ -1091,7 +1091,7 @@ public class PlayScene : Scene
         return result;
     }
 
-    public void SendMsg(int ident, int chrid, int x, int y, int cdir, int feature, int state, string str, int ipInfo)
+    public void SendMsg(int ident, int chrid, int x, int y, int cdir, int feature, int state, string str, int ipInfo=0)
     {
         TActor actor;
         TMagicEff meff;
@@ -1166,9 +1166,9 @@ public class PlayScene : Scene
                 actor = FindActor(chrid);
                 if (actor == null)
                 {
-                    actor = NewActor(chrid, x, y, Lobyte(cdir), feature, state);
-                    actor.m_nChrLight = Hibyte(cdir);
-                    cdir = Lobyte(cdir);
+                    actor = NewActor(chrid, x, y, HUtil32.LoByte(cdir), feature, state);
+                    actor.m_nChrLight = HUtil32.HiByte(cdir);
+                    cdir = HUtil32.LoByte(cdir);
                     actor.SendMsg(Grobal2.SM_TURN, x, y, cdir, feature, state, "", 0);
                 }
                 if (MShare.g_MySelf != null)
@@ -1203,9 +1203,8 @@ public class PlayScene : Scene
                         DeleteActor(chrid, true);
                         return;
                     }
-                    if (Units.PlayScn.IsMySlaveObject(actor))
+                    if (PlayScn.IsMySlaveObject(actor))
                     {
-                        // if (Actor = g_MySelf.m_SlaveObject) then begin
                         if ((cdir != 0) || actor.m_boDeath)
                         {
                             DeleteActor(chrid, true);
@@ -1221,7 +1220,7 @@ public class PlayScene : Scene
                 {
                     if (actor == null)
                     {
-                        actor = NewActor(chrid, x, y, Lobyte(cdir), feature, state);
+                        actor = NewActor(chrid, x, y, HUtil32.LoByte(cdir), feature, state);
                     }
                     if (actor != null)
                     {
@@ -1229,8 +1228,8 @@ public class PlayScene : Scene
                         {
                             actor.m_nIPowerLvl = HUtil32.HiWord(ipInfo);
                         }
-                        actor.m_nChrLight = Hibyte(cdir);
-                        cdir = Lobyte(cdir);
+                        actor.m_nChrLight = HUtil32.HiByte(cdir);
+                        cdir = HUtil32.LoByte(cdir);
                         if (ident == Grobal2.SM_SKELETON)
                         {
                             actor.m_boDeath = true;
@@ -1238,7 +1237,7 @@ public class PlayScene : Scene
                         }
                         if (ident == Grobal2.SM_DEATH)
                         {
-                            if (Hibyte(cdir) != 0)
+                            if (HUtil32.HiByte(cdir) != 0)
                             {
                                 actor.m_boItemExplore = true;
                             }

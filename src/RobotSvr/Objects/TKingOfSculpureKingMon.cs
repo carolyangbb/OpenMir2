@@ -4,7 +4,6 @@ namespace RobotSvr
 {
     public class TKingOfSculpureKingMon : TGasKuDeGi
     {
-        // TKingOfSculpureKingMon
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
@@ -67,40 +66,5 @@ namespace RobotSvr
                     break;
             }
         }
-
-        public override void LoadSurface()
-        {
-            base.LoadSurface();
-            if (this.m_boUseEffect)
-            {
-                switch (this.m_nCurrentAction)
-                {
-                    case Grobal2.SM_HIT:
-                        this.AttackEffectSurface = WMFile.Units.WMFile.g_WMons[19].GetCachedImage(1490 + (this.firedir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-                        break;
-                    case Grobal2.SM_LIGHTING:
-                        switch (this.m_btRace)
-                        {
-                            case 25:
-                                this.AttackEffectSurface = WMFile.Units.WMFile.g_WMons[25].GetCachedImage(426 + (this.firedir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-                                break;
-                            case 26:
-                                this.AttackEffectSurface = WMFile.Units.WMFile.g_WMons[25].GetCachedImage(932 + (this.firedir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-                                break;
-                            case 62:
-                                this.AttackEffectSurface = WMFile.Units.WMFile.g_WMons[19].GetCachedImage(1380 + (this.firedir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-                                break;
-                        }
-                        break;
-                    case Grobal2.SM_NOWDEATH:
-                        if ((this.m_btRace == 62))
-                        {
-                            this.AttackEffectSurface = WMFile.Units.WMFile.g_WMons[19].GetCachedImage(1470 + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-                        }
-                        break;
-                }
-            }
-        }
-
-    } // end TKingOfSculpureKingMon
+    }
 }

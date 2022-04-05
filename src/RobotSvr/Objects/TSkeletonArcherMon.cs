@@ -3,37 +3,18 @@ using SystemModule;
 
 namespace RobotSvr
 {
-    public class TSkeletonArcherMon: TArcherMon
+    public class TSkeletonArcherMon : TArcherMon
     {
-        public TDirectDrawSurface AttackEffectSurface = null;
         public bool m_boNowDeath = false;
         public int n264 = 0;
         public int n268 = 0;
-        // TSkeletonArcherMon
+
         public override void CalcActorFrame()
         {
             base.CalcActorFrame();
             if ((this.m_nCurrentAction == Grobal2.SM_NOWDEATH) && (this.m_btRace != 72))
             {
                 m_boNowDeath = true;
-            }
-        }
-
-        public override void DrawEff(TDirectDrawSurface dsurface, int dx, int dy)
-        {
-            base.DrawEff(dsurface, dx, dy);
-            if (m_boNowDeath && (AttackEffectSurface != null))
-            {
-                cliUtil.Units.cliUtil.DrawBlend(dsurface, dx + n264 + this.m_nShiftX, dy + n268 + this.m_nShiftY, AttackEffectSurface, 1);
-            }
-        }
-
-        public override void LoadSurface()
-        {
-            base.LoadSurface();
-            if (m_boNowDeath)
-            {
-                AttackEffectSurface = WMFile.Units.WMFile.g_WMons[20].GetCachedImage(1600 + this.m_nEffectFrame - this.m_nEffectStart, ref n264, ref n268);
             }
         }
 
@@ -65,7 +46,6 @@ namespace RobotSvr
             base.Run();
         }
 
-    } // end TSkeletonArcherMon
-
-    } // end TBanyaGuardMon
+    }
+}
 

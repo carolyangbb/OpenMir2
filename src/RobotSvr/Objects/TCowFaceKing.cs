@@ -1,6 +1,6 @@
 ﻿namespace RobotSvr
 {
-    public class TCowFaceKing: TGasKuDeGi
+    public class TCowFaceKing : TGasKuDeGi
     {
         public override int light()
         {
@@ -17,8 +17,5 @@
             result = L;
             return result;
         }
-
-    } // end TCowFaceKing
-
-    } // end TBanyaGuardMon
-
+    }
+}

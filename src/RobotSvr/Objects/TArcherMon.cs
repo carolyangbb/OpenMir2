@@ -3,9 +3,8 @@ using SystemModule;
 
 namespace RobotSvr
 {
-    public class TArcherMon: TCatMon
+    public class TArcherMon : TCatMon
     {
-        // ============================= TArcherMon =============================
         public override void Run()
         {
             int prv;
@@ -20,7 +19,6 @@ namespace RobotSvr
             {
                 this.m_boMsgMuch = true;
             }
-            this.RunActSound(this.m_nCurrentFrame - this.m_nStartFrame);
             this.RunFrameAction(this.m_nCurrentFrame - this.m_nStartFrame);
             prv = this.m_nCurrentFrame;
             if (this.m_nCurrentAction != 0)
@@ -41,23 +39,13 @@ namespace RobotSvr
                 {
                     if (this.m_nCurrentFrame < this.m_nEndFrame)
                     {
-                        this.m_nCurrentFrame ++;
+                        this.m_nCurrentFrame++;
                         this.m_dwStartTime = MShare.GetTickCount();
                     }
                     else
                     {
                         this.m_nCurrentAction = 0;
                         this.m_boUseEffect = false;
-                    }
-                    if ((this.m_nCurrentAction == Grobal2.SM_FLYAXE) && (this.m_nCurrentFrame - this.m_nStartFrame == 4))
-                    {
-                        meff = ((TFlyingArrow)(ClMain.g_PlayScene.NewFlyObject(this, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFlyArrow)));
-                        if (meff != null)
-                        {
-                            meff.ImgLib = WMFile.Units.WMFile.g_WEffectImg;
-                            meff.NextFrameTime = 30;
-                            meff.FlyImageBase = magiceff.Units.magiceff.ARCHERBASE2;
-                        }
                     }
                 }
                 this.m_nCurrentDefFrame = 0;
@@ -70,7 +58,7 @@ namespace RobotSvr
                     if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
                     {
                         this.m_dwDefFrameTime = MShare.GetTickCount();
-                        this.m_nCurrentDefFrame ++;
+                        this.m_nCurrentDefFrame++;
                         if (this.m_nCurrentDefFrame >= this.m_nDefFrameCount)
                         {
                             this.m_nCurrentDefFrame = 0;
@@ -82,11 +70,7 @@ namespace RobotSvr
             if (prv != this.m_nCurrentFrame)
             {
                 this.m_dwLoadSurfaceTime = MShare.GetTickCount();
-                this.LoadSurface();
             }
         }
-
-    } // end TArcherMon
-
-    } // end TBanyaGuardMon
-
+    }
+}

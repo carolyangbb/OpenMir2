@@ -11,16 +11,6 @@ namespace RobotSvr
         {
             this.m_boUseEffect = false;
         }
-        public override void SetSound()
-        {
-            base.SetSound();
-            if (this.m_boUseMagic && (this.m_CurMagic.MagicSerial > 0))
-            {
-                this.m_nMagicStartSound = 10000 + this.m_CurMagic.MagicSerial * 10;
-                this.m_nMagicFireSound = this.m_nMagicStartSound + 1;
-                this.m_nMagicExplosionSound = this.m_nMagicStartSound + 2;
-            }
-        }
 
         public override void CalcActorFrame()
         {

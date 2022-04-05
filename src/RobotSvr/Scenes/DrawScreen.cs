@@ -269,6 +269,11 @@ namespace RobotSvr
 
         }
 
+        public void AddChatBoardString(string str, int fcolor, Color bcolor)
+        {
+
+        }
+
 
         public void AddChatBoardString(string str, int fcolor, int bcolor)
         {

@@ -1,26 +1,29 @@
 ﻿using SystemModule;
 
-public class TFrostTiger: TSkeletonOma
+namespace RobotSvr
+{
+    public class TFrostTiger : TSkeletonOma
     {
         public bool boActive = false;
         public bool boCasted = false;
-        //Constructor  Create()
+
         public TFrostTiger() : base()
         {
             boActive = false;
             boCasted = false;
         }
+
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
-            this.m_nCurrentFrame =  -1;
+            this.m_nCurrentFrame = -1;
             this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
             pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
             }
-            switch(this.m_nCurrentAction)
+            switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_LIGHTING:
                     this.m_nStartFrame = pm.ActCritical.start + this.m_btDir * (pm.ActCritical.frame + pm.ActCritical.skip);
@@ -54,12 +57,12 @@ public class TFrostTiger: TSkeletonOma
 
         public override void Run()
         {
-            bool bofly;
+            bool bofly = false;
             if ((this.m_nCurrentAction == Grobal2.SM_LIGHTING) && (boCasted == true))
             {
                 boCasted = false;
-               ClMain.g_PlayScene.NewMagic(this, 1, 39, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFly, false, 30, ref bofly);
-                            }
+                //ClMain.g_PlayScene.NewMagic(this, 1, 39, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFly, false, 30, ref bofly);
+            }
             base.Run();
         }
 
@@ -103,5 +106,6 @@ public class TFrostTiger: TSkeletonOma
             return result;
         }
 
-    } // end TFrostTiger
+    }
+}
 

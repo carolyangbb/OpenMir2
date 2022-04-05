@@ -1,16 +1,15 @@
 ﻿using System;
 using SystemModule;
 
-public class TStoneMonster: TSkeletonArcherMon
+namespace RobotSvr
+{
+    public class TStoneMonster : TSkeletonArcherMon
     {
-        // Size: 0x270 0x4d 0x4b
-        public TDirectDrawSurface n26C = null;
-        // TStoneMonster
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
             this.m_boUseMagic = false;
-            this.m_nCurrentFrame =  -1;
+            this.m_nCurrentFrame = -1;
             this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
             pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
@@ -18,7 +17,7 @@ public class TStoneMonster: TSkeletonArcherMon
                 return;
             }
             this.m_btDir = 0;
-            switch(this.m_nCurrentAction)
+            switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_TURN:
                     this.m_nStartFrame = pm.ActStand.start;
@@ -79,68 +78,11 @@ public class TStoneMonster: TSkeletonArcherMon
             }
         }
 
-        //Constructor  Create()
         public TStoneMonster() : base()
         {
             n26C = null;
             this.m_boUseEffect = false;
             this.m_boNowDeath = false;
-        }
-        public override void DrawEff(TDirectDrawSurface dsurface, int dx, int dy)
-        {
-            base.DrawEff(dsurface, dx, dy);
-            if (this.m_boUseEffect && (n26C != null))
-            {
-                cliUtil.Units.cliUtil.DrawBlend(dsurface, dx + this.ax + this.m_nShiftX, dy + this.ay + this.m_nShiftY, n26C, 1);
-            }
-        }
-
-        public override void LoadSurface()
-        {
-            base.LoadSurface();
-            if (this.m_boNowDeath)
-            {
-                switch(this.m_btRace)
-                {
-                    case 75:
-                        this.AttackEffectSurface = WMFile.Units.WMFile.g_WMons[22].GetCachedImage(2530 + this.m_nEffectFrame - this.m_nEffectStart, ref this.n264, ref this.n268);
-                        break;
-                    case 77:
-                        this.AttackEffectSurface = WMFile.Units.WMFile.g_WMons[22].GetCachedImage(2660 + this.m_nEffectFrame - this.m_nEffectStart, ref this.n264, ref this.n268);
-                        break;
-                }
-            }
-            else
-            {
-                if (this.m_boUseEffect)
-                {
-                    switch(this.m_btRace)
-                    {
-                        case 75:
-                            switch(this.m_nCurrentAction)
-                            {
-                                case Grobal2.SM_HIT:
-                                    n26C = WMFile.Units.WMFile.g_WMons[22].GetCachedImage(2500 + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-                                    break;
-                                case Grobal2.SM_TURN:
-                                    n26C = WMFile.Units.WMFile.g_WMons[22].GetCachedImage(2490 + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-                                    break;
-                            }
-                            break;
-                        case 77:
-                            switch(this.m_nCurrentAction)
-                            {
-                                case Grobal2.SM_HIT:
-                                    n26C = WMFile.Units.WMFile.g_WMons[22].GetCachedImage(2630 + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-                                    break;
-                                case Grobal2.SM_TURN:
-                                    n26C = WMFile.Units.WMFile.g_WMons[22].GetCachedImage(2620 + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-                                    break;
-                            }
-                            break;
-                    }
-                }
-            }
         }
 
         public override void Run()
@@ -174,7 +116,7 @@ public class TStoneMonster: TSkeletonArcherMon
                     this.m_dwEffectStartTime = MShare.GetTickCount();
                     if (this.m_nEffectFrame < this.m_nEffectEnd)
                     {
-                        this.m_nEffectFrame ++;
+                        this.m_nEffectFrame++;
                     }
                     else
                     {
@@ -202,7 +144,7 @@ public class TStoneMonster: TSkeletonArcherMon
                 {
                     if (this.m_nCurrentFrame < this.m_nEndFrame)
                     {
-                        this.m_nCurrentFrame ++;
+                        this.m_nCurrentFrame++;
                         this.m_dwStartTime = MShare.GetTickCount();
                     }
                     else
@@ -220,7 +162,7 @@ public class TStoneMonster: TSkeletonArcherMon
                     if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
                     {
                         this.m_dwDefFrameTime = MShare.GetTickCount();
-                        this.m_nCurrentDefFrame ++;
+                        this.m_nCurrentDefFrame++;
                         if (this.m_nCurrentDefFrame >= this.m_nDefFrameCount)
                         {
                             this.m_nCurrentDefFrame = 0;
@@ -235,6 +177,6 @@ public class TStoneMonster: TSkeletonArcherMon
                 LoadSurface();
             }
         }
-
-    } // end TStoneMonster
+    }
+}
 
