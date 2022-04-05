@@ -191,7 +191,7 @@ namespace RobotSvr
             this.m_btWeaponEffect = this.m_btHorse;
             this.m_btHorse = 0;
             this.m_btEffect = Grobal2.Effectfeature(this.m_nFeatureEx);
-            this.m_nBodyOffset = Actor.Units.Actor.HUMANFRAME * (this.m_btDress);
+            this.m_nBodyOffset = Actor.HUMANFRAME * (this.m_btDress);
             this.m_nCboHairOffset = -1;
             if (this.m_btHair >= 10)
             {
@@ -210,7 +210,6 @@ namespace RobotSvr
                     this.m_btHair = haircount - 1;
                 }
                 nHairEx = (this.m_btHair - this.m_btSex) >> 1 + 1;
-                haircount = WMFile.Units.WMFile.g_cbohair.ImageCount / 2000 / 2;
                 if (nHairEx > haircount)
                 {
                     nHairEx = haircount;
@@ -223,10 +222,8 @@ namespace RobotSvr
                 {
                     this.m_btHairEx = haircount;
                 }
-                this.m_nHairOffsetEx = Actor.Units.Actor.HUMANFRAME * ((this.m_btHairEx - 1) * 2 + this.m_btSex);
-                // nHairEx := m_btHairEx + m_btSex + (m_btHairEx mod 4);
+                this.m_nHairOffsetEx = Actor.HUMANFRAME * ((this.m_btHairEx - 1) * 2 + this.m_btSex);
                 nHairEx = (this.m_btHairEx - 1) * 2 + this.m_btSex;
-                haircount = WMFile.Units.WMFile.g_cbohair.ImageCount / 2000;
                 if (nHairEx > haircount)
                 {
                     nHairEx = haircount;
@@ -244,20 +241,20 @@ namespace RobotSvr
             this.m_btHair = this.m_btHair * 2;
             if (this.m_btHair > 1)
             {
-                this.m_nHairOffset = Actor.Units.Actor.HUMANFRAME * (this.m_btHair + this.m_btSex);
+                this.m_nHairOffset = Actor.HUMANFRAME * (this.m_btHair + this.m_btSex);
             }
             else
             {
                 this.m_nHairOffset = -1;
             }
-            this.m_nWeaponOffset = Actor.Units.Actor.HUMANFRAME * this.m_btWeapon;
+            this.m_nWeaponOffset = Actor.HUMANFRAME * this.m_btWeapon;
             if ((this.m_btEffect == 50))
             {
                 this.m_nHumWinOffset = 352;
             }
             else if (this.m_btEffect != 0)
             {
-                this.m_nHumWinOffset = (this.m_btEffect - 1) * Actor.Units.Actor.HUMANFRAME;
+                this.m_nHumWinOffset = (this.m_btEffect - 1) * Actor.HUMANFRAME;
             }
             switch (this.m_nCurrentAction)
             {
@@ -318,118 +315,6 @@ namespace RobotSvr
                         this.m_nMoveStep = 1;
                         this.Shift(this.m_btDir, 1, 0, this.m_nEndFrame - this.m_nStartFrame + 1);
                     }
-                    break;
-                case Grobal2.SM_RUSHEX:
-                    CalcActorWinFrame();
-                    this.m_nSpellFrame = THumAction.HA.ActRush2.frame;
-                    this.m_nStartFrame = THumAction.HA.ActRush2.start + this.m_btDir * (THumAction.HA.ActRush2.frame + THumAction.HA.ActRush2.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + THumAction.HA.ActRush2.frame - 1;
-                    m_dwFrameTime = THumAction.HA.ActRush2.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    this.m_nMaxTick = THumAction.HA.ActRush2.usetick;
-                    this.m_nCurTick = 0;
-                    this.m_nMoveStep = this.m_RushStep;
-                    this.Shift(this.m_btDir, this.m_nMoveStep, 0, this.m_nEndFrame - this.m_nStartFrame + 1);
-                    this.m_boWarMode = true;
-                    this.m_dwWarModeTime = MShare.GetTickCount();
-                    this.m_boUseCboLib = true;
-                    this.m_boHitEffect = true;
-                    break;
-                case Grobal2.SM_SMITEHIT:
-                    CalcActorWinFrame();
-                    this.m_nSpellFrame = THumAction.HA.ActSmiteHit.frame;
-                    this.m_nStartFrame = THumAction.HA.ActSmiteHit.start + this.m_btDir * (THumAction.HA.ActSmiteHit.frame + THumAction.HA.ActSmiteHit.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + THumAction.HA.ActSmiteHit.frame - 1;
-                    m_dwFrameTime = THumAction.HA.ActSmiteHit.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    this.m_nMaxTick = THumAction.HA.ActSmiteHit.usetick;
-                    this.m_nCurTick = 0;
-                    this.Shift(this.m_btDir, 0, 0, 1);
-                    this.m_boWarMode = true;
-                    this.m_dwWarModeTime = MShare.GetTickCount();
-                    this.m_boUseCboLib = true;
-                    this.m_boSmiteHit = true;
-                    this.m_boHitEffect = true;
-                    break;
-                case Grobal2.SM_SMITELONGHIT:
-                    CalcActorWinFrame();
-                    this.m_nSpellFrame = THumAction.HA.ActSmiteLongHit.frame;
-                    this.m_nStartFrame = THumAction.HA.ActSmiteLongHit.start + this.m_btDir * (THumAction.HA.ActSmiteLongHit.frame + THumAction.HA.ActSmiteLongHit.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + THumAction.HA.ActSmiteLongHit.frame - 1;
-                    m_dwFrameTime = THumAction.HA.ActSmiteLongHit.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    this.m_nMaxTick = THumAction.HA.ActSmiteLongHit.usetick;
-                    this.m_nCurTick = 0;
-                    this.Shift(this.m_btDir, 0, 0, 1);
-                    this.m_boWarMode = true;
-                    this.m_dwWarModeTime = MShare.GetTickCount();
-                    this.m_boUseCboLib = true;
-                    this.m_boSmiteLongHit = 1;
-                    this.m_boHitEffect = true;
-                    break;
-                case Grobal2.SM_SMITELONGHIT3:
-                    CalcActorWinFrame();
-                    this.m_nSpellFrame = THumAction.HA.ActSmiteLongHit3.frame;
-                    this.m_nStartFrame = THumAction.HA.ActSmiteLongHit3.start + this.m_btDir * (THumAction.HA.ActSmiteLongHit3.frame + THumAction.HA.ActSmiteLongHit3.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + THumAction.HA.ActSmiteLongHit3.frame - 1;
-                    m_dwFrameTime = THumAction.HA.ActSmiteLongHit3.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    this.m_nMaxTick = THumAction.HA.ActSmiteLongHit3.usetick;
-                    this.m_nCurTick = 0;
-                    this.Shift(this.m_btDir, 0, 0, 1);
-                    this.m_boWarMode = true;
-                    this.m_dwWarModeTime = MShare.GetTickCount();
-                    this.m_boUseCboLib = true;
-                    this.m_boHitEffect = true;
-                    break;
-                case Grobal2.SM_SMITELONGHIT2:
-                    CalcActorWinFrame();
-                    this.m_nSpellFrame = THumAction.HA.ActMagic_113.frame;
-                    this.m_nStartFrame = THumAction.HA.ActMagic_113.start + this.m_btDir * (THumAction.HA.ActMagic_113.frame + THumAction.HA.ActMagic_113.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + THumAction.HA.ActMagic_113.frame - 1;
-                    m_dwFrameTime = THumAction.HA.ActMagic_113.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    this.m_nMaxTick = THumAction.HA.ActMagic_113.usetick;
-                    this.m_nCurTick = 0;
-                    this.Shift(this.m_btDir, 0, 0, 1);
-                    this.m_boWarMode = true;
-                    this.m_dwWarModeTime = MShare.GetTickCount();
-                    this.m_boUseCboLib = true;
-                    this.m_boSmiteLongHit2 = true;
-                    this.m_boSmiteLongHitS2 = 2;
-                    this.m_boHitEffect = true;
-                    break;
-                case Grobal2.SM_SMITEWIDEHIT:
-                    CalcActorWinFrame();
-                    this.m_nSpellFrame = THumAction.HA.ActSmiteWideHit.frame;
-                    this.m_nStartFrame = THumAction.HA.ActSmiteWideHit.start + this.m_btDir * (THumAction.HA.ActSmiteWideHit.frame + THumAction.HA.ActSmiteWideHit.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + THumAction.HA.ActSmiteWideHit.frame - 1;
-                    m_dwFrameTime = THumAction.HA.ActSmiteWideHit.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    this.m_nMaxTick = THumAction.HA.ActSmiteWideHit.usetick;
-                    this.m_nCurTick = 0;
-                    this.Shift(this.m_btDir, 0, 0, 1);
-                    this.m_boWarMode = true;
-                    this.m_dwWarModeTime = MShare.GetTickCount();
-                    this.m_boUseCboLib = true;
-                    this.m_boHitEffect = true;
-                    break;
-                case Grobal2.SM_SMITEWIDEHIT2:
-                    CalcActorWinFrame();
-                    this.m_nSpellFrame = THumAction.HA.ActMagic_114.frame;
-                    this.m_nStartFrame = THumAction.HA.ActMagic_114.start + this.m_btDir * (THumAction.HA.ActMagic_114.frame + THumAction.HA.ActMagic_114.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + THumAction.HA.ActMagic_114.frame - 1;
-                    m_dwFrameTime = THumAction.HA.ActMagic_114.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    this.m_nMaxTick = THumAction.HA.ActMagic_114.usetick;
-                    this.m_nCurTick = 0;
-                    this.Shift(this.m_btDir, 0, 0, 1);
-                    this.m_boWarMode = true;
-                    this.m_dwWarModeTime = MShare.GetTickCount();
-                    this.m_boUseCboLib = true;
-                    this.m_boSmiteWideHit2 = true;
-                    this.m_boSmiteWideHitS2 = 9;
-                    this.m_boHitEffect = true;
                     break;
                 case Grobal2.SM_RUSHKUNG:
                     this.m_nStartFrame = THumAction.HA.ActRun.start + this.m_btDir * (THumAction.HA.ActRun.frame + THumAction.HA.ActRun.skip);
@@ -496,11 +381,7 @@ namespace RobotSvr
                 case Grobal2.SM_LONGHIT:
                 case Grobal2.SM_WIDEHIT:
                 case Grobal2.SM_FIREHIT:
-                case Grobal2.SM_HERO_LONGHIT:
-                case Grobal2.SM_HERO_LONGHIT2:
-                case Grobal2.SM_SQUHIT:
                 case Grobal2.SM_CRSHIT:
-                case Grobal2.SM_TWNHIT:
                     this.m_nStartFrame = THumAction.HA.ActHit.start + this.m_btDir * (THumAction.HA.ActHit.frame + THumAction.HA.ActHit.skip);
                     this.m_nEndFrame = this.m_nStartFrame + THumAction.HA.ActHit.frame - 1;
                     m_dwFrameTime = THumAction.HA.ActHit.ftime;
@@ -579,54 +460,12 @@ namespace RobotSvr
                                 break;
                         }
                     }
-                    if ((this.m_nCurrentAction == Grobal2.SM_SQUHIT))
-                    {
-                        Effect = new THeroCharEffect(WMFile.Units.WMFile.g_WMagic2Images, this.m_btDir * 20 + 740, 15, 50, this);
-                        if (Effect != null)
-                        {
-                            ClMain.g_PlayScene.m_EffectList.Add(Effect);
-                        }
-                    }
                     if ((this.m_nCurrentAction == Grobal2.SM_CRSHIT))
                     {
                         this.m_boHitEffect = true;
                         this.m_nMagLight = 2;
                         this.m_nHitEffectNumber = 5;
                     }
-                    if ((this.m_nCurrentAction == Grobal2.SM_TWNHIT))
-                    {
-                        // 35
-                        Effect = new THeroCharEffect(WMFile.Units.WMFile.g_WMagic2Images, this.m_btDir * 20 + 226, 6, 72, this);
-                        if (Effect != null)
-                        {
-                            ClMain.g_PlayScene.m_EffectList.Add(Effect);
-                        }
-                    }
-                    if ((this.m_nCurrentAction == Grobal2.SM_HERO_LONGHIT2))
-                    {
-                        this.m_boHitEffect = true;
-                        this.m_nMagLight = 2;
-                        this.m_nHitEffectNumber = 6;
-                        this.m_boHeroLongHit2 = true;
-                    }
-                    if ((this.m_nCurrentAction == Grobal2.SM_HERO_LONGHIT))
-                    {
-                        this.m_boHitEffect = true;
-                        this.m_nMagLight = 2;
-                        this.m_nHitEffectNumber = 8;
-                        this.m_boHeroLongHit = true;
-                    }
-                    this.Shift(this.m_btDir, 0, 0, 1);
-                    break;
-                case Grobal2.SM_WWJATTACK:
-                case Grobal2.SM_WSJATTACK:
-                case Grobal2.SM_WTJATTACK:
-                    this.m_nStartFrame = THumAction.HA.ActHit.start + this.m_btDir * (THumAction.HA.ActHit.frame + THumAction.HA.ActHit.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + THumAction.HA.ActHit.frame - 1;
-                    m_dwFrameTime = THumAction.HA.ActHit.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    this.m_boWarMode = true;
-                    this.m_dwWarModeTime = MShare.GetTickCount();
                     this.Shift(this.m_btDir, 0, 0, 1);
                     break;
                 case Grobal2.SM_HEAVYHIT:
@@ -639,7 +478,6 @@ namespace RobotSvr
                     this.Shift(this.m_btDir, 0, 0, 1);
                     break;
                 case Grobal2.SM_BIGHIT:
-                case Grobal2.SM_PURSUEHIT:
                     this.m_nStartFrame = THumAction.HA.ActBigHit.start + this.m_btDir * (THumAction.HA.ActBigHit.frame + THumAction.HA.ActBigHit.skip);
                     this.m_nEndFrame = this.m_nStartFrame + THumAction.HA.ActBigHit.frame - 1;
                     m_dwFrameTime = THumAction.HA.ActBigHit.ftime;
@@ -762,7 +600,7 @@ namespace RobotSvr
                         this.m_nCurEffFrame = 0;
                         this.m_boUseMagic = true;
                         // DScreen.AddChatBoardString(format('EffectNumber=%d m_nEndFrame=%d', [m_CurMagic.EffectNumber, 1]), clWhite, clRed);
-                        this.m_nSpellFrame = Actor.Units.Actor.DEFSPELLFRAME;
+                        this.m_nSpellFrame = Actor.DEFSPELLFRAME;
                         switch (this.m_CurMagic.EffectNumber)
                         {
                             case 10:
@@ -827,7 +665,7 @@ namespace RobotSvr
                                 break;
                             default:
                                 this.m_nMagLight = 2;
-                                this.m_nSpellFrame = Actor.Units.Actor.DEFSPELLFRAME;
+                                this.m_nSpellFrame = Actor.DEFSPELLFRAME;
                                 break;
                         }
                     }
@@ -1227,7 +1065,7 @@ namespace RobotSvr
                 {
                     m_dwWeaponpEffectTime = MShare.GetTickCount();
                     m_nCurWeaponEffect++;
-                    if (m_nCurWeaponEffect >= Actor.Units.Actor.MAXWPEFFECTFRAME)
+                    if (m_nCurWeaponEffect >= Actor.MAXWPEFFECTFRAME)
                     {
                         m_boWeaponEffect = false;
                     }

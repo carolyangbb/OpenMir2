@@ -2,24 +2,24 @@
 using System.Collections;
 using SystemModule;
 
-public class TFireDragon: TSkeletonArcherMon
+namespace RobotSvr
+{
+    public class TFireDragon : TSkeletonArcherMon
     {
-        // 0x53
         public Timer LightningTimer = null;
         public TDirectDrawSurface m_DrawEffect = null;
-        // TFireDragon
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
             this.m_btDir = 0;
-            this.m_nCurrentFrame =  -1;
-            this.m_nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            this.m_nCurrentFrame = -1;
+            this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
             }
-            switch(this.m_nCurrentAction)
+            switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_TURN:
                     this.m_dwStartTime = MShare.GetTickCount();
@@ -27,7 +27,7 @@ public class TFireDragon: TSkeletonArcherMon
                     this.Shift(this.m_btDir, 0, 0, 1);
                     if (this.m_btRace == 120)
                     {
-                        switch(this.m_nTempState)
+                        switch (this.m_nTempState)
                         {
                             case 1:
                                 this.m_nStartFrame = 0;
@@ -83,7 +83,7 @@ public class TFireDragon: TSkeletonArcherMon
                         this.Shift(this.m_btDir, 0, 0, 1);
                         if (this.m_btRace == 120)
                         {
-                            switch(this.m_nTempState)
+                            switch (this.m_nTempState)
                             {
                                 case 1:
                                     this.m_nStartFrame = 20;
@@ -192,7 +192,7 @@ public class TFireDragon: TSkeletonArcherMon
                     }
                     break;
             }
-            if (new ArrayList(new int[] {118, 119, 120}).Contains(this.m_btRace))
+            if (new ArrayList(new int[] { 118, 119, 120 }).Contains(this.m_btRace))
             {
                 this.m_boUseEffect = true;
             }
@@ -216,7 +216,7 @@ public class TFireDragon: TSkeletonArcherMon
         {
             if (LightningTimer != null)
             {
-                                LightningTimer.Free;
+                LightningTimer.Free;
             }
             base.Destroy();
         }
@@ -241,25 +241,25 @@ public class TFireDragon: TSkeletonArcherMon
                 ky = (new System.Random(5)).Next();
                 if (LightningTimer.Tag == 0)
                 {
-                   ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_1, Grobal2.MAGIC_SOULBALL_ATT3_1, this.m_nCurrX, this.m_nCurrY, tx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                   ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_2, Grobal2.MAGIC_SOULBALL_ATT3_2, this.m_nCurrX, this.m_nCurrY, tx - 2, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                   ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_3, Grobal2.MAGIC_SOULBALL_ATT3_3, this.m_nCurrX, this.m_nCurrY, tx, ty - 2, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                   ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_4, Grobal2.MAGIC_SOULBALL_ATT3_4, this.m_nCurrX, this.m_nCurrY, tx - kx, ty - ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_1, Grobal2.MAGIC_SOULBALL_ATT3_1, this.m_nCurrX, this.m_nCurrY, tx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_2, Grobal2.MAGIC_SOULBALL_ATT3_2, this.m_nCurrX, this.m_nCurrY, tx - 2, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_3, Grobal2.MAGIC_SOULBALL_ATT3_3, this.m_nCurrX, this.m_nCurrY, tx, ty - 2, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_4, Grobal2.MAGIC_SOULBALL_ATT3_4, this.m_nCurrX, this.m_nCurrY, tx - kx, ty - ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
                     LightningTimer.Interval = 500;
                 }
                 else if (LightningTimer.Tag == 2)
                 {
-                   ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_1, Grobal2.MAGIC_SOULBALL_ATT3_1, this.m_nCurrX, this.m_nCurrY, tx - 2, ty - 2, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                   ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_2, Grobal2.MAGIC_SOULBALL_ATT3_2, this.m_nCurrX, this.m_nCurrY, tx + 2, ty - 2, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                   ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_3, Grobal2.MAGIC_SOULBALL_ATT3_3, this.m_nCurrX, this.m_nCurrY, tx + kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                   ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_4, Grobal2.MAGIC_SOULBALL_ATT3_4, this.m_nCurrX, this.m_nCurrY, tx - kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_1, Grobal2.MAGIC_SOULBALL_ATT3_1, this.m_nCurrX, this.m_nCurrY, tx - 2, ty - 2, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_2, Grobal2.MAGIC_SOULBALL_ATT3_2, this.m_nCurrX, this.m_nCurrY, tx + 2, ty - 2, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_3, Grobal2.MAGIC_SOULBALL_ATT3_3, this.m_nCurrX, this.m_nCurrY, tx + kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_4, Grobal2.MAGIC_SOULBALL_ATT3_4, this.m_nCurrX, this.m_nCurrY, tx - kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
                 }
-               ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_5, Grobal2.MAGIC_SOULBALL_ATT3_5, this.m_nCurrX, this.m_nCurrY, tx + kx, ty - ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-               ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_1, Grobal2.MAGIC_SOULBALL_ATT3_1, this.m_nCurrX, this.m_nCurrY, tx - kx - 2, ty + ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-               ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_2, Grobal2.MAGIC_SOULBALL_ATT3_2, this.m_nCurrX, this.m_nCurrY, tx - kx, ty - ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-               ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_3, Grobal2.MAGIC_SOULBALL_ATT3_3, this.m_nCurrX, this.m_nCurrY, tx + kx + 2, ty + ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-               ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_4, Grobal2.MAGIC_SOULBALL_ATT3_4, this.m_nCurrX, this.m_nCurrY, tx + kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-               ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_5, Grobal2.MAGIC_SOULBALL_ATT3_5, this.m_nCurrX, this.m_nCurrY, tx - kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_5, Grobal2.MAGIC_SOULBALL_ATT3_5, this.m_nCurrX, this.m_nCurrY, tx + kx, ty - ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_1, Grobal2.MAGIC_SOULBALL_ATT3_1, this.m_nCurrX, this.m_nCurrY, tx - kx - 2, ty + ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_2, Grobal2.MAGIC_SOULBALL_ATT3_2, this.m_nCurrX, this.m_nCurrY, tx - kx, ty - ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_3, Grobal2.MAGIC_SOULBALL_ATT3_3, this.m_nCurrX, this.m_nCurrY, tx + kx + 2, ty + ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_4, Grobal2.MAGIC_SOULBALL_ATT3_4, this.m_nCurrX, this.m_nCurrY, tx + kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_5, Grobal2.MAGIC_SOULBALL_ATT3_5, this.m_nCurrX, this.m_nCurrY, tx - kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
                 LightningTimer.Interval = LightningTimer.Interval + 100;
                 LightningTimer.Tag = LightningTimer.Tag + 1;
                 if (LightningTimer.Tag > 7)
@@ -288,28 +288,28 @@ public class TFireDragon: TSkeletonArcherMon
             n8 = this.m_nCurrX;
             nc = this.m_nCurrY;
             iCount = (new System.Random(4)).Next();
-            for (i = 0; i <= iCount; i ++ )
+            for (i = 0; i <= iCount; i++)
             {
                 n10 = (new System.Random(4)).Next();
                 n14 = (new System.Random(8)).Next();
                 n18 = (new System.Random(8)).Next();
-                switch(n10)
+                switch (n10)
                 {
                     case 0:
-                       ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14 - 2, nc + n18 + 1, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
+                        ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14 - 2, nc + n18 + 1, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
                         break;
                     case 1:
-                       ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14, nc + n18, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
+                        ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14, nc + n18, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
                         break;
                     case 2:
-                       ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14, nc + n18 + 1, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
+                        ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14, nc + n18 + 1, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
                         break;
                     case 3:
-                       ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14 - 2, nc + n18, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
+                        ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14 - 2, nc + n18, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
                         break;
                 }
                 // PlaySound(8206);
-                            }
+            }
         }
 
         public override void DrawEff(TDirectDrawSurface dsurface, int dx, int dy)
@@ -329,7 +329,7 @@ public class TFireDragon: TSkeletonArcherMon
         {
             TWMBaseImages mimg;
             mimg = WMFile.Units.WMFile.g_WDragonImg;
-            if (new ArrayList(new int[] {120}).Contains(this.m_btRace))
+            if (new ArrayList(new int[] { 120 }).Contains(this.m_btRace))
             {
                 this.m_boUseEffect = true;
                 if (this.m_boDeath)
@@ -357,7 +357,7 @@ public class TFireDragon: TSkeletonArcherMon
                 }
                 else
                 {
-                    switch(this.m_nCurrentAction)
+                    switch (this.m_nCurrentAction)
                     {
                         case Grobal2.SM_HIT:
                             this.m_BodySurface = mimg.GetCachedImage(40 + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
@@ -372,7 +372,7 @@ public class TFireDragon: TSkeletonArcherMon
                             this.m_BodySurface = mimg.GetCachedImage(30 + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
                             break;
                         default:
-                            this.m_BodySurface = mimg.GetCachedImage(Actor.Units.Actor.GetOffset(this.m_wAppearance) + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
+                            this.m_BodySurface = mimg.GetCachedImage(Actor.GetOffset(this.m_wAppearance) + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
                             break;
                     }
                 }
@@ -386,7 +386,7 @@ public class TFireDragon: TSkeletonArcherMon
                 }
                 else
                 {
-                    switch(this.m_nCurrentAction)
+                    switch (this.m_nCurrentAction)
                     {
                         case Grobal2.SM_HIT:
                             this.m_BodySurface = mimg.GetCachedImage(40 + this.m_nEndFrame - this.m_nCurrentFrame, ref this.ax, ref this.ay);
@@ -401,7 +401,7 @@ public class TFireDragon: TSkeletonArcherMon
                             this.m_BodySurface = mimg.GetCachedImage(30 + this.m_nEndFrame - this.m_nCurrentFrame, ref this.ax, ref this.ay);
                             break;
                         default:
-                            this.m_BodySurface = mimg.GetCachedImage(Actor.Units.Actor.GetOffset(this.m_wAppearance) + this.m_nEndFrame - this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
+                            this.m_BodySurface = mimg.GetCachedImage(Actor.GetOffset(this.m_wAppearance) + this.m_nEndFrame - this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
                             break;
                     }
                 }
@@ -421,7 +421,7 @@ public class TFireDragon: TSkeletonArcherMon
                 }
                 else
                 {
-                    switch(this.m_nCurrentAction)
+                    switch (this.m_nCurrentAction)
                     {
                         case Grobal2.SM_HIT:
                             m_DrawEffect = mimg.GetCachedImage(60 + this.m_nEffectFrame, ref this.ax, ref this.ay);
@@ -462,7 +462,7 @@ public class TFireDragon: TSkeletonArcherMon
             }
             if (this.m_boRunSound)
             {
-                                this.m_boRunSound = false;
+                this.m_boRunSound = false;
             }
             if (this.m_boUseEffect)
             {
@@ -479,11 +479,11 @@ public class TFireDragon: TSkeletonArcherMon
                     this.m_dwEffectStartTime = MShare.GetTickCount();
                     if (this.m_nEffectFrame < this.m_nEffectEnd)
                     {
-                        this.m_nEffectFrame ++;
+                        this.m_nEffectFrame++;
                     }
                     else
                     {
-                        if (new ArrayList(new int[] {118, 119, 120}).Contains(this.m_btRace))
+                        if (new ArrayList(new int[] { 118, 119, 120 }).Contains(this.m_btRace))
                         {
                             if (this.m_boDeath)
                             {
@@ -520,7 +520,7 @@ public class TFireDragon: TSkeletonArcherMon
                 {
                     if (this.m_nCurrentFrame < this.m_nEndFrame)
                     {
-                        this.m_nCurrentFrame ++;
+                        this.m_nCurrentFrame++;
                         this.m_dwStartTime = MShare.GetTickCount();
                     }
                     else
@@ -533,32 +533,32 @@ public class TFireDragon: TSkeletonArcherMon
                     {
                         // and (m_nCurrentFrame = 4) then begin
                         AttackEff();
-                                            }
+                    }
                     else if (this.m_btRace == 120)
                     {
                         if ((this.m_nCurrentAction == Grobal2.SM_LIGHTING) && (this.m_nCurrentFrame - this.m_nStartFrame == 1))
                         {
                             // TargetRecog,
-                           ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT1, Grobal2.MAGIC_SOULBALL_ATT1, this.m_nCurrX, this.m_nCurrY, this.m_nCurrX, this.m_nCurrY, this.m_nRecogId, magiceff.TMagicType.mtGroundEffect, false, 30, ref bofly);
-                                                    }
+                            ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT1, Grobal2.MAGIC_SOULBALL_ATT1, this.m_nCurrX, this.m_nCurrY, this.m_nCurrX, this.m_nCurrY, this.m_nRecogId, magiceff.TMagicType.mtGroundEffect, false, 30, ref bofly);
+                        }
                         else if ((this.m_nCurrentAction == Grobal2.SM_LIGHTING_1) && (this.m_nCurrentFrame - this.m_nStartFrame == 1))
                         {
-                           ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT2, Grobal2.MAGIC_SOULBALL_ATT2, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                                                    }
+                            ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT2, Grobal2.MAGIC_SOULBALL_ATT2, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                        }
                         else if ((this.m_nCurrentAction == Grobal2.SM_LIGHTING_2) && (this.m_nCurrentFrame - this.m_nStartFrame == 1))
                         {
                             if (!LightningTimer.Enabled)
                             {
                                 LightningTimer.Enabled = true;
-                                                            }
+                            }
                         }
                     }
                     else if ((this.m_nCurrentAction == 81) || (this.m_nCurrentAction == 82) || (this.m_nCurrentAction == 83))
                     {
                         if ((this.m_nCurrentFrame - this.m_nStartFrame) == 4)
                         {
-                           ClMain.g_PlayScene.NewMagic(this, this.m_nCurrentAction, this.m_nCurrentAction, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFly, true, 30, ref bofly);
-                                                    }
+                            ClMain.g_PlayScene.NewMagic(this, this.m_nCurrentAction, this.m_nCurrentAction, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFly, true, 30, ref bofly);
+                        }
                     }
                 }
                 this.m_nCurrentDefFrame = 0;
@@ -571,7 +571,7 @@ public class TFireDragon: TSkeletonArcherMon
                     if (MShare.GetTickCount() - this.m_dwDefFrameTime > 150)
                     {
                         this.m_dwDefFrameTime = MShare.GetTickCount();
-                        this.m_nCurrentDefFrame ++;
+                        this.m_nCurrentDefFrame++;
                         if (this.m_nCurrentDefFrame >= this.m_nDefFrameCount)
                         {
                             this.m_nCurrentDefFrame = 0;
@@ -584,7 +584,7 @@ public class TFireDragon: TSkeletonArcherMon
                     if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
                     {
                         this.m_dwDefFrameTime = MShare.GetTickCount();
-                        this.m_nCurrentDefFrame ++;
+                        this.m_nCurrentDefFrame++;
                         if (this.m_nCurrentDefFrame >= this.m_nDefFrameCount)
                         {
                             this.m_nCurrentDefFrame = 0;
@@ -599,6 +599,6 @@ public class TFireDragon: TSkeletonArcherMon
                 LoadSurface();
             }
         }
-
-    } // end TFireDragon
+    }
+}
 

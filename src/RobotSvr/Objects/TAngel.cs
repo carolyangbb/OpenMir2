@@ -1,17 +1,14 @@
-﻿using System.Collections;
-using SystemModule;
+﻿using SystemModule;
 
 namespace RobotSvr
 {
-    public class TAngel: THumActor
+    public class TAngel : THumActor
     {
-        protected TDirectDrawSurface EffectSurface = null;
         protected int ax = 0;
         protected int ay = 0;
-        //Constructor  Create()
+
         public TAngel() : base()
         {
-            EffectSurface = null;
             this.m_boUseEffect = false;
         }
         public override void SetSound()
@@ -28,16 +25,16 @@ namespace RobotSvr
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
-            this.m_nCurrentFrame =  -1;
+            this.m_nCurrentFrame = -1;
             this.m_boReverseFrame = false;
             this.m_boUseEffect = false;
-            this.m_nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
             }
-            switch(this.m_nCurrentAction)
+            switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_TURN:
                     this.m_nStartFrame = pm.ActStand.start + this.m_btDir * (pm.ActStand.frame + pm.ActStand.skip);
@@ -138,7 +135,7 @@ namespace RobotSvr
             int cf;
             TMonsterAction pm;
             result = 0;
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return result;
@@ -166,200 +163,5 @@ namespace RobotSvr
             }
             return result;
         }
-
-        public override void LoadSurface()
-        {
-            int nBody;
-            int nEffect;
-            int nDigUp;
-            int nBodyOffset;
-            // inherited LoadSurface;
-            if (this.m_wAppearance == 330)
-            {
-                if (this.m_boUseEffect)
-                {
-                    this.m_BodySurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(20 + this.m_nEffectFrame, ref this.m_nPx, ref this.m_nPy);
-                    EffectSurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(360 + this.m_nEffectFrame, ref ax, ref ay);
-                }
-                else if (!this.m_boReverseFrame)
-                {
-                    this.m_BodySurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(20 + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
-                    EffectSurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(360 + this.m_nCurrentFrame, ref ax, ref ay);
-                }
-                else
-                {
-                    this.m_BodySurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(20 + this.m_nEndFrame - (this.m_nCurrentFrame - this.m_nStartFrame), ref this.m_nPx, ref this.m_nPy);
-                    EffectSurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(360 + this.m_nEndFrame - (this.m_nCurrentFrame - this.m_nStartFrame), ref ax, ref ay);
-                }
-                if (this.m_nCurrentAction == Grobal2.SM_DIGUP)
-                {
-                    // g_Screen.AddChatBoardString(Format('%d', [m_nCurrentFrame]), GetRGB(5), clWhite);
-                    this.m_BodySurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
-                    EffectSurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(10 + this.m_nCurrentFrame, ref ax, ref ay);
-                    this.m_boUseEffect = true;
-                }
-                else
-                {
-                    this.m_boUseEffect = false;
-                }
-                return;
-            }
-            if (this.m_wAppearance == 336)
-            {
-                nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-                // 1840
-                nBody = nBodyOffset;
-                nDigUp = nBodyOffset - 10;
-                nEffect = 360 + nBodyOffset - 20;
-                if (this.m_boUseEffect)
-                {
-                    this.m_BodySurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(nBody + this.m_nEffectFrame, ref this.m_nPx, ref this.m_nPy);
-                    EffectSurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(nEffect + this.m_nEffectFrame, ref ax, ref ay);
-                }
-                else if (!this.m_boReverseFrame)
-                {
-                    this.m_BodySurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(nBody + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
-                    EffectSurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(nEffect + this.m_nCurrentFrame, ref ax, ref ay);
-                }
-                else
-                {
-                    this.m_BodySurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(nBody + this.m_nEndFrame - (this.m_nCurrentFrame - this.m_nStartFrame), ref this.m_nPx, ref this.m_nPy);
-                    EffectSurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(nEffect + this.m_nEndFrame - (this.m_nCurrentFrame - this.m_nStartFrame), ref ax, ref ay);
-                }
-                if (this.m_nCurrentAction == Grobal2.SM_DIGUP)
-                {
-                    // g_Screen.AddChatBoardString(Format('%d', [FCurrentFrame]), GetRGB(5), clWhite);
-                    this.m_BodySurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
-                    EffectSurface = WMFile.Units.WMFile.g_WMons[34].GetCachedImage(nDigUp + this.m_nCurrentFrame, ref ax, ref ay);
-                    this.m_boUseEffect = true;
-                }
-                else
-                {
-                    this.m_boUseEffect = false;
-                }
-                return;
-            }
-            if (this.m_boUseEffect)
-            {
-                this.m_BodySurface = WMFile.Units.WMFile.g_WMons[18].GetCachedImage(1280 + this.m_nEffectFrame, ref this.m_nPx, ref this.m_nPy);
-                EffectSurface = WMFile.Units.WMFile.g_WMons[18].GetCachedImage(920 + this.m_nEffectFrame, ref ax, ref ay);
-            }
-            else if (!this.m_boReverseFrame)
-            {
-                this.m_BodySurface = WMFile.Units.WMFile.g_WMons[18].GetCachedImage(1280 + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
-                EffectSurface = WMFile.Units.WMFile.g_WMons[18].GetCachedImage(920 + this.m_nCurrentFrame, ref ax, ref ay);
-            }
-            else
-            {
-                this.m_BodySurface = WMFile.Units.WMFile.g_WMons[18].GetCachedImage(1280 + this.m_nEndFrame - (this.m_nCurrentFrame - this.m_nStartFrame), ref this.m_nPx, ref this.m_nPy);
-                EffectSurface = WMFile.Units.WMFile.g_WMons[18].GetCachedImage(920 + this.m_nEndFrame - (this.m_nCurrentFrame - this.m_nStartFrame), ref ax, ref ay);
-            }
-            if (this.m_nCurrentAction == Grobal2.SM_DIGUP)
-            {
-                this.m_BodySurface = null;
-                EffectSurface = WMFile.Units.WMFile.g_WMons[18].GetCachedImage(920 + this.m_nCurrentFrame, ref ax, ref ay);
-                this.m_boUseEffect = true;
-            }
-            else
-            {
-                this.m_boUseEffect = false;
-            }
-        }
-
-        public override void DrawChr(TDirectDrawSurface dsurface, int dx, int dy, bool blend, bool boFlag, bool DrawOnSale)
-        {
-            int idx;
-            TDirectDrawSurface d;
-            TWMBaseImages wimg;
-            bool bWin;
-            int ShiftX;
-            int ShiftY;
-            TColorEffect ceff;
-            int ax2;
-            int ay2;
-            if (!(this.m_btDir >= 0 && this.m_btDir<= 7))
-            {
-                return;
-            }
-                        if (MShare.GetTickCount() - this.m_dwLoadSurfaceTime > g_dwLoadSurfaceTime)
-            {
-                this.m_dwLoadSurfaceTime = MShare.GetTickCount();
-                LoadSurface();
-            }
-            ShiftX = dx + this.m_nShiftX;
-            ShiftY = dy + this.m_nShiftY;
-            ceff = this.GetDrawEffectValue();
-            if ((this.m_wAppearance == 330) || (this.m_wAppearance == 336))
-            {
-                bWin = (new ArrayList(new int[] {0, 6, 7}).Contains(this.m_btDir));
-                if (EffectSurface != null)
-                {
-                    if (!bWin)
-                    {
-                        cliUtil.Units.cliUtil.DrawBlend(dsurface, dx + ax + this.m_nShiftX, dy + ay + this.m_nShiftY, EffectSurface, 1);
-                    }
-                }
-                if (this.m_BodySurface != null)
-                {
-                    this.DrawEffSurface(dsurface, this.m_BodySurface, ShiftX + this.m_nPx, ShiftY + this.m_nPy, blend, ceff);
-                }
-                if (EffectSurface != null)
-                {
-                    if (bWin)
-                    {
-                        cliUtil.Units.cliUtil.DrawBlend(dsurface, dx + ax + this.m_nShiftX, dy + ay + this.m_nShiftY, EffectSurface, 1);
-                    }
-                }
-            }
-            else
-            {
-                if (EffectSurface != null)
-                {
-                    cliUtil.Units.cliUtil.DrawBlend(dsurface, dx + ax + this.m_nShiftX, dy + ay + this.m_nShiftY, EffectSurface, 1);
-                }
-                if (this.m_BodySurface != null)
-                {
-                    this.DrawEffSurface(dsurface, this.m_BodySurface, ShiftX + this.m_nPx, ShiftY + this.m_nPy, blend, ceff);
-                }
-            }
-            if (this.m_boUseMagic && (this.m_CurMagic.EffectNumber > 0))
-            {
-                // sm_spell
-                if (this.m_nCurEffFrame >= 0 && this.m_nCurEffFrame<= this.m_nSpellFrame - 1)
-                {
-                    wimg = null;
-                    magiceff.Units.magiceff.GetEffectBase(this.m_CurMagic.EffectNumber - 1, 0, ref wimg, ref idx);
-                    if (wimg != null)
-                    {
-                        idx = idx + this.m_nCurEffFrame;
-                        d = wimg.GetCachedImage(idx, ref ax2, ref ay2);
-                        if (d != null)
-                        {
-                            cliUtil.Units.cliUtil.DrawBlend(dsurface, ShiftX + ax2, ShiftY + ay2, d, 1);
-                        }
-                    }
-                }
-            }
-            // 显示攻击效果
-            if (this.m_boHitEffect)
-            {
-                if ((this.m_nHitEffectNumber > 0))
-                {
-                    magiceff.Units.magiceff.GetEffectBase(this.m_nHitEffectNumber - 1, 1, ref wimg, ref idx);
-                    if (wimg != null)
-                    {
-                        idx = idx + this.m_btDir * 10 + (this.m_nCurrentFrame - this.m_nStartFrame);
-                        d = wimg.GetCachedImage(idx, ref ax2, ref ay2);
-                        if (d != null)
-                        {
-                            cliUtil.Units.cliUtil.DrawBlend(dsurface, ShiftX + ax2, ShiftY + ay2, d, 1);
-                        }
-                    }
-                }
-            }
-        }
-
-    } // end TAngel
-
-    } // end TBanyaGuardMon
-
+    }
+}

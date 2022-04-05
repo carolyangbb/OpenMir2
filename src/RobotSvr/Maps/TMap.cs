@@ -309,7 +309,7 @@ namespace RobotSvr
                 m_nCurrentMap = File.Open(sFileName, (FileMode)FileAccess.Read | FileShare.ReadWrite);
                 if (m_nCurrentMap != 0)
                 {
-                    if (FileRead(m_nCurrentMap, this.m_MapHeader);
+                    if (FileRead(m_nCurrentMap, this.m_MapHeader));
                     {
                         m_nCurrentMap.Close();
                         m_nCurrentMap = 0;

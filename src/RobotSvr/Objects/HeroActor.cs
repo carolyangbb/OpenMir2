@@ -8,6 +8,7 @@ namespace RobotSvr
         public static long g_hinttick1 = 0;
         public static long g_hinttick2 = 0;
         public const int overdisc = 22;
+
         // 待处理节点入队列, 依靠对目的地估价距离插入排序
         public static bool CanNextSpell()
         {
@@ -341,7 +342,7 @@ namespace RobotSvr
                 has = false;
                 for (i = 0; i < MShare.MAXBAGITEMCL; i ++ )
                 {
-                    if ((MShare.g_ItemArr[i].s.Name != "") && (MShare.g_ItemArr[i].s.AC > 0) && (MShare.g_ItemArr[i].s.StdMode == 0))
+                    if ((MShare.g_ItemArr[i].Item.Name != "") && (MShare.g_ItemArr[i].Item.AC > 0) && (MShare.g_ItemArr[i].Item.StdMode == 0))
                     {
                         has = true;
                         break;
@@ -360,7 +361,7 @@ namespace RobotSvr
                 has = false;
                 for (i = 0; i < MShare.MAXBAGITEMCL; i ++ )
                 {
-                    if ((MShare.g_ItemArr[i].s.Name != "") && (MShare.g_ItemArr[i].s.MAC > 0) && (MShare.g_ItemArr[i].s.StdMode == 0))
+                    if ((MShare.g_ItemArr[i].Item.Name != "") && (MShare.g_ItemArr[i].Item.MAC > 0) && (MShare.g_ItemArr[i].Item.StdMode == 0))
                     {
                         has = true;
                         break;
@@ -379,7 +380,7 @@ namespace RobotSvr
                 has = false;
                 for (i = 0; i <= 45; i ++ )
                 {
-                    if ((MShare.g_ItemArr[i].s.Name == ""))
+                    if ((MShare.g_ItemArr[i].Item.Name == ""))
                     {
                         has = true;
                         break;
@@ -398,7 +399,7 @@ namespace RobotSvr
                 has = false;
                 for (i = 0; i < MShare.MAXBAGITEMCL; i ++ )
                 {
-                    if ((MShare.g_ItemArr[i].s.StdMode == 25) && (MShare.g_ItemArr[i].s.Name != "") && (MShare.g_ItemArr[i].s.Name.IndexOf("符") > 0))
+                    if ((MShare.g_ItemArr[i].Item.StdMode == 25) && (MShare.g_ItemArr[i].Item.Name != "") && (MShare.g_ItemArr[i].Item.Name.IndexOf("符") > 0))
                     {
                         has = true;
                         break;
@@ -415,7 +416,7 @@ namespace RobotSvr
                     has = false;
                     for (i = 0; i < MShare.MAXBAGITEMCL; i ++ )
                     {
-                        if ((MShare.g_ItemArr[i].s.StdMode == 25) && (MShare.g_ItemArr[i].s.Name != "") && (MShare.g_ItemArr[i].s.Name.IndexOf("药") > 0))
+                        if ((MShare.g_ItemArr[i].Item.StdMode == 25) && (MShare.g_ItemArr[i].Item.Name != "") && (MShare.g_ItemArr[i].Item.Name.IndexOf("药") > 0))
                         {
                             has = true;
                             break;
@@ -532,7 +533,7 @@ namespace RobotSvr
                 has = false;
                 for (i = 0; i <= 45; i ++ )
                 {
-                    if ((MShare.g_ItemArr[i].s.Name == ""))
+                    if ((MShare.g_ItemArr[i].Item.Name == ""))
                     {
                         has = true;
                         break;
@@ -1237,7 +1238,7 @@ DDDD:
                     {
                         for (i = 6; i < MShare.MAXBAGITEMCL; i ++ )
                         {
-                            if ((MShare.g_ItemArr[i].s.NeedIdentify < 4) && (MShare.g_ItemArr[i].s.StdMode == 25) && (MShare.g_ItemArr[i].s.Shape != 6) && (MShare.g_ItemArr[i].s.Name.IndexOf("药") > 0))
+                            if ((MShare.g_ItemArr[i].Item.NeedIdentify < 4) && (MShare.g_ItemArr[i].Item.StdMode == 25) && (MShare.g_ItemArr[i].Item.Shape != 6) && (MShare.g_ItemArr[i].Item.Name.IndexOf("药") > 0))
                             {
                                 n ++;
                                 break;
@@ -1261,7 +1262,7 @@ DDDD:
                     {
                         for (i = 6; i < MShare.MAXBAGITEMCL; i ++ )
                         {
-                            if ((MShare.g_ItemArr[i].s.NeedIdentify < 4) && (MShare.g_ItemArr[i].s.StdMode == 25) && (MShare.g_ItemArr[i].s.Shape != 6) && (MShare.g_ItemArr[i].s.Name.IndexOf("符") > 0))
+                            if ((MShare.g_ItemArr[i].Item.NeedIdentify < 4) && (MShare.g_ItemArr[i].Item.StdMode == 25) && (MShare.g_ItemArr[i].Item.Shape != 6) && (MShare.g_ItemArr[i].Item.Name.IndexOf("符") > 0))
                             {
                                 m ++;
                                 break;

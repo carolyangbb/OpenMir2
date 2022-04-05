@@ -506,16 +506,16 @@ namespace RobotSvr
         public static TUserStateInfo UserState1 = null;
         public static TItemShine g_detectItemShine = null;
         public static TItemShine[] UserState1Shine = new TItemShine[Grobal2.U_FASHION + 1];
-        public static TItemShine[] g_UseItemsShine = new TItemShine[Grobal2.U_FASHION + 1];
-        public static TItemShine[] g_HeroUseItemsShine = new TItemShine[Grobal2.U_FASHION + 1];
+        public static TItemShine[] g_Us.Item.Itemhine = new TItemShine[Grobal2.U_FASHION + 1];
+        public static TItemShine[] g_HeroUs.Item.Itemhine = new TItemShine[Grobal2.U_FASHION + 1];
         public static TClientItem[] g_ItemArr = new TClientItem[MAXBAGITEMCL - 1 + 1];
         public static TClientItem[] g_HeroItemArr = new TClientItem[MAXBAGITEMCL - 1 + 1];
         public static TItemShine[] g_ItemArrShine = new TItemShine[MAXBAGITEMCL - 1 + 1];
         public static TItemShine[] g_HeroItemArrShine = new TItemShine[MAXBAGITEMCL - 1 + 1];
         public static TItemShine[] g_StallItemArrShine = new TItemShine[10 - 1 + 1];
         public static TItemShine[] g_uStallItemArrShine = new TItemShine[10 - 1 + 1];
-        public static TItemShine[] g_DealItemsShine = new TItemShine[10 - 1 + 1];
-        public static TItemShine[] g_DealRemoteItemsShine = new TItemShine[20 - 1 + 1];
+        public static TItemShine[] g_Dea.Item.Itemhine = new TItemShine[10 - 1 + 1];
+        public static TItemShine[] g_DealRemot.Item.Itemhine = new TItemShine[20 - 1 + 1];
         public static TItemShine g_MovingItemShine = null;
         public static bool g_boBagLoaded = false;
         public static bool g_boServerChanging = false;
@@ -816,42 +816,11 @@ namespace RobotSvr
     {35 + 240, 70 + 23 * 5, 35 + 240 + 72, 70 + 23 * 5 + 16} ,
     {35 + 120, 70 + 23 * 5, 35 + 120 + 72, 70 + 23 * 5 + 16} ,
     {35 + 000, 70 + 23 * 5, 35 + 000 + 96, 70 + 23 * 5 + 16} };
-        // 0
-        // 1
-        // 2
-        // 3
-        // 4
-        // '显示过滤',                     //5
-        // 6
-        // '拣取过滤',                     //7
-        // 8
-        // 9
-        public static string[] g_caGeneral = { "人名显示(Z)", "持久警告(X)", "免Shift键(C)", "显示经验过滤", "物品提示(ESC)", "显示过滤", "隐藏人物翅膀", "预留(无作用)", "隐藏尸体(V)", "自动修理", "屏幕震动", "音效", "预留", "数字飘血", "装备比较", "稳如泰山", "显示称号" };
-        // 0
-        // 1
-        // 2
-        // 3
-        // 4
-        // 5
-        // 6
-        // '钩选此项将不自动拣取未显示\在地面上的物品', //7
-        // 8
-        // 9
-        public static string[] g_HintGeneral = { "钩选此项将全屏显示玩家名字", "钩选此项在装备持久低时进行提示", "钩选此项将不需要按Shift也能\\攻击其他玩家", "钩选此项将隐藏聊天栏中低于\\设置的经验值提示", "钩选此项将显示地面未过滤的\\物品的名字", "钩选此项将过滤部分地面物品的显示", "钩选此项将不显示人物翅膀效果，可避免\\电脑较差且翅膀显示过多而导致卡问题", "", "钩选此项将隐藏已死亡的怪物\\尸体，避免资源效果，游戏更流畅", "钩选此项将自动修理身上装备\\包裹需放置有一定持久的修复神水", "钩选此项将触发游戏中的屏幕震动效果", "钩选此项将启用游戏音效反之\\则关闭游戏的音效", "", "钩选此项将触发开启伤害值显示", "是否开启装备比较功能", "钩选此项将屏蔽人物受打击时的后昂动作", "钩选此项将显示人物头顶的称号" };
         public static bool[] g_gcGeneral = { true, true, false, true, true, true, false, true, false, true, true, true, true, false, false, true, true };
         public static Color[] g_clGeneral = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver };
         public static Color[] g_clGeneralDef = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver };
         // ====================================Protect====================================
         public const int MAX_GC_PROTECT = 11;
-        // 0
-        // 1
-        // 2
-        // 3
-        // 4
-        // 5
-        // 6
-        // 0
-        // 1
         public static Rectangle[] g_ptProtect = new Rectangle[]{
     {35 + 000, 70 + 24 * 0, 35 + 000 + 20, 70 + 24 * 0 + 16} ,
     {35 + 000, 70 + 24 * 1, 35 + 000 + 20, 70 + 24 * 1 + 16} ,
@@ -1290,7 +1259,6 @@ namespace RobotSvr
             ClMain.DScreen.AddChatBoardString(Str, System.Drawing.Color.White, System.Drawing.Color.Black);
         }
 
-        // 123456
         public static void LoadMapDesc()
         {
             int i;
@@ -1339,7 +1307,6 @@ namespace RobotSvr
                         pMapDescInfo.nPointY = nPointY;
                         pMapDescInfo.nColor = nColor;
                         pMapDescInfo.nFullMap = nFullMap;
-                        // DebugOutStr(string.Format('%.8x', [pMapDescInfo.nColor]));
                         g_xMapDescList.Add(szMapTitle, ((pMapDescInfo) as Object));
                     }
                 }
@@ -1717,7 +1684,7 @@ namespace RobotSvr
             //g_gnProtectPercent[10] = ini.ReadInteger("Protect", "HeroPerSidestep", g_gnProtectPercent[10]);
             //g_gnProtectPercent[5] = ini.ReadInteger("Protect", "RenewBookPercent", g_gnProtectPercent[5]);
             //g_gnProtectPercent[6] = ini.ReadInteger("Protect", "RenewBookNowBookIndex", g_gnProtectPercent[6]);
-            //ClMain.frmMain.SendClientMessage(Grobal2.CM_HEROSIDESTEP, MakeLong(((int)g_gcProtect[10]), g_gnProtectPercent[10]), 0, 0, 0);
+            //ClMain.frmMain.SendClientMessage(Grobal2.CM_HEROSIDESTEP, HUtil32.Makelong(((int)g_gcProtect[10]), g_gnProtectPercent[10]), 0, 0, 0);
             //g_gcTec[0] = ini.ReadBool("Tec", "SmartLongHit", g_gcTec[0]);
             //g_gcTec[10] = ini.ReadBool("Tec", "SmartLongHit2", g_gcTec[10]);
             //g_gcTec[11] = ini.ReadBool("Tec", "SmartSLongHit", g_gcTec[11]);
@@ -1734,7 +1701,7 @@ namespace RobotSvr
             //g_gcTec[12] = ini.ReadBool("Tec", "HeroSeriesSkillFilter", g_gcTec[12]);
             //g_gcTec[13] = ini.ReadBool("Tec", "SLongHit", g_gcTec[13]);
             //g_gcTec[14] = ini.ReadBool("Tec", "SmartGoMagic", g_gcTec[14]);
-            //ClMain.frmMain.SendClientMessage(Grobal2.CM_HEROSERIESSKILLCONFIG, MakeLong(((int)g_gcTec[12]), 0), 0, 0, 0);
+            //ClMain.frmMain.SendClientMessage(Grobal2.CM_HEROSERIESSKILLCONFIG, HUtil32.Makelong(((int)g_gcTec[12]), 0), 0, 0, 0);
             //g_gcHotkey[0] = ini.ReadBool("Hotkey", "UseHotkey", g_gcHotkey[0]);
             //FrmDlg.DEHeroCallHero.SetOfHotKey(ini.ReadInteger("Hotkey", "HeroCallHero", 0));
             //FrmDlg.DEHeroSetAttackState.SetOfHotKey(ini.ReadInteger("Hotkey", "HeroSetAttackState", 0));
@@ -2050,7 +2017,7 @@ namespace RobotSvr
             {
                 return result;
             }
-            switch (clientItem.Item.StdMode)
+            switch (clientItem.Item.ItemtdMode)
             {
                 case 10:
                 case 11:
@@ -2107,7 +2074,7 @@ namespace RobotSvr
             byte cnt;
             string s;
             result = false;
-            if (!(new ArrayList(new int[] { 5, 6, 10, 15, 26 }).Contains(CurrMouseItem.s.StdMode)))
+            if (!(new ArrayList(new int[] { 5, 6, 10, 15, 26 }).Contains(CurrMous.Item.Item.StdMode)))
             {
                 return result;
             }
@@ -2417,11 +2384,11 @@ namespace RobotSvr
         {
             int i;
             TClientItem cu;
-            //if ((g_TIItems[0].Item.Item.Name != "") && (g_TIItems[0].Item.Item.Eva.EvaTimesMax > 0) && (g_TIItems[0].Item.Item.Eva.EvaTimes < g_TIItems[0].Item.Item.Eva.EvaTimesMax) && ((g_TIItems[1].Item.Item.Name == "") || (g_TIItems[1].Item.Item.StdMode != 56) || !(g_TIItems[1].Item.Item.Shape >= 1 && g_TIItems[1].Item.Item.Shape <= 3) || (g_TIItems[1].Item.Item.Shape != g_TIItems[0].Item.Item.Eva.EvaTimes + 1)))
+            //if ((g_TIItems[0].Item.Item.Name != "") && (g_TIItems[0].Item.Item.Eva.EvaTimesMax > 0) && (g_TIItems[0].Item.Item.Eva.EvaTimes < g_TIItems[0].Item.Item.Eva.EvaTimesMax) && ((g_TIItems[1].Item.Item.Name == "") || (g_TIItems[1].Item.Item.ItemtdMode != 56) || !(g_TIItems[1].Item.Item.Itemhape >= 1 && g_TIItems[1].Item.Item.Itemhape <= 3) || (g_TIItems[1].Item.Item.Itemhape != g_TIItems[0].Item.Item.Eva.EvaTimes + 1)))
             //{
             //    for (i = MAXBAGITEMCL - 1; i >= 6; i--)
             //    {
-            //        if ((g_ItemArr[i].Item.Name != "") && (g_ItemArr[i].Item.StdMode == 56) && (g_ItemArr[i].Item.Shape == g_TIItems[0].Item.Eva.EvaTimes + 1))
+            //        if ((g_ItemArr[i].Item.Name != "") && (g_ItemArr[i].Item.ItemtdMode == 56) && (g_ItemArr[i].Item.Itemhape == g_TIItems[0].Item.Eva.EvaTimes + 1))
             //        {
             //            if (g_TIItems[1].Item.Item.Name != "")
             //            {
@@ -2446,11 +2413,11 @@ namespace RobotSvr
         {
             int i;
             TClientItem cu;
-            //if (FrmDlg.DWSP.Visible && (FrmDlg.DWSP.tag == 1) && (g_spItems[0].Item.Item.Name != "") && (g_spItems[0].Item.Item.Eva.EvaTimesMax > 0) && ((g_spItems[1].Item.Item.Name == "") || (g_spItems[1].Item.Item.StdMode != 56) || (g_spItems[1].Item.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             s.Shape != 0)))
+            //if (FrmDlg.DWSP.Visible && (FrmDlg.DWSP.tag == 1) && (g_spItems[0].Item.Item.Name != "") && (g_spItems[0].Item.Item.Eva.EvaTimesMax > 0) && ((g_spItems[1].Item.Item.Name == "") || (g_spItems[1].Item.Item.ItemtdMode != 56) || (g_spItems[1].Item.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             s.Shape != 0)))
             //{
             //    for (i = MAXBAGITEMCL - 1; i >= 6; i--)
             //    {
-            //        if ((g_ItemArr[i].s.Name != "") && (g_ItemArr[i].s.StdMode == 56) && (g_ItemArr[i].s.Shape == 0))
+            //        if ((g_ItemArr[i].Item.Name != "") && (g_ItemArr[i].Item.StdMode == 56) && (g_ItemArr[i].Item.Shape == 0))
             //        {
             //            if (g_spItems[1].Item.Item.Name != "")
             //            {
@@ -2463,7 +2430,7 @@ namespace RobotSvr
             //            {
             //                g_spItems[1].Item = g_ItemArr[i];
             //                g_spItems[1].Index = i;
-            //                g_ItemArr[i].s.Name = "";
+            //                g_ItemArr[i].Item.Name = "";
             //            }
             //            break;
             //        }
@@ -2475,11 +2442,11 @@ namespace RobotSvr
         {
             int i;
             TClientItem cu;
-            //if ((g_TIItems[0].Item.Item.Name != "") && (g_TIItems[0].Item.Item.Eva.EvaTimesMax > 0) && (g_TIItems[0].Item.Item.Eva.EvaTimes > 0) && ((g_TIItems[1].Item.Item.Name == "") || (g_TIItems[1].Item.Item.StdMode != 41) || (g_TIItems[1].Item.Item.Shape != 30)))
+            //if ((g_TIItems[0].Item.Item.Name != "") && (g_TIItems[0].Item.Item.Eva.EvaTimesMax > 0) && (g_TIItems[0].Item.Item.Eva.EvaTimes > 0) && ((g_TIItems[1].Item.Item.Name == "") || (g_TIItems[1].Item.Item.ItemtdMode != 41) || (g_TIItems[1].Item.Item.Itemhape != 30)))
             //{
             //    for (i = MAXBAGITEMCL - 1; i >= 6; i--)
             //    {
-            //        if ((g_ItemArr[i].s.Name != "") && (g_ItemArr[i].s.StdMode == 41) && (g_ItemArr[i].s.Shape == 30))
+            //        if ((g_ItemArr[i].Item.Name != "") && (g_ItemArr[i].Item.StdMode == 41) && (g_ItemArr[i].Item.Shape == 30))
             //        {
             //            if (g_TIItems[1].Item.Item.Name != "")
             //            {
@@ -2692,7 +2659,7 @@ namespace RobotSvr
     {
         public int Index;
         public TClientItem Item;
-    } 
+    }
 
     public struct TCleintBox
     {
@@ -2794,6 +2761,36 @@ namespace RobotSvr
         i_Stone,
         i_Gold,
         i_Other
-    } // end TItemType
+    }
 
+    public class TChrMsg
+    {
+        public int Ident;
+        public int X;
+        public int Y;
+        public int Dir;
+        public int State;
+        public int Feature;
+        public int Saying;
+        public int Sound;
+        public int dwDelay;
+    }
+
+    public class TDropItem
+    {
+        public int X;
+        public int Y;
+        public int id;
+        public int looks;
+        public string Name;
+        public int Width;
+        public int Height;
+        public int FlashTime;
+        public int FlashStepTime;
+        public int FlashStep;
+        public bool BoFlash;
+        public bool boNonSuch;
+        public bool boPickUp;
+        public bool boShowName;
+    }
 }

@@ -12,8 +12,8 @@ namespace RobotSvr
             TMonsterAction pm;
             this.m_boUseMagic = false;
             this.m_nCurrentFrame =  -1;
-            this.m_nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
@@ -88,7 +88,7 @@ namespace RobotSvr
             int cf;
             TMonsterAction pm;
             result = 0;
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return result;
@@ -155,8 +155,8 @@ namespace RobotSvr
             TMonsterAction pm;
             this.m_boUseMagic = false;
             this.m_nCurrentFrame =  -1;
-            this.m_nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
@@ -216,7 +216,7 @@ namespace RobotSvr
             int cf;
             result = 0;
             // jacky
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return result;
@@ -262,8 +262,8 @@ namespace RobotSvr
             TMonsterAction pm;
             this.m_boUseMagic = false;
             this.m_nCurrentFrame =  -1;
-            this.m_nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
@@ -446,8 +446,8 @@ namespace RobotSvr
             TMonsterAction pm;
             this.m_boUseEffect = false;
             this.m_nCurrentFrame =  -1;
-            this.m_nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
@@ -527,8 +527,8 @@ namespace RobotSvr
             TMonsterAction pm;
             result = 0;
             // jacky
-            this.m_nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return result;
@@ -626,8 +626,8 @@ namespace RobotSvr
             TMonsterAction pm;
             this.m_boUseEffect = false;
             this.m_nCurrentFrame =  -1;
-            this.m_nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
@@ -683,7 +683,7 @@ namespace RobotSvr
             if (deathframe > 0)
             {
                 // (CurrentAction = SM_NOWDEATH) or (CurrentAction = SM_DEATH) then begin
-                this.m_BodySurface = mimg.GetCachedImage(Actor.Units.Actor.GetOffset(this.m_wAppearance) + deathframe, ref this.m_nPx, ref this.m_nPy);
+                this.m_BodySurface = mimg.GetCachedImage(Actor.GetOffset(this.m_wAppearance) + deathframe, ref this.m_nPx, ref this.m_nPy);
             }
             else
             {
@@ -691,7 +691,7 @@ namespace RobotSvr
             }
             if ((this.m_wAppearance >= 901) && (this.m_wAppearance <= 903))
             {
-                BrokenSurface = WMFile.Units.WMFile.g_WEffectImg.GetCachedImage(Actor.Units.Actor.GetOffset(this.m_wAppearance) + 8 + this.m_btDir, ref bx, ref by);
+                BrokenSurface = WMFile.Units.WMFile.g_WEffectImg.GetCachedImage(Actor.GetOffset(this.m_wAppearance) + 8 + this.m_btDir, ref bx, ref by);
                 if (this.m_boUseEffect)
                 {
                     if (this.m_wAppearance == 901)
@@ -712,8 +712,8 @@ namespace RobotSvr
             TMonsterAction pm;
             result = 0;
             // jacky
-            this.m_nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return result;
@@ -777,8 +777,8 @@ namespace RobotSvr
             this.m_btDir = 0;
             this.m_boUseMagic = false;
             this.m_nCurrentFrame =  -1;
-            this.m_nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
@@ -872,7 +872,7 @@ namespace RobotSvr
 
 }
 
-namespace HerbActor.Units
+namespace Herb
 {
     public class HerbActor
     {

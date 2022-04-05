@@ -29,8 +29,8 @@ public class TGhostShipMonster : TActor
         this.m_boReverseFrame = false;
         this.m_nCurrentFrame = -1;
         this.m_nHitEffectNumber = 0;
-        this.m_nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-        pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+        this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
+        pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
         if (pm == null)
         {
             return;
@@ -219,7 +219,7 @@ public class TGhostShipMonster : TActor
         int cf;
         TMonsterAction pm;
         result = 0;
-        pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+        pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
         if (pm == null)
         {
             return result;
@@ -264,11 +264,11 @@ public class TGhostShipMonster : TActor
         {
             if (!this.m_boReverseFrame)
             {
-                this.m_BodySurface = mimg.GetCachedImage(Actor.Units.Actor.GetOffset(this.m_wAppearance) + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
+                this.m_BodySurface = mimg.GetCachedImage(Actor.GetOffset(this.m_wAppearance) + this.m_nCurrentFrame, ref this.m_nPx, ref this.m_nPy);
             }
             else
             {
-                this.m_BodySurface = mimg.GetCachedImage(Actor.Units.Actor.GetOffset(this.m_wAppearance) + this.m_nEndFrame - (this.m_nCurrentFrame - this.m_nStartFrame), ref this.m_nPx, ref this.m_nPy);
+                this.m_BodySurface = mimg.GetCachedImage(Actor.GetOffset(this.m_wAppearance) + this.m_nEndFrame - (this.m_nCurrentFrame - this.m_nStartFrame), ref this.m_nPx, ref this.m_nPy);
             }
         }
         switch (this.m_wAppearance)
@@ -300,11 +300,11 @@ public class TGhostShipMonster : TActor
         }
         if ((!this.m_boReverseFrame))
         {
-            ShadowSurface = WMFile.Units.WMFile.g_WMons[36].GetCachedImage(nShadowOffset + Actor.Units.Actor.GetOffset(this.m_wAppearance) + this.m_nCurrentFrame, ref ax, ref ay);
+            ShadowSurface = WMFile.Units.WMFile.g_WMons[36].GetCachedImage(nShadowOffset + Actor.GetOffset(this.m_wAppearance) + this.m_nCurrentFrame, ref ax, ref ay);
         }
         else
         {
-            ShadowSurface = WMFile.Units.WMFile.g_WMons[36].GetCachedImage(nShadowOffset + Actor.Units.Actor.GetOffset(this.m_wAppearance) + this.m_nEndFrame - (this.m_nCurrentFrame - this.m_nStartFrame), ref ax, ref ay);
+            ShadowSurface = WMFile.Units.WMFile.g_WMons[36].GetCachedImage(nShadowOffset + Actor.GetOffset(this.m_wAppearance) + this.m_nEndFrame - (this.m_nCurrentFrame - this.m_nStartFrame), ref ax, ref ay);
         }
     }
 

@@ -2,7 +2,9 @@
 using System.Collections;
 using SystemModule;
 
-public class TSnowMon: TActor
+namespace RobotSvr
+{
+    public class TSnowMon : TActor
     {
         protected TDirectDrawSurface AttackEffectSurface = null;
         protected TDirectDrawSurface AttackEffectSurface2 = null;
@@ -47,30 +49,30 @@ public class TSnowMon: TActor
         {
             this.m_boRunSound = true;
             SetSound();
-            switch(this.m_nCurrentAction)
+            switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_STRUCK:
                     if ((this.m_nStruckWeaponSound >= 0))
                     {
-                                            }
+                    }
                     if ((this.m_nStruckSound >= 0))
                     {
-                                            }
+                    }
                     if ((this.m_nScreamSound >= 0))
                     {
-                                            }
+                    }
                     break;
                 case Grobal2.SM_NOWDEATH:
                     if ((this.m_nDieSound >= 0))
                     {
-                                            }
+                    }
                     break;
                 case Grobal2.SM_THROW:
                 case Grobal2.SM_HIT:
                 case Grobal2.SM_FLYAXE:
                 case Grobal2.SM_LIGHTING:
                 case Grobal2.SM_DIGDOWN:
-                    switch(this.m_wAppearance)
+                    switch (this.m_wAppearance)
                     {
                         case 250:
                         case 251:
@@ -80,38 +82,37 @@ public class TSnowMon: TActor
                             {
                                 if (this.m_nDie2Sound >= 0)
                                 {
-                                                                    }
+                                }
                             }
                             else if (this.m_nAttackSound >= 0)
                             {
-                                                            }
+                            }
                             break;
                         default:
                             if (this.m_nAttackSound >= 0)
                             {
-                                                            }
+                            }
                             break;
                     }
                     break;
                 case Grobal2.SM_ALIVE:
                 case Grobal2.SM_DIGUP:
-                                                            break;
+                    break;
                 case Grobal2.SM_SPELL:
-                                        break;
+                    break;
             }
         }
 
         public override void CalcActorFrame()
         {
-            TMonsterAction pm;
-            this.m_nCurrentFrame =  -1;
-            this.m_nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            this.m_nCurrentFrame = -1;
+            this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
+            TMonsterAction pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
             }
-            switch(this.m_nCurrentAction)
+            switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_TURN:
                     this.m_nStartFrame = pm.ActStand.start + this.m_btDir * (pm.ActStand.frame + pm.ActStand.skip);
@@ -135,7 +136,6 @@ public class TSnowMon: TActor
                     }
                     else
                     {
-                        // sm_backstep
                         this.Shift(ClFunc.GetBack(this.m_btDir), this.m_nMoveStep, 0, this.m_nEndFrame - this.m_nStartFrame + 1);
                     }
                     break;
@@ -160,13 +160,6 @@ public class TSnowMon: TActor
                     }
                     this.m_dwEffectStartTime = MShare.GetTickCount();
                     this.m_dwEffectFrameTime = this.m_dwFrameTime;
-                    // Actor := g_PlayScene.FindActor(m_nTargetRecog);
-                    // if Actor <> nil then begin
-                    // g_PlayScene.ScreenXYfromMCXY(m_nCurrX, m_nCurrY, scx, scy);
-                    // g_PlayScene.ScreenXYfromMCXY(Actor.m_nCurrX, Actor.m_nCurrY, stx, sty);
-                    // fire16dir := GetFlyDirection16(scx, scy, stx, sty);
-                    // end else
-                    // fire16dir := firedir * 2;
                     this.m_boUseEffect = false;
                     if (this.m_btRace == 51)
                     {
@@ -177,8 +170,7 @@ public class TSnowMon: TActor
                     this.m_nStartFrame = pm.ActCritical.start + this.m_btDir * (pm.ActCritical.frame + pm.ActCritical.skip);
                     this.m_nEndFrame = this.m_nStartFrame + pm.ActCritical.frame - 1;
                     this.m_dwFrameTime = pm.ActCritical.ftime;
-                    // DScreen.AddChatBoardString(IntToStr(m_nMagicNum), clWhite, clBlack);
-                    if ((this.m_nMagicNum == 2) && (new ArrayList(new int[] {38, 39, 46}).Contains(this.m_btRace)))
+                    if ((this.m_nMagicNum == 2) && (new ArrayList(new int[] { 38, 39, 46 }).Contains(this.m_btRace)))
                     {
                         this.m_nStartFrame = pm.ActDeath.start + this.m_btDir * (pm.ActDeath.frame + pm.ActDeath.skip);
                         this.m_nEndFrame = this.m_nStartFrame + pm.ActDeath.frame - 1;
@@ -227,12 +219,12 @@ public class TSnowMon: TActor
                     this.m_nEndFrame = this.m_nStartFrame + pm.ActDie.frame - 1;
                     this.m_dwFrameTime = pm.ActDie.ftime;
                     this.m_dwStartTime = MShare.GetTickCount();
-                    if ((new ArrayList(new int[] {40, 65}).Contains(this.m_btRace)))
+                    if ((new ArrayList(new int[] { 40, 65 }).Contains(this.m_btRace)))
                     {
                         BoUseDieEffect = true;
                     }
                     // 38, 39,
-                    if (new ArrayList(new int[] {51}).Contains(this.m_btRace))
+                    if (new ArrayList(new int[] { 51 }).Contains(this.m_btRace))
                     {
                         BoUseDieEffect = true;
                     }
@@ -267,7 +259,7 @@ public class TSnowMon: TActor
             int cf;
             TMonsterAction pm;
             result = 0;
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return result;
@@ -303,130 +295,6 @@ public class TSnowMon: TActor
             return result;
         }
 
-        public override void LoadSurface()
-        {
-            int nImgBase;
-            ChrEffect = null;
-            base.LoadSurface();
-            switch(this.m_btRace)
-            {
-                case 27:
-                    if (this.m_boUseEffect)
-                    {
-                        AttackEffectSurface = WMFile.Units.WMFile.g_WMons[26].GetCachedImage(420 + (this.m_btDir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                    }
-                    break;
-                case 28:
-                    if (this.m_boUseEffect)
-                    {
-                        AttackEffectSurface = WMFile.Units.WMFile.g_WMons[26].GetCachedImage(930 + (this.m_btDir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                    }
-                    break;
-                case 38:
-                    if (this.m_boUseEffect)
-                    {
-                        if (this.m_nMagicNum == 2)
-                        {
-                            AttackEffectSurface = WMFile.Units.WMFile.g_WMons[26].GetCachedImage(2650 + (this.m_btDir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                        }
-                        else
-                        {
-                            AttackEffectSurface = WMFile.Units.WMFile.g_WMons[26].GetCachedImage(2570 + (this.m_btDir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                        }
-                    }
-                    break;
-                case 39:
-                    // /ddddddddddddddddddddddddddddd
-                    if (this.m_wAppearance == 267)
-                    {
-                        if (this.m_boUseEffect)
-                        {
-                            ChrEffect = WMFile.Units.WMFile.g_WMons[27].GetCachedImage(3040 + this.m_nEffectFrame, ref ax, ref ay);
-                        }
-                        else if (!this.m_boReverseFrame)
-                        {
-                            ChrEffect = WMFile.Units.WMFile.g_WMons[27].GetCachedImage(3040 + this.m_nCurrentFrame, ref ax, ref ay);
-                        }
-                        else
-                        {
-                            ChrEffect = WMFile.Units.WMFile.g_WMons[27].GetCachedImage(3040 + this.m_nEndFrame - (this.m_nCurrentFrame - this.m_nStartFrame), ref ax, ref ay);
-                        }
-                        if (this.m_boUseEffect)
-                        {
-                            AttackEffectSurface = WMFile.Units.WMFile.g_WMons[27].GetCachedImage(3470 + (this.m_btDir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                            AttackEffectSurface2 = WMFile.Units.WMFile.g_WMons[27].GetCachedImage(3550 + this.m_nEffectFrame - this.m_nEffectStart, ref bx, ref by);
-                        }
-                    }
-                    else if (this.m_wAppearance == 268)
-                    {
-                        if (this.m_boUseEffect)
-                        {
-                            ChrEffect = WMFile.Units.WMFile.g_WMons[27].GetCachedImage(4070 + this.m_nEffectFrame, ref ax, ref ay);
-                        }
-                        else if (!this.m_boReverseFrame)
-                        {
-                            ChrEffect = WMFile.Units.WMFile.g_WMons[27].GetCachedImage(4070 + this.m_nCurrentFrame, ref ax, ref ay);
-                        }
-                        else
-                        {
-                            ChrEffect = WMFile.Units.WMFile.g_WMons[27].GetCachedImage(4070 + this.m_nEndFrame - (this.m_nCurrentFrame - this.m_nStartFrame), ref ax, ref ay);
-                        }
-                        if (this.m_boUseEffect)
-                        {
-                            AttackEffectSurface = WMFile.Units.WMFile.g_WMons[27].GetCachedImage(4500 + (this.m_btDir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                            AttackEffectSurface2 = WMFile.Units.WMFile.g_WMons[27].GetCachedImage(4580 + this.m_nEffectFrame - this.m_nEffectStart, ref bx, ref by);
-                        }
-                    }
-                    else
-                    {
-                        if (this.m_boUseEffect)
-                        {
-                            ChrEffect = WMFile.Units.WMFile.g_WMons[26].GetCachedImage(3240 + this.m_nEffectFrame, ref ax, ref ay);
-                        }
-                        else if (!this.m_boReverseFrame)
-                        {
-                            ChrEffect = WMFile.Units.WMFile.g_WMons[26].GetCachedImage(3240 + this.m_nCurrentFrame, ref ax, ref ay);
-                        }
-                        else
-                        {
-                            ChrEffect = WMFile.Units.WMFile.g_WMons[26].GetCachedImage(3240 + this.m_nEndFrame - (this.m_nCurrentFrame - this.m_nStartFrame), ref ax, ref ay);
-                        }
-                        if (this.m_boUseEffect)
-                        {
-                            AttackEffectSurface = WMFile.Units.WMFile.g_WMons[26].GetCachedImage(3670 + (this.m_btDir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                            AttackEffectSurface2 = WMFile.Units.WMFile.g_WMons[26].GetCachedImage(3750 + this.m_nEffectFrame - this.m_nEffectStart, ref bx, ref by);
-                        }
-                    }
-                    break;
-                case 46:
-                    if (this.m_boUseEffect && (this.m_nMagicNum == 2))
-                    {
-                        AttackEffectSurface = WMFile.Units.WMFile.g_WMons[27].GetCachedImage(1180 + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                    }
-                    break;
-                case 51:
-                    nImgBase = 1610;
-                    switch(this.m_nCurrentAction)
-                    {
-                        case Grobal2.SM_HIT:
-                            nImgBase = 1610;
-                            break;
-                        case Grobal2.SM_LIGHTING:
-                            nImgBase = 1690;
-                            break;
-                    }
-                    if (this.m_boUseEffect)
-                    {
-                        AttackEffectSurface = WMFile.Units.WMFile.g_WMons[27].GetCachedImage(nImgBase + (this.m_btDir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref ax, ref ay);
-                    }
-                    if (BoUseDieEffect)
-                    {
-                        DieEffectSurface = WMFile.Units.WMFile.g_WMons[27].GetCachedImage(1770 + (this.m_btDir * 10) + this.m_nCurrentFrame - this.m_nStartFrame, ref bx, ref by);
-                    }
-                    break;
-            }
-        }
-
         public override void Run()
         {
             long dwEffectFrameTimetime;
@@ -446,7 +314,7 @@ public class TSnowMon: TActor
                     this.m_dwEffectStartTime = MShare.GetTickCount();
                     if (this.m_nEffectFrame < this.m_nEffectEnd)
                     {
-                        this.m_nEffectFrame ++;
+                        this.m_nEffectFrame++;
                     }
                     else
                     {
@@ -455,40 +323,5 @@ public class TSnowMon: TActor
                 }
             }
         }
-
-        public override void DrawChr(TDirectDrawSurface dsurface, int dx, int dy, bool blend, bool boFlag, bool DrawOnSale)
-        {
-            base.DrawChr(dsurface, dx, dy, blend, boFlag, DrawOnSale);
-            // if m_sUserName = '' then Exit;  //1015
-            if (ChrEffect != null)
-            {
-                cliUtil.Units.cliUtil.DrawBlend(dsurface, dx + ax + this.m_nShiftX, dy + ay + this.m_nShiftY, ChrEffect, 1);
-            }
-        }
-
-        public override void DrawEff(TDirectDrawSurface dsurface, int dx, int dy)
-        {
-            if (this.m_boUseEffect)
-            {
-                if (AttackEffectSurface != null)
-                {
-                    cliUtil.Units.cliUtil.DrawBlend(dsurface, dx + ax + this.m_nShiftX, dy + ay + this.m_nShiftY, AttackEffectSurface, 1);
-                }
-                if (AttackEffectSurface2 != null)
-                {
-                    cliUtil.Units.cliUtil.DrawBlend(dsurface, dx + bx + this.m_nShiftX, dy + by + this.m_nShiftY, AttackEffectSurface2, 1);
-                }
-            }
-            if (BoUseDieEffect)
-            {
-                if (DieEffectSurface != null)
-                {
-                    cliUtil.Units.cliUtil.DrawBlend(dsurface, dx + bx + this.m_nShiftX, dy + by + this.m_nShiftY, DieEffectSurface, 1);
-                }
-            }
-        }
-
     }
-
 }
-

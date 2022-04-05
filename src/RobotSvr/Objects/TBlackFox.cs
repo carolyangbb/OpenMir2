@@ -1,18 +1,20 @@
 ﻿using SystemModule;
 
-public class TBlackFox: TGasKuDeGi
+namespace RobotSvr
+{
+    public class TBlackFox : TGasKuDeGi
     {
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
-            this.m_nCurrentFrame =  -1;
-            this.m_nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            this.m_nCurrentFrame = -1;
+            this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
             }
-            switch(this.m_nCurrentAction)
+            switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_LIGHTING:
                     this.m_nStartFrame = pm.ActCritical.start + this.m_btDir * (pm.ActCritical.frame + pm.ActCritical.skip);
@@ -38,14 +40,5 @@ public class TBlackFox: TGasKuDeGi
                     break;
             }
         }
-
-        public override void LoadSurface()
-        {
-            base.LoadSurface();
-            if ((this.m_btRace == 109) && this.m_boUseEffect && (this.m_nCurrentAction == Grobal2.SM_LIGHTING))
-            {
-                this.AttackEffectSurface = WMFile.Units.WMFile.g_WMons[24].GetCachedImage(352 + (this.m_btDir * 10) + this.m_nEffectFrame - this.m_nEffectStart, ref this.ax, ref this.ay);
-            }
-        }
-
-    } // end TBlackFox
+    }
+}

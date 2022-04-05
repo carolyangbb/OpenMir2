@@ -1,29 +1,27 @@
 ﻿using System;
 using SystemModule;
 
-public class TDragonStatue: TSkeletonArcherMon
+namespace RobotSvr
+{
+    public class TDragonStatue : TSkeletonArcherMon
     {
-        // Size: 0x270 0x54
-        public TDirectDrawSurface n26C = null;
-        // TDragonStatue
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
             this.m_btDir = 0;
-            this.m_nCurrentFrame =  -1;
-            this.m_nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            this.m_nCurrentFrame = -1;
+            this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
             }
-            switch(this.m_nCurrentAction)
+            switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_DIGUP:
                     this.Shift(0, 0, 0, 1);
                     this.m_nStartFrame = 0;
                     this.m_nEndFrame = 0;
-                    // blue
                     this.m_dwFrameTime = 100;
                     this.m_dwStartTime = MShare.GetTickCount();
                     break;
@@ -44,32 +42,7 @@ public class TDragonStatue: TSkeletonArcherMon
 
         public TDragonStatue() : base()
         {
-            n26C = null;
-        }
 
-        public override void LoadSurface()
-        {
-            TWMBaseImages mimg;
-            mimg = WMFile.Units.WMFile.g_WDragonImg;
-            if (mimg != null)
-            {
-                // + m_nCurrentFrame
-                this.m_BodySurface = mimg.GetCachedImage(Actor.Units.Actor.GetOffset(this.m_wAppearance), ref this.m_nPx, ref this.m_nPy);
-            }
-            if (this.m_boUseEffect)
-            {
-                switch(this.m_btRace)
-                {
-                    // Modify the A .. B: 84 .. 86
-                    case 84:
-                        this.EffectSurface = mimg.GetCachedImage(310 + this.m_nEffectFrame, ref this.ax, ref this.ay);
-                        break;
-                    // Modify the A .. B: 87 .. 89
-                    case 87:
-                        this.EffectSurface = mimg.GetCachedImage(330 + this.m_nEffectFrame, ref this.ax, ref this.ay);
-                        break;
-                }
-            }
         }
 
         public override void Run()
@@ -103,7 +76,7 @@ public class TDragonStatue: TSkeletonArcherMon
                     this.m_dwEffectStartTime = MShare.GetTickCount();
                     if (this.m_nEffectFrame < this.m_nEffectEnd)
                     {
-                        this.m_nEffectFrame ++;
+                        this.m_nEffectFrame++;
                     }
                     else
                     {
@@ -130,7 +103,7 @@ public class TDragonStatue: TSkeletonArcherMon
                 {
                     if (this.m_nCurrentFrame < this.m_nEndFrame)
                     {
-                        this.m_nCurrentFrame ++;
+                        this.m_nCurrentFrame++;
                         this.m_dwStartTime = MShare.GetTickCount();
                     }
                     else
@@ -144,8 +117,8 @@ public class TDragonStatue: TSkeletonArcherMon
                         // 74
                         // 74
                         // mtThunder
-                       ClMain.g_PlayScene.NewMagic(this, 90, 90, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, 0, magiceff.TMagicType.mtExplosion, false, 30, ref bofly);
-                                            }
+                        ClMain.g_PlayScene.NewMagic(this, 90, 90, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, 0, magiceff.TMagicType.mtExplosion, false, 30, ref bofly);
+                    }
                 }
                 this.m_nCurrentDefFrame = 0;
                 this.m_dwDefFrameTime = MShare.GetTickCount();
@@ -157,7 +130,7 @@ public class TDragonStatue: TSkeletonArcherMon
                     if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
                     {
                         this.m_dwDefFrameTime = MShare.GetTickCount();
-                        this.m_nCurrentDefFrame ++;
+                        this.m_nCurrentDefFrame++;
                         if (this.m_nCurrentDefFrame >= this.m_nDefFrameCount)
                         {
                             this.m_nCurrentDefFrame = 0;
@@ -173,5 +146,6 @@ public class TDragonStatue: TSkeletonArcherMon
             }
         }
 
-    } // end TDragonStatue
+    }
+}
 

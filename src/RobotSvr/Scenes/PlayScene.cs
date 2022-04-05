@@ -14,8 +14,6 @@ public class PlayScene : Scene
     private int _mNAniCount = 0;
     private int _mNDefXx = 0;
     private int _mNDefYy = 0;
-    private Timer _mMainSoundTimer = null;
-    public TextBox MemoLog = null;
     public ArrayList MActorList = null;
     public ArrayList MEffectList = null;
     public ArrayList MFlyList = null;
@@ -25,163 +23,30 @@ public class PlayScene : Scene
 
     public PlayScene()
     {
-        MMapSurface = null;
-        MObjSurface = null;
-        MMagSurface = null;
         ProcMagic.NTargetX = -1;
         MActorList = new ArrayList();
         MEffectList = new ArrayList();
         MFlyList = new ArrayList();
         MDwBlinkTime = MShare.GetTickCount();
         MBoViewBlink = false;
-        MemoLog = new TextBox(ClMain.frmMain.Owner);
-        MemoLog.Parent = ClMain.frmMain;
-        MemoLog.BorderStyle = System.Windows.Forms.FormBorderStyle.None;
-        MemoLog.Visible = false;
-        MemoLog.Ctl3D = true;
-        MemoLog.Left = 0;
-        MemoLog.Top = 250;
-        MemoLog.Width = 300;
-        MemoLog.Height = 150;
         _mDwMoveTime = MShare.GetTickCount();
         _mDwAniTime = MShare.GetTickCount();
         _mNAniCount = 0;
-        // m_nMoveStepCount := 0;
-        _mMainSoundTimer = new Timer(ClMain.frmMain.Owner);
-        _mMainSoundTimer.onTimer = SoundOnTimer;
-        _mMainSoundTimer.Interval = 1;
-        _mMainSoundTimer.Enabled = false;
-    }
-
-
-    ~PlayScene()
-    {
-        MActorList.Free;
-        MEffectList.Free;
-        MFlyList.Free;
-        base.Destroy();
-    }
-
-    private void SoundOnTimer(Object sender)
-    {
-        SoundUtil.Units.SoundUtil.g_SndMgr.PlaySound(SoundUtil.Units.SoundUtil.s_main_theme);
-        _mMainSoundTimer.Interval = 46 * 1000;
-    }
-
-    public bool Initialize()
-    {
-        bool result;
-        result = false;
-        // 更新
-        MMapSurface = new TDXRenderTargetTexture(HGECanvas.Units.HGECanvas.g_DXCanvas);
-        MMapSurface.Size = new Point(MShare.g_FScreenWidth + Grobal2.UNITX * 10 + 30, MShare.g_FScreenHeight + Grobal2.UNITY * 10 + 30);
-        MMapSurface.Active = true;
-        if (!MMapSurface.Active)
-        {
-            return result;
-        }
-        MObjSurface = new TDXRenderTargetTexture(HGECanvas.Units.HGECanvas.g_DXCanvas);
-        MObjSurface.Size = new Point(MShare.g_FScreenWidth + Grobal2.UNITX * 8 + 30, MShare.g_FScreenHeight + Grobal2.UNITY * 8 + 30);
-        MObjSurface.Active = true;
-        if (!MObjSurface.Active)
-        {
-            return result;
-        }
-        MMagSurface = new TDXRenderTargetTexture(HGECanvas.Units.HGECanvas.g_DXCanvas);
-        MMagSurface.Size = new Point(MShare.g_FScreenWidth, MShare.g_FScreenHeight);
-        MMagSurface.Active = true;
-        if (!MMagSurface.Active)
-        {
-            return result;
-        }
-        result = true;
-        return result;
-    }
-
-    public override void Finalize()
-    {
-        if (MMapSurface != null)
-        {
-            MMapSurface.Free;
-        }
-        if (MObjSurface != null)
-        {
-            MObjSurface.Free;
-        }
-        if (MMagSurface != null)
-        {
-            MMagSurface.Free;
-        }
-        MMapSurface = null;
-        MObjSurface = null;
-        MMagSurface = null;
-    }
-
-    public void Recovered()
-    {
-        if (MMapSurface != null)
-        {
-            MMapSurface.Recovered;
-        }
-        if (MObjSurface != null)
-        {
-            MObjSurface.Recovered;
-        }
-        if (MMagSurface != null)
-        {
-            MMagSurface.Recovered;
-        }
-    }
-
-    public void Lost()
-    {
-        if (MMapSurface != null)
-        {
-            MMapSurface.Lost;
-        }
-        if (MObjSurface != null)
-        {
-            MObjSurface.Lost;
-        }
-        if (MMagSurface != null)
-        {
-            MMagSurface.Lost;
-        }
     }
 
     public bool CanDrawTileMap()
     {
-        bool result;
-        result = false;
-        TMap wvar1 = ClMain.Map;
-        if ((wvar1.m_ClientRect.Left == wvar1.m_OldClientRect.Left) && (wvar1.m_ClientRect.Top == wvar1.m_OldClientRect.Top))
-        {
-            return result;
-        }
-        if (!MShare.g_boDrawTileMap)
-        {
-            return result;
-        }
-        result = true;
-        return result;
+        return true;
     }
 
     public override void OpenScene()
     {
-        // 进入游戏场景
-        ClMain.HGE.Gfx_Restore(MShare.g_FScreenWidth, MShare.g_FScreenHeight, 32);
-        FrmDlg.DEditChat.Visible = false;
-        // 迷你地图
-        FrmDlg.DWinMiniMap.Visible = true;
-        FrmDlg.ViewBottomBox(true);
+
     }
 
     public override void CloseScene()
     {
-        // 关闭游戏场景
-        SoundUtil.Units.SoundUtil.g_SndMgr.SilenceSound();
-        FrmDlg.DEditChat.Visible = false;
-        FrmDlg.ViewBottomBox(false);
+
     }
 
     public override void OpeningScene()
@@ -190,30 +55,30 @@ public class PlayScene : Scene
 
     public void CleanObjects()
     {
-        int i;
-        for (i = MActorList.Count - 1; i >= 0; i--)
-        {
-            // (TActor(m_ActorList[i]) <> g_MySelf.m_SlaveObject)
-            if ((((TActor)(MActorList[i])) != MShare.g_MySelf) && (((TActor)(MActorList[i])) != MShare.g_MySelf.m_HeroObject) && !Units.PlayScn.IsMySlaveObject(((TActor)(MActorList[i]))))
-            {
-                // BLUE
-                ((TActor)(MActorList[i])).Free;
-                MActorList.RemoveAt(i);
-            }
-        }
-        MShare.g_TargetCret = null;
-        MShare.g_FocusCret = null;
-        MShare.g_MagicTarget = null;
-        for (i = 0; i < MEffectList.Count; i++)
-        {
-            ((TMagicEff)(MEffectList[i])).Free;
-        }
-        MEffectList.Clear();
+        //int i;
+        //for (i = MActorList.Count - 1; i >= 0; i--)
+        //{
+        //    // (TActor(m_ActorList[i]) <> g_MySelf.m_SlaveObject)
+        //    if ((((TActor)(MActorList[i])) != MShare.g_MySelf) && (((TActor)(MActorList[i])) != MShare.g_MySelf.m_HeroObject) && !Units.PlayScn.IsMySlaveObject(((TActor)(MActorList[i]))))
+        //    {
+        //        // BLUE
+        //        ((TActor)(MActorList[i])).Free;
+        //        MActorList.RemoveAt(i);
+        //    }
+        //}
+        //MShare.g_TargetCret = null;
+        //MShare.g_FocusCret = null;
+        //MShare.g_MagicTarget = null;
+        //for (i = 0; i < MEffectList.Count; i++)
+        //{
+        //    ((TMagicEff)(MEffectList[i])).Free;
+        //}
+        //MEffectList.Clear();
     }
 
     public void DrawTileMap()
     {
-        
+
     }
 
     private void ClearDropItemA()
@@ -231,7 +96,6 @@ public class PlayScene : Scene
             }
             if ((Math.Abs(dropItem.X - MShare.g_MySelf.m_nCurrX) > 20) || (Math.Abs(dropItem.Y - MShare.g_MySelf.m_nCurrY) > 20))
             {
-                //@ Unsupported function or procedure: 'Dispose'
                 Dispose(dropItem);
                 MShare.g_DropedItemList.RemoveAt(i);
                 break;
@@ -241,310 +105,7 @@ public class PlayScene : Scene
 
     public void BeginScene()
     {
-        int i;
-        int k;
-        bool movetick;
-        TClEvent evn;
-        TActor actor;
-        TMagicEff meff;
-        long tick;
-        tick = MShare.GetTickCount();
-        if ((MShare.g_MySelf == null))
-        {
-            return;
-        }
-        MShare.g_boDoFastFadeOut = false;
-        movetick = false;
-        if (MShare.g_boSpeedRate)
-        {
-            // move speed
-            if (tick - _mDwMoveTime >= ((long)95 - MShare.g_MoveSpeedRate / 2))
-            {
-                // move speed
-                _mDwMoveTime = tick;
-                movetick = true;
-            }
-        }
-        else
-        {
-            if (tick - _mDwMoveTime >= 95)
-            {
-                _mDwMoveTime = tick;
-                movetick = true;
-            }
-        }
-        if (tick - _mDwAniTime >= 150)
-        {
-            // 活动素材
-            _mDwAniTime = tick;
-            _mNAniCount++;
-            if (_mNAniCount > 100000)
-            {
-                _mNAniCount = 0;
-            }
-        }
-        try
-        {
-            i = 0;
-            while (true)
-            {
-                // DYNAMIC MODE
-                if (i >= MActorList.Count)
-                {
-                    break;
-                }
-                actor = MActorList[i];
-                if (actor.m_boDeath && MShare.g_gcGeneral[8] && !actor.m_boItemExplore && (actor.m_btRace != 0) && actor.IsIdle())
-                {
-                    i++;
-                    continue;
-                }
-                if (movetick)
-                {
-                    actor.m_boLockEndFrame = false;
-                }
-                if (!actor.m_boLockEndFrame)
-                {
-                    actor.ProcMsg();
-                    if (movetick)
-                    {
-                        if (actor.Move())
-                        {
-                            MBoPlayChange = MBoPlayChange;
-                            i++;
-                            continue;
-                        }
-                    }
-                    actor.Run();
-                    if (actor != MShare.g_MySelf)
-                    {
-                        actor.ProcHurryMsg();
-                    }
-                }
-                if (actor == MShare.g_MySelf)
-                {
-                    actor.ProcHurryMsg();
-                }
-                // dogz....
-                if (actor.m_nWaitForRecogId != 0)
-                {
-                    if (actor.IsIdle())
-                    {
-                        ClFunc.Units.ClFunc.DelChangeFace(actor.m_nWaitForRecogId);
-                        NewActor(actor.m_nWaitForRecogId, actor.m_nCurrX, actor.m_nCurrY, actor.m_btDir, actor.m_nWaitForFeature, actor.m_nWaitForStatus);
-                        actor.m_nWaitForRecogId = 0;
-                        actor.m_boDelActor = true;
-                    }
-                }
-                if (actor.m_boDelActor)
-                {
-                    MShare.g_FreeActorList.Add(actor);
-                    MActorList.RemoveAt(i);
-                    if (MShare.g_TargetCret == actor)
-                    {
-                        MShare.g_TargetCret = null;
-                    }
-                    if (MShare.g_FocusCret == actor)
-                    {
-                        MShare.g_FocusCret = null;
-                    }
-                    if (MShare.g_MagicTarget == actor)
-                    {
-                        MShare.g_MagicTarget = null;
-                    }
-                }
-                else
-                {
-                    i++;
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            ClMain.DebugOutStr("101 " + e.Message);
-        }
-        MBoPlayChange = MBoPlayChange || (MShare.GetTickCount() > MDwPlayChangeTick);
-        try
-        {
-            // STATIC MODE
-            i = 0;
-            while (true)
-            {
-                if (i >= MEffectList.Count)
-                {
-                    break;
-                }
-                meff = MEffectList[i];
-                if (meff.m_boActive)
-                {
-                    if (!meff.Run())
-                    {
-                        meff.Free;
-                        // 1003
-                        MEffectList.RemoveAt(i);
-                        continue;
-                    }
-                }
-                i++;
-            }
-            i = 0;
-            while (true)
-            {
-                if (i >= MFlyList.Count)
-                {
-                    break;
-                }
-                meff = MFlyList[i];
-                if (meff.m_boActive)
-                {
-                    if (!meff.Run())
-                    {
-                        meff.Free;
-                        MFlyList.RemoveAt(i);
-                        continue;
-                    }
-                }
-                i++;
-            }
-            ClMain.EventMan.Execute();
-            if ((MShare.g_RareBoxWindow != null))
-            {
-                if (MShare.g_RareBoxWindow.m_boActive)
-                {
-                    if (!MShare.g_RareBoxWindow.Run())
-                    {
-                        MShare.g_RareBoxWindow.m_boActive = false;
-                    }
-                }
-            }
-        }
-        catch
-        {
-            ClMain.DebugOutStr("102");
-        }
-        try
-        {
-            ClearDropItemA();
-            // 释放事件的地方
-            if (ClMain.EventMan.EventList.Count > 0)
-            {
-                for (k = 0; k < ClMain.EventMan.EventList.Count; k++)
-                {
-                    evn = ((TClEvent)(ClMain.EventMan.EventList[k]));
-                    if ((Math.Abs(evn.m_nX - MShare.g_MySelf.m_nCurrX) > 16) || (Math.Abs(evn.m_nY - MShare.g_MySelf.m_nCurrY) > 16))
-                    {
-                        evn.Free;
-                        ClMain.EventMan.EventList.RemoveAt(k);
-                        break;
-                    }
-                }
-            }
-        }
-        catch
-        {
-            ClMain.DebugOutStr("103");
-        }
-        try
-        {
-            // with Map.m_ClientRect do
-            // begin
-            // Left := g_MySelf.m_nRx - g_TileMapOffSetX;
-            // Right := g_MySelf.m_nRx + g_TileMapOffSetX;
-            // Top := g_MySelf.m_nRy - g_TileMapOffSetY;
-            // Bottom := g_MySelf.m_nRy + g_TileMapOffSetY;
-            // end;
-            Rectangle wvar1 = ClMain.Map.m_ClientRect;
-            switch (MShare.g_FScreenMode)
-            {
-                case 0:
-                    // 分辨率修改
-                    // 地图的范围是玩家为中心，例如左右各9
-                    // 800x600模式
-                    wvar1.Left = MShare.g_MySelf.m_nRx - 10;
-                    wvar1.Top = MShare.g_MySelf.m_nRy - 12;
-                    wvar1.Right = MShare.g_MySelf.m_nRx + 10;
-                    wvar1.Bottom = MShare.g_MySelf.m_nRy + 12;
-                    break;
-                case 1:
-                    // 1024 X 768
-                    wvar1.Left = MShare.g_MySelf.m_nRx - 13;
-                    wvar1.Top = MShare.g_MySelf.m_nRy - 15;
-                    wvar1.Right = MShare.g_MySelf.m_nRx + 13;
-                    wvar1.Bottom = MShare.g_MySelf.m_nRy + 13;
-                    break;
-                case 2:
-                    // 1280 X 800
-                    wvar1.Left = MShare.g_MySelf.m_nRx - 13 - 2;
-                    // 左
-                    wvar1.Top = MShare.g_MySelf.m_nRy - 15;
-                    // 上
-                    wvar1.Right = MShare.g_MySelf.m_nRx + 13 + 3;
-                    // 右
-                    wvar1.Bottom = MShare.g_MySelf.m_nRy + 13 + 3;
-                    break;
-                case 3:
-                    // 下
-                    // 1280 X 1024
-                    wvar1.Left = MShare.g_MySelf.m_nRx - 13 - 2;
-                    wvar1.Top = MShare.g_MySelf.m_nRy - 15 - 4;
-                    wvar1.Right = MShare.g_MySelf.m_nRx + 13 + 3;
-                    wvar1.Bottom = MShare.g_MySelf.m_nRy + 13 + 4;
-                    break;
-                case 4:
-                    // 1366 X 768
-                    wvar1.Left = MShare.g_MySelf.m_nRx - 13 - 3;
-                    wvar1.Top = MShare.g_MySelf.m_nRy - 15;
-                    wvar1.Right = MShare.g_MySelf.m_nRx + 13 + 4;
-                    wvar1.Bottom = MShare.g_MySelf.m_nRy + 13;
-                    break;
-                case 5:
-                    // 1440 X 900
-                    wvar1.Left = MShare.g_MySelf.m_nRx - 13 - 4;
-                    wvar1.Top = MShare.g_MySelf.m_nRy - 15 - 1;
-                    wvar1.Right = MShare.g_MySelf.m_nRx + 13 + 5;
-                    wvar1.Bottom = MShare.g_MySelf.m_nRy + 13 + 2;
-                    break;
-                case 6:
-                    // 1600 X 900
-                    wvar1.Left = MShare.g_MySelf.m_nRx - 13 - 6;
-                    wvar1.Top = MShare.g_MySelf.m_nRy - 15 - 1;
-                    wvar1.Right = MShare.g_MySelf.m_nRx + 13 + 6;
-                    wvar1.Bottom = MShare.g_MySelf.m_nRy + 13 + 2;
-                    break;
-                case 7:
-                    // 1680 X 1050
-                    wvar1.Left = MShare.g_MySelf.m_nRx - 13 - 7;
-                    wvar1.Top = MShare.g_MySelf.m_nRy - 15 - 4;
-                    wvar1.Right = MShare.g_MySelf.m_nRx + 13 + 5;
-                    wvar1.Bottom = MShare.g_MySelf.m_nRy + 13 + 5;
-                    break;
-                case 8:
-                    // 1920 X 1080
-                    wvar1.Left = MShare.g_MySelf.m_nRx - 13 - 9;
-                    wvar1.Top = MShare.g_MySelf.m_nRy - 15 - 5;
-                    wvar1.Right = MShare.g_MySelf.m_nRx + 13 + 9;
-                    wvar1.Bottom = MShare.g_MySelf.m_nRy + 13 + 6;
-                    break;
-                default:
-                    // 9: begin  //1024 X 700
-                    // Left := g_MySelf.m_nRx - 13;
-                    // Top := g_MySelf.m_nRy - 14;
-                    // Right := g_MySelf.m_nRx + 13;
-                    // Bottom := g_MySelf.m_nRy + 13;
-                    // end;
-                    // 默认
-                    wvar1.Left = MShare.g_MySelf.m_nRx - 13;
-                    wvar1.Top = MShare.g_MySelf.m_nRy - 15;
-                    wvar1.Right = MShare.g_MySelf.m_nRx + 13;
-                    wvar1.Bottom = MShare.g_MySelf.m_nRy + 13;
-                    break;
-            }
-            ClMain.Map.UpdateMapPos(MShare.g_MySelf.m_nRx, MShare.g_MySelf.m_nRy);
-        }
-        catch (Exception e)
-        {
-            ClMain.DebugOutStr("104 " + e.Message);
-        }
+        ClMain.Map.UpdateMapPos(MShare.g_MySelf.m_nRx, MShare.g_MySelf.m_nRy);
     }
 
     public override void PlayScene()
@@ -554,24 +115,17 @@ public class PlayScene : Scene
 
     public void PlaySurface(Object sender)
     {
-       
+
     }
 
     public void MagicSurface(Object sender)
     {
-        int k;
-        TMagicEff meff;
-        MMagSurface.Draw(Units.PlayScn.SOFFX, Units.PlayScn.SOFFY, MObjSurface.ClientRect, MObjSurface, false);
-        for (k = 0; k < MEffectList.Count; k++)
-        {
-            meff = ((TMagicEff)(MEffectList[k]));
-            meff.DrawEff(MObjSurface);
-        }
+
     }
 
     public void NewMagic(TActor aowner, int magid, int magnumb, int cx, int cy, int tx, int ty, int targetCode, MagicType mtype, bool recusion, int anitime, ref bool boFly, int maglv, int poison)
     {
-       
+
     }
 
     public void DelMagic(int magid)
@@ -590,261 +144,7 @@ public class PlayScene : Scene
 
     public TMagicEff NewFlyObject(TActor aowner, int cx, int cy, int tx, int ty, int targetCode, TMagicType mtype)
     {
-        TMagicEff result;
-        int scx;
-        int scy;
-        int sctx;
-        int scty;
-        TMagicEff meff;
-        ScreenXYfromMcxy(cx, cy, ref scx, ref scy);
-        ScreenXYfromMcxy(tx, ty, ref sctx, ref scty);
-        switch (mtype)
-        {
-            case magiceff.TMagicType.mtFlyArrow:
-                meff = new TFlyingArrow(1, 1, scx, scy, sctx, scty, mtype, true, 0);
-                break;
-            case magiceff.TMagicType.mtFlyBug:
-                meff = new TFlyingFireBall(1, 1, scx, scy, sctx, scty, mtype, true, 0);
-                break;
-            case magiceff.TMagicType.mtFireBall:
-                meff = new TFlyingBug(1, 1, scx, scy, sctx, scty, mtype, true, 0);
-                break;
-            default:
-                meff = new TFlyingAxe(1, 1, scx, scy, sctx, scty, mtype, true, 0);
-                break;
-        }
-        meff.TargetRx = tx;
-        meff.TargetRy = ty;
-        meff.TargetActor = FindActor(targetCode);
-        meff.MagOwner = aowner;
-        MFlyList.Add(meff);
-        result = meff;
-        return result;
-    }
-
-    // procedure TPlayScene.ScreenXYfromMCXY(cx, cy: Integer; var sX, sY: Integer);
-    // begin
-    // if g_MySelf = nil then Exit;
-    // sX := (cx - g_MySelf.m_nRx) * UNITX - g_MySelf.m_nShiftX + SCREENWIDTH div 2;
-    // sY := (cy - g_MySelf.m_nRy) * UNITY - g_MySelf.m_nShiftY + ShiftYOffset;
-    // end;
-    // procedure TPlayScene.CXYfromMouseXY(mx, my: Integer; var ccx, ccy: Integer);
-    // begin
-    // if g_MySelf = nil then Exit;
-    // ccx := Round((mx - SCREENWIDTH div 2 + g_MySelf.m_nShiftX) / UNITX) + g_MySelf.m_nRx;
-    // ccy := Round((my - ShiftYOffset + g_MySelf.m_nShiftY) / UNITY) + g_MySelf.m_nRy;
-    // end;
-    public void ScreenXYfromMcxy(int cx, int cy, ref int sx, ref int sy)
-    {
-        if (MShare.g_MySelf == null)
-        {
-            return;
-        }
-        switch (MShare.g_FScreenWidth)
-        {
-            case 800:
-                // {$IF Var_Interface = Var_Mir2}
-                // 宽度 计算方式 : (屏幕宽度高- 低)  div 2 + 364
-                // + 12
-                sx = (cx - MShare.g_MySelf.m_nRx) * Grobal2.UNITX + 364 - 8 + Grobal2.UNITX / 2 - MShare.g_MySelf.m_nShiftX;
-                break;
-            case 1024:
-                sx = (cx - MShare.g_MySelf.m_nRx) * Grobal2.UNITX + 476 - 4 + Grobal2.UNITX / 2 - MShare.g_MySelf.m_nShiftX;
-                break;
-            case 1280:
-                // + 12
-                sx = (cx - MShare.g_MySelf.m_nRx) * Grobal2.UNITX + 604 - 8 + Grobal2.UNITX / 2 - MShare.g_MySelf.m_nShiftX;
-                break;
-            case 1366:
-                // + 16
-                sx = (cx - MShare.g_MySelf.m_nRx) * Grobal2.UNITX + 647 - 10 + Grobal2.UNITX / 2 - MShare.g_MySelf.m_nShiftX;
-                break;
-            case 1440:
-                sx = (cx - MShare.g_MySelf.m_nRx) * Grobal2.UNITX + 684 - 12 + Grobal2.UNITX / 2 - MShare.g_MySelf.m_nShiftX;
-                break;
-            case 1600:
-                sx = (cx - MShare.g_MySelf.m_nRx) * Grobal2.UNITX + 764 - 10 + Grobal2.UNITX / 2 - MShare.g_MySelf.m_nShiftX;
-                break;
-            case 1680:
-                sx = (cx - MShare.g_MySelf.m_nRx) * Grobal2.UNITX + 804 - 8 + Grobal2.UNITX / 2 - MShare.g_MySelf.m_nShiftX;
-                break;
-            case 1920:
-                sx = (cx - MShare.g_MySelf.m_nRx) * Grobal2.UNITX + 924 - 16 + Grobal2.UNITX / 2 - MShare.g_MySelf.m_nShiftX;
-                break;
-            default:
-                // 2560: sx := (cx - g_MySelf.m_nRx) * UNITX + 1244 - 20  + UNITX div 2 - g_MySelf.m_nShiftX;
-                // + 12
-                sx = (cx - MShare.g_MySelf.m_nRx) * Grobal2.UNITX + 364 - 8 + Grobal2.UNITX / 2 - MShare.g_MySelf.m_nShiftX;
-                break;
-        }
-        switch (MShare.g_FScreenHeight)
-        {
-            case 600:
-                // 高度 计算方式 : (屏幕高度高- 低)  div 2 + 224 + 12
-                sy = (cy - MShare.g_MySelf.m_nRy) * Grobal2.UNITY + 224 + Grobal2.UNITY / 2 - MShare.g_MySelf.m_nShiftY;
-                break;
-            case 768:
-                // 700: sy := (cy - g_MySelf.m_nRy) * UNITY + 286 + UNITY div 2 - g_MySelf.m_nShiftY;
-                sy = (cy - MShare.g_MySelf.m_nRy) * Grobal2.UNITY + 320 + 2 + Grobal2.UNITY / 2 - MShare.g_MySelf.m_nShiftY;
-                break;
-            case 800:
-                sy = (cy - MShare.g_MySelf.m_nRy) * Grobal2.UNITY + 336 - 14 + Grobal2.UNITY / 2 - MShare.g_MySelf.m_nShiftY;
-                break;
-            case 900:
-                sy = (cy - MShare.g_MySelf.m_nRy) * Grobal2.UNITY + 386 - 32 + Grobal2.UNITY / 2 - MShare.g_MySelf.m_nShiftY;
-                break;
-            case 1024:
-                sy = (cy - MShare.g_MySelf.m_nRy) * Grobal2.UNITY + 448 + 2 + Grobal2.UNITY / 2 - MShare.g_MySelf.m_nShiftY;
-                break;
-            case 1050:
-                sy = (cy - MShare.g_MySelf.m_nRy) * Grobal2.UNITY + 461 - 12 + Grobal2.UNITY / 2 - MShare.g_MySelf.m_nShiftY;
-                break;
-            case 1080:
-                sy = (cy - MShare.g_MySelf.m_nRy) * Grobal2.UNITY + 476 + 6 + Grobal2.UNITY / 2 - MShare.g_MySelf.m_nShiftY;
-                break;
-            default:
-                // 1200: sy := (cy - g_MySelf.m_nRy) * UNITY + 536 + UNITY div 2 - g_MySelf.m_nShiftY;
-                // 1600: sy := (cy - g_MySelf.m_nRy) * UNITY + 736 + UNITY div 2 - g_MySelf.m_nShiftY;
-                sy = (cy - MShare.g_MySelf.m_nRy) * Grobal2.UNITY + 224 + Grobal2.UNITY / 2 - MShare.g_MySelf.m_nShiftY;
-                break;
-        }
-        // {$ELSE}
-        // case g_FScreenWidth of     //宽度 计算方式 : (屏幕宽度高- 低)  div 2 + 364
-        // 800: sx := (cx - g_MySelf.m_nRx) * UNITX + 364 + 12 + UNITX div 2 - g_MySelf.m_nShiftX;
-        // 1024: sx := (cx - g_MySelf.m_nRx) * UNITX + 476 - 4  + UNITX div 2 - g_MySelf.m_nShiftX;
-        // 1280: sx := (cx - g_MySelf.m_nRx) * UNITX + 604 + 12 + UNITX div 2 - g_MySelf.m_nShiftX;
-        // 1366: sx := (cx - g_MySelf.m_nRx) * UNITX + 647 + 16 + UNITX div 2 - g_MySelf.m_nShiftX;
-        // 1440: sx := (cx - g_MySelf.m_nRx) * UNITX + 684 - 20 + UNITX div 2 - g_MySelf.m_nShiftX;
-        // 1600: sx := (cx - g_MySelf.m_nRx) * UNITX + 764 - 4  + UNITX div 2 - g_MySelf.m_nShiftX;
-        // 1680: sx := (cx - g_MySelf.m_nRx) * UNITX + 804 + 4  + UNITX div 2 - g_MySelf.m_nShiftX;
-        // 1920: sx := (cx - g_MySelf.m_nRx) * UNITX + 924 - 20 + UNITX div 2 - g_MySelf.m_nShiftX;
-        // //2560: sx := (cx - g_MySelf.m_nRx) * UNITX + 1244 - 20  + UNITX div 2 - g_MySelf.m_nShiftX;
-        // else
-        // sx := (cx - g_MySelf.m_nRx) * UNITX + 364 + 12 + UNITX div 2 - g_MySelf.m_nShiftX;
-        // end;
-        // case g_FScreenHeight of  //高度 计算方式 : (屏幕高度高- 低)  div 2 + 288 + 12
-        // 600: sy := (cy - g_MySelf.m_nRy) * UNITY + 288 + UNITY div 2 - g_MySelf.m_nShiftY;
-        // //700: sy := (cy - g_MySelf.m_nRy) * UNITY + 350 + 4 + UNITY div 2 - g_MySelf.m_nShiftY;
-        // 768: sy := (cy - g_MySelf.m_nRy) * UNITY + 384 + 2 + UNITY div 2 - g_MySelf.m_nShiftY;
-        // 800: sy := (cy - g_MySelf.m_nRy) * UNITY + 400 - 14 + UNITY div 2 - g_MySelf.m_nShiftY;
-        // 900: sy := (cy - g_MySelf.m_nRy) * UNITY + 450 - 32 + UNITY div 2 - g_MySelf.m_nShiftY;
-        // 1024: sy := (cy - g_MySelf.m_nRy) * UNITY + 512 + 2 + UNITY div 2 - g_MySelf.m_nShiftY;
-        // 1050: sy := (cy - g_MySelf.m_nRy) * UNITY + 525 - 12 + UNITY div 2 - g_MySelf.m_nShiftY;
-        // 1080: sy := (cy - g_MySelf.m_nRy) * UNITY + 540 + 6 + UNITY div 2 - g_MySelf.m_nShiftY;
-        // //    1200: sy := (cy - g_MySelf.m_nRy) * UNITY + 600 + UNITY div 2 - g_MySelf.m_nShiftY;
-        // //    1600: sy := (cy - g_MySelf.m_nRy) * UNITY + 800 + UNITY div 2 - g_MySelf.m_nShiftY;
-        // else
-        // sy := (cy - g_MySelf.m_nRy) * UNITY + 288 + UNITY div 2 - g_MySelf.m_nShiftY;
-        // end;
-        // {$IFEND}
-
-    }
-
-    // 屏幕座标 mx, my转换成ccx, ccy地图座标
-    public void CxYfromMouseXy(int mx, int my, ref int ccx, ref int ccy)
-    {
-        if (MShare.g_MySelf == null)
-        {
-            return;
-        }
-        switch (MShare.g_FScreenWidth)
-        {
-            case 800:
-                // {$IF Var_Interface = Var_Mir2}
-                // 宽度 计算方式 : (屏幕宽度高- 低)  div 2 + 364
-                // - 12
-                ccx = Math.Round((mx - 364 + 8 + MShare.g_MySelf.m_nShiftX - Grobal2.UNITX / 2) / Grobal2.UNITX) + MShare.g_MySelf.m_nRx;
-                break;
-            case 1024:
-                ccx = Math.Round((mx - 476 + 4 + MShare.g_MySelf.m_nShiftX - Grobal2.UNITX / 2) / Grobal2.UNITX) + MShare.g_MySelf.m_nRx;
-                break;
-            case 1280:
-                // - 12
-                ccx = Math.Round((mx - 604 + 8 + MShare.g_MySelf.m_nShiftX - Grobal2.UNITX / 2) / Grobal2.UNITX) + MShare.g_MySelf.m_nRx;
-                break;
-            case 1366:
-                // - 16
-                ccx = Math.Round((mx - 657 + 10 + MShare.g_MySelf.m_nShiftX - Grobal2.UNITX / 2) / Grobal2.UNITX) + MShare.g_MySelf.m_nRx;
-                break;
-            case 1440:
-                ccx = Math.Round((mx - 684 + 12 + MShare.g_MySelf.m_nShiftX - Grobal2.UNITX / 2) / Grobal2.UNITX) + MShare.g_MySelf.m_nRx;
-                break;
-            case 1600:
-                ccx = Math.Round((mx - 764 + 10 + MShare.g_MySelf.m_nShiftX - Grobal2.UNITX / 2) / Grobal2.UNITX) + MShare.g_MySelf.m_nRx;
-                break;
-            case 1680:
-                ccx = Math.Round((mx - 804 + 8 + MShare.g_MySelf.m_nShiftX - Grobal2.UNITX / 2) / Grobal2.UNITX) + MShare.g_MySelf.m_nRx;
-                break;
-            case 1920:
-                ccx = Math.Round((mx - 924 + 16 + MShare.g_MySelf.m_nShiftX - Grobal2.UNITX / 2) / Grobal2.UNITX) + MShare.g_MySelf.m_nRx;
-                break;
-            default:
-                // 2560: ccx := Round((mx - 1244 + 20 + g_MySelf.m_nShiftX - UNITX div 2) / UNITX) + g_MySelf.m_nRx;
-                // - 12
-                ccx = Math.Round((mx - 364 + 8 + MShare.g_MySelf.m_nShiftX - Grobal2.UNITX / 2) / Grobal2.UNITX) + MShare.g_MySelf.m_nRx;
-                break;
-        }
-        switch (MShare.g_FScreenHeight)
-        {
-            case 600:
-                // 高度 计算方式 : (屏幕高度高- 低)  div 2 + 224 + 12
-                ccy = Math.Round((my - 224 + MShare.g_MySelf.m_nShiftY - Grobal2.UNITY / 2) / Grobal2.UNITY) + MShare.g_MySelf.m_nRy;
-                break;
-            case 768:
-                // 700: ccy := Round((my - 286 + g_MySelf.m_nShiftY - UNITY div 2) / UNITY) + g_MySelf.m_nRy;
-                ccy = Math.Round((my - 320 - 2 + MShare.g_MySelf.m_nShiftY - Grobal2.UNITY / 2) / Grobal2.UNITY) + MShare.g_MySelf.m_nRy;
-                break;
-            case 800:
-                ccy = Math.Round((my - 336 + 14 + MShare.g_MySelf.m_nShiftY - Grobal2.UNITY / 2) / Grobal2.UNITY) + MShare.g_MySelf.m_nRy;
-                break;
-            case 900:
-                ccy = Math.Round((my - 386 + 32 + MShare.g_MySelf.m_nShiftY - Grobal2.UNITY / 2) / Grobal2.UNITY) + MShare.g_MySelf.m_nRy;
-                break;
-            case 1024:
-                ccy = Math.Round((my - 448 - 2 + MShare.g_MySelf.m_nShiftY - Grobal2.UNITY / 2) / Grobal2.UNITY) + MShare.g_MySelf.m_nRy;
-                break;
-            case 1050:
-                ccy = Math.Round((my - 461 + 12 + MShare.g_MySelf.m_nShiftY - Grobal2.UNITY / 2) / Grobal2.UNITY) + MShare.g_MySelf.m_nRy;
-                break;
-            case 1080:
-                ccy = Math.Round((my - 476 - 6 + MShare.g_MySelf.m_nShiftY - Grobal2.UNITY / 2) / Grobal2.UNITY) + MShare.g_MySelf.m_nRy;
-                break;
-            default:
-                // 1200: ccy := Round((my - 636 + g_MySelf.m_nShiftY - UNITY div 2) / UNITY) + g_MySelf.m_nRy;
-                // 1600: ccy := Round((my - 736 + g_MySelf.m_nShiftY - UNITY div 2) / UNITY) + g_MySelf.m_nRy;
-                ccy = Math.Round((my - 224 + MShare.g_MySelf.m_nShiftY - Grobal2.UNITY / 2) / Grobal2.UNITY) + MShare.g_MySelf.m_nRy;
-                break;
-        }
-        // {$ELSE}
-        // case g_FScreenWidth of     //宽度 计算方式 : (屏幕宽度高- 低)  div 2 + 364
-        // 800: ccx := Round((mx - 364 - 12 + g_MySelf.m_nShiftX - UNITX div 2) / UNITX) + g_MySelf.m_nRx;
-        // 1024: ccx := Round((mx - 476 + 4  + g_MySelf.m_nShiftX - UNITX div 2) / UNITX) + g_MySelf.m_nRx;
-        // 1280: ccx := Round((mx - 604 - 12 + g_MySelf.m_nShiftX - UNITX div 2) / UNITX) + g_MySelf.m_nRx;
-        // 1366: ccx := Round((mx - 657 - 16 + g_MySelf.m_nShiftX - UNITX div 2) / UNITX) + g_MySelf.m_nRx;
-        // 1440: ccx := Round((mx - 684 + 20 + g_MySelf.m_nShiftX - UNITX div 2) / UNITX) + g_MySelf.m_nRx;
-        // 1600: ccx := Round((mx - 764 + 4  + g_MySelf.m_nShiftX - UNITX div 2) / UNITX) + g_MySelf.m_nRx;
-        // 1680: ccx := Round((mx - 804 - 4  + g_MySelf.m_nShiftX - UNITX div 2) / UNITX) + g_MySelf.m_nRx;
-        // 1920: ccx := Round((mx - 924 + 20 + g_MySelf.m_nShiftX - UNITX div 2) / UNITX) + g_MySelf.m_nRx;
-        // //    2560: ccx := Round((mx - 1244 + 20 + g_MySelf.m_nShiftX - UNITX div 2) / UNITX) + g_MySelf.m_nRx;
-        // else
-        // ccx := Round((mx - 364 - 12 + g_MySelf.m_nShiftX - UNITX div 2) / UNITX) + g_MySelf.m_nRx;
-        // end;
-        // case g_FScreenHeight of  //高度 计算方式 : (屏幕高度高- 低)  div 2 - 288
-        // 600: ccy := Round((my - 288 + g_MySelf.m_nShiftY - UNITY div 2) / UNITY) + g_MySelf.m_nRy;
-        // //700: ccy := Round((my - 350 - 4 + g_MySelf.m_nShiftY - UNITY div 2) / UNITY) + g_MySelf.m_nRy;
-        // 768: ccy := Round((my - 384 - 2  + g_MySelf.m_nShiftY - UNITY div 2) / UNITY) + g_MySelf.m_nRy;
-        // 800: ccy := Round((my - 400 + 14 + g_MySelf.m_nShiftY - UNITY div 2) / UNITY) + g_MySelf.m_nRy;
-        // 900: ccy := Round((my - 450 + 32 + g_MySelf.m_nShiftY - UNITY div 2) / UNITY) + g_MySelf.m_nRy;
-        // 1024: ccy := Round((my - 512 - 2  + g_MySelf.m_nShiftY - UNITY div 2) / UNITY) + g_MySelf.m_nRy;
-        // 1050: ccy := Round((my - 525 + 12 + g_MySelf.m_nShiftY - UNITY div 2) / UNITY) + g_MySelf.m_nRy;
-        // 1080: ccy := Round((my - 540 - 6  + g_MySelf.m_nShiftY - UNITY div 2) / UNITY) + g_MySelf.m_nRy;
-        // //    1200: ccy := Round((my - 600 + g_MySelf.m_nShiftY - UNITY div 2) / UNITY) + g_MySelf.m_nRy;
-        // //    1600: ccy := Round((my - 800 + g_MySelf.m_nShiftY - UNITY div 2) / UNITY) + g_MySelf.m_nRy;
-        // else
-        // ccy := Round((my - 288 + g_MySelf.m_nShiftY - UNITY div 2) / UNITY) + g_MySelf.m_nRy;
-        // end;
-        // {$IFEND}
-
+            
     }
 
     public TActor GetCharacter(int x, int y, int wantsel, ref int nowsel, bool liveonly)
@@ -859,7 +159,6 @@ public class PlayScene : Scene
         TActor a;
         result = null;
         nowsel = -1;
-        CxYfromMouseXy(x, y, ref ccx, ref ccy);
         for (k = ccy + 8; k >= ccy - 1; k--)
         {
             for (i = MActorList.Count - 1; i >= 0; i--)
@@ -964,7 +263,6 @@ public class PlayScene : Scene
         int dx;
         int dy;
         result = false;
-        CxYfromMouseXy(x, y, ref ccx, ref ccy);
         for (k = ccy + 2; k >= ccy - 1; k--)
         {
             if (MShare.g_MySelf.m_nCurrY == k)
@@ -991,8 +289,6 @@ public class PlayScene : Scene
         int ssy;
         TDropItem dropItem;
         result = null;
-        CxYfromMouseXy(x, y, ref ccx, ref ccy);
-        ScreenXYfromMcxy(ccx, ccy, ref ssx, ref ssy);
         inames = "";
         for (i = 0; i < MShare.g_DropedItemList.Count; i++)
         {
@@ -1053,15 +349,10 @@ public class PlayScene : Scene
         int ndir;
         int rx;
         int ry;
-        ndir = ClFunc.Units.ClFunc.GetNextDirection(sX, sY, ex, ey);
+        ndir = ClFunc.GetNextDirection(sX, sY, ex, ey);
         rx = sX;
         ry = sY;
-        ClFunc.Units.ClFunc.GetNextPosXY(ndir, ref rx, ref ry);
-        // if Map.CanMove(rx, ry) and Map.CanMove(ex, ey) then
-        // Result := True
-        // else begin
-        // Result := False;
-        // end;
+        ClFunc.GetNextPosXY(ndir, ref rx, ref ry);
         if (CanWalkEx(rx, ry) && CanWalkEx(ex, ey))
         {
             result = true;
@@ -1268,7 +559,7 @@ public class PlayScene : Scene
                 return result;
             }
         }
-        if (ClFunc.Units.ClFunc.IsChangingFace(chrid))
+        if (ClFunc.IsChangingFace(chrid))
         {
             return result;
         }
@@ -1551,15 +842,12 @@ public class PlayScene : Scene
                 actor = new TWarriorElfMonster();
                 break;
             case 98:
-                // 神兽1
                 actor = new TWallStructure();
                 break;
             case 99:
-                // LeftWall
                 actor = new TCastleDoor();
                 break;
             case 101:
-                // MainDoor
                 actor = new TBanyaGuardMon();
                 break;
             case 102:
@@ -1587,7 +875,6 @@ public class PlayScene : Scene
                 actor = new TBanyaGuardMon();
                 break;
             case 113:
-                // TSpiderKing.Create;
                 actor = new TBanyaGuardMon();
                 break;
             case 114:
@@ -1700,64 +987,14 @@ public class PlayScene : Scene
         }
     }
 
-    // (*procedure TPlayScene.ClearActors;
-    // var
-    // i                         : Integer;
-    // begin
-    // for i := 0 to g_FreeActorList.Count - 1 do
-    // TActor(g_FreeActorList[i]).Free;
-    // g_FreeActorList.Clear;
-    // 
-    // for i := 0 to m_ActorList.Count - 1 do
-    // TActor(m_ActorList[i]).Free;
-    // m_ActorList.Clear;
-    // 
-    // if g_MySelf  <> nil then begin
-    // g_MySelf.m_HeroObject := nil;
-    // g_MySelf.m_SlaveObject.Clear;       // := nil;
-    // g_MySelf := nil;
-    // end;
-    // 
-    // g_TargetCret := nil;
-    // g_FocusCret := nil;
-    // g_MagicTarget := nil;
-    // for i := 0 to m_EffectList.Count - 1 do
-    // TMagicEff(m_EffectList[i]).Free;
-    // m_EffectList.Clear;
-    // DScreen.ClearHint;
-    // end;*)
     // 清除所有角色
     public void ClearActors()
     {
-        int i;
-        try
-        {
-            if (MActorList.Count > 0)
-            {
-                for (i = 0; i < MActorList.Count; i++)
-                {
-                    ((TActor)(MActorList[i])).Free;
-                }
-                MActorList.Clear();
-            }
-            MShare.g_MySelf = null;
-            MShare.g_TargetCret = null;
-            MShare.g_FocusCret = null;
-            MShare.g_MagicTarget = null;
-            // 清除魔法效果对象
-            if (MEffectList.Count > 0)
-            {
-                for (i = 0; i < MEffectList.Count; i++)
-                {
-                    ((TMagicEff)(MEffectList[i])).Free;
-                }
-                MEffectList.Clear();
-            }
-        }
-        catch
-        {
-            ClMain.DebugOutStr("TPlayScene.ClearActors");
-        }
+        MActorList.Clear();
+        MShare.g_MySelf = null;
+        MShare.g_TargetCret = null;
+        MShare.g_FocusCret = null;
+        MShare.g_MagicTarget = null;
     }
 
     public TActor DeleteActor(int id, bool boDeath)
@@ -1788,24 +1025,18 @@ public class PlayScene : Scene
                 }
                 if ((((TActor)(MActorList[i])) == MShare.g_MySelf.m_HeroObject))
                 {
-                    // TActor(m_ActorList[i]).m_boNotShowHealth := True;
                     if (!boDeath)
                     {
                         break;
                     }
                 }
-                if (Units.PlayScn.IsMySlaveObject(((TActor)(MActorList[i]))))
+                if (PlayScn.IsMySlaveObject(((TActor)(MActorList[i]))))
                 {
                     if (!boDeath)
                     {
                         break;
                     }
                 }
-                // if (TActor(m_ActorList[i]) = g_MySelf.m_SlaveObject) then begin
-                // //TActor(m_ActorList[i]).m_boNotShowHealth := True;
-                // if not boDeath then
-                // Break;
-                // end;
                 ((TActor)(MActorList[i])).m_dwDeleteTime = MShare.GetTickCount();
                 MShare.g_FreeActorList.Add(MActorList[i]);
                 MActorList.RemoveAt(i);
@@ -1898,7 +1129,6 @@ public class PlayScene : Scene
                     }
                     if (ClMain.Map.m_MapBuf != null)
                     {
-                        //@ Unsupported function or procedure: 'FreeMem'
                         FreeMem(ClMain.Map.m_MapBuf);
                         ClMain.Map.m_MapBuf = null;
                     }
@@ -1997,11 +1227,8 @@ public class PlayScene : Scene
                     {
                         if (ipInfo != 0)
                         {
-                            // Actor.m_nIPower := LoWord(IPInfo);
-                            //@ Unsupported function or procedure: 'HiWord'
-                            actor.m_nIPowerLvl = HiWord(ipInfo);
+                            actor.m_nIPowerLvl = HUtil32.HiWord(ipInfo);
                         }
-                        //@ Unsupported function or procedure: 'Hibyte'
                         actor.m_nChrLight = Hibyte(cdir);
                         cdir = Lobyte(cdir);
                         if (ident == Grobal2.SM_SKELETON)
@@ -2011,7 +1238,6 @@ public class PlayScene : Scene
                         }
                         if (ident == Grobal2.SM_DEATH)
                         {
-                            //@ Unsupported function or procedure: 'Hibyte'
                             if (Hibyte(cdir) != 0)
                             {
                                 actor.m_boItemExplore = true;
@@ -2030,8 +1256,8 @@ public class PlayScene : Scene
                         actor.m_nFeatureEx = state;
                         if (str != "")
                         {
-                            EDcode.Units.EDcode.DecodeBuffer(str, mbw);
-                            actor.m_btTitleIndex = LoWord(mbw.param1);
+                            EDcode.DecodeBuffer(str, mbw);
+                            actor.m_btTitleIndex = HUtil32.LoWord(mbw.param1);
                         }
                         else
                         {
@@ -2044,14 +1270,6 @@ public class PlayScene : Scene
                     case Grobal2.SM_CHARSTATUSCHANGED:
                         actor.m_nState = feature;
                         actor.m_nHitSpeed = state;
-                        if (str == "1")
-                        {
-                            meff = new TCharEffect(1110, 10, actor);
-                            meff.NextFrameTime = 80;
-                            meff.ImgLib = WMFile.Units.WMFile.g_WMagic2Images;
-                            ClMain.g_PlayScene.m_EffectList.Add(meff);
-                            // PlaySoundName('wav\M1-2.wav');
-                        }
                         break;
                     default:
                         if (ident == Grobal2.SM_TURN)

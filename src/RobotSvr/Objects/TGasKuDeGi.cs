@@ -6,29 +6,20 @@ namespace RobotSvr
 {
     public class TGasKuDeGi: TActor
     {
-        protected TDirectDrawSurface AttackEffectSurface = null;
-        protected TDirectDrawSurface DieEffectSurface = null;
         protected bool BoUseDieEffect = false;
-        // 0x258
         protected int firedir = 0;
-        // 0x25C
         protected int fire16dir = 0;
-        // 0c260
         protected int ax = 0;
-        // 0x264
         protected int ay = 0;
-        // 0x268
         protected int bx = 0;
         protected int by = 0;
-        // ============================== TGasKuDeGi =============================
-        //Constructor  Create()
+
         public TGasKuDeGi() : base()
         {
-            AttackEffectSurface = null;
-            DieEffectSurface = null;
             this.m_boUseEffect = false;
             BoUseDieEffect = false;
         }
+
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
@@ -38,8 +29,8 @@ namespace RobotSvr
             int stx;
             int sty;
             this.m_nCurrentFrame =  -1;
-            this.m_nBodyOffset = Actor.Units.Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
@@ -145,7 +136,7 @@ namespace RobotSvr
             int cf;
             TMonsterAction pm;
             result = 0;
-            pm = Actor.Units.Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return result;
