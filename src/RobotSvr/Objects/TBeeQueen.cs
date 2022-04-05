@@ -2,20 +2,20 @@
 
 namespace RobotSvr
 {
-    public class TBeeQueen: TActor
+    public class TBeeQueen : TActor
     {
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
             this.m_boUseMagic = false;
-            this.m_nCurrentFrame =  -1;
+            this.m_nCurrentFrame = -1;
             this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
             pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;
             }
-            switch(this.m_nCurrentAction)
+            switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_TURN:
                     // //规氢捞 绝澜...
@@ -95,10 +95,10 @@ namespace RobotSvr
                     cf = this.m_nCurrentDefFrame;
                 }
                 result = pm.ActStand.start + cf;
-            // 规氢捞 绝澜..
+                // 规氢捞 绝澜..
             }
             return result;
         }
-    } 
+    }
 }
 

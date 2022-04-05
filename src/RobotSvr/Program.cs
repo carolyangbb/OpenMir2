@@ -13,7 +13,7 @@ namespace RobotSvr
             var builder = new HostBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    
+
                 });
 
             await builder.RunConsoleAsync();

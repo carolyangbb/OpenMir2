@@ -1,8 +1,8 @@
 ﻿namespace RobotSvr
 {
-    public class TSmallElfMonster: TSkeletonOma
+    public class TSmallElfMonster : TSkeletonOma
     {
     } // end TSmallElfMonster
 
-    } // end TBanyaGuardMon
+} // end TBanyaGuardMon
 

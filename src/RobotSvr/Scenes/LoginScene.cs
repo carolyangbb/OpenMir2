@@ -19,9 +19,6 @@ namespace RobotSvr
 
         public LoginScene() : base(SceneType.StLogin)
         {
-            object p;
-            int nX;
-            int nY;
             _mBoOpenFirst = false;
         }
 
@@ -67,7 +64,6 @@ namespace RobotSvr
 
         public void ChangeLoginState(LoginState state)
         {
-            int i;
             TfrmMain wvar1 = ClMain.frmMain;
             switch (state)
             {

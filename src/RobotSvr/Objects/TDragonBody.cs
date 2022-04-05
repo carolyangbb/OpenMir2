@@ -36,15 +36,10 @@
         {
             int n8;
             int nc;
-            int n10;
-            int n14;
-            int n18;
-            bool bo11;
-            int i;
             int iCount;
             n8 = this.m_nCurrX;
             nc = this.m_nCurrY;
-            iCount = (new System.Random(5)).Next();
+            iCount = new System.Random(5).Next();
             //for (i = 0; i <= iCount; i++)
             //{
             //    n10 = (new System.Random(4)).Next();

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.IO;
 using SystemModule;
 
 namespace RobotSvr
@@ -73,7 +72,7 @@ namespace RobotSvr
             int i;
             int n;
             string Str;
-            Str = (gold).ToString();
+            Str = gold.ToString();
             n = 0;
             result = "";
             for (i = Str.Length; i >= 1; i--)
@@ -162,7 +161,7 @@ namespace RobotSvr
                         return result;
                     }
                 }
-                if ((MShare.g_RIWhere > 0))
+                if (MShare.g_RIWhere > 0)
                 {
                     if (MShare.g_RefineItems[MShare.g_RIWhere - 1].Item.Item.Name != "")
                     {
@@ -185,9 +184,9 @@ namespace RobotSvr
                     }
                 }
             }
-            if ((idx >= 0))
+            if (idx >= 0)
             {
-                if ((MShare.g_ItemArr[idx].Item.Name == ""))
+                if (MShare.g_ItemArr[idx].Item.Name == "")
                 {
                     MShare.g_ItemArr[idx] = cu;
                     result = true;
@@ -385,9 +384,9 @@ namespace RobotSvr
             result = null;
             for (i = 0; i < DropItems.Count; i++)
             {
-                if ((((TClientItem)(DropItems[i])).Item.Name == iname) && (((TClientItem)(DropItems[i])).MakeIndex == MakeIndex))
+                if ((((TClientItem)DropItems[i]).Item.Name == iname) && (((TClientItem)DropItems[i]).MakeIndex == MakeIndex))
                 {
-                    result = ((TClientItem)(DropItems[i]));
+                    result = (TClientItem)DropItems[i];
                     break;
                 }
             }
@@ -399,9 +398,9 @@ namespace RobotSvr
             int i;
             for (i = 0; i < DropItems.Count; i++)
             {
-                if ((((TClientItem)(DropItems[i])).Item.Name == iname) && (((TClientItem)(DropItems[i])).MakeIndex == MakeIndex))
+                if ((((TClientItem)DropItems[i]).Item.Name == iname) && (((TClientItem)DropItems[i]).MakeIndex == MakeIndex))
                 {
-                    Dispose(((TClientItem)(DropItems[i])));
+                    Dispose((TClientItem)DropItems[i]);
                     DropItems.RemoveAt(i);
                     break;
                 }
@@ -1260,13 +1259,13 @@ namespace RobotSvr
 
         public static void AddChangeFace(int recogid)
         {
-            MShare.g_ChangeFaceReadyList.Add((recogid as object));
+            MShare.g_ChangeFaceReadyList.Add(recogid);
         }
 
         public static void DelChangeFace(int recogid)
         {
             int i;
-            i = MShare.g_ChangeFaceReadyList.IndexOf((recogid as object));
+            i = MShare.g_ChangeFaceReadyList.IndexOf(recogid);
             if (i > -1)
             {
                 MShare.g_ChangeFaceReadyList.RemoveAt(i);
@@ -1276,13 +1275,12 @@ namespace RobotSvr
         public static bool IsChangingFace(int recogid)
         {
             bool result;
-            result = MShare.g_ChangeFaceReadyList.IndexOf((recogid as object)) > -1;
+            result = MShare.g_ChangeFaceReadyList.IndexOf(recogid) > -1;
             return result;
         }
 
         public static bool ChangeItemCount(int mindex, short Count, short MsgNum, string iname)
         {
-            int i;
             bool result = false;
             //for (i = MShare.g_TIItems.GetLowerBound(0); i <= MShare.g_TIItems.GetUpperBound(0); i++)
             //{
@@ -1464,12 +1462,12 @@ namespace RobotSvr
 
         public void initialization()
         {
-          
+
         }
 
         public void finalization()
         {
-           
+
         }
     }
 }

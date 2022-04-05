@@ -2,7 +2,7 @@
 
 namespace RobotSvr
 {
-    public class TZombiDigOut: TSkeletonOma
+    public class TZombiDigOut : TSkeletonOma
     {
         // ============================= TZombiDigOut =============================
         public override void RunFrameAction(int frame)
@@ -14,12 +14,12 @@ namespace RobotSvr
                 {
                     clEvent = new TClEvent(this.m_nCurrentEvent, this.m_nCurrX, this.m_nCurrY, Grobal2.ET_DIGOUTZOMBI);
                     clEvent.m_nDir = this.m_btDir;
-                   ClMain.EventMan.AddEvent(clEvent);
+                    ClMain.EventMan.AddEvent(clEvent);
                 }
             }
         }
 
     } // end TZombiDigOut
 
-    } // end TBanyaGuardMon
+} // end TBanyaGuardMon
 

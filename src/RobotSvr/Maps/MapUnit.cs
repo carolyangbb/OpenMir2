@@ -152,14 +152,14 @@ namespace RobotSvr
         {
             bool result;
             FPos = 0;
-            result = (FCount > 0);
+            result = FCount > 0;
             return result;
         }
 
         public bool Next()
         {
             bool result;
-            result = (FPos < (FCount - 1));
+            result = FPos < (FCount - 1);
             if (result)
             {
                 FPos++;

@@ -88,7 +88,7 @@ namespace RobotSvr
         {
             int result;
             int Cost;
-            Direction = (Direction & 7);
+            Direction = Direction & 7;
             if ((X < 0) || (X >= m_MapHeader.wWidth) || (Y < 0) || (Y >= m_MapHeader.wHeight))
             {
                 result = -1;
@@ -98,7 +98,7 @@ namespace RobotSvr
                 result = TerrainParams[m_MapData[X, Y].TerrainType || m_MapData[X, Y].TCellActor];
                 if ((X < m_MapHeader.wWidth - m_nPathWidth) && (X > m_nPathWidth) && (Y < m_MapHeader.wHeight - m_nPathWidth) && (Y > m_nPathWidth))
                 {
-                    Cost = (TerrainParams[m_MapData[X - m_nPathWidth, Y].TerrainType || m_MapData[X - m_nPathWidth, Y].TCellActor]) + (TerrainParams[m_MapData[X + m_nPathWidth, Y].TerrainType || m_MapData[X + m_nPathWidth, Y].TCellActor]) + (TerrainParams[m_MapData[X, Y - m_nPathWidth].TerrainType || m_MapData[X, Y - m_nPathWidth].TCellActor]) + (TerrainParams[m_MapData[X, Y + m_nPathWidth].TerrainType || m_MapData[X, Y + m_nPathWidth].TCellActor]);
+                    Cost = TerrainParams[m_MapData[X - m_nPathWidth, Y].TerrainType || m_MapData[X - m_nPathWidth, Y].TCellActor] + TerrainParams[m_MapData[X + m_nPathWidth, Y].TerrainType || m_MapData[X + m_nPathWidth, Y].TCellActor] + TerrainParams[m_MapData[X, Y - m_nPathWidth].TerrainType || m_MapData[X, Y - m_nPathWidth].TCellActor] + TerrainParams[m_MapData[X, Y + m_nPathWidth].TerrainType || m_MapData[X, Y + m_nPathWidth].TCellActor];
                     // ttNormal
                     if (Cost < 4 * TerrainParams[false])
                     {
@@ -150,7 +150,7 @@ namespace RobotSvr
             TWave NewWave;
             bool Finished;
             TWaveCell i;
-            Finished = ((X1 == X2) && (Y1 == Y2));
+            Finished = (X1 == X2) && (Y1 == Y2);
             if (Finished)
             {
                 return result;
@@ -196,14 +196,14 @@ namespace RobotSvr
                         }
                         result[i.Y, i.X].Distance = result[i.Y - DirToDY(i.Direction), i.X - DirToDX(i.Direction)].Distance + 1;
                         result[i.Y, i.X].Direction = i.Direction;
-                        Finished = ((i.X == X2) && (i.Y == Y2));
+                        Finished = (i.X == X2) && (i.Y == Y2);
                         if (Finished)
                         {
                             break;
                         }
                         FillPathMap_TestNeighbours();
                     }
-                } while (!(!OldWave.Next()));
+                } while (!!OldWave.Next());
             }
             NewWave.Free;
             OldWave.Free;

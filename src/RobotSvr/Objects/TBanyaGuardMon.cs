@@ -30,7 +30,7 @@ namespace RobotSvr
                     this.m_dwStartTime = MShare.GetTickCount();
                     this.m_dwWarModeTime = MShare.GetTickCount();
                     this.Shift(this.m_btDir, 0, 0, 1);
-                    if (!(new ArrayList(new int[] { 27, 28, 111 }).Contains(this.m_btRace)))
+                    if (!new ArrayList(new int[] { 27, 28, 111 }).Contains(this.m_btRace))
                     {
                         this.m_boUseEffect = true;
                         this.m_nEffectFrame = this.m_nStartFrame;
@@ -45,7 +45,7 @@ namespace RobotSvr
                     }
                     break;
                 case Grobal2.SM_LIGHTING:
-                    if ((this.m_btRace >= 117 && this.m_btRace <= 119))
+                    if (this.m_btRace >= 117 && this.m_btRace <= 119)
                     {
                         this.m_nStartFrame = pm.ActCritical.start;
                     }
@@ -60,7 +60,7 @@ namespace RobotSvr
                     this.m_boUseMagic = true;
                     this.m_dwWarModeTime = MShare.GetTickCount();
                     this.Shift(this.m_btDir, 0, 0, 1);
-                    if ((new ArrayList(new int[] { 71, 72, 111 }).Contains(this.m_btRace)))
+                    if (new ArrayList(new int[] { 71, 72, 111 }).Contains(this.m_btRace))
                     {
                         this.m_boUseEffect = true;
                         this.m_nEffectFrame = this.m_nStartFrame;
@@ -69,7 +69,7 @@ namespace RobotSvr
                         this.m_dwEffectStartTime = MShare.GetTickCount();
                         this.m_dwEffectFrameTime = this.m_dwFrameTime;
                     }
-                    else if ((new ArrayList(new int[] { 27, 28 }).Contains(this.m_btRace)))
+                    else if (new ArrayList(new int[] { 27, 28 }).Contains(this.m_btRace))
                     {
                         this.m_boUseEffect = true;
                         this.m_nEffectFrame = this.m_nStartFrame;
@@ -82,7 +82,7 @@ namespace RobotSvr
                         this.m_dwEffectStartTime = MShare.GetTickCount();
                         this.m_dwEffectFrameTime = this.m_dwFrameTime;
                     }
-                    else if ((new ArrayList(new int[] { 113, 114 }).Contains(this.m_btRace)))
+                    else if (new ArrayList(new int[] { 113, 114 }).Contains(this.m_btRace))
                     {
                         this.m_nStartFrame = pm.ActAttack.start + this.m_btDir * (pm.ActAttack.frame + pm.ActAttack.skip);
                         this.m_nEndFrame = this.m_nStartFrame + pm.ActAttack.frame - 1;
@@ -97,7 +97,7 @@ namespace RobotSvr
                             this.m_dwEffectFrameTime = this.m_dwFrameTime;
                         }
                     }
-                    else if ((this.m_btRace == 117))
+                    else if (this.m_btRace == 117)
                     {
                         this.m_boUseEffect = true;
                         this.m_nEffectFrame = this.m_nStartFrame + 15;

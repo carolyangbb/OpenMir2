@@ -6,10 +6,9 @@ namespace RobotSvr
     {
         public override void CalcActorFrame()
         {
-            TMonsterAction pm;
             this.m_nCurrentFrame = -1;
             this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            TMonsterAction pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;

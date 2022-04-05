@@ -18,7 +18,7 @@ namespace RobotSvr
                 FPath = value;
             }
         }
-        private ArrayList FSendRequestList = null;
+        private readonly ArrayList FSendRequestList = null;
         private Point[] FPath;
         public TMapInfo[,] m_MArr;
         public bool m_boChange = false;
@@ -72,7 +72,7 @@ namespace RobotSvr
                 {
                     nMapSize = this.m_MapHeader.wWidth * sizeof(TMapInfo) * this.m_MapHeader.wHeight;
                     this.m_MapBuf = AllocMem(nMapSize);
-                    FileSeek(m_nCurrentMap); switch (((byte)this.m_MapHeader.Reserved[0]))
+                    FileSeek(m_nCurrentMap); switch ((byte)this.m_MapHeader.Reserved[0])
                     {
                         case 6:
                             FileRead(m_nCurrentMap, this.m_MapBuf, nMapSize);
@@ -99,9 +99,9 @@ namespace RobotSvr
                             break;
                     }
                 }
-                if ((this.m_MapBuf != null))
+                if (this.m_MapBuf != null)
                 {
-                    if ((this.m_MapData.Length <= 0))
+                    if (this.m_MapData.Length <= 0)
                     {
                         this.m_MapData = new TCellParams[this.m_MapHeader.wWidth];
                     }
@@ -150,14 +150,14 @@ namespace RobotSvr
                 }
                 for (i = 0; i < ClMain.g_PlayScene.m_ActorList.Count; i++)
                 {
-                    Actor = ((TActor)(ClMain.g_PlayScene.m_ActorList[i]));
+                    Actor = (TActor)ClMain.g_PlayScene.m_ActorList[i];
                     if (Actor == MShare.g_MySelf)
                     {
                         continue;
                     }
                     if ((Actor.m_nCurrX >= MShare.g_MySelf.m_nCurrX - 32) && (Actor.m_nCurrX <= MShare.g_MySelf.m_nCurrX + 32) && (Actor.m_nCurrY >= MShare.g_MySelf.m_nCurrY - 32) && (Actor.m_nCurrY <= MShare.g_MySelf.m_nCurrY + 32))
                     {
-                        if ((Actor.m_boVisible) && (Actor.m_boHoldPlace) && (!Actor.m_boDeath))
+                        if (Actor.m_boVisible && Actor.m_boHoldPlace && (!Actor.m_boDeath))
                         {
                             this.m_MapData[Actor.m_nCurrX, Actor.m_nCurrY].TCellActor = true;
                         }
@@ -195,7 +195,7 @@ namespace RobotSvr
                 {
                     nBy = this.m_MapHeader.wHeight;
                 }
-                switch (((byte)this.m_MapHeader.Reserved[0]))
+                switch ((byte)this.m_MapHeader.Reserved[0])
                 {
                     case 6:
                         nAline = sizeof(TMapInfo) * this.m_MapHeader.wHeight;
@@ -309,7 +309,7 @@ namespace RobotSvr
                 m_nCurrentMap = File.Open(sFileName, (FileMode)FileAccess.Read | FileShare.ReadWrite);
                 if (m_nCurrentMap != 0)
                 {
-                    if (FileRead(m_nCurrentMap, this.m_MapHeader));
+                    if (FileRead(m_nCurrentMap, this.m_MapHeader)) ;
                     {
                         m_nCurrentMap.Close();
                         m_nCurrentMap = 0;
@@ -417,7 +417,7 @@ namespace RobotSvr
             cy = my - m_nBlockTop;
             if (ClMain.Map.m_MArr[cx, cy].btDoorIndex & 0x80 > 0)
             {
-                result = (ClMain.Map.m_MArr[cx, cy].btDoorOffset & 0x80 != 0);
+                result = ClMain.Map.m_MArr[cx, cy].btDoorOffset & 0x80 != 0;
             }
             return result;
         }

@@ -1,8 +1,8 @@
 ﻿namespace RobotSvr
 {
-    public class TZombiLighting: TGasKuDeGi
+    public class TZombiLighting : TGasKuDeGi
     {
     } // end TZombiLighting
 
-    } // end TBanyaGuardMon
+} // end TBanyaGuardMon
 

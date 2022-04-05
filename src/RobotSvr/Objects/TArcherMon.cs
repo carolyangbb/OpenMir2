@@ -1,5 +1,4 @@
-﻿using System;
-using SystemModule;
+﻿using SystemModule;
 
 namespace RobotSvr
 {
@@ -9,7 +8,6 @@ namespace RobotSvr
         {
             int prv;
             long m_dwFrameTimetime;
-            TFlyingAxe meff;
             if ((this.m_nCurrentAction == Grobal2.SM_WALK) || (this.m_nCurrentAction == Grobal2.SM_BACKSTEP) || (this.m_nCurrentAction == Grobal2.SM_RUN) || (this.m_nCurrentAction == Grobal2.SM_HORSERUN))
             {
                 return;
@@ -29,7 +27,7 @@ namespace RobotSvr
                 }
                 if (this.m_boMsgMuch)
                 {
-                    m_dwFrameTimetime = Math.Round(this.m_dwFrameTime * 2 / 3);
+                    m_dwFrameTimetime = HUtil32.Round(this.m_dwFrameTime * 2 / 3);
                 }
                 else
                 {
@@ -53,7 +51,7 @@ namespace RobotSvr
             }
             else
             {
-                if (((int)MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
+                if ((MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
                 {
                     if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
                     {

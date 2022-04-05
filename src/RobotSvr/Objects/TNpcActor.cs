@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using SystemModule;
 
 namespace RobotSvr
 {
-    public class TNpcActor: TActor
+    public class TNpcActor : TActor
     {
-        private int m_nEffX = 0;
-        private int m_nEffY = 0;
+        private readonly int m_nEffX = 0;
+        private readonly int m_nEffY = 0;
         private bool m_boDigUp = false;
         private long m_dwUseEffectTick = 0;
 
@@ -16,7 +15,7 @@ namespace RobotSvr
             this.m_boUseMagic = false;
             this.m_boNewMagic = false;
             this.m_boUseCboLib = false;
-            this.m_nCurrentFrame =  -1;
+            this.m_nCurrentFrame = -1;
             this.m_nBodyOffset = Actor.GetNpcOffset(this.m_wAppearance);
             TMonsterAction pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
@@ -24,10 +23,10 @@ namespace RobotSvr
                 return;
             }
             this.m_btDir = this.m_btDir % 3;
-            switch(this.m_nCurrentAction)
+            switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_TURN:
-                    switch(this.m_wAppearance)
+                    switch (this.m_wAppearance)
                     {
                         // Modify the A .. B: 54 .. 58, 112 .. 117
                         case 54:
@@ -61,7 +60,7 @@ namespace RobotSvr
                     }
                     if (!this.m_boUseEffect)
                     {
-                        if ((new ArrayList(new int[] {33, 34}).Contains(this.m_wAppearance)))
+                        if (new ArrayList(new int[] { 33, 34 }).Contains(this.m_wAppearance))
                         {
                             this.m_boUseEffect = true;
                             this.m_nEffectFrame = this.m_nEffectStart;
@@ -69,7 +68,7 @@ namespace RobotSvr
                             this.m_dwEffectStartTime = MShare.GetTickCount();
                             this.m_dwEffectFrameTime = 300;
                         }
-                        else if (new ArrayList(new int[] {54, 94}).Contains(this.m_wAppearance))
+                        else if (new ArrayList(new int[] { 54, 94 }).Contains(this.m_wAppearance))
                         {
                             // m_nStartFrame := 0;
                             // m_nEndFrame := 0;
@@ -80,7 +79,7 @@ namespace RobotSvr
                             this.m_dwEffectStartTime = MShare.GetTickCount();
                             this.m_dwEffectFrameTime = 150;
                         }
-                        else if (this.m_wAppearance >= 42 && this.m_wAppearance<= 47)
+                        else if (this.m_wAppearance >= 42 && this.m_wAppearance <= 47)
                         {
                             this.m_nStartFrame = 20;
                             this.m_nEndFrame = 10;
@@ -91,7 +90,7 @@ namespace RobotSvr
                             this.m_dwEffectStartTime = MShare.GetTickCount();
                             this.m_dwEffectFrameTime = 100;
                         }
-                        else if (this.m_wAppearance >= 118 && this.m_wAppearance<= 120)
+                        else if (this.m_wAppearance >= 118 && this.m_wAppearance <= 120)
                         {
                             this.m_boUseEffect = true;
                             this.m_nEffectStart = 10;
@@ -100,7 +99,7 @@ namespace RobotSvr
                             this.m_dwEffectStartTime = MShare.GetTickCount();
                             this.m_dwEffectFrameTime = 200;
                         }
-                        else if (this.m_wAppearance >= 122 && this.m_wAppearance<= 123)
+                        else if (this.m_wAppearance >= 122 && this.m_wAppearance <= 123)
                         {
                             this.m_boUseEffect = true;
                             this.m_nEffectStart = 20;
@@ -136,7 +135,7 @@ namespace RobotSvr
                             this.m_dwEffectStartTime = MShare.GetTickCount();
                             this.m_dwEffectFrameTime = 150;
                         }
-                        else if (this.m_wAppearance >= 60 && this.m_wAppearance<= 67)
+                        else if (this.m_wAppearance >= 60 && this.m_wAppearance <= 67)
                         {
                             this.m_boUseEffect = true;
                             this.m_nEffectStart = 0;
@@ -145,7 +144,7 @@ namespace RobotSvr
                             this.m_dwEffectStartTime = MShare.GetTickCount();
                             this.m_dwEffectFrameTime = 500;
                         }
-                        else if (new ArrayList(new int[] {68}).Contains(this.m_wAppearance))
+                        else if (new ArrayList(new int[] { 68 }).Contains(this.m_wAppearance))
                         {
                             this.m_boUseEffect = true;
                             this.m_nEffectStart = 60;
@@ -154,7 +153,7 @@ namespace RobotSvr
                             this.m_dwEffectStartTime = MShare.GetTickCount();
                             this.m_dwEffectFrameTime = 500;
                         }
-                        else if (new ArrayList(new int[] {70, 90}).Contains(this.m_wAppearance))
+                        else if (new ArrayList(new int[] { 70, 90 }).Contains(this.m_wAppearance))
                         {
                             this.m_boUseEffect = true;
                             this.m_nEffectStart = 4;
@@ -166,7 +165,7 @@ namespace RobotSvr
                     }
                     break;
                 case Grobal2.SM_HIT:
-                    switch(this.m_wAppearance)
+                    switch (this.m_wAppearance)
                     {
                         // Modify the A .. B: 54 .. 58, 104 .. 106, 110, 112 .. 117, 121, 132, 133
                         case 54:
@@ -242,7 +241,7 @@ namespace RobotSvr
                         this.m_dwEffectStartTime = MShare.GetTickCount();
                         this.m_dwEffectFrameTime = 100;
                     }
-                    if (new ArrayList(new int[] {84, 85}).Contains(this.m_wAppearance))
+                    if (new ArrayList(new int[] { 84, 85 }).Contains(this.m_wAppearance))
                     {
                         this.m_nStartFrame = pm.ActCritical.start;
                         this.m_nEndFrame = this.m_nStartFrame + pm.ActCritical.frame - 1;
@@ -294,7 +293,7 @@ namespace RobotSvr
             {
                 cf = this.m_nCurrentDefFrame;
             }
-            if (new ArrayList(new int[] {54, 94, 70, 81, 90, 112, 130}).Contains(this.m_wAppearance))
+            if (new ArrayList(new int[] { 54, 94, 70, 81, 90, 112, 130 }).Contains(this.m_wAppearance))
             {
                 result = pm.ActStand.start + cf;
             }
@@ -315,7 +314,7 @@ namespace RobotSvr
             {
                 if (this.m_boUseMagic)
                 {
-                    dwEffectFrameTime = Math.Round(this.m_dwEffectFrameTime / 3);
+                    dwEffectFrameTime = HUtil32.Round(this.m_dwEffectFrameTime / 3);
                 }
                 else
                 {
@@ -326,7 +325,7 @@ namespace RobotSvr
                     this.m_dwEffectStartTime = MShare.GetTickCount();
                     if (this.m_nEffectFrame < this.m_nEffectEnd)
                     {
-                        this.m_nEffectFrame ++;
+                        this.m_nEffectFrame++;
                     }
                     else
                     {

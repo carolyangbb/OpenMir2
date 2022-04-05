@@ -57,7 +57,6 @@ namespace RobotSvr
 
         public override void Run()
         {
-            bool bofly = false;
             if ((this.m_nCurrentAction == Grobal2.SM_LIGHTING) && (boCasted == true))
             {
                 boCasted = false;

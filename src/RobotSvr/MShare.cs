@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using SystemModule;
@@ -19,8 +20,6 @@ namespace RobotSvr
 #endif
         public static bool g_boLogon = false;
         public static bool g_fGoAttack = false;
-        // g_QueryWinBottomTick: Longword;
-        // g_fGetRenderBottom: Boolean = False;
         public static int g_nDragonRageStateIndex = 0;
         public static int AAX = 26 + 14;
         public static int LMX = 30;
@@ -34,7 +33,6 @@ namespace RobotSvr
         public static byte g_BuildBotTex = 0;
         public static byte g_WinBottomType = 0;
         public static bool g_Windowed = false;
-        // g_pkeywords: PString = nil;
         public static bool g_boAutoPickUp = true;
         public static bool g_boPickUpAll = false;
         public static int g_ptItems_Pos = -1;
@@ -49,8 +47,6 @@ namespace RobotSvr
         public static ArrayList g_xMapDescList = null;
         public static ArrayList g_xCurMapDescList = null;
         public static byte[] g_pWsockAddr = new byte[4 + 1];
-        // g_dwImgThreadId: Longword = 0;
-        // g_hImagesThread: THandle = INVALID_HANDLE_VALUE;
         public static int g_nMagicRange = 8;
         public static int g_TileMapOffSetX = 9;
         public static int g_TileMapOffSetY = 9;
@@ -114,18 +110,6 @@ namespace RobotSvr
         public static long g_PointFlashTick = 0;
         public static bool g_boHPointFlash = false;
         public static long g_HPointFlashTick = 0;
-        public static TVenationInfo[] g_VenationInfos = {
-    {0, 0} ,
-    {0, 0} ,
-    {0, 0} ,
-    {0, 0} };
-        // 经络信息
-        public static TVenationInfo[] g_hVenationInfos = {
-    {0, 0} ,
-    {0, 0} ,
-    {0, 0} ,
-    {0, 0} };
-        // 经络信息
         public static bool g_NextSeriesSkill = false;
         public static long g_dwSeriesSkillReadyTick = 0;
         public static int g_nCurrentMagic = 888;
@@ -138,33 +122,23 @@ namespace RobotSvr
         public static bool g_SeriesSkillFire = false;
         public static bool g_SeriesSkillReady = false;
         public static bool g_SeriesSkillReadyFlash = false;
-        // g_TempMagicArr            : array[0..3] of TTempSeriesSkillA;
         public static byte[] g_TempSeriesSkillArr;
         public static byte[] g_HTempSeriesSkillArr;
         public static byte[] g_SeriesSkillArr = new byte[3 + 1];
-        // TSeriesSkill;
         public static ArrayList g_SeriesSkillSelList = null;
         public static ArrayList g_hSeriesSkillSelList = null;
         public static long g_dwAutoTecTick = 0;
         public static long g_dwAutoTecHeroTick = 0;
-        // g_ProcOnIdleTick: Longword;
-        // g_boProcMessagePacket: Boolean = False;
         public static long g_dwProcMessagePacket = 0;
         public static long g_ProcNowTick = 0;
         public static bool g_ProcCanFill = true;
-        // g_ProcOnDrawTick: Longword;
         public static long g_ProcOnDrawTick_Effect = 0;
         public static long g_ProcOnDrawTick_Effect2 = 0;
-        // g_ProcCanDraw: Boolean;
-        // g_ProcCanDraw_Effect      : Boolean;
-        // g_ProcCanDraw_Effect2     : Boolean;
         public static long g_dwImgMgrTick = 0;
         public static int g_nImgMgrIdx = 0;
-        // ProcImagesCS              : TRTLCriticalSection;
         public static TRTLCriticalSection ProcMsgCS = null;
         public static TRTLCriticalSection ThreadCS = null;
         public static bool g_bIMGBusy = false;
-        // g_dwCurrentTick           : PLongWord;
         public static long g_dwThreadTick = 0;
         public static long g_rtime = 0;
         public static long g_dwLastThreadTick = 0;
@@ -174,16 +148,11 @@ namespace RobotSvr
         public static bool g_ShowMiniMapXY = false;
         public static bool g_DrawingMiniMap = false;
         public static bool g_DrawMiniBlend = false;
-        // g_MiniMapRC: TRect;
         public static bool g_boTakeOnPos = true;
         public static bool g_boHeroTakeOnPos = true;
         public static bool g_boQueryDynCode = false;
         public static bool g_boQuerySelChar = false;
-        // g_pRcHeader: pTRcHeader;
-        // g_bLoginKey: PBoolean;
-        // g_pbInitSock: PBoolean;
         public static bool g_pbRecallHero = false;
-        // g_dwCheckTick             : LongWord = 0;
         public static int g_dwCheckCount = 0;
         public static int g_nBookPath = 0;
         public static int g_nBookPage = 0;
@@ -239,28 +208,10 @@ namespace RobotSvr
         public static int g_nTopDrawPos = 0;
         public static int g_nLeftDrawPos = 0;
         public static bool g_boSendLogin = false;
-        // 是否发送登录消息
         public static bool g_boServerConnected = false;
         public static bool g_SoftClosed = false;
-        // 小退游戏标记
         public static TChrAction g_ChrAction;
         public static TConnectionStep g_ConnectionStep;
-        // g_boSound                 : Boolean;
-        // g_boBGSound               : Boolean;
-        // g_MainFont: string = '宋体';
-        // g_FontArr: array[0..MAXFONT - 1] of string = (
-        // '宋体',
-        // '新宋体',
-        // '仿宋',
-        // '楷体',
-        // 'Courier New',
-        // 'Arial',
-        // 'MS Sans Serif',
-        // 'Microsoft Sans Serif'
-        // );
-        // g_OldTime: Longword;
-        // g_nCurFont: Integer = 0;
-        // g_sCurFontName: string = '宋体';
         public static bool g_boFullScreen = false;
         public static byte g_btMP3Volume = 70;
         public static byte g_btSoundVolume = 70;
@@ -282,10 +233,6 @@ namespace RobotSvr
         public static long g_DxFontsMgrTick = 0;
         public static TClientMagic[,] g_MagicArr = new TClientMagic[2 + 1, 255 + 1];
         public static ArrayList g_MagicList = null;
-#if SERIESSKILL
-        public static ArrayList g_MagicList2 = null;
-        public static ArrayList g_hMagicList2 = null;
-#endif // SERIESSKILL
         public static ArrayList g_IPMagicList = null;
         public static ArrayList g_HeroMagicList = null;
         public static ArrayList g_HeroIPMagicList = null;
@@ -294,7 +241,7 @@ namespace RobotSvr
         public static ArrayList g_MenuItemList = null;
         public static ArrayList g_DropedItemList = null;
         public static ArrayList g_ChangeFaceReadyList = null;
-        public static ArrayList g_FreeActorList = null;
+        public static IList<TActor> g_FreeActorList = null;
         public static int g_PoisonIndex = 0;
         public static int g_nBonusPoint = 0;
         public static int g_nSaveBonusPoint = 0;
@@ -326,10 +273,6 @@ namespace RobotSvr
         public static long g_dwLatestSmiteWideHitTick = 0;
         public static long g_dwLatestSmiteWideHitTick2 = 0;
         public static long g_dwLatestRushRushTick = 0;
-        // 最后被推动时间
-        // g_dwLatestStruckTick      : LongWord; //最后弯腰时间
-        // g_dwLatestHitTick         : LongWord; //最后物理攻击时间(用来控制攻击状态不能退出游戏)
-        // g_dwLatestMagicTick       : LongWord; //最后放魔法时间(用来控制攻击状态不能退出游戏)
         public static long g_dwMagicDelayTime = 0;
         public static long g_dwMagicPKDelayTime = 0;
         public static int g_nMouseCurrX = 0;
@@ -502,7 +445,6 @@ namespace RobotSvr
         public static TClientItem[] g_tui = new TClientItem[13 + 1];
         public static TClientItem[] g_UseItems = new TClientItem[Grobal2.U_FASHION + 1];
         public static TClientItem[] g_HeroUseItems = new TClientItem[Grobal2.U_FASHION + 1];
-        public static TUserStateInfo UserState1 = null;
         public static TItemShine g_detectItemShine = null;
         public static TItemShine[] UserState1Shine = new TItemShine[Grobal2.U_FASHION + 1];
         public static TItemShine[] g_UseItemsShine = new TItemShine[Grobal2.U_FASHION + 1];
@@ -519,32 +461,24 @@ namespace RobotSvr
         public static bool g_boBagLoaded = false;
         public static bool g_boServerChanging = false;
         public static int g_nCaptureSerial = 0;
-        // 抓图文件名序号
-        // g_nSendCount              : Integer; //发送操作计数
         public static int g_nReceiveCount = 0;
-        // 接改操作状态计数
         public static int g_nTestSendCount = 0;
         public static int g_nTestReceiveCount = 0;
         public static int g_nSpellCount = 0;
-        // 使用魔法计数
         public static int g_nSpellFailCount = 0;
-        // 使用魔法失败计数
         public static int g_nFireCount = 0;
         public static int g_nDebugCount = 0;
         public static int g_nDebugCount1 = 0;
         public static int g_nDebugCount2 = 0;
-        // 买卖相关
         public static TClientItem g_SellDlgItem = null;
         public static TMovingItem g_TakeBackItemWait = null;
         public static TMovingItem g_SellDlgItemSellWait = null;
-        // TClientItem;
         public static TClientItem g_DetectItem = null;
         public static int g_DetectItemMineID = 0;
         public static TClientItem g_DealDlgItem = null;
         public static bool g_boQueryPrice = false;
         public static long g_dwQueryPriceTime = 0;
         public static string g_sSellPriceStr = String.Empty;
-        // 交易相关
         public static TClientItem[] g_DealItems = new TClientItem[9 + 1];
         public static bool g_boYbDealing = false;
         public static TClientPS g_YbDealInfo = null;
@@ -579,20 +513,10 @@ namespace RobotSvr
         public static bool g_boNoDarkness = false;
         public static int g_nRunReadyCount = 0;
         public static bool g_boLastViewFog = false;
-#if VIEWFOG
-        public static bool g_boViewFog = true;
-    // 是否显示黑暗
-        public static bool g_boForceNotViewFog = true;
-    // 免蜡烛
-#else
         public static bool g_boViewFog = false;
-        // 是否显示黑暗
         public static bool g_boForceNotViewFog = true;
-        // 免蜡烛
-#endif // VIEWFOG
         public static TClientItem g_EatingItem = null;
         public static long g_dwEatTime = 0;
-        // timeout...
         public static long g_dwHeroEatTime = 0;
         public static long g_dwDizzyDelayStart = 0;
         public static long g_dwDizzyDelayTime = 0;
@@ -610,12 +534,7 @@ namespace RobotSvr
         // 游戏速度检测相关变量
         public static long g_dwFirstServerTime = 0;
         public static long g_dwFirstClientTime = 0;
-        // ServerTimeGap: int64;
         public static int g_nTimeFakeDetectCount = 0;
-        // g_dwSHGetCount            : PLongWord;
-        // g_dwSHGetTime             : LongWord;
-        // g_dwSHTimerTime           : LongWord;
-        // g_nSHFakeCount            : Integer;  //检查机器速度异常次数，如果超过4次则提示速度不稳定
         public static long g_dwLatestClientTime2 = 0;
         public static long g_dwFirstClientTimerTime = 0;
         // timer 矫埃
@@ -833,60 +752,14 @@ namespace RobotSvr
     {35 + 180, 70 + 24 * 3, 35 + 180 + 20, 70 + 24 * 3 + 16} ,
     {35 + 180, 70 + 24 * 5, 35 + 180 + 20, 70 + 24 * 5 + 16} ,
     {35 + 180, 70 + 24 * 6, 35 + 180 + 20, 70 + 24 * 6 + 16} };
-        // 0
-        // 1
-        // 2
-        // 3
-        // 4
-        // 5
-        // 6
-        // 7
-        // 8
-        // 9
-        // 10
-        public static string[] g_caProtect = { "HP               毫秒", "MP               毫秒", "", "HP               毫秒", "", "HP               毫秒", "卷轴类型", "HP               毫秒", "MP               毫秒", "HP               毫秒", "HP", "MP不足允许使用特殊药品" };
-        // shape = 2
-        // shape = 1
-        // shape = 3
-        // shape = 5
-        public static string[] g_sRenewBooks = { "随机传送卷", "地牢逃脱卷", "回城卷", "行会回城卷", "盟重传送石", "比奇传送石", "随机传送石", "", "", "", "", "" };
+
         public static bool[] g_gcProtect = { false, false, false, false, false, false, false, true, true, true, false, true };
         public static int[] g_gnProtectPercent = { 10, 10, 10, 10, 10, 10, 0, 88, 88, 88, 20, 00 };
         public static int[] g_gnProtectTime = { 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 1000, 1000, 1000 };
         public static Color[] g_clProtect = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Lime };
         // ====================================Tec====================================
         public const int MAX_GC_TEC = 14;
-        // 0
-        // 1
-        // 2
-        // 3
-        // 4
-        // 5
-        // 6
-        // 7
-        // 8
-        // 9
-        // 0
-        // 1
-        // 2
-        // 3
-        // 4
-        // 5
-        // 6
-        // 7
-        // 8
-        // 9
         public static string[] g_HintTec = { "钩选此项将开启刀刀刺杀", "钩选此项将开启智能半月", "钩选此项将自动凝聚烈火剑法", "钩选此项将自动凝聚逐日剑法", "钩选此项将自动开启魔法盾", "钩选此项英雄将自动开启魔法盾", "钩选此项道士将自动使用隐身术", "", "", "钩选此项将自动凝聚雷霆剑法", "钩选此项将自动进行隔位刺杀", "钩选此项将自动凝聚断空斩", "钩选此项英雄将不使用连击打怪\\方便玩家之间进行PK", "钩选此项将自动凝聚开天斩", "钩选此项：施展魔法超过允许距离时，会自动跑近目标并释放魔法" };
-        // 0
-        // 1
-        // 2
-        // 3
-        // 4
-        // 5
-        // 6
-        // 7
-        // 8
-        // 9
         public static string[] g_caTec = { "刀刀刺杀", "智能半月", "自动烈火", "逐日剑法", "自动开盾", "持续开盾(英雄)", "自动隐身", "时间间隔", "", "自动雷霆", "隔位刺杀", "自动断空斩", "英雄连击不打怪", "自动开天斩", "自动调节魔法距离" };
         public static string[] g_sMagics = { "火球术", "治愈术", "大火球", "施毒术", "攻杀剑术", "抗拒火环", "地狱火", "疾光电影", "雷电术", "雷电术", "雷电术", "雷电术", "雷电术", "开天斩", "开天斩" };
         public const int g_gnTecPracticeKey = 0;
@@ -895,12 +768,6 @@ namespace RobotSvr
         public static Color[] g_clTec = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver };
         // ====================================Assistant====================================
         public const int MAX_GC_ASS = 6;
-        // 0
-        // 1
-        // 2
-        // 3
-        // 4
-        // 5
         public static Rectangle[] g_ptAss = {
     {35 + 000, 70 + 24 * 0, 35 + 000 + 142, 70 + 24 * 0 + 16} ,
     {35 + 000, 70 + 24 * 1, 35 + 000 + 72, 70 + 24 * 1 + 16} ,
@@ -909,45 +776,15 @@ namespace RobotSvr
     {35 + 000, 70 + 24 * 4, 35 + 000 + 72, 70 + 24 * 4 + 16} ,
     {35 + 000, 70 + 24 * 5, 35 + 000 + 120, 70 + 24 * 5 + 16} ,
     {35 + 000, 70 + 24 * 6, 35 + 000 + 120, 70 + 24 * 6 + 16} };
-        // 0
-        // 1
-        // 2
-        // 3
-        // 4
-        public static string[] g_HintAss = { "", "", "", "", "", "可以自己编辑要显示和拾取的物品，开启\\此功能后，将替换掉 [物品] 选项卡的设置", "" };
-        // 0
-        // 1
-        // 2
-        // 3
-        // 4
-        public static string[] g_caAss = { "开启挂机(Ctrl+Alt+X)", "红药用完回城", "蓝药用完回城", "符毒用完回城", "背包满时回城", "自定物品过滤(钩选编辑)", "自定打怪过滤(钩选编辑)" };
+
         public static bool[] g_gcAss = { false, false, false, false, false, false, false };
         public static Color[] g_clAss = { System.Drawing.Color.Lime, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver };
         // ====================================HotKey====================================
-        public const int MAX_GC_HOTKEY = 8;
-        // 0
-        // 2
-        // 3
-        // 4
-        // 5
-        // 6
-        // 7
-        // 8
-        public static string[] g_caHotkey = { "启用自定快捷键", "召唤英雄", "英雄攻击目标", "使用合击技能", "英雄攻击模式", "英雄守护模式", "切换攻击模式", "切换小地图", "释放连击" };
-        public static bool[] g_gcHotkey = { false, false, false, false, false, false, false, false, false };
-        public static int[] g_gnHotkey = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        public static Color[] g_clHotkey = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Lime };
         public const int MAX_GC_ITEMS = 7;
         public const Rectangle g_ptItemsA =
     {25 + 194, 68 + 18 * 7 + 23, 25 + 194 + 80, 68 + 18 * 7 + 16 + 23};
         public const Rectangle g_ptAutoPickUp =
     {25 + 267, 68 + 18 * 7 + 23, 25 + 267 + 80, 68 + 18 * 7 + 16 + 23};
-        // 0
-        // 1
-        // 2
-        // 3
-        // 4
-        // 5
         public static TCItemRule[] g_caItems = { null, null, null, null, null, null, null, null };
         public static TCItemRule[] g_caItems2 = { null, null, null, null, null, null, null, null };
         public static Color[] g_clItems = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver };
@@ -959,108 +796,13 @@ namespace RobotSvr
         public const bool g_boNewMission = false;
         // 新任务
         public const long g_dwNewMission = 0;
-        // 11
-        // 21
-        // 31
-        // 老狮子吼
-        // 火焰冰
-        // 41
-        // 51
-        // 59
-        // 67
-        // 68
-        // 69
-        // 70
-        // 71
-        // 72
-        // 73
-        // 74
-        // 75
-        // 100
-        // 101
-        // 102
-        // 103
-        // 104
-        // 105
-        // 106
-        // 107
-        // 108
-        // 109
-        // 110
-        // 111
-        public static string[] g_asSkillDesc = { "凝聚自身魔力发射一枚火球\\攻击目标", "释放精神之力恢复自己或者\\他人的体力", "提高自身的攻击命中率", "通过与精神之力沟通，可以\\提高战斗时的命中率", "凝聚自身魔力发射一枚大火\\球攻击目标", "配合特殊药粉可以指定某个\\目标中毒", "攻击时有机率造成大幅伤害", "将身边的人或者怪兽推开", "向前挥出一堵火焰墙，使法\\术区域内的敌人受到伤害", "积蓄一道光电，使直线上所\\有敌人受到伤害", "从空中召唤一道雷电攻击敌人", "隔位施展剑气，使敌人受到\\大幅伤害", "将精神之力附着在护身符上，\\远程攻击目标", "使用护身符提高范围内友方\\的魔法防御力", "使用护身符提高范围内友方\\的防御力", "被限制在咒语中的怪兽不能\\移动或攻击圈外敌人", "使用护身符从地狱深处召唤\\骷髅，分担召唤者受到的伤害", "在自身周围释放精神之力使\\怪物无法察觉你的存在", "通达大量释放精神之力，能\\够隐藏范围内的人", "通过闪光电击使敌人瘫痪，\\甚至可以使怪物成为忠实的仆人", "利用强大魔力打乱空间，从\\而达到随机传送目的的法术", "在地面上产生火焰，使踏入\\的敌人受到伤害", "产生高热的火焰，使法术区\\域内的敌人受到伤害", "能够呼唤出一股强力的雷光\\风暴，伤害所有围在身边的敌人", "使用劲气可同时攻击环绕自\\身周围的敌人", "召唤火精灵附在武器上，从\\而造成强力的额外伤害", "用肩膀把敌人撞开，如果撞\\到障碍物将会对自己造成伤害", "使用精神力查看目标体力", "恢复自己和周围所有玩家的\\体力", "使用护身符召唤一只强大神\\兽作为自己的随从", "使用自身魔力制造一个魔法\\盾减少施法者受到的伤害", "有机率一击杀死不死生物", "召唤强力的暴风雪，使法术\\区域内的敌人受到伤害", "解除友方身上中的各种毒", "", "将法力凝结成冰攻击目标，\\有一定几率使对方暂时石化", "召唤强力的雷电，使法术\\区域内的敌人受到伤害", "配合特殊药粉可以指定某个\\区域内的目标中毒", "彻地钉，武士远程攻击技能", "使用劲气可同时攻击环绕\\自身周围的敌人", "使用劲气如雷震般将自身\\周围怪物暂时石化", "使用劲气造成处于自身前\\方大面积的敌人受伤", "召唤雷电灵附在武器上，\\从而造成强力的额外伤害，\\有一定几率使敌人麻痹", "产生巨大的魔力推力同时\\给敌人造成一定的伤害", "吸取对方一定的MP，同时\\产生巨大的魔力伤害", "", "召唤出可以熔化天日的火龙气焰", "一种内功的修炼，可以推\\开周围的怪物而得以防身的作用", "解除友方身上中的各种中毒状态", "瞬间提升自己的精神力", "飓风破", "诅咒术", "血咒", "骷髅咒", "", "剑气凝聚成形，瞬间化作\\一道光影，突袭身前的敌人", "驱使护身符，伤害同时吸取\\对方生命值", "召唤一阵猛烈的火雨，使\\法术区域内的敌人受到伤害", "", "将雷霆万钧之力凝于双刀之\\尖，对敌人造成致命伤害", "将刀光幻化成缕缕虹光环绕\\四周，对敌人造成致命伤害", "召唤天裂之力于利刃之中，\\对敌人造成致命伤害", "召唤噬魂沼泽，对敌人造成\\致命伤害", "炙热的龙焰与冻绝的冰息，\\汇合成内敛之气，爆发于瞬间", "召唤出可以熔化天日的火龙气焰", "凝聚力量的顶点，幻化出一柄\\巨剑，爆发出毁天灭地的威力", "", "", "", "将自己的属性召唤到身边", "远距离擒获怪物到自身前方", "使用法力自由移动到指定位置", "", "", "可以用来减低对方给予\\你的伤害", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "近身攻击，冲撞单体目标，\\在迫使其后退的同时，造成伤害", "左右开弓，挥剑重砍。\\近身攻击，对单体目标造成伤害", "跳起重击地面造成巨大伤害。\\远程攻击，对三步内的\\单体目标造成伤害", "横扫千军犹入无人之境。\\范围攻击，以自身为中心，\\对5*5范围内造成伤害", "犹如凤凰涅磐般的致命一击。\\远程攻击，对单体目标造成伤害", "跃起后发出强烈的魔法气场。\\远程攻击，对单体目标造成伤害", "蓄力重击，冻裂地面形成冰刺。\\范围攻击，以目标为中心，\\对5*5范围内造成持续伤害", "伤害非常恐怖的双龙出击。\\远程攻击，对单体目标造成伤害", "放出圣兽对目标发起攻击。\\远程攻击，对单体目标造成伤害", "双手运气，推出八卦掌攻击敌人。\\远程攻击，对单体目标造成伤害", "让人难以招架的连环符。\\远程攻击，对单体目标造成伤害", "万剑齐发，天地同归。\\范围攻击，以目标为中心，\\对5*5范围内造成伤害", "范围攻击，以目标为中心，\\对3*3范围内造成持续伤害", "跳起重击地面造成巨大伤害\\远程攻击，对四步内的\\单体目标造成伤害", "跳起重击地面造成巨大伤害\\远程攻击，对屏幕内的\\目标造成巨大伤害", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
         public const int WH_KEYBOARD_LL = 13;
         public const int LLKHF_ALTDOWN = 0x20;
-        // Windows 2000/XP multimedia keys (adapted from winuser.h and renamed to avoid potential conflicts)
-        // See also: http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/winui/WindowsUserInterface/UserInput/VirtualKeyCodes.asp
-        public const int _VK_BROWSER_BACK = 0xA6;
-        // Browser Back key
-        public const int _VK_BROWSER_FORWARD = 0xA7;
-        // Browser Forward key
-        public const int _VK_BROWSER_REFRESH = 0xA8;
-        // Browser Refresh key
-        public const int _VK_BROWSER_STOP = 0xA9;
-        // Browser Stop key
-        public const int _VK_BROWSER_SEARCH = 0xAA;
-        // Browser Search key
-        public const int _VK_BROWSER_FAVORITES = 0xAB;
-        // Browser Favorites key
-        public const int _VK_BROWSER_HOME = 0xAC;
-        // Browser Start and Home key
-        public const int _VK_VOLUME_MUTE = 0xAD;
-        // Volume Mute key
-        public const int _VK_VOLUME_DOWN = 0xAE;
-        // Volume Down key
-        public const int _VK_VOLUME_UP = 0xAF;
-        // Volume Up key
-        public const int _VK_MEDIA_NEXT_TRACK = 0xB0;
-        // Next Track key
-        public const int _VK_MEDIA_PREV_TRACK = 0xB1;
-        // Previous Track key
-        public const int _VK_MEDIA_STOP = 0xB2;
-        // Stop Media key
-        public const int _VK_MEDIA_PLAY_PAUSE = 0xB3;
-        // Play/Pause Media key
-        public const int _VK_LAUNCH_MAIL = 0xB4;
-        // Start Mail key
-        public const int _VK_LAUNCH_MEDIA_SELECT = 0xB5;
-        // Select Media key
-        public const int _VK_LAUNCH_APP1 = 0xB6;
-        // Start Application 1 key
-        public const int _VK_LAUNCH_APP2 = 0xB7;
-        // Start Application 2 key
-        // Self-invented names for the extended keys
-        public const string NAME_VK_BROWSER_BACK = "Browser Back";
-        public const string NAME_VK_BROWSER_FORWARD = "Browser Forward";
-        public const string NAME_VK_BROWSER_REFRESH = "Browser Refresh";
-        public const string NAME_VK_BROWSER_STOP = "Browser Stop";
-        public const string NAME_VK_BROWSER_SEARCH = "Browser Search";
-        public const string NAME_VK_BROWSER_FAVORITES = "Browser Favorites";
-        public const string NAME_VK_BROWSER_HOME = "Browser Start/Home";
-        public const string NAME_VK_VOLUME_MUTE = "Volume Mute";
-        public const string NAME_VK_VOLUME_DOWN = "Volume Down";
-        public const string NAME_VK_VOLUME_UP = "Volume Up";
-        public const string NAME_VK_MEDIA_NEXT_TRACK = "Next Track";
-        public const string NAME_VK_MEDIA_PREV_TRACK = "Previous Track";
-        public const string NAME_VK_MEDIA_STOP = "Stop Media";
-        public const string NAME_VK_MEDIA_PLAY_PAUSE = "Play/Pause Media";
-        public const string NAME_VK_LAUNCH_MAIL = "Start Mail";
-        public const string NAME_VK_LAUNCH_MEDIA_SELECT = "Select Media";
-        public const string NAME_VK_LAUNCH_APP1 = "Start Application 1";
-        public const string NAME_VK_LAUNCH_APP2 = "Start Application 2";
         public const string CONFIGFILE = "Config\\%s.ini";
-        // *******************************************************************************
         public const string g_affiche0 = "游戏音效已关闭！";
         public const string g_affiche1 = "健康游戏公告";
         public const string g_affiche2 = "抵制不良游戏 拒绝盗版游戏 注意自我保护 谨防受骗上当 适度游戏益脑";
         public const string g_affiche3 = "沉迷游戏伤身 合理安排时间 享受健康生活 严厉打击赌博 营造和谐环境";
-        public const string mmsyst = "winmm.dll";
-        public const string kernel32 = "kernel32.dll";
-        public const string HotKeyAtomPrefix = "HotKeyManagerHotKey";
-        public const string ModName_Shift = "Shift";
-        public const string ModName_Ctrl = "Ctrl";
-        public const string ModName_Alt = "Alt";
-        public const string ModName_Win = "Win";
         public const int VK2_SHIFT = 32;
         public const int VK2_CONTROL = 64;
         public const int VK2_ALT = 128;
@@ -1110,7 +852,7 @@ namespace RobotSvr
                     result = "竞技区域";
                 }
             }
-            if ((ClMain.SelectChrScene != null))
+            if (ClMain.SelectChrScene != null)
             {
                 if (VarText == "$SELECTCHRNAME1")
                 {
@@ -1306,7 +1048,7 @@ namespace RobotSvr
                         pMapDescInfo.nPointY = nPointY;
                         pMapDescInfo.nColor = nColor;
                         pMapDescInfo.nFullMap = nFullMap;
-                        g_xMapDescList.Add(szMapTitle, ((pMapDescInfo) as Object));
+                        g_xMapDescList.Add(szMapTitle, pMapDescInfo as Object);
                     }
                 }
                 xsl.Free;
@@ -1439,7 +1181,7 @@ namespace RobotSvr
             if (nMax != 0)
             {
                 // or (nMax - nMin > 1500)
-                result = (Math.Round((nMin / nMax) * 100) < g_gnProtectPercent[0]);
+                result = HUtil32.Round(nMin / nMax * 100) < g_gnProtectPercent[0];
             }
             return result;
         }
@@ -1451,7 +1193,7 @@ namespace RobotSvr
             if (nMax != 0)
             {
                 // or (nMax - nMin > 1500)
-                result = (Math.Round((nMin / nMax) * 100) < g_gnProtectPercent[1]);
+                result = HUtil32.Round(nMin / nMax * 100) < g_gnProtectPercent[1];
             }
             return result;
         }
@@ -1463,7 +1205,7 @@ namespace RobotSvr
             if (nMax != 0)
             {
                 // or (nMax - nMin > 6000)
-                result = (Math.Round((nMin / nMax) * 100) < g_gnProtectPercent[3]);
+                result = HUtil32.Round(nMin / nMax * 100) < g_gnProtectPercent[3];
             }
             return result;
         }
@@ -1475,7 +1217,7 @@ namespace RobotSvr
             if (nMax != 0)
             {
                 // or (nMax - nMin > 6000)
-                result = (Math.Round((nMin / nMax) * 100) < g_gnProtectPercent[5]);
+                result = HUtil32.Round(nMin / nMax * 100) < g_gnProtectPercent[5];
             }
             return result;
         }
@@ -1487,7 +1229,7 @@ namespace RobotSvr
             if (nMax != 0)
             {
                 // or (nMax - nMin > 1500)
-                result = (Math.Round((nMin / nMax) * 100) < g_gnProtectPercent[7]);
+                result = HUtil32.Round(nMin / nMax * 100) < g_gnProtectPercent[7];
             }
             return result;
         }
@@ -1499,7 +1241,7 @@ namespace RobotSvr
             if (nMax != 0)
             {
                 // or (nMax - nMin > 1500)
-                result = (Math.Round((nMin / nMax) * 100) < g_gnProtectPercent[8]);
+                result = HUtil32.Round(nMin / nMax * 100) < g_gnProtectPercent[8];
             }
             return result;
         }
@@ -1511,7 +1253,7 @@ namespace RobotSvr
             if (nMax != 0)
             {
                 // or (nMax - nMin > 6000)
-                result = (Math.Round((nMin / nMax) * 100) < g_gnProtectPercent[9]);
+                result = HUtil32.Round(nMin / nMax * 100) < g_gnProtectPercent[9];
             }
             return result;
         }
@@ -1793,7 +1535,7 @@ namespace RobotSvr
                     if ((Name != "") && (desc != ""))
                     {
                         // g_ItemDesc.Put(name, TObject(ps));
-                        g_ItemDesc.Add(Name, ((ps) as Object));
+                        g_ItemDesc.Add(Name, ps as Object);
                     }
                 }
                 temp.Free;
@@ -1869,27 +1611,27 @@ namespace RobotSvr
                     p.rare = s2 == "1";
                     p.pick = s3 == "1";
                     p.Show = s4 == "1";
-                    g_ItemsFilter_All.Put(s0, ((p) as Object));
+                    g_ItemsFilter_All.Put(s0, p as Object);
                     p2 = new TCItemRule();
                     p2 = p;
-                    g_ItemsFilter_All_Def.Put(s0, ((p2) as Object));
+                    g_ItemsFilter_All_Def.Put(s0, p2 as Object);
                     n = Convert.ToInt32(s1);
                     switch (n)
                     {
                         case 0:
-                            g_ItemsFilter_Dress.Add(s0, ((p) as Object));
+                            g_ItemsFilter_Dress.Add(s0, p as Object);
                             break;
                         case 1:
-                            g_ItemsFilter_Weapon.Add(s0, ((p) as Object));
+                            g_ItemsFilter_Weapon.Add(s0, p as Object);
                             break;
                         case 2:
-                            g_ItemsFilter_Headgear.Add(s0, ((p) as Object));
+                            g_ItemsFilter_Headgear.Add(s0, p as Object);
                             break;
                         case 3:
-                            g_ItemsFilter_Drug.Add(s0, ((p) as Object));
+                            g_ItemsFilter_Drug.Add(s0, p as Object);
                             break;
                         default:
-                            g_ItemsFilter_Other.Add(s0, ((p) as Object));
+                            g_ItemsFilter_Other.Add(s0, p as Object);
                             break;
                             // 服装
                     }
@@ -1900,89 +1642,89 @@ namespace RobotSvr
 
         public static void LoadItemFilter2()
         {
-            int i;
-            string s;
-            string s0;
-            string s2;
-            string s3;
-            string s4;
-            string fn;
-            ArrayList ls;
-            TCItemRule p;
-            TCItemRule p2;
-            bool b2;
-            bool b3;
-            bool b4;
-            fn = ".\\Config\\" + g_sServerName + "." + ClMain.frmMain.m_sCharName + ".ItemFilter.txt";
-            // DScreen.AddChatBoardString(fn, clWhite, clBlue);
-            if (File.Exists(fn))
-            {
-                // DScreen.AddChatBoardString('1', clWhite, clBlue);
-                ls = new ArrayList();
-                ls.LoadFromFile(fn);
-                for (i = 0; i < ls.Count; i++)
-                {
-                    s = ls[i];
-                    if (s == "")
-                    {
-                        continue;
-                    }
-                    s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s0, new string[] { "," });
-                    s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s2, new string[] { "," });
-                    s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s3, new string[] { "," });
-                    s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s4, new string[] { "," });
-                    p = ((TCItemRule)(g_ItemsFilter_All_Def.GetValues(s0)));
-                    if (p != null)
-                    {
-                        // DScreen.AddChatBoardString('2', clWhite, clBlue);
-                        b2 = s2 == "1";
-                        b3 = s3 == "1";
-                        b4 = s4 == "1";
-                        if ((b2 != p.rare) || (b3 != p.pick) || (b4 != p.Show))
-                        {
-                            // DScreen.AddChatBoardString('3', clWhite, clBlue);
-                            p2 = ((TCItemRule)(g_ItemsFilter_All.GetValues(s0)));
-                            if (p2 != null)
-                            {
-                                // DScreen.AddChatBoardString('4', clWhite, clBlue);
-                                p2.rare = b2;
-                                p2.pick = b3;
-                                p2.Show = b4;
-                            }
-                        }
-                    }
-                }
-                ls.Free;
-            }
+            //int i;
+            //string s;
+            //string s0;
+            //string s2;
+            //string s3;
+            //string s4;
+            //string fn;
+            //ArrayList ls;
+            //TCItemRule p;
+            //TCItemRule p2;
+            //bool b2;
+            //bool b3;
+            //bool b4;
+            //fn = ".\\Config\\" + g_sServerName + "." + ClMain.frmMain.m_sCharName + ".ItemFilter.txt";
+            //// DScreen.AddChatBoardString(fn, clWhite, clBlue);
+            //if (File.Exists(fn))
+            //{
+            //    // DScreen.AddChatBoardString('1', clWhite, clBlue);
+            //    ls = new ArrayList();
+            //    ls.LoadFromFile(fn);
+            //    for (i = 0; i < ls.Count; i++)
+            //    {
+            //        s = ls[i];
+            //        if (s == "")
+            //        {
+            //            continue;
+            //        }
+            //        s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s0, new string[] { "," });
+            //        s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s2, new string[] { "," });
+            //        s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s3, new string[] { "," });
+            //        s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s4, new string[] { "," });
+            //        p = ((TCItemRule)(g_ItemsFilter_All_Def.GetValues(s0)));
+            //        if (p != null)
+            //        {
+            //            // DScreen.AddChatBoardString('2', clWhite, clBlue);
+            //            b2 = s2 == "1";
+            //            b3 = s3 == "1";
+            //            b4 = s4 == "1";
+            //            if ((b2 != p.rare) || (b3 != p.pick) || (b4 != p.Show))
+            //            {
+            //                // DScreen.AddChatBoardString('3', clWhite, clBlue);
+            //                p2 = ((TCItemRule)(g_ItemsFilter_All.GetValues(s0)));
+            //                if (p2 != null)
+            //                {
+            //                    // DScreen.AddChatBoardString('4', clWhite, clBlue);
+            //                    p2.rare = b2;
+            //                    p2.pick = b3;
+            //                    p2.Show = b4;
+            //                }
+            //            }
+            //        }
+            //    }
+            //    ls.Free;
+            //}
         }
 
         public static void SaveItemFilter()
         {
             // 退出增量保存
-            int i;
-            ArrayList ls;
-            TCItemRule p;
-            TCItemRule p2;
-            string fn;
-            fn = ".\\Config\\" + g_sServerName + "." + ClMain.frmMain.m_sCharName + ".ItemFilter.txt";
-            ls = new ArrayList();
-            for (i = 0; i < g_ItemsFilter_All.Count; i++)
-            {
-                p = ((TCItemRule)(g_ItemsFilter_All.GetValues(g_ItemsFilter_All.Keys[i])));
-                p2 = ((TCItemRule)(g_ItemsFilter_All_Def.GetValues(g_ItemsFilter_All_Def.Keys[i])));
-                if (p.Name == p2.Name)
-                {
-                    if ((p.rare != p2.rare) || (p.pick != p2.pick) || (p.Show != p2.Show))
-                    {
-                        ls.Add(string.Format("%s,%d,%d,%d", new byte[] { p.Name, ((byte)p.rare), ((byte)p.pick), ((byte)p.Show) }));
-                    }
-                }
-            }
-            if (ls.Count > 0)
-            {
-                ls.SaveToFile(fn);
-            }
-            ls.Free;
+            //int i;
+            //ArrayList ls;
+            //TCItemRule p;
+            //TCItemRule p2;
+            //string fn;
+            //fn = ".\\Config\\" + g_sServerName + "." + ClMain.frmMain.m_sCharName + ".ItemFilter.txt";
+            //ls = new ArrayList();
+            //for (i = 0; i < g_ItemsFilter_All.Count; i++)
+            //{
+            //    p = ((TCItemRule)(g_ItemsFilter_All.GetValues(g_ItemsFilter_All.Keys[i])));
+            //    p2 = ((TCItemRule)(g_ItemsFilter_All_Def.GetValues(g_ItemsFilter_All_Def.Keys[i])));
+            //    if (p.Name == p2.Name)
+            //    {
+            //        if ((p.rare != p2.rare) || (p.pick != p2.pick) || (p.Show != p2.Show))
+            //        {
+            //            ls.Add(string.Format("%s,%d,%d,%d", new byte[] { p.Name, ((byte)p.rare), ((byte)p.pick), ((byte)p.Show) }));
+            //        }
+            //    }
+            //}
+            //if (ls.Count > 0)
+            //{
+            //    ls.SaveToFile(fn);
+            //}
+            //ls.Free;
         }
 
         public static TClientSuiteItems getSuiteHint(ref int idx, string s, byte gender)
@@ -1998,7 +1740,7 @@ namespace RobotSvr
             for (i = 0; i < g_SuiteItemsList.Count; i++)
             {
                 p = g_SuiteItemsList[i];
-                if (((p.asSuiteName[0] == "") || (gender == p.Gender)) && ((s).ToLower().CompareTo((p.asSuiteName[idx]).ToLower()) == 0))
+                if (((p.asSuiteName[0] == "") || (gender == p.Gender)) && (s.ToLower().CompareTo(p.asSuiteName[idx].ToLower()) == 0))
                 {
                     result = p;
                     break;
@@ -2067,13 +1809,8 @@ namespace RobotSvr
         public static bool GetSecretAbil(TClientItem CurrMouseItem)
         {
             bool result;
-            int i;
-            int start;
-            byte adv;
-            byte cnt;
-            string s;
             result = false;
-            if (!(new ArrayList(new int[] { 5, 6, 10, 15, 26 }).Contains(CurrMous.Item.Item.StdMode)))
+            if (!new ArrayList(new int[] { 5, 6, 10, 15, 26 }).Contains(CurrMous.Item.Item.StdMode))
             {
                 return result;
             }
@@ -2381,8 +2118,6 @@ namespace RobotSvr
 
         public static void AutoPutOntiBooks()
         {
-            int i;
-            TClientItem cu;
             //if ((g_TIItems[0].Item.Item.Name != "") && (g_TIItems[0].Item.Item.Eva.EvaTimesMax > 0) && (g_TIItems[0].Item.Item.Eva.EvaTimes < g_TIItems[0].Item.Item.Eva.EvaTimesMax) && ((g_TIItems[1].Item.Item.Name == "") || (g_TIItems[1].Item.Item.ItemtdMode != 56) || !(g_TIItems[1].Item.Item.Itemhape >= 1 && g_TIItems[1].Item.Item.Itemhape <= 3) || (g_TIItems[1].Item.Item.Itemhape != g_TIItems[0].Item.Item.Eva.EvaTimes + 1)))
             //{
             //    for (i = MAXBAGITEMCL - 1; i >= 6; i--)
@@ -2410,8 +2145,6 @@ namespace RobotSvr
 
         public static void AutoPutOntiSecretBooks()
         {
-            int i;
-            TClientItem cu;
             //if (FrmDlg.DWSP.Visible && (FrmDlg.DWSP.tag == 1) && (g_spItems[0].Item.Item.Name != "") && (g_spItems[0].Item.Item.Eva.EvaTimesMax > 0) && ((g_spItems[1].Item.Item.Name == "") || (g_spItems[1].Item.Item.ItemtdMode != 56) || (g_spItems[1].Item.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             s.Shape != 0)))
             //{
             //    for (i = MAXBAGITEMCL - 1; i >= 6; i--)
@@ -2439,8 +2172,6 @@ namespace RobotSvr
 
         public static void AutoPutOntiCharms()
         {
-            int i;
-            TClientItem cu;
             //if ((g_TIItems[0].Item.Item.Name != "") && (g_TIItems[0].Item.Item.Eva.EvaTimesMax > 0) && (g_TIItems[0].Item.Item.Eva.EvaTimes > 0) && ((g_TIItems[1].Item.Item.Name == "") || (g_TIItems[1].Item.Item.ItemtdMode != 41) || (g_TIItems[1].Item.Item.Itemhape != 30)))
             //{
             //    for (i = MAXBAGITEMCL - 1; i >= 6; i--)
@@ -2546,11 +2277,11 @@ namespace RobotSvr
         {
             bool result;
             result = false;
-            if ((g_MySelf == null))
+            if (g_MySelf == null)
             {
                 return result;
             }
-            if ((Math.Abs(X - g_MySelf.m_nCurrX) <= HUtil32._MIN(24, g_TileMapOffSetX + 9)) && (Math.Abs(Y - g_MySelf.m_nCurrY) <= HUtil32._MIN(24, (g_TileMapOffSetY + 10))))
+            if ((Math.Abs(X - g_MySelf.m_nCurrX) <= HUtil32._MIN(24, g_TileMapOffSetX + 9)) && (Math.Abs(Y - g_MySelf.m_nCurrY) <= HUtil32._MIN(24, g_TileMapOffSetY + 10)))
             {
                 result = true;
             }
@@ -2564,7 +2295,7 @@ namespace RobotSvr
             nItemIdx -= 1;
             if ((nItemIdx >= 0) && (g_TitlesList.Count > nItemIdx))
             {
-                if (((TStdItem)(g_TitlesList[nItemIdx])).Name != "")
+                if (((TStdItem)g_TitlesList[nItemIdx]).Name != "")
                 {
                     result = g_TitlesList[nItemIdx];
                 }
@@ -2626,13 +2357,13 @@ namespace RobotSvr
         public string[] Hint;
     } // end TVaInfo
 
-    public struct TFindNode
+    public class TFindNode
     {
         public int X;
         public int Y;
     } // end TFindNode
 
-    public struct Tree
+    public class Tree
     {
         public int H;
         public int X;
@@ -2641,7 +2372,7 @@ namespace RobotSvr
         public Tree Father;
     }
 
-    public struct Link
+    public class Link
     {
         public Tree Node;
         public int F;
@@ -2654,7 +2385,7 @@ namespace RobotSvr
         public string CodeSign;
     }
 
-    public struct TMovingItem
+    public class TMovingItem
     {
         public int Index;
         public TClientItem Item;

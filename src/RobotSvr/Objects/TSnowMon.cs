@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using SystemModule;
 
 namespace RobotSvr
@@ -89,7 +88,7 @@ namespace RobotSvr
                     this.m_nStartFrame = pm.ActCritical.start + this.m_btDir * (pm.ActCritical.frame + pm.ActCritical.skip);
                     this.m_nEndFrame = this.m_nStartFrame + pm.ActCritical.frame - 1;
                     this.m_dwFrameTime = pm.ActCritical.ftime;
-                    if ((this.m_nMagicNum == 2) && (new ArrayList(new int[] { 38, 39, 46 }).Contains(this.m_btRace)))
+                    if ((this.m_nMagicNum == 2) && new ArrayList(new int[] { 38, 39, 46 }).Contains(this.m_btRace))
                     {
                         this.m_nStartFrame = pm.ActDeath.start + this.m_btDir * (pm.ActDeath.frame + pm.ActDeath.skip);
                         this.m_nEndFrame = this.m_nStartFrame + pm.ActDeath.frame - 1;
@@ -138,7 +137,7 @@ namespace RobotSvr
                     this.m_nEndFrame = this.m_nStartFrame + pm.ActDie.frame - 1;
                     this.m_dwFrameTime = pm.ActDie.ftime;
                     this.m_dwStartTime = MShare.GetTickCount();
-                    if ((new ArrayList(new int[] { 40, 65 }).Contains(this.m_btRace)))
+                    if (new ArrayList(new int[] { 40, 65 }).Contains(this.m_btRace))
                     {
                         BoUseDieEffect = true;
                     }
@@ -222,7 +221,7 @@ namespace RobotSvr
             {
                 if (this.m_boMsgMuch)
                 {
-                    dwEffectFrameTimetime = Math.Round(this.m_dwEffectFrameTime * 2 / 3);
+                    dwEffectFrameTimetime = HUtil32.Round(this.m_dwEffectFrameTime * 2 / 3);
                 }
                 else
                 {

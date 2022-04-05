@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using SystemModule;
 
 namespace RobotSvr
@@ -27,7 +26,7 @@ namespace RobotSvr
             {
                 if (this.m_boMsgMuch)
                 {
-                    m_dwEffectFrameTimetime = Math.Round(this.m_dwEffectFrameTime * 2 / 3);
+                    m_dwEffectFrameTimetime = HUtil32.Round(this.m_dwEffectFrameTime * 2 / 3);
                 }
                 else
                 {
@@ -55,7 +54,7 @@ namespace RobotSvr
                 }
                 if (this.m_boMsgMuch)
                 {
-                    m_dwFrameTimetime = Math.Round(this.m_dwFrameTime * 2 / 3);
+                    m_dwFrameTimetime = HUtil32.Round(this.m_dwFrameTime * 2 / 3);
                 }
                 else
                 {
@@ -82,50 +81,50 @@ namespace RobotSvr
                         }
                         if ((this.m_nCurrentFrame - this.m_nStartFrame) == 4)
                         {
-                            if ((this.m_btRace == 111))
+                            if (this.m_btRace == 111)
                             {
                                 // RightGuard
                                 ClMain.g_PlayScene.NewMagic(this, 7, 33, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtGroundEffect, false, 30, ref bofly);
                             }
-                            else if ((this.m_btRace == 101))
+                            else if (this.m_btRace == 101)
                             {
                                 // RightGuard
                                 ClMain.g_PlayScene.NewMagic(this, 1, 1, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFly, true, 20, ref bofly);
                             }
                             // or (m_btRace = 81)
-                            else if ((this.m_btRace == 70))
+                            else if (this.m_btRace == 70)
                             {
                                 // m_nMagicNum
                                 // 8
                                 ClMain.g_PlayScene.NewMagic(this, 7, 9, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
                             }
-                            else if ((this.m_btRace == 71))
+                            else if (this.m_btRace == 71)
                             {
                                 // 1
                                 // 1
                                 ClMain.g_PlayScene.NewMagic(this, 11, 32, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFly, true, 30, ref bofly);
                             }
-                            else if ((this.m_btRace == 72))
+                            else if (this.m_btRace == 72)
                             {
                                 ClMain.g_PlayScene.NewMagic(this, 11, 32, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtGroundEffect, false, 30, ref bofly);
                             }
-                            else if ((this.m_btRace == 78))
+                            else if (this.m_btRace == 78)
                             {
                                 ClMain.g_PlayScene.NewMagic(this, 11, 37, this.m_nCurrX, this.m_nCurrY, this.m_nCurrX, this.m_nCurrY, this.m_nRecogId, magiceff.TMagicType.mtGroundEffect, false, 30, ref bofly);
                             }
-                            else if ((this.m_btRace == 81))
+                            else if (this.m_btRace == 81)
                             {
                                 ClMain.g_PlayScene.NewMagic(this, 7, 9, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
                             }
-                            else if ((this.m_btRace == 113))
+                            else if (this.m_btRace == 113)
                             {
                             }
-                            else if ((this.m_btRace == 114))
+                            else if (this.m_btRace == 114)
                             {
                                 // 11,
                                 ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_FOX_THUNDER, Grobal2.MAGIC_FOX_THUNDER, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
                             }
-                            else if ((this.m_btRace == 115))
+                            else if (this.m_btRace == 115)
                             {
                                 ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_FOX_FIRE2, Grobal2.MAGIC_FOX_FIRE2, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtExploBujauk, false, 30, ref bofly);
                                 this.m_nMagicStartSound = 10130;
@@ -136,13 +135,13 @@ namespace RobotSvr
                     }
                     else if (this.m_nCurrentAction == Grobal2.SM_LIGHTING_1)
                     {
-                        if ((this.m_nCurrentFrame - this.m_nStartFrame == 4))
+                        if (this.m_nCurrentFrame - this.m_nStartFrame == 4)
                         {
-                            if ((this.m_btRace == 114))
+                            if (this.m_btRace == 114)
                             {
                                 ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_FOX_FIRE1, Grobal2.MAGIC_FOX_FIRE1, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
                             }
-                            else if ((this.m_btRace == 115))
+                            else if (this.m_btRace == 115)
                             {
                                 ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_FOX_CURSE, Grobal2.MAGIC_FOX_CURSE, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtExploBujauk, false, 30, ref bofly);
                                 this.m_nMagicStartSound = 10130;
@@ -170,7 +169,7 @@ namespace RobotSvr
                     }
                     this.DefaultMotion();
                 }
-                else if (((int)MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
+                else if ((MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
                 {
                     if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
                     {

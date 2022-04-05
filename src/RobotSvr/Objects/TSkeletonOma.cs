@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using SystemModule;
 
 namespace RobotSvr
@@ -314,8 +313,6 @@ namespace RobotSvr
             {
                 this.m_boMsgMuch = true;
             }
-            // 荤款靛 瓤苞
-            this.RunActSound(this.m_nCurrentFrame - this.m_nStartFrame);
             this.RunFrameAction(this.m_nCurrentFrame - this.m_nStartFrame);
             prv = this.m_nCurrentFrame;
             if (this.m_nCurrentAction != 0)
@@ -326,7 +323,7 @@ namespace RobotSvr
                 }
                 if (this.m_boMsgMuch)
                 {
-                    m_dwFrameTimetime = Math.Round(this.m_dwFrameTime * 2 / 3);
+                    m_dwFrameTimetime = HUtil32.Round(this.m_dwFrameTime * 2 / 3);
                 }
                 else
                 {
@@ -352,7 +349,7 @@ namespace RobotSvr
             }
             else
             {
-                if (((int)MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
+                if ((MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
                 {
                     if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
                     {
@@ -369,7 +366,6 @@ namespace RobotSvr
             if (prv != this.m_nCurrentFrame)
             {
                 this.m_dwLoadSurfaceTime = MShare.GetTickCount();
-                LoadSurface();
             }
         }
     }

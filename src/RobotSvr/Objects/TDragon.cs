@@ -67,10 +67,8 @@ namespace RobotSvr
         public override void Run()
         {
             int prv;
-            int nDir;
             long m_dwEffectframetimetime;
             long m_dwFrameTimetime;
-            bool bofly;
             if ((this.m_nCurrentAction == Grobal2.SM_WALK) || (this.m_nCurrentAction == Grobal2.SM_BACKSTEP) || (this.m_nCurrentAction == Grobal2.SM_RUN) || (this.m_nCurrentAction == Grobal2.SM_HORSERUN))
             {
                 return;
@@ -134,28 +132,24 @@ namespace RobotSvr
                         this.m_nCurrentAction = 0;
                         this.m_boUseEffect = false;
                     }
-                    if ((this.m_nCurrentAction == Grobal2.SM_LIGHTING))
+                    if (this.m_nCurrentAction == Grobal2.SM_LIGHTING)
                     {
                         AttackEff();
                     }
-                    else if ((this.m_nCurrentAction == Grobal2.SM_HIT))
+                    else if (this.m_nCurrentAction == Grobal2.SM_HIT)
                     {
-                        nDir = 81;
                         if (this.m_btDir <= 4)
                         {
-                            nDir = 81;
                         }
                         else if (this.m_btDir == 5)
                         {
-                            nDir = 82;
                         }
                         else if (this.m_btDir >= 6)
                         {
-                            nDir = 83;
                         }
                         if ((this.m_nCurrentFrame - this.m_nStartFrame) == 4)
                         {
-                           // ClMain.g_PlayScene.NewMagic(this, nDir, nDir, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFly, true, 30, ref bofly);
+                            // ClMain.g_PlayScene.NewMagic(this, nDir, nDir, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFly, true, 30, ref bofly);
                         }
                     }
                 }

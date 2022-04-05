@@ -143,8 +143,8 @@ namespace RobotSvr
     public class TCentipedeKingMon : TKillingHerb
     {
         private bool BoUseDieEffect = false;
-        private int ax = 0;
-        private int ay = 0;
+        private readonly int ax = 0;
+        private readonly int ay = 0;
 
         public override void CalcActorFrame()
         {
@@ -242,10 +242,10 @@ namespace RobotSvr
 
     public class TCastleDoor : TActor
     {
-        private int ax = 0;
-        private int ay = 0;
-        private int oldunitx = 0;
-        private int oldunity = 0;
+        private readonly int ax = 0;
+        private readonly int ay = 0;
+        private readonly int oldunitx = 0;
+        private readonly int oldunity = 0;
         public bool BoDoorOpen = false;
 
         public TCastleDoor() : base()

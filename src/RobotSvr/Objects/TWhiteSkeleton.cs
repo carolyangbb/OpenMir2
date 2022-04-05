@@ -24,7 +24,7 @@ namespace RobotSvr
                     this.m_dwFrameTime = this.m_Action.ActAttack.ftime;
                     this.m_dwStartTime = MShare.GetTickCount();
                     this.m_dwWarModeTime = MShare.GetTickCount();
-                    if ((this.m_nCurrentAction == Grobal2.SM_POWERHIT))
+                    if (this.m_nCurrentAction == Grobal2.SM_POWERHIT)
                     {
                         this.m_boHitEffect = true;
                         this.m_nMagLight = 2;

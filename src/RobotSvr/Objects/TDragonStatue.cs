@@ -1,5 +1,4 @@
-﻿using System;
-using SystemModule;
+﻿using SystemModule;
 
 namespace RobotSvr
 {
@@ -65,7 +64,7 @@ namespace RobotSvr
             {
                 if (this.m_boMsgMuch)
                 {
-                    dwEffectFrameTime = Math.Round(this.m_dwEffectFrameTime * 2 / 3);
+                    dwEffectFrameTime = HUtil32.Round(this.m_dwEffectFrameTime * 2 / 3);
                 }
                 else
                 {
@@ -93,7 +92,7 @@ namespace RobotSvr
                 }
                 if (this.m_boMsgMuch)
                 {
-                    m_dwFrameTimetime = Math.Round(this.m_dwFrameTime * 2 / 3);
+                    m_dwFrameTimetime = HUtil32.Round(this.m_dwFrameTime * 2 / 3);
                 }
                 else
                 {
@@ -122,7 +121,7 @@ namespace RobotSvr
             }
             else
             {
-                if (((int)MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
+                if ((MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
                 {
                     if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
                     {

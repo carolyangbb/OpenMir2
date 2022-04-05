@@ -1,5 +1,4 @@
-﻿using System;
-using SystemModule;
+﻿using SystemModule;
 
 namespace RobotSvr
 {
@@ -44,14 +43,14 @@ namespace RobotSvr
                     this.m_dwStartTime = MShare.GetTickCount();
                     this.m_boWarMode = true;
                     this.m_dwWarModeTime = MShare.GetTickCount();
-                    if ((this.m_wAppearance == 354))
+                    if (this.m_wAppearance == 354)
                     {
                         this.m_boHitEffect = true;
                         this.m_nMagLight = 2;
                         this.m_nHitEffectNumber = 3;
                         this.m_nHitEffectNumber += 101;
                     }
-                    if ((this.m_wAppearance == 815))
+                    if (this.m_wAppearance == 815)
                     {
                         this.m_boHitEffect = true;
                         this.m_nMagLight = 2;
@@ -167,12 +166,12 @@ namespace RobotSvr
                     {
                         ClMain.g_PlayScene.m_EffectList.Add(neff);
                     }
-                    if ((this.m_wAppearance == 354))
+                    if (this.m_wAppearance == 354)
                     {
                         ClMain.g_ShakeScreen.SetScrShake_X(4);
                         ClMain.g_ShakeScreen.SetScrShake_Y(3);
                     }
-                    if ((this.m_wAppearance == 815))
+                    if (this.m_wAppearance == 815)
                     {
                         ClMain.g_ShakeScreen.SetScrShake_X(7);
                         ClMain.g_ShakeScreen.SetScrShake_Y(5);
@@ -251,7 +250,7 @@ namespace RobotSvr
                 if (this.m_boMsgMuch)
                 {
                     // Round(m_dwFrameTime / 1.6)
-                    dwFrameTimetime = Math.Round(this.m_dwFrameTime * 2 / 3);
+                    dwFrameTimetime = HUtil32.Round(this.m_dwFrameTime * 2 / 3);
                 }
                 else
                 {
@@ -263,9 +262,9 @@ namespace RobotSvr
                     {
                         if (this.m_boUseMagic)
                         {
-                            if ((this.m_nCurEffFrame == this.m_nSpellFrame - 2))
+                            if (this.m_nCurEffFrame == this.m_nSpellFrame - 2)
                             {
-                                if ((this.m_CurMagic.ServerMagicCode >= 0))
+                                if (this.m_CurMagic.ServerMagicCode >= 0)
                                 {
                                     this.m_nCurrentFrame++;
                                     this.m_nCurEffFrame++;
@@ -323,7 +322,7 @@ namespace RobotSvr
                     {
                         if (this.m_wAppearance == 812)
                         {
-                            meff = ((TFlyingAxe)(ClMain.g_PlayScene.NewFlyObject(this, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFlyAxe)));
+                            meff = (TFlyingAxe)ClMain.g_PlayScene.NewFlyObject(this, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFlyAxe);
                             if (meff != null)
                             {
                                 meff.ImgLib = WMFile.Units.WMFile.g_WMons[3];
@@ -337,7 +336,7 @@ namespace RobotSvr
                         }
                         if (this.m_wAppearance == 826)
                         {
-                            meff2 = ((TFlyingArrow)(ClMain.g_PlayScene.NewFlyObject(this, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFlyArrow)));
+                            meff2 = (TFlyingArrow)ClMain.g_PlayScene.NewFlyObject(this, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFlyArrow);
                             if (meff2 != null)
                             {
                                 meff2.ImgLib = WMFile.Units.WMFile.g_WEffectImg;
@@ -350,7 +349,7 @@ namespace RobotSvr
                 this.m_nCurrentDefFrame = 0;
                 this.m_dwDefFrameTime = MShare.GetTickCount();
             }
-            else if (((int)MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
+            else if ((MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
             {
                 if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
                 {

@@ -2,7 +2,7 @@
 
 namespace RobotSvr;
 
-public class SelectChrScene: Scene
+public class SelectChrScene : Scene
 {
     private Timer _soundTimer = null;
     private bool _createChrMode = false;
@@ -14,7 +14,7 @@ public class SelectChrScene: Scene
     {
         _createChrMode = false;
         //@ Unsupported function or procedure: 'FillChar'
-        FillChar(ChrArr);            ChrArr[0].FreezeState = true;
+        FillChar(ChrArr); ChrArr[0].FreezeState = true;
         ChrArr[1].FreezeState = true;
         NewIndex = 0;
         _soundTimer = new Timer(ClMain.frmMain.Owner);
@@ -30,8 +30,8 @@ public class SelectChrScene: Scene
     public override void OpenScene()
     {
         // 进入人物选择场景
-                ClMain.HGE.Gfx_Restore(MShare.g_FScreenWidth, MShare.g_FScreenHeight, 32);
-                                FrmDlg.DWinSelectChr.Visible = true;
+        ClMain.HGE.Gfx_Restore(MShare.g_FScreenWidth, MShare.g_FScreenHeight, 32);
+        FrmDlg.DWinSelectChr.Visible = true;
         _soundTimer.Enabled = true;
         _soundTimer.Interval = 100;
     }
@@ -40,7 +40,7 @@ public class SelectChrScene: Scene
     {
         // 离开人物选择场景
         SoundUtil.Units.SoundUtil.g_SndMgr.SilenceSound();
-                                FrmDlg.DWinSelectChr.Visible = false;
+        FrmDlg.DWinSelectChr.Visible = false;
         _soundTimer.Enabled = false;
     }
 
@@ -53,7 +53,7 @@ public class SelectChrScene: Scene
 
     public void SelChrSelect1Click()
     {
-        if ((!ChrArr[0].Selected) && (ChrArr[0].Valid) && ChrArr[0].FreezeState)
+        if ((!ChrArr[0].Selected) && ChrArr[0].Valid && ChrArr[0].FreezeState)
         {
             ClMain.frmMain.SelectChr(ChrArr[0].UserChr.Name);
             // 2004/05/17
@@ -72,7 +72,7 @@ public class SelectChrScene: Scene
 
     public void SelChrSelect2Click()
     {
-        if ((!ChrArr[1].Selected) && (ChrArr[1].Valid) && ChrArr[1].FreezeState)
+        if ((!ChrArr[1].Selected) && ChrArr[1].Valid && ChrArr[1].FreezeState)
         {
             ClMain.frmMain.SelectChr(ChrArr[1].UserChr.Name);
             // 2004/05/17
@@ -113,7 +113,7 @@ public class SelectChrScene: Scene
         }
         else
         {
-                                    FrmDlg.DMessageDlg("开始游戏前你应该先创建一个新角色！\\点击<创建角色>按钮创建一个游戏角色。", new object[] {MessageBoxButtons.OK});
+            FrmDlg.DMessageDlg("开始游戏前你应该先创建一个新角色！\\点击<创建角色>按钮创建一个游戏角色。", new object[] { MessageBoxButtons.OK });
         }
     }
 
@@ -132,7 +132,7 @@ public class SelectChrScene: Scene
         }
         else
         {
-                                    FrmDlg.DMessageDlg("一个帐号最多只能创建 2 个游戏角色！", new object[] {MessageBoxButtons.OK});
+            FrmDlg.DMessageDlg("一个帐号最多只能创建 2 个游戏角色！", new object[] { MessageBoxButtons.OK });
         }
     }
 
@@ -148,9 +148,9 @@ public class SelectChrScene: Scene
         {
             n = 1;
         }
-        if ((ChrArr[n].Valid) && (!ChrArr[n].FreezeState) && (ChrArr[n].UserChr.Name != ""))
+        if (ChrArr[n].Valid && (!ChrArr[n].FreezeState) && (ChrArr[n].UserChr.Name != ""))
         {
-                                    if (System.Windows.Forms.DialogResult.Yes == FrmDlg.DMessageDlg("\"" + ChrArr[n].UserChr.Name + "\" 是否确认删除此游戏角色？", new object[] {MessageBoxButtons.YesNo, MessageBoxButtons.YesNo}))
+            if (System.Windows.Forms.DialogResult.Yes == FrmDlg.DMessageDlg("\"" + ChrArr[n].UserChr.Name + "\" 是否确认删除此游戏角色？", new object[] { MessageBoxButtons.YesNo, MessageBoxButtons.YesNo }))
             {
                 ClMain.frmMain.SendDelChr(ChrArr[n].UserChr.Name);
             }
@@ -183,7 +183,7 @@ public class SelectChrScene: Scene
     public void ClearChrs()
     {
         //@ Unsupported function or procedure: 'FillChar'
-        FillChar(ChrArr);            ChrArr[0].FreezeState = false;
+        FillChar(ChrArr); ChrArr[0].FreezeState = false;
         ChrArr[1].FreezeState = true;
         ChrArr[0].Selected = true;
         ChrArr[1].Selected = false;
@@ -220,21 +220,22 @@ public class SelectChrScene: Scene
         NewIndex = index;
         if (index == 0)
         {
-                                                FrmDlg.DCreateChr.Left = 415;
-                                                FrmDlg.DCreateChr.Top = 15;
+            FrmDlg.DCreateChr.Left = 415;
+            FrmDlg.DCreateChr.Top = 15;
         }
         else
         {
-                                                FrmDlg.DCreateChr.Left = 75;
-                                                FrmDlg.DCreateChr.Top = 15;
+            FrmDlg.DCreateChr.Left = 75;
+            FrmDlg.DCreateChr.Top = 15;
         }
-                                FrmDlg.DCreateChr.Visible = true;
+        FrmDlg.DCreateChr.Visible = true;
         ChrArr[NewIndex].Valid = true;
         ChrArr[NewIndex].FreezeState = false;
-                                FrmDlg.DEditChrName.SetFocus;
+        FrmDlg.DEditChrName.SetFocus;
         SelectChr(NewIndex);
         //@ Unsupported function or procedure: 'FillChar'
-        FillChar(ChrArr[NewIndex].UserChr);        }
+        FillChar(ChrArr[NewIndex].UserChr);
+    }
 
     public void SelectChr(int index)
     {
@@ -256,7 +257,7 @@ public class SelectChrScene: Scene
     {
         ChrArr[NewIndex].Valid = false;
         _createChrMode = false;
-                                FrmDlg.DCreateChr.Visible = false;
+        FrmDlg.DCreateChr.Visible = false;
         ChrArr[NewIndex].Selected = true;
         ChrArr[NewIndex].FreezeState = false;
     }
@@ -267,24 +268,24 @@ public class SelectChrScene: Scene
         string shair;
         string sjob;
         string ssex;
-                                chrname = FrmDlg.DEditChrName.Text.Trim();
+        chrname = FrmDlg.DEditChrName.Text.Trim();
         if (chrname != "")
         {
             ChrArr[NewIndex].Valid = false;
             _createChrMode = false;
-                                                FrmDlg.DCreateChr.Visible = false;
+            FrmDlg.DCreateChr.Visible = false;
             ChrArr[NewIndex].Selected = true;
             ChrArr[NewIndex].FreezeState = false;
-            shair = (1 + (new System.Random(5)).Next()).ToString();
-            sjob = (ChrArr[NewIndex].UserChr.Job).ToString();
-            ssex = (ChrArr[NewIndex].UserChr.Sex).ToString();
+            shair = (1 + new System.Random(5).Next()).ToString();
+            sjob = ChrArr[NewIndex].UserChr.Job.ToString();
+            ssex = ChrArr[NewIndex].UserChr.Sex.ToString();
             ClMain.frmMain.SendNewChr(ClMain.frmMain.LoginID, chrname, shair, sjob, ssex);
         }
     }
 
     public void SelChrNewJob(int job)
     {
-        if ((job >= 0 && job<= 2) && (ChrArr[NewIndex].UserChr.Job != job))
+        if (job >= 0 && job <= 2 && (ChrArr[NewIndex].UserChr.Job != job))
         {
             ChrArr[NewIndex].UserChr.Job = job;
             SelectChr(NewIndex);
@@ -321,8 +322,6 @@ public class SelectChrScene: Scene
         // 选择人物时显示的效果光位置
         TDirectDrawSurface d;
         TDirectDrawSurface e;
-        TDirectDrawSurface dd;
-        string svname;
         if (MShare.g_boOpenAutoPlay && (MShare.g_nAPReLogon == 2))
         {
             // 0613
@@ -346,10 +345,10 @@ public class SelectChrScene: Scene
         d = WMFile.Units.WMFile.g_WMain3Images.Images[400];
         if (d != null)
         {
-                                                            mSurface.Draw((MShare.g_FScreenWidth - d.Width) / 2, (MShare.g_FScreenHeight - d.Height) / 2, d.ClientRect, d, true);
+            mSurface.Draw((MShare.g_FScreenWidth - d.Width) / 2, (MShare.g_FScreenHeight - d.Height) / 2, d.ClientRect, d, true);
         }
         // Tips.dat
-        for (n = 0; n <= 1; n ++ )
+        for (n = 0; n <= 1; n++)
         {
             if (ChrArr[n].Valid)
             {
@@ -357,7 +356,7 @@ public class SelectChrScene: Scene
                 ex = (MShare.g_FScreenWidth - 800) / 2 + 90;
                 // 60-2
                 ey = (MShare.g_FScreenHeight - 600) / 2 + 60 - 2;
-                switch(ChrArr[n].UserChr.Job)
+                switch (ChrArr[n].UserChr.Job)
                 {
                     case 0:
                         if (ChrArr[n].UserChr.Sex == 0)
@@ -428,7 +427,7 @@ public class SelectChrScene: Scene
                     e = WMFile.Units.WMFile.g_WChrSel.Images[4 + ChrArr[n].EffIndex];
                     if (d != null)
                     {
-                                                                        mSurface.Draw(bx, by, d.ClientRect, d, true);
+                        mSurface.Draw(bx, by, d.ClientRect, d, true);
                     }
                     if (e != null)
                     {
@@ -451,7 +450,7 @@ public class SelectChrScene: Scene
                         ChrArr[n].AniIndex = 0;
                     }
                 }
-                else if (!ChrArr[n].Selected && (!ChrArr[n].FreezeState && !ChrArr[n].Freezing))
+                else if (!ChrArr[n].Selected && !ChrArr[n].FreezeState && !ChrArr[n].Freezing)
                 {
                     ChrArr[n].Freezing = true;
                     ChrArr[n].AniIndex = 0;
@@ -463,7 +462,7 @@ public class SelectChrScene: Scene
                     d = WMFile.Units.WMFile.g_WChrSel.Images[img + Units.IntroScn.FREEZEFRAME - ChrArr[n].AniIndex - 1];
                     if (d != null)
                     {
-                                                                        mSurface.Draw(bx, by, d.ClientRect, d, true);
+                        mSurface.Draw(bx, by, d.ClientRect, d, true);
                     }
                     if (MShare.GetTickCount() - ChrArr[n].StartTime > 110)
                     {
@@ -493,7 +492,7 @@ public class SelectChrScene: Scene
                             // //              MSurface.Draw(fx, fy, dd.ClientRect, dd, True);
                             // //              dd.free;
                             // end else
-                                                                                    mSurface.Draw(fx, fy, d.ClientRect, d, true);
+                            mSurface.Draw(fx, fy, d.ClientRect, d, true);
                         }
                     }
                     else
@@ -502,7 +501,7 @@ public class SelectChrScene: Scene
                         d = WMFile.Units.WMFile.g_WChrSel.Images[img];
                         if (d != null)
                         {
-                                                                                    mSurface.Draw(bx, by, d.ClientRect, d, true);
+                            mSurface.Draw(bx, by, d.ClientRect, d, true);
                         }
                     }
                     if (ChrArr[n].Selected)

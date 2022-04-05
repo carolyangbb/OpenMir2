@@ -17,9 +17,7 @@ namespace RobotSvr
         public const int DEFSPELLFRAME = 10;
         public const int FIREHIT_READYFRAME = 6;
         public const int MAGBUBBLEBASE = 3890;
-        // 魔法盾效果图位置
         public const int MAGBUBBLESTRUCKBASE = 3900;
-        // 被攻击时魔法盾效果图位置
         public const int MAXWPEFFECTFRAME = 5;
         public const int WPEFFECTBASE = 3750;
         public const int EffectBase = 0;
@@ -1466,7 +1464,7 @@ namespace RobotSvr
             int nRace;
             int nPos;
             result = 0;
-            if ((Appr >= 1000))
+            if (Appr >= 1000)
             {
                 return result;
             }

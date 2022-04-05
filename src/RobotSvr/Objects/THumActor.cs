@@ -36,7 +36,7 @@ namespace RobotSvr
 
         protected void CalcActorWinFrame()
         {
-            if ((this.m_btEffect == 50))
+            if (this.m_btEffect == 50)
             {
                 this.m_nCboHumWinOffSet = 352;
             }
@@ -97,7 +97,6 @@ namespace RobotSvr
         {
             int nHairEx;
             int haircount;
-            TMagicEff Effect;
             this.m_boUseMagic = false;
             this.m_boNewMagic = false;
             this.m_boUseCboLib = false;
@@ -115,7 +114,7 @@ namespace RobotSvr
             this.m_btWeaponEffect = this.m_btHorse;
             this.m_btHorse = 0;
             this.m_btEffect = Grobal2.Effectfeature(this.m_nFeatureEx);
-            this.m_nBodyOffset = Actor.HUMANFRAME * (this.m_btDress);
+            this.m_nBodyOffset = Actor.HUMANFRAME * this.m_btDress;
             this.m_nCboHairOffset = -1;
             if (this.m_btHair >= 10)
             {
@@ -172,7 +171,7 @@ namespace RobotSvr
                 this.m_nHairOffset = -1;
             }
             this.m_nWeaponOffset = Actor.HUMANFRAME * this.m_btWeapon;
-            if ((this.m_btEffect == 50))
+            if (this.m_btEffect == 50)
             {
                 this.m_nHumWinOffset = 352;
             }
@@ -312,7 +311,7 @@ namespace RobotSvr
                     this.m_dwStartTime = MShare.GetTickCount();
                     this.m_boWarMode = true;
                     this.m_dwWarModeTime = MShare.GetTickCount();
-                    if ((this.m_nCurrentAction == Grobal2.SM_POWERHIT))
+                    if (this.m_nCurrentAction == Grobal2.SM_POWERHIT)
                     {
                         this.m_boHitEffect = true;
                         this.m_nMagLight = 2;
@@ -330,7 +329,7 @@ namespace RobotSvr
                                 break;
                         }
                     }
-                    if ((this.m_nCurrentAction == Grobal2.SM_LONGHIT))
+                    if (this.m_nCurrentAction == Grobal2.SM_LONGHIT)
                     {
                         this.m_boHitEffect = true;
                         this.m_nMagLight = 2;
@@ -348,7 +347,7 @@ namespace RobotSvr
                                 break;
                         }
                     }
-                    if ((this.m_nCurrentAction == Grobal2.SM_WIDEHIT))
+                    if (this.m_nCurrentAction == Grobal2.SM_WIDEHIT)
                     {
                         this.m_boHitEffect = true;
                         this.m_nMagLight = 2;
@@ -366,7 +365,7 @@ namespace RobotSvr
                                 break;
                         }
                     }
-                    if ((this.m_nCurrentAction == Grobal2.SM_FIREHIT))
+                    if (this.m_nCurrentAction == Grobal2.SM_FIREHIT)
                     {
                         this.m_boHitEffect = true;
                         this.m_nMagLight = 2;
@@ -384,7 +383,7 @@ namespace RobotSvr
                                 break;
                         }
                     }
-                    if ((this.m_nCurrentAction == Grobal2.SM_CRSHIT))
+                    if (this.m_nCurrentAction == Grobal2.SM_CRSHIT)
                     {
                         this.m_boHitEffect = true;
                         this.m_nMagLight = 2;
@@ -618,15 +617,14 @@ namespace RobotSvr
 
         public override void DefaultMotion()
         {
-            int ndir;
             int MaxIdx;
             int frame;
             base.DefaultMotion();
             if (this.m_boUseCboLib)
             {
-                if ((this.m_btEffect == 50))
+                if (this.m_btEffect == 50)
                 {
-                    if ((this.m_nCurrentFrame <= 536))
+                    if (this.m_nCurrentFrame <= 536)
                     {
                         if ((MShare.GetTickCount() - m_dwFrameTick) > 100)
                         {
@@ -642,94 +640,50 @@ namespace RobotSvr
                         }
                     }
                 }
-                else if ((this.m_btEffect != 0))
+                else if (this.m_btEffect != 0)
                 {
                     MaxIdx = 0;
-                    ndir = 0;
                     frame = 0;
                     switch (this.m_nCurrentAction)
                     {
-                        case Grobal2.SM_RUSHEX:
-                            frame = 8;
-                            ndir = 10;
-                            MaxIdx = 80;
-                            break;
-                        case Grobal2.SM_SMITEHIT:
-                            frame = 15;
-                            ndir = 20;
-                            MaxIdx = 160;
-                            break;
-                        case Grobal2.SM_SMITELONGHIT:
-                            if (this.m_boSmiteLongHit == 2)
-                            {
-                                frame = 6;
-                                ndir = 10;
-                                MaxIdx = 320;
-                            }
-                            break;
-                        case Grobal2.SM_SMITELONGHIT3:
-                            frame = 6;
-                            ndir = 10;
-                            MaxIdx = 320;
-                            break;
-                        case Grobal2.SM_SMITELONGHIT2:
-                        case Grobal2.SM_SMITEWIDEHIT2:
-                            frame = 12;
-                            ndir = 20;
-                            MaxIdx = 400;
-                            break;
-                        case Grobal2.SM_SMITEWIDEHIT:
-                            frame = 10;
-                            ndir = 10;
-                            MaxIdx = 560;
-                            break;
                         case Grobal2.SM_SPELL:
                             switch (this.m_CurMagic.EffectNumber)
                             {
                                 case 104:
                                     frame = 6;
-                                    ndir = 10;
                                     MaxIdx = 640;
                                     break;
                                 case 112:
                                     frame = 6;
-                                    ndir = 10;
                                     MaxIdx = 720;
                                     break;
                                 case 106:
                                     frame = 8;
-                                    ndir = 10;
                                     MaxIdx = 800;
                                     break;
                                 case 107:
                                     frame = 13;
-                                    ndir = 10;
                                     MaxIdx = 1040;
                                     break;
                                 case 108:
                                     frame = 6;
-                                    ndir = 10;
                                     MaxIdx = 1200;
                                     break;
                                 case 109:
                                     frame = 12;
-                                    ndir = 20;
                                     MaxIdx = 1440;
                                     break;
                                 case 110:
                                     frame = 12;
-                                    ndir = 20;
                                     MaxIdx = 1600;
                                     break;
                                 case 111:
                                     frame = 14;
-                                    ndir = 20;
                                     MaxIdx = 1760;
                                     break;
                                 case 105:
                                     // 112
                                     frame = 10;
-                                    ndir = 10;
                                     MaxIdx = 880;
                                     break;
                             }
@@ -754,9 +708,9 @@ namespace RobotSvr
                 }
                 else
                 {
-                    if ((this.m_btEffect == 50))
+                    if (this.m_btEffect == 50)
                     {
-                        if ((this.m_nCurrentFrame <= 536))
+                        if (this.m_nCurrentFrame <= 536)
                         {
                             if ((MShare.GetTickCount() - m_dwFrameTick) > 100)
                             {
@@ -772,7 +726,7 @@ namespace RobotSvr
                             }
                         }
                     }
-                    else if ((this.m_btEffect != 0))
+                    else if (this.m_btEffect != 0)
                     {
                         if (this.m_nCurrentFrame < 64)
                         {
@@ -829,79 +783,20 @@ namespace RobotSvr
 
         public override void RunFrameAction(int frame)
         {
-            TNormalDrawEffect neff;
-            TMapEffect meff;
-            TClEvent __event;
-            TFlyingAxe mfly;
-            TMagicEff HeroCharEffect;
             m_boHideWeapon = false;
             if (m_boSSkill)
             {
-                if ((frame == 1))
+                if (frame == 1)
                 {
                     m_boSSkill = false;
                 }
             }
-            else if (this.m_nCurrentAction == Grobal2.SM_SMITELONGHIT)
-            {
-                if ((frame == 4) && (this.m_boSmiteLongHit == 2))
-                {
-                    this.m_boSmiteLongHit = 0;
-                }
-            }
-            else if (this.m_nCurrentAction == Grobal2.SM_SMITELONGHIT3)
-            {
- 
-            }
-            else if (this.m_nCurrentAction == Grobal2.SM_SMITEWIDEHIT2)
-            {
-                if ((frame == 8) && (this.m_boSmiteWideHitS2 > 0))
-                {
-                    this.m_boSmiteWideHitS2 -= 1;
-                }
-                if ((frame == 10) && this.m_boSmiteWideHit2)
-                {
-                    this.m_boSmiteWideHit2 = false;
-                }
-            }
-            else if (this.m_nCurrentAction == Grobal2.SM_SMITELONGHIT2)
-            {
-                if ((frame == 8) && (this.m_boSmiteLongHitS2 > 0))
-                {
-                    this.m_boSmiteLongHitS2 -= 1;
-                }
-                if ((frame == 11) && this.m_boSmiteLongHit2)
-                {
-                    this.m_boSmiteLongHit2 = false;
-                }
-            }
-            else if (this.m_nCurrentAction == Grobal2.SM_SMITEHIT)
-            {
-                if ((frame == 14) && (this.m_boSmiteHit))
-                {
-                    this.m_boSmiteHit = false;
-                }
-            }
-            else if (this.m_nCurrentAction == Grobal2.SM_HERO_LONGHIT2)
-            {
-                if ((frame == 4) && (this.m_boHeroLongHit2))
-                {
-                    this.m_boHeroLongHit2 = false;
-                }
-            }
-            else if (this.m_nCurrentAction == Grobal2.SM_HERO_LONGHIT)
-            {
-                if ((frame == 4) && (this.m_boHeroLongHit))
-                {
-                    this.m_boHeroLongHit = false;
-                }
-            }
             else if (this.m_nCurrentAction == Grobal2.SM_HEAVYHIT)
             {
-                if ((frame == 5) && (this.m_boDigFragment))
+                if ((frame == 5) && this.m_boDigFragment)
                 {
                     this.m_boDigFragment = false;
-                    __event = ClMain.EventMan.GetEvent(this.m_nCurrX, this.m_nCurrY, Grobal2.ET_PILESTONES);
+                    var __event = ClMain.EventMan.GetEvent(this.m_nCurrX, this.m_nCurrY, Grobal2.ET_PILESTONES);
                     if (__event != null)
                     {
                         __event.m_nEventParam = __event.m_nEventParam + 1;
@@ -910,10 +805,10 @@ namespace RobotSvr
             }
             else if (this.m_nCurrentAction == Grobal2.SM_SITDOWN)
             {
-                if ((frame == 5) && (this.m_boDigFragment))
+                if ((frame == 5) && this.m_boDigFragment)
                 {
                     this.m_boDigFragment = false;
-                    __event = ClMain.EventMan.GetEvent(this.m_nCurrX, this.m_nCurrY, Grobal2.ET_PILESTONES);
+                    var __event = ClMain.EventMan.GetEvent(this.m_nCurrX, this.m_nCurrY, Grobal2.ET_PILESTONES);
                     if (__event != null)
                     {
                         __event.m_nEventParam = __event.m_nEventParam + 1;
@@ -922,16 +817,9 @@ namespace RobotSvr
             }
             else if (this.m_nCurrentAction == Grobal2.SM_THROW)
             {
-                if ((frame == 3) && (this.m_boThrow))
+                if ((frame == 3) && this.m_boThrow)
                 {
                     this.m_boThrow = false;
-                    mfly = ((TFlyingAxe)(ClMain.g_PlayScene.NewFlyObject(this, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFlyAxe)));
-                    if (mfly != null)
-                    {
-                        ((TFlyingAxe)(mfly)).ReadyFrame = 40;
-                        mfly.ImgLib = WMFile.Units.WMFile.g_WMons[3];
-                        mfly.FlyImageBase = magiceff.Units.magiceff.FLYOMAAXEBASE;
-                    }
                 }
                 if (frame >= 3)
                 {
@@ -949,7 +837,7 @@ namespace RobotSvr
         public bool Run_MagicTimeOut()
         {
             bool result;
-            if ((this == MShare.g_MySelf))
+            if (this == MShare.g_MySelf)
             {
                 result = MShare.GetTickCount() - this.m_dwWaitMagicRequest > 1800;
             }
@@ -995,12 +883,12 @@ namespace RobotSvr
                     }
                 }
             }
-            if ((this.m_nCurrentAction == Grobal2.SM_RUSHEX))
+            if (this.m_nCurrentAction == Grobal2.SM_RUSHEX)
             {
                 this.RunActSound(this.m_nCurrentFrame - this.m_nStartFrame);
                 return;
             }
-            if ((new ArrayList(new int[] { 5, 9, 11, 13, 39 }).Contains(this.m_nCurrentAction)))
+            if (new ArrayList(new int[] { 5, 9, 11, 13, 39 }).Contains(this.m_nCurrentAction))
             {
                 return;
             }
@@ -1023,34 +911,34 @@ namespace RobotSvr
                     {
                         if (this.m_btIsHero == 1)
                         {
-                            dwFrameTimetime = Math.Round(m_dwFrameTime / 1.50);
+                            dwFrameTimetime = HUtil32.Round(m_dwFrameTime / 1.50);
                         }
                         else
                         {
-                            dwFrameTimetime = Math.Round(m_dwFrameTime / 1.55);
+                            dwFrameTimetime = HUtil32.Round(m_dwFrameTime / 1.55);
                         }
                     }
                     else
                     {
-                        dwFrameTimetime = Math.Round(m_dwFrameTime / 1.7);
+                        dwFrameTimetime = HUtil32.Round(m_dwFrameTime / 1.7);
                     }
                 }
-                else if ((this != MShare.g_MySelf) && (this.m_boUseMagic))
+                else if ((this != MShare.g_MySelf) && this.m_boUseMagic)
                 {
                     if (this.m_boUseCboLib)
                     {
                         if (this.m_btIsHero == 1)
                         {
-                            dwFrameTimetime = Math.Round(m_dwFrameTime / 1.28);
+                            dwFrameTimetime = HUtil32.Round(m_dwFrameTime / 1.28);
                         }
                         else
                         {
-                            dwFrameTimetime = Math.Round(m_dwFrameTime / 1.32);
+                            dwFrameTimetime = HUtil32.Round(m_dwFrameTime / 1.32);
                         }
                     }
                     else
                     {
-                        dwFrameTimetime = Math.Round(m_dwFrameTime / 1.38);
+                        dwFrameTimetime = HUtil32.Round(m_dwFrameTime / 1.38);
                     }
                 }
                 else
@@ -1059,7 +947,7 @@ namespace RobotSvr
                 }
                 if (MShare.g_boSpeedRate)
                 {
-                    dwFrameTimetime = HUtil32._MAX(0, dwFrameTimetime - ((long)HUtil32._MIN(10, MShare.g_MoveSpeedRate)));
+                    dwFrameTimetime = HUtil32._MAX(0, dwFrameTimetime - HUtil32._MIN(10, MShare.g_MoveSpeedRate));
                 }
                 if (MShare.GetTickCount() - this.m_dwStartTime > dwFrameTimetime)
                 {
@@ -1210,7 +1098,7 @@ namespace RobotSvr
                 }
                 this.m_dwDefFrameTime = MShare.GetTickCount();
             }
-            else if (((int)MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
+            else if ((MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
             {
                 if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
                 {

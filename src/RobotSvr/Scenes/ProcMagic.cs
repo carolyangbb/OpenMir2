@@ -2,7 +2,7 @@
 
 namespace RobotSvr
 {
-    public struct ProcMagic
+    public class ProcMagic
     {
         public int NTargetX;
         public int NTargetY;

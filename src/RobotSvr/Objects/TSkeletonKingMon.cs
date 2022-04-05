@@ -1,5 +1,4 @@
-﻿using System;
-using SystemModule;
+﻿using SystemModule;
 
 namespace RobotSvr
 {
@@ -121,7 +120,6 @@ namespace RobotSvr
             int prv;
             long m_dwEffectFrameTimetime;
             long m_dwFrameTimetime;
-            TFlyingFireBall meff;
             if ((this.m_nCurrentAction == Grobal2.SM_WALK) || (this.m_nCurrentAction == Grobal2.SM_BACKSTEP) || (this.m_nCurrentAction == Grobal2.SM_RUN) || (this.m_nCurrentAction == Grobal2.SM_HORSERUN))
             {
                 return;
@@ -131,13 +129,12 @@ namespace RobotSvr
             {
                 this.m_boMsgMuch = true;
             }
-            this.RunActSound(this.m_nCurrentFrame - this.m_nStartFrame);
             this.RunFrameAction(this.m_nCurrentFrame - this.m_nStartFrame);
             if (this.m_boUseEffect)
             {
                 if (this.m_boMsgMuch)
                 {
-                    m_dwEffectFrameTimetime = Math.Round(this.m_dwEffectFrameTime * 2 / 3);
+                    m_dwEffectFrameTimetime = HUtil32.Round(this.m_dwEffectFrameTime * 2 / 3);
                 }
                 else
                 {
@@ -165,7 +162,7 @@ namespace RobotSvr
                 }
                 if (this.m_boMsgMuch)
                 {
-                    m_dwFrameTimetime = Math.Round(this.m_dwFrameTime * 2 / 3);
+                    m_dwFrameTimetime = HUtil32.Round(this.m_dwFrameTime * 2 / 3);
                 }
                 else
                 {
@@ -184,23 +181,13 @@ namespace RobotSvr
                         this.m_boUseEffect = false;
                         this.BoUseDieEffect = false;
                     }
-                    if ((this.m_nCurrentAction == Grobal2.SM_FLYAXE) && (this.m_nCurrentFrame - this.m_nStartFrame == 4))
-                    {
-                        meff = ((TFlyingFireBall)(ClMain.g_PlayScene.NewFlyObject(this, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFlyBug)));
-                        if (meff != null)
-                        {
-                            meff.ImgLib = WMFile.Units.WMFile.g_WMons[20];
-                            meff.NextFrameTime = 60;
-                            meff.FlyImageBase = 3573;
-                        }
-                    }
                     this.m_nCurrentDefFrame = 0;
                     this.m_dwDefFrameTime = MShare.GetTickCount();
                 }
             }
             else
             {
-                if (((int)MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
+                if ((MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
                 {
                     if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
                     {
@@ -217,7 +204,6 @@ namespace RobotSvr
             if (prv != this.m_nCurrentFrame)
             {
                 this.m_dwLoadSurfaceTime = MShare.GetTickCount();
-                LoadSurface();
             }
         }
     }

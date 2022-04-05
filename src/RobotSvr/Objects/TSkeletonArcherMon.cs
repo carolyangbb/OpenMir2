@@ -1,5 +1,4 @@
-﻿using System;
-using SystemModule;
+﻿using SystemModule;
 
 namespace RobotSvr
 {
@@ -23,7 +22,7 @@ namespace RobotSvr
             long m_dwFrameTimetime;
             if (this.m_boMsgMuch)
             {
-                m_dwFrameTimetime = Math.Round(this.m_dwFrameTime * 2 / 3);
+                m_dwFrameTimetime = HUtil32.Round(this.m_dwFrameTime * 2 / 3);
             }
             else
             {

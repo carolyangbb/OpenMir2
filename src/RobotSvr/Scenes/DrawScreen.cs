@@ -7,12 +7,12 @@ namespace RobotSvr
 {
     public class DrawScreen
     {
-        private long _mDwFrameTime = 0;
-        private long _mDwFrameCount = 0;
+        private readonly long _mDwFrameTime = 0;
+        private readonly long _mDwFrameCount = 0;
         // m_dwDrawFrameCount: LongWord;
-        private ArrayList _mSysMsgList = null;
-        private ArrayList _mSysMsgListEx = null;
-        private ArrayList _mSysMsgListEx2 = null;
+        private readonly ArrayList _mSysMsgList = null;
+        private readonly ArrayList _mSysMsgListEx = null;
+        private readonly ArrayList _mSysMsgListEx2 = null;
         public Scene CurrentScene = null;
         public ArrayList ChatStrs = null;
         public ArrayList ChatBks = null;
@@ -128,7 +128,7 @@ namespace RobotSvr
             {
                 _mSysMsgList.Remove(0);
             }
-            _mSysMsgList.Add(msg, ((MShare.GetTickCount()) as Object));
+            _mSysMsgList.Add(msg, MShare.GetTickCount() as Object);
         }
 
         public void AddSysMsgBottom(string msg)
@@ -137,7 +137,7 @@ namespace RobotSvr
             {
                 _mSysMsgListEx.Remove(0);
             }
-            _mSysMsgListEx.Add(msg, ((MShare.GetTickCount()) as Object));
+            _mSysMsgListEx.Add(msg, MShare.GetTickCount() as Object);
         }
 
         public void AddSysMsgBottom2(string msg)
@@ -146,7 +146,7 @@ namespace RobotSvr
             {
                 _mSysMsgListEx2.Remove(0);
             }
-            _mSysMsgListEx2.Add(msg, ((MShare.GetTickCount()) as Object));
+            _mSysMsgListEx2.Add(msg, MShare.GetTickCount() as Object);
         }
 
         public void AddSysMsgCenter(string msg, Color fc, Color bc, int sec)
@@ -217,7 +217,7 @@ namespace RobotSvr
                 {
                     if (p < n)
                     {
-                        if ((msg[p + 1] == "t"))
+                        if (msg[p + 1] == "t")
                         {
                             msg[p + 1] = "d";
                         }
@@ -311,8 +311,8 @@ namespace RobotSvr
                 if (aline >= FrmDlg.DImageGridSay.Width)
                 {
                     // 换行
-                    ChatStrs.Add(temp, ((fcolor) as Object));
-                    ChatBks.Add((bcolor as object));
+                    ChatStrs.Add(temp, fcolor as Object);
+                    ChatBks.Add(bcolor);
                     str = str.Substring(i + 1 - 1, len - i);
                     temp = "";
                     break;
@@ -321,8 +321,8 @@ namespace RobotSvr
             }
             if (temp != "")
             {
-                ChatStrs.Add(temp, ((fcolor) as Object));
-                ChatBks.Add((bcolor as object));
+                ChatStrs.Add(temp, fcolor as Object);
+                ChatBks.Add(bcolor);
                 str = "";
             }
             if (ChatStrs.Count > 200)

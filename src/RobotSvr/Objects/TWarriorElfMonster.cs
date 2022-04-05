@@ -1,10 +1,8 @@
-﻿using SystemModule;
-
-namespace RobotSvr
+﻿namespace RobotSvr
 {
     public class TWarriorElfMonster : TSkeletonOma
     {
-        private int oldframe = 0;
+        private readonly int oldframe = 0;
 
         public override void RunFrameAction(int frame)
         {

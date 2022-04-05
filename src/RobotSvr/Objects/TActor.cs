@@ -49,10 +49,10 @@ namespace RobotSvr
         public string[] m_sDescUserName;
         public string m_sUserName = String.Empty;
         public int m_sUserNameOffSet = 0;
-        public string[] m_sLoyaly;
-        public string[] m_sAutoSayMsg;
+        public string m_sLoyaly;
+        public string m_sAutoSayMsg;
         public byte m_btNameColor = 0;
-        public int m_nNameColor = 0; 
+        public int m_nNameColor = 0;
         public TAbility m_Abil = null;
         public TOAbility m_Abils = null;
         public int m_nGold = 0;
@@ -69,8 +69,8 @@ namespace RobotSvr
         public int m_nSayX = 0;
         public int m_nSayY = 0;
         public int m_nSayLineCount = 0;
-        public short m_nShiftX = 0;
-        public short m_nShiftY = 0;
+        public int m_nShiftX = 0;
+        public int m_nShiftY = 0;
         public int m_nPx = 0;
         public int m_nHpx = 0;
         public int m_nWpx = 0;
@@ -125,7 +125,6 @@ namespace RobotSvr
         public bool m_noInstanceOpenHealth = false;
         public long m_dwOpenHealthStart = 0;
         public long m_dwOpenHealthTime = 0;
-        public TDirectDrawSurface m_BodySurface = null;
         public bool m_boGrouped = false;
         public int m_nCurrentAction = 0;
         public bool m_boReverseFrame = false;
@@ -218,10 +217,7 @@ namespace RobotSvr
         {
             m_btTitleIndex = 0;
             m_nCurFocusFrame = 0;
-            //@ Unsupported function or procedure: 'FillChar'
-            FillChar(m_Abil);            //@ Unsupported function or procedure: 'FillChar'
-            FillChar(m_Abils);            //@ Unsupported function or procedure: 'FillChar'
-            FillChar(m_Action); m_nWaitForRecogId = 0;
+            m_nWaitForRecogId = 0;
             m_MsgList = new TGList();
             m_nRecogId = 0;
             m_wAppr = 0;
@@ -232,7 +228,6 @@ namespace RobotSvr
             m_nIPowerLvl = 0;
             m_nIPowerExp = 0;
             m_btAttribute = 0;
-            m_BodySurface = null;
             m_nGold = 0;
             m_boVisible = true;
             m_boHoldPlace = true;
@@ -247,7 +242,6 @@ namespace RobotSvr
             RealActionMsg.Ident = 0;
             m_sUserName = "";
             m_sUserNameOffSet = 0;
-            // for i := Low(m_sDrawName) to High(m_sDrawName) do m_sDrawName[i] := '';
             m_sAutoSayMsg = "";
             m_btNameColor = 255;
             m_nNameColor = System.Drawing.Color.White;
@@ -448,7 +442,7 @@ namespace RobotSvr
                     Shift(m_btDir, 0, 0, 1);
                     break;
                 case Grobal2.SM_STRUCK:
-                    if ((m_btRace != 12))
+                    if (m_btRace != 12)
                     {
                         m_nStartFrame = m_Action.ActStruck.start + m_btDir * (m_Action.ActStruck.frame + m_Action.ActStruck.skip);
                         m_nEndFrame = m_nStartFrame + m_Action.ActStruck.frame - 1;
@@ -525,21 +519,21 @@ namespace RobotSvr
                 // n := 0;
                 if (MShare.g_MySelf == this)
                 {
-                    if ((Msg.Ident == Grobal2.CM_WALK))
+                    if (Msg.Ident == Grobal2.CM_WALK)
                     {
                         if (!ClMain.g_PlayScene.CanWalk(Msg.X, Msg.Y))
                         {
                             return;
                         }
                     }
-                    if ((Msg.Ident == Grobal2.CM_RUN))
+                    if (Msg.Ident == Grobal2.CM_RUN)
                     {
                         if (!ClMain.g_PlayScene.CanRun(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, Msg.X, Msg.Y))
                         {
                             return;
                         }
                     }
-                    if ((Msg.Ident == Grobal2.CM_HORSERUN))
+                    if (Msg.Ident == Grobal2.CM_HORSERUN)
                     {
                         if (!ClMain.g_PlayScene.CanRun(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, Msg.X, Msg.Y))
                         {
@@ -585,9 +579,9 @@ namespace RobotSvr
                         case Grobal2.CM_THROW:
                             if (m_nFeature != 0)
                             {
-                                m_nTargetX = ((Msg.Feature) as TActor).m_nCurrX;
-                                m_nTargetY = ((Msg.Feature) as TActor).m_nCurrY;
-                                m_nTargetRecog = ((Msg.Feature) as TActor).m_nRecogId;
+                                m_nTargetX = (Msg.Feature as TActor).m_nCurrX;
+                                m_nTargetY = (Msg.Feature as TActor).m_nCurrY;
+                                m_nTargetRecog = (Msg.Feature as TActor).m_nRecogId;
                             }
                             RealActionMsg = Msg;
                             Msg.Ident = Grobal2.SM_THROW;
@@ -603,7 +597,7 @@ namespace RobotSvr
                                 Msg.Dir = ClFunc.GetFlyDirection(m_nCurrX, m_nCurrY, MShare.g_MagicTarget.m_nCurrX, MShare.g_MagicTarget.m_nCurrY);
                             }
                             RealActionMsg = Msg;
-                            UseMagic = ((TUseMagicInfo)(Msg.Feature));
+                            UseMagic = (TUseMagicInfo)Msg.Feature;
                             RealActionMsg.Dir = UseMagic.MagicSerial;
                             Msg.Ident = Msg.Ident - 3000;
                             Msg.X = ClMain.GetMagicLv(this, UseMagic.MagicSerial);
@@ -618,7 +612,7 @@ namespace RobotSvr
                 {
                     case Grobal2.SM_STRUCK:
                         m_nMagicStruckSound = Msg.X;
-                        n = Math.Round(200 - m_Abil.Level * 5);
+                        n = HUtil32.Round(200 - m_Abil.Level * 5);
                         if (n > 80)
                         {
                             m_dwStruckFrameTime = n;
@@ -631,7 +625,7 @@ namespace RobotSvr
                         break;
                     case Grobal2.SM_SPELL:
                         m_btDir = Msg.Dir;
-                        UseMagic = ((TUseMagicInfo)(Msg.Feature));
+                        UseMagic = (TUseMagicInfo)Msg.Feature;
                         if (UseMagic != null)
                         {
                             m_CurMagic = UseMagic;
@@ -762,7 +756,7 @@ namespace RobotSvr
                     {
                         break;
                     }
-                    Msg = ((TChrMsg)(m_MsgList[n]));
+                    Msg = (TChrMsg)m_MsgList[n];
                     fin = false;
                     switch (Msg.Ident)
                     {
@@ -773,7 +767,7 @@ namespace RobotSvr
                                 m_CurMagic.target = Msg.X;
                                 if (Msg.Y >= 0 && Msg.Y <= magiceff.Units.magiceff.MAXMAGICTYPE - 1)
                                 {
-                                    m_CurMagic.EffectType = ((TMagicType)(Msg.Y));
+                                    m_CurMagic.EffectType = (TMagicType)Msg.Y;
                                 }
                                 m_CurMagic.EffectNumber = Msg.Dir % 255;
                                 m_CurMagic.targx = Msg.Feature;
@@ -793,7 +787,7 @@ namespace RobotSvr
                     }
                     if (fin)
                     {
-                        Dispose(((TChrMsg)(m_MsgList[n])));
+                        Dispose((TChrMsg)m_MsgList[n]);
                         m_MsgList.RemoveAt(n);
                     }
                     else
@@ -830,7 +824,7 @@ namespace RobotSvr
         public int CanWalk()
         {
             int result;
-            if ((MShare.GetTickCount() - MShare.g_dwLatestSpellTick < MShare.g_dwMagicPKDelayTime))
+            if (MShare.GetTickCount() - MShare.g_dwLatestSpellTick < MShare.g_dwMagicPKDelayTime)
             {
                 result = -1;
             }
@@ -859,7 +853,7 @@ namespace RobotSvr
             {
                 for (var i = 0; i < m_MsgList.Count; i++)
                 {
-                    if (((TChrMsg)(m_MsgList[i])).Ident == Grobal2.SM_STRUCK)
+                    if (((TChrMsg)m_MsgList[i]).Ident == Grobal2.SM_STRUCK)
                     {
                         result = true;
                         break;
@@ -876,14 +870,12 @@ namespace RobotSvr
         // 阴影闪烁修复  直接替换函数
         public void Shift(int dir, int step, int cur, int max)
         {
-            int unx;
-            int uny;
             int ss;
             int v;
             int funx;
             int funy;
-            unx = Grobal2.UNITX * step;
-            uny = Grobal2.UNITY * step;
+            int unx = Grobal2.UNITX * step;
+            int uny = Grobal2.UNITY * step;
             if (cur > max)
             {
                 cur = max;
@@ -893,12 +885,11 @@ namespace RobotSvr
             switch (dir)
             {
                 case Grobal2.DR_UP:
-                    // ss := Round((max-cur-1) / max) * step;
-                    ss = Math.Round((max - cur) / max) * step;
+                    ss = HUtil32.Round((max - cur) / max) * step;
                     m_nRy = m_nCurrY + ss;
                     if (ss == step)
                     {
-                        funx = -Math.Round(uny / max * cur);
+                        funx = -HUtil32.Round(uny / max * cur);
                         if ((funx % 2) != 0)
                         {
                             funx = funx + 1;
@@ -907,7 +898,7 @@ namespace RobotSvr
                     }
                     else
                     {
-                        funx = Math.Round(uny / max * (max - cur));
+                        funx = HUtil32.Round(uny / max * (max - cur));
                         if ((funx % 2) != 0)
                         {
                             funx = funx + 1;
@@ -924,18 +915,18 @@ namespace RobotSvr
                     {
                         v = 0;
                     }
-                    ss = Math.Round((max - cur + v) / max) * step;
+                    ss = HUtil32.Round((max - cur + v) / max) * step;
                     m_nRx = m_nCurrX - ss;
                     m_nRy = m_nCurrY + ss;
                     if (ss == step)
                     {
-                        funx = Math.Round(unx / max * cur);
+                        funx = HUtil32.Round(unx / max * cur);
                         if ((funx % 2) != 0)
                         {
                             funx = funx + 1;
                         }
                         m_nShiftX = funx;
-                        funy = -Math.Round(uny / max * cur);
+                        funy = -HUtil32.Round(uny / max * cur);
                         if ((funy % 2) != 0)
                         {
                             funy = funy + 1;
@@ -944,13 +935,13 @@ namespace RobotSvr
                     }
                     else
                     {
-                        funx = -Math.Round(unx / max * (max - cur));
+                        funx = -HUtil32.Round(unx / max * (max - cur));
                         if ((funx % 2) != 0)
                         {
                             funx = funx + 1;
                         }
                         m_nShiftX = funx;
-                        funy = Math.Round(uny / max * (max - cur));
+                        funy = HUtil32.Round(uny / max * (max - cur));
                         if ((funy % 2) != 0)
                         {
                             funy = funy + 1;
@@ -959,15 +950,15 @@ namespace RobotSvr
                     }
                     break;
                 case Grobal2.DR_RIGHT:
-                    ss = Math.Round((max - cur) / max) * step;
+                    ss = HUtil32.Round((max - cur) / max) * step;
                     m_nRx = m_nCurrX - ss;
                     if (ss == step)
                     {
-                        m_nShiftX = Math.Round(unx / max * cur);
+                        m_nShiftX = HUtil32.Round(unx / max * cur);
                     }
                     else
                     {
-                        m_nShiftX = -Math.Round(unx / max * (max - cur));
+                        m_nShiftX = -HUtil32.Round(unx / max * (max - cur));
                     }
                     m_nShiftY = 0;
                     break;
@@ -980,18 +971,18 @@ namespace RobotSvr
                     {
                         v = 0;
                     }
-                    ss = Math.Round((max - cur - v) / max) * step;
+                    ss = HUtil32.Round((max - cur - v) / max) * step;
                     m_nRx = m_nCurrX - ss;
                     m_nRy = m_nCurrY - ss;
                     if (ss == step)
                     {
-                        funx = Math.Round(unx / max * cur);
+                        funx = HUtil32.Round(unx / max * cur);
                         if ((funx % 2) != 0)
                         {
                             funx = funx + 1;
                         }
                         m_nShiftX = funx;
-                        funy = Math.Round(uny / max * cur);
+                        funy = HUtil32.Round(uny / max * cur);
                         if ((funy % 2) != 0)
                         {
                             funy = funy + 1;
@@ -1000,13 +991,13 @@ namespace RobotSvr
                     }
                     else
                     {
-                        funx = -Math.Round(unx / max * (max - cur));
+                        funx = -HUtil32.Round(unx / max * (max - cur));
                         if ((funx % 2) != 0)
                         {
                             funx = funx + 1;
                         }
                         m_nShiftX = funx;
-                        funy = -Math.Round(uny / max * (max - cur));
+                        funy = -HUtil32.Round(uny / max * (max - cur));
                         if ((funy % 2) != 0)
                         {
                             funy = funy + 1;
@@ -1023,12 +1014,12 @@ namespace RobotSvr
                     {
                         v = 0;
                     }
-                    ss = Math.Round((max - cur - v) / max) * step;
+                    ss = HUtil32.Round((max - cur - v) / max) * step;
                     m_nShiftX = 0;
                     m_nRy = m_nCurrY - ss;
                     if (ss == step)
                     {
-                        funy = Math.Round(uny / max * cur);
+                        funy = HUtil32.Round(uny / max * cur);
                         if ((funy % 2) != 0)
                         {
                             funy = funy + 1;
@@ -1037,7 +1028,7 @@ namespace RobotSvr
                     }
                     else
                     {
-                        funy = -Math.Round(uny / max * (max - cur));
+                        funy = -HUtil32.Round(uny / max * (max - cur));
                         if ((funy % 2) != 0)
                         {
                             funy = funy + 1;
@@ -1054,18 +1045,18 @@ namespace RobotSvr
                     {
                         v = 0;
                     }
-                    ss = Math.Round((max - cur - v) / max) * step;
+                    ss = HUtil32.Round((max - cur - v) / max) * step;
                     m_nRx = m_nCurrX + ss;
                     m_nRy = m_nCurrY - ss;
                     if (ss == step)
                     {
-                        funx = -Math.Round(unx / max * cur);
+                        funx = -HUtil32.Round(unx / max * cur);
                         if ((funx % 2) != 0)
                         {
                             funx = funx + 1;
                         }
                         m_nShiftX = funx;
-                        funy = Math.Round(uny / max * cur);
+                        funy = HUtil32.Round(uny / max * cur);
                         if ((funy % 2) != 0)
                         {
                             funy = funy + 1;
@@ -1074,13 +1065,13 @@ namespace RobotSvr
                     }
                     else
                     {
-                        funx = Math.Round(unx / max * (max - cur));
+                        funx = HUtil32.Round(unx / max * (max - cur));
                         if ((funx % 2) != 0)
                         {
                             funx = funx + 1;
                         }
                         m_nShiftX = funx;
-                        funy = -Math.Round(uny / max * (max - cur));
+                        funy = -HUtil32.Round(uny / max * (max - cur));
                         if ((funy % 2) != 0)
                         {
                             funy = funy + 1;
@@ -1089,15 +1080,15 @@ namespace RobotSvr
                     }
                     break;
                 case Grobal2.DR_LEFT:
-                    ss = Math.Round((max - cur) / max) * step;
+                    ss = HUtil32.Round((max - cur) / max) * step;
                     m_nRx = m_nCurrX + ss;
                     if (ss == step)
                     {
-                        m_nShiftX = -Math.Round(unx / max * cur);
+                        m_nShiftX = -HUtil32.Round(unx / max * cur);
                     }
                     else
                     {
-                        m_nShiftX = Math.Round(unx / max * (max - cur));
+                        m_nShiftX = HUtil32.Round(unx / max * (max - cur));
                     }
                     m_nShiftY = 0;
                     break;
@@ -1110,18 +1101,18 @@ namespace RobotSvr
                     {
                         v = 0;
                     }
-                    ss = Math.Round((max - cur + v) / max) * step;
+                    ss = HUtil32.Round((max - cur + v) / max) * step;
                     m_nRx = m_nCurrX + ss;
                     m_nRy = m_nCurrY + ss;
                     if (ss == step)
                     {
-                        funx = -Math.Round(unx / max * cur);
+                        funx = -HUtil32.Round(unx / max * cur);
                         if ((funx % 2) != 0)
                         {
                             funx = funx + 1;
                         }
                         m_nShiftX = funx;
-                        funy = -Math.Round(uny / max * cur);
+                        funy = -HUtil32.Round(uny / max * cur);
                         if ((funy % 2) != 0)
                         {
                             funy = funy + 1;
@@ -1130,13 +1121,13 @@ namespace RobotSvr
                     }
                     else
                     {
-                        funx = Math.Round(unx / max * (max - cur));
+                        funx = HUtil32.Round(unx / max * (max - cur));
                         if ((funx % 2) != 0)
                         {
                             funx = funx + 1;
                         }
                         m_nShiftX = funx;
-                        funy = Math.Round(uny / max * (max - cur));
+                        funy = HUtil32.Round(uny / max * (max - cur));
                         if ((funy % 2) != 0)
                         {
                             funy = funy + 1;
@@ -1235,46 +1226,17 @@ namespace RobotSvr
 
         public int CharWidth()
         {
-            int result;
-            if (m_BodySurface != null)
-            {
-                result = m_BodySurface.Width;
-            }
-            else
-            {
-                result = 48;
-            }
-            return result;
+            return 48;
         }
 
         public int CharHeight()
         {
-            int result;
-            if (m_BodySurface != null)
-            {
-                result = m_BodySurface.Height;
-            }
-            else
-            {
-                result = 70;
-            }
-            return result;
+            return 70;
         }
 
         public bool CheckSelect(int dx, int dy)
         {
-            bool result;
-            int c;
-            result = false;
-            if (m_BodySurface != null)
-            {
-                c = m_BodySurface.Pixels[dx, dy];
-                if ((c != 0) && ((m_BodySurface.Pixels[dx - 1, dy] != 0) && (m_BodySurface.Pixels[dx + 1, dy] != 0) && (m_BodySurface.Pixels[dx, dy - 1] != 0) && (m_BodySurface.Pixels[dx, dy + 1] != 0)))
-                {
-                    result = true;
-                }
-            }
-            return result;
+            return false;
         }
 
         public virtual int GetDefaultFrame(bool wmode)
@@ -1324,7 +1286,7 @@ namespace RobotSvr
             m_boReverseFrame = false;
             if (m_boWarMode)
             {
-                if ((MShare.GetTickCount() - m_dwWarModeTime > 4 * 1000))
+                if (MShare.GetTickCount() - m_dwWarModeTime > 4 * 1000)
                 {
                     m_boWarMode = false;
                 }
@@ -1390,11 +1352,11 @@ namespace RobotSvr
                 }
                 if ((this != MShare.g_MySelf) && m_boUseMagic)
                 {
-                    dwFrameTimetime = Math.Round(m_dwFrameTime / 1.8);
+                    dwFrameTimetime = HUtil32.Round(m_dwFrameTime / 1.8);
                 }
                 else if (m_boMsgMuch)
                 {
-                    dwFrameTimetime = Math.Round(m_dwFrameTime * 2 / 3);
+                    dwFrameTimetime = HUtil32.Round(m_dwFrameTime * 2 / 3);
                 }
                 else
                 {
@@ -1406,9 +1368,9 @@ namespace RobotSvr
                     {
                         if (m_boUseMagic)
                         {
-                            if ((m_nCurEffFrame == m_nSpellFrame - 2) || (Run_MagicTimeOut()))
+                            if ((m_nCurEffFrame == m_nSpellFrame - 2) || Run_MagicTimeOut())
                             {
-                                if ((m_CurMagic.ServerMagicCode >= 0) || (Run_MagicTimeOut()))
+                                if ((m_CurMagic.ServerMagicCode >= 0) || Run_MagicTimeOut())
                                 {
                                     m_nCurrentFrame++;
                                     m_nCurEffFrame++;
@@ -1485,7 +1447,7 @@ namespace RobotSvr
                 }
                 m_dwDefFrameTime = MShare.GetTickCount();
             }
-            else if (((int)MShare.GetTickCount() - m_dwSmoothMoveTime) > 200)
+            else if ((MShare.GetTickCount() - m_dwSmoothMoveTime) > 200)
             {
                 if (MShare.GetTickCount() - m_dwDefFrameTime > 500)
                 {
@@ -1501,7 +1463,6 @@ namespace RobotSvr
             if (prv != m_nCurrentFrame)
             {
                 m_dwLoadSurfaceTime = MShare.GetTickCount();
-                LoadSurface();
             }
         }
 
@@ -1516,7 +1477,7 @@ namespace RobotSvr
             result = false;
             fastmove = false;
             normmove = false;
-            if ((m_nCurrentAction == Grobal2.SM_BACKSTEP))
+            if (m_nCurrentAction == Grobal2.SM_BACKSTEP)
             {
                 fastmove = true;
             }
@@ -1545,9 +1506,9 @@ namespace RobotSvr
                 }
                 if ((m_btRace == 0) && (this == MShare.g_MySelf))
                 {
-                    if ((new ArrayList(new int[] { 5, 9, 11, 13 }).Contains(m_nCurrentAction)))
+                    if (new ArrayList(new int[] { 5, 9, 11, 13 }).Contains(m_nCurrentAction))
                     {
-                        switch ((m_nCurrentFrame - m_nStartFrame))
+                        switch (m_nCurrentFrame - m_nStartFrame)
                         {
                             case 1:
                                 break;
@@ -1623,7 +1584,7 @@ namespace RobotSvr
                 }
                 result = true;
             }
-            if ((m_nCurrentAction == Grobal2.SM_RUSHEX))
+            if (m_nCurrentAction == Grobal2.SM_RUSHEX)
             {
                 if ((m_nCurrentFrame < m_nStartFrame) || (m_nCurrentFrame > m_nEndFrame))
                 {
@@ -1672,7 +1633,7 @@ namespace RobotSvr
                 }
                 result = true;
             }
-            if ((m_nCurrentAction == Grobal2.SM_BACKSTEP))
+            if (m_nCurrentAction == Grobal2.SM_BACKSTEP)
             {
                 if ((m_nCurrentFrame > m_nEndFrame) || (m_nCurrentFrame < m_nStartFrame))
                 {
@@ -1766,7 +1727,7 @@ namespace RobotSvr
         {
             int idx;
             idx = 0;
-            m_StruckDamage.Add(Str, ((idx) as Object));
+            m_StruckDamage.Add(Str, idx as Object);
         }
 
         public void GetMoveHPShow(int nCount)

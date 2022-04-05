@@ -1,8 +1,8 @@
 ﻿namespace RobotSvr
 {
-    public class TSuperiorGuard: TGasKuDeGi
+    public class TSuperiorGuard : TGasKuDeGi
     {
     } // end TSuperiorGuard
 
-    } // end TBanyaGuardMon
+} // end TBanyaGuardMon
 

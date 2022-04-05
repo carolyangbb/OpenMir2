@@ -225,8 +225,8 @@ namespace RobotSvr
                 }
                 tx = MShare.g_MySelf.m_nCurrX;
                 ty = MShare.g_MySelf.m_nCurrY;
-                kx = (new System.Random(7)).Next();
-                ky = (new System.Random(5)).Next();
+                kx = new System.Random(7).Next();
+                ky = new System.Random(5).Next();
                 if (LightningTimer.Tag == 0)
                 {
                     ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_1, Grobal2.MAGIC_SOULBALL_ATT3_1, this.m_nCurrX, this.m_nCurrY, tx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
@@ -275,12 +275,12 @@ namespace RobotSvr
             }
             n8 = this.m_nCurrX;
             nc = this.m_nCurrY;
-            iCount = (new System.Random(4)).Next();
+            iCount = new System.Random(4).Next();
             for (i = 0; i <= iCount; i++)
             {
-                n10 = (new System.Random(4)).Next();
-                n14 = (new System.Random(8)).Next();
-                n18 = (new System.Random(8)).Next();
+                n10 = new System.Random(4).Next();
+                n14 = new System.Random(8).Next();
+                n18 = new System.Random(8).Next();
                 switch (n10)
                 {
                     case 0:
@@ -328,7 +328,7 @@ namespace RobotSvr
             {
                 if (this.m_boMsgMuch)
                 {
-                    m_dwEffectFrameTimetime = Math.Round(this.m_dwEffectFrameTime * 2 / 3);
+                    m_dwEffectFrameTimetime = HUtil32.Round(this.m_dwEffectFrameTime * 2 / 3);
                 }
                 else
                 {
@@ -370,7 +370,7 @@ namespace RobotSvr
                 }
                 if (this.m_boMsgMuch)
                 {
-                    m_dwFrameTimetime = Math.Round(this.m_dwFrameTime * 2 / 3);
+                    m_dwFrameTimetime = HUtil32.Round(this.m_dwFrameTime * 2 / 3);
                 }
                 else
                 {
@@ -389,7 +389,7 @@ namespace RobotSvr
                         this.m_boUseEffect = false;
                         this.m_boNowDeath = false;
                     }
-                    if ((this.m_nCurrentAction == Grobal2.SM_HIT))
+                    if (this.m_nCurrentAction == Grobal2.SM_HIT)
                     {
                         // and (m_nCurrentFrame = 4) then begin
                         AttackEff();
@@ -439,7 +439,7 @@ namespace RobotSvr
                     }
                     this.DefaultMotion();
                 }
-                else if (((int)MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
+                else if ((MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
                 {
                     if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
                     {

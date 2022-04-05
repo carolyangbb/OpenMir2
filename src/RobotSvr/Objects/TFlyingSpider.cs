@@ -2,7 +2,7 @@
 
 namespace RobotSvr
 {
-    public class TFlyingSpider: TSkeletonOma
+    public class TFlyingSpider : TSkeletonOma
     {
         // TFlyingSpider
         public override void CalcActorFrame()
@@ -15,12 +15,12 @@ namespace RobotSvr
                 if (Eff8 != null)
                 {
                     Eff8.MagOwner = MShare.g_MySelf;
-                   ClMain.g_PlayScene.m_EffectList.Add(Eff8);
+                    ClMain.g_PlayScene.m_EffectList.Add(Eff8);
                 }
             }
         }
 
     } // end TFlyingSpider
 
-    } // end TBanyaGuardMon
+} // end TBanyaGuardMon
 

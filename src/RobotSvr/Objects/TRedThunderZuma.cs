@@ -5,7 +5,7 @@ namespace RobotSvr
     public class TRedThunderZuma : TGasKuDeGi
     {
         public bool boCasted = false;
- 
+
         public TRedThunderZuma() : base()
         {
             boCasted = false;
@@ -72,7 +72,7 @@ namespace RobotSvr
             bool bofly;
             if ((this.m_nCurrentFrame - this.m_nStartFrame) == 2)
             {
-                if ((this.m_nCurrentAction == Grobal2.SM_LIGHTING))
+                if (this.m_nCurrentAction == Grobal2.SM_LIGHTING)
                 {
                     if (boCasted == true)
                     {
