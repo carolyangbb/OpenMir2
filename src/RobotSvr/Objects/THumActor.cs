@@ -4,7 +4,6 @@ using SystemModule;
 
 namespace RobotSvr
 {
-    // ActFireHitReady: (start: 192; frame: 6; skip: 4; ftime: 70; usetick: 0);
     public class THumActor : TActor
     {
         private bool m_boSSkill = false;
@@ -13,17 +12,15 @@ namespace RobotSvr
         private int m_nCurBubbleStruck = 0;
         private long m_dwWeaponpEffectTime = 0;
         private bool m_boHideWeapon = false;
-        public TStallMgr m_StallMgr = null;
         public int m_nFrame = 0;
         public long m_dwFrameTick = 0;
         public long m_dwFrameTime = 0;
+        public TStallMgr m_StallMgr;
         public ArrayList m_SlaveObject = null;
-        public TActor m_HeroObject = null;
 
         public THumActor() : base()
         {
             m_SlaveObject = new ArrayList();
-            m_HeroObject = null;
             m_boWeaponEffect = false;
             m_boSSkill = false;
             m_dwFrameTime = 150;
@@ -31,7 +28,6 @@ namespace RobotSvr
             m_nFrame = 0;
             this.m_nHumWinOffset = 0;
             this.m_nCboHumWinOffSet = 0;
-            m_StallMgr = new TStallMgr();
         }
 
         protected void CalcActorWinFrame()
@@ -61,7 +57,7 @@ namespace RobotSvr
                     {
                         if (MShare.g_MagicArr[0][MShare.g_SeriesSkillArr[MShare.g_nCurrentMagic]] != null)
                         {
-                            ClMain.frmMain.UseMagic(MShare.g_nMouseX, MShare.g_nMouseY, MShare.g_MagicArr[0][MShare.g_SeriesSkillArr[MShare.g_nCurrentMagic]], false, true);
+                           // ClMain.frmMain.UseMagic(MShare.g_nMouseX, MShare.g_nMouseY, MShare.g_MagicArr[0][MShare.g_SeriesSkillArr[MShare.g_nCurrentMagic]], false, true);
                         }
                         MShare.g_nCurrentMagic++;
                         if (MShare.g_nCurrentMagic > HUtil32._MIN(3, MShare.g_SeriesSkillStep))
@@ -82,7 +78,7 @@ namespace RobotSvr
                 {
                     if (MShare.g_MagicArr[0][MShare.g_SeriesSkillArr[MShare.g_nCurrentMagic2]] != null)
                     {
-                        ClMain.frmMain.UseMagic(MShare.g_nMouseX, MShare.g_nMouseY, MShare.g_MagicArr[0][MShare.g_SeriesSkillArr[MShare.g_nCurrentMagic2]], false, true);
+                       // ClMain.frmMain.UseMagic(MShare.g_nMouseX, MShare.g_nMouseY, MShare.g_MagicArr[0][MShare.g_SeriesSkillArr[MShare.g_nCurrentMagic2]], false, true);
                     }
                     MShare.g_nCurrentMagic2++;
                     if (MShare.g_nCurrentMagic2 > HUtil32._MIN(4, MShare.g_SeriesSkillStep))
@@ -103,82 +99,81 @@ namespace RobotSvr
             this.m_boHitEffect = false;
             this.m_nHitEffectNumber = 0;
             this.m_nCurrentFrame = -1;
-            this.m_btHair = Grobal2.HAIRfeature(this.m_nFeature);
-            this.m_btDress = Grobal2.DRESSfeature(this.m_nFeature);
-            if (this.m_btDress >= 24 && this.m_btDress <= 27)
-            {
-                this.m_btDress = 18 + this.m_btSex;
-            }
-            this.m_btWeapon = Grobal2.WEAPONfeature(this.m_nFeature);
-            this.m_btHorse = Grobal2.Horsefeature(this.m_nFeatureEx);
-            this.m_btWeaponEffect = this.m_btHorse;
-            this.m_btHorse = 0;
-            this.m_btEffect = Grobal2.Effectfeature(this.m_nFeatureEx);
-            this.m_nBodyOffset = Actor.HUMANFRAME * this.m_btDress;
-            this.m_nCboHairOffset = -1;
-            if (this.m_btHair >= 10)
-            {
-                this.m_btHairEx = this.m_btHair / 10;
-                this.m_btHair = this.m_btHair % 10;
-            }
-            else
-            {
-                this.m_btHairEx = 0;
-            }
-            if (this.m_btHairEx == 0)
-            {
-                // 头发兼容模式
-                if (this.m_btHair > haircount - 1)
-                {
-                    this.m_btHair = haircount - 1;
-                }
-                nHairEx = (this.m_btHair - this.m_btSex) >> 1 + 1;
-                if (nHairEx > haircount)
-                {
-                    nHairEx = haircount;
-                }
-                this.m_nCboHairOffset = 2000 * ((nHairEx - 1) * 2 + this.m_btSex);
-            }
-            else if (this.m_btHairEx > 0)
-            {
-                if (this.m_btHairEx > haircount)
-                {
-                    this.m_btHairEx = haircount;
-                }
-                this.m_nHairOffsetEx = Actor.HUMANFRAME * ((this.m_btHairEx - 1) * 2 + this.m_btSex);
-                nHairEx = (this.m_btHairEx - 1) * 2 + this.m_btSex;
-                if (nHairEx > haircount)
-                {
-                    nHairEx = haircount;
-                }
-                this.m_nCboHairOffset = 2000 * nHairEx;
-            }
-            else
-            {
-                this.m_nHairOffsetEx = -1;
-            }
-            if (this.m_btHair > haircount - 1)
-            {
-                this.m_btHair = haircount - 1;
-            }
-            this.m_btHair = this.m_btHair * 2;
-            if (this.m_btHair > 1)
-            {
-                this.m_nHairOffset = Actor.HUMANFRAME * (this.m_btHair + this.m_btSex);
-            }
-            else
-            {
-                this.m_nHairOffset = -1;
-            }
-            this.m_nWeaponOffset = Actor.HUMANFRAME * this.m_btWeapon;
-            if (this.m_btEffect == 50)
-            {
-                this.m_nHumWinOffset = 352;
-            }
-            else if (this.m_btEffect != 0)
-            {
-                this.m_nHumWinOffset = (this.m_btEffect - 1) * Actor.HUMANFRAME;
-            }
+            //this.m_btHair = Grobal2.HAIRfeature(this.m_nFeature);
+            //this.m_btDress = Grobal2.DRESSfeature(this.m_nFeature);
+            //if (this.m_btDress >= 24 && this.m_btDress <= 27)
+            //{
+            //    this.m_btDress = 18 + this.m_btSex;
+            //}
+            //this.m_btWeapon = Grobal2.WEAPONfeature(this.m_nFeature);
+            //this.m_btHorse = Grobal2.Horsefeature(this.m_nFeatureEx);
+            //this.m_btWeaponEffect = this.m_btHorse;
+            //this.m_btHorse = 0;
+            //this.m_btEffect = Grobal2.Effectfeature(this.m_nFeatureEx);
+            //this.m_nBodyOffset = Actor.HUMANFRAME * this.m_btDress;
+            //this.m_nCboHairOffset = -1;
+            //if (this.m_btHair >= 10)
+            //{
+            //    this.m_btHairEx = this.m_btHair / 10;
+            //    this.m_btHair = this.m_btHair % 10;
+            //}
+            //else
+            //{
+            //    this.m_btHairEx = 0;
+            //}
+            //if (this.m_btHairEx == 0)
+            //{
+            //    if (this.m_btHair > haircount - 1)
+            //    {
+            //        this.m_btHair = haircount - 1;
+            //    }
+            //    nHairEx = (this.m_btHair - this.m_btSex) >> 1 + 1;
+            //    if (nHairEx > haircount)
+            //    {
+            //        nHairEx = haircount;
+            //    }
+            //    this.m_nCboHairOffset = 2000 * ((nHairEx - 1) * 2 + this.m_btSex);
+            //}
+            //else if (this.m_btHairEx > 0)
+            //{
+            //    if (this.m_btHairEx > haircount)
+            //    {
+            //        this.m_btHairEx = haircount;
+            //    }
+            //    this.m_nHairOffsetEx = Actor.HUMANFRAME * ((this.m_btHairEx - 1) * 2 + this.m_btSex);
+            //    nHairEx = (this.m_btHairEx - 1) * 2 + this.m_btSex;
+            //    if (nHairEx > haircount)
+            //    {
+            //        nHairEx = haircount;
+            //    }
+            //    this.m_nCboHairOffset = 2000 * nHairEx;
+            //}
+            //else
+            //{
+            //    this.m_nHairOffsetEx = -1;
+            //}
+            //if (this.m_btHair > haircount - 1)
+            //{
+            //    this.m_btHair = haircount - 1;
+            //}
+            //this.m_btHair = this.m_btHair * 2;
+            //if (this.m_btHair > 1)
+            //{
+            //    this.m_nHairOffset = Actor.HUMANFRAME * (this.m_btHair + this.m_btSex);
+            //}
+            //else
+            //{
+            //    this.m_nHairOffset = -1;
+            //}
+            //this.m_nWeaponOffset = Actor.HUMANFRAME * this.m_btWeapon;
+            //if (this.m_btEffect == 50)
+            //{
+            //    this.m_nHumWinOffset = 352;
+            //}
+            //else if (this.m_btEffect != 0)
+            //{
+            //    this.m_nHumWinOffset = (this.m_btEffect - 1) * Actor.HUMANFRAME;
+            //}
             switch (this.m_nCurrentAction)
             {
                 case Grobal2.SM_TURN:
@@ -783,49 +778,49 @@ namespace RobotSvr
 
         public override void RunFrameAction(int frame)
         {
-            m_boHideWeapon = false;
-            if (m_boSSkill)
-            {
-                if (frame == 1)
-                {
-                    m_boSSkill = false;
-                }
-            }
-            else if (this.m_nCurrentAction == Grobal2.SM_HEAVYHIT)
-            {
-                if ((frame == 5) && this.m_boDigFragment)
-                {
-                    this.m_boDigFragment = false;
-                    var __event = ClMain.EventMan.GetEvent(this.m_nCurrX, this.m_nCurrY, Grobal2.ET_PILESTONES);
-                    if (__event != null)
-                    {
-                        __event.m_nEventParam = __event.m_nEventParam + 1;
-                    }
-                }
-            }
-            else if (this.m_nCurrentAction == Grobal2.SM_SITDOWN)
-            {
-                if ((frame == 5) && this.m_boDigFragment)
-                {
-                    this.m_boDigFragment = false;
-                    var __event = ClMain.EventMan.GetEvent(this.m_nCurrX, this.m_nCurrY, Grobal2.ET_PILESTONES);
-                    if (__event != null)
-                    {
-                        __event.m_nEventParam = __event.m_nEventParam + 1;
-                    }
-                }
-            }
-            else if (this.m_nCurrentAction == Grobal2.SM_THROW)
-            {
-                if ((frame == 3) && this.m_boThrow)
-                {
-                    this.m_boThrow = false;
-                }
-                if (frame >= 3)
-                {
-                    m_boHideWeapon = true;
-                }
-            }
+            //m_boHideWeapon = false;
+            //if (m_boSSkill)
+            //{
+            //    if (frame == 1)
+            //    {
+            //        m_boSSkill = false;
+            //    }
+            //}
+            //else if (this.m_nCurrentAction == Grobal2.SM_HEAVYHIT)
+            //{
+            //    if ((frame == 5) && this.m_boDigFragment)
+            //    {
+            //        this.m_boDigFragment = false;
+            //        var __event = ClMain.EventMan.GetEvent(this.m_nCurrX, this.m_nCurrY, Grobal2.ET_PILESTONES);
+            //        if (__event != null)
+            //        {
+            //            __event.m_nEventParam = __event.m_nEventParam + 1;
+            //        }
+            //    }
+            //}
+            //else if (this.m_nCurrentAction == Grobal2.SM_SITDOWN)
+            //{
+            //    if ((frame == 5) && this.m_boDigFragment)
+            //    {
+            //        this.m_boDigFragment = false;
+            //        var __event = ClMain.EventMan.GetEvent(this.m_nCurrX, this.m_nCurrY, Grobal2.ET_PILESTONES);
+            //        if (__event != null)
+            //        {
+            //            __event.m_nEventParam = __event.m_nEventParam + 1;
+            //        }
+            //    }
+            //}
+            //else if (this.m_nCurrentAction == Grobal2.SM_THROW)
+            //{
+            //    if ((frame == 3) && this.m_boThrow)
+            //    {
+            //        this.m_boThrow = false;
+            //    }
+            //    if (frame >= 3)
+            //    {
+            //        m_boHideWeapon = true;
+            //    }
+            //}
         }
 
         public void DoWeaponBreakEffect()
@@ -883,11 +878,6 @@ namespace RobotSvr
                     }
                 }
             }
-            if (this.m_nCurrentAction == Grobal2.SM_RUSHEX)
-            {
-                this.RunActSound(this.m_nCurrentFrame - this.m_nStartFrame);
-                return;
-            }
             if (new ArrayList(new int[] { 5, 9, 11, 13, 39 }).Contains(this.m_nCurrentAction))
             {
                 return;
@@ -895,12 +885,10 @@ namespace RobotSvr
             this.m_boMsgMuch = (this != MShare.g_MySelf) && (this.m_MsgList.Count >= 2);
             bss = new ArrayList(new int[] { 105, 109 }).Contains(this.m_CurMagic.EffectNumber);
             off = this.m_nCurrentFrame - this.m_nStartFrame;
-            this.RunActSound(off);
             RunFrameAction(off);
             prv = this.m_nCurrentFrame;
             if (this.m_nCurrentAction != 0)
             {
-                // m_nCurrentAction = SM_ALIVE
                 if ((this.m_nCurrentFrame < this.m_nStartFrame) || (this.m_nCurrentFrame > this.m_nEndFrame))
                 {
                     this.m_nCurrentFrame = this.m_nStartFrame;
@@ -1017,15 +1005,12 @@ namespace RobotSvr
                             this.m_dwWarModeTime = MShare.GetTickCount();
                             this.m_boUseCboLib = true;
                             this.m_boHitEffect = true;
-                            this.m_nCurrentAction = Grobal2.SM_SMITELONGHIT;
                         }
                     }
                     if (this.m_boUseMagic)
                     {
-                        // bss := m_CurMagic.EffectNumber in [105..107, 109..111];
                         if (bss && (this.m_CurMagic.ServerMagicCode > 0))
                         {
-                            // i := m_nCurrentFrame - m_nStartFrame;
                             sskill = false;
                             switch (this.m_CurMagic.EffectNumber)
                             {
@@ -1047,8 +1032,8 @@ namespace RobotSvr
                             }
                             if (sskill)
                             {
-                                TUseMagicInfo _wvar1 = this.m_CurMagic;
-                                ClMain.g_PlayScene.NewMagic(this, _wvar1.ServerMagicCode, _wvar1.EffectNumber, this.m_nCurrX, this.m_nCurrY, _wvar1.targx, _wvar1.targy, _wvar1.target, _wvar1.EffectType, _wvar1.Recusion, _wvar1.anitime, ref boFly, _wvar1.magfirelv, _wvar1.Poison);
+                                //TUseMagicInfo _wvar1 = this.m_CurMagic;
+                                //ClMain.g_PlayScene.NewMagic(this, _wvar1.ServerMagicCode, _wvar1.EffectNumber, this.m_nCurrX, this.m_nCurrY, _wvar1.targx, _wvar1.targy, _wvar1.target, _wvar1.EffectType, _wvar1.Recusion, _wvar1.anitime, ref boFly, _wvar1.magfirelv, _wvar1.Poison);
                                 this.m_boNewMagic = false;
                             }
                         }
@@ -1065,8 +1050,8 @@ namespace RobotSvr
                         {
                             if ((this.m_CurMagic.ServerMagicCode > 0) && (!bss || this.m_boNewMagic))
                             {
-                                TUseMagicInfo _wvar2 = this.m_CurMagic;
-                                ClMain.g_PlayScene.NewMagic(this, _wvar2.ServerMagicCode, _wvar2.EffectNumber, this.m_nCurrX, this.m_nCurrY, _wvar2.targx, _wvar2.targy, _wvar2.target, _wvar2.EffectType, _wvar2.Recusion, _wvar2.anitime, ref boFly, _wvar2.magfirelv, _wvar2.Poison);
+                                //TUseMagicInfo _wvar2 = this.m_CurMagic;
+                                //ClMain.g_PlayScene.NewMagic(this, _wvar2.ServerMagicCode, _wvar2.EffectNumber, this.m_nCurrX, this.m_nCurrY, _wvar2.targx, _wvar2.targy, _wvar2.target, _wvar2.EffectType, _wvar2.Recusion, _wvar2.anitime, ref boFly, _wvar2.magfirelv, _wvar2.Poison);
                                 if (boFly)
                                 {
                                     //SoundUtil.g_SndMgr.PlaySound(this.m_nMagicFireSound, this.m_nCurrX, this.m_nCurrY);
@@ -1114,7 +1099,6 @@ namespace RobotSvr
             if (prv != this.m_nCurrentFrame)
             {
                 this.m_dwLoadSurfaceTime = MShare.GetTickCount();
-                LoadSurface();
             }
         }
 
@@ -1133,5 +1117,10 @@ namespace RobotSvr
             result = L;
             return result;
         }
+    }
+
+    public class TStallMgr
+    {
+        public bool OnSale;
     }
 }

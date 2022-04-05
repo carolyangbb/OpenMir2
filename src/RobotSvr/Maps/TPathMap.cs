@@ -7,8 +7,8 @@ namespace RobotSvr
         public static Point[] g_MapPath;
         public const int SCALE = 4;
         public const string MAP_BASEPATH = ".\\Map\\";
-        public static int[,] TerrainParams = { 4, -1 };
-        public TMapHeader m_MapHeader = null;
+        public static int[,] TerrainParams = new int[1] { 4, -1 };
+        public TMapHeader m_MapHeader;
         public TCellParams[] m_MapData;
         public TMapInfo[] m_MapBuf;
         public int m_nPathWidth = 0;
@@ -19,6 +19,7 @@ namespace RobotSvr
             m_MapBuf = null;
             m_nPathWidth = 0;
         }
+
         public Point[] FindPathOnMap(int X, int Y)
         {
             Point[] result;
@@ -99,7 +100,6 @@ namespace RobotSvr
                 if ((X < m_MapHeader.wWidth - m_nPathWidth) && (X > m_nPathWidth) && (Y < m_MapHeader.wHeight - m_nPathWidth) && (Y > m_nPathWidth))
                 {
                     Cost = TerrainParams[m_MapData[X - m_nPathWidth, Y].TerrainType || m_MapData[X - m_nPathWidth, Y].TCellActor] + TerrainParams[m_MapData[X + m_nPathWidth, Y].TerrainType || m_MapData[X + m_nPathWidth, Y].TCellActor] + TerrainParams[m_MapData[X, Y - m_nPathWidth].TerrainType || m_MapData[X, Y - m_nPathWidth].TCellActor] + TerrainParams[m_MapData[X, Y + m_nPathWidth].TerrainType || m_MapData[X, Y + m_nPathWidth].TCellActor];
-                    // ttNormal
                     if (Cost < 4 * TerrainParams[false])
                     {
                         result = -1;
@@ -133,14 +133,12 @@ namespace RobotSvr
 
         public void FillPathMap_ExchangeWaves()
         {
-            TWave w;
-            w = OldWave;
+            TWave w = OldWave;
             OldWave = NewWave;
             NewWave = w;
             NewWave.Clear();
         }
 
-        // virtual;
         protected TPathMapCell[] FillPathMap(int X1, int Y1, int X2, int Y2)
         {
             TPathMapCell[,] result;
@@ -166,11 +164,8 @@ namespace RobotSvr
             OldWave = new TWave();
             NewWave = new TWave();
             result[Y1, X1].Distance = 0;
-            // 起点Distance:=0
             OldWave.Add(X1, Y1, 0, 0);
-            // 将起点加入OldWave
             FillPathMap_TestNeighbours();
-            // Finished := ((X1 = X2) and (Y1 = Y2));
             while (!Finished)
             {
                 FillPathMap_ExchangeWaves();
@@ -182,10 +177,8 @@ namespace RobotSvr
                 {
                     i = OldWave.item;
                     i.Cost = i.Cost - OldWave.MinCost;
-                    // 如果大于MinCost
                     if (i.Cost > 0)
                     {
-                        // 更新Cost= cost-MinCost
                         NewWave.Add(i.X, i.Y, i.Cost, i.Direction);
                     }
                     else
@@ -205,8 +198,8 @@ namespace RobotSvr
                     }
                 } while (!!OldWave.Next());
             }
-            NewWave.Free;
-            OldWave.Free;
+            NewWave = null;
+            OldWave = null;
             return result;
         }
     }

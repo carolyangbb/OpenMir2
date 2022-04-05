@@ -64,6 +64,14 @@ namespace SystemModule
             return Misc.DecodeBuf(bSrc, bSrc.Length, ref nLen);
         }
 
+        public static byte[] DecodeBuffer<T>(string src, ref T packet)
+        {
+            if (src == null) throw new ArgumentNullException(nameof(src));
+            var bSrc = HUtil32.GetBytes(src);
+            var nLen = 0;
+            return Misc.DecodeBuf(bSrc, bSrc.Length, ref nLen);
+        }
+
         /// <summary>
         /// 加密字符串
         /// </summary>

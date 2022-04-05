@@ -1,20 +1,9 @@
 namespace RobotSvr
 {
-    // end TProcMagic
-
-    // end TShakeScreen
-
-    // end TPlayScene
-
-}
-
-namespace PlayScn.Units
-{
     public class PlayScn
     {
         public static long GO = 0;
         public static long GW = 0;
-        public static Bitmap GBit = null;
         public static int GProcDrawChrPos = 0;
         public static long GProcDrawChr = 0;
         public static int GNEffectAction = 0;
@@ -25,6 +14,7 @@ namespace PlayScn.Units
         public const int Lmx = 30;
         public const int Lmy = 26;
         public const int Maxlight = 5;
+
         public static bool IsMySlaveObject(TActor atc)
         {
             bool result;
@@ -44,8 +34,6 @@ namespace PlayScn.Units
             }
             return result;
         }
-
-    } // end PlayScn
-
+    } 
 }
 

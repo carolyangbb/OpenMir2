@@ -1,26 +1,23 @@
-﻿namespace RobotSvr
+﻿using SystemModule;
+
+namespace RobotSvr
 {
     public class TWallStructure : TActor
     {
-        private TDirectDrawSurface EffectSurface = null;
-        private TDirectDrawSurface BrokenSurface = null;
+        private const int V = 0;
         private readonly int ax = 0;
         private readonly int ay = 0;
         private readonly int bx = 0;
         private readonly int by = 0;
         private int deathframe = 0;
         private bool bomarkpos = false;
-        // ----------------------------------------------------------------------
-        //Constructor  Create()
+
         public TWallStructure() : base()
         {
             this.m_btDir = 0;
-            EffectSurface = null;
-            BrokenSurface = null;
             bomarkpos = false;
-            // DownDrawLevel := 1;
-
         }
+
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
@@ -52,7 +49,6 @@
                     this.m_nDefFrameCount = 0;
                     break;
                 case Grobal2.SM_DIGUP:
-                    // //葛嚼捞 函版瞪锭 付促
                     this.m_nStartFrame = pm.ActDie.start;
                     this.m_nEndFrame = this.m_nStartFrame + pm.ActDie.frame - 1;
                     this.m_dwFrameTime = pm.ActDie.ftime;
@@ -61,15 +57,11 @@
                     this.m_boUseEffect = true;
                     break;
                 default:
-                    // //规氢捞 绝澜...
                     this.m_nStartFrame = pm.ActStand.start + this.m_btDir;
-                    // * (pm.ActStand.frame + pm.ActStand.skip);
                     this.m_nEndFrame = this.m_nStartFrame;
-                    // + pm.ActStand.frame - 1;
                     this.m_dwFrameTime = pm.ActStand.ftime;
                     this.m_dwStartTime = MShare.GetTickCount();
                     this.m_nDefFrameCount = 0;
-                    // pm.ActStand.frame;
                     this.Shift(this.m_btDir, 0, 0, 1);
                     this.m_boHoldPlace = true;
                     break;
@@ -78,19 +70,14 @@
 
         public override int GetDefaultFrame(bool wmode)
         {
-            int result;
-            TMonsterAction pm;
-            result = 0;
-            // jacky
+            int result = V;
             this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            TMonsterAction pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return result;
             }
             result = pm.ActStand.start + this.m_btDir;
-            // * (pm.ActStand.frame + pm.ActStand.skip);
-
             return result;
         }
 
@@ -115,8 +102,6 @@
             ClMain.g_PlayScene.SetActorDrawLevel(this, 0);
             base.Run();
         }
-
-    } // end TWallStructure
-
+    } 
 }
 

@@ -6,8 +6,6 @@ namespace RobotSvr
 {
     public class TFireDragon : TSkeletonArcherMon
     {
-        public Timer LightningTimer = null;
-
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
@@ -64,7 +62,6 @@ namespace RobotSvr
                     break;
                 // Modify the A .. B: Grobal2.SM_LIGHTING, Grobal2.SM_LIGHTING_1 .. Grobal2.SM_LIGHTING_3
                 case Grobal2.SM_LIGHTING:
-                case Grobal2.SM_LIGHTING_1:
                     if (this.m_btRace == 120)
                     {
                         this.m_nStartFrame = 0;
@@ -200,63 +197,58 @@ namespace RobotSvr
 
         public TFireDragon() : base()
         {
-            m_DrawEffect = null;
-            LightningTimer = new Timer(null);
-            LightningTimer.Interval = 10;
-            LightningTimer.Tag = 0;
-            LightningTimer.onTimer = LightningTimerTimer;
-            LightningTimer.Enabled = false;
+ 
         }
 
         public void LightningTimerTimer(Object Sender)
         {
-            int tx;
-            int ty;
-            int kx;
-            int ky;
-            bool bofly;
-            if (this.m_btRace == 120)
-            {
-                if (LightningTimer.Tag == 0)
-                {
-                    LightningTimer.Tag = LightningTimer.Tag + 1;
-                    LightningTimer.Interval = 10;
-                    return;
-                }
-                tx = MShare.g_MySelf.m_nCurrX;
-                ty = MShare.g_MySelf.m_nCurrY;
-                kx = new System.Random(7).Next();
-                ky = new System.Random(5).Next();
-                if (LightningTimer.Tag == 0)
-                {
-                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_1, Grobal2.MAGIC_SOULBALL_ATT3_1, this.m_nCurrX, this.m_nCurrY, tx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_2, Grobal2.MAGIC_SOULBALL_ATT3_2, this.m_nCurrX, this.m_nCurrY, tx - 2, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_3, Grobal2.MAGIC_SOULBALL_ATT3_3, this.m_nCurrX, this.m_nCurrY, tx, ty - 2, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_4, Grobal2.MAGIC_SOULBALL_ATT3_4, this.m_nCurrX, this.m_nCurrY, tx - kx, ty - ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                    LightningTimer.Interval = 500;
-                }
-                else if (LightningTimer.Tag == 2)
-                {
-                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_1, Grobal2.MAGIC_SOULBALL_ATT3_1, this.m_nCurrX, this.m_nCurrY, tx - 2, ty - 2, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_2, Grobal2.MAGIC_SOULBALL_ATT3_2, this.m_nCurrX, this.m_nCurrY, tx + 2, ty - 2, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_3, Grobal2.MAGIC_SOULBALL_ATT3_3, this.m_nCurrX, this.m_nCurrY, tx + kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_4, Grobal2.MAGIC_SOULBALL_ATT3_4, this.m_nCurrX, this.m_nCurrY, tx - kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                }
-                ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_5, Grobal2.MAGIC_SOULBALL_ATT3_5, this.m_nCurrX, this.m_nCurrY, tx + kx, ty - ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_1, Grobal2.MAGIC_SOULBALL_ATT3_1, this.m_nCurrX, this.m_nCurrY, tx - kx - 2, ty + ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_2, Grobal2.MAGIC_SOULBALL_ATT3_2, this.m_nCurrX, this.m_nCurrY, tx - kx, ty - ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_3, Grobal2.MAGIC_SOULBALL_ATT3_3, this.m_nCurrX, this.m_nCurrY, tx + kx + 2, ty + ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_4, Grobal2.MAGIC_SOULBALL_ATT3_4, this.m_nCurrX, this.m_nCurrY, tx + kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_5, Grobal2.MAGIC_SOULBALL_ATT3_5, this.m_nCurrX, this.m_nCurrY, tx - kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                LightningTimer.Interval = LightningTimer.Interval + 100;
-                LightningTimer.Tag = LightningTimer.Tag + 1;
-                if (LightningTimer.Tag > 7)
-                {
-                    LightningTimer.Interval = 10;
-                    LightningTimer.Tag = 0;
-                    LightningTimer.Enabled = false;
-                }
-            }
+            //int tx;
+            //int ty;
+            //int kx;
+            //int ky;
+            //bool bofly;
+            //if (this.m_btRace == 120)
+            //{
+            //    if (LightningTimer.Tag == 0)
+            //    {
+            //        LightningTimer.Tag = LightningTimer.Tag + 1;
+            //        LightningTimer.Interval = 10;
+            //        return;
+            //    }
+            //    tx = MShare.g_MySelf.m_nCurrX;
+            //    ty = MShare.g_MySelf.m_nCurrY;
+            //    kx = new System.Random(7).Next();
+            //    ky = new System.Random(5).Next();
+            //    if (LightningTimer.Tag == 0)
+            //    {
+            //        ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_1, Grobal2.MAGIC_SOULBALL_ATT3_1, this.m_nCurrX, this.m_nCurrY, tx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+            //        ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_2, Grobal2.MAGIC_SOULBALL_ATT3_2, this.m_nCurrX, this.m_nCurrY, tx - 2, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+            //        ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_3, Grobal2.MAGIC_SOULBALL_ATT3_3, this.m_nCurrX, this.m_nCurrY, tx, ty - 2, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+            //        ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_4, Grobal2.MAGIC_SOULBALL_ATT3_4, this.m_nCurrX, this.m_nCurrY, tx - kx, ty - ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+            //        LightningTimer.Interval = 500;
+            //    }
+            //    else if (LightningTimer.Tag == 2)
+            //    {
+            //        ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_1, Grobal2.MAGIC_SOULBALL_ATT3_1, this.m_nCurrX, this.m_nCurrY, tx - 2, ty - 2, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+            //        ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_2, Grobal2.MAGIC_SOULBALL_ATT3_2, this.m_nCurrX, this.m_nCurrY, tx + 2, ty - 2, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+            //        ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_3, Grobal2.MAGIC_SOULBALL_ATT3_3, this.m_nCurrX, this.m_nCurrY, tx + kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+            //        ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_4, Grobal2.MAGIC_SOULBALL_ATT3_4, this.m_nCurrX, this.m_nCurrY, tx - kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+            //    }
+            //    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_5, Grobal2.MAGIC_SOULBALL_ATT3_5, this.m_nCurrX, this.m_nCurrY, tx + kx, ty - ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+            //    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_1, Grobal2.MAGIC_SOULBALL_ATT3_1, this.m_nCurrX, this.m_nCurrY, tx - kx - 2, ty + ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+            //    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_2, Grobal2.MAGIC_SOULBALL_ATT3_2, this.m_nCurrX, this.m_nCurrY, tx - kx, ty - ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+            //    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_3, Grobal2.MAGIC_SOULBALL_ATT3_3, this.m_nCurrX, this.m_nCurrY, tx + kx + 2, ty + ky, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+            //    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_4, Grobal2.MAGIC_SOULBALL_ATT3_4, this.m_nCurrX, this.m_nCurrY, tx + kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+            //    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT3_5, Grobal2.MAGIC_SOULBALL_ATT3_5, this.m_nCurrX, this.m_nCurrY, tx - kx, ty, 0, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+            //    LightningTimer.Interval = LightningTimer.Interval + 100;
+            //    LightningTimer.Tag = LightningTimer.Tag + 1;
+            //    if (LightningTimer.Tag > 7)
+            //    {
+            //        LightningTimer.Interval = 10;
+            //        LightningTimer.Tag = 0;
+            //        LightningTimer.Enabled = false;
+            //    }
+            //}
         }
 
         private void AttackEff()
@@ -275,29 +267,29 @@ namespace RobotSvr
             }
             n8 = this.m_nCurrX;
             nc = this.m_nCurrY;
-            iCount = new System.Random(4).Next();
-            for (i = 0; i <= iCount; i++)
-            {
-                n10 = new System.Random(4).Next();
-                n14 = new System.Random(8).Next();
-                n18 = new System.Random(8).Next();
-                switch (n10)
-                {
-                    case 0:
-                        ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14 - 2, nc + n18 + 1, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
-                        break;
-                    case 1:
-                        ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14, nc + n18, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
-                        break;
-                    case 2:
-                        ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14, nc + n18 + 1, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
-                        break;
-                    case 3:
-                        ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14 - 2, nc + n18, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
-                        break;
-                }
-                // PlaySound(8206);
-            }
+            //iCount = new System.Random(4).Next();
+            //for (i = 0; i <= iCount; i++)
+            //{
+            //    n10 = new System.Random(4).Next();
+            //    n14 = new System.Random(8).Next();
+            //    n18 = new System.Random(8).Next();
+            //    switch (n10)
+            //    {
+            //        case 0:
+            //            ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14 - 2, nc + n18 + 1, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
+            //            break;
+            //        case 1:
+            //            ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14, nc + n18, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
+            //            break;
+            //        case 2:
+            //            ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14, nc + n18 + 1, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
+            //            break;
+            //        case 3:
+            //            ClMain.g_PlayScene.NewMagic(this, 80, 80, this.m_nCurrX, this.m_nCurrY, n8 - n14 - 2, nc + n18, 0, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
+            //            break;
+            //    }
+            //    // PlaySound(8206);
+            //}
         }
 
         public override void Run()
@@ -308,7 +300,6 @@ namespace RobotSvr
             bool bofly;
             if ((this.m_btRace != 120) && this.m_boDeath)
             {
-                this.m_BodySurface = null;
                 return;
             }
             if ((this.m_nCurrentAction == Grobal2.SM_WALK) || (this.m_nCurrentAction == Grobal2.SM_BACKSTEP) || (this.m_nCurrentAction == Grobal2.SM_RUN) || (this.m_nCurrentAction == Grobal2.SM_HORSERUN))
@@ -391,33 +382,31 @@ namespace RobotSvr
                     }
                     if (this.m_nCurrentAction == Grobal2.SM_HIT)
                     {
-                        // and (m_nCurrentFrame = 4) then begin
                         AttackEff();
                     }
                     else if (this.m_btRace == 120)
                     {
-                        if ((this.m_nCurrentAction == Grobal2.SM_LIGHTING) && (this.m_nCurrentFrame - this.m_nStartFrame == 1))
-                        {
-                            // TargetRecog,
-                            ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT1, Grobal2.MAGIC_SOULBALL_ATT1, this.m_nCurrX, this.m_nCurrY, this.m_nCurrX, this.m_nCurrY, this.m_nRecogId, magiceff.TMagicType.mtGroundEffect, false, 30, ref bofly);
-                        }
-                        else if ((this.m_nCurrentAction == Grobal2.SM_LIGHTING_1) && (this.m_nCurrentFrame - this.m_nStartFrame == 1))
-                        {
-                            ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT2, Grobal2.MAGIC_SOULBALL_ATT2, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                        }
-                        else if ((this.m_nCurrentAction == Grobal2.SM_LIGHTING_2) && (this.m_nCurrentFrame - this.m_nStartFrame == 1))
-                        {
-                            if (!LightningTimer.Enabled)
-                            {
-                                LightningTimer.Enabled = true;
-                            }
-                        }
+                        //if ((this.m_nCurrentAction == Grobal2.SM_LIGHTING) && (this.m_nCurrentFrame - this.m_nStartFrame == 1))
+                        //{
+                        //    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT1, Grobal2.MAGIC_SOULBALL_ATT1, this.m_nCurrX, this.m_nCurrY, this.m_nCurrX, this.m_nCurrY, this.m_nRecogId, magiceff.TMagicType.mtGroundEffect, false, 30, ref bofly);
+                        //}
+                        //else if ((this.m_nCurrentAction == Grobal2.SM_LIGHTING_1) && (this.m_nCurrentFrame - this.m_nStartFrame == 1))
+                        //{
+                        //    ClMain.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SOULBALL_ATT2, Grobal2.MAGIC_SOULBALL_ATT2, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                        //}
+                        //else if ((this.m_nCurrentAction == Grobal2.SM_LIGHTING_2) && (this.m_nCurrentFrame - this.m_nStartFrame == 1))
+                        //{
+                        //    if (!LightningTimer.Enabled)
+                        //    {
+                        //        LightningTimer.Enabled = true;
+                        //    }
+                        //}
                     }
                     else if ((this.m_nCurrentAction == 81) || (this.m_nCurrentAction == 82) || (this.m_nCurrentAction == 83))
                     {
                         if ((this.m_nCurrentFrame - this.m_nStartFrame) == 4)
                         {
-                            ClMain.g_PlayScene.NewMagic(this, this.m_nCurrentAction, this.m_nCurrentAction, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFly, true, 30, ref bofly);
+                            //ClMain.g_PlayScene.NewMagic(this, this.m_nCurrentAction, this.m_nCurrentAction, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFly, true, 30, ref bofly);
                         }
                     }
                 }
@@ -456,7 +445,6 @@ namespace RobotSvr
             if (prv != this.m_nCurrentFrame)
             {
                 this.m_dwLoadSurfaceTime = MShare.GetTickCount();
-                LoadSurface();
             }
         }
     }

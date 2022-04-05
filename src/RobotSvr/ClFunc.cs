@@ -633,7 +633,7 @@ namespace RobotSvr
             }
         }
 
-        public static void GetNextRunXY(byte dir, ref int X, ref int Y)
+        public static void GetNextRunXY(int dir, ref int X, ref int Y)
         {
             switch (dir)
             {
@@ -1173,7 +1173,7 @@ namespace RobotSvr
             return result;
         }
 
-        public static int GetTakeOnPosition(TClientSt.Item.Itemmode, TClientItem[] UseItems, bool bPos)
+        public static int GetTakeOnPosition(TStdItem smode, TClientItem[] UseItems, bool bPos)
         {
             int result;
             result = -1;
@@ -1263,7 +1263,7 @@ namespace RobotSvr
             return result;
         }
 
-        public static int GetTakeOnPosition(TClientStdItem smode, TClientItem[] UseItems)
+        public static int GetTakeOnPosition(TStdItem smode, TClientItem[] UseItems)
         {
             return GetTakeOnPosition(smode, UseItems, false);
         }
@@ -1386,12 +1386,10 @@ namespace RobotSvr
             return result;
         }
 
-        public static bool SellItemProg(short remain, short sellcnt)
+        public static bool SellItemProg(ushort remain, short sellcnt)
         {
-            bool result;
-            int i;
-            result = false;
-            for (i = 0; i < MShare.MAXBAGITEMCL; i++)
+            bool result = false;
+            for (var i = 0; i < MShare.MAXBAGITEMCL; i++)
             {
                 if ((MShare.g_ItemArr[i].MakeIndex == MShare.g_SellDlgItemSellWait.Item.MakeIndex) && (MShare.g_ItemArr[i].Item.Name == MShare.g_SellDlgItemSellWait.Item.Item.Name) && (MShare.g_ItemArr[i].Item.Overlap > 0))
                 {
@@ -1409,10 +1407,8 @@ namespace RobotSvr
 
         public static bool DelCountItemBag(string iname, int iindex, short Count)
         {
-            bool result;
-            int i;
-            result = false;
-            for (i = MShare.MAXBAGITEMCL - 1; i >= 0; i--)
+            bool result = false;
+            for (var i = MShare.MAXBAGITEMCL - 1; i >= 0; i--)
             {
                 if (MShare.g_ItemArr[i].Item.Name == iname)
                 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using SystemModule.Packet;
 
 namespace RobotSvr
 {
@@ -17,12 +18,12 @@ namespace RobotSvr
         public long MEditPassHandle = 0;
         public object MEditPassPointer = null;
 
-        public LoginScene() : base(SceneType.StLogin)
+        public LoginScene() : base(SceneType.stLogin)
         {
             _mBoOpenFirst = false;
         }
 
-        // 进入登录界面
+
         public override void OpenScene()
         {
             _mNCurFrame = 0;
@@ -40,7 +41,7 @@ namespace RobotSvr
 
         public void PassWdFail()
         {
-            FrmDlg.DEditLoginAccount.SetFocus;
+ 
         }
 
         public void HideLoginBox()
@@ -64,86 +65,43 @@ namespace RobotSvr
 
         public void ChangeLoginState(LoginState state)
         {
-            TfrmMain wvar1 = ClMain.frmMain;
             switch (state)
             {
                 case LoginState.LsLogin:
-                    wvar1.FrmDlg.DWinNewAccount.Visible = false;
-                    wvar1.FrmDlg.DWinChgPw.Visible = false;
-                    wvar1.FrmDlg.DWinLogin.Visible = true;
-                    if (wvar1.FrmDlg.DEditLoginAccount.Visible)
-                    {
-                        wvar1.FrmDlg.DEditLoginAccount.SetFocus;
-                    }
+
                     break;
                 case LoginState.LsNewidRetry:
                 case LoginState.LsNewid:
-                    if (wvar1.FrmDlg.DEditNewID.Visible && wvar1.FrmDlg.DEditNewID.Enabled)
-                    {
-                        wvar1.FrmDlg.DEditNewID.SetFocus;
-                    }
-                    else
-                    {
-                        if (wvar1.FrmDlg.DEditNewPassWordConfirm.Visible && wvar1.FrmDlg.DEditNewPassWordConfirm.Enabled)
-                        {
-                            wvar1.FrmDlg.DEditNewPassWordConfirm.SetFocus;
-                        }
-                    }
+
                     break;
                 case LoginState.LsChgpw:
-                    wvar1.FrmDlg.DWinNewAccount.Visible = false;
-                    wvar1.FrmDlg.DWinChgPw.Visible = true;
-                    wvar1.FrmDlg.DWinLogin.Visible = false;
-                    if (wvar1.FrmDlg.DEditChgID.Visible)
-                    {
-                        wvar1.FrmDlg.DEditChgID.SetFocus;
-                    }
+
                     break;
                 case LoginState.LsCloseAll:
-                    wvar1.FrmDlg.DWinNewAccount.Visible = false;
-                    wvar1.FrmDlg.DWinChgPw.Visible = false;
-                    wvar1.FrmDlg.DWinLogin.Visible = false;
+
                     break;
             }
         }
 
         public void NewClick()
         {
-            FrmDlg.NewAccountTitle = "";
             ChangeLoginState(LoginState.LsNewid);
         }
 
         public void NewIdRetry(bool boupdate)
         {
             ChangeLoginState(LoginState.LsNewidRetry);
-            FrmDlg.DEditNewID.Text = _mNewIdRetryUe.sAccount;
-            FrmDlg.DEditNewPassWord.Text = _mNewIdRetryUe.sPassword;
-            FrmDlg.DEditNewYourName.Text = _mNewIdRetryUe.sUserName;
-            FrmDlg.DEditNewIDcard.Text = _mNewIdRetryUe.sSSNo;
-            FrmDlg.DEditNewQuiz1.Text = _mNewIdRetryUe.sQuiz;
-            FrmDlg.DEditNewAnswer1.Text = _mNewIdRetryUe.sAnswer;
-            FrmDlg.DEditNewPhone.Text = _mNewIdRetryUe.sPhone;
-            FrmDlg.DEditNewEMail.Text = _mNewIdRetryUe.sEMail;
-            FrmDlg.DEditNewQuiz2.Text = _mNewIdRetryAdd.sQuiz2;
-            FrmDlg.DEditNewAnswer2.Text = _mNewIdRetryAdd.sAnswer2;
-            FrmDlg.DEditNewMobPhone.Text = _mNewIdRetryAdd.sMobilePhone;
-            FrmDlg.DEditNewBirthDay.Text = _mNewIdRetryAdd.sBirthDay;
         }
 
         public void UpdateAccountInfos(TUserEntry ue)
         {
-            _mNewIdRetryUe = ue;
-            //@ Unsupported function or procedure: 'FillChar'
-            FillChar(_mNewIdRetryAdd);            // m_boUpdateAccountMode := True;
+            _mNewIdRetryUe = ue; 
             NewIdRetry(true);
-            FrmDlg.NewAccountTitle = "(请填写帐号相关信息)";
         }
 
         public void OkClick()
         {
-            char key;
-            key = '\r';
-            FrmDlg.DEditLoginPassWordKeyPress(FrmDlg.DEditLoginPassWord, key);
+
         }
 
         public void ChgPwClick()
@@ -164,60 +122,43 @@ namespace RobotSvr
             TUserEntryAdd ua;
             if (CheckUserEntrys())
             {
-                //@ Unsupported function or procedure: 'FillChar'
-                FillChar(ue);                //@ Unsupported function or procedure: 'FillChar'
-                FillChar(ua); ue.sAccount = FrmDlg.DEditNewID.Text.ToLower();
-                ue.sPassword = FrmDlg.DEditNewPassWord.Text;
-                ue.sUserName = FrmDlg.DEditNewYourName.Text;
-                ue.sSSNo = FrmDlg.DEditNewIDcard.Text;
-                ue.sQuiz = FrmDlg.DEditNewQuiz1.Text;
-                ue.sAnswer = FrmDlg.DEditNewAnswer1.Text.Trim();
-                ue.sPhone = FrmDlg.DEditNewPhone.Text;
-                ue.sEMail = FrmDlg.DEditNewEMail.Text.Trim();
-                ua.sQuiz2 = FrmDlg.DEditNewQuiz1.Text;
-                ua.sAnswer2 = FrmDlg.DEditNewAnswer1.Text.Trim();
-                ua.sBirthDay = FrmDlg.DEditNewBirthDay.Text;
-                ua.sMobilePhone = FrmDlg.DEditNewMobPhone.Text;
+                ue = new TUserEntry();
+                ua = new TUserEntryAdd();
+                //ue.sAccount = FrmDlg.DEditNewID.Text.ToLower();
+                //ue.sPassword = FrmDlg.DEditNewPassWord.Text;
+                //ue.sUserName = FrmDlg.DEditNewYourName.Text;
+                //ue.sSSNo = FrmDlg.DEditNewIDcard.Text;
+                //ue.sQuiz = FrmDlg.DEditNewQuiz1.Text;
+                //ue.sAnswer = FrmDlg.DEditNewAnswer1.Text.Trim();
+                //ue.sPhone = FrmDlg.DEditNewPhone.Text;
+                //ue.sEMail = FrmDlg.DEditNewEMail.Text.Trim();
+                //ua.sQuiz2 = FrmDlg.DEditNewQuiz1.Text;
+                //ua.sAnswer2 = FrmDlg.DEditNewAnswer1.Text.Trim();
+                //ua.sBirthDay = FrmDlg.DEditNewBirthDay.Text;
+                //ua.sMobilePhone = FrmDlg.DEditNewMobPhone.Text;
                 _mNewIdRetryUe = ue;
                 _mNewIdRetryUe.sAccount = "";
                 _mNewIdRetryUe.sPassword = "";
                 _mNewIdRetryAdd = ua;
-                // 发送注册帐号信息
-                ClMain.frmMain.SendNewAccount(ue, ua);
+                //ClMain.frmMain.SendNewAccount(ue, ua); // 发送注册帐号信息
                 NewAccountClose();
+                Console.WriteLine("注册账号");
             }
         }
 
         public void NewAccountClose()
         {
-            // if not m_boUpdateAccountMode then
             ChangeLoginState(LoginState.LsLogin);
         }
 
         public void ChgpwOk()
         {
-            string uid;
-            string passwd;
-            string newpasswd;
-            if (FrmDlg.DEditChgNewPw.Text == FrmDlg.DEditChgNewPwRepeat.Text)
-            {
-                uid = FrmDlg.DEditChgID.Text;
-                passwd = FrmDlg.DEditChgCurrentpw.Text;
-                newpasswd = FrmDlg.DEditChgNewPw.Text;
-                ClMain.frmMain.SendChgPw(uid, passwd, newpasswd);
-                ChgpwCancel();
-            }
-            else
-            {
-                FrmDlg.DMessageDlg("二次输入的密码不匹配！！！。", new object[] { MessageBoxButtons.OK });
-                FrmDlg.DEditChgNewPw.SetFocus;
-            }
+            
         }
 
         public void ChgpwCancel()
         {
             ChangeLoginState(LoginState.LsLogin);
         }
-
     }
 }

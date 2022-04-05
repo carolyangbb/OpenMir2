@@ -9,10 +9,6 @@ namespace RobotSvr
 {
     public class MShare
     {
-        public static THumTitle[] g_Titles;
-        public static THumTitle g_ActiveTitle = null;
-        public static THumTitle[] g_hTitles;
-        public static THumTitle g_hActiveTitle = null;
 #if DEBUG_LOGIN
         public static byte g_fWZLFirst = 7;
 #else
@@ -25,11 +21,6 @@ namespace RobotSvr
         public static int LMX = 30;
         public static int LMY = 26;
         public static int VIEWWIDTH = 8;
-        public static Rectangle g_SkidAD_Rect = null;
-        public static Rectangle g_SkidAD_Rect2 = null;
-        public static Rectangle G_RC_SQUENGINER = null;
-        public static Rectangle G_RC_IMEMODE = null;
-        // ====================================物品====================================
         public static byte g_BuildBotTex = 0;
         public static byte g_WinBottomType = 0;
         public static bool g_Windowed = false;
@@ -37,8 +28,8 @@ namespace RobotSvr
         public static bool g_boPickUpAll = false;
         public static int g_ptItems_Pos = -1;
         public static int g_ptItems_Type = 0;
-        public static TCnHashTableSmall g_ItemsFilter_All = null;
-        public static TCnHashTableSmall g_ItemsFilter_All_Def = null;
+        public static Dictionary<string,string> g_ItemsFilter_All = null;
+        public static Dictionary<string, string> g_ItemsFilter_All_Def = null;
         public static ArrayList g_ItemsFilter_Dress = null;
         public static ArrayList g_ItemsFilter_Weapon = null;
         public static ArrayList g_ItemsFilter_Headgear = null;
@@ -53,18 +44,12 @@ namespace RobotSvr
         public static int g_TileMapOffSetY = 9;
         public static byte g_btMyEnergy = 0;
         public static byte g_btMyLuck = 0;
-        public static TItemShine g_tiOKShow =
-    {0, 0};
-        public static TItemShine g_tiFailShow =
-    {0, 0};
-        public static TItemShine g_tiOKShow2 =
-    {0, 0};
-        public static TItemShine g_tiFailShow2 =
-    {0, 0};
-        public static TItemShine g_spOKShow2 =
-    {0, 0};
-        public static TItemShine g_spFailShow2 =
-    {0, 0};
+        public static TItemShine g_tiOKShow = new TItemShine() { idx = 0, tick = 0 };
+        public static TItemShine g_tiFailShow = new TItemShine() { idx = 0, tick = 0 };
+        public static TItemShine g_tiOKShow2 = new TItemShine() { idx = 0, tick = 0 };
+        public static TItemShine g_tiFailShow2 = new TItemShine() { idx = 0, tick = 0 };
+        public static TItemShine g_spOKShow2 = new TItemShine() { idx = 0, tick = 0 };
+        public static TItemShine g_spFailShow2 = new TItemShine() { idx = 0, tick = 0 };
         public static string g_tiHintStr1 = "";
         public static string g_tiHintStr2 = "";
         public static TMovingItem[] g_TIItems = new TMovingItem[1 + 1];
@@ -73,16 +58,13 @@ namespace RobotSvr
         public static TMovingItem[] g_spItems = new TMovingItem[1 + 1];
         public static int g_SkidAD_Count = 0;
         public static int g_SkidAD_Count2 = 0;
-        public static string g_lastHeroSel = String.Empty;
-        public static THeroInfo[] g_heros;
+        public static string g_lastHeroSel = string.Empty;
         public static byte g_ItemWear = 0;
         public static byte g_ShowSuite = 0;
         public static byte g_ShowSuite2 = 0;
         public static byte g_ShowSuite3 = 0;
         public static byte g_SuiteSpSkill = 0;
         public static int g_SuiteIdx = -1;
-        public static ArrayList g_SuiteItemsList = null;
-        public static ArrayList g_TitlesList = null;
         public static byte g_btSellType = 0;
         public static bool g_showgamegoldinfo = false;
         public static bool SSE_AVAILABLE = false;
@@ -137,8 +119,8 @@ namespace RobotSvr
         public static long g_ProcOnDrawTick_Effect2 = 0;
         public static long g_dwImgMgrTick = 0;
         public static int g_nImgMgrIdx = 0;
-        public static TRTLCriticalSection ProcMsgCS = null;
-        public static TRTLCriticalSection ThreadCS = null;
+        public static object ProcMsgCS = null;
+        public static object ThreadCS = null;
         public static bool g_bIMGBusy = false;
         public static long g_dwThreadTick = 0;
         public static long g_rtime = 0;
@@ -170,27 +152,27 @@ namespace RobotSvr
         public static string g_sWizardName = "魔法师";
         public static string g_sTaoistName = "道士";
         public static string g_sUnKnowName = "未知";
-        public static string g_sMainParam1 = String.Empty;
-        public static string g_sMainParam2 = String.Empty;
-        public static string g_sMainParam3 = String.Empty;
-        public static string g_sMainParam4 = String.Empty;
-        public static string g_sMainParam5 = String.Empty;
-        public static string g_sMainParam6 = String.Empty;
+        public static string g_sMainParam1 = string.Empty;
+        public static string g_sMainParam2 = string.Empty;
+        public static string g_sMainParam3 = string.Empty;
+        public static string g_sMainParam4 = string.Empty;
+        public static string g_sMainParam5 = string.Empty;
+        public static string g_sMainParam6 = string.Empty;
         public static bool g_boCanDraw = true;
         public static bool g_boInitialize = false;
         public static int g_nInitializePer = 0;
         public static bool g_boQueryExit = false;
-        public static string g_FontName = String.Empty;
+        public static string g_FontName = string.Empty;
         public static int g_FontSize = 0;
         public static byte[] g_PowerBlock = { 0x55, 0x8B, 0xEC, 0x83, 0xC4, 0xE8, 0x89, 0x55, 0xF8, 0x89, 0x45, 0xFC, 0xC7, 0x45, 0xEC, 0xE8, 0x03, 0x00, 0x00, 0xC7, 0x45, 0xE8, 0x64, 0x00, 0x00, 0x00, 0xDB, 0x45, 0xEC, 0xDB, 0x45, 0xE8, 0xDE, 0xF9, 0xDB, 0x45, 0xFC, 0xDE, 0xC9, 0xDD, 0x5D, 0xF0, 0x9B, 0x8B, 0x45, 0xF8, 0x8B, 0x00, 0x8B, 0x55, 0xF8, 0x89, 0x02, 0xDD, 0x45, 0xF0, 0x8B, 0xE5, 0x5D, 0xC3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
         public static byte[] g_PowerBlock1 = { 0x55, 0x8B, 0xEC, 0x83, 0xC4, 0xE8, 0x89, 0x55, 0xF8, 0x89, 0x45, 0xFC, 0xC7, 0x45, 0xEC, 0x64, 0x00, 0x00, 0x00, 0xC7, 0x45, 0xE8, 0x64, 0x00, 0x00, 0x00, 0xDB, 0x45, 0xEC, 0xDB, 0x45, 0xE8, 0xDE, 0xF9, 0xDB, 0x45, 0xFC, 0xDE, 0xC9, 0xDD, 0x5D, 0xF0, 0x9B, 0x8B, 0x45, 0xF8, 0x8B, 0x00, 0x8B, 0x55, 0xF8, 0x89, 0x02, 0xDD, 0x45, 0xF0, 0x8B, 0xE5, 0x5D, 0xC3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-        public static string g_sServerName = String.Empty;
-        public static string g_sServerMiniName = String.Empty;
-        public static string g_psServerAddr = String.Empty;
+        public static string g_sServerName = string.Empty;
+        public static string g_sServerMiniName = string.Empty;
+        public static string g_psServerAddr = string.Empty;
         public static int g_pnServerPort = 0;
-        public static string g_sSelChrAddr = String.Empty;
+        public static string g_sSelChrAddr = string.Empty;
         public static int g_nSelChrPort = 0;
-        public static string g_sRunServerAddr = String.Empty;
+        public static string g_sRunServerAddr = string.Empty;
         public static int g_nRunServerPort = 0;
         public static int g_nTopDrawPos = 0;
         public static int g_nLeftDrawPos = 0;
@@ -207,12 +189,12 @@ namespace RobotSvr
         public static bool g_DlgInitialize = false;
         public static bool g_boFirstActive = true;
         public static bool g_boFirstTime = false;
-        public static string g_sMapTitle = String.Empty;
+        public static string g_sMapTitle = string.Empty;
         public static int g_nLastMapMusic = -1;
         public static ArrayList g_SendSayList = null;
         public static int g_SendSayListIdx = 0;
         public static ArrayList g_ServerList = null;
-        public static THStringList g_GroupMembers = null;
+        public static IList<string> g_GroupMembers = null;
         public static ArrayList g_SoundList = null;
         public static ArrayList BGMusicList = null;
         public static long g_DxFontsMgrTick = 0;
@@ -234,8 +216,8 @@ namespace RobotSvr
         public static TNakedAbility g_BonusAbil = null;
         public static TNakedAbility g_NakedAbil = null;
         public static TNakedAbility g_BonusAbilChg = null;
-        public static string g_sGuildName = String.Empty;
-        public static string g_sGuildRankName = String.Empty;
+        public static string g_sGuildName = string.Empty;
+        public static string g_sGuildRankName = string.Empty;
         public static long g_dwLatestJoinAttackTick = 0;
         // 最后魔法攻击时间
         public static long g_dwLastAttackTick = 0;
@@ -278,16 +260,14 @@ namespace RobotSvr
         public static Link g_APQueue = null;
         public static ArrayList g_APPathList = null;
         public static double[,] g_APPass;
-        // array[0..MAXX * 3, 0..MAXY * 3] of DWORD;
         public static TActor g_APTagget = null;
-        // /////////////////////////////
         public static long g_APRunTick = 0;
         public static long g_APRunTick2 = 0;
         public static TDropItem g_AutoPicupItem = null;
         public static int g_nAPStatus = 0;
         public static bool g_boAPAutoMove = false;
         public static bool g_boLongHit = false;
-        public static string g_sAPStr = String.Empty;
+        public static string g_sAPStr = string.Empty;
         public static int g_boAPXPAttack = 0;
         public static long m_dwSpellTick = 0;
         public static long m_dwRecallTick = 0;
@@ -296,9 +276,8 @@ namespace RobotSvr
         public static int m_btMagPassTh = 0;
         public static int g_nTagCount = 0;
         public static long m_dwTargetFocusTick = 0;
-        public static THStringList g_APPickUpList = null;
-        public static THStringList g_APMobList = null;
-        public static THStringList g_ItemDesc = null;
+        public static Dictionary<string, string> g_APPickUpList = null;
+        public static Dictionary<string,string> g_APMobList = null;
         public static int g_AttackInvTime = 900;
         public static TActor g_AttackTarget = null;
         public static long g_dwSearchEnemyTick = 0;
@@ -319,8 +298,8 @@ namespace RobotSvr
         public static int g_APStep2 = -1;
         public static Point[] g_APMapPath;
         public static Point[] g_APMapPath2;
-        public static Point g_APLastPoint = null;
-        public static Point g_APLastPoint2 = null;
+        public static Point g_APLastPoint;
+        public static Point g_APLastPoint2;
         public static bool g_nApMiniMap = false;
         public static long g_dwBlinkTime = 0;
         public static bool g_boViewBlink = false;
@@ -393,10 +372,10 @@ namespace RobotSvr
         public static int g_nHeroIPowerRecover = 0;
         public static int g_nHeroAddDamage = 0;
         public static int g_nHeroDecDamage = 0;
-        public static short g_wAvailIDDay = 0;
-        public static short g_wAvailIDHour = 0;
-        public static short g_wAvailIPDay = 0;
-        public static short g_wAvailIPHour = 0;
+        public static ushort g_wAvailIDDay = 0;
+        public static ushort g_wAvailIDHour = 0;
+        public static ushort g_wAvailIPDay = 0;
+        public static ushort g_wAvailIPHour = 0;
         public static THumActor g_MySelf = null;
         public static THumActor g_MyDrawActor = null;
         public static string g_sAttackMode = "";
@@ -421,10 +400,10 @@ namespace RobotSvr
         public static TMovingItem[] g_BuildAcuses = new TMovingItem[7 + 1];
         public static int g_BAFirstShape = -1;
         public static TClientItem[] g_tui = new TClientItem[13 + 1];
-        public static TClientItem[] g_UseItems = new TClientItem[Grobal2.U_FASHION + 1];
+        public static TClientItem[] g_UseItems = new TClientItem[13 + 1];
         public static TItemShine g_detectItemShine = null;
-        public static TItemShine[] UserState1Shine = new TItemShine[Grobal2.U_FASHION + 1];
-        public static TItemShine[] g_UseItemsShine = new TItemShine[Grobal2.U_FASHION + 1];
+        public static TItemShine[] UserState1Shine = new TItemShine[13 + 1];
+        public static TItemShine[] g_UseItemsShine = new TItemShine[13 + 1];
         public static TClientItem[] g_ItemArr = new TClientItem[MAXBAGITEMCL - 1 + 1];
         public static TClientItem[] g_HeroItemArr = new TClientItem[MAXBAGITEMCL - 1 + 1];
         public static TItemShine[] g_ItemArrShine = new TItemShine[MAXBAGITEMCL - 1 + 1];
@@ -454,7 +433,7 @@ namespace RobotSvr
         public static TClientItem g_DealDlgItem = null;
         public static bool g_boQueryPrice = false;
         public static long g_dwQueryPriceTime = 0;
-        public static string g_sSellPriceStr = String.Empty;
+        public static string g_sSellPriceStr = string.Empty;
         public static TClientItem[] g_DealItems = new TClientItem[9 + 1];
         public static bool g_boYbDealing = false;
         public static TClientPS g_YbDealInfo = null;
@@ -463,13 +442,12 @@ namespace RobotSvr
         public static int g_nDealGold = 0;
         public static int g_nDealRemoteGold = 0;
         public static bool g_boDealEnd = false;
-        public static string g_sDealWho = String.Empty;
+        public static string g_sDealWho = string.Empty;
         public static TClientItem g_MouseItem = null;
         public static TClientItem g_MouseStateItem = null;
         public static TClientItem g_HeroMouseStateItem = null;
         public static TClientItem g_MouseUserStateItem = null;
         public static TClientItem g_HeroMouseItem = null;
-        public static TShopItem g_ClickShopItem = null;
         public static bool g_boItemMoving = false;
         public static TMovingItem g_MovingItem = null;
         public static TMovingItem g_OpenBoxItem = null;
@@ -508,11 +486,11 @@ namespace RobotSvr
         public static bool g_boSelectMyself = false;
         // 鼠标是否指到自己
         // 游戏速度检测相关变量
-        public static long g_dwFirstServerTime = 0;
-        public static long g_dwFirstClientTime = 0;
+        public static int g_dwFirstServerTime = 0;
+        public static int g_dwFirstClientTime = 0;
         public static int g_nTimeFakeDetectCount = 0;
-        public static long g_dwLatestClientTime2 = 0;
-        public static long g_dwFirstClientTimerTime = 0;
+        public static int g_dwLatestClientTime2 = 0;
+        public static int g_dwFirstClientTimerTime = 0;
         // timer 矫埃
         public static long g_dwLatestClientTimerTime = 0;
         public static long g_dwFirstClientGetTime = 0;
@@ -612,10 +590,6 @@ namespace RobotSvr
         public static long g_dwCollectIpExpMax = 1;
         public static bool g_ReSelChr = false;
         public static bool ShouldUnloadEnglishKeyboardLayout = false;
-        public static string LocalModName_Shift = ModName_Shift;
-        public static string LocalModName_Ctrl = ModName_Ctrl;
-        public static string LocalModName_Alt = ModName_Alt;
-        public static string LocalModName_Win = ModName_Win;
         public static int[] g_FSResolutionWidth = { 800, 1024, 1280, 1280, 1366, 1440, 1600, 1680, 1920 };// 电脑分辨率宽度
         public static int[] g_FSResolutionHeight = { 600, 768, 800, 1024, 768, 900, 900, 1050, 1080 };// 电脑分辨率高度
         public static byte g_FScreenMode = 0;
@@ -631,24 +605,19 @@ namespace RobotSvr
         public const string REG_SETUP_MP3OPEN = "MusicOpen";
         public const string REG_SETUP_SOUNDOPEN = "SoundOpen";
         public const int MAXX = 40;
-        // SCREENWIDTH div 20;
         public const int MAXY = 30;
-        // SCREENWIDTH div 20;
         public const int LONGHEIGHT_IMAGE = 35;
         public const int FLASHBASE = 410;
         public const int SOFFX = 0;
         public const int SOFFY = 0;
         public const int HEALTHBAR_BLACK = 0;
-        // HEALTHBAR_RED = 1;
         public const int BARWIDTH = 30;
         public const int BARHEIGHT = 2;
         public const int MAXSYSLINE = 8;
         public const int BOTTOMBOARD = 1;
         public const int AREASTATEICONBASE = 150;
         public const int g_WinBottomRetry = 45;
-        // ------------
         public const bool NEWHINTSYS = true;
-        // MIR2EX = True;
         public const int NPC_CILCK_INVTIME = 500;
         public const int MAXITEMBOX_WIDTH = 177;
         public const int MAXMAGICLV = 3;
@@ -691,42 +660,42 @@ namespace RobotSvr
         public static string[] g_DBStateStrArr2W = { "态", "能", "络", "击", "他" };
         public static string[] g_slegend = { "", "传奇神剑", "传奇勋章", "传奇项链", "传奇之冠", "", "传奇护腕", "", "传奇之戒", "", "传奇腰带", "传奇之靴", "", "传奇面巾" };
         public const int MAX_GC_GENERAL = 16;
-        public static Rectangle[] g_ptGeneral = new Rectangle[20] {
-    {35 + 000, 70 + 23 * 0, 35 + 000 + 72 + 18, 70 + 23 * 0 + 16} ,
-    {35 + 000, 70 + 23 * 1, 35 + 000 + 72 + 18, 70 + 23 * 1 + 16} ,
-    {35 + 000, 70 + 23 * 2, 35 + 000 + 78 + 18, 70 + 23 * 2 + 16} ,
-    {35 + 000, 70 + 23 * 3, 35 + 000 + 96, 70 + 23 * 3 + 16} ,
-    {35 + 120, 70 + 23 * 0, 35 + 120 + 72 + 30, 70 + 23 * 0 + 16} ,
-    {35 + 120, 70 + 23 * 1, 35 + 120 + 72, 70 + 23 * 1 + 16} ,
-    {35 + 120, 70 + 23 * 2, 35 + 120 + 72 + 18, 70 + 23 * 2 + 16} ,
-    {35 + 120, 70 + 23 * 3, 35 + 120 + 72, 70 + 23 * 3 + 16} ,
-    {35 + 120, 70 + 23 * 4, 35 + 120 + 72 + 18, 70 + 23 * 4 + 16} ,
-    {35 + 240, 70 + 23 * 0, 35 + 240 + 72, 70 + 23 * 0 + 16} ,
-    {35 + 240, 70 + 23 * 1, 35 + 240 + 72, 70 + 23 * 1 + 16} ,
-    {35 + 240, 70 + 23 * 2, 35 + 240 + 48, 70 + 23 * 2 + 16} ,
-    {35 + 240, 70 + 23 * 3, 35 + 240 + 72, 70 + 23 * 3 + 16} ,
-    {35 + 240, 70 + 23 * 4, 35 + 240 + 72, 70 + 23 * 4 + 16} ,
-    {35 + 240, 70 + 23 * 5, 35 + 240 + 72, 70 + 23 * 5 + 16} ,
-    {35 + 120, 70 + 23 * 5, 35 + 120 + 72, 70 + 23 * 5 + 16} ,
-    {35 + 000, 70 + 23 * 5, 35 + 000 + 96, 70 + 23 * 5 + 16} };
+        public static Rectangle[] g_ptGeneral = new Rectangle[] {
+          new Rectangle() {X= 35 + 000, Y= 70 + 23 * 0,  Width= 35 + 000 + 72 + 18, Height= 70 + 23 * 0 + 16} ,
+          new Rectangle() {X=35 + 000, Y=70 + 23 * 1,Width= 35 + 000 + 72 + 18,  Height= 70 + 23 * 1 + 16} ,
+          new Rectangle() {X=35 + 000, Y=70 + 23 * 2,Width= 35 + 000 + 78 + 18,  Height= 70 + 23 * 2 + 16} ,
+          new Rectangle() {X=35 + 000, Y=70 + 23 * 3,Width= 35 + 000 + 96,  Height= 70 + 23 * 3 + 16} ,
+          new Rectangle() {X=35 + 120, Y=70 + 23 * 0,Width= 35 + 120 + 72 + 30,  Height= 70 + 23 * 0 + 16} ,
+          new Rectangle() {X=35 + 120, Y=70 + 23 * 1,Width= 35 + 120 + 72,  Height= 70 + 23 * 1 + 16} ,
+          new Rectangle() {X=35 + 120, Y=70 + 23 * 2,Width= 35 + 120 + 72 + 18, Height=  70 + 23 * 2 + 16} ,
+          new Rectangle() {X=35 + 120, Y=70 + 23 * 3,Width= 35 + 120 + 72,  Height= 70 + 23 * 3 + 16} ,
+          new Rectangle() {X=35 + 120, Y=70 + 23 * 4,Width= 35 + 120 + 72 + 18,  Height= 70 + 23 * 4 + 16} ,
+          new Rectangle() {X=35 + 240, Y=70 + 23 * 0,Width= 35 + 240 + 72,  Height= 70 + 23 * 0 + 16} ,
+          new Rectangle() {X=35 + 240, Y=70 + 23 * 1,Width= 35 + 240 + 72,  Height= 70 + 23 * 1 + 16} ,
+          new Rectangle() {X=35 + 240, Y=70 + 23 * 2,Width= 35 + 240 + 48,  Height= 70 + 23 * 2 + 16} ,
+          new Rectangle() {X=35 + 240, Y=70 + 23 * 3,Width= 35 + 240 + 72,  Height= 70 + 23 * 3 + 16} ,
+          new Rectangle() {X=35 + 240, Y=70 + 23 * 4,Width= 35 + 240 + 72,  Height= 70 + 23 * 4 + 16} ,
+          new Rectangle() {X=35 + 240, Y=70 + 23 * 5,Width= 35 + 240 + 72,  Height= 70 + 23 * 5 + 16} ,
+          new Rectangle() {X=35 + 120, Y=70 + 23 * 5,Width= 35 + 120 + 72,  Height= 70 + 23 * 5 + 16} ,
+          new Rectangle() {X=35 + 000, Y=70 + 23 * 5,Width= 35 + 000 + 96,  Height= 70 + 23 * 5 + 16} };
         public static bool[] g_gcGeneral = { true, true, false, true, true, true, false, true, false, true, true, true, true, false, false, true, true };
         public static Color[] g_clGeneral = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver };
         public static Color[] g_clGeneralDef = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver };
         // ====================================Protect====================================
         public const int MAX_GC_PROTECT = 11;
         public static Rectangle[] g_ptProtect = new Rectangle[]{
-    {35 + 000, 70 + 24 * 0, 35 + 000 + 20, 70 + 24 * 0 + 16} ,
-    {35 + 000, 70 + 24 * 1, 35 + 000 + 20, 70 + 24 * 1 + 16} ,
-    {35 + 000, 70 + 24 * 2, 35 + 000 + 20, 70 + 24 * 2 + 16} ,
-    {35 + 000, 70 + 24 * 3, 35 + 000 + 20, 70 + 24 * 3 + 16} ,
-    {35 + 000, 70 + 24 * 4, 35 + 000 + 20, 70 + 24 * 4 + 16} ,
-    {35 + 000, 70 + 24 * 5, 35 + 000 + 20, 70 + 24 * 5 + 16} ,
-    {35 + 000, 70 + 24 * 6, 35 + 000 + 72, 70 + 24 * 6 + 16} ,
-    {35 + 180, 70 + 24 * 0, 35 + 180 + 20, 70 + 24 * 0 + 16} ,
-    {35 + 180, 70 + 24 * 1, 35 + 180 + 20, 70 + 24 * 1 + 16} ,
-    {35 + 180, 70 + 24 * 3, 35 + 180 + 20, 70 + 24 * 3 + 16} ,
-    {35 + 180, 70 + 24 * 5, 35 + 180 + 20, 70 + 24 * 5 + 16} ,
-    {35 + 180, 70 + 24 * 6, 35 + 180 + 20, 70 + 24 * 6 + 16} };
+           new Rectangle(){X=35 + 000,Y=70 + 24 * 0, Width=35 + 000 + 20,Height=70 + 24 * 0 + 16} ,
+           new Rectangle(){X=35 + 000,Y=70 + 24 * 1, Width=35 + 000 + 20,Height=70 + 24 * 1 + 16} ,
+           new Rectangle(){X=35 + 000,Y=70 + 24 * 2, Width=35 + 000 + 20,Height=70 + 24 * 2 + 16} ,
+           new Rectangle(){X=35 + 000,Y=70 + 24 * 3, Width=35 + 000 + 20,Height=70 + 24 * 3 + 16} ,
+           new Rectangle(){X=35 + 000,Y=70 + 24 * 4, Width=35 + 000 + 20,Height=70 + 24 * 4 + 16} ,
+           new Rectangle(){X=35 + 000,Y=70 + 24 * 5, Width=35 + 000 + 20,Height=70 + 24 * 5 + 16} ,
+           new Rectangle(){X=35 + 000,Y=70 + 24 * 6, Width=35 + 000 + 72,Height=70 + 24 * 6 + 16} ,
+           new Rectangle(){X=35 + 180,Y=70 + 24 * 0, Width=35 + 180 + 20,Height=70 + 24 * 0 + 16} ,
+           new Rectangle(){X=35 + 180,Y=70 + 24 * 1, Width=35 + 180 + 20,Height=70 + 24 * 1 + 16} ,
+           new Rectangle(){X=35 + 180,Y=70 + 24 * 3, Width=35 + 180 + 20,Height=70 + 24 * 3 + 16} ,
+           new Rectangle(){X=35 + 180,Y=70 + 24 * 5, Width=35 + 180 + 20,Height=70 + 24 * 5 + 16} ,
+           new Rectangle(){X=35 + 180,Y=70 + 24 * 6, Width=35 + 180 + 20,Height=70 + 24 * 6 + 16} };
 
         public static bool[] g_gcProtect = { false, false, false, false, false, false, false, true, true, true, false, true };
         public static int[] g_gnProtectPercent = { 10, 10, 10, 10, 10, 10, 0, 88, 88, 88, 20, 00 };
@@ -744,24 +713,20 @@ namespace RobotSvr
         // ====================================Assistant====================================
         public const int MAX_GC_ASS = 6;
         public static Rectangle[] g_ptAss = {
-    {35 + 000, 70 + 24 * 0, 35 + 000 + 142, 70 + 24 * 0 + 16} ,
-    {35 + 000, 70 + 24 * 1, 35 + 000 + 72, 70 + 24 * 1 + 16} ,
-    {35 + 000, 70 + 24 * 2, 35 + 000 + 72, 70 + 24 * 2 + 16} ,
-    {35 + 000, 70 + 24 * 3, 35 + 000 + 72, 70 + 24 * 3 + 16} ,
-    {35 + 000, 70 + 24 * 4, 35 + 000 + 72, 70 + 24 * 4 + 16} ,
-    {35 + 000, 70 + 24 * 5, 35 + 000 + 120, 70 + 24 * 5 + 16} ,
-    {35 + 000, 70 + 24 * 6, 35 + 000 + 120, 70 + 24 * 6 + 16} };
+  new Rectangle()  {X=35 + 000,Y= 70 + 24 * 0, Width=35 + 000 + 142,Height= 70 + 24 * 0 + 16} ,
+  new Rectangle()  {X=35 + 000,Y= 70 + 24 * 1, Width=35 + 000 + 72, Height=70 + 24 * 1 + 16} ,
+  new Rectangle()  {X=35 + 000,Y= 70 + 24 * 2, Width=35 + 000 + 72, Height=70 + 24 * 2 + 16} ,
+  new Rectangle()  {X=35 + 000,Y= 70 + 24 * 3, Width=35 + 000 + 72, Height=70 + 24 * 3 + 16} ,
+  new Rectangle()  {X=35 + 000,Y= 70 + 24 * 4, Width=35 + 000 + 72, Height=70 + 24 * 4 + 16} ,
+  new Rectangle()  {X=35 + 000,Y= 70 + 24 * 5, Width=35 + 000 + 120,Height= 70 + 24 * 5 + 16} ,
+  new Rectangle()  {X=35 + 000,Y= 70 + 24 * 6, Width=35 + 000 + 120,Height= 70 + 24 * 6 + 16} };
 
         public static bool[] g_gcAss = { false, false, false, false, false, false, false };
         public static Color[] g_clAss = { System.Drawing.Color.Lime, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver };
         // ====================================HotKey====================================
         public const int MAX_GC_ITEMS = 7;
-        public const Rectangle g_ptItemsA =
-    {25 + 194, 68 + 18 * 7 + 23, 25 + 194 + 80, 68 + 18 * 7 + 16 + 23};
-        public const Rectangle g_ptAutoPickUp =
-    {25 + 267, 68 + 18 * 7 + 23, 25 + 267 + 80, 68 + 18 * 7 + 16 + 23};
-        public static TCItemRule[] g_caItems = { null, null, null, null, null, null, null, null };
-        public static TCItemRule[] g_caItems2 = { null, null, null, null, null, null, null, null };
+        public static Rectangle g_ptItemsA = new Rectangle() { X = 25 + 194, Y = 68 + 18 * 7 + 23, Width = 25 + 194 + 80, Height = 68 + 18 * 7 + 16 + 23 };
+        public static Rectangle g_ptAutoPickUp = new Rectangle() { X = 25 + 267, Y = 68 + 18 * 7 + 23, Width = 25 + 267 + 80, Height = 68 + 18 * 7 + 16 + 23 };
         public static Color[] g_clItems = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver };
         public const int MAX_SERIESSKILL_POINT = 4;
         public static int g_HitSpeedRate = 0;
@@ -786,295 +751,114 @@ namespace RobotSvr
         public const int SCREENHEIGHT = 600;
         public static string[] g_levelstring = { "一", "二", "三", "四", "五", "六", "七", "八" };
 
-        public string GetMySelfStringVar_GetVarTextFieldFunc(string VarText)
-        {
-            string result;
-            result = "";
-            // 转换为大写
-            VarText = VarText.UpperCase(VarText);
-            if (VarText == "$SERVERNAME")
-            {
-                // 选择角色界面标签变量
-                result = MShare.g_sServerName;
-            }
-            else if (VarText == "$MAP")
-            {
-                // 地图名称
-                result = MShare.g_sMapTitle;
-            }
-            else if (VarText == "$LOCALTIME")
-            {
-                // 本地时间
-                result = FormatDateTime("HH:MM:SS", DateTime.Now);
-            }
-            else if (VarText == "$MAPAREASTATE")
-            {
-                // 当前位置区域状态
-                if ((MShare.g_nAreaStateValue & 8) != 0)
-                {
-                    result = "8";
-                }
-                else if ((MShare.g_nAreaStateValue & 4) != 0)
-                {
-                    result = "攻城区域";
-                }
-                else if ((MShare.g_nAreaStateValue & 2) != 0)
-                {
-                    result = "安全区域";
-                }
-                else if ((MShare.g_nAreaStateValue & 1) != 0)
-                {
-                    result = "竞技区域";
-                }
-            }
-            if (ClMain.SelectChrScene != null)
-            {
-                if (VarText == "$SELECTCHRNAME1")
-                {
-                    result = ClMain.SelectChrScene.ChrArr[0].UserChr.Name;
-                }
-                else if (VarText == "$SELECTCHRLEVEL1")
-                {
-                    if (ClMain.SelectChrScene.ChrArr[0].UserChr.Name != "")
-                    {
-                        result = ClMain.SelectChrScene.ChrArr[0].UserChr.Level.ToString();
-                    }
-                }
-                else if (VarText == "$SELECTCHRJOB1")
-                {
-                    if (ClMain.SelectChrScene.ChrArr[0].UserChr.Name != "")
-                    {
-                        result = MShare.GetJobName(ClMain.SelectChrScene.ChrArr[0].UserChr.Job);
-                    }
-                }
-                else if (VarText == "$SELECTCHRNAME2")
-                {
-                    result = ClMain.SelectChrScene.ChrArr[1].UserChr.Name;
-                }
-                else if (VarText == "$SELECTCHRLEVEL2")
-                {
-                    if (ClMain.SelectChrScene.ChrArr[1].UserChr.Name != "")
-                    {
-                        result = ClMain.SelectChrScene.ChrArr[1].UserChr.Level.ToString();
-                    }
-                }
-                else if (VarText == "$SELECTCHRJOB2")
-                {
-                    if (ClMain.SelectChrScene.ChrArr[1].UserChr.Name != "")
-                    {
-                        result = MShare.GetJobName(ClMain.SelectChrScene.ChrArr[1].UserChr.Job);
-                    }
-                }
-            }
-            // 人物信息
-            if (MShare.g_MySelf != null)
-            {
-                // 人物属性标签变量
-                if (VarText == "$USERNAME")
-                {
-                    result = MShare.g_MySelf.m_sUserName;
-                }
-                else if (VarText == "$HP")
-                {
-                    result = MShare.g_MySelf.m_Abil.HP.ToString();
-                }
-                else if (VarText == "$MP")
-                {
-                    result = MShare.g_MySelf.m_Abil.MP.ToString();
-                }
-                else if (VarText == "$MAXHP")
-                {
-                    result = MShare.g_MySelf.m_Abil.MaxHP.ToString();
-                }
-                else if (VarText == "$MAXMP")
-                {
-                    result = MShare.g_MySelf.m_Abil.MaxMP.ToString();
-                }
-                else if (VarText == "$X")
-                {
-                    result = MShare.g_MySelf.m_nCurrX.ToString();
-                }
-                else if (VarText == "$Y")
-                {
-                    result = MShare.g_MySelf.m_nCurrY.ToString();
-                }
-                else if (VarText == "$LEVEL")
-                {
-                    result = MShare.g_MySelf.m_Abil.Level.ToString();
-                }
-            }
-            // 英雄信息
-            if ((MShare.g_MySelf != null) && (MShare.g_MySelf.m_HeroObject != null))
-            {
-                if (VarText == "$HEROGLORY")
-                {
-                    result = MShare.g_MySelf.m_HeroObject.m_wGloryPoint.ToString();
-                }
-            }
-            return result;
-        }
-
-        // 自定义UI字符串改变事件
-        public static void GetMySelfStringVar(ref string Text)
-        {
-            string S;
-            string sVarText;
-            int nPos;
-            int nPos2;
-            string ShowText;
-            if (Text == "")
-            {
-                return;
-            }
-            S = Text;
-            nPos = S.IndexOf("<");
-            if (nPos > 0)
-            {
-                ShowText = S.Substring(1 - 1, nPos - 1);
-                nPos2 = S.IndexOf(">");
-                sVarText = S.Substring(nPos + 1 - 1, nPos2 - nPos - 1);
-                ShowText = ShowText + GetMySelfStringVar_GetVarTextFieldFunc(sVarText);
-                S = S.Substring(nPos2 + 1 - 1, 255);
-                while (true)
-                {
-                    nPos = S.IndexOf("<");
-                    nPos2 = S.IndexOf(">");
-                    ShowText = ShowText + S.Substring(1 - 1, nPos - 1);
-                    if (nPos + nPos2 > 0)
-                    {
-                        sVarText = S.Substring(nPos + 1 - 1, nPos2 - nPos - 1);
-                        ShowText = ShowText + GetMySelfStringVar_GetVarTextFieldFunc(sVarText);
-                        S = S.Substring(nPos2 + 1 - 1, 255);
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                Text = ShowText + S;
-            }
-        }
-
         // 得到地图文件名称自定义路径
         public static string GetMapDirAndName(string sFileName)
         {
             string result;
-            if (File.Exists(WMFile.Units.WMFile.MAPDIRNAME + sFileName + ".map"))
+            if (File.Exists(WMFile.MAPDIRNAME + sFileName + ".map"))
             {
-                result = WMFile.Units.WMFile.MAPDIRNAME + sFileName + ".map";
+                result = WMFile.MAPDIRNAME + sFileName + ".map";
             }
             else
             {
-                result = WMFile.Units.WMFile.OLDMAPDIRNAME + sFileName + ".map";
+                result = WMFile.OLDMAPDIRNAME + sFileName + ".map";
             }
             return result;
         }
 
         public static void ShowMsg(string Str)
         {
-            ClMain.DScreen.AddChatBoardString(Str, System.Drawing.Color.White, System.Drawing.Color.Black);
+          //  ClMain.DScreen.AddChatBoardString(Str, System.Drawing.Color.White, System.Drawing.Color.Black);
         }
 
         public static void LoadMapDesc()
         {
-            int i;
-            string szFileName;
-            string szLine;
-            ArrayList xsl;
-            string szMapTitle;
-            string szPointX;
-            string szPointY;
-            string szPlaceName;
-            string szColor;
-            string szFullMap;
-            int nPointX;
-            int nPointY;
-            int nFullMap;
-            Color nColor;
-            TMapDescInfo pMapDescInfo;
-            szFileName = ".\\data\\MapDesc2.dat";
-            if (File.Exists(szFileName))
-            {
-                xsl = new ArrayList();
-                xsl.LoadFromFile(szFileName);
-                for (i = 0; i < xsl.Count; i++)
-                {
-                    szLine = xsl[i];
-                    if ((szLine == "") || (szLine[1] == ";"))
-                    {
-                        continue;
-                    }
-                    szLine = HGEGUI.Units.HGEGUI.GetValidStr3(szLine, ref szMapTitle, new string[] { "," });
-                    szLine = HGEGUI.Units.HGEGUI.GetValidStr3(szLine, ref szPointX, new string[] { "," });
-                    szLine = HGEGUI.Units.HGEGUI.GetValidStr3(szLine, ref szPointY, new string[] { "," });
-                    szLine = HGEGUI.Units.HGEGUI.GetValidStr3(szLine, ref szPlaceName, new string[] { "," });
-                    szLine = HGEGUI.Units.HGEGUI.GetValidStr3(szLine, ref szColor, new string[] { "," });
-                    szLine = HGEGUI.Units.HGEGUI.GetValidStr3(szLine, ref szFullMap, new string[] { "," });
-                    nPointX = HUtil32.Str_ToInt(szPointX, -1);
-                    nPointY = HUtil32.Str_ToInt(szPointY, -1);
-                    nColor = Convert.ToInt32(szColor);
-                    nFullMap = HUtil32.Str_ToInt(szFullMap, -1);
-                    if ((szPlaceName != "") && (szMapTitle != "") && (nPointX >= 0) && (nPointY >= 0) && (nFullMap >= 0))
-                    {
-                        pMapDescInfo = new TMapDescInfo();
-                        pMapDescInfo.szMapTitle = szMapTitle;
-                        pMapDescInfo.szPlaceName = szPlaceName;
-                        pMapDescInfo.nPointX = nPointX;
-                        pMapDescInfo.nPointY = nPointY;
-                        pMapDescInfo.nColor = nColor;
-                        pMapDescInfo.nFullMap = nFullMap;
-                        g_xMapDescList.Add(szMapTitle, pMapDescInfo as Object);
-                    }
-                }
-                xsl.Free;
-            }
+            //int i;
+            //string szFileName;
+            //string szLine;
+            //ArrayList xsl;
+            //string szMapTitle = String.Empty;
+            //string szPointX = String.Empty;
+            //string szPointY = String.Empty;
+            //string szPlaceName = String.Empty;
+            //string szColor = String.Empty;
+            //string szFullMap = String.Empty;
+            //int nPointX;
+            //int nPointY;
+            //int nFullMap;
+            //Color nColor;
+            //TMapDescInfo pMapDescInfo;
+            //szFileName = ".\\data\\MapDesc2.dat";
+            //if (File.Exists(szFileName))
+            //{
+            //    xsl = new ArrayList();
+            //    xsl.LoadFromFile(szFileName);
+            //    for (i = 0; i < xsl.Count; i++)
+            //    {
+            //        szLine = xsl[i];
+            //        if ((szLine == "") || (szLine[0] == ';'))
+            //        {
+            //            continue;
+            //        }
+            //        szLine = HGEGUI.GetValidStr3(szLine, ref szMapTitle, new string[] { "," });
+            //        szLine = HGEGUI.GetValidStr3(szLine, ref szPointX, new string[] { "," });
+            //        szLine = HGEGUI.GetValidStr3(szLine, ref szPointY, new string[] { "," });
+            //        szLine = HGEGUI.GetValidStr3(szLine, ref szPlaceName, new string[] { "," });
+            //        szLine = HGEGUI.GetValidStr3(szLine, ref szColor, new string[] { "," });
+            //        szLine = HGEGUI.GetValidStr3(szLine, ref szFullMap, new string[] { "," });
+            //        nPointX = HUtil32.Str_ToInt(szPointX, -1);
+            //        nPointY = HUtil32.Str_ToInt(szPointY, -1);
+            //        nColor = Convert.ToInt32(szColor);
+            //        nFullMap = HUtil32.Str_ToInt(szFullMap, -1);
+            //        if ((szPlaceName != "") && (szMapTitle != "") && (nPointX >= 0) && (nPointY >= 0) && (nFullMap >= 0))
+            //        {
+            //            pMapDescInfo = new TMapDescInfo();
+            //            pMapDescInfo.szMapTitle = szMapTitle;
+            //            pMapDescInfo.szPlaceName = szPlaceName;
+            //            pMapDescInfo.nPointX = nPointX;
+            //            pMapDescInfo.nPointY = nPointY;
+            //            pMapDescInfo.nColor = nColor;
+            //            pMapDescInfo.nFullMap = nFullMap;
+            //            g_xMapDescList.Add(szMapTitle, pMapDescInfo as Object);
+            //        }
+            //    }
+            //}
         }
 
         public static int GetTickCount()
         {
-            return SystemModule.HUtil32.GetTickCount(); ;
+            return HUtil32.GetTickCount(); ;
         }
 
         // stdcall;
         public static bool IsDetectItem(int idx)
         {
-            bool result;
-            result = idx == DETECT_MIIDX_OFFSET;
-            return result;
+            return idx == DETECT_MIIDX_OFFSET;
         }
 
         public static bool IsBagItem(int idx)
         {
-            bool result;
-            result = idx >= 6 && idx <= Grobal2.MAXBAGITEM - 1;
-            return result;
+            return idx >= 6 && idx <= Grobal2.MAXBAGITEM - 1;
         }
 
         public static bool IsEquItem(int idx)
         {
-            bool result;
-            int sel;
-            result = false;
             if (idx < 0)
             {
-                sel = -(idx + 1);
-                result = sel >= 0 && sel <= Grobal2.U_FASHION;
+                int sel = -(idx + 1);
+                return sel >= 0 && sel <= 13;
             }
-            return result;
+            return false;
         }
 
         public static bool IsStorageItem(int idx)
         {
-            bool result;
-            result = (idx >= SAVE_MIIDX_OFFSET) && (idx < SAVE_MIIDX_OFFSET + 46);
-            return result;
+            return (idx >= SAVE_MIIDX_OFFSET) && (idx < SAVE_MIIDX_OFFSET + 46);
         }
 
         public static bool IsStallItem(int idx)
         {
-            bool result;
-            result = (idx >= STALL_MIIDX_OFFSET) && (idx < STALL_MIIDX_OFFSET + 10);
-            return result;
+            return (idx >= STALL_MIIDX_OFFSET) && (idx < STALL_MIIDX_OFFSET + 10);
         }
 
         public static void ResetSeriesSkillVar()
@@ -1086,7 +870,10 @@ namespace RobotSvr
             g_SeriesSkillFire_100 = false;
             g_SeriesSkillReady = false;
             g_NextSeriesSkill = false;
-            //FillChar(g_VenationInfos);            //FillChar(g_TempSeriesSkillArr);            //FillChar(g_HTempSeriesSkillArr);            //FillChar(g_SeriesSkillArr);        }
+            //FillChar(g_VenationInfos);   
+            //FillChar(g_TempSeriesSkillArr);   
+            //FillChar(g_HTempSeriesSkillArr); 
+            //FillChar(g_SeriesSkillArr);      
         }
 
         public static int GetSeriesSkillIcon(int id)
@@ -1144,18 +931,14 @@ namespace RobotSvr
             if (g_dwCheckCount > Count)
             {
                 g_dwCheckCount = 0;
-                // g_ModuleDetect.FCheckTick := 0;
             }
         }
 
-        // procedure SaveUserConfig(sUserName: string);
         public static bool IsPersentHP(int nMin, int nMax)
         {
-            bool result;
-            result = false;
+            bool result = false;
             if (nMax != 0)
             {
-                // or (nMax - nMin > 1500)
                 result = HUtil32.Round(nMin / nMax * 100) < g_gnProtectPercent[0];
             }
             return result;
@@ -1163,11 +946,9 @@ namespace RobotSvr
 
         public static bool IsPersentMP(int nMin, int nMax)
         {
-            bool result;
-            result = false;
+            bool result = false;
             if (nMax != 0)
             {
-                // or (nMax - nMin > 1500)
                 result = HUtil32.Round(nMin / nMax * 100) < g_gnProtectPercent[1];
             }
             return result;
@@ -1175,11 +956,9 @@ namespace RobotSvr
 
         public static bool IsPersentSpc(int nMin, int nMax)
         {
-            bool result;
-            result = false;
+            bool result = false;
             if (nMax != 0)
             {
-                // or (nMax - nMin > 6000)
                 result = HUtil32.Round(nMin / nMax * 100) < g_gnProtectPercent[3];
             }
             return result;
@@ -1187,60 +966,17 @@ namespace RobotSvr
 
         public static bool IsPersentBook(int nMin, int nMax)
         {
-            bool result;
-            result = false;
+            bool result = false;
             if (nMax != 0)
             {
-                // or (nMax - nMin > 6000)
                 result = HUtil32.Round(nMin / nMax * 100) < g_gnProtectPercent[5];
             }
             return result;
         }
 
-        public static bool IsPersentHPHero(int nMin, int nMax)
-        {
-            bool result;
-            result = false;
-            if (nMax != 0)
-            {
-                // or (nMax - nMin > 1500)
-                result = HUtil32.Round(nMin / nMax * 100) < g_gnProtectPercent[7];
-            }
-            return result;
-        }
-
-        public static bool IsPersentMPHero(int nMin, int nMax)
-        {
-            bool result;
-            result = false;
-            if (nMax != 0)
-            {
-                // or (nMax - nMin > 1500)
-                result = HUtil32.Round(nMin / nMax * 100) < g_gnProtectPercent[8];
-            }
-            return result;
-        }
-
-        public static bool IsPersentSpcHero(int nMin, int nMax)
-        {
-            bool result;
-            result = false;
-            if (nMax != 0)
-            {
-                // or (nMax - nMin > 6000)
-                result = HUtil32.Round(nMin / nMax * 100) < g_gnProtectPercent[9];
-            }
-            return result;
-        }
-
-        // 取得职业名称
-        // 0 武士
-        // 1 魔法师
-        // 2 道士
         public static string GetJobName(int nJob)
         {
-            string result;
-            result = "";
+            string result = "";
             switch (nJob)
             {
                 case 0:
@@ -1259,10 +995,9 @@ namespace RobotSvr
             return result;
         }
 
-        // procedure ClearShowItemList();
         public static string GetItemType(TItemType ItemType)
         {
-            string result;
+            string result = string.Empty;
             switch (ItemType)
             {
                 case TItemType.i_HPDurg:
@@ -1492,29 +1227,28 @@ namespace RobotSvr
             string desc;
             string ps;
             ArrayList temp;
-            // g_ItemDesc
-            if (File.Exists(fItemDesc))
-            {
-                temp = new ArrayList();
-                temp.LoadFromFile(fItemDesc);
-                for (i = 0; i < temp.Count; i++)
-                {
-                    if (temp[i] == "")
-                    {
-                        continue;
-                    }
-                    desc = HGEGUI.Units.HGEGUI.GetValidStr3(temp[i], ref Name, new string[] { "=" });
-                    desc = desc.Replace("\\", "");
-                    ps = new string();
-                    ps = desc;
-                    if ((Name != "") && (desc != ""))
-                    {
-                        // g_ItemDesc.Put(name, TObject(ps));
-                        g_ItemDesc.Add(Name, ps as Object);
-                    }
-                }
-                temp.Free;
-            }
+            //if (File.Exists(fItemDesc))
+            //{
+            //    temp = new ArrayList();
+            //    temp.LoadFromFile(fItemDesc);
+            //    for (i = 0; i < temp.Count; i++)
+            //    {
+            //        if (temp[i] == "")
+            //        {
+            //            continue;
+            //        }
+            //        desc = HGEGUI.Units.HGEGUI.GetValidStr3(temp[i], ref Name, new string[] { "=" });
+            //        desc = desc.Replace("\\", "");
+            //        ps = new string();
+            //        ps = desc;
+            //        if ((Name != "") && (desc != ""))
+            //        {
+            //            // g_ItemDesc.Put(name, TObject(ps));
+            //            g_ItemDesc.Add(Name, ps as object);
+            //        }
+            //    }
+            //    temp.Free;
+            //}
         }
 
         public static int GetLevelColor(byte iLevel)
@@ -1552,67 +1286,67 @@ namespace RobotSvr
 
         public static void LoadItemFilter()
         {
-            int i;
-            int n;
-            string s;
-            string s0;
-            string s1;
-            string s2;
-            string s3;
-            string s4;
-            string fn;
-            ArrayList ls;
-            TCItemRule p;
-            TCItemRule p2;
-            fn = ".\\Data\\lsDefaultItemFilter.txt";
-            if (File.Exists(fn))
-            {
-                ls = new ArrayList();
-                ls.LoadFromFile(fn);
-                for (i = 0; i < ls.Count; i++)
-                {
-                    s = ls[i];
-                    if (s == "")
-                    {
-                        continue;
-                    }
-                    s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s0, new string[] { "," });
-                    s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s1, new string[] { "," });
-                    s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s2, new string[] { "," });
-                    s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s3, new string[] { "," });
-                    s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s4, new string[] { "," });
-                    p = new TCItemRule();
-                    p.Name = s0;
-                    p.rare = s2 == "1";
-                    p.pick = s3 == "1";
-                    p.Show = s4 == "1";
-                    g_ItemsFilter_All.Put(s0, p as Object);
-                    p2 = new TCItemRule();
-                    p2 = p;
-                    g_ItemsFilter_All_Def.Put(s0, p2 as Object);
-                    n = Convert.ToInt32(s1);
-                    switch (n)
-                    {
-                        case 0:
-                            g_ItemsFilter_Dress.Add(s0, p as Object);
-                            break;
-                        case 1:
-                            g_ItemsFilter_Weapon.Add(s0, p as Object);
-                            break;
-                        case 2:
-                            g_ItemsFilter_Headgear.Add(s0, p as Object);
-                            break;
-                        case 3:
-                            g_ItemsFilter_Drug.Add(s0, p as Object);
-                            break;
-                        default:
-                            g_ItemsFilter_Other.Add(s0, p as Object);
-                            break;
-                            // 服装
-                    }
-                }
-                ls.Free;
-            }
+            //int i;
+            //int n;
+            //string s;
+            //string s0;
+            //string s1;
+            //string s2;
+            //string s3;
+            //string s4;
+            //string fn;
+            //ArrayList ls;
+            //TCItemRule p;
+            //TCItemRule p2;
+            //fn = ".\\Data\\lsDefaultItemFilter.txt";
+            //if (File.Exists(fn))
+            //{
+            //    ls = new ArrayList();
+            //    ls.LoadFromFile(fn);
+            //    for (i = 0; i < ls.Count; i++)
+            //    {
+            //        s = ls[i];
+            //        if (s == "")
+            //        {
+            //            continue;
+            //        }
+            //        s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s0, new string[] { "," });
+            //        s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s1, new string[] { "," });
+            //        s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s2, new string[] { "," });
+            //        s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s3, new string[] { "," });
+            //        s = HGEGUI.Units.HGEGUI.GetValidStr3(s, ref s4, new string[] { "," });
+            //        p = new TCItemRule();
+            //        p.Name = s0;
+            //        p.rare = s2 == "1";
+            //        p.pick = s3 == "1";
+            //        p.Show = s4 == "1";
+            //        g_ItemsFilter_All.Put(s0, p as object);
+            //        p2 = new TCItemRule();
+            //        p2 = p;
+            //        g_ItemsFilter_All_Def.Put(s0, p2 as object);
+            //        n = Convert.ToInt32(s1);
+            //        switch (n)
+            //        {
+            //            case 0:
+            //                g_ItemsFilter_Dress.Add(s0, p as object);
+            //                break;
+            //            case 1:
+            //                g_ItemsFilter_Weapon.Add(s0, p as object);
+            //                break;
+            //            case 2:
+            //                g_ItemsFilter_Headgear.Add(s0, p as object);
+            //                break;
+            //            case 3:
+            //                g_ItemsFilter_Drug.Add(s0, p as object);
+            //                break;
+            //            default:
+            //                g_ItemsFilter_Other.Add(s0, p as object);
+            //                break;
+            //                // 服装
+            //        }
+            //    }
+            //    ls.Free;
+            //}
         }
 
         public static void LoadItemFilter2()
@@ -1700,29 +1434,6 @@ namespace RobotSvr
             //    ls.SaveToFile(fn);
             //}
             //ls.Free;
-        }
-
-        public static TClientSuiteItems getSuiteHint(ref int idx, string s, byte gender)
-        {
-            TClientSuiteItems result;
-            int i;
-            TClientSuiteItems p;
-            result = null;
-            if ((idx > 12) || (idx < 0))
-            {
-                return result;
-            }
-            for (i = 0; i < g_SuiteItemsList.Count; i++)
-            {
-                p = g_SuiteItemsList[i];
-                if (((p.asSuiteName[0] == "") || (gender == p.Gender)) && (s.ToLower().CompareTo(p.asSuiteName[idx].ToLower()) == 0))
-                {
-                    result = p;
-                    break;
-                }
-            }
-            idx = -1;
-            return result;
         }
 
         public static int GetItemWhere(TClientItem clientItem)
@@ -2261,21 +1972,6 @@ namespace RobotSvr
             return result;
         }
 
-        public static TClientStdItem GetTitle(int nItemIdx)
-        {
-            TClientStdItem result;
-            result = null;
-            nItemIdx -= 1;
-            if ((nItemIdx >= 0) && (g_TitlesList.Count > nItemIdx))
-            {
-                if (((TStdItem)g_TitlesList[nItemIdx]).Name != "")
-                {
-                    result = g_TitlesList[nItemIdx];
-                }
-            }
-            return result;
-        }
-
         public void initialization()
         {
             //g_APPass = new double();
@@ -2370,10 +2066,31 @@ namespace RobotSvr
         public TClientItem Item;
     }
 
-    public struct TMoveHMShow
+    public enum MagicType
     {
-        public TDirectDrawSurface Surface;
-        public long dwMoveHpTick;
+        mtReady,
+        mtFly,
+        mtExplosion,
+        mtFlyAxe,
+        mtFireWind,
+        mtFireGun,
+        mtLightingThunder,
+        mtThunder,
+        mtExploBujauk,
+        mtBujaukGroundEffect,
+        mtKyulKai,
+        mtFlyArrow,
+        mtFlyBug,
+        mtGroundEffect,
+        mtThuderEx,
+        mtFireBall,
+        mtFlyBolt,
+        mtRedThunder,
+        mtRedGroundThunder,
+        mtLava,
+        mtSpurt,
+        mtFlyStick,
+        mtFlyStick2
     }
 
     public struct TShowItem
@@ -2396,11 +2113,11 @@ namespace RobotSvr
         public int nFullMap;
     } // end TMapDescInfo
 
-    public struct TItemShine
+    public class TItemShine
     {
         public int idx;
         public long tick;
-    } // end TItemShine
+    }
 
     public struct TSeriesSkill
     {

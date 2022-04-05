@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using SystemModule;
 
 namespace RobotSvr
@@ -209,7 +210,7 @@ namespace RobotSvr
         public int m_nActBeforeX = 0;
         public int m_nActBeforeY = 0;
         public TChrMsg m_ChrMsg = null;
-        public TGList m_MsgList = null;
+        public IList<string> m_MsgList = null;
         public TChrMsg RealActionMsg = null;
         public ArrayList m_nMoveHpList = null;
 
@@ -218,7 +219,7 @@ namespace RobotSvr
             m_btTitleIndex = 0;
             m_nCurFocusFrame = 0;
             m_nWaitForRecogId = 0;
-            m_MsgList = new TGList();
+            m_MsgList = new List<string>();
             m_nRecogId = 0;
             m_wAppr = 0;
             m_btPoisonDecHealth = 0;
@@ -244,7 +245,7 @@ namespace RobotSvr
             m_sUserNameOffSet = 0;
             m_sAutoSayMsg = "";
             m_btNameColor = 255;
-            m_nNameColor = System.Drawing.Color.White;
+            m_nNameColor = 255;
             m_dwSendQueryUserNameTime = MShare.GetTickCount();
             m_boWarMode = false;
             m_dwWarModeTime = 0;
@@ -291,7 +292,7 @@ namespace RobotSvr
             m_fHideMode = false;
         }
 
-        public void SendMsg(int wIdent, int nX, int nY, int ndir, int nFeature, int nState, string sStr, int nSound, long dwDelay = 0)
+        public void SendMsg(int wIdent, int nX, int nY, int ndir, int nFeature, int nState, string sStr, int nSound, int dwDelay = 0)
         {
             TChrMsg Msg;
             Msg = new TChrMsg();
@@ -311,15 +312,7 @@ namespace RobotSvr
             {
                 Msg.dwDelay = 0;
             }
-            m_MsgList.__Lock();
-            try
-            {
-                m_MsgList.Add(Msg);
-            }
-            finally
-            {
-                m_MsgList.UnLock();
-            }
+            m_MsgList.Add(Msg);
         }
 
         public void UpdateMsg(short wIdent, int nX, int nY, int ndir, int nFeature, int nState, string sStr, int nSound)
@@ -339,7 +332,6 @@ namespace RobotSvr
                     Msg = m_MsgList[i];
                     if (((this == MShare.g_MySelf) && (Msg.Ident >= 3000) && (Msg.Ident <= 3099)) || (Msg.Ident == wIdent))
                     {
-                        //@ Unsupported function or procedure: 'Dispose'
                         Dispose(Msg);
                         m_MsgList.RemoveAt(i);
                         continue;
@@ -515,8 +507,6 @@ namespace RobotSvr
                         }
                         break;
                 }
-                // if Msg.ident = SM_LIGHTING then
-                // n := 0;
                 if (MShare.g_MySelf == this)
                 {
                     if (Msg.Ident == Grobal2.CM_WALK)

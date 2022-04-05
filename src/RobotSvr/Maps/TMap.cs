@@ -57,7 +57,7 @@ namespace RobotSvr
             FSendRequestList.Sorted = true;
         }
 
-        public void LoadMapData(bool bFirst)
+        public void LoadMapData(bool bFirst=false)
         {
             int X;
             int Y;

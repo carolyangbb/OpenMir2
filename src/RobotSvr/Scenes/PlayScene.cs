@@ -126,21 +126,15 @@ namespace RobotSvr
 
         public void DelMagic(int magid)
         {
-            int i;
-            for (i = 0; i < MEffectList.Count; i++)
-            {
-                if (((TMagicEff)MEffectList[i]).ServerMagicId == magid)
-                {
-                    ((TMagicEff)MEffectList[i]).Free;
-                    MEffectList.RemoveAt(i);
-                    break;
-                }
-            }
-        }
-
-        public TMagicEff NewFlyObject(TActor aowner, int cx, int cy, int tx, int ty, int targetCode, TMagicType mtype)
-        {
-
+            //for (var i = 0; i < MEffectList.Count; i++)
+            //{
+            //    if (((TMagicEff)MEffectList[i]).ServerMagicId == magid)
+            //    {
+            //        ((TMagicEff)MEffectList[i]).Free;
+            //        MEffectList.RemoveAt(i);
+            //        break;
+            //    }
+            //}
         }
 
         public TActor GetCharacter(int x, int y, int wantsel, ref int nowsel, bool liveonly)
@@ -1091,8 +1085,8 @@ namespace RobotSvr
                         if (ClMain.frmMain.TimerAutoMove.Enabled)
                         {
                             ClMain.frmMain.TimerAutoMove.Enabled = false;
-                            MapUnit.Units.MapUnit.g_MapPath = new Point[0];
-                            MapUnit.Units.MapUnit.g_MapPath = null;
+                            MapUnit.Units.TPathMap.g_MapPath = new Point[0];
+                            MapUnit.Units.TPathMap.g_MapPath = null;
                             ClMain.DScreen.AddChatBoardString("地图跳转，停止自动移动", ClMain.GetRGB(5), System.Drawing.Color.White);
                         }
                         if (MShare.g_boOpenAutoPlay && ClMain.frmMain.TimerAutoPlay.Enabled)
@@ -1133,16 +1127,6 @@ namespace RobotSvr
                         MShare.g_MySelf.m_nRx = x;
                         MShare.g_MySelf.m_nRy = y;
                         DelActor(MShare.g_MySelf);
-                    }
-                    if (frmDlg.DWGameConfig.Visible && (frmDlg.DWGameConfig.tag == 5))
-                    {
-                        MShare.g_nApMiniMap = true;
-                        ClMain.frmMain.SendWantMiniMap();
-                    }
-                    if (MShare.g_boViewMiniMap)
-                    {
-                        MShare.g_nMiniMapIndex = -1;
-                        ClMain.frmMain.SendWantMiniMap();
                     }
                     break;
                 case Grobal2.SM_LOGON:
