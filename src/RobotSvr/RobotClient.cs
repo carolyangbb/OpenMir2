@@ -113,11 +113,6 @@ namespace RobotSvr
             }
             MShare.InitClientItems();
             MShare.g_DetectItemMineID = 0;
-            MShare.g_BAFirstShape = -1;
-            MShare.g_BuildAcusesSuc = -1;
-            MShare.g_BuildAcusesStep = 0;
-            MShare.g_BuildAcusesProc = 0;
-            MShare.g_BuildAcusesRate = 0;
             MShare.g_SaveItemList = new ArrayList();
             //MShare.g_DetectItem.Item.Name = "";
             //MShare.g_WaitingUseItem.Item.Item.Name = "";
@@ -139,7 +134,6 @@ namespace RobotSvr
             MShare.g_nTestReceiveCount = 0;
             MShare.g_boServerChanging = false;
             MShare.g_boBagLoaded = false;
-            MShare.g_nHeroBagSize = 10;
             MShare.g_boAutoDig = false;
             MShare.g_boAutoSit = false;
             MShare.g_dwLatestClientTime2 = 0;
@@ -164,7 +158,6 @@ namespace RobotSvr
             MShare.g_boMapMovingWait = false;
             MShare.g_boCheckBadMapMode = false;
             MShare.g_boCheckSpeedHackDisplay = false;
-            MShare.g_boViewMiniMap = true;
             MShare.g_nDupSelection = 0;
             MShare.g_dwLastAttackTick = MShare.GetTickCount();
             MShare.g_dwLastMoveTick = MShare.GetTickCount();
@@ -194,8 +187,6 @@ namespace RobotSvr
             MShare.g_sSellPriceStr = "";
             MShare.g_boAllowGroup = false;
             MShare.g_GroupMembers = new List<string>();
-            MShare.g_SeriesSkillSelList = new ArrayList();
-            MShare.g_hSeriesSkillSelList = new ArrayList();
             MShare.LoadItemDesc();
             MShare.LoadItemFilter();
             m_ConnectionStatus = TConnectionStatus.cns_Failure;
@@ -742,13 +733,6 @@ namespace RobotSvr
                     SendActMsg(MShare.g_MySelf.RealActionMsg.Ident, MShare.g_MySelf.RealActionMsg.X, MShare.g_MySelf.RealActionMsg.Y, MShare.g_MySelf.RealActionMsg.Dir);
                 }
                 MShare.g_MySelf.RealActionMsg.Ident = 0;
-                if (MShare.g_nMDlgX != -1)
-                {
-                    if ((Math.Abs(MShare.g_nMDlgX - MShare.g_MySelf.m_nCurrX) >= 8) || (Math.Abs(MShare.g_nMDlgY - MShare.g_MySelf.m_nCurrY) >= 8))
-                    {
-                        MShare.g_nMDlgX = -1;
-                    }
-                }
                 if (MShare.g_nStallX != -1)
                 {
                     if ((Math.Abs(MShare.g_nStallX - MShare.g_MySelf.m_nCurrX) >= 8) || (Math.Abs(MShare.g_nStallY - MShare.g_MySelf.m_nCurrY) >= 8))
@@ -2231,10 +2215,6 @@ namespace RobotSvr
                     case Grobal2.SM_CHANGEMAP:
                         MShare.g_boMapMovingWait = false;
                         MShare.g_boMapMoving = false;
-                        if (MShare.g_nMDlgX != -1)
-                        {
-                            MShare.g_nMDlgX = -1;
-                        }
                         if (MShare.g_nStallX != -1)
                         {
                             MShare.g_nStallX = -1;
@@ -2334,10 +2314,6 @@ namespace RobotSvr
             MShare.g_SendSayListIdx = 0;
             MShare.g_SendSayList.Clear();
             MShare.ResetSeriesSkillVar();
-            if (MShare.g_nMDlgX != -1)
-            {
-                MShare.g_nMDlgX = -1;
-            }
             if (MShare.g_nStallX != -1)
             {
                 MShare.g_nStallX = -1;
@@ -2439,11 +2415,6 @@ namespace RobotSvr
             MShare.g_boNextTimeSmiteWideHit2 = false;
             MShare.InitClientItems();
             MShare.g_DetectItemMineID = 0;
-            MShare.g_BAFirstShape = -1;
-            MShare.g_BuildAcusesSuc = -1;
-            MShare.g_BuildAcusesStep = 0;
-            MShare.g_BuildAcusesProc = 0;
-            MShare.g_BuildAcusesRate = 0;
             SelectChrScene _wvar1 = SelectChrScene;
             _wvar1.ChrArr[0].FreezeState = true;
             _wvar1.ChrArr[1].FreezeState = true;
@@ -3869,14 +3840,6 @@ namespace RobotSvr
                     MShare.g_boForceNotViewFog = HUtil32.HiByte(msg.Param) != 0;
                     MShare.g_boOpenStallSystem = HUtil32.LoByte(msg.Param) != 0;
                     MShare.g_boAutoLongAttack = true;
-                    MShare.g_boHero = true;
-                    if (!MShare.g_boHero)
-                    {
-                        if (MShare.g_BuildBotTex == 0)
-                        {
-                            MShare.g_BuildBotTex = 1;
-                        }
-                    }
                     if (!MShare.g_boAutoLongAttack)
                     {
                         MShare.g_gcTec[10] = false;
@@ -5020,7 +4983,6 @@ namespace RobotSvr
                 case Grobal2.SM_READMINIMAP_FAIL:
                     MShare.g_dwQueryMsgTick = MShare.GetTickCount();
                     DScreen.AddChatBoardString("没有小地图", Color.White, Color.Red);
-                    MShare.g_nMiniMapIndex = -1;
                     break;
                 case Grobal2.SM_CHANGEGUILDNAME:
                     ClientGetChangeGuildName(EDcode.DeCodeString(body));

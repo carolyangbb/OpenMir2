@@ -132,15 +132,6 @@ namespace RobotSvr
             }
         }
 
-        public static void HeroClearBag()
-        {
-            int i;
-            for (i = 0; i < MShare.MAXBAGITEMCL; i++)
-            {
-                MShare.g_HeroItemArr[i].Item.Name = "";
-            }
-        }
-
         public static bool AddItemBag(TClientItem cu, int idx = 0)
         {
             bool result = false;

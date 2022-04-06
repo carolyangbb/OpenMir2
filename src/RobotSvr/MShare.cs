@@ -16,29 +16,14 @@ namespace RobotSvr
 #else
         public static byte g_fWZLFirst = 7;
 #endif
-        public static bool g_boLogon = false;
-        public static bool g_fGoAttack = false;
-        public static int g_nDragonRageStateIndex = 0;
         public static int AAX = 26 + 14;
         public static int LMX = 30;
         public static int LMY = 26;
         public static int VIEWWIDTH = 8;
-        public static byte g_BuildBotTex = 0;
-        public static byte g_WinBottomType = 0;
-        public static bool g_Windowed = false;
         public static bool g_boAutoPickUp = true;
         public static bool g_boPickUpAll = false;
-        public static int g_ptItems_Pos = -1;
-        public static int g_ptItems_Type = 0;
         public static Dictionary<string, string> g_ItemsFilter_All = null;
         public static Dictionary<string, string> g_ItemsFilter_All_Def = null;
-        public static ArrayList g_ItemsFilter_Dress = null;
-        public static ArrayList g_ItemsFilter_Weapon = null;
-        public static ArrayList g_ItemsFilter_Headgear = null;
-        public static ArrayList g_ItemsFilter_Drug = null;
-        public static ArrayList g_ItemsFilter_Other = null;
-        public static ArrayList g_xMapDescList = null;
-        public static ArrayList g_xCurMapDescList = null;
         public static byte[] g_pWsockAddr = new byte[4 + 1];
         public static string[] g_sRenewBooks = new string[] { "随机传送卷", "地牢逃脱卷", "回城卷", "行会回城卷", "盟重传送石", "比奇传送石", "随机传送石", };
         public static int g_nMagicRange = 8;
@@ -58,50 +43,15 @@ namespace RobotSvr
         public static string g_spHintStr1 = "";
         public static string g_spHintStr2 = "";
         public static TMovingItem[] g_spItems = new TMovingItem[1 + 1];
-        public static int g_SkidAD_Count = 0;
-        public static int g_SkidAD_Count2 = 0;
-        public static string g_lastHeroSel = string.Empty;
-        public static byte g_ItemWear = 0;
-        public static byte g_ShowSuite = 0;
-        public static byte g_ShowSuite2 = 0;
-        public static byte g_ShowSuite3 = 0;
-        public static byte g_SuiteSpSkill = 0;
-        public static int g_SuiteIdx = -1;
-        public static byte g_btSellType = 0;
-        public static bool g_showgamegoldinfo = false;
-        public static bool SSE_AVAILABLE = false;
-        public static int g_lWavMaxVol = 68;
-        // -100;
-        public static long g_uDressEffectTick = 0;
-        public static long g_sDressEffectTick = 0;
-        public static long g_hDressEffectTick = 0;
-        public static int g_uDressEffectIdx = 0;
-        public static int g_sDressEffectIdx = 0;
-        public static int g_hDressEffectIdx = 0;
-        public static long g_uWeaponEffectTick = 0;
-        public static long g_sWeaponEffectTick = 0;
-        public static long g_hWeaponEffectTick = 0;
-        public static int g_uWeaponEffectIdx = 0;
-        public static int g_sWeaponEffectIdx = 0;
-        public static int g_hWeaponEffectIdx = 0;
-        public static int g_ChatWindowLines = 12;
-        public static bool g_LoadBeltConfig = false;
-        public static bool g_BeltMode = true;
-        public static int g_BeltPositionX = 408;
-        public static int g_BeltPositionY = 487;
         public static int g_dwActorLimit = 5;
         public static int g_nProcActorIDx = 0;
-        public static bool g_boPointFlash = false;
-        public static long g_PointFlashTick = 0;
-        public static bool g_boHPointFlash = false;
-        public static long g_HPointFlashTick = 0;
         public static bool g_NextSeriesSkill = false;
-        public static long g_dwSeriesSkillReadyTick = 0;
+        public static int g_dwSeriesSkillReadyTick = 0;
         public static int g_nCurrentMagic = 888;
         public static int g_nCurrentMagic2 = 888;
-        public static long g_SendFireSerieSkillTick = 0;
-        public static long g_IPointLessHintTick = 0;
-        public static long g_MPLessHintTick = 0;
+        public static int g_SendFireSerieSkillTick = 0;
+        public static int g_IPointLessHintTick = 0;
+        public static int g_MPLessHintTick = 0;
         public static int g_SeriesSkillStep = 0;
         public static bool g_SeriesSkillFire_100 = false;
         public static bool g_SeriesSkillFire = false;
@@ -110,25 +60,11 @@ namespace RobotSvr
         public static byte[] g_TempSeriesSkillArr;
         public static byte[] g_HTempSeriesSkillArr;
         public static byte[] g_SeriesSkillArr = new byte[3 + 1];
-        public static ArrayList g_SeriesSkillSelList = null;
-        public static ArrayList g_hSeriesSkillSelList = null;
-        public static long g_dwAutoTecTick = 0;
-        public static long g_dwAutoTecHeroTick = 0;
-        public static long g_dwProcMessagePacket = 0;
-        public static long g_ProcNowTick = 0;
-        public static bool g_ProcCanFill = true;
-        public static long g_ProcOnDrawTick_Effect = 0;
-        public static long g_ProcOnDrawTick_Effect2 = 0;
-        public static long g_rtime = 0;
-        public static long g_dwLastThreadTick = 0;
+        public static int g_dwAutoTecTick = 0;
+        public static int g_rtime = 0;
         public static bool g_boExchgPoison = false;
         public static bool g_boCheckTakeOffPoison = false;
-        public static int g_Angle = 0;
-        public static bool g_ShowMiniMapXY = false;
-        public static bool g_DrawingMiniMap = false;
-        public static bool g_DrawMiniBlend = false;
         public static bool g_boTakeOnPos = true;
-        public static bool g_boHeroTakeOnPos = true;
         public static bool g_boQueryDynCode = false;
         public static bool g_boQuerySelChar = false;
         public static int g_dwCheckCount = 0;
@@ -137,7 +73,6 @@ namespace RobotSvr
         public static int g_HillMerchant = 0;
         public static string g_sBookLabel = "";
         public static int g_MaxExpFilter = 2000;
-        public static bool g_boDrawLevelRank = false;
         public static string[] g_UnBindItems = { "万年雪霜", "疗伤药", "强效太阳水", "强效金创药", "强效魔法药", "金创药(小量)", "魔法药(小量)", "金创药(中量)", "魔法药(中量)", "地牢逃脱卷", "随机传送卷", "回城卷", "行会回城卷" };
         public static string g_sLogoText = "LegendSoft";
         public static string g_sGoldName = "金币";
@@ -147,11 +82,7 @@ namespace RobotSvr
         public static string g_sWizardName = "魔法师";
         public static string g_sTaoistName = "道士";
         public static string g_sUnKnowName = "未知";
-        public static bool g_boInitialize = false;
-        public static int g_nInitializePer = 0;
         public static bool g_boQueryExit = false;
-        public static byte[] g_PowerBlock = { 0x55, 0x8B, 0xEC, 0x83, 0xC4, 0xE8, 0x89, 0x55, 0xF8, 0x89, 0x45, 0xFC, 0xC7, 0x45, 0xEC, 0xE8, 0x03, 0x00, 0x00, 0xC7, 0x45, 0xE8, 0x64, 0x00, 0x00, 0x00, 0xDB, 0x45, 0xEC, 0xDB, 0x45, 0xE8, 0xDE, 0xF9, 0xDB, 0x45, 0xFC, 0xDE, 0xC9, 0xDD, 0x5D, 0xF0, 0x9B, 0x8B, 0x45, 0xF8, 0x8B, 0x00, 0x8B, 0x55, 0xF8, 0x89, 0x02, 0xDD, 0x45, 0xF0, 0x8B, 0xE5, 0x5D, 0xC3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-        public static byte[] g_PowerBlock1 = { 0x55, 0x8B, 0xEC, 0x83, 0xC4, 0xE8, 0x89, 0x55, 0xF8, 0x89, 0x45, 0xFC, 0xC7, 0x45, 0xEC, 0x64, 0x00, 0x00, 0x00, 0xC7, 0x45, 0xE8, 0x64, 0x00, 0x00, 0x00, 0xDB, 0x45, 0xEC, 0xDB, 0x45, 0xE8, 0xDE, 0xF9, 0xDB, 0x45, 0xFC, 0xDE, 0xC9, 0xDD, 0x5D, 0xF0, 0x9B, 0x8B, 0x45, 0xF8, 0x8B, 0x00, 0x8B, 0x55, 0xF8, 0x89, 0x02, 0xDD, 0x45, 0xF0, 0x8B, 0xE5, 0x5D, 0xC3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
         public static string g_psServerAddr = string.Empty;
         public static int g_pnServerPort = 0;
         public static string g_sSelChrAddr = string.Empty;
@@ -170,9 +101,7 @@ namespace RobotSvr
         public static ArrayList g_SendSayList = null;
         public static int g_SendSayListIdx = 0;
         public static IList<string> g_GroupMembers = null;
-        public static ArrayList g_SoundList = null;
-        public static ArrayList BGMusicList = null;
-        public static long g_DxFontsMgrTick = 0;
+        public static int g_DxFontsMgrTick = 0;
         public static TClientMagic[][] g_MagicArr = new TClientMagic[3][] { new TClientMagic[] { }, new TClientMagic[] { }, new TClientMagic[] { } };
         public static ArrayList g_MagicList = null;
         public static ArrayList g_IPMagicList = null;
@@ -180,51 +109,42 @@ namespace RobotSvr
         public static IList<TDropItem> g_DropedItemList = null;
         public static ArrayList g_ChangeFaceReadyList = null;
         public static IList<TActor> g_FreeActorList = null;
-        public static int g_PoisonIndex = 0;
-        public static int g_nBonusPoint = 0;
-        public static int g_nSaveBonusPoint = 0;
         public static TNakedAbility g_BonusTick = null;
         public static TNakedAbility g_BonusAbil = null;
         public static TNakedAbility g_NakedAbil = null;
         public static TNakedAbility g_BonusAbilChg = null;
         public static string g_sGuildName = string.Empty;
         public static string g_sGuildRankName = string.Empty;
-        public static long g_dwLatestJoinAttackTick = 0;
+        public static int g_dwLatestJoinAttackTick = 0;
         // 最后魔法攻击时间
-        public static long g_dwLastAttackTick = 0;
+        public static int g_dwLastAttackTick = 0;
         // 最后攻击时间(包括物理攻击及魔法攻击)
-        public static long g_dwLastMoveTick = 0;
+        public static int g_dwLastMoveTick = 0;
         // 最后移动时间
-        public static long g_dwLatestSpellTick = 0;
+        public static int g_dwLatestSpellTick = 0;
         // 最后魔法攻击时间
-        public static long g_dwLatestFireHitTick = 0;
+        public static int g_dwLatestFireHitTick = 0;
         // 最后列火攻击时间
-        public static long g_dwLatestSLonHitTick = 0;
+        public static int g_dwLatestSLonHitTick = 0;
         // 最后列火攻击时间
-        public static long g_dwLatestTwinHitTick = 0;
-        public static long g_dwLatestPursueHitTick = 0;
-        public static long g_dwLatestRushHitTick = 0;
-        public static long g_dwLatestSmiteHitTick = 0;
-        public static long g_dwLatestSmiteLongHitTick = 0;
-        public static long g_dwLatestSmiteLongHitTick2 = 0;
-        public static long g_dwLatestSmiteLongHitTick3 = 0;
-        public static long g_dwLatestSmiteWideHitTick = 0;
-        public static long g_dwLatestSmiteWideHitTick2 = 0;
-        public static long g_dwLatestRushRushTick = 0;
-        public static long g_dwMagicDelayTime = 0;
-        public static long g_dwMagicPKDelayTime = 0;
+        public static int g_dwLatestTwinHitTick = 0;
+        public static int g_dwLatestPursueHitTick = 0;
+        public static int g_dwLatestRushHitTick = 0;
+        public static int g_dwLatestSmiteHitTick = 0;
+        public static int g_dwLatestSmiteLongHitTick = 0;
+        public static int g_dwLatestSmiteLongHitTick2 = 0;
+        public static int g_dwLatestSmiteLongHitTick3 = 0;
+        public static int g_dwLatestSmiteWideHitTick = 0;
+        public static int g_dwLatestSmiteWideHitTick2 = 0;
+        public static int g_dwLatestRushRushTick = 0;
+        public static int g_dwMagicDelayTime = 0;
+        public static int g_dwMagicPKDelayTime = 0;
         public static int g_nMouseCurrX = 0;
-        // 鼠标所在地图位置座标X
         public static int g_nMouseCurrY = 0;
-        // 鼠标所在地图位置座标Y
         public static int g_nMouseX = 0;
-        // 鼠标所在屏幕位置座标X
         public static int g_nMouseY = 0;
-        // 鼠标所在屏幕位置座标Y
         public static int g_nTargetX = 0;
-        // 目标座标
         public static int g_nTargetY = 0;
-        // 目标座标
         public static TActor g_TargetCret = null;
         public static TActor g_FocusCret = null;
         public static TActor g_MagicTarget = null;
@@ -232,33 +152,25 @@ namespace RobotSvr
         public static ArrayList g_APPathList = null;
         public static double[,] g_APPass;
         public static TActor g_APTagget = null;
-        public static long g_APRunTick = 0;
-        public static long g_APRunTick2 = 0;
+        public static int g_APRunTick = 0;
+        public static int g_APRunTick2 = 0;
         public static TDropItem g_AutoPicupItem = null;
         public static int g_nAPStatus = 0;
         public static bool g_boAPAutoMove = false;
-        public static bool g_boLongHit = false;
         public static string g_sAPStr = string.Empty;
-        public static int g_boAPXPAttack = 0;
-        public static long m_dwSpellTick = 0;
-        public static long m_dwRecallTick = 0;
-        public static long m_dwDoubluSCTick = 0;
-        public static long m_dwPoisonTick = 0;
+        public static int m_dwSpellTick = 0;
+        public static int m_dwRecallTick = 0;
+        public static int m_dwDoubluSCTick = 0;
+        public static int m_dwPoisonTick = 0;
         public static int m_btMagPassTh = 0;
         public static int g_nTagCount = 0;
-        public static long m_dwTargetFocusTick = 0;
+        public static int m_dwTargetFocusTick = 0;
         public static Dictionary<string, string> g_APPickUpList = null;
         public static Dictionary<string, string> g_APMobList = null;
-        public static int g_AttackInvTime = 900;
         public static TActor g_AttackTarget = null;
-        public static long g_dwSearchEnemyTick = 0;
-        public static bool g_boAllowJointAttack = false;
-        // ////////////////////////////////////////
+        public static int g_dwSearchEnemyTick = 0;
         public static byte g_nAPReLogon = 0;
-        public static bool g_nAPrlRecallHero = false;
-        public static bool g_nAPSendSelChr = false;
-        public static bool g_nAPSendNotice = false;
-        public static long g_nAPReLogonWaitTick = 0;
+        public static int g_nAPReLogonWaitTick = 0;
         public static int g_nAPReLogonWaitTime = 10 * 1000;
         public static int g_ApLastSelect = 0;
         public static int g_nOverAPZone = 0;
@@ -272,34 +184,17 @@ namespace RobotSvr
         public static Point g_APLastPoint;
         public static Point g_APLastPoint2;
         public static bool g_nApMiniMap = false;
-        public static long g_dwBlinkTime = 0;
+        public static int g_dwBlinkTime = 0;
         public static bool g_boViewBlink = false;
         public static bool g_boMapMoving = false;
         public static bool g_boMapMovingWait = false;
         public static bool g_boCheckBadMapMode = false;
         public static bool g_boCheckSpeedHackDisplay = false;
-        public static bool g_boViewMiniMap = false;
-        // 是否可视小地图 默认为True
-        public static int g_nViewMinMapLv = 0;
-        // 小地图显示等级
-        public static int g_nMiniMapIndex = 0;
-        // 小地图索引编号
-        public static int g_nMiniMapX = 0;
-        // 小图鼠标指向坐标X
-        public static int g_nMiniMapY = 0;
-        // 小图鼠标指向坐标Y
-        // NPC 相关
-        public static int g_nCurMerchant = 0;
-        // NPC大对话框
-        public static int g_nCurMerchantFaceIdx = 0;
-        // Development 2019-01-14
-        public static int g_nMDlgX = 0;
-        public static int g_nMDlgY = 0;
         public static int g_nStallX = 0;
         public static int g_nStallY = 0;
-        public static long g_dwChangeGroupModeTick = 0;
-        public static long g_dwDealActionTick = 0;
-        public static long g_dwQueryMsgTick = 0;
+        public static int g_dwChangeGroupModeTick = 0;
+        public static int g_dwDealActionTick = 0;
+        public static int g_dwQueryMsgTick = 0;
         public static int g_nDupSelection = 0;
         public static bool g_boAllowGroup = false;
         // 人物信息相关
@@ -323,26 +218,6 @@ namespace RobotSvr
         // 中毒恢复
         public static int g_nMyAddDamage = 0;
         public static int g_nMyDecDamage = 0;
-        public static int g_nHeroSpeedPoint = 0;
-        // 敏捷
-        public static int g_nHeroHitPoint = 0;
-        // 准确
-        public static int g_nHeroAntiPoison = 0;
-        // 魔法躲避
-        public static int g_nHeroPoisonRecover = 0;
-        // 中毒恢复
-        public static int g_nHeroHealthRecover = 0;
-        // 体力恢复
-        public static int g_nHeroSpellRecover = 0;
-        // 魔法恢复
-        public static int g_nHeroAntiMagic = 0;
-        // 魔法躲避
-        public static int g_nHeroHungryState = 0;
-        // 饥饿状态
-        public static int g_nHeroBagSize = 40;
-        public static int g_nHeroIPowerRecover = 0;
-        public static int g_nHeroAddDamage = 0;
-        public static int g_nHeroDecDamage = 0;
         public static ushort g_wAvailIDDay = 0;
         public static ushort g_wAvailIDHour = 0;
         public static ushort g_wAvailIPDay = 0;
@@ -360,25 +235,14 @@ namespace RobotSvr
         public static int g_RIWhere = 0;
         public static TMovingItem[] g_RefineItems = new TMovingItem[2 + 1];
         public static int g_BuildAcusesStep = 0;
-        public static int g_BuildAcusesProc = 0;
-        public static long g_BuildAcusesProcTick = 0;
-        public static int g_BuildAcusesSuc = -1;
-        public static int g_BuildAcusesSucFrame = 0;
-        public static long g_BuildAcusesSucFrameTick = 0;
-        public static long g_BuildAcusesFrameTick = 0;
-        public static int g_BuildAcusesFrame = 0;
-        public static int g_BuildAcusesRate = 0;
         public static TMovingItem[] g_BuildAcuses = new TMovingItem[7 + 1];
-        public static int g_BAFirstShape = -1;
         public static TClientItem[] g_tui = new TClientItem[13 + 1];
         public static TClientItem[] g_UseItems = new TClientItem[13 + 1];
         public static TItemShine g_detectItemShine = null;
         public static TItemShine[] UserState1Shine = new TItemShine[13 + 1];
         public static TItemShine[] g_UseItemsShine = new TItemShine[13 + 1];
         public static TClientItem[] g_ItemArr = new TClientItem[MAXBAGITEMCL - 1 + 1];
-        public static TClientItem[] g_HeroItemArr = new TClientItem[MAXBAGITEMCL - 1 + 1];
         public static TItemShine[] g_ItemArrShine = new TItemShine[MAXBAGITEMCL - 1 + 1];
-        public static TItemShine[] g_HeroItemArrShine = new TItemShine[MAXBAGITEMCL - 1 + 1];
         public static TItemShine[] g_StallItemArrShine = new TItemShine[10 - 1 + 1];
         public static TItemShine[] g_uStallItemArrShine = new TItemShine[10 - 1 + 1];
         public static TItemShine[] g_DealItemsShine = new TItemShine[10 - 1 + 1];
@@ -403,10 +267,9 @@ namespace RobotSvr
         public static int g_DetectItemMineID = 0;
         public static TClientItem g_DealDlgItem = null;
         public static bool g_boQueryPrice = false;
-        public static long g_dwQueryPriceTime = 0;
+        public static int g_dwQueryPriceTime = 0;
         public static string g_sSellPriceStr = string.Empty;
         public static TClientItem[] g_DealItems = new TClientItem[9 + 1];
-        public static bool g_boYbDealing = false;
         public static TClientItem[] g_YbDealItems = new TClientItem[9 + 1];
         public static TClientItem[] g_DealRemoteItems = new TClientItem[19 + 1];
         public static int g_nDealGold = 0;
@@ -415,9 +278,7 @@ namespace RobotSvr
         public static string g_sDealWho = string.Empty;
         public static TClientItem g_MouseItem = null;
         public static TClientItem g_MouseStateItem = null;
-        public static TClientItem g_HeroMouseStateItem = null;
         public static TClientItem g_MouseUserStateItem = null;
-        public static TClientItem g_HeroMouseItem = null;
         public static bool g_boItemMoving = false;
         public static TMovingItem g_MovingItem = null;
         public static TMovingItem g_OpenBoxItem = null;
@@ -440,43 +301,40 @@ namespace RobotSvr
         public static bool g_boViewFog = false;
         public static bool g_boForceNotViewFog = true;
         public static TClientItem g_EatingItem = null;
-        public static long g_dwEatTime = 0;
-        public static long g_dwDizzyDelayStart = 0;
-        public static long g_dwDizzyDelayTime = 0;
+        public static int g_dwEatTime = 0;
+        public static int g_dwDizzyDelayStart = 0;
+        public static int g_dwDizzyDelayTime = 0;
         public static bool g_boDoFadeOut = false;
         public static bool g_boDoFadeIn = false;
         public static int g_nFadeIndex = 0;
         public static bool g_boDoFastFadeOut = false;
         public static bool g_boAutoDig = false;
         public static bool g_boAutoSit = false;
-        // 自动锄矿
-        public static bool g_boSelectMyself = false;
-        // 鼠标是否指到自己
-        // 游戏速度检测相关变量
         public static int g_dwFirstServerTime = 0;
         public static int g_dwFirstClientTime = 0;
         public static int g_nTimeFakeDetectCount = 0;
         public static int g_dwLatestClientTime2 = 0;
         public static int g_dwFirstClientTimerTime = 0;
-        // timer 矫埃
-        public static long g_dwLatestClientTimerTime = 0;
-        public static long g_dwFirstClientGetTime = 0;
-        // gettickcount 矫埃
-        public static long g_dwLatestClientGetTime = 0;
+        public static int g_dwLatestClientTimerTime = 0;
+        public static int g_dwFirstClientGetTime = 0;
+        public static int g_dwLatestClientGetTime = 0;
         public static int g_nTimeFakeDetectSum = 0;
         public static int g_nTimeFakeDetectTimer = 0;
-        public static long g_dwLastestClientGetTime = 0;
-        // 外挂功能变量开始
-        public static long g_dwDropItemFlashTime = 5 * 1000;
-        // 地面物品闪时间间隔
+        public static int g_dwLastestClientGetTime = 0;
+        /// <summary>
+        /// 地面物品闪时间间隔
+        /// </summary>
+        public static int g_dwDropItemFlashTime = 5 * 1000;
+        /// <summary>
+        /// 攻击间隔时间间隔
+        /// </summary>
         public static int g_nHitTime = 1400;
-        // 攻击间隔时间间隔  0820
         public static int g_nItemSpeed = 60;
-        public static long g_dwSpellTime = 500;
-        // 魔法攻间隔时间
-        public static bool g_boHero = true;
+        /// <summary>
+        /// 魔法攻间隔时间
+        /// </summary>
+        public static int g_dwSpellTime = 500;
         public static bool g_boOpenAutoPlay = true;
-        // 死亡颜色  Development 2018-12-29
         public static bool g_boClientCanSet = true;
         public static int g_nEatIteminvTime = 200;
         public static bool g_boCanRunSafeZone = true;
@@ -506,17 +364,13 @@ namespace RobotSvr
         // 魔法锁定
         public static bool g_boSpeedRate = false;
         public static bool g_boSpeedRateShow = false;
-        // g_boAutoPuckUpItem        : Boolean = False;
-        public static bool g_boShowHumanInfo = true;
-        public static bool g_boShowMonsterInfo = false;
-        public static bool g_boShowNpcInfo = false;
         // 外挂功能变量结束
         public static bool g_boQuickPickup = false;
-        public static long g_dwAutoPickupTick = 0;
+        public static int g_dwAutoPickupTick = 0;
         /// <summary>
         /// 自动捡物品间隔
         /// </summary>
-        public static long g_dwAutoPickupTime = 100;
+        public static int g_dwAutoPickupTime = 100;
         public static TActor g_MagicLockActor = null;
         public static bool g_boNextTimePowerHit = false;
         public static bool g_boCanLongHit = false;
@@ -536,25 +390,6 @@ namespace RobotSvr
         public static bool g_boCanSLonHit = false;
         public static bool g_boCanSquHit = false;
         public static Dictionary<string, string> g_ShowItemList = null;
-        public static bool g_boDrawTileMap = true;
-        public static bool g_boDrawDropItem = true;
-        public static int g_nTestX = 71;
-        public static int g_nTestY = 212;
-        public static int g_nSquHitPoint = 0;
-        public static int g_nMaxSquHitPoint = 0;
-        public static bool g_boConfigLoaded = false;
-        public static byte g_dwCollectExpLv = 0;
-        public static bool g_boCollectStateShine = false;
-        public static int g_nCollectStateShine = 0;
-        public static long g_dwCollectStateShineTick = 0;
-        public static long g_dwCollectStateShineTick2 = 0;
-        public static long g_dwCollectExp = 0;
-        public static long g_dwCollectExpMax = 1;
-        public static bool g_boCollectExpShine = false;
-        public static int g_boCollectExpShineCount = 0;
-        public static long g_dwCollectExpShineTick = 0;
-        public static long g_dwCollectIpExp = 0;
-        public static long g_dwCollectIpExpMax = 1;
         public const int HEALTHBAR_BLACK = 0;
         public const int CLIENT_VERSION_NUMBER = 120020522;
         public const int RMCLIENT = 46;
@@ -570,48 +405,10 @@ namespace RobotSvr
         public const int STALL_MIIDX_OFFSET = HERO_MIIDX_OFFSET + 500 + 50;
         public const int DETECT_MIIDX_OFFSET = HERO_MIIDX_OFFSET + 500 + 50 + 10 + 1;
         public const int MSGMUCH = 2;
-        public static Rectangle[] g_ptGeneral = new Rectangle[] {
-          new Rectangle() {X= 35 + 000, Y= 70 + 23 * 0,  Width= 35 + 000 + 72 + 18, Height= 70 + 23 * 0 + 16} ,
-          new Rectangle() {X=35 + 000, Y=70 + 23 * 1,Width= 35 + 000 + 72 + 18,  Height= 70 + 23 * 1 + 16} ,
-          new Rectangle() {X=35 + 000, Y=70 + 23 * 2,Width= 35 + 000 + 78 + 18,  Height= 70 + 23 * 2 + 16} ,
-          new Rectangle() {X=35 + 000, Y=70 + 23 * 3,Width= 35 + 000 + 96,  Height= 70 + 23 * 3 + 16} ,
-          new Rectangle() {X=35 + 120, Y=70 + 23 * 0,Width= 35 + 120 + 72 + 30,  Height= 70 + 23 * 0 + 16} ,
-          new Rectangle() {X=35 + 120, Y=70 + 23 * 1,Width= 35 + 120 + 72,  Height= 70 + 23 * 1 + 16} ,
-          new Rectangle() {X=35 + 120, Y=70 + 23 * 2,Width= 35 + 120 + 72 + 18, Height=  70 + 23 * 2 + 16} ,
-          new Rectangle() {X=35 + 120, Y=70 + 23 * 3,Width= 35 + 120 + 72,  Height= 70 + 23 * 3 + 16} ,
-          new Rectangle() {X=35 + 120, Y=70 + 23 * 4,Width= 35 + 120 + 72 + 18,  Height= 70 + 23 * 4 + 16} ,
-          new Rectangle() {X=35 + 240, Y=70 + 23 * 0,Width= 35 + 240 + 72,  Height= 70 + 23 * 0 + 16} ,
-          new Rectangle() {X=35 + 240, Y=70 + 23 * 1,Width= 35 + 240 + 72,  Height= 70 + 23 * 1 + 16} ,
-          new Rectangle() {X=35 + 240, Y=70 + 23 * 2,Width= 35 + 240 + 48,  Height= 70 + 23 * 2 + 16} ,
-          new Rectangle() {X=35 + 240, Y=70 + 23 * 3,Width= 35 + 240 + 72,  Height= 70 + 23 * 3 + 16} ,
-          new Rectangle() {X=35 + 240, Y=70 + 23 * 4,Width= 35 + 240 + 72,  Height= 70 + 23 * 4 + 16} ,
-          new Rectangle() {X=35 + 240, Y=70 + 23 * 5,Width= 35 + 240 + 72,  Height= 70 + 23 * 5 + 16} ,
-          new Rectangle() {X=35 + 120, Y=70 + 23 * 5,Width= 35 + 120 + 72,  Height= 70 + 23 * 5 + 16} ,
-          new Rectangle() {X=35 + 000, Y=70 + 23 * 5,Width= 35 + 000 + 96,  Height= 70 + 23 * 5 + 16} };
         public static bool[] g_gcGeneral = { true, true, false, true, true, true, false, true, false, true, true, true, true, false, false, true, true };
-        public static Color[] g_clGeneral = { Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver };
-        public static Color[] g_clGeneralDef = { Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver };
-        // ====================================Protect====================================
-        public const int MAX_GC_PROTECT = 11;
-        public static Rectangle[] g_ptProtect = new Rectangle[]{
-           new Rectangle(){X=35 + 000,Y=70 + 24 * 0, Width=35 + 000 + 20,Height=70 + 24 * 0 + 16} ,
-           new Rectangle(){X=35 + 000,Y=70 + 24 * 1, Width=35 + 000 + 20,Height=70 + 24 * 1 + 16} ,
-           new Rectangle(){X=35 + 000,Y=70 + 24 * 2, Width=35 + 000 + 20,Height=70 + 24 * 2 + 16} ,
-           new Rectangle(){X=35 + 000,Y=70 + 24 * 3, Width=35 + 000 + 20,Height=70 + 24 * 3 + 16} ,
-           new Rectangle(){X=35 + 000,Y=70 + 24 * 4, Width=35 + 000 + 20,Height=70 + 24 * 4 + 16} ,
-           new Rectangle(){X=35 + 000,Y=70 + 24 * 5, Width=35 + 000 + 20,Height=70 + 24 * 5 + 16} ,
-           new Rectangle(){X=35 + 000,Y=70 + 24 * 6, Width=35 + 000 + 72,Height=70 + 24 * 6 + 16} ,
-           new Rectangle(){X=35 + 180,Y=70 + 24 * 0, Width=35 + 180 + 20,Height=70 + 24 * 0 + 16} ,
-           new Rectangle(){X=35 + 180,Y=70 + 24 * 1, Width=35 + 180 + 20,Height=70 + 24 * 1 + 16} ,
-           new Rectangle(){X=35 + 180,Y=70 + 24 * 3, Width=35 + 180 + 20,Height=70 + 24 * 3 + 16} ,
-           new Rectangle(){X=35 + 180,Y=70 + 24 * 5, Width=35 + 180 + 20,Height=70 + 24 * 5 + 16} ,
-           new Rectangle(){X=35 + 180,Y=70 + 24 * 6, Width=35 + 180 + 20,Height=70 + 24 * 6 + 16} };
-
         public static bool[] g_gcProtect = { false, false, false, false, false, false, false, true, true, true, false, true };
         public static int[] g_gnProtectPercent = { 10, 10, 10, 10, 10, 10, 0, 88, 88, 88, 20, 00 };
         public static int[] g_gnProtectTime = { 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 1000, 1000, 1000 };
-        public static Color[] g_clProtect = { Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Lime };
-        // ====================================Tec====================================
         public const int MAX_GC_TEC = 14;
         public static string[] g_HintTec = { "钩选此项将开启刀刀刺杀", "钩选此项将开启智能半月", "钩选此项将自动凝聚烈火剑法", "钩选此项将自动凝聚逐日剑法", "钩选此项将自动开启魔法盾", "钩选此项英雄将自动开启魔法盾", "钩选此项道士将自动使用隐身术", "", "", "钩选此项将自动凝聚雷霆剑法", "钩选此项将自动进行隔位刺杀", "钩选此项将自动凝聚断空斩", "钩选此项英雄将不使用连击打怪\\方便玩家之间进行PK", "钩选此项将自动凝聚开天斩", "钩选此项：施展魔法超过允许距离时，会自动跑近目标并释放魔法" };
         public static string[] g_caTec = { "刀刀刺杀", "智能半月", "自动烈火", "逐日剑法", "自动开盾", "持续开盾(英雄)", "自动隐身", "时间间隔", "", "自动雷霆", "隔位刺杀", "自动断空斩", "英雄连击不打怪", "自动开天斩", "自动调节魔法距离" };
@@ -619,47 +416,16 @@ namespace RobotSvr
         public const int g_gnTecPracticeKey = 0;
         public static bool[] g_gcTec = { true, true, true, true, true, true, false, false, false, false, false, false, false, true, false };
         public static int[] g_gnTecTime = { 0, 0, 0, 0, 0, 0, 0, 0, 4000, 0, 0, 0, 0, 0, 0 };
-        public static Color[] g_clTec = { Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver };
-        // ====================================Assistant====================================
-        public const int MAX_GC_ASS = 6;
-        public static Rectangle[] g_ptAss = {
-  new Rectangle()  {X=35 + 000,Y= 70 + 24 * 0, Width=35 + 000 + 142,Height= 70 + 24 * 0 + 16} ,
-  new Rectangle()  {X=35 + 000,Y= 70 + 24 * 1, Width=35 + 000 + 72, Height=70 + 24 * 1 + 16} ,
-  new Rectangle()  {X=35 + 000,Y= 70 + 24 * 2, Width=35 + 000 + 72, Height=70 + 24 * 2 + 16} ,
-  new Rectangle()  {X=35 + 000,Y= 70 + 24 * 3, Width=35 + 000 + 72, Height=70 + 24 * 3 + 16} ,
-  new Rectangle()  {X=35 + 000,Y= 70 + 24 * 4, Width=35 + 000 + 72, Height=70 + 24 * 4 + 16} ,
-  new Rectangle()  {X=35 + 000,Y= 70 + 24 * 5, Width=35 + 000 + 120,Height= 70 + 24 * 5 + 16} ,
-  new Rectangle()  {X=35 + 000,Y= 70 + 24 * 6, Width=35 + 000 + 120,Height= 70 + 24 * 6 + 16} };
-
         public static bool[] g_gcAss = { false, false, false, false, false, false, false };
-        public static Color[] g_clAss = { Color.Lime, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver };
-        // ====================================HotKey====================================
-        public const int MAX_GC_ITEMS = 7;
-        public static Rectangle g_ptItemsA = new Rectangle() { X = 25 + 194, Y = 68 + 18 * 7 + 23, Width = 25 + 194 + 80, Height = 68 + 18 * 7 + 16 + 23 };
-        public static Rectangle g_ptAutoPickUp = new Rectangle() { X = 25 + 267, Y = 68 + 18 * 7 + 23, Width = 25 + 267 + 80, Height = 68 + 18 * 7 + 16 + 23 };
-        public static Color[] g_clItems = { Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver };
-        public const int MAX_SERIESSKILL_POINT = 4;
         public static int g_HitSpeedRate = 0;
         public static int g_MagSpeedRate = 0;
         public static int g_MoveSpeedRate = 0;
-        public const bool g_boFlashMission = false;
-        public const bool g_boNewMission = false;
-        // 新任务
-        public const long g_dwNewMission = 0;
-        public const int WH_KEYBOARD_LL = 13;
-        public const int LLKHF_ALTDOWN = 0x20;
-        public const string CONFIGFILE = "Config\\%s.ini";
         public const string g_affiche0 = "游戏音效已关闭！";
         public const string g_affiche1 = "健康游戏公告";
         public const string g_affiche2 = "抵制不良游戏 拒绝盗版游戏 注意自我保护 谨防受骗上当 适度游戏益脑";
         public const string g_affiche3 = "沉迷游戏伤身 合理安排时间 享受健康生活 严厉打击赌博 营造和谐环境";
-        public const int VK2_SHIFT = 32;
-        public const int VK2_CONTROL = 64;
-        public const int VK2_ALT = 128;
-        public const int VK2_WIN = 256;
         public const int SCREENWIDTH = 800;
         public const int SCREENHEIGHT = 600;
-        public static string[] g_levelstring = { "一", "二", "三", "四", "五", "六", "七", "八" };
         public const string MAPDIRNAME = "Map/";
 
         // 得到地图文件名称自定义路径
@@ -1821,7 +1587,7 @@ namespace RobotSvr
         public void initialization()
         {
             //g_APPass = new double();
-            //g_dwThreadTick = new long();
+            //g_dwThreadTick = new int();
             //g_dwThreadTick = 0;
             //g_pbRecallHero = new bool();
             //g_pbRecallHero = false;
@@ -1959,7 +1725,7 @@ namespace RobotSvr
     public class TItemShine
     {
         public int idx;
-        public long tick;
+        public int tick;
     }
 
     public struct TSeriesSkill
