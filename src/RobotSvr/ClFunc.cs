@@ -1432,7 +1432,7 @@ namespace RobotSvr
             return result;
         }
 
-        public static void ResultDealItem(TClientItem ci, int mindex, short Count)
+        public static void ResultDealItem(TClientItem ci, int mindex, ushort Count)
         {
             int i;
             for (i = 0; i < 10; i++)

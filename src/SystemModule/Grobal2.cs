@@ -537,6 +537,11 @@ namespace SystemModule
         /// 发送服务器配置信息
         /// </summary>
         public const int SM_SERVERCONFIG = 5007;
+        public const int SM_SERVERCONFIG2 = 50072;
+        public const int SM_SERVERCONFIG3 = 50074;
+        public const int SM_RUNHUMAN = 50080;
+        public const int SM_INSAFEZONEFLAG = 50081;
+
         public const int SM_GAMEGOLDNAME = 5008;
         public const int SM_PASSWORD = 5009;
         public const int SM_HORSERUN = 5010;

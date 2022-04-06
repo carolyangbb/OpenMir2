@@ -1,6 +1,6 @@
-﻿using SystemModule;
+﻿using System.IO;
 
-namespace GameSvr
+namespace SystemModule
 {
     public class TShortMessage : Packets
     {

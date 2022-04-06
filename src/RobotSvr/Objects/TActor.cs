@@ -7,6 +7,7 @@ namespace RobotSvr
 {
     public class TActor
     {
+        private RobotClient robotClient;
         public byte m_btTitleIndex = 0;
         public byte m_RushStep = 0;
         public bool m_btAFilter = false;
@@ -25,12 +26,9 @@ namespace RobotSvr
         public byte m_btRace = 0;
         public byte m_btHair = 0;
         public byte m_btHairEx = 0;
-        public byte m_btDress = 0;
-        // 衣服类型
-        public byte m_btWeapon = 0;
-        // 武器类型
-        public byte m_btWeaponEffect = 0;
-        // 武器特效类型
+        public byte m_btDress = 0;// 衣服类型
+        public byte m_btWeapon = 0;// 武器类型
+        public byte m_btWeaponEffect = 0;// 武器特效类型
         public byte m_btHorse = 0;
         public byte m_btEffect = 0;
         public byte m_btAttribute = 0;
@@ -169,14 +167,10 @@ namespace RobotSvr
         public long m_dwAutoTecHeroTick = 0;
         public long m_dwPracticeTick = 0;
         public bool m_boFisrShopItem = false;
-        public bool m_boAttackSlow = false;
-        // 腕力不够时慢动作攻击.
-        public bool m_boMoveSlow = false;
-        // 负重不够时慢动作跑
+        public bool m_boAttackSlow = false;// 腕力不够时慢动作攻击.
+        public bool m_boMoveSlow = false;// 负重不够时慢动作跑
         public int m_nMoveSlowLevel = 0;
         public ArrayList m_StruckDamage = null;
-        // m_StruckDamageTick: LongWord;
-        // m_StruckDamageTick2: LongWord;
         public bool m_fHideMode = false;
         public byte m_nTempState = 0;
         protected int m_nStartFrame = 0;
@@ -214,8 +208,9 @@ namespace RobotSvr
         public TChrMsg RealActionMsg = null;
         public ArrayList m_nMoveHpList = null;
 
-        public TActor() : base()
+        public TActor(RobotClient robotClient) : base()
         {
+            this.robotClient = robotClient;
             m_btTitleIndex = 0;
             m_nCurFocusFrame = 0;
             m_nWaitForRecogId = 0;
@@ -318,7 +313,7 @@ namespace RobotSvr
         {
             int i;
             TChrMsg Msg;
-            m_MsgList.__Lock();
+            //m_MsgList.__Lock();
             try
             {
                 i = 0;
@@ -331,7 +326,7 @@ namespace RobotSvr
                     Msg = m_MsgList[i];
                     if (((this == MShare.g_MySelf) && (Msg.Ident >= 3000) && (Msg.Ident <= 3099)) || (Msg.Ident == wIdent))
                     {
-                        Dispose(Msg);
+                        Msg = null;
                         m_MsgList.RemoveAt(i);
                         continue;
                     }
@@ -340,7 +335,7 @@ namespace RobotSvr
             }
             finally
             {
-                m_MsgList.UnLock();
+                //m_MsgList.UnLock();
             }
             SendMsg(wIdent, nX, nY, ndir, nFeature, nState, sStr, nSound);
         }
@@ -349,7 +344,7 @@ namespace RobotSvr
         {
             int i;
             TChrMsg Msg;
-            m_MsgList.__Lock();
+            //m_MsgList.__Lock();
             try
             {
                 i = 0;
@@ -362,8 +357,7 @@ namespace RobotSvr
                     Msg = m_MsgList[i];
                     if ((Msg.Ident >= 3000) && (Msg.Ident <= 3099))
                     {
-                        //@ Unsupported function or procedure: 'Dispose'
-                        Dispose(Msg);
+                        Msg = null;
                         m_MsgList.RemoveAt(i);
                         continue;
                     }
@@ -372,7 +366,7 @@ namespace RobotSvr
             }
             finally
             {
-                m_MsgList.UnLock();
+                //m_MsgList.UnLock();
             }
         }
 
@@ -507,21 +501,21 @@ namespace RobotSvr
                 {
                     if (Msg.Ident == Grobal2.CM_WALK)
                     {
-                        if (!ClMain.g_PlayScene.CanWalk(Msg.X, Msg.Y))
+                        if (!robotClient.g_PlayScene.CanWalk(Msg.X, Msg.Y))
                         {
                             return;
                         }
                     }
                     if (Msg.Ident == Grobal2.CM_RUN)
                     {
-                        if (!ClMain.g_PlayScene.CanRun(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, Msg.X, Msg.Y))
+                        if (!robotClient.g_PlayScene.CanRun(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, Msg.X, Msg.Y))
                         {
                             return;
                         }
                     }
                     if (Msg.Ident == Grobal2.CM_HORSERUN)
                     {
-                        if (!ClMain.g_PlayScene.CanRun(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, Msg.X, Msg.Y))
+                        if (!robotClient.g_PlayScene.CanRun(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, Msg.X, Msg.Y))
                         {
                             return;
                         }
@@ -541,19 +535,15 @@ namespace RobotSvr
                         case Grobal2.CM_CRSHIT:
                             if (Msg.Ident == Grobal2.CM_POWERHIT)
                             {
-                                Msg.Saying = ClMain.GetMagicLv(this, 7);
+                                Msg.Saying = robotClient.GetMagicLv(this, 7);
                             }
                             else if (Msg.Ident == Grobal2.CM_LONGHIT)
                             {
-                                Msg.Saying = ClMain.GetMagicLv(this, 12);
+                                Msg.Saying = robotClient.GetMagicLv(this, 12);
                             }
                             else if (Msg.Ident == Grobal2.CM_WIDEHIT)
                             {
-                                Msg.Saying = ClMain.GetMagicLv(this, 25);
-                            }
-                            else if (Msg.Ident == Grobal2.CM_PURSUEHIT)
-                            {
-                                Msg.Saying = ClMain.GetMagicLv(this, 56);
+                                Msg.Saying = robotClient.GetMagicLv(this, 25);
                             }
                             RealActionMsg = Msg;
                             Msg.Ident = Msg.Ident - 3000;
@@ -573,7 +563,7 @@ namespace RobotSvr
                             Msg.Ident = Grobal2.SM_THROW;
                             break;
                         case Grobal2.CM_FIREHIT:
-                            Msg.Saying = ClMain.GetMagicLv(this, 26);
+                            Msg.Saying = robotClient.GetMagicLv(this, 26);
                             RealActionMsg = Msg;
                             Msg.Ident = Grobal2.SM_FIREHIT;
                             break;
@@ -586,7 +576,7 @@ namespace RobotSvr
                             UseMagic = (TUseMagicInfo)Msg.Feature;
                             RealActionMsg.Dir = UseMagic.MagicSerial;
                             Msg.Ident = Msg.Ident - 3000;
-                            Msg.X = ClMain.GetMagicLv(this, UseMagic.MagicSerial);
+                            Msg.X = robotClient.GetMagicLv(this, UseMagic.MagicSerial);
                             Msg.Y = m_btPoisonDecHealth;
                             break;
                     }
@@ -620,7 +610,7 @@ namespace RobotSvr
                             m_CurMagic.targy = Msg.Y;
                             m_CurMagic.spelllv = Msg.X;
                             m_CurMagic.Poison = Msg.Y;
-                            Dispose(UseMagic);
+                            UseMagic = null;
                             if (m_CurMagic.EffectNumber >= 60 && m_CurMagic.EffectNumber <= 66)
                             {
                                 MShare.g_SeriesSkillFire = false;
@@ -659,7 +649,7 @@ namespace RobotSvr
                 {
                     m_boItemExplore = true;
                 }
-                ClMain.g_PlayScene.ActorDied(this);
+                robotClient.g_PlayScene.ActorDied(this);
             }
         }
 
@@ -669,7 +659,7 @@ namespace RobotSvr
             int i;
             TChrMsg Msg;
             result = false;
-            m_MsgList.__Lock();
+            //m_MsgList.__Lock();
             try
             {
                 i = 0;
@@ -682,7 +672,7 @@ namespace RobotSvr
                         continue;
                     }
                     ChrMsg = Msg;
-                    Dispose(Msg);
+                    Msg = null;
                     m_MsgList.RemoveAt(i);
                     result = true;
                     break;
@@ -690,7 +680,7 @@ namespace RobotSvr
             }
             finally
             {
-                m_MsgList.UnLock();
+                //m_MsgList.UnLock();
             }
             return result;
         }
@@ -731,7 +721,7 @@ namespace RobotSvr
             int n;
             TChrMsg Msg;
             bool fin;
-            m_MsgList.__Lock();
+            //m_MsgList.__Lock();
             try
             {
                 n = 0;
@@ -741,7 +731,7 @@ namespace RobotSvr
                     {
                         break;
                     }
-                    Msg = (TChrMsg)m_MsgList[n];
+                    Msg = m_MsgList[n];
                     fin = false;
                     switch (Msg.Ident)
                     {
@@ -750,9 +740,9 @@ namespace RobotSvr
                             {
                                 m_CurMagic.ServerMagicCode = 255;
                                 m_CurMagic.target = Msg.X;
-                                if (Msg.Y >= 0 && Msg.Y <= magiceff.Units.magiceff.MAXMAGICTYPE - 1)
+                                if (Msg.Y >= 0 && Msg.Y <= magiceff.MAXMAGICTYPE - 1)
                                 {
-                                    m_CurMagic.EffectType = (TMagicType)Msg.Y;
+                                    m_CurMagic.EffectType = (MagicType)Msg.Y;
                                 }
                                 m_CurMagic.EffectNumber = Msg.Dir % 255;
                                 m_CurMagic.targx = Msg.Feature;
@@ -772,7 +762,7 @@ namespace RobotSvr
                     }
                     if (fin)
                     {
-                        Dispose((TChrMsg)m_MsgList[n]);
+                        m_MsgList[n] = null;
                         m_MsgList.RemoveAt(n);
                     }
                     else
@@ -783,7 +773,7 @@ namespace RobotSvr
             }
             finally
             {
-                m_MsgList.UnLock();
+                //m_MsgList.UnLock();
             }
         }
 
@@ -833,12 +823,12 @@ namespace RobotSvr
         public bool Strucked()
         {
             bool result = false;
-            m_MsgList.__Lock();
+            //m_MsgList.__Lock();
             try
             {
                 for (var i = 0; i < m_MsgList.Count; i++)
                 {
-                    if (((TChrMsg)m_MsgList[i]).Ident == Grobal2.SM_STRUCK)
+                    if (m_MsgList[i].Ident == Grobal2.SM_STRUCK)
                     {
                         result = true;
                         break;
@@ -847,7 +837,7 @@ namespace RobotSvr
             }
             finally
             {
-                m_MsgList.UnLock();
+                //m_MsgList.UnLock();
             }
             return result;
         }
@@ -1310,7 +1300,7 @@ namespace RobotSvr
         {
             int prv;
             long dwFrameTimetime;
-            bool boFly;
+            bool boFly = false;
             if ((m_nCurrentAction == Grobal2.SM_WALK) || (m_nCurrentAction == Grobal2.SM_BACKSTEP) || (m_nCurrentAction == Grobal2.SM_RUN) || (m_nCurrentAction == Grobal2.SM_HORSERUN) || (m_nCurrentAction == Grobal2.SM_RUSH) || (m_nCurrentAction == Grobal2.SM_RUSHKUNG))
             {
                 return;
@@ -1382,7 +1372,7 @@ namespace RobotSvr
                         }
                         if (this == MShare.g_MySelf)
                         {
-                            if (ClMain.frmMain.ServerAcceptNextAction())
+                            if (robotClient.ServerAcceptNextAction())
                             {
                                 ActionEnded();
                                 m_nCurrentAction = 0;
@@ -1412,7 +1402,7 @@ namespace RobotSvr
                         {
                             if (m_CurMagic.ServerMagicCode > 0)
                             {
-                                ClMain.g_PlayScene.NewMagic(this, m_CurMagic.ServerMagicCode, m_CurMagic.EffectNumber, m_nCurrX, m_nCurrY, m_CurMagic.targx, m_CurMagic.targy, m_CurMagic.target, m_CurMagic.EffectType, m_CurMagic.Recusion, m_CurMagic.anitime, ref boFly, m_CurMagic.magfirelv);
+                                robotClient.g_PlayScene.NewMagic(this, m_CurMagic.ServerMagicCode, m_CurMagic.EffectNumber, m_nCurrX, m_nCurrY, m_CurMagic.targx, m_CurMagic.targy, m_CurMagic.target, m_CurMagic.EffectType, m_CurMagic.Recusion, m_CurMagic.anitime, ref boFly, m_CurMagic.magfirelv);
                             }
                             m_CurMagic.ServerMagicCode = 0;
                         }
@@ -1526,7 +1516,7 @@ namespace RobotSvr
                 {
                     if (this == MShare.g_MySelf)
                     {
-                        if (ClMain.frmMain.ServerAcceptNextAction())
+                        if (robotClient.ServerAcceptNextAction())
                         {
                             m_nCurrentAction = 0;
                             m_boLockEndFrame = true;

@@ -396,8 +396,7 @@ namespace RobotSvr
 
         public bool CanWalk(int mx, int my)
         {
-            bool result;
-            result = false;
+            bool result = false;
             if (ClMain.Map.CanMove(mx, my))
             {
                 result = !CrashMan(mx, my);
@@ -525,7 +524,7 @@ namespace RobotSvr
             return result;
         }
 
-        public TActor NewActor(int chrid, int cx, int cy, short cdir, int cfeature, int cstate)
+        public TActor NewActor(int chrid, int cx, int cy, ushort cdir, int cfeature, int cstate)
         {
             TActor actor;
             TActor result = null;

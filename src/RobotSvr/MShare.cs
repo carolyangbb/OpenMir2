@@ -1065,9 +1065,7 @@ namespace RobotSvr
 
         public static bool GetItemShowFilter(string sItemName)
         {
-            bool result;
-            result = g_ShowItemList.IndexOf(sItemName) > -1;
-            return result;
+            return g_ShowItemList.ContainsKey(sItemName);
         }
 
         public static void LoadUserConfig(string sUserName)
