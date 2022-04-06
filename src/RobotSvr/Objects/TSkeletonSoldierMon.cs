@@ -1,188 +1,164 @@
 ﻿using System.Collections;
 using SystemModule;
 
-namespace RobotSvr
+namespace RobotSvr;
+
+public class TSkeletonSoldierMon : TGasKuDeGi
 {
-    public class TSkeletonSoldierMon : TGasKuDeGi
+    public TSkeletonSoldierMon(RobotClient robotClient) : base(robotClient)
     {
-        public TSkeletonSoldierMon(RobotClient robotClient) : base(robotClient)
+    }
+
+    public override void Run()
+    {
+        int prv;
+        long m_dwEffectFrameTimetime;
+        long m_dwFrameTimetime;
+        bool bofly;
+        if (m_nCurrentAction == Grobal2.SM_WALK || m_nCurrentAction == Grobal2.SM_BACKSTEP ||
+            m_nCurrentAction == Grobal2.SM_RUN || m_nCurrentAction == Grobal2.SM_HORSERUN) return;
+        m_boMsgMuch = false;
+        if (m_MsgList.Count >= MShare.MSGMUCH) m_boMsgMuch = true;
+        RunFrameAction(m_nCurrentFrame - m_nStartFrame);
+        if (m_boUseEffect)
         {
+            if (m_boMsgMuch)
+                m_dwEffectFrameTimetime = HUtil32.Round(m_dwEffectFrameTime * 2 / 3);
+            else
+                m_dwEffectFrameTimetime = m_dwEffectFrameTime;
+            if (MShare.GetTickCount() - m_dwEffectStartTime > m_dwEffectFrameTimetime)
+            {
+                m_dwEffectStartTime = MShare.GetTickCount();
+                if (m_nEffectFrame < m_nEffectEnd)
+                    m_nEffectFrame++;
+                else
+                    m_boUseEffect = false;
+            }
         }
 
-        public override void Run()
+        prv = m_nCurrentFrame;
+        if (m_nCurrentAction != 0)
         {
-            int prv;
-            long m_dwEffectFrameTimetime;
-            long m_dwFrameTimetime;
-            bool bofly;
-            if ((this.m_nCurrentAction == Grobal2.SM_WALK) || (this.m_nCurrentAction == Grobal2.SM_BACKSTEP) || (this.m_nCurrentAction == Grobal2.SM_RUN) || (this.m_nCurrentAction == Grobal2.SM_HORSERUN))
+            if (m_nCurrentFrame < m_nStartFrame || m_nCurrentFrame > m_nEndFrame) m_nCurrentFrame = m_nStartFrame;
+            if (m_boMsgMuch)
+                m_dwFrameTimetime = HUtil32.Round(m_dwFrameTime * 2 / 3);
+            else
+                m_dwFrameTimetime = m_dwFrameTime;
+            if (MShare.GetTickCount() - m_dwStartTime > m_dwFrameTimetime)
             {
-                return;
-            }
-            this.m_boMsgMuch = false;
-            if (this.m_MsgList.Count >= MShare.MSGMUCH)
-            {
-                this.m_boMsgMuch = true;
-            }
-            this.RunFrameAction(this.m_nCurrentFrame - this.m_nStartFrame);
-            if (this.m_boUseEffect)
-            {
-                if (this.m_boMsgMuch)
+                if (m_nCurrentFrame < m_nEndFrame)
                 {
-                    m_dwEffectFrameTimetime = HUtil32.Round(this.m_dwEffectFrameTime * 2 / 3);
+                    m_nCurrentFrame++;
+                    m_dwStartTime = MShare.GetTickCount();
                 }
                 else
                 {
-                    m_dwEffectFrameTimetime = this.m_dwEffectFrameTime;
+                    m_nCurrentAction = 0;
+                    m_boUseEffect = false;
+                    //this.m_boNowDeath = false;
                 }
-                if (MShare.GetTickCount() - this.m_dwEffectStartTime > m_dwEffectFrameTimetime)
+
+                if (m_nCurrentAction == Grobal2.SM_LIGHTING)
                 {
-                    this.m_dwEffectStartTime = MShare.GetTickCount();
-                    if (this.m_nEffectFrame < this.m_nEffectEnd)
-                    {
-                        this.m_nEffectFrame++;
-                    }
-                    else
-                    {
-                        this.m_boUseEffect = false;
-                    }
-                }
-            }
-            prv = this.m_nCurrentFrame;
-            if (this.m_nCurrentAction != 0)
-            {
-                if ((this.m_nCurrentFrame < this.m_nStartFrame) || (this.m_nCurrentFrame > this.m_nEndFrame))
-                {
-                    this.m_nCurrentFrame = this.m_nStartFrame;
-                }
-                if (this.m_boMsgMuch)
-                {
-                    m_dwFrameTimetime = HUtil32.Round(this.m_dwFrameTime * 2 / 3);
-                }
-                else
-                {
-                    m_dwFrameTimetime = this.m_dwFrameTime;
-                }
-                if (MShare.GetTickCount() - this.m_dwStartTime > m_dwFrameTimetime)
-                {
-                    if (this.m_nCurrentFrame < this.m_nEndFrame)
-                    {
-                        this.m_nCurrentFrame++;
-                        this.m_dwStartTime = MShare.GetTickCount();
-                    }
-                    else
-                    {
-                        this.m_nCurrentAction = 0;
-                        this.m_boUseEffect = false;
-                        //this.m_boNowDeath = false;
-                    }
-                    if (this.m_nCurrentAction == Grobal2.SM_LIGHTING)
-                    {
-                        //if ((this.m_btRace == 117) && (this.m_nCurrentFrame - this.m_nStartFrame == 1))
-                        //{
-                        //    robotClient.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SIDESTONE_ATT1, Grobal2.MAGIC_SIDESTONE_ATT1, this.m_nCurrX, this.m_nCurrY, this.m_nCurrX, this.m_nCurrY, this.m_nRecogId, magiceff.TMagicType.mtGroundEffect, false, 30, ref bofly);
-                        //}
-                        //if ((this.m_nCurrentFrame - this.m_nStartFrame) == 4)
-                        //{
-                        //    if (this.m_btRace == 111)
-                        //    {
-                        //        robotClient.g_PlayScene.NewMagic(this, 7, 33, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtGroundEffect, false, 30, ref bofly);
-                        //    }
-                        //    else if (this.m_btRace == 101)
-                        //    {
-                        //        robotClient.g_PlayScene.NewMagic(this, 1, 1, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFly, true, 20, ref bofly);
-                        //    }
-                        //    else if (this.m_btRace == 70)
-                        //    {
-                        //        robotClient.g_PlayScene.NewMagic(this, 7, 9, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                        //    }
-                        //    else if (this.m_btRace == 71)
-                        //    {
-                        //        robotClient.g_PlayScene.NewMagic(this, 11, 32, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFly, true, 30, ref bofly);
-                        //    }
-                        //    else if (this.m_btRace == 72)
-                        //    {
-                        //        robotClient.g_PlayScene.NewMagic(this, 11, 32, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtGroundEffect, false, 30, ref bofly);
-                        //    }
-                        //    else if (this.m_btRace == 78)
-                        //    {
-                        //        robotClient.g_PlayScene.NewMagic(this, 11, 37, this.m_nCurrX, this.m_nCurrY, this.m_nCurrX, this.m_nCurrY, this.m_nRecogId, magiceff.TMagicType.mtGroundEffect, false, 30, ref bofly);
-                        //    }
-                        //    else if (this.m_btRace == 81)
-                        //    {
-                        //        robotClient.g_PlayScene.NewMagic(this, 7, 9, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                        //    }
-                        //    else if (this.m_btRace == 113)
-                        //    {
-                        //    }
-                        //    else if (this.m_btRace == 114)
-                        //    {
-                        //        // 11,
-                        //        robotClient.g_PlayScene.NewMagic(this, Grobal2.MAGIC_FOX_THUNDER, Grobal2.MAGIC_FOX_THUNDER, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                        //    }
-                        //    else if (this.m_btRace == 115)
-                        //    {
-                        //        robotClient.g_PlayScene.NewMagic(this, Grobal2.MAGIC_FOX_FIRE2, Grobal2.MAGIC_FOX_FIRE2, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtExploBujauk, false, 30, ref bofly);
-                        //        this.m_nMagicStartSound = 10130;
-                        //        this.m_nMagicFireSound = 10131;
-                        //        this.m_nMagicExplosionSound = 3426;
-                        //    }
-                        //}
-                    }
-                    //else if (this.m_nCurrentAction == Grobal2.SM_LIGHTING_1)
+                    //if ((this.m_btRace == 117) && (this.m_nCurrentFrame - this.m_nStartFrame == 1))
                     //{
-                    //    if (this.m_nCurrentFrame - this.m_nStartFrame == 4)
+                    //    robotClient.g_PlayScene.NewMagic(this, Grobal2.MAGIC_SIDESTONE_ATT1, Grobal2.MAGIC_SIDESTONE_ATT1, this.m_nCurrX, this.m_nCurrY, this.m_nCurrX, this.m_nCurrY, this.m_nRecogId, magiceff.TMagicType.mtGroundEffect, false, 30, ref bofly);
+                    //}
+                    //if ((this.m_nCurrentFrame - this.m_nStartFrame) == 4)
+                    //{
+                    //    if (this.m_btRace == 111)
                     //    {
-                    //        if (this.m_btRace == 114)
-                    //        {
-                    //            robotClient.g_PlayScene.NewMagic(this, Grobal2.MAGIC_FOX_FIRE1, Grobal2.MAGIC_FOX_FIRE1, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
-                    //        }
-                    //        else if (this.m_btRace == 115)
-                    //        {
-                    //            robotClient.g_PlayScene.NewMagic(this, Grobal2.MAGIC_FOX_CURSE, Grobal2.MAGIC_FOX_CURSE, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtExploBujauk, false, 30, ref bofly);
-                    //            this.m_nMagicStartSound = 10130;
-                    //            this.m_nMagicFireSound = 10131;
-                    //            this.m_nMagicExplosionSound = 3427;
-                    //        }
+                    //        robotClient.g_PlayScene.NewMagic(this, 7, 33, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtGroundEffect, false, 30, ref bofly);
+                    //    }
+                    //    else if (this.m_btRace == 101)
+                    //    {
+                    //        robotClient.g_PlayScene.NewMagic(this, 1, 1, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFly, true, 20, ref bofly);
+                    //    }
+                    //    else if (this.m_btRace == 70)
+                    //    {
+                    //        robotClient.g_PlayScene.NewMagic(this, 7, 9, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                    //    }
+                    //    else if (this.m_btRace == 71)
+                    //    {
+                    //        robotClient.g_PlayScene.NewMagic(this, 11, 32, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFly, true, 30, ref bofly);
+                    //    }
+                    //    else if (this.m_btRace == 72)
+                    //    {
+                    //        robotClient.g_PlayScene.NewMagic(this, 11, 32, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtGroundEffect, false, 30, ref bofly);
+                    //    }
+                    //    else if (this.m_btRace == 78)
+                    //    {
+                    //        robotClient.g_PlayScene.NewMagic(this, 11, 37, this.m_nCurrX, this.m_nCurrY, this.m_nCurrX, this.m_nCurrY, this.m_nRecogId, magiceff.TMagicType.mtGroundEffect, false, 30, ref bofly);
+                    //    }
+                    //    else if (this.m_btRace == 81)
+                    //    {
+                    //        robotClient.g_PlayScene.NewMagic(this, 7, 9, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                    //    }
+                    //    else if (this.m_btRace == 113)
+                    //    {
+                    //    }
+                    //    else if (this.m_btRace == 114)
+                    //    {
+                    //        // 11,
+                    //        robotClient.g_PlayScene.NewMagic(this, Grobal2.MAGIC_FOX_THUNDER, Grobal2.MAGIC_FOX_THUNDER, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                    //    }
+                    //    else if (this.m_btRace == 115)
+                    //    {
+                    //        robotClient.g_PlayScene.NewMagic(this, Grobal2.MAGIC_FOX_FIRE2, Grobal2.MAGIC_FOX_FIRE2, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtExploBujauk, false, 30, ref bofly);
+                    //        this.m_nMagicStartSound = 10130;
+                    //        this.m_nMagicFireSound = 10131;
+                    //        this.m_nMagicExplosionSound = 3426;
                     //    }
                     //}
-                    this.m_nCurrentDefFrame = 0;
-                    this.m_dwDefFrameTime = MShare.GetTickCount();
                 }
-            }
-            else
-            {
-                if (new ArrayList(new int[] { 118, 119 }).Contains(this.m_btRace))
-                {
-                    if (MShare.GetTickCount() - this.m_dwDefFrameTime > 150)
-                    {
-                        this.m_dwDefFrameTime = MShare.GetTickCount();
-                        this.m_nCurrentDefFrame++;
-                        if (this.m_nCurrentDefFrame >= this.m_nDefFrameCount)
-                        {
-                            this.m_nCurrentDefFrame = 0;
-                        }
-                    }
-                    this.DefaultMotion();
-                }
-                else if ((MShare.GetTickCount() - this.m_dwSmoothMoveTime) > 200)
-                {
-                    if (MShare.GetTickCount() - this.m_dwDefFrameTime > 500)
-                    {
-                        this.m_dwDefFrameTime = MShare.GetTickCount();
-                        this.m_nCurrentDefFrame++;
-                        if (this.m_nCurrentDefFrame >= this.m_nDefFrameCount)
-                        {
-                            this.m_nCurrentDefFrame = 0;
-                        }
-                    }
-                    this.DefaultMotion();
-                }
-            }
-            if (prv != this.m_nCurrentFrame)
-            {
-                this.m_dwLoadSurfaceTime = MShare.GetTickCount();
+
+                //else if (this.m_nCurrentAction == Grobal2.SM_LIGHTING_1)
+                //{
+                //    if (this.m_nCurrentFrame - this.m_nStartFrame == 4)
+                //    {
+                //        if (this.m_btRace == 114)
+                //        {
+                //            robotClient.g_PlayScene.NewMagic(this, Grobal2.MAGIC_FOX_FIRE1, Grobal2.MAGIC_FOX_FIRE1, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtThunder, false, 30, ref bofly);
+                //        }
+                //        else if (this.m_btRace == 115)
+                //        {
+                //            robotClient.g_PlayScene.NewMagic(this, Grobal2.MAGIC_FOX_CURSE, Grobal2.MAGIC_FOX_CURSE, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtExploBujauk, false, 30, ref bofly);
+                //            this.m_nMagicStartSound = 10130;
+                //            this.m_nMagicFireSound = 10131;
+                //            this.m_nMagicExplosionSound = 3427;
+                //        }
+                //    }
+                //}
+                m_nCurrentDefFrame = 0;
+                m_dwDefFrameTime = MShare.GetTickCount();
             }
         }
+        else
+        {
+            if (new ArrayList(new[] {118, 119}).Contains(m_btRace))
+            {
+                if (MShare.GetTickCount() - m_dwDefFrameTime > 150)
+                {
+                    m_dwDefFrameTime = MShare.GetTickCount();
+                    m_nCurrentDefFrame++;
+                    if (m_nCurrentDefFrame >= m_nDefFrameCount) m_nCurrentDefFrame = 0;
+                }
+
+                DefaultMotion();
+            }
+            else if (MShare.GetTickCount() - m_dwSmoothMoveTime > 200)
+            {
+                if (MShare.GetTickCount() - m_dwDefFrameTime > 500)
+                {
+                    m_dwDefFrameTime = MShare.GetTickCount();
+                    m_nCurrentDefFrame++;
+                    if (m_nCurrentDefFrame >= m_nDefFrameCount) m_nCurrentDefFrame = 0;
+                }
+
+                DefaultMotion();
+            }
+        }
+
+        if (prv != m_nCurrentFrame) m_dwLoadSurfaceTime = MShare.GetTickCount();
     }
 }

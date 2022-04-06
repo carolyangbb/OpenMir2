@@ -1,244 +1,205 @@
 ﻿using System.Collections;
 using SystemModule;
 
-namespace RobotSvr
+namespace RobotSvr;
+
+public class TSnowMon : TActor
 {
-    public class TSnowMon : TActor
+    protected int ax = 0;
+    protected int ay = 0;
+    protected bool BoUseDieEffect;
+    protected int bx = 0;
+    protected int by = 0;
+    protected int fire16dir = 0;
+    protected int firedir;
+    protected bool m_bowChrEffect;
+
+    public TSnowMon(RobotClient robotClient) : base(robotClient)
     {
-        protected bool BoUseDieEffect = false;
-        protected int firedir = 0;
-        protected int fire16dir = 0;
-        protected int ax = 0;
-        protected int ay = 0;
-        protected int bx = 0;
-        protected int by = 0;
-        protected bool m_bowChrEffect = false;
+        m_boUseEffect = false;
+        BoUseDieEffect = false;
+        m_bowChrEffect = false;
+    }
 
-        public TSnowMon(RobotClient robotClient) : base(robotClient)
+    public override void CalcActorFrame()
+    {
+        m_nCurrentFrame = -1;
+        m_nBodyOffset = Actor.GetOffset(m_wAppearance);
+        var pm = Actor.GetRaceByPM(m_btRace, m_wAppearance);
+        if (pm == null) return;
+        switch (m_nCurrentAction)
         {
-            this.m_boUseEffect = false;
-            BoUseDieEffect = false;
-            m_bowChrEffect = false;
-        }
-
-        public override void CalcActorFrame()
-        {
-            this.m_nCurrentFrame = -1;
-            this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
-            TMonsterAction pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
-            if (pm == null)
-            {
-                return;
-            }
-            switch (this.m_nCurrentAction)
-            {
-                case Grobal2.SM_TURN:
-                    this.m_nStartFrame = pm.ActStand.start + this.m_btDir * (pm.ActStand.frame + pm.ActStand.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + pm.ActStand.frame - 1;
-                    this.m_dwFrameTime = pm.ActStand.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    this.m_nDefFrameCount = pm.ActStand.frame;
-                    this.Shift(this.m_btDir, 0, 0, 1);
-                    break;
-                case Grobal2.SM_WALK:
-                    this.m_nStartFrame = pm.ActWalk.start + this.m_btDir * (pm.ActWalk.frame + pm.ActWalk.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + pm.ActWalk.frame - 1;
-                    this.m_dwFrameTime = pm.ActWalk.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    this.m_nMaxTick = pm.ActWalk.usetick;
-                    this.m_nCurTick = 0;
-                    this.m_nMoveStep = 1;
-                    if (this.m_nCurrentAction == Grobal2.SM_WALK)
-                    {
-                        this.Shift(this.m_btDir, this.m_nMoveStep, 0, this.m_nEndFrame - this.m_nStartFrame + 1);
-                    }
-                    else
-                    {
-                        this.Shift(ClFunc.GetBack(this.m_btDir), this.m_nMoveStep, 0, this.m_nEndFrame - this.m_nStartFrame + 1);
-                    }
-                    break;
-                case Grobal2.SM_HIT:
-                    this.m_nStartFrame = pm.ActAttack.start + this.m_btDir * (pm.ActAttack.frame + pm.ActAttack.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + pm.ActAttack.frame - 1;
-                    this.m_dwFrameTime = pm.ActAttack.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    this.m_dwWarModeTime = MShare.GetTickCount();
-                    this.Shift(this.m_btDir, 0, 0, 1);
-                    this.m_boUseEffect = true;
-                    firedir = this.m_btDir;
-                    this.m_nEffectFrame = this.m_nStartFrame;
-                    this.m_nEffectStart = this.m_nStartFrame;
-                    if (this.m_btRace == 20)
-                    {
-                        this.m_nEffectEnd = this.m_nEndFrame + 1;
-                    }
-                    else
-                    {
-                        this.m_nEffectEnd = this.m_nEndFrame;
-                    }
-                    this.m_dwEffectStartTime = MShare.GetTickCount();
-                    this.m_dwEffectFrameTime = this.m_dwFrameTime;
-                    this.m_boUseEffect = false;
-                    if (this.m_btRace == 51)
-                    {
-                        this.m_boUseEffect = true;
-                    }
-                    break;
-                case Grobal2.SM_LIGHTING:
-                    this.m_nStartFrame = pm.ActCritical.start + this.m_btDir * (pm.ActCritical.frame + pm.ActCritical.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + pm.ActCritical.frame - 1;
-                    this.m_dwFrameTime = pm.ActCritical.ftime;
-                    if ((this.m_nMagicNum == 2) && new ArrayList(new int[] { 38, 39, 46 }).Contains(this.m_btRace))
-                    {
-                        this.m_nStartFrame = pm.ActDeath.start + this.m_btDir * (pm.ActDeath.frame + pm.ActDeath.skip);
-                        this.m_nEndFrame = this.m_nStartFrame + pm.ActDeath.frame - 1;
-                        this.m_dwFrameTime = pm.ActDeath.ftime;
-                    }
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    this.m_dwWarModeTime = MShare.GetTickCount();
-                    this.Shift(this.m_btDir, 0, 0, 1);
-                    this.m_boUseEffect = true;
-                    this.m_nEffectFrame = this.m_nStartFrame;
-                    this.m_nEffectStart = this.m_nStartFrame;
-                    this.m_nEffectEnd = this.m_nEndFrame;
-                    this.m_dwEffectStartTime = MShare.GetTickCount();
-                    this.m_dwEffectFrameTime = this.m_dwFrameTime;
-                    break;
-                case Grobal2.SM_SPELL:
-                    this.m_nStartFrame = pm.ActAttack.start + this.m_btDir * (pm.ActAttack.frame + pm.ActAttack.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + pm.ActAttack.frame - 1;
-                    this.m_dwFrameTime = pm.ActAttack.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    this.m_nCurEffFrame = 0;
-                    this.m_boUseMagic = true;
-                    this.m_nMagLight = 2;
-                    this.m_nSpellFrame = pm.ActCritical.frame;
-                    this.m_dwWaitMagicRequest = MShare.GetTickCount();
-                    this.m_boWarMode = true;
-                    this.m_dwWarModeTime = MShare.GetTickCount();
-                    this.Shift(this.m_btDir, 0, 0, 1);
-                    break;
-                case Grobal2.SM_STRUCK:
-                    this.m_nStartFrame = pm.ActStruck.start + this.m_btDir * (pm.ActStruck.frame + pm.ActStruck.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + pm.ActStruck.frame - 1;
-                    this.m_dwFrameTime = this.m_dwStruckFrameTime;
-                    // pm.ActStruck.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    break;
-                case Grobal2.SM_DEATH:
-                    this.m_nStartFrame = pm.ActDie.start + this.m_btDir * (pm.ActDie.frame + pm.ActDie.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + pm.ActDie.frame - 1;
-                    this.m_nStartFrame = this.m_nEndFrame;
-                    this.m_dwFrameTime = pm.ActDie.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    break;
-                case Grobal2.SM_NOWDEATH:
-                    this.m_nStartFrame = pm.ActDie.start + this.m_btDir * (pm.ActDie.frame + pm.ActDie.skip);
-                    this.m_nEndFrame = this.m_nStartFrame + pm.ActDie.frame - 1;
-                    this.m_dwFrameTime = pm.ActDie.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    if (new ArrayList(new int[] { 40, 65 }).Contains(this.m_btRace))
-                    {
-                        BoUseDieEffect = true;
-                    }
-                    // 38, 39,
-                    if (new ArrayList(new int[] { 51 }).Contains(this.m_btRace))
-                    {
-                        BoUseDieEffect = true;
-                    }
-                    break;
-                case Grobal2.SM_SKELETON:
-                    this.m_nStartFrame = pm.ActDeath.start;
-                    this.m_nEndFrame = this.m_nStartFrame + pm.ActDeath.frame - 1;
-                    this.m_dwFrameTime = pm.ActDeath.ftime;
-                    this.m_dwStartTime = MShare.GetTickCount();
-                    if (this.m_btRace == 39)
-                    {
-                        this.m_nStartFrame = pm.ActDeath.start + this.m_btDir * (pm.ActDeath.frame + pm.ActDeath.skip);
-                        this.m_nEndFrame = this.m_nStartFrame + pm.ActDeath.frame - 1;
-                        this.m_dwFrameTime = pm.ActDeath.ftime;
-                        this.m_dwStartTime = MShare.GetTickCount();
-                        this.m_dwWarModeTime = MShare.GetTickCount();
-                        this.Shift(this.m_btDir, 0, 0, 1);
-                        this.m_boUseEffect = true;
-                        this.m_nEffectFrame = this.m_nStartFrame;
-                        this.m_nEffectStart = this.m_nStartFrame;
-                        this.m_nEffectEnd = this.m_nEndFrame;
-                        this.m_dwEffectStartTime = MShare.GetTickCount();
-                        this.m_dwEffectFrameTime = this.m_dwFrameTime;
-                    }
-                    break;
-            }
-        }
-
-        public override int GetDefaultFrame(bool wmode)
-        {
-            int result;
-            int cf;
-            TMonsterAction pm;
-            result = 0;
-            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
-            if (pm == null)
-            {
-                return result;
-            }
-            if (this.m_boDeath)
-            {
-                if (this.m_boSkeleton)
-                {
-                    result = pm.ActDeath.start;
-                }
+            case Grobal2.SM_TURN:
+                m_nStartFrame = pm.ActStand.start + m_btDir * (pm.ActStand.frame + pm.ActStand.skip);
+                m_nEndFrame = m_nStartFrame + pm.ActStand.frame - 1;
+                m_dwFrameTime = pm.ActStand.ftime;
+                m_dwStartTime = MShare.GetTickCount();
+                m_nDefFrameCount = pm.ActStand.frame;
+                Shift(m_btDir, 0, 0, 1);
+                break;
+            case Grobal2.SM_WALK:
+                m_nStartFrame = pm.ActWalk.start + m_btDir * (pm.ActWalk.frame + pm.ActWalk.skip);
+                m_nEndFrame = m_nStartFrame + pm.ActWalk.frame - 1;
+                m_dwFrameTime = pm.ActWalk.ftime;
+                m_dwStartTime = MShare.GetTickCount();
+                m_nMaxTick = pm.ActWalk.usetick;
+                m_nCurTick = 0;
+                m_nMoveStep = 1;
+                if (m_nCurrentAction == Grobal2.SM_WALK)
+                    Shift(m_btDir, m_nMoveStep, 0, m_nEndFrame - m_nStartFrame + 1);
                 else
+                    Shift(ClFunc.GetBack(m_btDir), m_nMoveStep, 0, m_nEndFrame - m_nStartFrame + 1);
+                break;
+            case Grobal2.SM_HIT:
+                m_nStartFrame = pm.ActAttack.start + m_btDir * (pm.ActAttack.frame + pm.ActAttack.skip);
+                m_nEndFrame = m_nStartFrame + pm.ActAttack.frame - 1;
+                m_dwFrameTime = pm.ActAttack.ftime;
+                m_dwStartTime = MShare.GetTickCount();
+                m_dwWarModeTime = MShare.GetTickCount();
+                Shift(m_btDir, 0, 0, 1);
+                m_boUseEffect = true;
+                firedir = m_btDir;
+                m_nEffectFrame = m_nStartFrame;
+                m_nEffectStart = m_nStartFrame;
+                if (m_btRace == 20)
+                    m_nEffectEnd = m_nEndFrame + 1;
+                else
+                    m_nEffectEnd = m_nEndFrame;
+                m_dwEffectStartTime = MShare.GetTickCount();
+                m_dwEffectFrameTime = m_dwFrameTime;
+                m_boUseEffect = false;
+                if (m_btRace == 51) m_boUseEffect = true;
+                break;
+            case Grobal2.SM_LIGHTING:
+                m_nStartFrame = pm.ActCritical.start + m_btDir * (pm.ActCritical.frame + pm.ActCritical.skip);
+                m_nEndFrame = m_nStartFrame + pm.ActCritical.frame - 1;
+                m_dwFrameTime = pm.ActCritical.ftime;
+                if (m_nMagicNum == 2 && new ArrayList(new[] {38, 39, 46}).Contains(m_btRace))
                 {
-                    result = pm.ActDie.start + this.m_btDir * (pm.ActDie.frame + pm.ActDie.skip) + (pm.ActDie.frame - 1);
+                    m_nStartFrame = pm.ActDeath.start + m_btDir * (pm.ActDeath.frame + pm.ActDeath.skip);
+                    m_nEndFrame = m_nStartFrame + pm.ActDeath.frame - 1;
+                    m_dwFrameTime = pm.ActDeath.ftime;
                 }
-            }
+
+                m_dwStartTime = MShare.GetTickCount();
+                m_dwWarModeTime = MShare.GetTickCount();
+                Shift(m_btDir, 0, 0, 1);
+                m_boUseEffect = true;
+                m_nEffectFrame = m_nStartFrame;
+                m_nEffectStart = m_nStartFrame;
+                m_nEffectEnd = m_nEndFrame;
+                m_dwEffectStartTime = MShare.GetTickCount();
+                m_dwEffectFrameTime = m_dwFrameTime;
+                break;
+            case Grobal2.SM_SPELL:
+                m_nStartFrame = pm.ActAttack.start + m_btDir * (pm.ActAttack.frame + pm.ActAttack.skip);
+                m_nEndFrame = m_nStartFrame + pm.ActAttack.frame - 1;
+                m_dwFrameTime = pm.ActAttack.ftime;
+                m_dwStartTime = MShare.GetTickCount();
+                m_nCurEffFrame = 0;
+                m_boUseMagic = true;
+                m_nMagLight = 2;
+                m_nSpellFrame = pm.ActCritical.frame;
+                m_dwWaitMagicRequest = MShare.GetTickCount();
+                m_boWarMode = true;
+                m_dwWarModeTime = MShare.GetTickCount();
+                Shift(m_btDir, 0, 0, 1);
+                break;
+            case Grobal2.SM_STRUCK:
+                m_nStartFrame = pm.ActStruck.start + m_btDir * (pm.ActStruck.frame + pm.ActStruck.skip);
+                m_nEndFrame = m_nStartFrame + pm.ActStruck.frame - 1;
+                m_dwFrameTime = m_dwStruckFrameTime;
+                // pm.ActStruck.ftime;
+                m_dwStartTime = MShare.GetTickCount();
+                break;
+            case Grobal2.SM_DEATH:
+                m_nStartFrame = pm.ActDie.start + m_btDir * (pm.ActDie.frame + pm.ActDie.skip);
+                m_nEndFrame = m_nStartFrame + pm.ActDie.frame - 1;
+                m_nStartFrame = m_nEndFrame;
+                m_dwFrameTime = pm.ActDie.ftime;
+                m_dwStartTime = MShare.GetTickCount();
+                break;
+            case Grobal2.SM_NOWDEATH:
+                m_nStartFrame = pm.ActDie.start + m_btDir * (pm.ActDie.frame + pm.ActDie.skip);
+                m_nEndFrame = m_nStartFrame + pm.ActDie.frame - 1;
+                m_dwFrameTime = pm.ActDie.ftime;
+                m_dwStartTime = MShare.GetTickCount();
+                if (new ArrayList(new[] {40, 65}).Contains(m_btRace)) BoUseDieEffect = true;
+                // 38, 39,
+                if (new ArrayList(new[] {51}).Contains(m_btRace)) BoUseDieEffect = true;
+                break;
+            case Grobal2.SM_SKELETON:
+                m_nStartFrame = pm.ActDeath.start;
+                m_nEndFrame = m_nStartFrame + pm.ActDeath.frame - 1;
+                m_dwFrameTime = pm.ActDeath.ftime;
+                m_dwStartTime = MShare.GetTickCount();
+                if (m_btRace == 39)
+                {
+                    m_nStartFrame = pm.ActDeath.start + m_btDir * (pm.ActDeath.frame + pm.ActDeath.skip);
+                    m_nEndFrame = m_nStartFrame + pm.ActDeath.frame - 1;
+                    m_dwFrameTime = pm.ActDeath.ftime;
+                    m_dwStartTime = MShare.GetTickCount();
+                    m_dwWarModeTime = MShare.GetTickCount();
+                    Shift(m_btDir, 0, 0, 1);
+                    m_boUseEffect = true;
+                    m_nEffectFrame = m_nStartFrame;
+                    m_nEffectStart = m_nStartFrame;
+                    m_nEffectEnd = m_nEndFrame;
+                    m_dwEffectStartTime = MShare.GetTickCount();
+                    m_dwEffectFrameTime = m_dwFrameTime;
+                }
+
+                break;
+        }
+    }
+
+    public override int GetDefaultFrame(bool wmode)
+    {
+        int result;
+        int cf;
+        TMonsterAction pm;
+        result = 0;
+        pm = Actor.GetRaceByPM(m_btRace, m_wAppearance);
+        if (pm == null) return result;
+        if (m_boDeath)
+        {
+            if (m_boSkeleton)
+                result = pm.ActDeath.start;
             else
-            {
-                this.m_nDefFrameCount = pm.ActStand.frame;
-                if (this.m_nCurrentDefFrame < 0)
-                {
-                    cf = 0;
-                }
-                else if (this.m_nCurrentDefFrame >= pm.ActStand.frame)
-                {
-                    cf = 0;
-                }
-                else
-                {
-                    cf = this.m_nCurrentDefFrame;
-                }
-                result = pm.ActStand.start + this.m_btDir * (pm.ActStand.frame + pm.ActStand.skip) + cf;
-            }
-            return result;
+                result = pm.ActDie.start + m_btDir * (pm.ActDie.frame + pm.ActDie.skip) + (pm.ActDie.frame - 1);
+        }
+        else
+        {
+            m_nDefFrameCount = pm.ActStand.frame;
+            if (m_nCurrentDefFrame < 0)
+                cf = 0;
+            else if (m_nCurrentDefFrame >= pm.ActStand.frame)
+                cf = 0;
+            else
+                cf = m_nCurrentDefFrame;
+            result = pm.ActStand.start + m_btDir * (pm.ActStand.frame + pm.ActStand.skip) + cf;
         }
 
-        public override void Run()
+        return result;
+    }
+
+    public override void Run()
+    {
+        long dwEffectFrameTimetime;
+        base.Run();
+        if (m_boUseEffect)
         {
-            long dwEffectFrameTimetime;
-            base.Run();
-            if (this.m_boUseEffect)
+            if (m_boMsgMuch)
+                dwEffectFrameTimetime = HUtil32.Round(m_dwEffectFrameTime * 2 / 3);
+            else
+                dwEffectFrameTimetime = m_dwEffectFrameTime;
+            if (MShare.GetTickCount() - m_dwEffectStartTime > dwEffectFrameTimetime)
             {
-                if (this.m_boMsgMuch)
-                {
-                    dwEffectFrameTimetime = HUtil32.Round(this.m_dwEffectFrameTime * 2 / 3);
-                }
+                m_dwEffectStartTime = MShare.GetTickCount();
+                if (m_nEffectFrame < m_nEffectEnd)
+                    m_nEffectFrame++;
                 else
-                {
-                    dwEffectFrameTimetime = this.m_dwEffectFrameTime;
-                }
-                if (MShare.GetTickCount() - this.m_dwEffectStartTime > dwEffectFrameTimetime)
-                {
-                    this.m_dwEffectStartTime = MShare.GetTickCount();
-                    if (this.m_nEffectFrame < this.m_nEffectEnd)
-                    {
-                        this.m_nEffectFrame++;
-                    }
-                    else
-                    {
-                        this.m_boUseEffect = false;
-                    }
-                }
+                    m_boUseEffect = false;
             }
         }
     }

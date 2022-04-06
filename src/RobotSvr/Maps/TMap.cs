@@ -251,7 +251,7 @@ namespace RobotSvr
             }
         }
 
-        public void UpdateMapPos_Unmark(int xx, int yy)
+        public void UpdateMapPos_Unmark(int xx, int yy, ref int cx, ref int cy)
         {
             int ax;
             int ay;
@@ -259,17 +259,15 @@ namespace RobotSvr
             {
                 ax = xx - m_nBlockLeft;
                 ay = yy - m_nBlockTop;
-                m_MArr[ax, ay].wFrImg = m_MArr[ax, ay].wFrImg & 0x7FFF;
-                m_MArr[ax, ay].wBkImg = m_MArr[ax, ay].wBkImg & 0x7FFF;
+                m_MArr[ax, ay].wFrImg = (ushort)(m_MArr[ax, ay].wFrImg & 0x7FFF);
+                m_MArr[ax, ay].wBkImg = (ushort)(m_MArr[ax, ay].wBkImg & 0x7FFF);
             }
         }
 
         public void UpdateMapPos(int mx, int my)
         {
-            int cx;
-            int cy;
-            cx = mx / MShare.LOGICALMAPUNIT;
-            cy = my / MShare.LOGICALMAPUNIT;
+            int cx = mx / MShare.LOGICALMAPUNIT;
+            int cy = my / MShare.LOGICALMAPUNIT;
             m_nBlockLeft = HUtil32._MAX(0, (cx - 1) * MShare.LOGICALMAPUNIT);
             m_nBlockTop = HUtil32._MAX(0, (cy - 1) * MShare.LOGICALMAPUNIT);
             UpdateMapSquare(cx, cy);
@@ -277,13 +275,13 @@ namespace RobotSvr
             {
                 if (m_sCurrentMap == "3")
                 {
-                    UpdateMapPos_Unmark(624, 278);
-                    UpdateMapPos_Unmark(627, 278);
-                    UpdateMapPos_Unmark(634, 271);
-                    UpdateMapPos_Unmark(564, 287);
-                    UpdateMapPos_Unmark(564, 286);
-                    UpdateMapPos_Unmark(661, 277);
-                    UpdateMapPos_Unmark(578, 296);
+                    UpdateMapPos_Unmark(624, 278, ref cx, ref cy);
+                    UpdateMapPos_Unmark(627, 278, ref cx, ref cy);
+                    UpdateMapPos_Unmark(634, 271, ref cx, ref cy);
+                    UpdateMapPos_Unmark(564, 287, ref cx, ref cy);
+                    UpdateMapPos_Unmark(564, 286, ref cx, ref cy);
+                    UpdateMapPos_Unmark(661, 277, ref cx, ref cy);
+                    UpdateMapPos_Unmark(578, 296, ref cx, ref cy);
                 }
             }
             m_nOldLeft = m_nBlockLeft;

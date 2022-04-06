@@ -4,47 +4,41 @@ namespace RobotSvr
 {
     public class TSkeletonArcherMon : TArcherMon
     {
-        public bool m_boNowDeath = false;
+        public bool m_boNowDeath;
         public int n264 = 0;
         public int n268 = 0;
+
+        public TSkeletonArcherMon(RobotClient robotClient) : base(robotClient)
+        {
+        }
 
         public override void CalcActorFrame()
         {
             base.CalcActorFrame();
-            if ((this.m_nCurrentAction == Grobal2.SM_NOWDEATH) && (this.m_btRace != 72))
-            {
-                m_boNowDeath = true;
-            }
+            if (m_nCurrentAction == Grobal2.SM_NOWDEATH && m_btRace != 72) m_boNowDeath = true;
         }
 
         public override void Run()
         {
             long m_dwFrameTimetime;
-            if (this.m_boMsgMuch)
-            {
-                m_dwFrameTimetime = HUtil32.Round(this.m_dwFrameTime * 2 / 3);
-            }
+            if (m_boMsgMuch)
+                m_dwFrameTimetime = HUtil32.Round(m_dwFrameTime * 2 / 3);
             else
-            {
-                m_dwFrameTimetime = this.m_dwFrameTime;
-            }
-            if (this.m_nCurrentAction != 0)
-            {
-                if ((MShare.GetTickCount() - this.m_dwStartTime) > m_dwFrameTimetime)
+                m_dwFrameTimetime = m_dwFrameTime;
+            if (m_nCurrentAction != 0)
+                if (MShare.GetTickCount() - m_dwStartTime > m_dwFrameTimetime)
                 {
-                    if (this.m_nCurrentFrame < this.m_nEndFrame)
+                    if (m_nCurrentFrame < m_nEndFrame)
                     {
                     }
                     else
                     {
-                        this.m_nCurrentAction = 0;
+                        m_nCurrentAction = 0;
                         m_boNowDeath = false;
                     }
                 }
-            }
+
             base.Run();
         }
-
     }
 }
-

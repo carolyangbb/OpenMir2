@@ -1,9 +1,8 @@
-﻿namespace RobotSvr
+﻿namespace RobotSvr;
+
+public class TSmallElfMonster : TSkeletonOma
 {
-    public class TSmallElfMonster : TSkeletonOma
+    public TSmallElfMonster(RobotClient robotClient) : base(robotClient)
     {
-        public TSmallElfMonster(RobotClient robotClient) : base(robotClient)
-        {
-        }
     }
 }

@@ -1,22 +1,20 @@
-﻿namespace RobotSvr
+﻿namespace RobotSvr;
+
+public class TMineMon : TKillingHerb
 {
-    public class TMineMon : TKillingHerb
+    public TMineMon(RobotClient robotClient) : base(robotClient)
     {
-        public TMineMon(RobotClient robotClient) : base(robotClient)
-        {
-        }
+    }
 
-        public override void CalcActorFrame()
-        {
-            base.CalcActorFrame();
-        }
+    public override void CalcActorFrame()
+    {
+        base.CalcActorFrame();
+    }
 
-    
-        public override int GetDefaultFrame(bool wmode)
-        {
-            int result = 0;
-            return result;
-        }
+
+    public override int GetDefaultFrame(bool wmode)
+    {
+        var result = 0;
+        return result;
     }
 }
-

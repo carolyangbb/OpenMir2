@@ -1,12 +1,9 @@
-﻿namespace RobotSvr
-{
-    public class TSpiderKing : TBanyaGuardMon
-    {
-        public override void CalcActorFrame()
-        {
-            base.CalcActorFrame();
-            return;
-        }
+﻿namespace RobotSvr;
 
+public class TSpiderKing : TBanyaGuardMon
+{
+    public override void CalcActorFrame()
+    {
+        base.CalcActorFrame();
     }
 }

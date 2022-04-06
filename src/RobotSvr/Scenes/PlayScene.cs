@@ -522,7 +522,7 @@ namespace RobotSvr
                     break;
                 case 15:
                     // 骷髅
-                    actor = new TDualAxeOma();
+                    actor = new TDualAxeOma(robotClient);
                     break;
                 case 16:
                     // 掷斧骷髅
@@ -530,38 +530,37 @@ namespace RobotSvr
                     break;
                 case 17:
                     // 洞蛆
-                    actor = new TCatMon();
+                    actor = new TCatMon(robotClient);
                     break;
                 case 18:
                     // 钩爪猫
-                    actor = new THuSuABi();
+                    actor = new THuSuABi(robotClient);
                     break;
                 case 19:
                     // 稻草人
-                    actor = new TCatMon();
+                    actor = new TCatMon(robotClient);
                     break;
                 case 20:
                     // 沃玛战士
-                    actor = new TFireCowFaceMon();
+                    actor = new TFireCowFaceMon(robotClient);
                     break;
                 case 21:// 火焰沃玛
-                    actor = new TCowFaceKing();
+                    actor = new TCowFaceKing(robotClient);
                     break;
                 case 22:// 沃玛教主
-                    actor = new TDualAxeOma();
+                    actor = new TDualAxeOma(robotClient);
                     break;
                 case 23:// 黑暗战士
                     actor = new TWhiteSkeleton(robotClient);
                     break;
                 case 24:// 变异骷髅
-                    actor = new TSuperiorGuard();
+                    actor = new TSuperiorGuard(robotClient);
                     break;
-                case 25:
-                    // 带刀卫士
-                    actor = new TKingOfSculpureKingMon();
+                case 25:// 带刀卫士
+                    actor = new TKingOfSculpureKingMon(robotClient);
                     break;
                 case 26:
-                    actor = new TKingOfSculpureKingMon();
+                    actor = new TKingOfSculpureKingMon(robotClient);
                     break;
                 case 27:
                     actor = new TSnowMon(robotClient);
@@ -573,35 +572,28 @@ namespace RobotSvr
                     actor = new TSnowMon(robotClient);
                     break;
                 case 30:
-                    actor = new TCatMon();
+                    actor = new TCatMon(robotClient);
                     break;
-                case 31:
-                    // 朝俺窿
-                    actor = new TCatMon();
+                case 31:// 朝俺窿
+                    actor = new TCatMon(robotClient);
                     break;
-                case 32:
-                    // 角蝇
-                    actor = new TScorpionMon();
+                case 32:// 角蝇
+                    actor = new TScorpionMon(robotClient);
                     break;
-                case 33:
-                    // 蝎子
-                    actor = new TCentipedeKingMon();
+                case 33:// 蝎子
+                    actor = new TCentipedeKingMon(robotClient);
                     break;
-                case 34:
-                    // 触龙神
-                    actor = new TBigHeartMon();
+                case 34:// 触龙神
+                    actor = new TBigHeartMon(robotClient);
                     break;
-                case 35:
-                    // 赤月恶魔
+                case 35:// 赤月恶魔
                     actor = new TSpiderHouseMon(robotClient);
                     break;
-                case 36:
-                    // 幻影蜘蛛
-                    actor = new TExplosionSpider();
+                case 36:// 幻影蜘蛛
+                    actor = new TExplosionSpider(robotClient);
                     break;
-                case 37:
-                    // 月魔蜘蛛
-                    actor = new TFlyingSpider();
+                case 37:// 月魔蜘蛛
+                    actor = new TFlyingSpider(robotClient);
                     break;
                 case 38:
                     actor = new TSnowMon(robotClient);
@@ -610,44 +602,37 @@ namespace RobotSvr
                     actor = new TSnowMon(robotClient);
                     break;
                 case 40:
-                    actor = new TZombiLighting();
+                    actor = new TZombiLighting(robotClient);
                     break;
-                case 41:
-                    // 僵尸1
+                case 41:// 僵尸1
                     actor = new TZombiDigOut(robotClient);
                     break;
-                case 42:
-                    // 僵尸2
+                case 42:// 僵尸2
                     actor = new TZombiZilkin(robotClient);
                     break;
-                case 43:
-                    // 僵尸3
-                    actor = new TBeeQueen();
+                case 43:// 僵尸3
+                    actor = new TBeeQueen(robotClient);
                     break;
-                case 44:
-                    // 角蝇巢
+                case 44:// 角蝇巢
                     actor = new TSnowMon(robotClient);
                     break;
                 case 45:
-                    actor = new TArcherMon();
+                    actor = new TArcherMon(robotClient);
                     break;
-                case 46:
-                    // 弓箭手
+                case 46:// 弓箭手
                     actor = new TSnowMon(robotClient);
                     break;
                 case 47:
                     actor = new TSculptureMon(robotClient);
                     break;
-                case 48:
-                    // 祖玛雕像
+                case 48:// 祖玛雕像
                     actor = new TSculptureMon(robotClient);
                     break;
-                case 49:
+                case 49:// 祖玛教主
                     actor = new TSculptureKingMon(robotClient);
                     break;
                 case 50:
-                    // 祖玛教主
-                    actor = new TNpcActor();
+                    actor = new TNpcActor(robotClient);
                     break;
                 case 51:
                     actor = new TSnowMon(robotClient);
@@ -672,72 +657,72 @@ namespace RobotSvr
                     actor = new TAngel(robotClient);
                     break;
                 case 57:
-                    actor = new TDualAxeOma();
+                    actor = new TDualAxeOma(robotClient);
                     break;
                 case 58:
                     // 1234
-                    actor = new TDualAxeOma();
+                    actor = new TDualAxeOma(robotClient);
                     break;
                 case 60:
                     // 1234
-                    actor = new TElectronicScolpionMon();
+                    actor = new TElectronicScolpionMon(robotClient);
                     break;
                 case 61:
-                    actor = new TBossPigMon();
+                    actor = new TBossPigMon(robotClient);
                     break;
                 case 62:
-                    actor = new TKingOfSculpureKingMon();
+                    actor = new TKingOfSculpureKingMon(robotClient);
                     break;
                 case 63:
-                    actor = new TSkeletonKingMon();
+                    actor = new TSkeletonKingMon(robotClient);
                     break;
                 case 64:
                     actor = new TGasKuDeGi(robotClient);
                     break;
                 case 65:
-                    actor = new TSamuraiMon();
+                    actor = new TSamuraiMon(robotClient);
                     break;
                 case 66:
-                    actor = new TSkeletonSoldierMon();
+                    actor = new TSkeletonSoldierMon(robotClient);
                     break;
                 case 67:
-                    actor = new TSkeletonSoldierMon();
+                    actor = new TSkeletonSoldierMon(robotClient);
                     break;
                 case 68:
-                    actor = new TSkeletonSoldierMon();
+                    actor = new TSkeletonSoldierMon(robotClient);
                     break;
                 case 69:
-                    actor = new TSkeletonArcherMon();
+                    actor = new TSkeletonArcherMon(robotClient);
                     break;
                 case 70:
-                    actor = new TBanyaGuardMon();
+                    actor = new TBanyaGuardMon(robotClient);
                     break;
                 case 71:
-                    actor = new TBanyaGuardMon();
+                    actor = new TBanyaGuardMon(robotClient);
                     break;
                 case 72:
-                    actor = new TBanyaGuardMon();
+                    actor = new TBanyaGuardMon(robotClient);
                     break;
                 case 73:
-                    actor = new TPBOMA1Mon();
+                    actor = new TPBOMA1Mon(robotClient);
                     break;
                 case 74:
-                    actor = new TCatMon();
+                    actor = new TCatMon(robotClient);
                     break;
                 case 75:
-                    actor = new TStoneMonster();
+                    actor = new TStoneMonster(robotClient);
                     break;
                 case 76:
-                    actor = new TSuperiorGuard();
+                    actor = new TSuperiorGuard(robotClient);
                     break;
                 case 77:
-                    actor = new TStoneMonster();
+                    actor = new TStoneMonster(robotClient);
                     break;
                 case 78:
-                    actor = new TBanyaGuardMon();
+                    actor = new TBanyaGuardMon(robotClient);
                     break;
                 case 79:
-                    actor = new TPBOMA6Mon();
+                    actor = new TPBOMA6Mon(robotClient);
                     break;
                 case 80:
                     actor = new TMineMon(robotClient);
@@ -746,16 +731,16 @@ namespace RobotSvr
                     actor = new TAngel(robotClient);
                     break;
                 case 83:
-                    actor = new TFireDragon();
+                    actor = new TFireDragon(robotClient);
                     break;
                 case 84:
-                    actor = new TDragonStatue();
+                    actor = new TDragonStatue(robotClient);
                     break;
                 case 87:
-                    actor = new TDragonStatue();
+                    actor = new TDragonStatue(robotClient);
                     break;
                 case 90:
-                    actor = new TDragonBody();
+                    actor = new TDragonBody(robotClient);
                     break;
                 case 91:
                     actor = new TWhiteSkeleton(robotClient);
@@ -776,60 +761,60 @@ namespace RobotSvr
                     actor = new TWallStructure(robotClient);
                     break;
                 case 99:
-                    actor = new TCastleDoor();
+                    actor = new TCastleDoor(robotClient);
                     break;
                 case 101:
-                    actor = new TBanyaGuardMon();
+                    actor = new TBanyaGuardMon(robotClient);
                     break;
                 case 102:
-                    actor = new TKhazardMon();
+                    actor = new TKhazardMon(robotClient);
                     break;
                 case 103:
-                    actor = new TFrostTiger();
+                    actor = new TFrostTiger(robotClient);
                     break;
                 case 104:
-                    actor = new TRedThunderZuma();
+                    actor = new TRedThunderZuma(robotClient);
                     break;
                 case 105:
-                    actor = new TCrystalSpider();
+                    actor = new TCrystalSpider(robotClient);
                     break;
                 case 106:
-                    actor = new TYimoogi();
+                    actor = new TYimoogi(robotClient);
                     break;
                 case 109:
-                    actor = new TBlackFox();
+                    actor = new TBlackFox(robotClient);
                     break;
                 case 110:
-                    actor = new TGreenCrystalSpider();
+                    actor = new TGreenCrystalSpider(robotClient);
                     break;
                 case 111:
-                    actor = new TBanyaGuardMon();
+                    actor = new TBanyaGuardMon(robotClient);
                     break;
                 case 113:
-                    actor = new TBanyaGuardMon();
+                    actor = new TBanyaGuardMon(robotClient);
                     break;
                 case 114:
-                    actor = new TBanyaGuardMon();
+                    actor = new TBanyaGuardMon(robotClient);
                     break;
                 case 115:
-                    actor = new TBanyaGuardMon();
+                    actor = new TBanyaGuardMon(robotClient);
                     break;
                 case 117:
                 case 118:
                 case 119:
-                    actor = new TBanyaGuardMon();
+                    actor = new TBanyaGuardMon(robotClient);
                     break;
                 case 120:
-                    actor = new TFireDragon();
+                    actor = new TFireDragon(robotClient);
                     break;
                 case 121:
                     actor = new TTiger(robotClient);
                     break;
                 case 122:
-                    actor = new TDragon();
+                    actor = new TDragon(robotClient);
                     break;
                 case 123:
-                    actor = new TGhostShipMonster();
+                    actor = new TGhostShipMonster(robotClient);
                     break;
                 default:
                     actor = new TActor(robotClient);

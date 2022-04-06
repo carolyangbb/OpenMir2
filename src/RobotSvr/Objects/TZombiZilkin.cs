@@ -1,10 +1,8 @@
-﻿namespace RobotSvr
+﻿namespace RobotSvr;
+
+public class TZombiZilkin : TSkeletonOma
 {
-    public class TZombiZilkin : TSkeletonOma
+    public TZombiZilkin(RobotClient robotClient) : base(robotClient)
     {
-        public TZombiZilkin(RobotClient robotClient) : base(robotClient)
-        {
-        }
     }
 }
-
