@@ -155,29 +155,29 @@ namespace RobotSvr
 
         public override void RunFrameAction(int frame)
         {
-            TNormalDrawEffect neff;
-            if (this.m_nCurrentAction == Grobal2.SM_LIGHTING)
-            {
-                if ((frame == 5) && this.m_boSmiteWideHit2)
-                {
-                    this.m_boSmiteWideHit2 = false;
-                    neff = new TNormalDrawEffect(this.m_nCurrX, this.m_nCurrY, WMFile.Units.WMFile.g_WMagic2Images, 1391, 14, 75, true);
-                    if (neff != null)
-                    {
-                        ClMain.g_PlayScene.m_EffectList.Add(neff);
-                    }
-                    if (this.m_wAppearance == 354)
-                    {
-                        ClMain.g_ShakeScreen.SetScrShake_X(4);
-                        ClMain.g_ShakeScreen.SetScrShake_Y(3);
-                    }
-                    if (this.m_wAppearance == 815)
-                    {
-                        ClMain.g_ShakeScreen.SetScrShake_X(7);
-                        ClMain.g_ShakeScreen.SetScrShake_Y(5);
-                    }
-                }
-            }
+            //TNormalDrawEffect neff;
+            //if (this.m_nCurrentAction == Grobal2.SM_LIGHTING)
+            //{
+            //    if ((frame == 5) && this.m_boSmiteWideHit2)
+            //    {
+            //        this.m_boSmiteWideHit2 = false;
+            //        neff = new TNormalDrawEffect(this.m_nCurrX, this.m_nCurrY, WMFile.Units.WMFile.g_WMagic2Images, 1391, 14, 75, true);
+            //        if (neff != null)
+            //        {
+            //            ClMain.g_PlayScene.m_EffectList.Add(neff);
+            //        }
+            //        if (this.m_wAppearance == 354)
+            //        {
+            //            ClMain.g_ShakeScreen.SetScrShake_X(4);
+            //            ClMain.g_ShakeScreen.SetScrShake_Y(3);
+            //        }
+            //        if (this.m_wAppearance == 815)
+            //        {
+            //            ClMain.g_ShakeScreen.SetScrShake_X(7);
+            //            ClMain.g_ShakeScreen.SetScrShake_Y(5);
+            //        }
+            //    }
+            //}
         }
 
         public override int GetDefaultFrame(bool wmode)
@@ -238,7 +238,6 @@ namespace RobotSvr
             {
                 this.m_boMsgMuch = true;
             }
-            RunActSound(this.m_nCurrentFrame - this.m_nStartFrame);
             RunFrameAction(this.m_nCurrentFrame - this.m_nStartFrame);
             prv = this.m_nCurrentFrame;
             if (this.m_nCurrentAction != 0)
@@ -297,7 +296,6 @@ namespace RobotSvr
                         this.m_nCurrentAction = 0;
                         this.m_boUseMagic = false;
                         this.m_boUseEffect = false;
-                        // 0605
                         this.m_boHitEffect = false;
                     }
                     if (this.m_boUseMagic)
@@ -316,33 +314,6 @@ namespace RobotSvr
                                 }
                             }
                             this.m_CurMagic.ServerMagicCode = 0;
-                        }
-                    }
-                    if ((this.m_nCurrentAction == Grobal2.SM_FLYAXE) && (this.m_nCurrentFrame - this.m_nStartFrame == Units.AxeMon.AXEMONATTACKFRAME - 4))
-                    {
-                        if (this.m_wAppearance == 812)
-                        {
-                            meff = (TFlyingAxe)ClMain.g_PlayScene.NewFlyObject(this, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFlyAxe);
-                            if (meff != null)
-                            {
-                                meff.ImgLib = WMFile.Units.WMFile.g_WMons[3];
-                                switch (this.m_wAppearance)
-                                {
-                                    case 812:
-                                        meff.FlyImageBase = magiceff.Units.magiceff.THORNBASE;
-                                        break;
-                                }
-                            }
-                        }
-                        if (this.m_wAppearance == 826)
-                        {
-                            meff2 = (TFlyingArrow)ClMain.g_PlayScene.NewFlyObject(this, this.m_nCurrX, this.m_nCurrY, this.m_nTargetX, this.m_nTargetY, this.m_nTargetRecog, magiceff.TMagicType.mtFlyArrow);
-                            if (meff2 != null)
-                            {
-                                meff2.ImgLib = WMFile.Units.WMFile.g_WEffectImg;
-                                meff2.NextFrameTime = 30;
-                                meff2.FlyImageBase = magiceff.Units.magiceff.ARCHERBASE2;
-                            }
                         }
                     }
                 }
@@ -365,7 +336,6 @@ namespace RobotSvr
             if (prv != this.m_nCurrentFrame)
             {
                 this.m_dwLoadSurfaceTime = MShare.GetTickCount();
-                LoadSurface();
             }
         }
     }

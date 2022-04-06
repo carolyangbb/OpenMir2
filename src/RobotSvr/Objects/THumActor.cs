@@ -17,7 +17,7 @@ namespace RobotSvr
         public TStallMgr m_StallMgr;
         public ArrayList m_SlaveObject = null;
 
-        public THumActor() : base()
+        public THumActor(RobotClient robotClient) : base(robotClient)
         {
             m_SlaveObject = new ArrayList();
             m_boWeaponEffect = false;
@@ -848,8 +848,8 @@ namespace RobotSvr
         {
             int off;
             int prv;
-            double dwFrameTimetime;
-            bool boFly;
+            int dwFrameTimetime;
+            bool boFly = false;
             bool bss;
             bool sskill;
             bool fAddNewMagic;
@@ -971,7 +971,7 @@ namespace RobotSvr
                     {
                         if (this == MShare.g_MySelf)
                         {
-                            if (ClMain.frmMain.ServerAcceptNextAction())
+                            if (robotClient.ServerAcceptNextAction())
                             {
                                 ActionEnded();
                                 this.m_nCurrentAction = 0;
@@ -1049,18 +1049,6 @@ namespace RobotSvr
                             {
                                 //TUseMagicInfo _wvar2 = this.m_CurMagic;
                                 //ClMain.g_PlayScene.NewMagic(this, _wvar2.ServerMagicCode, _wvar2.EffectNumber, this.m_nCurrX, this.m_nCurrY, _wvar2.targx, _wvar2.targy, _wvar2.target, _wvar2.EffectType, _wvar2.Recusion, _wvar2.anitime, ref boFly, _wvar2.magfirelv, _wvar2.Poison);
-                                if (boFly)
-                                {
-                                    //SoundUtil.g_SndMgr.PlaySound(this.m_nMagicFireSound, this.m_nCurrX, this.m_nCurrY);
-                                }
-                                else
-                                {
-                                    // DScreen.AddChatBoardString(inttostr(m_nMagicExplosionSound), GetRGB(219), clWhite);
-                                    if (this.m_CurMagic.EffectNumber != 116)
-                                    {
-                                        //SoundUtil.g_SndMgr.PlaySound(this.m_nMagicExplosionSound, _wvar2.targx, _wvar2.targy);
-                                    }
-                                }
                             }
                             if (this == MShare.g_MySelf)
                             {
@@ -1119,5 +1107,13 @@ namespace RobotSvr
     public class TStallMgr
     {
         public bool OnSale;
+        public TClientStallInfo mBlock;
+    }
+
+    public class TClientStallInfo
+    {
+        public int ItemCount;
+        public string StallName;
+        public TClientItem[] Items = new TClientItem[10];
     }
 }

@@ -22,7 +22,7 @@ namespace RobotSvr
         public bool MBoViewBlink = false;
         public ProcMagic ProcMagic = null;
 
-        public PlayScene() : base(SceneType.stPlayGame)
+        public PlayScene(RobotClient robotClient) : base(SceneType.stPlayGame, robotClient)
         {
             ProcMagic.NTargetX = -1;
             m_ActorList = new List<TActor>();
@@ -97,7 +97,7 @@ namespace RobotSvr
                 }
                 if ((Math.Abs(dropItem.X - MShare.g_MySelf.m_nCurrX) > 20) || (Math.Abs(dropItem.Y - MShare.g_MySelf.m_nCurrY) > 20))
                 {
-                    Dispose(dropItem);
+                    dropItem = null;
                     MShare.g_DropedItemList.RemoveAt(i);
                     break;
                 }
@@ -106,7 +106,7 @@ namespace RobotSvr
 
         public void BeginScene()
         {
-            //ClMain.Map.UpdateMapPos(MShare.g_MySelf.m_nRx, MShare.g_MySelf.m_nRy);
+            //robotClient.Map.UpdateMapPos(MShare.g_MySelf.m_nRx, MShare.g_MySelf.m_nRy);
         }
 
         public void PlaySurface(Object sender)
@@ -139,14 +139,13 @@ namespace RobotSvr
 
         public TActor GetCharacter(int x, int y, int wantsel, ref int nowsel, bool liveonly)
         {
-            TActor result;
             int k;
             int i;
-            int ccy;
-            int dx;
-            int dy;
+            int ccy = 0;
+            int dx = 0;
+            int dy = 0;
             TActor a;
-            result = null;
+            TActor result = null;
             nowsel = -1;
             for (k = ccy + 8; k >= ccy - 1; k--)
             {
@@ -159,8 +158,8 @@ namespace RobotSvr
                         {
                             if (a.m_nCurrY == k)
                             {
-                                dx = (a.m_nRx - ClMain.Map.m_ClientRect.Left) * Grobal2.UNITX + _mNDefXx + a.m_nPx + a.m_nShiftX;
-                                dy = (a.m_nRy - ClMain.Map.m_ClientRect.Top - 1) * Grobal2.UNITY + _mNDefYy + a.m_nPy + a.m_nShiftY;
+                                dx = (a.m_nRx - robotClient.Map.m_ClientRect.Left) * Grobal2.UNITX + _mNDefXx + a.m_nPx + a.m_nShiftX;
+                                dy = (a.m_nRy - robotClient.Map.m_ClientRect.Top - 1) * Grobal2.UNITY + _mNDefYy + a.m_nPy + a.m_nShiftY;
                                 if (a.CheckSelect(x - dx, y - dy))
                                 {
                                     result = a;
@@ -205,8 +204,8 @@ namespace RobotSvr
                             {
                                 if (a.m_nCurrY == k)
                                 {
-                                    dx = (a.m_nRx - ClMain.Map.m_ClientRect.Left) * Grobal2.UNITX + _mNDefXx + a.m_nPx + a.m_nShiftX;
-                                    dy = (a.m_nRy - ClMain.Map.m_ClientRect.Top - 1) * Grobal2.UNITY + _mNDefYy + a.m_nPy + a.m_nShiftY;
+                                    dx = (a.m_nRx - robotClient.Map.m_ClientRect.Left) * Grobal2.UNITX + _mNDefXx + a.m_nPx + a.m_nShiftX;
+                                    dy = (a.m_nRy - robotClient.Map.m_ClientRect.Top - 1) * Grobal2.UNITY + _mNDefYy + a.m_nPy + a.m_nShiftY;
                                     if (a.CharWidth() > 40)
                                     {
                                         centx = (a.CharWidth() - 40) / 2;
@@ -252,8 +251,8 @@ namespace RobotSvr
             {
                 if (MShare.g_MySelf.m_nCurrY == k)
                 {
-                    dx = (MShare.g_MySelf.m_nRx - ClMain.Map.m_ClientRect.Left) * Grobal2.UNITX + _mNDefXx + MShare.g_MySelf.m_nPx + MShare.g_MySelf.m_nShiftX;
-                    dy = (MShare.g_MySelf.m_nRy - ClMain.Map.m_ClientRect.Top - 1) * Grobal2.UNITY + _mNDefYy + MShare.g_MySelf.m_nPy + MShare.g_MySelf.m_nShiftY;
+                    dx = (MShare.g_MySelf.m_nRx - robotClient.Map.m_ClientRect.Left) * Grobal2.UNITX + _mNDefXx + MShare.g_MySelf.m_nPx + MShare.g_MySelf.m_nShiftX;
+                    dy = (MShare.g_MySelf.m_nRy - robotClient.Map.m_ClientRect.Top - 1) * Grobal2.UNITY + _mNDefYy + MShare.g_MySelf.m_nPy + MShare.g_MySelf.m_nShiftY;
                     if (MShare.g_MySelf.CheckSelect(x - dx, y - dy))
                     {
                         result = true;
@@ -313,9 +312,6 @@ namespace RobotSvr
                 if ((dropItem.X == nX) && (dropItem.Y == nY))
                 {
                     result = dropItem;
-                    // if not g_gcGeneral[7] or DropItem.boShowName then
-                    // Break;
-                    // not g_gcGeneral[7] or
                     if (MShare.g_boPickUpAll || dropItem.boPickUp)
                     {
                         break;
@@ -328,12 +324,9 @@ namespace RobotSvr
         public bool CanRun(int sX, int sY, int ex, int ey)
         {
             bool result;
-            int ndir;
-            int rx;
-            int ry;
-            ndir = ClFunc.GetNextDirection(sX, sY, ex, ey);
-            rx = sX;
-            ry = sY;
+            byte ndir = ClFunc.GetNextDirection(sX, sY, ex, ey);
+            int rx = sX;
+            int ry = sY;
             ClFunc.GetNextPosXY(ndir, ref rx, ref ry);
             if (CanWalkEx(rx, ry) && CanWalkEx(ex, ey))
             {
@@ -348,9 +341,8 @@ namespace RobotSvr
 
         public bool CanWalkEx(int mx, int my)
         {
-            bool result;
-            result = false;
-            if (ClMain.Map.CanMove(mx, my))
+            bool result = false;
+            if (robotClient.Map.CanMove(mx, my))
             {
                 result = !CrashManEx(mx, my);
             }
@@ -359,11 +351,9 @@ namespace RobotSvr
 
         private bool CrashManEx(int mx, int my)
         {
-            bool result;
-            int i;
             TActor actor;
-            result = false;
-            for (i = 0; i < m_ActorList.Count; i++)
+            bool result = false;
+            for (var i = 0; i < m_ActorList.Count; i++)
             {
                 actor = m_ActorList[i];
                 if (actor == MShare.g_MySelf)
@@ -397,7 +387,7 @@ namespace RobotSvr
         public bool CanWalk(int mx, int my)
         {
             bool result = false;
-            if (ClMain.Map.CanMove(mx, my))
+            if (robotClient.Map.CanMove(mx, my))
             {
                 result = !CrashMan(mx, my);
             }
@@ -426,39 +416,20 @@ namespace RobotSvr
             return result;
         }
 
-        // function TPlayScene.CrashManPath(mx, my: Integer): Boolean;
-        // var
-        // i                         : Integer;
-        // a                         : TActor;
-        // begin
-        // Result := False;
-        // for i := 0 to m_ActorList.count - 1 do begin
-        // a := TActor(m_ActorList[i]);
-        // if a = g_MySelf then Continue;
-        // if (a.m_boVisible) and (a.m_boHoldPlace) and (not a.m_boDeath) and (a.m_nCurrX = mx) and (a.m_nCurrY = my) then begin
-        // Result := True;
-        // Break;
-        // end;
-        // end;
-        // end;
         public bool CanFly(int mx, int my)
         {
-            bool result;
-            result = ClMain.Map.CanFly(mx, my);
-            return result;
+            return robotClient.Map.CanFly(mx, my);
         }
 
         // ------------------------ Actor ------------------------
         public TActor FindActor(int id)
         {
-            TActor result;
-            int i;
-            result = null;
+            TActor result = null;
             if (id == 0)
             {
                 return result;
             }
-            for (i = 0; i < m_ActorList.Count; i++)
+            for (var i = 0; i < m_ActorList.Count; i++)
             {
                 if (m_ActorList[i].m_nRecogId == id)
                 {
@@ -471,13 +442,10 @@ namespace RobotSvr
 
         public TActor FindActor(string sName)
         {
-            TActor result;
-            int i;
-            TActor actor;
-            result = null;
-            for (i = 0; i < m_ActorList.Count; i++)
+            TActor result = null;
+            for (var i = 0; i < m_ActorList.Count; i++)
             {
-                actor = m_ActorList[i];
+                TActor actor = m_ActorList[i];
                 if (actor.m_sUserName.ToLower().CompareTo(sName.ToLower()) == 0)
                 {
                     result = actor;
@@ -489,13 +457,10 @@ namespace RobotSvr
 
         public TActor FindActorXY(int x, int y)
         {
-            TActor result;
-            int i;
-            TActor a;
-            result = null;
-            for (i = 0; i < m_ActorList.Count; i++)
+            TActor result = null;
+            for (var i = 0; i < m_ActorList.Count; i++)
             {
-                a = m_ActorList[i];
+                TActor a = m_ActorList[i];
                 if ((a.m_nCurrX == x) && (a.m_nCurrY == y))
                 {
                     result = a;
@@ -510,10 +475,8 @@ namespace RobotSvr
 
         public bool IsValidActor(TActor actor)
         {
-            bool result;
-            int i;
-            result = false;
-            for (i = 0; i < m_ActorList.Count; i++)
+            bool result = false;
+            for (var i = 0; i < m_ActorList.Count; i++)
             {
                 if (m_ActorList[i] == actor)
                 {
@@ -540,10 +503,10 @@ namespace RobotSvr
             {
                 return result;
             }
-            switch (Grobal2.RACEfeature(cfeature))
+            switch (cfeature)
             {
                 case 0:
-                    actor = new THumActor();
+                    actor = new THumActor(robotClient);
                     break;
                 case 9:
                     // 人物
@@ -710,7 +673,7 @@ namespace RobotSvr
                     break;
                 case 56:
                     // 神兽1
-                    actor = new TAngel();
+                    actor = new TAngel(robotClient);
                     break;
                 case 57:
                     actor = new TDualAxeOma();
@@ -784,7 +747,7 @@ namespace RobotSvr
                     actor = new TMineMon();
                     break;
                 case 81:
-                    actor = new TAngel();
+                    actor = new TAngel(robotClient);
                     break;
                 case 83:
                     actor = new TFireDragon();
@@ -799,23 +762,18 @@ namespace RobotSvr
                     actor = new TDragonBody();
                     break;
                 case 91:
-                    // 龙
                     actor = new TWhiteSkeleton();
                     break;
                 case 92:
-                    // 变异骷髅
                     actor = new TWhiteSkeleton();
                     break;
                 case 93:
-                    // 变异骷髅
                     actor = new TWhiteSkeleton();
                     break;
                 case 94:
-                    // 变异骷髅
                     actor = new TWarriorElfMonster();
                     break;
                 case 95:
-                    // 神兽1
                     actor = new TWarriorElfMonster();
                     break;
                 case 98:
@@ -878,7 +836,7 @@ namespace RobotSvr
                     actor = new TGhostShipMonster();
                     break;
                 default:
-                    actor = new TActor();
+                    actor = new TActor(robotClient);
                     break;
             }
             actor.m_nRecogId = chrid;
@@ -886,27 +844,25 @@ namespace RobotSvr
             actor.m_nCurrY = cy;
             actor.m_nRx = actor.m_nCurrX;
             actor.m_nRy = actor.m_nCurrY;
-            actor.m_btDir = cdir;
+            actor.m_btDir = (byte)cdir;
             actor.m_nFeature = cfeature;
             if (MShare.g_boOpenAutoPlay && MShare.g_gcAss[6])
             {
-                actor.m_btAFilter = MShare.g_APMobList.IndexOf(actor.m_sUserName) >= 0;
+               // actor.m_btAFilter = MShare.g_APMobList.IndexOf(actor.m_sUserName) >= 0;
             }
-            actor.m_btRace = Grobal2.RACEfeature(cfeature);
-            actor.m_btHair = Grobal2.HAIRfeature(cfeature);
-            actor.m_btDress = Grobal2.DRESSfeature(cfeature);
-            actor.m_btWeapon = Grobal2.WEAPONfeature(cfeature);
-            actor.m_wAppearance = Grobal2.APPRfeature(cfeature);
-            // if (m_btRace = 50) and (m_wAppearance in [54..48]) then
-            // m_boVisible := False;
+            //actor.m_btRace = Grobal2.RACEfeature(cfeature);
+            //actor.m_btHair = Grobal2.HAIRfeature(cfeature);
+            //actor.m_btDress = Grobal2.DRESSfeature(cfeature);
+            //actor.m_btWeapon = Grobal2.WEAPONfeature(cfeature);
+            //actor.m_wAppearance = Grobal2.APPRfeature(cfeature);
             actor.m_Action = null;
             if (actor.m_btRace == 0)
             {
-                actor.m_btSex = actor.m_btDress % 2;
-                if (actor.m_btDress >= 24 && actor.m_btDress <= 27)
-                {
-                    actor.m_btDress = 18 + actor.m_btSex;
-                }
+                //actor.m_btSex = actor.m_btDress % 2;
+                //if (actor.m_btDress >= 24 && actor.m_btDress <= 27)
+                //{
+                //    actor.m_btDress = 18 + actor.m_btSex;
+                //}
             }
             else
             {
@@ -1000,13 +956,6 @@ namespace RobotSvr
                     {
                         MShare.g_MagicTarget = null;
                     }
-                    if (m_ActorList[i] == MShare.g_MySelf.m_HeroObject)
-                    {
-                        if (!boDeath)
-                        {
-                            break;
-                        }
-                    }
                     if (PlayScn.IsMySlaveObject(m_ActorList[i]))
                     {
                         if (!boDeath)
@@ -1048,14 +997,10 @@ namespace RobotSvr
 
         public TActor ButchAnimal(int x, int y)
         {
-            TActor result;
-            int i;
-            TActor a;
-            result = null;
-            for (i = 0; i < m_ActorList.Count; i++)
+            TActor result = null;
+            for (var i = 0; i < m_ActorList.Count; i++)
             {
-                a = m_ActorList[i];
-                // and (a.m_btRace <> 0)
+                TActor a = m_ActorList[i];
                 if (a.m_boDeath)
                 {
                     if ((Math.Abs(a.m_nCurrX - x) <= 1) && (Math.Abs(a.m_nCurrY - y) <= 1))
@@ -1077,48 +1022,48 @@ namespace RobotSvr
                 case Grobal2.SM_CHANGEMAP:
                 case Grobal2.SM_NEWMAP:
                     ProcMagic.NTargetX = -1;
-                    ClMain.EventMan.ClearEvents();
-                    ClMain.g_PathBusy = true;
+                    //robotClient.EventMan.ClearEvents();
+                    robotClient.g_PathBusy = true;
                     try
                     {
-                        if (ClMain.frmMain.TimerAutoMove.Enabled)
+                        if (robotClient.TimerAutoMove.Enabled)
                         {
-                            ClMain.frmMain.TimerAutoMove.Enabled = false;
-                            MapUnit.Units.TPathMap.g_MapPath = new Point[0];
-                            MapUnit.Units.TPathMap.g_MapPath = null;
-                            ClMain.DScreen.AddChatBoardString("地图跳转，停止自动移动", ClMain.GetRGB(5), System.Drawing.Color.White);
+                            robotClient.TimerAutoMove.Enabled = false;
+                            TPathMap.g_MapPath = new Point[0];
+                            TPathMap.g_MapPath = null;
+                            robotClient.DScreen.AddChatBoardString("地图跳转，停止自动移动", robotClient.GetRGB(5), Color.White);
                         }
-                        if (MShare.g_boOpenAutoPlay && ClMain.frmMain.TimerAutoPlay.Enabled)
+                        if (MShare.g_boOpenAutoPlay && robotClient.TimerAutoPlay.Enabled)
                         {
-                            ClMain.frmMain.TimerAutoPlay.Enabled = false;
+                            robotClient.TimerAutoPlay.Enabled = false;
                             MShare.g_gcAss[0] = false;
                             MShare.g_APMapPath = new Point[0];
                             MShare.g_APMapPath2 = new Point[0];
                             MShare.g_APStep = -1;
                             MShare.g_APLastPoint.X = -1;
-                            ClMain.DScreen.AddChatBoardString("[挂机] 地图跳转，停止自动挂机", System.Drawing.Color.Red, System.Drawing.Color.White);
+                            robotClient.DScreen.AddChatBoardString("[挂机] 地图跳转，停止自动挂机", Color.Red, Color.White);
                         }
                         if (MShare.g_MySelf != null)
                         {
                             MShare.g_MySelf.m_nTagX = 0;
                             MShare.g_MySelf.m_nTagY = 0;
                         }
-                        if (ClMain.Map.m_MapBuf != null)
+                        if (robotClient.Map.m_MapBuf != null)
                         {
-                            FreeMem(ClMain.Map.m_MapBuf);
-                            ClMain.Map.m_MapBuf = null;
+                            //FreeMem(robotClient.Map.m_MapBuf);
+                            robotClient.Map.m_MapBuf = null;
                         }
-                        if (ClMain.Map.m_MapData.Length > 0)
+                        if (robotClient.Map.m_MapData.Length > 0)
                         {
-                            ClMain.Map.m_MapData = new TCellParams[0];
-                            ClMain.Map.m_MapData = null;
+                            robotClient.Map.m_MapData = new TCellParams[0];
+                            robotClient.Map.m_MapData = null;
                         }
                     }
                     finally
                     {
-                        ClMain.g_PathBusy = false;
+                        robotClient.g_PathBusy = false;
                     }
-                    ClMain.Map.LoadMap(str, x, y);
+                    robotClient.Map.LoadMap(str, x, y);
                     if ((ident == Grobal2.SM_NEWMAP) && (MShare.g_MySelf != null))
                     {
                         MShare.g_MySelf.m_nCurrX = x;
@@ -1139,10 +1084,6 @@ namespace RobotSvr
                     }
                     if (MShare.g_MySelf != null)
                     {
-                        if (MShare.g_MySelf.m_HeroObject != null)
-                        {
-                            MShare.g_MySelf.m_HeroObject = null;
-                        }
                         MShare.g_MySelf.m_SlaveObject.Clear();
                         MShare.g_MySelf = null;
                     }
@@ -1158,15 +1099,6 @@ namespace RobotSvr
                         }
                         if (actor.m_nWaitForRecogId != 0)
                         {
-                            return;
-                        }
-                        if (actor == MShare.g_MySelf.m_HeroObject)
-                        {
-                            if (!actor.m_boDeath)
-                            {
-                                return;
-                            }
-                            DeleteActor(chrid, true);
                             return;
                         }
                         if (PlayScn.IsMySlaveObject(actor))
@@ -1221,8 +1153,9 @@ namespace RobotSvr
                             actor.m_nFeatureEx = state;
                             if (str != "")
                             {
-                                EDcode.DecodeBuffer(str, mbw);
-                                actor.m_btTitleIndex = HUtil32.LoWord(mbw.param1);
+                                mbw = new TMessageBodyW();
+                                EDcode.DecodeBuffer(str, ref mbw);
+                                actor.m_btTitleIndex = (byte)HUtil32.LoWord(mbw.Param1);
                             }
                             else
                             {
@@ -1230,11 +1163,9 @@ namespace RobotSvr
                             }
                             actor.FeatureChanged();
                             break;
-                        case Grobal2.SM_APPRCHANGED:
-                            break;
                         case Grobal2.SM_CHARSTATUSCHANGED:
                             actor.m_nState = feature;
-                            actor.m_nHitSpeed = state;
+                            actor.m_nHitSpeed = (ushort)state;
                             break;
                         default:
                             if (ident == Grobal2.SM_TURN)
@@ -1242,7 +1173,6 @@ namespace RobotSvr
                                 if (str != "")
                                 {
                                     actor.m_sUserName = str;
-                                    actor.m_sUserNameOffSet = HGECanvas.Units.HGECanvas.g_DXCanvas.TextWidth(actor.m_sUserName) / 2;
                                 }
                             }
                             actor.SendMsg(ident, x, y, cdir, feature, state, "", 0);

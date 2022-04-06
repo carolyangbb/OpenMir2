@@ -7,7 +7,7 @@ namespace RobotSvr
 {
     public class TActor
     {
-        private RobotClient robotClient;
+        public RobotClient robotClient;
         public byte m_btTitleIndex = 0;
         public byte m_RushStep = 0;
         public bool m_btAFilter = false;
@@ -47,7 +47,6 @@ namespace RobotSvr
         public bool m_boDelActionAfterFinished = false;
         public string m_sDescUserName;
         public string m_sUserName = String.Empty;
-        public int m_sUserNameOffSet = 0;
         public string m_sLoyaly;
         public string m_sAutoSayMsg;
         public byte m_btNameColor = 0;
@@ -56,10 +55,10 @@ namespace RobotSvr
         public TOAbility m_Abils = null;
         public int m_nGold = 0;
         public int m_nGameGold = 0;
-        public short m_nGameGird = 0;
+        public ushort m_nGameGird = 0;
         public int m_nGamePoint = 0;
-        public short m_nGameDiamd = 0;
-        public short m_nHitSpeed = 0;
+        public ushort m_nGameDiamd = 0;
+        public ushort m_nHitSpeed = 0;
         public bool m_boVisible = false;
         public bool m_boHoldPlace = false;
         public string[] m_SayingArr;
@@ -178,21 +177,21 @@ namespace RobotSvr
         protected int m_nEffectStart = 0;
         protected int m_nEffectFrame = 0;
         protected int m_nEffectEnd = 0;
-        protected long m_dwEffectStartTime = 0;
-        protected long m_dwEffectFrameTime = 0;
-        protected long m_dwFrameTime = 0;
-        protected long m_dwStartTime = 0;
+        protected int m_dwEffectStartTime = 0;
+        protected int m_dwEffectFrameTime = 0;
+        protected int m_dwFrameTime = 0;
+        protected int m_dwStartTime = 0;
         protected int m_nMaxTick = 0;
         protected int m_nCurTick = 0;
         protected int m_nMoveStep = 0;
         protected bool m_boMsgMuch = false;
-        protected long m_dwStruckFrameTime = 0;
+        protected int m_dwStruckFrameTime = 0;
         protected int m_nCurrentDefFrame = 0;
-        protected long m_dwDefFrameTime = 0;
+        protected int m_dwDefFrameTime = 0;
         protected int m_nDefFrameCount = 0;
         protected int m_nSkipTick = 0;
-        protected long m_dwSmoothMoveTime = 0;
-        protected long m_dwGenAnicountTime = 0;
+        protected int m_dwSmoothMoveTime = 0;
+        protected int m_dwGenAnicountTime = 0;
         protected int m_nOldx = 0;
         protected int m_nOldy = 0;
         protected int m_nOldDir = 0;
@@ -237,7 +236,6 @@ namespace RobotSvr
             m_nEffectFrame = -1;
             RealActionMsg.Ident = 0;
             m_sUserName = "";
-            m_sUserNameOffSet = 0;
             m_sAutoSayMsg = "";
             m_btNameColor = 255;
             m_nNameColor = 255;
@@ -461,7 +459,6 @@ namespace RobotSvr
         public void ReadyAction(TChrMsg Msg)
         {
             int n;
-            TUseMagicInfo UseMagic;
             m_nActBeforeX = m_nCurrX;
             m_nActBeforeY = m_nCurrY;
             if (Msg.Ident == Grobal2.SM_ALIVE)
@@ -497,6 +494,7 @@ namespace RobotSvr
                         }
                         break;
                 }
+                TUseMagicInfo UseMagic;
                 if (MShare.g_MySelf == this)
                 {
                     if (Msg.Ident == Grobal2.CM_WALK)
@@ -573,11 +571,11 @@ namespace RobotSvr
                                 Msg.Dir = ClFunc.GetFlyDirection(m_nCurrX, m_nCurrY, MShare.g_MagicTarget.m_nCurrX, MShare.g_MagicTarget.m_nCurrY);
                             }
                             RealActionMsg = Msg;
-                            UseMagic = (TUseMagicInfo)Msg.Feature;
-                            RealActionMsg.Dir = UseMagic.MagicSerial;
-                            Msg.Ident = Msg.Ident - 3000;
-                            Msg.X = robotClient.GetMagicLv(this, UseMagic.MagicSerial);
-                            Msg.Y = m_btPoisonDecHealth;
+                            //UseMagic = (TUseMagicInfo)Msg.Feature;
+                            //RealActionMsg.Dir = UseMagic.MagicSerial;
+                            //Msg.Ident = Msg.Ident - 3000;
+                            //Msg.X = robotClient.GetMagicLv(this, UseMagic.MagicSerial);
+                            //Msg.Y = m_btPoisonDecHealth;
                             break;
                     }
                     m_nOldx = m_nCurrX;
@@ -740,7 +738,7 @@ namespace RobotSvr
                             {
                                 m_CurMagic.ServerMagicCode = 255;
                                 m_CurMagic.target = Msg.X;
-                                if (Msg.Y >= 0 && Msg.Y <= magiceff.MAXMAGICTYPE - 1)
+                                if (Msg.Y >= 0 && Msg.Y <= 16)
                                 {
                                     m_CurMagic.EffectType = (MagicType)Msg.Y;
                                 }

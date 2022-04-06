@@ -193,7 +193,6 @@ namespace RobotSvr
         public static int g_nLastMapMusic = -1;
         public static ArrayList g_SendSayList = null;
         public static int g_SendSayListIdx = 0;
-        public static ArrayList g_ServerList = null;
         public static IList<string> g_GroupMembers = null;
         public static ArrayList g_SoundList = null;
         public static ArrayList BGMusicList = null;
@@ -201,8 +200,6 @@ namespace RobotSvr
         public static TClientMagic[][] g_MagicArr = new TClientMagic[3][] { new TClientMagic[] { }, new TClientMagic[] { }, new TClientMagic[] { } };
         public static ArrayList g_MagicList = null;
         public static ArrayList g_IPMagicList = null;
-        public static ArrayList g_HeroMagicList = null;
-        public static ArrayList g_HeroIPMagicList = null;
         public static ArrayList[] g_ShopListArr = new ArrayList[5 + 1];
         public static ArrayList g_SaveItemList = null;
         public static ArrayList g_MenuItemList = null;
@@ -678,8 +675,8 @@ namespace RobotSvr
           new Rectangle() {X=35 + 120, Y=70 + 23 * 5,Width= 35 + 120 + 72,  Height= 70 + 23 * 5 + 16} ,
           new Rectangle() {X=35 + 000, Y=70 + 23 * 5,Width= 35 + 000 + 96,  Height= 70 + 23 * 5 + 16} };
         public static bool[] g_gcGeneral = { true, true, false, true, true, true, false, true, false, true, true, true, true, false, false, true, true };
-        public static Color[] g_clGeneral = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver };
-        public static Color[] g_clGeneralDef = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver };
+        public static Color[] g_clGeneral = { Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver };
+        public static Color[] g_clGeneralDef = { Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver };
         // ====================================Protect====================================
         public const int MAX_GC_PROTECT = 11;
         public static Rectangle[] g_ptProtect = new Rectangle[]{
@@ -699,7 +696,7 @@ namespace RobotSvr
         public static bool[] g_gcProtect = { false, false, false, false, false, false, false, true, true, true, false, true };
         public static int[] g_gnProtectPercent = { 10, 10, 10, 10, 10, 10, 0, 88, 88, 88, 20, 00 };
         public static int[] g_gnProtectTime = { 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 1000, 1000, 1000 };
-        public static Color[] g_clProtect = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Lime };
+        public static Color[] g_clProtect = { Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Lime };
         // ====================================Tec====================================
         public const int MAX_GC_TEC = 14;
         public static string[] g_HintTec = { "钩选此项将开启刀刀刺杀", "钩选此项将开启智能半月", "钩选此项将自动凝聚烈火剑法", "钩选此项将自动凝聚逐日剑法", "钩选此项将自动开启魔法盾", "钩选此项英雄将自动开启魔法盾", "钩选此项道士将自动使用隐身术", "", "", "钩选此项将自动凝聚雷霆剑法", "钩选此项将自动进行隔位刺杀", "钩选此项将自动凝聚断空斩", "钩选此项英雄将不使用连击打怪\\方便玩家之间进行PK", "钩选此项将自动凝聚开天斩", "钩选此项：施展魔法超过允许距离时，会自动跑近目标并释放魔法" };
@@ -708,7 +705,7 @@ namespace RobotSvr
         public const int g_gnTecPracticeKey = 0;
         public static bool[] g_gcTec = { true, true, true, true, true, true, false, false, false, false, false, false, false, true, false };
         public static int[] g_gnTecTime = { 0, 0, 0, 0, 0, 0, 0, 0, 4000, 0, 0, 0, 0, 0, 0 };
-        public static Color[] g_clTec = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver };
+        public static Color[] g_clTec = { Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver };
         // ====================================Assistant====================================
         public const int MAX_GC_ASS = 6;
         public static Rectangle[] g_ptAss = {
@@ -721,12 +718,12 @@ namespace RobotSvr
   new Rectangle()  {X=35 + 000,Y= 70 + 24 * 6, Width=35 + 000 + 120,Height= 70 + 24 * 6 + 16} };
 
         public static bool[] g_gcAss = { false, false, false, false, false, false, false };
-        public static Color[] g_clAss = { System.Drawing.Color.Lime, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver };
+        public static Color[] g_clAss = { Color.Lime, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver };
         // ====================================HotKey====================================
         public const int MAX_GC_ITEMS = 7;
         public static Rectangle g_ptItemsA = new Rectangle() { X = 25 + 194, Y = 68 + 18 * 7 + 23, Width = 25 + 194 + 80, Height = 68 + 18 * 7 + 16 + 23 };
         public static Rectangle g_ptAutoPickUp = new Rectangle() { X = 25 + 267, Y = 68 + 18 * 7 + 23, Width = 25 + 267 + 80, Height = 68 + 18 * 7 + 16 + 23 };
-        public static Color[] g_clItems = { System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver, System.Drawing.Color.Silver };
+        public static Color[] g_clItems = { Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver, Color.Silver };
         public const int MAX_SERIESSKILL_POINT = 4;
         public static int g_HitSpeedRate = 0;
         public static int g_MagSpeedRate = 0;
@@ -1485,12 +1482,11 @@ namespace RobotSvr
 
         public static bool GetSecretAbil(TClientItem CurrMouseItem)
         {
-            bool result;
-            result = false;
-            if (!new ArrayList(new int[] { 5, 6, 10, 15, 26 }).Contains(CurrMous.Item.Item.StdMode))
-            {
-                return result;
-            }
+            bool result = false;
+            //if (!new ArrayList(new int[] { 5, 6, 10, 15, 26 }).Contains(CurrMous.Item.Item.StdMode))
+            //{
+            //    return result;
+            //}
             return result;
         }
 
@@ -2203,5 +2199,18 @@ namespace RobotSvr
         public bool boNonSuch;
         public bool boPickUp;
         public bool boShowName;
+    }
+
+    public class TUseMagicInfo
+    {
+        public int ServerMagicCode;
+        public int MagicSerial;
+        public int Target;
+        public MagicType EffectType;
+        public int EffectNumber;
+        public int TargX:
+        public int TargY;
+        public bool Recusion;
+        public int AniTime;
     }
 }

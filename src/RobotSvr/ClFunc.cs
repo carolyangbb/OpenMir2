@@ -143,46 +143,11 @@ namespace RobotSvr
 
         public static bool AddItemBag(TClientItem cu, int idx = 0)
         {
-            bool result;
-            int i;
-            bool InputCheck;
-            result = false;
-            InputCheck = false;
+            bool result = false;
+            bool InputCheck = false;
             if (cu.Item.Name == "")
             {
                 return result;
-            }
-            if (FrmDlg.DWRefine.Visible)
-            {
-                for (i = MShare.g_RefineItems.GetLowerBound(0); i <= MShare.g_RefineItems.GetUpperBound(0); i++)
-                {
-                    if ((MShare.g_RefineItems[i].Item.MakeIndex == cu.MakeIndex) && (MShare.g_RefineItems[i].Item.Item.Name == cu.Item.Name) && (MShare.g_RefineItems[i].Item.Item.Overlap < 1))
-                    {
-                        return result;
-                    }
-                }
-                if (MShare.g_RIWhere > 0)
-                {
-                    if (MShare.g_RefineItems[MShare.g_RIWhere - 1].Item.Item.Name != "")
-                    {
-                        MShare.g_MovingItem = MShare.g_RefineItems[MShare.g_RIWhere - 1];
-                        MShare.g_boItemMoving = true;
-                    }
-                    MShare.g_RefineItems[MShare.g_RIWhere - 1].Item = cu;
-                    MShare.g_RIWhere = 0;
-                    return result;
-                }
-                else
-                {
-                    for (i = MShare.g_RefineItems.GetLowerBound(0); i <= MShare.g_RefineItems.GetUpperBound(0); i++)
-                    {
-                        if (MShare.g_RefineItems[i].Item.Item.Name == "")
-                        {
-                            MShare.g_RefineItems[i].Item = cu;
-                            return result;
-                        }
-                    }
-                }
             }
             if (idx >= 0)
             {
@@ -193,9 +158,9 @@ namespace RobotSvr
                     return result;
                 }
             }
-            for (i = 0; i < MShare.MAXBAGITEMCL; i++)
+            for (var i = 0; i < MShare.MAXBAGITEMCL; i++)
             {
-                if ((MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex) && (MShare.g_ItemArr[i].Item.Name == cu.Item.Name) && (MShare.g_ItemArr[i].Item.Overlap < 1))
+                if ((MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex) && (MShare.g_ItemArr[i].Item.Name == cu.Item.Name))
                 {
                     return result;
                 }
@@ -206,7 +171,7 @@ namespace RobotSvr
             }
             if (cu.Item.StdMode <= 3)
             {
-                for (i = 0; i <= 5; i++)
+                for (var i = 0; i <= 5; i++)
                 {
                     if (MShare.g_ItemArr[i].Item.Name == "")
                     {
@@ -216,18 +181,18 @@ namespace RobotSvr
                     }
                 }
             }
-            for (i = 6; i < MShare.MAXBAGITEMCL; i++)
+            for (var i = 6; i < MShare.MAXBAGITEMCL; i++)
             {
-                if ((MShare.g_ItemArr[i].Item.Overlap > 0) && (MShare.g_ItemArr[i].Item.Name == cu.Item.Name) && (MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex))
+                if ((MShare.g_ItemArr[i].Item.Name == cu.Item.Name) && (MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex))
                 {
-                    MShare.g_ItemArr[i].Dura = MShare.g_ItemArr[i].Dura + cu.Dura;
+                    MShare.g_ItemArr[i].Dura = (ushort)(MShare.g_ItemArr[i].Dura + cu.Dura);
                     cu.Dura = 0;
                     InputCheck = true;
                 }
             }
             if (!InputCheck)
             {
-                for (i = 6; i < MShare.MAXBAGITEMCL; i++)
+                for (var i = 6; i < MShare.MAXBAGITEMCL; i++)
                 {
                     if (MShare.g_ItemArr[i].Item.Name == "")
                     {
@@ -299,7 +264,6 @@ namespace RobotSvr
             {
                 if ((MShare.g_ItemArr[i].Item.Name == iname) && (MShare.g_ItemArr[i].MakeIndex == iindex))
                 {
-                    //FillChar(MShare.g_ItemArr[i], '\0');
                     result = true;
                     break;
                 }
@@ -308,9 +272,8 @@ namespace RobotSvr
             {
                 for (i = 10 - 1; i >= 0; i--)
                 {
-                    if ((MShare.g_MySelf.m_StallMgr.mBlock.Items[i].s.Name == iname) && (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].MakeIndex == iindex))
+                    if ((MShare.g_MySelf.m_StallMgr.mBlock.Items[i].Item.Name == iname) && (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].MakeIndex == iindex))
                     {
-                        //FillChar(MShare.g_MySelf.m_StallMgr.mBlock.Items[i], '\0');
                         result = true;
                         break;
                     }
@@ -322,29 +285,22 @@ namespace RobotSvr
 
         public static void ArrangeItembag()
         {
-            int i;
-            int k;
-            for (i = 0; i < MShare.MAXBAGITEMCL; i++)
+            for (var i = 0; i < MShare.MAXBAGITEMCL; i++)
             {
                 if (MShare.g_ItemArr[i].Item.Name != "")
                 {
-                    for (k = i + 1; k < MShare.MAXBAGITEMCL; k++)
+                    for (var k = i + 1; k < MShare.MAXBAGITEMCL; k++)
                     {
                         // ÇåÀí¸´ÖÆ
                         if ((MShare.g_ItemArr[i].Item.Name == MShare.g_ItemArr[k].Item.Name) && (MShare.g_ItemArr[i].MakeIndex == MShare.g_ItemArr[k].MakeIndex))
                         {
-                            if (MShare.g_ItemArr[i].Item.Overlap > 0)
-                            {
-                                MShare.g_ItemArr[i].Dura = MShare.g_ItemArr[i].Dura + MShare.g_ItemArr[k].Dura;
-                                //FillChar(MShare.g_ItemArr[k], '\0');
-                            }
-                            else
-                            {
-                                //FillChar(MShare.g_ItemArr[k], '\0');
-                            }
+                            //if (MShare.g_ItemArr[i].Item.Overlap > 0)
+                            //{
+                            //    MShare.g_ItemArr[i].Dura = MShare.g_ItemArr[i].Dura + MShare.g_ItemArr[k].Dura;
+                            //}
                         }
                     }
-                    if ((MShare.g_ItemArr[i].Item.Name == MShare.g_MovingItem.Item.Item.Name) && (MShare.g_ItemArr[i].MakeIndex == MShare.g_MovingItem.Item.MakeIndex) && (MShare.g_ItemArr[i].Item.Overlap < 1))
+                    if ((MShare.g_ItemArr[i].Item.Name == MShare.g_MovingItem.Item.Item.Name) && (MShare.g_ItemArr[i].MakeIndex == MShare.g_MovingItem.Item.MakeIndex))
                     {
                         MShare.g_MovingItem.Index = 0;
                         MShare.g_MovingItem.Item.Item.Name = "";
@@ -352,11 +308,11 @@ namespace RobotSvr
                     }
                 }
             }
-            for (i = 46; i < MShare.MAXBAGITEMCL; i++)
+            for (var i = 46; i < MShare.MAXBAGITEMCL; i++)
             {
                 if (MShare.g_ItemArr[i].Item.Name != "")
                 {
-                    for (k = 6; k <= 45; k++)
+                    for (var k = 6; k <= 45; k++)
                     {
                         if (MShare.g_ItemArr[k].Item.Name == "")
                         {
@@ -375,6 +331,18 @@ namespace RobotSvr
             pc = new TClientItem();
             pc = ci;
             DropItems.Add(pc);
+        }
+
+        public static TClientItem GetDropItem(string iname, int makeIndex)
+        {
+            for (var i = 0; i < DropItems.Count; i++)
+            {
+                if ((DropItems[i].Item.Name == iname) && (DropItems[i].MakeIndex == makeIndex))
+                {
+                    return DropItems[i];
+                }
+            }
+            return null;
         }
 
         public static void DelDropItem(string iname, int makeIndex)
@@ -411,22 +379,21 @@ namespace RobotSvr
             {
                 if ((DropItems[i].Item.Name == iname) && (DropItems[i].MakeIndex == MakeIndex))
                 {
-                    Dispose(DropItems[i]);
+                    DropItems[i] = null;
                     DropItems.RemoveAt(i);
                     break;
                 }
             }
         }
 
-        // ----------------------------------------------------------
         public static void AddDealItem(TClientItem ci)
         {
             int i;
             for (i = 0; i < 10; i++)
             {
-                if ((MShare.g_DealItems[i].Item.Name == ci.Item.Name) && (MShare.g_DealItems[i].Item.Overlap > 0))
+                if ((MShare.g_DealItems[i].Item.Name == ci.Item.Name))
                 {
-                    MShare.g_DealItems[i].Dura = MShare.g_DealItems[i].Dura + ci.Dura;
+                    MShare.g_DealItems[i].Dura = (ushort)(MShare.g_DealItems[i].Dura + ci.Dura);
                     break;
                 }
                 else if (MShare.g_DealItems[i].Item.Name == "")
@@ -457,7 +424,7 @@ namespace RobotSvr
             result = false;
             for (i = 0; i < 10; i++)
             {
-                if (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].s.Name == "")
+                if (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].Item.Name == "")
                 {
                     result = true;
                     break;
@@ -473,7 +440,7 @@ namespace RobotSvr
             result = 0;
             for (i = 0; i < 10; i++)
             {
-                if (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].s.Name != "")
+                if (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].Item.Name != "")
                 {
                     result++;
                     // Break;
@@ -489,7 +456,7 @@ namespace RobotSvr
             result = false;
             for (i = 0; i < 10; i++)
             {
-                if (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].s.Name != "")
+                if (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].Item.Name != "")
                 {
                     if (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].MakeIndex == ci.MakeIndex)
                     {
@@ -501,7 +468,7 @@ namespace RobotSvr
             }
             for (i = 0; i < 10; i++)
             {
-                if (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].s.Name == "")
+                if (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].Item.Name == "")
                 {
                     MShare.g_MySelf.m_StallMgr.mBlock.Items[i] = ci;
                     result = true;
@@ -513,16 +480,14 @@ namespace RobotSvr
 
         public static bool DelStallItem(TClientItem ci)
         {
-            bool result;
-            int i;
-            result = false;
-            for (i = 0; i < 10; i++)
+            bool result = false;
+            for (var i = 0; i < 10; i++)
             {
-                if ((MShare.g_MySelf.m_StallMgr.mBlock.Items[i].s.Name == ci.Item.Name) && (ci.MakeIndex == MShare.g_MySelf.m_StallMgr.mBlock.Items[i].MakeIndex))
+                if ((MShare.g_MySelf.m_StallMgr.mBlock.Items[i].Item.Name == ci.Item.Name) && (ci.MakeIndex == MShare.g_MySelf.m_StallMgr.mBlock.Items[i].MakeIndex))
                 {
-                    MShare.g_MySelf.m_StallMgr.mBlock.Items[i].s.Name = "";
+                    MShare.g_MySelf.m_StallMgr.mBlock.Items[i].Item.Name = "";
                     result = true;
-                    // Break;
+                    break;
                 }
             }
             return result;
@@ -542,26 +507,20 @@ namespace RobotSvr
 
         public static void MoveDealItemToBag()
         {
-            int i;
-            for (i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 if (MShare.g_DealItems[i].Item.Name != "")
                 {
-                    if (MShare.g_DealItems[i].Item.Overlap <= 0)
-                    {
-                        AddItemBag(MShare.g_DealItems[i]);
-                    }
+                    AddItemBag(MShare.g_DealItems[i]);
                 }
             }
-            //FillChar(MShare.g_DealItems * 10, '\0');
         }
 
         public static void AddDealRemoteItem(TClientItem ci)
         {
-            int i;
-            for (i = 0; i < 20; i++)
+            for (var i = 0; i < 20; i++)
             {
-                if ((MShare.g_DealRemoteItems[i].Item.Name == ci.Item.Name) && (ci.Item.Overlap > 0))
+                if ((MShare.g_DealRemoteItems[i].Item.Name == ci.Item.Name))
                 {
                     MShare.g_DealRemoteItems[i].MakeIndex = ci.MakeIndex;
                 }
@@ -1194,7 +1153,7 @@ namespace RobotSvr
                     result = Grobal2.U_HELMET;
                     break;
                 case 16:
-                    result = Grobal2.U_HELMETEX;
+                    result =13;
                     break;
                 case 12:
                 case 13:
@@ -1391,7 +1350,7 @@ namespace RobotSvr
             bool result = false;
             for (var i = 0; i < MShare.MAXBAGITEMCL; i++)
             {
-                if ((MShare.g_ItemArr[i].MakeIndex == MShare.g_SellDlgItemSellWait.Item.MakeIndex) && (MShare.g_ItemArr[i].Item.Name == MShare.g_SellDlgItemSellWait.Item.Item.Name) && (MShare.g_ItemArr[i].Item.Overlap > 0))
+                if ((MShare.g_ItemArr[i].MakeIndex == MShare.g_SellDlgItemSellWait.Item.MakeIndex) && (MShare.g_ItemArr[i].Item.Name == MShare.g_SellDlgItemSellWait.Item.Item.Name))
                 {
                     if (remain < 1)
                     {
@@ -1412,16 +1371,7 @@ namespace RobotSvr
             {
                 if (MShare.g_ItemArr[i].Item.Name == iname)
                 {
-                    if (MShare.g_ItemArr[i].Item.Overlap > 0)
-                    {
-                        MShare.g_ItemArr[i].Dura = MShare.g_ItemArr[i].Dura - Count;
-                        if (MShare.g_ItemArr[i].Dura <= 0)
-                        {
-                            MShare.g_ItemArr[i].Item.Name = "";
-                            MShare.g_ItemArr[i].Dura = 0;
-                        }
-                    }
-                    else if (MShare.g_ItemArr[i].MakeIndex == iindex)
+                    if (MShare.g_ItemArr[i].MakeIndex == iindex)
                     {
                         result = true;
                         break;
@@ -1434,28 +1384,18 @@ namespace RobotSvr
 
         public static void ResultDealItem(TClientItem ci, int mindex, ushort Count)
         {
-            int i;
-            for (i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                if ((MShare.g_DealItems[i].Item.Name == ci.Item.Name) && (MShare.g_DealItems[i].Item.Overlap > 0))
-                {
-                    if ((MShare.g_DealItems[i].Item.Name == ci.Item.Name) && (MShare.g_DealItems[i].MakeIndex == mindex))
-                    {
-                        MShare.g_DealItems[i].Dura = MShare.g_DealItems[i].Dura + ci.Dura;
-                    }
-                    MShare.g_DealItems[i].MakeIndex = mindex;
-                    break;
-                }
-                else if (MShare.g_DealItems[i].Item.Name == "")
+                if (MShare.g_DealItems[i].Item.Name == "")
                 {
                     MShare.g_DealItems[i] = ci;
                     MShare.g_DealItems[i].MakeIndex = mindex;
                     break;
                 }
             }
-            for (i = 0; i < MShare.MAXBAGITEMCL; i++)
+            for (var i = 0; i < MShare.MAXBAGITEMCL; i++)
             {
-                if ((MShare.g_ItemArr[i].Item.Name == ci.Item.Name) && (MShare.g_ItemArr[i].Item.Overlap > 0) && (MShare.g_ItemArr[i].MakeIndex == ci.MakeIndex))
+                if ((MShare.g_ItemArr[i].Item.Name == ci.Item.Name) && (MShare.g_ItemArr[i].MakeIndex == ci.MakeIndex))
                 {
                     if (Count < 1)
                     {
