@@ -9,7 +9,7 @@ namespace RobotSvr
         public const string MAP_BASEPATH = ".\\Map\\";
         public static int[,] TerrainParams = new int[1] { 4, -1 };
         public TMapHeader m_MapHeader;
-        public TCellParams[] m_MapData;
+        public TCellParams[,] m_MapData;
         public TMapInfo[] m_MapBuf;
         public int m_nPathWidth = 0;
         public TPathMapCell[,] m_PathMapArray;

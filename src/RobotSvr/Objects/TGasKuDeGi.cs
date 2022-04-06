@@ -13,7 +13,7 @@ namespace RobotSvr
         protected int bx = 0;
         protected int by = 0;
 
-        public TGasKuDeGi() : base()
+        public TGasKuDeGi(RobotClient robotClient) : base(robotClient)
         {
             this.m_boUseEffect = false;
             BoUseDieEffect = false;
@@ -84,7 +84,7 @@ namespace RobotSvr
                     }
                     this.m_dwEffectStartTime = MShare.GetTickCount();
                     this.m_dwEffectFrameTime = this.m_dwFrameTime;
-                    Actor = ClMain.g_PlayScene.FindActor(this.m_nTargetRecog);
+                    Actor = robotClient.g_PlayScene.FindActor(this.m_nTargetRecog);
                     if (Actor != null)
                     {
                         fire16dir = ClFunc.GetFlyDirection16(scx, scy, stx, sty);

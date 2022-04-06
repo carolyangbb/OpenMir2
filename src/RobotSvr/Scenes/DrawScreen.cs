@@ -6,6 +6,7 @@ namespace RobotSvr
 {
     public class DrawScreen
     {
+        private readonly RobotClient robotClient;
         private readonly long _mDwFrameTime = 0;
         private readonly long _mDwFrameCount = 0;
         private readonly ArrayList _mSysMsgList = null;
@@ -18,7 +19,7 @@ namespace RobotSvr
         public ArrayList MAdList2 = null;
 
 
-        public DrawScreen()
+        public DrawScreen(RobotClient robotClient)
         {
             CurrentScene = null;
             _mDwFrameTime = MShare.GetTickCount();
@@ -46,26 +47,26 @@ namespace RobotSvr
             switch (scenetype)
             {
                 case SceneType.stIntro:
-                    CurrentScene = ClMain.IntroScene;
-                    ClMain.IntroScene.m_dwStartTime = MShare.GetTickCount() + 2000;
+                    CurrentScene = robotClient.IntroScene;
+                    robotClient.IntroScene.m_dwStartTime = MShare.GetTickCount() + 2000;
                     break;
                 case SceneType.stLogin:
-                    CurrentScene = ClMain.LoginScene;
+                    CurrentScene = robotClient.LoginScene;
                     break;
                 case SceneType.stSelectCountry:
                     break;
                 case SceneType.stSelectChr:
-                    CurrentScene = ClMain.SelectChrScene;
+                    CurrentScene = robotClient.SelectChrScene;
                     break;
                 case SceneType.stNewChr:
                     break;
                 case SceneType.stLoading:
                     break;
                 case SceneType.stLoginNotice:
-                    CurrentScene = ClMain.LoginNoticeScene;
+                    CurrentScene = robotClient.LoginNoticeScene;
                     break;
                 case SceneType.stPlayGame:
-                    CurrentScene = ClMain.g_PlayScene;
+                    CurrentScene = robotClient.g_PlayScene;
                     break;
             }
             if (CurrentScene != null)

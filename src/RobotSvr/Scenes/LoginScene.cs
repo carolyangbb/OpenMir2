@@ -18,11 +18,10 @@ namespace RobotSvr
         public long MEditPassHandle = 0;
         public object MEditPassPointer = null;
 
-        public LoginScene() : base(SceneType.stLogin)
+        public LoginScene(RobotClient robotClient) : base(SceneType.stLogin, robotClient)
         {
             _mBoOpenFirst = false;
         }
-
 
         public override void OpenScene()
         {

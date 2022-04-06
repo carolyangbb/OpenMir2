@@ -2,7 +2,7 @@
 {
     public class LoginNotice : Scene
     {
-        public LoginNotice() : base(SceneType.StLoginNotice)
+        public LoginNotice(RobotClient robotClient) : base(SceneType.stLoginNotice, robotClient)
         {
 
         }

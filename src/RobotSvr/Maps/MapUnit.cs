@@ -69,9 +69,9 @@ namespace RobotSvr
     public struct TMapInfo
     {
         // 新地图结构
-        public short wBkImg;
-        public short wMidImg;
-        public short wFrImg;
+        public ushort wBkImg;
+        public ushort wMidImg;
+        public ushort wFrImg;
         public byte btDoorIndex;
         public byte btDoorOffset;
         public byte btAniFrame;
@@ -80,12 +80,12 @@ namespace RobotSvr
         public byte btLight;// 光
         public byte btBkIndex;
         public byte btSmIndex;
-        public short btTAnimImage;
-        public short btTAnimBlank;
-        public short btTAnimTick;
+        public ushort btTAnimImage;
+        public ushort btTAnimBlank;
+        public ushort btTAnimTick;
         public byte btTAnimIndex;
         public byte btTAniFrame;
-        public short btTAniOffset;
+        public ushort btTAniOffset;
         public byte btArea2;
         public byte btLight2;// 光
         public byte btTiles2;

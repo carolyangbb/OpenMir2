@@ -12,7 +12,7 @@ namespace RobotSvr
         private int deathframe = 0;
         private bool bomarkpos = false;
 
-        public TWallStructure() : base()
+        public TWallStructure(RobotClient robotClient) : base(robotClient)
         {
             this.m_btDir = 0;
             bomarkpos = false;

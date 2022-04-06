@@ -9,7 +9,7 @@ namespace RobotSvr
         protected int ay = 0;
         protected byte firedir = 0;
 
-        public TTiger() : base()
+        public TTiger(RobotClient robotClient) : base(robotClient)
         {
             this.m_boUseEffect = false;
         }

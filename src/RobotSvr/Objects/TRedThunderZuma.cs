@@ -6,10 +6,11 @@ namespace RobotSvr
     {
         public bool boCasted = false;
 
-        public TRedThunderZuma() : base()
+        public TRedThunderZuma(RobotClient robotClient) : base(robotClient)
         {
             boCasted = false;
         }
+
         public override void CalcActorFrame()
         {
             TMonsterAction pm;

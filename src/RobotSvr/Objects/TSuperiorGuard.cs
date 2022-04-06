@@ -2,7 +2,9 @@
 {
     public class TSuperiorGuard : TGasKuDeGi
     {
-    } // end TSuperiorGuard
+        public TSuperiorGuard(RobotClient robotClient) : base(robotClient)
+        {
 
-} // end TBanyaGuardMon
-
+        }
+    }
+}

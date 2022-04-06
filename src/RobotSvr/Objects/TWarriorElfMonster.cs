@@ -4,6 +4,11 @@
     {
         private readonly int oldframe = 0;
 
+        public TWarriorElfMonster(RobotClient robotClient) : base(robotClient)
+        {
+
+        }
+
         public override void RunFrameAction(int frame)
         {
             //TMapEffect meff;

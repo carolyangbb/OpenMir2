@@ -262,7 +262,7 @@ namespace RobotSvr
             }
         }
 
-        public TNpcActor() : base()
+        public TNpcActor(RobotClient robotClient) : base(robotClient)
         {
             this.m_boHitEffect = false;
             this.m_nHitEffectNumber = 0;

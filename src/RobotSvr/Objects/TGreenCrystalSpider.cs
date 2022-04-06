@@ -4,14 +4,18 @@ namespace RobotSvr
 {
     public class TGreenCrystalSpider : TGasKuDeGi
     {
+        public TGreenCrystalSpider(RobotClient robotClient) : base(robotClient)
+        {
+
+        }
+
         public override void CalcActorFrame()
         {
-            TMonsterAction pm;
             base.CalcActorFrame();
             return;
             this.m_nCurrentFrame = -1;
             this.m_nBodyOffset = Actor.GetOffset(this.m_wAppearance);
-            pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
+            TMonsterAction pm = Actor.GetRaceByPM(this.m_btRace, this.m_wAppearance);
             if (pm == null)
             {
                 return;

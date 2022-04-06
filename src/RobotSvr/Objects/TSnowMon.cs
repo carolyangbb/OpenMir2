@@ -14,7 +14,7 @@ namespace RobotSvr
         protected int by = 0;
         protected bool m_bowChrEffect = false;
 
-        public TSnowMon() : base()
+        public TSnowMon(RobotClient robotClient) : base(robotClient)
         {
             this.m_boUseEffect = false;
             BoUseDieEffect = false;

@@ -3,9 +3,9 @@
     public class IntroScene : Scene
     {
         public bool MBoOnClick = false;
-        public long MDwStartTime = 0;
+        public long m_dwStartTime = 0;
 
-        public IntroScene() : base(SceneType.stIntro)
+        public IntroScene(RobotClient robotClient) : base(SceneType.stIntro, robotClient)
         {
 
         }
@@ -13,7 +13,7 @@
         public override void OpenScene()
         {
             MBoOnClick = false;
-            MDwStartTime = MShare.GetTickCount() + 2 * 1000;
+            m_dwStartTime = MShare.GetTickCount() + 2 * 1000;
         }
 
         public override void CloseScene()
@@ -22,10 +22,10 @@
 
         public override void PlayScene()
         {
-            if (MShare.GetTickCount() > MDwStartTime)
+            if (MShare.GetTickCount() > m_dwStartTime)
             {
                 MBoOnClick = true;
-                ClMain.DScreen.ChangeScene(SceneType.stLogin);
+                robotClient.DScreen.ChangeScene(SceneType.stLogin);
                 if (!MShare.g_boDoFadeOut && !MShare.g_boDoFadeIn)
                 {
                     MShare.g_boDoFadeIn = true;

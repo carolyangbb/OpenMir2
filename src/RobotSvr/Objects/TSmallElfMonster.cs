@@ -2,7 +2,8 @@
 {
     public class TSmallElfMonster : TSkeletonOma
     {
-    } // end TSmallElfMonster
-
-} // end TBanyaGuardMon
-
+        public TSmallElfMonster(RobotClient robotClient) : base(robotClient)
+        {
+        }
+    }
+}

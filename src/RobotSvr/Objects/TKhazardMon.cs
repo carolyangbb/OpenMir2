@@ -4,7 +4,7 @@ namespace RobotSvr
 {
     public class TKhazardMon : TSkeletonOma
     {
-        public TKhazardMon() : base()
+        public TKhazardMon(RobotClient robotClient) : base(robotClient)
         {
         }
 

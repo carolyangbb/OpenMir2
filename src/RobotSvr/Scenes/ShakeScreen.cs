@@ -57,79 +57,79 @@ namespace RobotSvr
             NShakeRangeY = cnt;
         }
 
-        public Rectangle GetShakeRect(long tick)
-        {
-            Rectangle result;
-            int i;
-            //result.Left = 0;
-            //result.Top = 0;
-            //result.Right = MShare.SCREENWIDTH - PlayScn.SOFFX * 2;
-            //result.Bottom = MShare.SCREENHEIGHT;
-            if (BoShakeX)
-            {
-                if (NShakeLoopCntX > 0)
-                {
-                    if (NShakeCntX < NShakeRangeX)
-                    {
-                        if (tick - DwShakeTickX > DwShakeTimeX)
-                        {
-                            DwShakeTickX = tick;
-                            i = NShakeRangeX;
-                            i -= NShakeCntX;
-                            // result.Left = i;
-                            //i += MShare.SCREENWIDTH - PlayScn.SOFFX * 2;
-                            // result.Right = i;
-                            NShakeCntX++;
-                        }
-                    }
-                    else
-                    {
-                        if (NShakeRangeX > 1)
-                        {
-                            NShakeRangeX -= 1;
-                        }
-                        NShakeCntX = 0;
-                        NShakeLoopCntX -= 1;
-                        if (NShakeLoopCntX <= 0)
-                        {
-                            BoShakeX = false;
-                        }
-                    }
-                }
-            }
-            if (BoShakeY)
-            {
-                if (NShakeLoopCntY > 0)
-                {
-                    if (NShakeCntY < NShakeRangeY)
-                    {
-                        if (tick - DwShakeTickY > DwShakeTimeY)
-                        {
-                            DwShakeTickY = tick;
-                            i = NShakeRangeY;
-                            i -= NShakeCntY;
-                            // result.Top = i;
-                            i += MShare.SCREENHEIGHT;
-                            // result.Bottom = i;
-                            NShakeCntY++;
-                        }
-                    }
-                    else
-                    {
-                        if (NShakeRangeY > 1)
-                        {
-                            NShakeRangeY -= 1;
-                        }
-                        NShakeCntY = 0;
-                        NShakeLoopCntY -= 1;
-                        if (NShakeLoopCntY <= 0)
-                        {
-                            BoShakeY = false;
-                        }
-                    }
-                }
-            }
-            return result;
-        }
+        //public Rectangle GetShakeRect(long tick)
+        //{
+        //    Rectangle result;
+        //    int i;
+        //    result.Left = 0;
+        //    result.Top = 0;
+        //    result.Right = MShare.SCREENWIDTH - PlayScn.SOFFX * 2;
+        //    result.Bottom = MShare.SCREENHEIGHT;
+        //    if (BoShakeX)
+        //    {
+        //        if (NShakeLoopCntX > 0)
+        //        {
+        //            if (NShakeCntX < NShakeRangeX)
+        //            {
+        //                if (tick - DwShakeTickX > DwShakeTimeX)
+        //                {
+        //                    DwShakeTickX = tick;
+        //                    i = NShakeRangeX;
+        //                    i -= NShakeCntX;
+        //                    result.Left = i;
+        //                    i += MShare.SCREENWIDTH - PlayScn.SOFFX * 2;
+        //                    result.Right = i;
+        //                    NShakeCntX++;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (NShakeRangeX > 1)
+        //                {
+        //                    NShakeRangeX -= 1;
+        //                }
+        //                NShakeCntX = 0;
+        //                NShakeLoopCntX -= 1;
+        //                if (NShakeLoopCntX <= 0)
+        //                {
+        //                    BoShakeX = false;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    if (BoShakeY)
+        //    {
+        //        if (NShakeLoopCntY > 0)
+        //        {
+        //            if (NShakeCntY < NShakeRangeY)
+        //            {
+        //                if (tick - DwShakeTickY > DwShakeTimeY)
+        //                {
+        //                    DwShakeTickY = tick;
+        //                    i = NShakeRangeY;
+        //                    i -= NShakeCntY;
+        //                    result.Top = i;
+        //                    i += MShare.SCREENHEIGHT;
+        //                    result.Bottom = i;
+        //                    NShakeCntY++;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (NShakeRangeY > 1)
+        //                {
+        //                    NShakeRangeY -= 1;
+        //                }
+        //                NShakeCntY = 0;
+        //                NShakeLoopCntY -= 1;
+        //                if (NShakeLoopCntY <= 0)
+        //                {
+        //                    BoShakeY = false;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return result;
+        //}
     }
 }

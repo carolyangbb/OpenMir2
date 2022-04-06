@@ -2,7 +2,9 @@
 {
     public class TZombiLighting : TGasKuDeGi
     {
-    } // end TZombiLighting
+        public TZombiLighting(RobotClient robotClient) : base(robotClient)
+        {
 
-} // end TBanyaGuardMon
-
+        }
+    }
+}

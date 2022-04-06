@@ -6,15 +6,20 @@ namespace RobotSvr
 {
     public class HeroActor
     {
-        public static long g_hinttick1 = 0;
-        public static long g_hinttick2 = 0;
+        private readonly RobotClient robotClient;
+        public long g_hinttick1 = 0;
+        public long g_hinttick2 = 0;
         public const int overdisc = 22;
 
-        // 待处理节点入队列, 依靠对目的地估价距离插入排序
-        public static bool CanNextSpell()
+        public HeroActor(RobotClient robotClient)
         {
-            bool result;
-            result = false;
+            this.robotClient = robotClient;
+        }
+
+        // 待处理节点入队列, 依靠对目的地估价距离插入排序
+        public bool CanNextSpell()
+        {
+            bool result = false;
             if (MShare.g_boSpeedRate)
             {
                 if (MShare.GetTickCount() - MShare.g_dwLatestSpellTick > (MShare.g_dwSpellTime + MShare.g_dwMagicDelayTime - ((long)MShare.g_MagSpeedRate) * 20))
@@ -32,7 +37,7 @@ namespace RobotSvr
             return result;
         }
 
-        public static void enter_queue(Tree Node, int F)
+        public void enter_queue(Tree Node, int F)
         {
             Link P;
             Link Father;
@@ -56,7 +61,7 @@ namespace RobotSvr
         }
 
         // 将离目的地估计最近的方案出队列
-        public static Tree get_from_queue()
+        public Tree get_from_queue()
         {
             Tree result;
             Tree bestchoice;
@@ -70,7 +75,7 @@ namespace RobotSvr
         }
 
         // 释放申请过的所有节点
-        public static void FreeTree()
+        public void FreeTree()
         {
             Link P;
             while (MShare.g_APQueue != null)
@@ -86,13 +91,13 @@ namespace RobotSvr
             }
         }
 
-        public static void Dispose(object obj)
+        public void Dispose(object obj)
         {
 
         }
 
         // 估价函数,估价 x,y 到目的地的距离,估计值必须保证比实际值小
-        public static int judge(int X, int Y, int end_x, int end_y)
+        public int judge(int X, int Y, int end_x, int end_y)
         {
             int result;
             result = Math.Abs(end_x - X) + Math.Abs(end_y - Y);
@@ -105,8 +110,8 @@ namespace RobotSvr
             int cx;
             int cy;
             result = true;
-            cx = X - ClMain.Map.m_nBlockLeft;
-            cy = Y - ClMain.Map.m_nBlockTop;
+            cx = X - robotClient.Map.m_nBlockLeft;
+            cy = Y - robotClient.Map.m_nBlockTop;
             if ((cx > MShare.MAXX * 3) || (cy > MShare.MAXY * 3))
             {
                 return result;
@@ -122,13 +127,13 @@ namespace RobotSvr
             return result;
         }
 
-        public static bool Trytile(int X, int Y, int end_x, int end_y, Tree Father, byte dir)
+        public bool Trytile(int X, int Y, int end_x, int end_y, Tree Father, byte dir)
         {
             bool result;
             Tree P;
             int H;
             result = false;
-            if (!ClMain.Map.CanMove(X, Y))
+            if (!robotClient.Map.CanMove(X, Y))
             {
                 return result;
             }
@@ -148,7 +153,7 @@ namespace RobotSvr
                 return result;
             }
             // 如果曾经有更好的方案移动到 (x,y) 失败
-            MShare.g_APPass[X - ClMain.Map.m_nBlockLeft, Y - ClMain.Map.m_nBlockTop] = H;
+            MShare.g_APPass[X - robotClient.Map.m_nBlockLeft, Y - robotClient.Map.m_nBlockTop] = H;
             // 记录这次到 (x,y) 的距离为历史最佳距离
             P = new Tree();
             P.Father = Father;
@@ -162,7 +167,7 @@ namespace RobotSvr
         }
 
         // 路径寻找主函数
-        public static void AP_findpath(int Startx, int Starty, int end_x, int end_y)
+        public void AP_findpath(int Startx, int Starty, int end_x, int end_y)
         {
             Tree Root;
             Tree P;
@@ -171,7 +176,7 @@ namespace RobotSvr
             int Y;
             int dir;
             TFindNode Temp;
-            if (!ClMain.Map.CanMove(end_x, end_y))
+            if (!robotClient.Map.CanMove(end_x, end_y))
             {
                 return;
             }
@@ -249,7 +254,7 @@ namespace RobotSvr
             FreeTree();
         }
 
-        public static int RandomRange(int AFrom, int ATo)
+        public int RandomRange(int AFrom, int ATo)
         {
             int result;
             if (AFrom > ATo)
@@ -263,7 +268,7 @@ namespace RobotSvr
             return result;
         }
 
-        public static void Init_Queue()
+        public void Init_Queue()
         {
             int i;
             FreeTree();
@@ -301,7 +306,7 @@ namespace RobotSvr
             MShare.g_APPathList.Clear();
         }
 
-        public static void Init_Queue2()
+        public void Init_Queue2()
         {
             int i;
             FreeTree();
@@ -332,7 +337,7 @@ namespace RobotSvr
             MShare.g_APPathList.Clear();
         }
 
-        public static bool IsBackToSafeZone(ref int ret)
+        public bool IsBackToSafeZone(ref int ret)
         {
             bool result;
             int i;
@@ -436,22 +441,17 @@ namespace RobotSvr
             return result;
         }
 
-        public static int GetDis(int X1, int Y1, int X2, int Y2)
+        public int GetDis(int X1, int Y1, int X2, int Y2)
         {
-            int result;
-            result = (X1 - X2) * (X1 - X2) + (Y1 - Y2) * (Y1 - Y2);
-            return result;
+            return (X1 - X2) * (X1 - X2) + (Y1 - Y2) * (Y1 - Y2);
         }
 
-        public static bool IsProperTarget(TActor Actor)
+        public bool IsProperTarget(TActor Actor)
         {
-            bool result;
-            // (Actor.m_nHiterCode = 0) and
-            result = (Actor != null) && (Actor.m_btRace != 0) && (Actor.m_sUserName != "") && (!new ArrayList(new int[] { 12, 50 }).Contains(Actor.m_btRace)) && (!Actor.m_boDeath) && (Actor.m_btRace != 12) && ((Actor.m_nState & Grobal2.STATE_STONE_MODE) == 0) && (Actor.m_sUserName.IndexOf("(") == 0) && Actor.m_boVisible && (!Actor.m_boDelActor) && (!Actor.m_btAFilter) && MShare.g_gcAss[6] && (MShare.g_APMobList.IndexOf(Actor.m_sUserName) < 0);
-            return result;
+            return (Actor != null) && (Actor.m_btRace != 0) && (Actor.m_sUserName != "") && (!new ArrayList(new int[] { 12, 50 }).Contains(Actor.m_btRace)) && (!Actor.m_boDeath) && (Actor.m_btRace != 12) && ((Actor.m_nState & Grobal2.STATE_STONE_MODE) == 0) && (Actor.m_sUserName.IndexOf("(") == 0) && Actor.m_boVisible && (!Actor.m_boDelActor) && (!Actor.m_btAFilter) && MShare.g_gcAss[6] && (MShare.g_APMobList.IndexOf(Actor.m_sUserName) < 0);
         }
 
-        public static TActor SearchTarget()
+        public TActor SearchTarget()
         {
             TActor result;
             int i;
@@ -469,7 +469,7 @@ namespace RobotSvr
                     // Exit;
                 }
             }
-            PlayScene _wvar1 = ClMain.g_PlayScene;
+            PlayScene _wvar1 = robotClient.g_PlayScene;
             for (i = 0; i < _wvar1.m_ActorList.Count; i++)
             {
                 Actor = _wvar1.m_ActorList[i];
@@ -486,7 +486,7 @@ namespace RobotSvr
             return result;
         }
 
-        public static int GetDropItemsDis()
+        public int GetDropItemsDis()
         {
             int result;
             int i;
@@ -511,7 +511,7 @@ namespace RobotSvr
             return result;
         }
 
-        public static int GetAutoPalyStation()
+        public int GetAutoPalyStation()
         {
             int result;
             bool has;
@@ -621,9 +621,9 @@ namespace RobotSvr
             return result;
         }
 
-        public static bool AutoUseMagic(byte Key, TActor target, int nx = 0, int ny = 0)
+        public bool AutoUseMagic(byte Key, TActor target, int nx = 0, int ny = 0)
         {
-            TClientMagic pcm = ClMain.frmMain.GetMagicByID(Key);
+            TClientMagic pcm = robotClient.GetMagicByID(Key);
             if (pcm == null)
             {
                 return false;
@@ -631,70 +631,70 @@ namespace RobotSvr
             MShare.g_FocusCret = target;
             if (nx >= 0)
             {
-                ClMain.frmMain.UseMagic(nx, ny, pcm, true);
+                robotClient.UseMagic(nx, ny, pcm, true);
             }
             else
             {
-                ClMain.frmMain.UseMagic(target.m_nCurrX, target.m_nCurrY, pcm);
+                robotClient.UseMagic(target.m_nCurrX, target.m_nCurrY, pcm);
             }
             return true;
         }
 
-        public static int TargetCount(TActor target)
+        public int TargetCount(TActor target)
         {
             int result = 1;
             int rx = target.m_nCurrX + 1;
             int ry = target.m_nCurrY;
-            TActor Actor = ClMain.g_PlayScene.FindActorXY(rx, ry);
+            TActor Actor = robotClient.g_PlayScene.FindActorXY(rx, ry);
             if (IsProperTarget(Actor))
             {
                 result++;
             }
             rx = target.m_nCurrX + 1;
             ry = target.m_nCurrY + 1;
-            Actor = ClMain.g_PlayScene.FindActorXY(rx, ry);
+            Actor = robotClient.g_PlayScene.FindActorXY(rx, ry);
             if (IsProperTarget(Actor))
             {
                 result++;
             }
             rx = target.m_nCurrX + 1;
             ry = target.m_nCurrY - 1;
-            Actor = ClMain.g_PlayScene.FindActorXY(rx, ry);
+            Actor = robotClient.g_PlayScene.FindActorXY(rx, ry);
             if (IsProperTarget(Actor))
             {
                 result++;
             }
             rx = target.m_nCurrX - 1;
             ry = target.m_nCurrY;
-            Actor = ClMain.g_PlayScene.FindActorXY(rx, ry);
+            Actor = robotClient.g_PlayScene.FindActorXY(rx, ry);
             if (IsProperTarget(Actor))
             {
                 result++;
             }
             rx = target.m_nCurrX - 1;
             ry = target.m_nCurrY + 1;
-            Actor = ClMain.g_PlayScene.FindActorXY(rx, ry);
+            Actor = robotClient.g_PlayScene.FindActorXY(rx, ry);
             if (IsProperTarget(Actor))
             {
                 result++;
             }
             rx = target.m_nCurrX - 1;
             ry = target.m_nCurrY - 1;
-            Actor = ClMain.g_PlayScene.FindActorXY(rx, ry);
+            Actor = robotClient.g_PlayScene.FindActorXY(rx, ry);
             if (IsProperTarget(Actor))
             {
                 result++;
             }
             rx = target.m_nCurrX;
             ry = target.m_nCurrY + 1;
-            Actor = ClMain.g_PlayScene.FindActorXY(rx, ry);
+            Actor = robotClient.g_PlayScene.FindActorXY(rx, ry);
             if (IsProperTarget(Actor))
             {
                 result++;
             }
             rx = target.m_nCurrX;
             ry = target.m_nCurrY - 1;
-            Actor = ClMain.g_PlayScene.FindActorXY(rx, ry);
+            Actor = robotClient.g_PlayScene.FindActorXY(rx, ry);
             if (IsProperTarget(Actor))
             {
                 result++;
@@ -702,10 +702,10 @@ namespace RobotSvr
             return result;
         }
 
-        public static int TargetCount2(TActor target)
+        public int TargetCount2(TActor target)
         {
             int result = 0;
-            PlayScene _wvar1 = ClMain.g_PlayScene;
+            PlayScene _wvar1 = robotClient.g_PlayScene;
             for (var i = 0; i < _wvar1.m_ActorList.Count; i++)
             {
                 TActor Actor = _wvar1.m_ActorList[i];
@@ -720,10 +720,10 @@ namespace RobotSvr
             return result;
         }
 
-        public static int TargetCount3(TActor target)
+        public int TargetCount3(TActor target)
         {
             int result = 0;
-            PlayScene _wvar1 = ClMain.g_PlayScene;
+            PlayScene _wvar1 = robotClient.g_PlayScene;
             for (var i = 0; i < _wvar1.m_ActorList.Count; i++)
             {
                 TActor Actor = _wvar1.m_ActorList[i];
@@ -738,10 +738,10 @@ namespace RobotSvr
             return result;
         }
 
-        public static int TargetHumCount(TActor target)
+        public int TargetHumCount(TActor target)
         {
             int result = 0;
-            PlayScene _wvar1 = ClMain.g_PlayScene;
+            PlayScene _wvar1 = robotClient.g_PlayScene;
             for (var i = 0; i < _wvar1.m_ActorList.Count; i++)
             {
                 TActor Actor = _wvar1.m_ActorList[i];
@@ -757,12 +757,12 @@ namespace RobotSvr
             return result;
         }
 
-        public static bool XPATTACK()
+        public bool XPATTACK()
         {
             return false;
         }
 
-        public static bool HeroAttackTagget(TActor target)
+        public bool HeroAttackTagget(TActor target)
         {
             bool result;
             int n;
@@ -772,14 +772,14 @@ namespace RobotSvr
             TClientMagic pcm;
             int i;
             int nTag;
-            int nx;
-            int ny;
-            int nAbsX;
-            int nAbsY;
-            int nNX;
-            int nNY;
-            int nTX;
-            int nTY;
+            int nx = 0;
+            int ny = 0;
+            int nAbsX = 0;
+            int nAbsY = 0;
+            int nNX = 0;
+            int nNY = 0;
+            int nTX = 0;
+            int nTY = 0;
             int nOldDC;
             result = false;
             MShare.g_boAPAutoMove = false;
@@ -793,17 +793,17 @@ namespace RobotSvr
                 case 0:
                     if (MShare.g_SeriesSkillReady)
                     {
-                        ClMain.frmMain.SendFireSerieSkill();
+                        robotClient.SendFireSerieSkill();
                     }
                     if (MShare.g_gcTec[4] && ((MShare.g_MySelf.m_nState & 0x00100000) == 0) && CanNextSpell())
                     {
                         if (MShare.g_MagicArr[0][31] != null)
                         {
-                            ClMain.frmMain.UseMagic(MShare.SCREENWIDTH / 2, MShare.SCREENHEIGHT / 2, MShare.g_MagicArr[0][31]);
+                            robotClient.UseMagic(MShare.SCREENWIDTH / 2, MShare.SCREENHEIGHT / 2, MShare.g_MagicArr[0][31]);
                             return result;
                         }
                     }
-                    if (XPATTACK() || ClMain.frmMain.AttackTarget(MShare.g_APTagget))
+                    if (XPATTACK() || robotClient.AttackTarget(MShare.g_APTagget))
                     {
                         result = true;
                         return result;
@@ -812,7 +812,7 @@ namespace RobotSvr
                 case 1:
                     if (MShare.g_MySelf.m_Abil.Level < 7)
                     {
-                        if (ClMain.frmMain.AttackTarget(MShare.g_APTagget))
+                        if (robotClient.AttackTarget(MShare.g_APTagget))
                         {
                             result = true;
                         }
@@ -822,13 +822,13 @@ namespace RobotSvr
                     {
                         if (MShare.g_MagicArr[0][31] != null)
                         {
-                            ClMain.frmMain.UseMagic(MShare.SCREENWIDTH / 2, MShare.SCREENHEIGHT / 2, MShare.g_MagicArr[0][31]);
+                            robotClient.UseMagic(MShare.SCREENWIDTH / 2, MShare.SCREENHEIGHT / 2, MShare.g_MagicArr[0][31]);
                             return result;
                         }
                     }
                     if (MShare.g_SeriesSkillReady && (MShare.g_MagicLockActor != null) && (!MShare.g_MagicLockActor.m_boDeath))
                     {
-                        ClMain.frmMain.SendFireSerieSkill();
+                        robotClient.SendFireSerieSkill();
                     }
                     if (XPATTACK())
                     {
@@ -844,7 +844,7 @@ namespace RobotSvr
                         {
                             result = true;
                             MShare.g_sAPStr = string.Format("[挂机] 怪物目标：%s (%d,%d) 正在使用魔法攻击", MShare.g_APTagget.m_sUserName, MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY);
-                            if (ClMain.frmMain.CanNextAction() && ClMain.frmMain.ServerAcceptNextAction())
+                            if (robotClient.CanNextAction() && robotClient.ServerAcceptNextAction())
                             {
                                 if (CanNextSpell())
                                 {
@@ -855,7 +855,7 @@ namespace RobotSvr
                                             tdir = ClFunc.GetNextDirection(MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY, MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY);
                                             ClFunc.GetFrontPosition(MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY, tdir, ref nx, ref ny);
                                             ClFunc.GetFrontPosition(nx, ny, tdir, ref nx, ref ny);
-                                            if (ClMain.EventMan.GetEvent(nx, ny, Grobal2.ET_FIRE) == null)
+                                            if (robotClient.EventMan.GetEvent(nx, ny, Grobal2.ET_FIRE) == null)
                                             {
                                                 MShare.m_dwTargetFocusTick = MShare.GetTickCount();
                                                 if (AutoUseMagic(22, MShare.g_APTagget, nx, ny))
@@ -875,10 +875,10 @@ namespace RobotSvr
                                     if (MShare.g_MagicArr[0][10] != null)
                                     {
                                         tdir = ClFunc.GetNextDirection(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY);
-                                        if (ClMain.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, 1, ref nNX, ref nNY))
+                                        if (robotClient.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, 1, ref nNX, ref nNY))
                                         {
-                                            ClMain.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, 8, ref nTX, ref nTY);
-                                            if (ClMain.CheckMagPassThrough(nNX, nNY, nTX, nTY, tdir) >= nOldDC)
+                                            robotClient.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, 8, ref nTX, ref nTY);
+                                            if (robotClient.CheckMagPassThrough(nNX, nNY, nTX, nTY, tdir) >= nOldDC)
                                             {
                                                 MShare.m_dwTargetFocusTick = MShare.GetTickCount();
                                                 MagicKey = 10;
@@ -889,10 +889,10 @@ namespace RobotSvr
                                     if (MShare.g_MagicArr[0][9] != null)
                                     {
                                         tdir = ClFunc.GetNextDirection(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY);
-                                        if (ClMain.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, 1, ref nNX, ref nNY))
+                                        if (robotClient.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, 1, ref nNX, ref nNY))
                                         {
-                                            ClMain.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, 5, ref nTX, ref nTY);
-                                            if (ClMain.CheckMagPassThrough(nNX, nNY, nTX, nTY, tdir) >= nOldDC)
+                                            robotClient.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, 5, ref nTX, ref nTY);
+                                            if (robotClient.CheckMagPassThrough(nNX, nNY, nTX, nTY, tdir) >= nOldDC)
                                             {
                                                 MShare.m_dwTargetFocusTick = MShare.GetTickCount();
                                                 MagicKey = 9;
@@ -997,7 +997,7 @@ namespace RobotSvr
                                         if (MagicKey > 0)
                                         {
                                             result = true;
-                                            goto AAAA; //@ Unsupport goto 
+                                            goto AAAA;  
                                         }
                                         if (MShare.g_MagicArr[0][11] != null)
                                         {
@@ -1014,7 +1014,7 @@ namespace RobotSvr
                                         if (MagicKey > 0)
                                         {
                                             result = true;
-                                            goto AAAA; //@ Unsupport goto 
+                                            goto AAAA;  
                                         }
                                     }
                                     result = false;
@@ -1043,7 +1043,7 @@ namespace RobotSvr
                         nTag = 0;
                         while (true)
                         {
-                            if (ClMain.g_PlayScene.CanWalk(nx, ny))
+                            if (robotClient.g_PlayScene.CanWalk(nx, ny))
                             {
                                 break;
                             }
@@ -1056,16 +1056,16 @@ namespace RobotSvr
                                 break;
                             }
                         }
-                        if (ClMain.g_PlayScene.CanWalk(nx, ny))
+                        if (robotClient.g_PlayScene.CanWalk(nx, ny))
                         {
                             ClFunc.GetBackPosition2(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, ref nTX, ref nTY);
                             // Map.CanMove(nTX, nTY)
-                            if (ClMain.g_PlayScene.CanWalk(nTX, nTY))
+                            if (robotClient.g_PlayScene.CanWalk(nTX, nTY))
                             {
                                 // DScreen.AddChatBoardString(Format('避怪2(%d:%d)...........', [nTX, nTY]), clBlue, clWhite);
                                 MShare.g_nTargetX = nTX;
                                 MShare.g_nTargetY = nTY;
-                                MShare.g_ChrAction = MShare.TChrAction.caRun;
+                                MShare.g_ChrAction = TChrAction.caRun;
                                 MShare.g_nMouseCurrX = nTX;
                                 MShare.g_nMouseCurrY = nTY;
                                 result = true;
@@ -1075,7 +1075,7 @@ namespace RobotSvr
                                 // DScreen.AddChatBoardString(Format('避怪(%d:%d)...........', [nX, nY]), clBlue, clWhite);
                                 MShare.g_nTargetX = nx;
                                 MShare.g_nTargetY = ny;
-                                MShare.g_ChrAction = MShare.TChrAction.caRun;
+                                MShare.g_ChrAction = TChrAction.caRun;
                                 MShare.g_nMouseCurrX = nx;
                                 MShare.g_nMouseCurrY = ny;
                                 result = true;
@@ -1085,18 +1085,16 @@ namespace RobotSvr
                         {
                             // 强攻
                             // DScreen.AddChatBoardString('强攻...........', clBlue, clWhite);
-                            // nTag := 4;
-                            goto DDDD; //@ Unsupport goto 
+                            goto DDDD;  
                         }
                     }
                     break;
                 case 2:
-                    // //////////////////////////////////////
-                    if (MShare.g_gcTec[4] && (MShare.g_MySelf.m_nState & 0x00100000 == 0) && CanNextSpell())
+                    if (MShare.g_gcTec[4] && ((MShare.g_MySelf.m_nState & 0x00100000) == 0) && CanNextSpell())
                     {
                         if (MShare.g_MagicArr[0][31] != null)
                         {
-                            ClMain.frmMain.UseMagic(MShare.SCREENWIDTH / 2, MShare.SCREENHEIGHT / 2, MShare.g_MagicArr[0][31]);
+                            robotClient.UseMagic(MShare.SCREENWIDTH / 2, MShare.SCREENHEIGHT / 2, MShare.g_MagicArr[0][31]);
                             return result;
                         }
                     }
@@ -1121,7 +1119,7 @@ namespace RobotSvr
                         if (MShare.GetTickCount() - g_hinttick1 > 60 * 1000)
                         {
                             g_hinttick1 = MShare.GetTickCount();
-                            ClMain.DScreen.AddChatBoardString("你的[药粉]已经用完，注意补充", System.Drawing.Color.White, System.Drawing.Color.Blue);
+                            robotClient.DScreen.AddChatBoardString("你的[药粉]已经用完，注意补充", System.Drawing.Color.White, System.Drawing.Color.Blue);
                         }
                     }
                     m = 0;
@@ -1145,7 +1143,7 @@ namespace RobotSvr
                         if (MShare.GetTickCount() - g_hinttick2 > 60 * 1000)
                         {
                             g_hinttick2 = MShare.GetTickCount();
-                            ClMain.DScreen.AddChatBoardString("你的[护身符]已经用完，注意补充", System.Drawing.Color.White, System.Drawing.Color.Blue);
+                            robotClient.DScreen.AddChatBoardString("你的[护身符]已经用完，注意补充", System.Drawing.Color.White, System.Drawing.Color.Blue);
                         }
                     }
                     if ((MShare.GetTickCount() - MShare.m_dwRecallTick) > (1000 * 6))
@@ -1170,7 +1168,7 @@ namespace RobotSvr
                             if (MagicKey != 0)
                             {
                                 result = true;
-                                pcm = ClMain.frmMain.GetMagicByID(MagicKey);
+                                pcm = robotClient.GetMagicByID(MagicKey);
                                 if (pcm == null)
                                 {
                                     result = false;
@@ -1179,7 +1177,7 @@ namespace RobotSvr
                                 MShare.g_FocusCret = null;
                                 tdir = ClFunc.GetNextDirection(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY);
                                 ClFunc.GetFrontPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, ref nx, ref ny);
-                                ClMain.frmMain.UseMagic(nx, ny, pcm, true);
+                                robotClient.UseMagic(nx, ny, pcm, true);
                                 return result;
                             }
                         }
@@ -1199,17 +1197,6 @@ namespace RobotSvr
                                     return result;
                                 }
                             }
-                            if (MShare.g_MySelf.m_HeroObject != null)
-                            {
-                                if ((MShare.g_MySelf.m_HeroObject.m_nState & 0x00200000) == 0)
-                                {
-                                    result = true;
-                                    if (AutoUseMagic(14, MShare.g_MySelf.m_HeroObject))
-                                    {
-                                        return result;
-                                    }
-                                }
-                            }
                         }
                         // Double DefenceUp
                         if ((MShare.g_MagicArr[0][15] != null) && (m > 0))
@@ -1222,17 +1209,6 @@ namespace RobotSvr
                                     return result;
                                 }
                             }
-                            if (MShare.g_MySelf.m_HeroObject != null)
-                            {
-                                if (MShare.g_MySelf.m_HeroObject.m_nState & 0x00400000 == 0)
-                                {
-                                    result = true;
-                                    if (AutoUseMagic(15, MShare.g_MySelf.m_HeroObject))
-                                    {
-                                        return result;
-                                    }
-                                }
-                            }
                         }
                         // Healling
                         if (MShare.g_MagicArr[0][2] != null)
@@ -1243,20 +1219,6 @@ namespace RobotSvr
                                 if (AutoUseMagic(2, MShare.g_MySelf))
                                 {
                                     return result;
-                                }
-                            }
-                            if (MShare.g_MySelf.m_HeroObject != null)
-                            {
-                                if ((MShare.g_MySelf.m_HeroObject.m_Abil.HP != 0) && (Math.Abs(MShare.g_MySelf.m_nCurrX - MShare.g_MySelf.m_HeroObject.m_nCurrX + 2) <= MShare.g_nMagicRange) && (Math.Abs(MShare.g_MySelf.m_nCurrY - MShare.g_MySelf.m_HeroObject.m_nCurrY + 2) <= MShare.g_nMagicRange))
-                                {
-                                    if (HUtil32.Round(MShare.g_MySelf.m_HeroObject.m_Abil.HP / MShare.g_MySelf.m_HeroObject.m_Abil.MaxHP * 100) <= 80)
-                                    {
-                                        result = true;
-                                        if (AutoUseMagic(2, MShare.g_MySelf.m_HeroObject))
-                                        {
-                                            return result;
-                                        }
-                                    }
                                 }
                             }
                             if (MShare.g_MySelf.m_SlaveObject.Count > 0)
@@ -1298,19 +1260,6 @@ namespace RobotSvr
                                         return result;
                                     }
                                 }
-                                if (MShare.g_MySelf.m_HeroObject != null)
-                                {
-                                    if ((MShare.g_MySelf.m_HeroObject.m_Abil.HP != 0) && (Math.Abs(MShare.g_MySelf.m_nCurrX - MShare.g_MySelf.m_HeroObject.m_nCurrX + 2) <= MShare.g_nMagicRange) && (Math.Abs(MShare.g_MySelf.m_nCurrY - MShare.g_MySelf.m_HeroObject.m_nCurrY + 2) <= MShare.g_nMagicRange))
-                                    {
-                                        if (HUtil32.Round(MShare.g_MySelf.m_HeroObject.m_Abil.HP / MShare.g_MySelf.m_HeroObject.m_Abil.MaxHP * 100) < 85)
-                                        {
-                                            if (AutoUseMagic(2, MShare.g_MySelf.m_HeroObject))
-                                            {
-                                                return result;
-                                            }
-                                        }
-                                    }
-                                }
                                 for (i = 0; i < MShare.g_MySelf.m_SlaveObject.Count; i++)
                                 {
                                     if (((TActor)MShare.g_MySelf.m_SlaveObject[i]).m_boDeath)
@@ -1330,7 +1279,7 @@ namespace RobotSvr
                                 }
                             }
                         }
-                        if (ClMain.frmMain.AttackTarget(MShare.g_APTagget))
+                        if (robotClient.AttackTarget(MShare.g_APTagget))
                         {
                             result = true;
                         }
@@ -1338,7 +1287,7 @@ namespace RobotSvr
                     }
                     if (MShare.g_SeriesSkillReady && (MShare.g_MagicLockActor != null) && (!MShare.g_MagicLockActor.m_boDeath))
                     {
-                        ClMain.frmMain.SendFireSerieSkill();
+                        robotClient.SendFireSerieSkill();
                     }
                     if (XPATTACK())
                     {
@@ -1354,9 +1303,8 @@ namespace RobotSvr
                         if ((nAbsX <= MShare.g_nMagicRange) && (nAbsY <= MShare.g_nMagicRange))
                         {
                             result = true;
-                            //@ Unsupported function or procedure: 'Format'
-                            MShare.g_sAPStr = Format("[挂机] 怪物目标：%s (%d,%d) 正在使用魔法攻击", new int[] { MShare.g_APTagget.m_sUserName, MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY });
-                            if (ClMain.frmMain.CanNextAction() && ClMain.frmMain.ServerAcceptNextAction())
+                            MShare.g_sAPStr = string.Format("[挂机] 怪物目标：%s (%d,%d) 正在使用魔法攻击", MShare.g_APTagget.m_sUserName, MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY);
+                            if (robotClient.CanNextAction() && robotClient.ServerAcceptNextAction())
                             {
                             EEEE:
                                 if (CanNextSpell())
@@ -1369,7 +1317,7 @@ namespace RobotSvr
                                             MShare.m_dwDoubluSCTick = MShare.GetTickCount();
                                             MShare.m_dwTargetFocusTick = MShare.GetTickCount();
                                             MagicKey = 50;
-                                            goto BBBB; //@ Unsupport goto 
+                                            goto BBBB;
                                         }
                                     }
                                     // DECHEALTH & DAMAGEARMOR
@@ -1382,7 +1330,7 @@ namespace RobotSvr
                                             {
                                                 MShare.m_dwTargetFocusTick = MShare.GetTickCount();
                                                 MagicKey = 6;
-                                                goto BBBB; //@ Unsupport goto 
+                                                goto BBBB;
                                             }
                                         }
                                         if ((MShare.g_MagicArr[0][18] != null) && (MShare.g_MySelf.m_nState & 0x00800000 == 0) && (new System.Random(4).Next() == 0))
@@ -1391,7 +1339,7 @@ namespace RobotSvr
                                             {
                                                 MShare.m_dwTargetFocusTick = MShare.GetTickCount();
                                                 MagicKey = 18;
-                                                goto BBBB; //@ Unsupport goto 
+                                                goto BBBB;
                                             }
                                         }
                                     }
@@ -1401,13 +1349,13 @@ namespace RobotSvr
                                         {
                                             MShare.m_dwTargetFocusTick = MShare.GetTickCount();
                                             MagicKey = 57;
-                                            goto BBBB; //@ Unsupport goto 
+                                            goto BBBB;  
                                         }
                                         if (MShare.g_MagicArr[0][13] != null)
                                         {
                                             MShare.m_dwTargetFocusTick = MShare.GetTickCount();
                                             MagicKey = 13;
-                                            goto BBBB; //@ Unsupport goto 
+                                            goto BBBB;  
                                         }
                                     }
                                 BBBB:
@@ -1421,7 +1369,7 @@ namespace RobotSvr
                                     else
                                     {
                                         result = false;
-                                        goto CCCC; //@ Unsupport goto 
+                                        goto CCCC;  
                                     }
                                 }
                             }
@@ -1443,7 +1391,7 @@ namespace RobotSvr
                                 if (nTag >= 5)
                                 {
                                     // 怪太多,强攻解围...
-                                    goto EEEE; //@ Unsupport goto 
+                                    goto EEEE;  
                                 }
                                 if ((MShare.g_MagicArr[0][48] != null) && (nTag >= 3))
                                 {
@@ -1467,7 +1415,7 @@ namespace RobotSvr
                         nTag = 0;
                         while (true)
                         {
-                            if (ClMain.g_PlayScene.CanWalk(nx, ny))
+                            if (robotClient.g_PlayScene.CanWalk(nx, ny))
                             {
                                 break;
                             }
@@ -1480,16 +1428,16 @@ namespace RobotSvr
                                 break;
                             }
                         }
-                        if (ClMain.g_PlayScene.CanWalk(nx, ny))
+                        if (robotClient.g_PlayScene.CanWalk(nx, ny))
                         {
                             ClFunc.GetBackPosition2(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, ref nTX, ref nTY);
                             // Map.CanMove(nTX, nTY)
-                            if (ClMain.g_PlayScene.CanWalk(nTX, nTY))
+                            if (robotClient.g_PlayScene.CanWalk(nTX, nTY))
                             {
                                 // DScreen.AddChatBoardString(Format('避怪2(%d:%d)...........', [nTX, nTY]), clBlue, clWhite);
                                 MShare.g_nTargetX = nTX;
                                 MShare.g_nTargetY = nTY;
-                                MShare.g_ChrAction = MShare.TChrAction.caRun;
+                                MShare.g_ChrAction = TChrAction.caRun;
                                 MShare.g_nMouseCurrX = nTX;
                                 MShare.g_nMouseCurrY = nTY;
                                 result = true;
@@ -1499,7 +1447,7 @@ namespace RobotSvr
                                 // DScreen.AddChatBoardString(Format('避怪(%d:%d)...........', [nX, nY]), clBlue, clWhite);
                                 MShare.g_nTargetX = nx;
                                 MShare.g_nTargetY = ny;
-                                MShare.g_ChrAction = MShare.TChrAction.caRun;
+                                MShare.g_ChrAction = TChrAction.caRun;
                                 MShare.g_nMouseCurrX = nx;
                                 MShare.g_nMouseCurrY = ny;
                                 result = true;
@@ -1509,7 +1457,7 @@ namespace RobotSvr
                         {
                             // 强攻
                             // DScreen.AddChatBoardString('强攻...........', clBlue, clWhite);
-                            goto EEEE; //@ Unsupport goto 
+                            goto EEEE;  
                         }
                     }
                     break;

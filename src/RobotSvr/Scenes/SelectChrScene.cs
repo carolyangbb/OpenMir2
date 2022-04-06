@@ -8,7 +8,7 @@ namespace RobotSvr
         public int NewIndex = 0;
         public SelChar[] ChrArr;
 
-        public SelectChrScene() : base(SceneType.stSelectChr)
+        public SelectChrScene(RobotClient robotClient) : base(SceneType.stSelectChr, robotClient)
         {
             _createChrMode = false;
             ChrArr[0].FreezeState = true;
@@ -167,10 +167,10 @@ namespace RobotSvr
                 return;
             }
             ChrArr[n].UserChr.Name = uname;
-            ChrArr[n].UserChr.Job = job;
-            ChrArr[n].UserChr.hair = hair;
-            ChrArr[n].UserChr.Level = level;
-            ChrArr[n].UserChr.Sex = sex;
+            ChrArr[n].UserChr.Job = (byte)job;
+            ChrArr[n].UserChr.hair = (byte)hair;
+            ChrArr[n].UserChr.Level = (byte)level;
+            ChrArr[n].UserChr.Sex = (byte)sex;
             ChrArr[n].Valid = true;
         }
 
@@ -227,7 +227,7 @@ namespace RobotSvr
         {
             if (job >= 0 && job <= 2 && (ChrArr[NewIndex].UserChr.Job != job))
             {
-                ChrArr[NewIndex].UserChr.Job = job;
+                ChrArr[NewIndex].UserChr.Job = (byte)job;
                 SelectChr(NewIndex);
             }
         }
@@ -236,7 +236,7 @@ namespace RobotSvr
         {
             if (sex != ChrArr[NewIndex].UserChr.Sex)
             {
-                ChrArr[NewIndex].UserChr.Sex = sex;
+                ChrArr[NewIndex].UserChr.Sex = (byte)sex;
                 SelectChr(NewIndex);
             }
         }

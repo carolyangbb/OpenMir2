@@ -6,6 +6,10 @@ namespace RobotSvr
     {
         private int firedir = 0;
 
+        public TSculptureMon(RobotClient robotClient) : base(robotClient)
+        {
+        }
+
         public override void CalcActorFrame()
         {
             TMonsterAction pm;
@@ -24,7 +28,6 @@ namespace RobotSvr
                     {
                         if ((this.m_btRace == 48) || (this.m_btRace == 49))
                         {
-                            // + Dir * (pm.ActDeath.frame + pm.ActDeath.skip)
                             this.m_nStartFrame = pm.ActDeath.start;
                         }
                         else

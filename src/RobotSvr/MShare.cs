@@ -2208,8 +2208,8 @@ namespace RobotSvr
         public int Target;
         public MagicType EffectType;
         public int EffectNumber;
-        public int TargX:
-        public int TargY;
+        public int targx;
+        public int targy;
         public bool Recusion;
         public int AniTime;
     }

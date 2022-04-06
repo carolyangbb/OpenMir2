@@ -737,7 +737,7 @@ namespace RobotSvr
                             if (m_CurMagic.ServerMagicCode != 0)
                             {
                                 m_CurMagic.ServerMagicCode = 255;
-                                m_CurMagic.target = Msg.X;
+                                m_CurMagic.Target = Msg.X;
                                 if (Msg.Y >= 0 && Msg.Y <= 16)
                                 {
                                     m_CurMagic.EffectType = (MagicType)Msg.Y;
@@ -1400,7 +1400,7 @@ namespace RobotSvr
                         {
                             if (m_CurMagic.ServerMagicCode > 0)
                             {
-                                robotClient.g_PlayScene.NewMagic(this, m_CurMagic.ServerMagicCode, m_CurMagic.EffectNumber, m_nCurrX, m_nCurrY, m_CurMagic.targx, m_CurMagic.targy, m_CurMagic.target, m_CurMagic.EffectType, m_CurMagic.Recusion, m_CurMagic.anitime, ref boFly, m_CurMagic.magfirelv);
+                                //robotClient.g_PlayScene.NewMagic(this, m_CurMagic.ServerMagicCode, m_CurMagic.EffectNumber, m_nCurrX, m_nCurrY, m_CurMagic.targx, m_CurMagic.targy, m_CurMagic.target, m_CurMagic.EffectType, m_CurMagic.Recusion, m_CurMagic.anitime, ref boFly, m_CurMagic.magfirelv);
                             }
                             m_CurMagic.ServerMagicCode = 0;
                         }

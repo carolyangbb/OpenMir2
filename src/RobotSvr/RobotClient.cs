@@ -87,7 +87,7 @@ namespace RobotSvr
         public bool FboDisplayChange = false;
         public int FHotKeyId = 0;
         public bool boSizeMove = false;
-        
+        private HeroActor heroActor;
 
         public RobotClient()
         {
@@ -95,6 +95,7 @@ namespace RobotSvr
             int n;
             try
             {
+                heroActor = new HeroActor(this);
                 // 设置分辨率大小                      //分辨率修改标记
                 for (i = MShare.g_FSResolutionWidth.GetLowerBound(0); i <= MShare.g_FSResolutionWidth.GetUpperBound(0); i++)
                 {
@@ -112,23 +113,22 @@ namespace RobotSvr
                     MShare.g_FScreenHeight = MShare.g_FSResolutionHeight[0];
                 }
                 MShare.InitScreenConfig();
-                //MShare.ScreenChanged();
                 MShare.g_APPathList = new ArrayList();
                 MShare.g_ShowItemList = new Dictionary<string, string>();
                 FDDrawHandle = 0;
                 boSizeMove = false;
-                DScreen = new DrawScreen();
-                IntroScene = new IntroScene();
-                LoginScene = new LoginScene();
-                SelectChrScene = new SelectChrScene();
+                DScreen = new DrawScreen(this);
+                IntroScene = new IntroScene(this);
+                LoginScene = new LoginScene(this);
+                SelectChrScene = new SelectChrScene(this);
                 g_PlayScene = new PlayScene(this);
                 g_ShakeScreen = new ShakeScreen();
-                LoginNoticeScene = new LoginNotice();
+                LoginNoticeScene = new LoginNotice(this);
                 NpcImageList = new ArrayList();
                 ItemImageList = new ArrayList();
                 WeaponImageList = new ArrayList();
                 HumImageList = new ArrayList();
-                Map = new TMap();
+                Map = new TMap(this);
                 MShare.g_DropedItemList = new List<TDropItem>();
                 MShare.g_MagicList = new ArrayList();
                 MShare.g_IPMagicList = new ArrayList();
@@ -585,7 +585,7 @@ namespace RobotSvr
                                 {
                                     if (MShare.g_boOpenAutoPlay && MShare.g_boAPAutoMove && (MShare.g_APPathList.Count > 0))
                                     {
-                                        HeroActor.Init_Queue2();
+                                        heroActor.Init_Queue2();
                                         MShare.g_nTargetX = -1;
                                     }
                                     bowalk = false;
@@ -732,7 +732,7 @@ namespace RobotSvr
                     MShare.g_sAPStr = "拾取物品";
                     if (MShare.g_boAPAutoMove && (MShare.g_APPathList.Count > 0))
                     {
-                        HeroActor.Init_Queue2();
+                        heroActor.Init_Queue2();
                         MShare.g_nTargetX = -1;
                     }
                 }
@@ -7031,7 +7031,7 @@ namespace RobotSvr
                 return;
             }
             MShare.g_AutoPicupItem = null;
-            switch (HeroActor.GetAutoPalyStation())
+            switch (heroActor.GetAutoPalyStation())
             {
                 case 0:
                     if (!EatItemName("回城卷") && !EatItemName("回城卷包") && !EatItemName("盟重传送石") && !EatItemName("比奇传送石"))
@@ -7051,7 +7051,7 @@ namespace RobotSvr
                     MShare.g_boAPAutoMove = true;
                     break;
                 case 1:// 此时为该怪物首次被发现，自动寻找路径
-                    if (HeroActor.HeroAttackTagget(MShare.g_APTagget))
+                    if (heroActor.HeroAttackTagget(MShare.g_APTagget))
                     {
                         return;
                     }
@@ -7059,7 +7059,7 @@ namespace RobotSvr
                     {
                         MShare.g_nTargetX = MShare.g_APTagget.m_nCurrX;
                         MShare.g_nTargetY = MShare.g_APTagget.m_nCurrY;
-                        HeroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY);
+                        heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY);
                     }
                     MShare.g_nTargetX = -1;
                     MShare.g_nAPStatus = 1;
@@ -7070,7 +7070,7 @@ namespace RobotSvr
                     {
                         MShare.g_nTargetX = MShare.g_AutoPicupItem.X;
                         MShare.g_nTargetY = MShare.g_AutoPicupItem.Y;
-                        HeroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                        heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         MShare.g_nTargetX = -1;
                         MShare.g_sAPStr = string.Format("[挂机] 物品目标：%s(%d,%d) 正在去拾取", new object[] { MShare.g_AutoPicupItem.Name, MShare.g_AutoPicupItem.X, MShare.g_AutoPicupItem.Y });
                     }
@@ -7078,7 +7078,7 @@ namespace RobotSvr
                     {
                         MShare.g_nTargetX = MShare.g_AutoPicupItem.X;
                         MShare.g_nTargetY = MShare.g_AutoPicupItem.Y;
-                        HeroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                        heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         MShare.g_nTargetX = -1;
                         MShare.g_sAPStr = string.Format("[挂机] 物品目标：%s(%d,%d) 正在去拾取", new object[] { MShare.g_AutoPicupItem.Name, MShare.g_AutoPicupItem.X, MShare.g_AutoPicupItem.Y });
                     }
@@ -7092,7 +7092,7 @@ namespace RobotSvr
                         {
                             MShare.g_nTargetX = MShare.g_APMapPath[MShare.g_APStep].X;
                             MShare.g_nTargetY = MShare.g_APMapPath[MShare.g_APStep].X;
-                            HeroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                            heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                             MShare.g_sAPStr = string.Format("[挂机] 循路搜寻目标(%d,%d)", new int[] { MShare.g_nTargetX, MShare.g_nTargetY });
                             MShare.g_nTargetX = -1;
                         }
@@ -7102,7 +7102,7 @@ namespace RobotSvr
                             {
                                 if (b)
                                 {
-                                    HeroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                                    heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                                 }
                                 // memory leak !!!
                                 MShare.g_sAPStr = string.Format("[挂机] 定点随机搜寻目标(%d,%d)", new int[] { MShare.g_APMapPath[MShare.g_APStep].X, MShare.g_APMapPath[MShare.g_APStep].X });
@@ -7115,7 +7115,7 @@ namespace RobotSvr
                         TimerAutoPlayTimer_randomtag(ref b, ref ndir);
                         if (b)
                         {
-                            HeroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                            heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         }
                         MShare.g_sAPStr = "[挂机] 随机搜寻目标...";
                         MShare.g_nTargetX = -1;
@@ -7130,13 +7130,13 @@ namespace RobotSvr
                         {
                             MShare.g_nTargetX = MShare.g_APLastPoint.X;
                             MShare.g_nTargetY = MShare.g_APLastPoint.X;
-                            HeroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                            heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         }
                         else
                         {
                             MShare.g_nTargetX = MShare.g_APMapPath[MShare.g_APStep].X;
                             MShare.g_nTargetY = MShare.g_APMapPath[MShare.g_APStep].X;
-                            HeroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                            heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         }
                         MShare.g_sAPStr = string.Format("[挂机] 超出搜寻范围,返回(%d,%d)", new int[] { MShare.g_nTargetX, MShare.g_nTargetY });
                         MShare.g_nTargetX = -1;
@@ -7146,7 +7146,7 @@ namespace RobotSvr
                         TimerAutoPlayTimer_randomtag(ref b, ref ndir);
                         if (b)
                         {
-                            HeroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                            heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         }
                         MShare.g_sAPStr = string.Format("[挂机] 超出搜寻范围,随机搜寻目标(%d,%d)", new int[] { MShare.g_nTargetX, MShare.g_nTargetY });
                         MShare.g_nTargetX = -1;
@@ -7214,7 +7214,7 @@ namespace RobotSvr
             }
             if (MShare.g_boAPAutoMove && (MShare.g_APPathList.Count > 0))
             {
-                HeroActor.Init_Queue2();
+                heroActor.Init_Queue2();
             }
         }
 
@@ -7671,7 +7671,7 @@ namespace RobotSvr
                 Actor = g_PlayScene.FindActorXY(sx, sy);
                 if (Actor != null)
                 {
-                    if (HeroActor.IsProperTarget(Actor))
+                    if (heroActor.IsProperTarget(Actor))
                     {
                         tCount++;
                     }

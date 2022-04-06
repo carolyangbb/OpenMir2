@@ -8,7 +8,7 @@ namespace RobotSvr
         protected int ax = 0;
         protected int ay = 0;
 
-        public TSkeletonOma() : base()
+        public TSkeletonOma(RobotClient robotClient) : base(robotClient)
         {
             this.m_boUseEffect = false;
         }
