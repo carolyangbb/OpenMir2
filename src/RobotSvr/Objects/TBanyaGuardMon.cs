@@ -27,7 +27,7 @@ public class TBanyaGuardMon : TSkeletonArcherMon
                 m_dwStartTime = MShare.GetTickCount();
                 m_dwWarModeTime = MShare.GetTickCount();
                 Shift(m_btDir, 0, 0, 1);
-                if (!new ArrayList(new[] {27, 28, 111}).Contains(m_btRace))
+                if (!new ArrayList(new[] { 27, 28, 111 }).Contains(m_btRace))
                 {
                     m_boUseEffect = true;
                     m_nEffectFrame = m_nStartFrame;
@@ -37,7 +37,7 @@ public class TBanyaGuardMon : TSkeletonArcherMon
                     m_dwEffectFrameTime = m_dwFrameTime;
                 }
 
-                if (new ArrayList(new[] {113, 114, 115}).Contains(m_btRace)) m_boUseEffect = false;
+                if (new ArrayList(new[] { 113, 114, 115 }).Contains(m_btRace)) m_boUseEffect = false;
                 break;
             case Grobal2.SM_LIGHTING:
                 if (m_btRace >= 117 && m_btRace <= 119)
@@ -51,7 +51,7 @@ public class TBanyaGuardMon : TSkeletonArcherMon
                 m_boUseMagic = true;
                 m_dwWarModeTime = MShare.GetTickCount();
                 Shift(m_btDir, 0, 0, 1);
-                if (new ArrayList(new[] {71, 72, 111}).Contains(m_btRace))
+                if (new ArrayList(new[] { 71, 72, 111 }).Contains(m_btRace))
                 {
                     m_boUseEffect = true;
                     m_nEffectFrame = m_nStartFrame;
@@ -60,7 +60,7 @@ public class TBanyaGuardMon : TSkeletonArcherMon
                     m_dwEffectStartTime = MShare.GetTickCount();
                     m_dwEffectFrameTime = m_dwFrameTime;
                 }
-                else if (new ArrayList(new[] {27, 28}).Contains(m_btRace))
+                else if (new ArrayList(new[] { 27, 28 }).Contains(m_btRace))
                 {
                     m_boUseEffect = true;
                     m_nEffectFrame = m_nStartFrame;
@@ -70,7 +70,7 @@ public class TBanyaGuardMon : TSkeletonArcherMon
                     m_dwEffectStartTime = MShare.GetTickCount();
                     m_dwEffectFrameTime = m_dwFrameTime;
                 }
-                else if (new ArrayList(new[] {113, 114}).Contains(m_btRace))
+                else if (new ArrayList(new[] { 113, 114 }).Contains(m_btRace))
                 {
                     m_nStartFrame = pm.ActAttack.start + m_btDir * (pm.ActAttack.frame + pm.ActAttack.skip);
                     m_nEndFrame = m_nStartFrame + pm.ActAttack.frame - 1;
@@ -94,7 +94,7 @@ public class TBanyaGuardMon : TSkeletonArcherMon
                     m_dwEffectStartTime = MShare.GetTickCount();
                     m_dwEffectFrameTime = m_dwFrameTime;
                 }
-                else if (new ArrayList(new[] {118, 119}).Contains(m_btRace))
+                else if (new ArrayList(new[] { 118, 119 }).Contains(m_btRace))
                 {
                     m_boUseEffect = true;
                     m_boUseMagic = false;

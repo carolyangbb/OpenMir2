@@ -45,7 +45,6 @@ public class TDragonStatue : TSkeletonArcherMon
         int prv;
         long dwEffectFrameTime;
         long m_dwFrameTimetime;
-        bool bofly;
         m_btDir = 0;
         if (m_nCurrentAction == Grobal2.SM_WALK || m_nCurrentAction == Grobal2.SM_BACKSTEP ||
             m_nCurrentAction == Grobal2.SM_RUN || m_nCurrentAction == Grobal2.SM_HORSERUN) return;

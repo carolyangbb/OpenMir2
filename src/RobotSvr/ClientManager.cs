@@ -8,12 +8,12 @@ namespace RobotSvr
 {
     public static class ClientManager
     {
-        private static ConcurrentDictionary<string, RobotClient> _Clients;
+        private static readonly ConcurrentDictionary<string, RobotClient> _Clients;
         private static int g_dwProcessTimeMin = 0;
         private static int g_dwProcessTimeMax = 0;
         private static int g_nPosition = 0;
         private static int dwRunTick = 0;
-        private static Channel<RecvicePacket> _reviceMsgList;
+        private static readonly Channel<RecvicePacket> _reviceMsgList;
 
         static ClientManager()
         {

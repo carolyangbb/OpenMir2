@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
 using SystemModule;
 
@@ -34,7 +33,7 @@ namespace RobotSvr
         public int m_nCurUnitY = 0;
         public string m_sCurrentMap = string.Empty;
         public FileStream m_nCurrentMap;
-        private int FileSeek;
+        private readonly int FileSeek;
         public int m_nSegXCount = 0;
         public int m_nSegYCount = 0;
 
@@ -61,9 +60,6 @@ namespace RobotSvr
             int X;
             int Y;
             int n;
-            int nMapSize;
-            TMapInfo_Old[] TempMapInfoArr;
-            TMapInfo_2[] TempMapInfoArr2;
             bool canMove;
             if (m_nCurrentMap != null)
             {
@@ -144,7 +140,7 @@ namespace RobotSvr
                 }
                 for (var i = 0; i < robotClient.g_PlayScene.m_ActorList.Count; i++)
                 {
-                    Actor = (TActor)robotClient.g_PlayScene.m_ActorList[i];
+                    Actor = robotClient.g_PlayScene.m_ActorList[i];
                     if (Actor == MShare.g_MySelf)
                     {
                         continue;

@@ -68,7 +68,6 @@ public class TRedThunderZuma : TGasKuDeGi
 
     public override void Run()
     {
-        bool bofly;
         if (m_nCurrentFrame - m_nStartFrame == 2)
         {
             if (m_nCurrentAction == Grobal2.SM_LIGHTING)

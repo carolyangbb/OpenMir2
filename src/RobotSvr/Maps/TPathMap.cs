@@ -88,7 +88,6 @@ namespace RobotSvr
         protected int GetCost(int X, int Y, int Direction)
         {
             int result = 0;
-            int Cost;
             Direction = Direction & 7;
             //if ((X < 0) || (X >= m_MapHeader.wWidth) || (Y < 0) || (Y >= m_MapHeader.wHeight))
             //{
@@ -115,10 +114,6 @@ namespace RobotSvr
 
         public void FillPathMap_TestNeighbours()
         {
-            int X;
-            int Y;
-            int c;
-            int d;
             //for (d = 0; d <= 7; d++)
             //{
             //    X = OldWave.item.X + DirToDX(d);

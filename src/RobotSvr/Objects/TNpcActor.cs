@@ -26,7 +26,7 @@ public class TNpcActor : TActor
         m_nBodyOffset = Actor.GetNpcOffset(m_wAppearance);
         var pm = Actor.GetRaceByPM(m_btRace, m_wAppearance);
         if (pm == null) return;
-        m_btDir = (byte) (m_btDir % 3);
+        m_btDir = (byte)(m_btDir % 3);
         switch (m_nCurrentAction)
         {
             case Grobal2.SM_TURN:
@@ -65,7 +65,7 @@ public class TNpcActor : TActor
 
                 if (!m_boUseEffect)
                 {
-                    if (new ArrayList(new[] {33, 34}).Contains(m_wAppearance))
+                    if (new ArrayList(new[] { 33, 34 }).Contains(m_wAppearance))
                     {
                         m_boUseEffect = true;
                         m_nEffectFrame = m_nEffectStart;
@@ -73,7 +73,7 @@ public class TNpcActor : TActor
                         m_dwEffectStartTime = MShare.GetTickCount();
                         m_dwEffectFrameTime = 300;
                     }
-                    else if (new ArrayList(new[] {54, 94}).Contains(m_wAppearance))
+                    else if (new ArrayList(new[] { 54, 94 }).Contains(m_wAppearance))
                     {
                         // m_nStartFrame := 0;
                         // m_nEndFrame := 0;
@@ -149,7 +149,7 @@ public class TNpcActor : TActor
                         m_dwEffectStartTime = MShare.GetTickCount();
                         m_dwEffectFrameTime = 500;
                     }
-                    else if (new ArrayList(new[] {68}).Contains(m_wAppearance))
+                    else if (new ArrayList(new[] { 68 }).Contains(m_wAppearance))
                     {
                         m_boUseEffect = true;
                         m_nEffectStart = 60;
@@ -158,7 +158,7 @@ public class TNpcActor : TActor
                         m_dwEffectStartTime = MShare.GetTickCount();
                         m_dwEffectFrameTime = 500;
                     }
-                    else if (new ArrayList(new[] {70, 90}).Contains(m_wAppearance))
+                    else if (new ArrayList(new[] { 70, 90 }).Contains(m_wAppearance))
                     {
                         m_boUseEffect = true;
                         m_nEffectStart = 4;
@@ -251,7 +251,7 @@ public class TNpcActor : TActor
                     m_dwEffectFrameTime = 100;
                 }
 
-                if (new ArrayList(new[] {84, 85}).Contains(m_wAppearance))
+                if (new ArrayList(new[] { 84, 85 }).Contains(m_wAppearance))
                 {
                     m_nStartFrame = pm.ActCritical.start;
                     m_nEndFrame = m_nStartFrame + pm.ActCritical.frame - 1;
@@ -289,7 +289,7 @@ public class TNpcActor : TActor
             cf = 0;
         else
             cf = m_nCurrentDefFrame;
-        if (new ArrayList(new[] {54, 94, 70, 81, 90, 112, 130}).Contains(m_wAppearance))
+        if (new ArrayList(new[] { 54, 94, 70, 81, 90, 112, 130 }).Contains(m_wAppearance))
             result = pm.ActStand.start + cf;
         else
             result = pm.ActStand.start + m_btDir * (pm.ActStand.frame + pm.ActStand.skip) + cf;

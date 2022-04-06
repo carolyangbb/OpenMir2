@@ -834,7 +834,6 @@ public class THumActor : TActor
         int off;
         int prv;
         int dwFrameTimetime;
-        var boFly = false;
         bool bss;
         bool sskill;
         bool fAddNewMagic;
@@ -854,9 +853,9 @@ public class THumActor : TActor
                 if (m_nCurWeaponEffect >= Actor.MAXWPEFFECTFRAME) m_boWeaponEffect = false;
             }
 
-        if (new ArrayList(new[] {5, 9, 11, 13, 39}).Contains(m_nCurrentAction)) return;
+        if (new ArrayList(new[] { 5, 9, 11, 13, 39 }).Contains(m_nCurrentAction)) return;
         m_boMsgMuch = this != MShare.g_MySelf && m_MsgList.Count >= 2;
-        bss = new ArrayList(new[] {105, 109}).Contains(m_CurMagic.EffectNumber);
+        bss = new ArrayList(new[] { 105, 109 }).Contains(m_CurMagic.EffectNumber);
         off = m_nCurrentFrame - m_nStartFrame;
         RunFrameAction(off);
         prv = m_nCurrentFrame;
@@ -985,12 +984,12 @@ public class THumActor : TActor
                                 sskill = m_nCurEffFrame == 9;
                                 break;
                             case 110:
-                                sskill = new ArrayList(new[] {6, 8, 10}).Contains(m_nCurEffFrame);
+                                sskill = new ArrayList(new[] { 6, 8, 10 }).Contains(m_nCurEffFrame);
                                 break;
                             case 111:
                                 sskill = m_nCurEffFrame == 10;
                                 break;
-                            // 116, 117: sskill := m_nCurEffFrame = 6;
+                                // 116, 117: sskill := m_nCurEffFrame = 6;
                         }
 
                         if (sskill)

@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 
 namespace RobotSvr
@@ -120,7 +119,7 @@ namespace RobotSvr
         {
             using var stream = new MemoryStream(data, 0, data.Length);
             using var reader = new BinaryReader(stream);
- 
+
             wBkImg = reader.ReadUInt16();
             wMidImg = reader.ReadUInt16();
             wFrImg = reader.ReadUInt16();

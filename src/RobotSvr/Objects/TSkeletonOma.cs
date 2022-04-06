@@ -34,7 +34,7 @@ public class TSkeletonOma : TActor
                 m_dwStartTime = MShare.GetTickCount();
                 m_nDefFrameCount = pm.ActStand.frame;
                 Shift(m_btDir, 0, 0, 1);
-                if (new ArrayList(new[] {118, 119}).Contains(m_btRace))
+                if (new ArrayList(new[] { 118, 119 }).Contains(m_btRace))
                 {
                     m_boUseEffect = true;
                     m_dwEffectStartTime = MShare.GetTickCount();
@@ -54,7 +54,7 @@ public class TSkeletonOma : TActor
                 m_nCurTick = 0;
                 // WarMode := FALSE;
                 m_nMoveStep = 1;
-                if (new ArrayList(new[] {118, 119}).Contains(m_btRace))
+                if (new ArrayList(new[] { 118, 119 }).Contains(m_btRace))
                 {
                     m_boUseEffect = true;
                     m_dwEffectStartTime = MShare.GetTickCount();
@@ -107,7 +107,7 @@ public class TSkeletonOma : TActor
                 m_dwWarModeTime = MShare.GetTickCount();
                 if (m_btRace == 16 || m_btRace == 54) m_boUseEffect = true;
                 Shift(m_btDir, 0, 0, 1);
-                if (new ArrayList(new[] {118, 119}).Contains(m_btRace))
+                if (new ArrayList(new[] { 118, 119 }).Contains(m_btRace))
                 {
                     m_boUseEffect = true;
                     m_dwEffectStartTime = MShare.GetTickCount();
@@ -151,7 +151,7 @@ public class TSkeletonOma : TActor
                 m_dwStartTime = MShare.GetTickCount();
                 break;
             case Grobal2.SM_ALIVE:
-                if (new ArrayList(new[] {117}).Contains(m_btRace))
+                if (new ArrayList(new[] { 117 }).Contains(m_btRace))
                     m_nStartFrame = pm.ActDeath.start;
                 else
                     m_nStartFrame = pm.ActDeath.start + m_btDir * (pm.ActDeath.frame + pm.ActDeath.skip);
@@ -172,7 +172,7 @@ public class TSkeletonOma : TActor
         if (pm == null) return result;
         if (m_boDeath)
         {
-            if (new ArrayList(new[] {30, 151}).Contains(m_wAppearance)) m_nDownDrawLevel = 1;
+            if (new ArrayList(new[] { 30, 151 }).Contains(m_wAppearance)) m_nDownDrawLevel = 1;
             if (m_boSkeleton)
             {
                 result = pm.ActDeath.start;
@@ -233,7 +233,7 @@ public class TSkeletonOma : TActor
                 result = pm.ActStand.start + m_btDir * (pm.ActStand.frame + pm.ActStand.skip) + cf;
             }
 
-            if (new ArrayList(new[] {118, 119}).Contains(m_btRace))
+            if (new ArrayList(new[] { 118, 119 }).Contains(m_btRace))
             {
                 m_boUseEffect = true;
                 m_dwEffectStartTime = MShare.GetTickCount();

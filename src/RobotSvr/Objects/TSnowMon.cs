@@ -74,7 +74,7 @@ public class TSnowMon : TActor
                 m_nStartFrame = pm.ActCritical.start + m_btDir * (pm.ActCritical.frame + pm.ActCritical.skip);
                 m_nEndFrame = m_nStartFrame + pm.ActCritical.frame - 1;
                 m_dwFrameTime = pm.ActCritical.ftime;
-                if (m_nMagicNum == 2 && new ArrayList(new[] {38, 39, 46}).Contains(m_btRace))
+                if (m_nMagicNum == 2 && new ArrayList(new[] { 38, 39, 46 }).Contains(m_btRace))
                 {
                     m_nStartFrame = pm.ActDeath.start + m_btDir * (pm.ActDeath.frame + pm.ActDeath.skip);
                     m_nEndFrame = m_nStartFrame + pm.ActDeath.frame - 1;
@@ -124,9 +124,9 @@ public class TSnowMon : TActor
                 m_nEndFrame = m_nStartFrame + pm.ActDie.frame - 1;
                 m_dwFrameTime = pm.ActDie.ftime;
                 m_dwStartTime = MShare.GetTickCount();
-                if (new ArrayList(new[] {40, 65}).Contains(m_btRace)) BoUseDieEffect = true;
+                if (new ArrayList(new[] { 40, 65 }).Contains(m_btRace)) BoUseDieEffect = true;
                 // 38, 39,
-                if (new ArrayList(new[] {51}).Contains(m_btRace)) BoUseDieEffect = true;
+                if (new ArrayList(new[] { 51 }).Contains(m_btRace)) BoUseDieEffect = true;
                 break;
             case Grobal2.SM_SKELETON:
                 m_nStartFrame = pm.ActDeath.start;

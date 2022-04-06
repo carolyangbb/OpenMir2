@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace RobotSvr
+﻿namespace RobotSvr
 {
     public class ShakeScreen
     {

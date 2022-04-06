@@ -919,7 +919,7 @@ public class Actor
         }
     };
 
-    public static byte[] EffDir = {0, 0, 1, 1, 1, 1, 1, 0};
+    public static byte[] EffDir = { 0, 0, 1, 1, 1, 1, 1, 0 };
 
     public static TMonsterAction GetRaceByPM(int race, short Appr)
     {

@@ -1153,7 +1153,7 @@ namespace RobotSvr
                     result = Grobal2.U_HELMET;
                     break;
                 case 16:
-                    result =13;
+                    result = 13;
                     break;
                 case 12:
                 case 13:

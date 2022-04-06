@@ -8,7 +8,8 @@ using SystemModule.Sockets;
 
 namespace RobotSvr
 {
-    public class TimerAutoPlay {
+    public class TimerAutoPlay
+    {
         public bool Enabled;
     }
 
@@ -22,9 +23,7 @@ namespace RobotSvr
         public bool g_PathBusy = false;
         public static int g_MoveStep = 0;
         public static int g_MoveErr = 0;
-        public static long g_MoveErrTick = 0;
-        public static long g_dwSendCDCheckTick = 0;
-        public static bool g_boShowMemoLog = false;
+        public static int g_MoveErrTick = 0;
         public static int g_boShowRecog = 0;
         public DrawScreen DScreen = null;
         public IntroScene IntroScene = null;
@@ -35,27 +34,24 @@ namespace RobotSvr
         public LoginNotice LoginNoticeScene = null;
         //public ClEventManager EventMan = null;
         public TMap Map = null;
-        public static TOneClickMode OneClickMode;
         public static TActor ShowMsgActor = null;
         public static long g_dwOverSpaceWarningTick = 0;
         public static char activebuf = '*';
         public const bool CHECKPACKED = true;
-        public const bool CONFIGTEST = !CHECKPACKED;
-        public const bool boNeedPatch = true;
         public const string g_Debugflname = ".\\!Debug.txt";
         private string SocStr = string.Empty;
         private string BufferStr = string.Empty;
         private readonly TTimerCommand TimerCmd;
         private readonly string MakeNewId = string.Empty;
-        private long ActionLockTime = 0;
+        private int ActionLockTime = 0;
         private readonly short ActionKey = 0;
         private ClientPacket WaitingMsg = null;
         private string WaitingStr = string.Empty;
         private string WhisperName = string.Empty;
-        private long m_dwProcUseMagicTick = 0;
+        private int m_dwProcUseMagicTick = 0;
         public bool ActionFailLock = false;
-        public long ActionFailLockTime = 0;
-        public long LastHitTick = 0;
+        public int ActionFailLockTime = 0;
+        public int LastHitTick = 0;
         public string m_sServerName = string.Empty;
         public bool m_boNewAccount = false;
         public string LoginID = string.Empty;
@@ -66,18 +62,14 @@ namespace RobotSvr
         public int m_nEatRetIdx = 0;
         public bool ActionLock = false;
         public bool m_boSupplyItem = false;
-        public ArrayList NpcImageList = null;
-        public ArrayList ItemImageList = null;
-        public ArrayList WeaponImageList = null;
-        public ArrayList HumImageList = null;
-        public long m_dwDuraWarningTick = 0;
-        public long dwIPTick = 0;
-        public long dwhIPTick = 0;
+        public int m_dwDuraWarningTick = 0;
+        public int dwIPTick = 0;
+        public int dwhIPTick = 0;
         public object FEndeBuffer = null;
         public byte[] FTempBuffer;
         public byte[] FSendBuffer;
         public int FHotKeyId = 0;
-        private HeroActor heroActor;
+        private readonly HeroActor heroActor;
         public IClientScoket ClientSocket;
         /// <summary>
         /// 当前游戏网络连接步骤
@@ -95,156 +87,119 @@ namespace RobotSvr
             ClientSocket.OnDisconnected += CSocketDisconnect;
             ClientSocket.ReceivedDatagram += CSocketRead;
             ClientSocket.OnError += CSocketError;
-
-            int i;
-            int n;
-            try
+            heroActor = new HeroActor(this);
+            MShare.InitScreenConfig();
+            MShare.g_APPathList = new ArrayList();
+            MShare.g_ShowItemList = new Dictionary<string, string>();
+            DScreen = new DrawScreen(this);
+            IntroScene = new IntroScene(this);
+            LoginScene = new LoginScene(this);
+            SelectChrScene = new SelectChrScene(this);
+            g_PlayScene = new PlayScene(this);
+            g_ShakeScreen = new ShakeScreen();
+            LoginNoticeScene = new LoginNotice(this);
+            Map = new TMap(this);
+            MShare.g_DropedItemList = new List<TDropItem>();
+            MShare.g_MagicList = new ArrayList();
+            MShare.g_IPMagicList = new ArrayList();
+            MShare.g_FreeActorList = new List<TActor>();
+            //EventMan = new TClEventManager();
+            MShare.g_ChangeFaceReadyList = new ArrayList();
+            MShare.g_SendSayList = new ArrayList();
+            if (MShare.g_MySelf != null)
             {
-                heroActor = new HeroActor(this);
-                // 设置分辨率大小                      //分辨率修改标记
-                for (i = MShare.g_FSResolutionWidth.GetLowerBound(0); i <= MShare.g_FSResolutionWidth.GetUpperBound(0); i++)
-                {
-                    if (i == MShare.g_FScreenMode)
-                    {
-                        MShare.g_FScreenWidth = MShare.g_FSResolutionWidth[i];
-                        MShare.g_FScreenHeight = MShare.g_FSResolutionHeight[i];
-                        break;
-                    }
-                }
-                // 当设置坐标超过限定值的时候初始化
-                if (MShare.g_FScreenMode > MShare.g_FSResolutionWidth.GetUpperBound(0))
-                {
-                    MShare.g_FScreenWidth = MShare.g_FSResolutionWidth[0];
-                    MShare.g_FScreenHeight = MShare.g_FSResolutionHeight[0];
-                }
-                MShare.InitScreenConfig();
-                MShare.g_APPathList = new ArrayList();
-                MShare.g_ShowItemList = new Dictionary<string, string>();
-                DScreen = new DrawScreen(this);
-                IntroScene = new IntroScene(this);
-                LoginScene = new LoginScene(this);
-                SelectChrScene = new SelectChrScene(this);
-                g_PlayScene = new PlayScene(this);
-                g_ShakeScreen = new ShakeScreen();
-                LoginNoticeScene = new LoginNotice(this);
-                NpcImageList = new ArrayList();
-                ItemImageList = new ArrayList();
-                WeaponImageList = new ArrayList();
-                HumImageList = new ArrayList();
-                Map = new TMap(this);
-                MShare.g_DropedItemList = new List<TDropItem>();
-                MShare.g_MagicList = new ArrayList();
-                MShare.g_IPMagicList = new ArrayList();
-                for (n = MShare.g_ShopListArr.GetLowerBound(0); n <= MShare.g_ShopListArr.GetUpperBound(0); n++)
-                {
-                    MShare.g_ShopListArr[n] = new ArrayList();
-                }
-                MShare.g_FreeActorList = new List<TActor>();
-                //EventMan = new TClEventManager();
-                MShare.g_ChangeFaceReadyList = new ArrayList();
-                MShare.g_SendSayList = new ArrayList();
-                if (MShare.g_MySelf != null)
-                {
-                    MShare.g_MySelf.m_SlaveObject.Clear();
-                    MShare.g_MySelf = null;
-                }
-                MShare.InitClientItems();
-                MShare.g_DetectItemMineID = 0;
-                MShare.g_BAFirstShape = -1;
-                MShare.g_BuildAcusesSuc = -1;
-                MShare.g_BuildAcusesStep = 0;
-                MShare.g_BuildAcusesProc = 0;
-                MShare.g_BuildAcusesRate = 0;
-                MShare.g_SaveItemList = new ArrayList();
-                MShare.g_MenuItemList = new ArrayList();
-                //MShare.g_DetectItem.Item.Name = "";
-                //MShare.g_WaitingUseItem.Item.Item.Name = "";
-                //MShare.g_WaitingDetectItem.Item.Item.Name = "";
-                //MShare.g_WaitingStallItem.Item.Item.Name = "";
-                //MShare.g_OpenBoxItem.Item.Item.Name = "";
-                //MShare.g_EatingItem.Item.Name = "";
-                MShare.g_nLastMapMusic = -1;
-                MShare.g_nTargetX = -1;
-                MShare.g_nTargetY = -1;
-                MShare.g_TargetCret = null;
-                MShare.g_FocusCret = null;
-                MShare.g_FocusItem = null;
-                MShare.g_MagicTarget = null;
-                MShare.g_nDebugCount = 0;
-                MShare.g_nDebugCount1 = 0;
-                MShare.g_nDebugCount2 = 0;
-                MShare.g_nTestSendCount = 0;
-                MShare.g_nTestReceiveCount = 0;
-                MShare.g_boServerChanging = false;
-                MShare.g_boBagLoaded = false;
-                MShare.g_nHeroBagSize = 10;
-                MShare.g_boAutoDig = false;
-                MShare.g_boAutoSit = false;
-                MShare.g_dwLatestClientTime2 = 0;
-                MShare.g_dwFirstClientTime = 0;
-                MShare.g_dwFirstServerTime = 0;
-                MShare.g_dwFirstClientTimerTime = 0;
-                MShare.g_dwLatestClientTimerTime = 0;
-                MShare.g_dwFirstClientGetTime = 0;
-                MShare.g_dwLatestClientGetTime = 0;
-                MShare.g_nTimeFakeDetectCount = 0;
-                MShare.g_nTimeFakeDetectTimer = 0;
-                MShare.g_nTimeFakeDetectSum = 0;
-                MShare.g_nDayBright = 3;
-                MShare.g_nAreaStateValue = 0;
-                MShare.g_ConnectionStep = TConnectionStep.cnsIntro;
-                MShare.g_boSendLogin = false;
-                MShare.g_boServerConnected = false;
-                MShare.g_SoftClosed = false;
-                SocStr = string.Empty;
-                ActionFailLock = false;
-                MShare.g_boMapMoving = false;
-                MShare.g_boMapMovingWait = false;
-                MShare.g_boCheckBadMapMode = false;
-                MShare.g_boCheckSpeedHackDisplay = false;
-                MShare.g_boViewMiniMap = true;
-                MShare.g_nDupSelection = 0;
-                MShare.g_dwLastAttackTick = MShare.GetTickCount();
-                MShare.g_dwLastMoveTick = MShare.GetTickCount();
-                MShare.g_dwLatestSpellTick = MShare.GetTickCount();
-                MShare.g_dwAutoPickupTick = MShare.GetTickCount();
-                MShare.g_boFirstTime = true;
-                MShare.g_boItemMoving = false;
-                MShare.g_boDoFadeIn = false;
-                MShare.g_boDoFadeOut = false;
-                MShare.g_boDoFastFadeOut = false;
-                MShare.g_boNextTimePowerHit = false;
-                MShare.g_boCanLongHit = false;
-                MShare.g_boCanWideHit = false;
-                MShare.g_boCanCrsHit = false;
-                MShare.g_boNextTimeFireHit = false;
-                MShare.g_boCanSLonHit = false;
-                MShare.g_boNextTimeTwinHit = false;
-                MShare.g_boNextTimePursueHit = false;
-                MShare.g_boNextTimeRushHit = false;
-                MShare.g_boNextTimeSmiteHit = false;
-                MShare.g_boNextTimeSmiteLongHit = false;
-                MShare.g_boNextTimeSmiteLongHit3 = false;
-                MShare.g_boNextTimeSmiteLongHit2 = false;
-                MShare.g_boNextTimeSmiteWideHit = false;
-                MShare.g_boNextTimeSmiteWideHit2 = false;
-                MShare.g_boNoDarkness = false;
-                MShare.g_boQueryPrice = false;
-                MShare.g_sSellPriceStr = "";
-                MShare.g_boAllowGroup = false;
-                MShare.g_GroupMembers = new List<string>();
-                MShare.g_SeriesSkillSelList = new ArrayList();
-                MShare.g_hSeriesSkillSelList = new ArrayList();
-                MShare.LoadItemDesc();
-                MShare.LoadItemFilter();
-                OneClickMode = TOneClickMode.toNone;
-                m_ConnectionStatus = TConnectionStatus.cns_Failure;
-                //MaketSystem.Units.MaketSystem.g_Market = new TMarketItemManager();
+                MShare.g_MySelf.m_SlaveObject.Clear();
+                MShare.g_MySelf = null;
             }
-            catch
-            {
-                DebugOutStr("[Exception]: TfrmMain.FormCreate");
-            }
+            MShare.InitClientItems();
+            MShare.g_DetectItemMineID = 0;
+            MShare.g_BAFirstShape = -1;
+            MShare.g_BuildAcusesSuc = -1;
+            MShare.g_BuildAcusesStep = 0;
+            MShare.g_BuildAcusesProc = 0;
+            MShare.g_BuildAcusesRate = 0;
+            MShare.g_SaveItemList = new ArrayList();
+            //MShare.g_DetectItem.Item.Name = "";
+            //MShare.g_WaitingUseItem.Item.Item.Name = "";
+            //MShare.g_WaitingDetectItem.Item.Item.Name = "";
+            //MShare.g_WaitingStallItem.Item.Item.Name = "";
+            //MShare.g_OpenBoxItem.Item.Item.Name = "";
+            //MShare.g_EatingItem.Item.Name = "";
+            MShare.g_nLastMapMusic = -1;
+            MShare.g_nTargetX = -1;
+            MShare.g_nTargetY = -1;
+            MShare.g_TargetCret = null;
+            MShare.g_FocusCret = null;
+            MShare.g_FocusItem = null;
+            MShare.g_MagicTarget = null;
+            MShare.g_nDebugCount = 0;
+            MShare.g_nDebugCount1 = 0;
+            MShare.g_nDebugCount2 = 0;
+            MShare.g_nTestSendCount = 0;
+            MShare.g_nTestReceiveCount = 0;
+            MShare.g_boServerChanging = false;
+            MShare.g_boBagLoaded = false;
+            MShare.g_nHeroBagSize = 10;
+            MShare.g_boAutoDig = false;
+            MShare.g_boAutoSit = false;
+            MShare.g_dwLatestClientTime2 = 0;
+            MShare.g_dwFirstClientTime = 0;
+            MShare.g_dwFirstServerTime = 0;
+            MShare.g_dwFirstClientTimerTime = 0;
+            MShare.g_dwLatestClientTimerTime = 0;
+            MShare.g_dwFirstClientGetTime = 0;
+            MShare.g_dwLatestClientGetTime = 0;
+            MShare.g_nTimeFakeDetectCount = 0;
+            MShare.g_nTimeFakeDetectTimer = 0;
+            MShare.g_nTimeFakeDetectSum = 0;
+            MShare.g_nDayBright = 3;
+            MShare.g_nAreaStateValue = 0;
+            MShare.g_ConnectionStep = TConnectionStep.cnsIntro;
+            MShare.g_boSendLogin = false;
+            MShare.g_boServerConnected = false;
+            MShare.g_SoftClosed = false;
+            SocStr = string.Empty;
+            ActionFailLock = false;
+            MShare.g_boMapMoving = false;
+            MShare.g_boMapMovingWait = false;
+            MShare.g_boCheckBadMapMode = false;
+            MShare.g_boCheckSpeedHackDisplay = false;
+            MShare.g_boViewMiniMap = true;
+            MShare.g_nDupSelection = 0;
+            MShare.g_dwLastAttackTick = MShare.GetTickCount();
+            MShare.g_dwLastMoveTick = MShare.GetTickCount();
+            MShare.g_dwLatestSpellTick = MShare.GetTickCount();
+            MShare.g_dwAutoPickupTick = MShare.GetTickCount();
+            MShare.g_boItemMoving = false;
+            MShare.g_boDoFadeIn = false;
+            MShare.g_boDoFadeOut = false;
+            MShare.g_boDoFastFadeOut = false;
+            MShare.g_boNextTimePowerHit = false;
+            MShare.g_boCanLongHit = false;
+            MShare.g_boCanWideHit = false;
+            MShare.g_boCanCrsHit = false;
+            MShare.g_boNextTimeFireHit = false;
+            MShare.g_boCanSLonHit = false;
+            MShare.g_boNextTimeTwinHit = false;
+            MShare.g_boNextTimePursueHit = false;
+            MShare.g_boNextTimeRushHit = false;
+            MShare.g_boNextTimeSmiteHit = false;
+            MShare.g_boNextTimeSmiteLongHit = false;
+            MShare.g_boNextTimeSmiteLongHit3 = false;
+            MShare.g_boNextTimeSmiteLongHit2 = false;
+            MShare.g_boNextTimeSmiteWideHit = false;
+            MShare.g_boNextTimeSmiteWideHit2 = false;
+            MShare.g_boNoDarkness = false;
+            MShare.g_boQueryPrice = false;
+            MShare.g_sSellPriceStr = "";
+            MShare.g_boAllowGroup = false;
+            MShare.g_GroupMembers = new List<string>();
+            MShare.g_SeriesSkillSelList = new ArrayList();
+            MShare.g_hSeriesSkillSelList = new ArrayList();
+            MShare.LoadItemDesc();
+            MShare.LoadItemFilter();
+            m_ConnectionStatus = TConnectionStatus.cns_Failure;
+            //MaketSystem.Units.MaketSystem.g_Market = new TMarketItemManager();
         }
 
         public void Run()
@@ -1193,7 +1148,6 @@ namespace RobotSvr
 
         private void UseMagicSpell(int who, int effnum, int targetx, int targety, int magic_id)
         {
-            int adir;
             TActor Actor = g_PlayScene.FindActor(who);
             if (Actor != null)
             {
@@ -2958,11 +2912,6 @@ namespace RobotSvr
                             }
                         }
                     }
-                    return;
-                }
-                if (Str == "/debug check")
-                {
-                    g_boShowMemoLog = !g_boShowMemoLog;
                     return;
                 }
                 msg = Grobal2.MakeDefaultMsg(Grobal2.CM_SAY, 0, 0, 0, 0);
@@ -5025,7 +4974,7 @@ namespace RobotSvr
                     }
                     if (msg.Recog != 0)
                     {
-                       // DScreen.AddChatBoardString("重叠失败,物品最高数量是 " + Grobal2.MAX_OVERLAPITEM.ToString(), Color.White, Color.Red);
+                        // DScreen.AddChatBoardString("重叠失败,物品最高数量是 " + Grobal2.MAX_OVERLAPITEM.ToString(), Color.White, Color.Red);
                     }
                     break;
                 case Grobal2.SM_DEALDELITEM_OK:

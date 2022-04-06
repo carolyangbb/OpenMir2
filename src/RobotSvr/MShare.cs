@@ -119,12 +119,6 @@ namespace RobotSvr
         public static bool g_ProcCanFill = true;
         public static long g_ProcOnDrawTick_Effect = 0;
         public static long g_ProcOnDrawTick_Effect2 = 0;
-        public static long g_dwImgMgrTick = 0;
-        public static int g_nImgMgrIdx = 0;
-        public static object ProcMsgCS = null;
-        public static object ThreadCS = null;
-        public static bool g_bIMGBusy = false;
-        public static long g_dwThreadTick = 0;
         public static long g_rtime = 0;
         public static long g_dwLastThreadTick = 0;
         public static bool g_boExchgPoison = false;
@@ -137,7 +131,6 @@ namespace RobotSvr
         public static bool g_boHeroTakeOnPos = true;
         public static bool g_boQueryDynCode = false;
         public static bool g_boQuerySelChar = false;
-        public static bool g_pbRecallHero = false;
         public static int g_dwCheckCount = 0;
         public static int g_nBookPath = 0;
         public static int g_nBookPage = 0;
@@ -154,22 +147,11 @@ namespace RobotSvr
         public static string g_sWizardName = "魔法师";
         public static string g_sTaoistName = "道士";
         public static string g_sUnKnowName = "未知";
-        public static string g_sMainParam1 = string.Empty;
-        public static string g_sMainParam2 = string.Empty;
-        public static string g_sMainParam3 = string.Empty;
-        public static string g_sMainParam4 = string.Empty;
-        public static string g_sMainParam5 = string.Empty;
-        public static string g_sMainParam6 = string.Empty;
-        public static bool g_boCanDraw = true;
         public static bool g_boInitialize = false;
         public static int g_nInitializePer = 0;
         public static bool g_boQueryExit = false;
-        public static string g_FontName = string.Empty;
-        public static int g_FontSize = 0;
         public static byte[] g_PowerBlock = { 0x55, 0x8B, 0xEC, 0x83, 0xC4, 0xE8, 0x89, 0x55, 0xF8, 0x89, 0x45, 0xFC, 0xC7, 0x45, 0xEC, 0xE8, 0x03, 0x00, 0x00, 0xC7, 0x45, 0xE8, 0x64, 0x00, 0x00, 0x00, 0xDB, 0x45, 0xEC, 0xDB, 0x45, 0xE8, 0xDE, 0xF9, 0xDB, 0x45, 0xFC, 0xDE, 0xC9, 0xDD, 0x5D, 0xF0, 0x9B, 0x8B, 0x45, 0xF8, 0x8B, 0x00, 0x8B, 0x55, 0xF8, 0x89, 0x02, 0xDD, 0x45, 0xF0, 0x8B, 0xE5, 0x5D, 0xC3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
         public static byte[] g_PowerBlock1 = { 0x55, 0x8B, 0xEC, 0x83, 0xC4, 0xE8, 0x89, 0x55, 0xF8, 0x89, 0x45, 0xFC, 0xC7, 0x45, 0xEC, 0x64, 0x00, 0x00, 0x00, 0xC7, 0x45, 0xE8, 0x64, 0x00, 0x00, 0x00, 0xDB, 0x45, 0xEC, 0xDB, 0x45, 0xE8, 0xDE, 0xF9, 0xDB, 0x45, 0xFC, 0xDE, 0xC9, 0xDD, 0x5D, 0xF0, 0x9B, 0x8B, 0x45, 0xF8, 0x8B, 0x00, 0x8B, 0x55, 0xF8, 0x89, 0x02, 0xDD, 0x45, 0xF0, 0x8B, 0xE5, 0x5D, 0xC3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-        public static string g_sServerName = string.Empty;
-        public static string g_sServerMiniName = string.Empty;
         public static string g_psServerAddr = string.Empty;
         public static int g_pnServerPort = 0;
         public static string g_sSelChrAddr = string.Empty;
@@ -183,14 +165,6 @@ namespace RobotSvr
         public static bool g_SoftClosed = false;
         public static TChrAction g_ChrAction;
         public static TConnectionStep g_ConnectionStep;
-        public static bool g_boFullScreen = false;
-        public static byte g_btMP3Volume = 70;
-        public static byte g_btSoundVolume = 70;
-        public static bool g_boBGSound = true;
-        public static bool g_boSound = true;
-        public static bool g_DlgInitialize = false;
-        public static bool g_boFirstActive = true;
-        public static bool g_boFirstTime = false;
         public static string g_sMapTitle = string.Empty;
         public static int g_nLastMapMusic = -1;
         public static ArrayList g_SendSayList = null;
@@ -202,9 +176,7 @@ namespace RobotSvr
         public static TClientMagic[][] g_MagicArr = new TClientMagic[3][] { new TClientMagic[] { }, new TClientMagic[] { }, new TClientMagic[] { } };
         public static ArrayList g_MagicList = null;
         public static ArrayList g_IPMagicList = null;
-        public static ArrayList[] g_ShopListArr = new ArrayList[5 + 1];
         public static ArrayList g_SaveItemList = null;
-        public static ArrayList g_MenuItemList = null;
         public static IList<TDropItem> g_DropedItemList = null;
         public static ArrayList g_ChangeFaceReadyList = null;
         public static IList<TActor> g_FreeActorList = null;
@@ -469,13 +441,10 @@ namespace RobotSvr
         public static bool g_boForceNotViewFog = true;
         public static TClientItem g_EatingItem = null;
         public static long g_dwEatTime = 0;
-        public static long g_dwHeroEatTime = 0;
         public static long g_dwDizzyDelayStart = 0;
         public static long g_dwDizzyDelayTime = 0;
         public static bool g_boDoFadeOut = false;
-        // 由亮变暗
         public static bool g_boDoFadeIn = false;
-        // 由暗变亮
         public static int g_nFadeIndex = 0;
         public static bool g_boDoFastFadeOut = false;
         public static bool g_boAutoDig = false;
@@ -586,76 +555,21 @@ namespace RobotSvr
         public static long g_dwCollectExpShineTick = 0;
         public static long g_dwCollectIpExp = 0;
         public static long g_dwCollectIpExpMax = 1;
-        public static bool g_ReSelChr = false;
-        public static bool ShouldUnloadEnglishKeyboardLayout = false;
-        public static int[] g_FSResolutionWidth = { 800, 1024, 1280, 1280, 1366, 1440, 1600, 1680, 1920 };// 电脑分辨率宽度
-        public static int[] g_FSResolutionHeight = { 600, 768, 800, 1024, 768, 900, 900, 1050, 1080 };// 电脑分辨率高度
-        public static byte g_FScreenMode = 0;
-        public static int g_FScreenWidth = SCREENWIDTH;
-        public static int g_FScreenHeight = SCREENHEIGHT;
-        public static bool g_boClientUI = false;
-        public const string REG_SETUP_PATH = "SOFTWARE\\Jason\\Mir2\\Setup";
-        public const string REG_SETUP_BITDEPTH = "BitDepth";
-        public const string REG_SETUP_DISPLAY = "DisplaySize";
-        public const string REG_SETUP_WINDOWS = "Window";
-        public const string REG_SETUP_MP3VOLUME = "MusicVolume";
-        public const string REG_SETUP_SOUNDVOLUME = "SoundVolume";
-        public const string REG_SETUP_MP3OPEN = "MusicOpen";
-        public const string REG_SETUP_SOUNDOPEN = "SoundOpen";
-        public const int LONGHEIGHT_IMAGE = 35;
-        public const int FLASHBASE = 410;
-        public const int SOFFX = 0;
-        public const int SOFFY = 0;
         public const int HEALTHBAR_BLACK = 0;
-        public const int BARWIDTH = 30;
-        public const int BARHEIGHT = 2;
-        public const int MAXSYSLINE = 8;
-        public const int BOTTOMBOARD = 1;
-        public const int AREASTATEICONBASE = 150;
-        public const int g_WinBottomRetry = 45;
-        public const bool NEWHINTSYS = true;
-        public const int NPC_CILCK_INVTIME = 500;
-        public const int MAXITEMBOX_WIDTH = 177;
-        public const int MAXMAGICLV = 3;
-        public const int RUNLOGINCODE = 0;
         public const int CLIENT_VERSION_NUMBER = 120020522;
-        public const int STDCLIENT = 0;
         public const int RMCLIENT = 46;
         public const int CLIENTTYPE = RMCLIENT;
-        public const int CUSTOMLIBFILE = 0;
-        public const int DEBUG = 0;
         public const int LOGICALMAPUNIT = 30;
-        // 1108 40;
         public const int HUMWINEFFECTTICK = 200;
         public const int WINLEFT = 100;
-        // 窗体左边 图片素材留在左边屏幕内的尺寸为100
         public const int WINTOP = 100;
-        // 窗体顶边 图片素材留在顶边屏幕内的尺寸为100
-        public const int MINIMAPSIZE = 200;
-        // 迷你地图宽度
-        public const int DEFAULTCURSOR = 0;
-        // 系统默认光标
-        public const int IMAGECURSOR = 1;
-        // 图形光标
-        public const int USECURSOR = DEFAULTCURSOR;
-        // 使用什么类型的光标
         public const int MAXBAGITEMCL = 52;
         public const int MAXFONT = 8;
-        public const int ENEMYCOLOR = 69;
         public const int HERO_MIIDX_OFFSET = 5000;
         public const int SAVE_MIIDX_OFFSET = HERO_MIIDX_OFFSET + 500;
         public const int STALL_MIIDX_OFFSET = HERO_MIIDX_OFFSET + 500 + 50;
         public const int DETECT_MIIDX_OFFSET = HERO_MIIDX_OFFSET + 500 + 50 + 10 + 1;
         public const int MSGMUCH = 2;
-        public static string[] g_sHumAttr = { "金", "木", "水", "火", "土" };
-        public static string[] g_DBStateStrArr = { "装", "时", "状", "属", "称", "技", "其" };
-        public static string[] g_DBStateStrArrW = { "备", "装", "态", "性", "号", "能", "他" };
-        public static string[] g_DBStateStrArrUS = { "装", "时", "称" };
-        public static string[] g_DBStateStrArrUSW = { "备", "装", "号" };
-        public static string[] g_DBStateStrArr2 = { "状", "技", "经", "连", "其" };
-        public static string[] g_DBStateStrArr2W = { "态", "能", "络", "击", "他" };
-        public static string[] g_slegend = { "", "传奇神剑", "传奇勋章", "传奇项链", "传奇之冠", "", "传奇护腕", "", "传奇之戒", "", "传奇腰带", "传奇之靴", "", "传奇面巾" };
-        public const int MAX_GC_GENERAL = 16;
         public static Rectangle[] g_ptGeneral = new Rectangle[] {
           new Rectangle() {X= 35 + 000, Y= 70 + 23 * 0,  Width= 35 + 000 + 72 + 18, Height= 70 + 23 * 0 + 16} ,
           new Rectangle() {X=35 + 000, Y=70 + 23 * 1,Width= 35 + 000 + 72 + 18,  Height= 70 + 23 * 1 + 16} ,

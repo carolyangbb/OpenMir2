@@ -467,8 +467,6 @@ public class TActor
                         m_boOpenHealth = false;
                     break;
             }
-
-            TUseMagicInfo UseMagic;
             if (MShare.g_MySelf == this)
             {
                 if (Msg.Ident == Grobal2.CM_WALK)
@@ -553,7 +551,7 @@ public class TActor
                     m_dwLastStruckTime = MShare.GetTickCount();
                     break;
                 case Grobal2.SM_SPELL:
-                    m_btDir = (byte) Msg.Dir;
+                    m_btDir = (byte)Msg.Dir;
                     //UseMagic = (TUseMagicInfo) Msg.Feature;
                     //if (UseMagic != null)
                     //{
@@ -577,13 +575,13 @@ public class TActor
                 case Grobal2.SM_WIDEHIT:
                     m_nCurrX = Msg.X;
                     m_nCurrY = Msg.Y;
-                    m_btDir = (byte) Msg.Dir;
+                    m_btDir = (byte)Msg.Dir;
                     //m_CurMagic.magfirelv = Msg.Saying;
                     break;
                 default:
                     m_nCurrX = Msg.X;
                     m_nCurrY = Msg.Y;
-                    m_btDir = (byte) Msg.Dir;
+                    m_btDir = (byte)Msg.Dir;
                     break;
             }
 
@@ -680,7 +678,7 @@ public class TActor
                     {
                         m_CurMagic.ServerMagicCode = 255;
                         m_CurMagic.Target = Msg.X;
-                        if (Msg.Y >= 0 && Msg.Y <= 16) m_CurMagic.EffectType = (MagicType) Msg.Y;
+                        if (Msg.Y >= 0 && Msg.Y <= 16) m_CurMagic.EffectType = (MagicType)Msg.Y;
                         m_CurMagic.EffectNumber = Msg.Dir % 255;
                         m_CurMagic.targx = Msg.Feature;
                         m_CurMagic.targy = Msg.State;
@@ -1102,7 +1100,6 @@ public class TActor
     {
         int prv;
         long dwFrameTimetime;
-        var boFly = false;
         if (m_nCurrentAction == Grobal2.SM_WALK || m_nCurrentAction == Grobal2.SM_BACKSTEP ||
             m_nCurrentAction == Grobal2.SM_RUN || m_nCurrentAction == Grobal2.SM_HORSERUN ||
             m_nCurrentAction == Grobal2.SM_RUSH || m_nCurrentAction == Grobal2.SM_RUSHKUNG) return;
@@ -1191,7 +1188,7 @@ public class TActor
                     }
             }
 
-            if (new ArrayList(new[] {0, 1, 43}).Contains(m_wAppearance))
+            if (new ArrayList(new[] { 0, 1, 43 }).Contains(m_wAppearance))
                 m_nCurrentDefFrame = -10;
             else
                 m_nCurrentDefFrame = 0;
@@ -1244,7 +1241,7 @@ public class TActor
 
             m_nSkipTick = 0;
             if (m_btRace == 0 && this == MShare.g_MySelf)
-                if (new ArrayList(new[] {5, 9, 11, 13}).Contains(m_nCurrentAction))
+                if (new ArrayList(new[] { 5, 9, 11, 13 }).Contains(m_nCurrentAction))
                     switch (m_nCurrentFrame - m_nStartFrame)
                     {
                         case 1:
@@ -1361,7 +1358,7 @@ public class TActor
         m_boLockEndFrame = true;
         MShare.g_MySelf.m_nCurrX = m_nOldx;
         MShare.g_MySelf.m_nCurrY = m_nOldy;
-        MShare.g_MySelf.m_btDir = (byte) m_nOldDir;
+        MShare.g_MySelf.m_btDir = (byte)m_nOldDir;
         CleanUserMsgs();
     }
 

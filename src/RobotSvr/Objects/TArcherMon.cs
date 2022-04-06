@@ -34,7 +34,7 @@ namespace RobotSvr
                         m_boUseEffect = false;
                     }
                 }
-    
+
                 m_nCurrentDefFrame = 0;
                 m_dwDefFrameTime = MShare.GetTickCount();
             }
@@ -48,14 +48,14 @@ namespace RobotSvr
                         m_nCurrentDefFrame++;
                         if (m_nCurrentDefFrame >= m_nDefFrameCount) m_nCurrentDefFrame = 0;
                     }
-    
+
                     DefaultMotion();
                 }
             }
-    
+
             if (prv != m_nCurrentFrame) m_dwLoadSurfaceTime = MShare.GetTickCount();
         }
-    
+
         public TArcherMon(RobotClient robotClient) : base(robotClient)
         {
         }

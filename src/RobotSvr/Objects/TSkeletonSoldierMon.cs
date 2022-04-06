@@ -14,7 +14,6 @@ public class TSkeletonSoldierMon : TGasKuDeGi
         int prv;
         long m_dwEffectFrameTimetime;
         long m_dwFrameTimetime;
-        bool bofly;
         if (m_nCurrentAction == Grobal2.SM_WALK || m_nCurrentAction == Grobal2.SM_BACKSTEP ||
             m_nCurrentAction == Grobal2.SM_RUN || m_nCurrentAction == Grobal2.SM_HORSERUN) return;
         m_boMsgMuch = false;
@@ -135,7 +134,7 @@ public class TSkeletonSoldierMon : TGasKuDeGi
         }
         else
         {
-            if (new ArrayList(new[] {118, 119}).Contains(m_btRace))
+            if (new ArrayList(new[] { 118, 119 }).Contains(m_btRace))
             {
                 if (MShare.GetTickCount() - m_dwDefFrameTime > 150)
                 {

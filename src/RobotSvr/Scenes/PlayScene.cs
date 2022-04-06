@@ -830,7 +830,7 @@ namespace RobotSvr
             actor.m_nFeature = cfeature;
             if (MShare.g_boOpenAutoPlay && MShare.g_gcAss[6])
             {
-               // actor.m_btAFilter = MShare.g_APMobList.IndexOf(actor.m_sUserName) >= 0;
+                // actor.m_btAFilter = MShare.g_APMobList.IndexOf(actor.m_sUserName) >= 0;
             }
             //actor.m_btRace = Grobal2.RACEfeature(cfeature);
             //actor.m_btHair = Grobal2.HAIRfeature(cfeature);

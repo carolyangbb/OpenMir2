@@ -198,7 +198,6 @@ public class TGhostShipMonster : TActor
     {
         int prv;
         long dwFrameTimetime;
-        bool bofly;
         if (m_nCurrentAction == Grobal2.SM_WALK || m_nCurrentAction == Grobal2.SM_BACKSTEP || m_nCurrentAction == Grobal2.SM_RUN || m_nCurrentAction == Grobal2.SM_HORSERUN || m_nCurrentAction == Grobal2.SM_RUSH || m_nCurrentAction == Grobal2.SM_RUSHKUNG)
         {
             return;

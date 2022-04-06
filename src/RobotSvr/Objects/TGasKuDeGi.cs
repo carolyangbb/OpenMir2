@@ -96,7 +96,7 @@ public class TGasKuDeGi : TActor
                 m_nEndFrame = m_nStartFrame + pm.ActDie.frame - 1;
                 m_dwFrameTime = pm.ActDie.ftime;
                 m_dwStartTime = MShare.GetTickCount();
-                if (new ArrayList(new[] {40, 65}).Contains(m_btRace)) BoUseDieEffect = true;
+                if (new ArrayList(new[] { 40, 65 }).Contains(m_btRace)) BoUseDieEffect = true;
                 break;
             case Grobal2.SM_SKELETON:
                 m_nStartFrame = pm.ActDeath.start;
