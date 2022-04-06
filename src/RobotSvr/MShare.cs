@@ -9,6 +9,8 @@ namespace RobotSvr
 {
     public class MShare
     {
+        public const int MAXX = 30;
+        public const int MAXY = 40;
 #if DEBUG_LOGIN
         public static byte g_fWZLFirst = 7;
 #else
@@ -600,8 +602,6 @@ namespace RobotSvr
         public const string REG_SETUP_SOUNDVOLUME = "SoundVolume";
         public const string REG_SETUP_MP3OPEN = "MusicOpen";
         public const string REG_SETUP_SOUNDOPEN = "SoundOpen";
-        public const int MAXX = 40;
-        public const int MAXY = 30;
         public const int LONGHEIGHT_IMAGE = 35;
         public const int FLASHBASE = 410;
         public const int SOFFX = 0;
@@ -746,18 +746,19 @@ namespace RobotSvr
         public const int SCREENWIDTH = 800;
         public const int SCREENHEIGHT = 600;
         public static string[] g_levelstring = { "一", "二", "三", "四", "五", "六", "七", "八" };
+        public const string MAPDIRNAME = "Map/";
 
         // 得到地图文件名称自定义路径
         public static string GetMapDirAndName(string sFileName)
         {
             string result;
-            if (File.Exists(WMFile.MAPDIRNAME + sFileName + ".map"))
+            if (File.Exists(MAPDIRNAME + sFileName + ".map"))
             {
-                result = WMFile.MAPDIRNAME + sFileName + ".map";
+                result = MAPDIRNAME + sFileName + ".map";
             }
             else
             {
-                result = WMFile.OLDMAPDIRNAME + sFileName + ".map";
+                result = MAPDIRNAME + sFileName + ".map";
             }
             return result;
         }
@@ -766,67 +767,11 @@ namespace RobotSvr
         {
             //  ClMain.DScreen.AddChatBoardString(Str, System.Drawing.Color.White, System.Drawing.Color.Black);
         }
-
-        public static void LoadMapDesc()
-        {
-            //int i;
-            //string szFileName;
-            //string szLine;
-            //ArrayList xsl;
-            //string szMapTitle = String.Empty;
-            //string szPointX = String.Empty;
-            //string szPointY = String.Empty;
-            //string szPlaceName = String.Empty;
-            //string szColor = String.Empty;
-            //string szFullMap = String.Empty;
-            //int nPointX;
-            //int nPointY;
-            //int nFullMap;
-            //Color nColor;
-            //TMapDescInfo pMapDescInfo;
-            //szFileName = ".\\data\\MapDesc2.dat";
-            //if (File.Exists(szFileName))
-            //{
-            //    xsl = new ArrayList();
-            //    xsl.LoadFromFile(szFileName);
-            //    for (i = 0; i < xsl.Count; i++)
-            //    {
-            //        szLine = xsl[i];
-            //        if ((szLine == "") || (szLine[0] == ';'))
-            //        {
-            //            continue;
-            //        }
-            //        szLine = HGEGUI.GetValidStr3(szLine, ref szMapTitle, new string[] { "," });
-            //        szLine = HGEGUI.GetValidStr3(szLine, ref szPointX, new string[] { "," });
-            //        szLine = HGEGUI.GetValidStr3(szLine, ref szPointY, new string[] { "," });
-            //        szLine = HGEGUI.GetValidStr3(szLine, ref szPlaceName, new string[] { "," });
-            //        szLine = HGEGUI.GetValidStr3(szLine, ref szColor, new string[] { "," });
-            //        szLine = HGEGUI.GetValidStr3(szLine, ref szFullMap, new string[] { "," });
-            //        nPointX = HUtil32.Str_ToInt(szPointX, -1);
-            //        nPointY = HUtil32.Str_ToInt(szPointY, -1);
-            //        nColor = Convert.ToInt32(szColor);
-            //        nFullMap = HUtil32.Str_ToInt(szFullMap, -1);
-            //        if ((szPlaceName != "") && (szMapTitle != "") && (nPointX >= 0) && (nPointY >= 0) && (nFullMap >= 0))
-            //        {
-            //            pMapDescInfo = new TMapDescInfo();
-            //            pMapDescInfo.szMapTitle = szMapTitle;
-            //            pMapDescInfo.szPlaceName = szPlaceName;
-            //            pMapDescInfo.nPointX = nPointX;
-            //            pMapDescInfo.nPointY = nPointY;
-            //            pMapDescInfo.nColor = nColor;
-            //            pMapDescInfo.nFullMap = nFullMap;
-            //            g_xMapDescList.Add(szMapTitle, pMapDescInfo as Object);
-            //        }
-            //    }
-            //}
-        }
-
         public static int GetTickCount()
         {
             return HUtil32.GetTickCount(); ;
         }
 
-        // stdcall;
         public static bool IsDetectItem(int idx)
         {
             return idx == DETECT_MIIDX_OFFSET;
@@ -2001,7 +1946,6 @@ namespace RobotSvr
             //g_xMapDescList.Free;
             //g_xCurMapDescList.Free;
         }
-
     }
 
     public struct TVaInfo
@@ -2011,13 +1955,13 @@ namespace RobotSvr
         public Rectangle[] pt2;
         public string[] str1;
         public string[] Hint;
-    } // end TVaInfo
+    }
 
     public class TFindNode
     {
         public int X;
         public int Y;
-    } // end TFindNode
+    }
 
     public class Tree
     {
@@ -2088,8 +2032,7 @@ namespace RobotSvr
         public bool boShowName;
         public int nFColor;
         public int nBColor;
-    } // end TShowItem
-
+    }
     public struct TMapDescInfo
     {
         public string szMapTitle;
@@ -2098,8 +2041,7 @@ namespace RobotSvr
         public int nPointY;
         public Color nColor;
         public int nFullMap;
-    } // end TMapDescInfo
-
+    }
     public class TItemShine
     {
         public int idx;
@@ -2111,22 +2053,19 @@ namespace RobotSvr
         public byte wMagid;
         public byte nStep;
         public bool bSpell;
-    } // end TSeriesSkill
-
+    }
     public struct TTempSeriesSkillA
     {
         public TClientMagic pm;
         public bool bo;
-    } // end TTempSeriesSkillA
-
+    }
     public enum TTimerCommand
     {
         tcSoftClose,
         tcReSelConnect,
         tcFastQueryChr,
         tcQueryItemPrice
-    } // end TTimerCommand
-
+    }
     public enum TChrAction
     {
         caWalk,
@@ -2135,16 +2074,29 @@ namespace RobotSvr
         caHit,
         caSpell,
         caSitdown
-    } // end TChrAction
+    }
 
     public enum TConnectionStep
     {
+        cnsConnect,
+        cnsNewAccount,
+        cnsQueryServer,
+        cnsSelServer,
         cnsIntro,
         cnsLogin,
+        cnsNewChr,
+        cnsQueryChr,
         cnsSelChr,
         cnsReSelChr,
         cnsPlay
-    } // end TConnectionStep
+    }
+
+    public enum TConnectionStatus
+    {
+        cns_Success,
+        cns_Connect,
+        cns_Failure,
+    }
 
     public enum TItemType
     {

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 namespace RobotSvr
 {
@@ -31,11 +32,25 @@ namespace RobotSvr
 
     public struct TMapHeader
     {
-        public short wWidth;
-        public short wHeight;
-        public string[] sTitle;
-        public DateTime UpdateDate;
+        public ushort wWidth;
+        public ushort wHeight;
+        public char[] sTitle;
+        public double UpdateDate;
         public char[] Reserved;
+
+        public TMapHeader(byte[] data)
+        {
+            using var stream = new MemoryStream(data, 0, data.Length);
+            using var reader = new BinaryReader(stream);
+
+            wWidth = reader.ReadUInt16();
+            wHeight = reader.ReadUInt16();
+            sTitle = reader.ReadChars(16);
+            UpdateDate = reader.ReadDouble();
+            Reserved = reader.ReadChars(24);
+        }
+
+        public const int PacketSize = 52;
     }
 
     public struct TMapInfo_Old
@@ -49,6 +64,8 @@ namespace RobotSvr
         public byte btAniTick;
         public byte btArea;
         public byte btLight;
+
+        public const int PacketSize = 12;
     }
 
     public struct TMapInfo_2
@@ -64,6 +81,8 @@ namespace RobotSvr
         public byte btLight;
         public byte btBkIndex;
         public byte btSmIndex;
+
+        public const int PacketSize = 14;
     }
 
     public struct TMapInfo
@@ -78,6 +97,8 @@ namespace RobotSvr
         public byte btAniTick;
         public byte btArea;// ÇøÓò
         public byte btLight;// ¹â
+
+
         public byte btBkIndex;
         public byte btSmIndex;
         public ushort btTAnimImage;
@@ -91,6 +112,57 @@ namespace RobotSvr
         public byte btTiles2;
         public byte btSmTiles2;
         public byte[] btUnknown;
+
+        public const int PacketSize = 36;
+
+
+        public TMapInfo(byte[] data)
+        {
+            using var stream = new MemoryStream(data, 0, data.Length);
+            using var reader = new BinaryReader(stream);
+ 
+            wBkImg = reader.ReadUInt16();
+            wMidImg = reader.ReadUInt16();
+            wFrImg = reader.ReadUInt16();
+            btDoorIndex = reader.ReadByte();
+            btDoorOffset = reader.ReadByte();
+            btAniFrame = reader.ReadByte();
+            btAniTick = reader.ReadByte();
+            btArea = reader.ReadByte();
+            btLight = reader.ReadByte();
+            if (data.Length > TMapInfo_2.PacketSize)
+            {
+                btBkIndex = reader.ReadByte();
+                btSmIndex = reader.ReadByte();
+                btTAnimImage = reader.ReadUInt16();
+                btTAnimBlank = reader.ReadUInt16();
+                btTAnimTick = reader.ReadUInt16();
+                btTAnimIndex = reader.ReadByte();
+                btTAniFrame = reader.ReadByte();
+                btTAniOffset = reader.ReadUInt16();
+                btArea2 = reader.ReadByte();
+                btLight2 = reader.ReadByte();
+                btTiles2 = reader.ReadByte();
+                btSmTiles2 = reader.ReadByte();
+                btUnknown = reader.ReadBytes(8);
+            }
+            else
+            {
+                btBkIndex = 0;
+                btSmIndex = 0;
+                btTAnimImage = 0;
+                btTAnimBlank = 0;
+                btTAnimTick = 0;
+                btTAnimIndex = 0;
+                btTAniFrame = 0;
+                btTAniOffset = 0;
+                btArea2 = 0;
+                btLight2 = 0;
+                btTiles2 = 0;
+                btSmTiles2 = 0;
+                btUnknown = null;
+            }
+        }
     }
 
     public class TWave
@@ -145,7 +217,7 @@ namespace RobotSvr
         {
             FPos = 0;
             FCount = 0;
-            FMinCost = Int32.MaxValue;
+            FMinCost = int.MaxValue;
         }
 
         public bool start()

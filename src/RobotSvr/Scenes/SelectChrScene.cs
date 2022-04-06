@@ -11,6 +11,7 @@ namespace RobotSvr
         public SelectChrScene(RobotClient robotClient) : base(SceneType.stSelectChr, robotClient)
         {
             _createChrMode = false;
+            ChrArr = new SelChar[2];
             ChrArr[0].FreezeState = true;
             ChrArr[1].FreezeState = true;
             NewIndex = 0;

@@ -158,6 +158,11 @@ namespace SystemModule.Sockets
             Send(buffer);
         }
 
+        public void SendBuffer(byte[] data)
+        {
+            Send(data);
+        }
+
         public void Send(byte[] buffer)
         {
             try

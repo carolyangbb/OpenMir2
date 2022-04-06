@@ -79,23 +79,6 @@ public class TGhostShipMonster : TActor
                         base.CalcActorFrame();
                         break;
                 }
-
-                break;
-            case Grobal2.SM_LIGHTING_1:
-                switch (m_wAppearance)
-                {
-                    case 356:
-                    case 813:
-                        m_nStartFrame = m_Action.ActCritical.start +
-                                        m_btDir * (m_Action.ActCritical.frame + m_Action.ActCritical.skip);
-                        m_nEndFrame = m_nStartFrame + m_Action.ActCritical.frame - 1;
-                        m_dwFrameTime = m_Action.ActCritical.ftime;
-                        m_dwStartTime = MShare.GetTickCount();
-                        m_dwWarModeTime = MShare.GetTickCount();
-                        FLighting = true;
-                        break;
-                }
-
                 break;
             case Grobal2.SM_DIGUP:
                 switch (m_wAppearance)
@@ -106,10 +89,8 @@ public class TGhostShipMonster : TActor
                         break;
                     default:
                         base.CalcActorFrame();
-                        return;
                         break;
                 }
-
                 m_nEndFrame = m_nStartFrame + pm.ActDeath.frame - 1;
                 m_dwFrameTime = pm.ActDeath.ftime;
                 m_dwStartTime = MShare.GetTickCount();
@@ -218,12 +199,10 @@ public class TGhostShipMonster : TActor
         int prv;
         long dwFrameTimetime;
         bool bofly;
-        TFlyingAxe meff;
-        TFlyingArrow meff2;
-        if (m_nCurrentAction == Grobal2.SM_WALK || m_nCurrentAction == Grobal2.SM_BACKSTEP ||
-            m_nCurrentAction == Grobal2.SM_RUN || m_nCurrentAction == Grobal2.SM_HORSERUN ||
-            m_nCurrentAction == Grobal2.SM_RUSH || m_nCurrentAction == Grobal2.SM_RUSHEX ||
-            m_nCurrentAction == Grobal2.SM_RUSHKUNG) return;
+        if (m_nCurrentAction == Grobal2.SM_WALK || m_nCurrentAction == Grobal2.SM_BACKSTEP || m_nCurrentAction == Grobal2.SM_RUN || m_nCurrentAction == Grobal2.SM_HORSERUN || m_nCurrentAction == Grobal2.SM_RUSH || m_nCurrentAction == Grobal2.SM_RUSHKUNG)
+        {
+            return;
+        }
         m_boMsgMuch = false;
         if (m_MsgList.Count >= 2) m_boMsgMuch = true;
         RunFrameAction(m_nCurrentFrame - m_nStartFrame);
@@ -232,7 +211,6 @@ public class TGhostShipMonster : TActor
         {
             if (m_nCurrentFrame < m_nStartFrame || m_nCurrentFrame > m_nEndFrame) m_nCurrentFrame = m_nStartFrame;
             if (m_boMsgMuch)
-                // Round(m_dwFrameTime / 1.6)
                 dwFrameTimetime = HUtil32.Round(m_dwFrameTime * 2 / 3);
             else
                 dwFrameTimetime = m_dwFrameTime;
@@ -273,8 +251,8 @@ public class TGhostShipMonster : TActor
                     m_boUseEffect = false;
                     m_boHitEffect = false;
                 }
-
                 if (m_boUseMagic)
+                {
                     if (m_nCurEffFrame == m_nSpellFrame - 1)
                     {
                         if (m_CurMagic.ServerMagicCode > 0)
@@ -282,11 +260,10 @@ public class TGhostShipMonster : TActor
                             var _wvar1 = m_CurMagic;
                             //robotClient.g_PlayScene.NewMagic(this, _wvar1.ServerMagicCode, _wvar1.EffectNumber, this.m_nCurrX, this.m_nCurrY, _wvar1.targx, _wvar1.targy, _wvar1.target, _wvar1.EffectType, _wvar1.Recusion, _wvar1.anitime, ref bofly, _wvar1.magfirelv);
                         }
-
                         m_CurMagic.ServerMagicCode = 0;
                     }
+                }
             }
-
             m_nCurrentDefFrame = 0;
             m_dwDefFrameTime = MShare.GetTickCount();
         }
@@ -298,10 +275,8 @@ public class TGhostShipMonster : TActor
                 m_nCurrentDefFrame++;
                 if (m_nCurrentDefFrame >= m_nDefFrameCount) m_nCurrentDefFrame = 0;
             }
-
             DefaultMotion();
         }
-
         if (prv != m_nCurrentFrame) m_dwLoadSurfaceTime = MShare.GetTickCount();
     }
 }

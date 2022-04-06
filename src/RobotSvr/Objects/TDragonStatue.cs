@@ -88,10 +88,10 @@ public class TDragonStatue : TSkeletonArcherMon
                     m_boUseEffect = false;
                     m_boNowDeath = false;
                 }
-
                 if (m_nCurrentAction == Grobal2.SM_LIGHTING && m_nCurrentFrame == 4)
-                    robotClient.g_PlayScene.NewMagic(this, 90, 90, m_nCurrX, m_nCurrY, m_nTargetX, m_nTargetY, 0,
-                        magiceff.TMagicType.mtExplosion, false, 30, ref bofly);
+                {
+                    //robotClient.g_PlayScene.NewMagic(this, 90, 90, m_nCurrX, m_nCurrY, m_nTargetX, m_nTargetY, 0,magiceff.TMagicType.mtExplosion, false, 30, ref bofly);
+                }
             }
             m_nCurrentDefFrame = 0;
             m_dwDefFrameTime = MShare.GetTickCount();

@@ -6,8 +6,8 @@ namespace RobotSvr
     {
         public static Point[] g_MapPath;
         public const int SCALE = 4;
-        public const string MAP_BASEPATH = ".\\Map\\";
-        public static int[,] TerrainParams = new int[1] { 4, -1 };
+        public const string MAP_BASEPATH = @"D:\Legend of Mir\Map\";
+        public static int[] TerrainParams = new int[2] { 4, -1 };
         public TMapHeader m_MapHeader;
         public TCellParams[,] m_MapData;
         public TMapInfo[] m_MapBuf;
@@ -87,29 +87,29 @@ namespace RobotSvr
 
         protected int GetCost(int X, int Y, int Direction)
         {
-            int result;
+            int result = 0;
             int Cost;
             Direction = Direction & 7;
-            if ((X < 0) || (X >= m_MapHeader.wWidth) || (Y < 0) || (Y >= m_MapHeader.wHeight))
-            {
-                result = -1;
-            }
-            else
-            {
-                result = TerrainParams[m_MapData[X, Y].TerrainType || m_MapData[X, Y].TCellActor];
-                if ((X < m_MapHeader.wWidth - m_nPathWidth) && (X > m_nPathWidth) && (Y < m_MapHeader.wHeight - m_nPathWidth) && (Y > m_nPathWidth))
-                {
-                    Cost = TerrainParams[m_MapData[X - m_nPathWidth, Y].TerrainType || m_MapData[X - m_nPathWidth, Y].TCellActor] + TerrainParams[m_MapData[X + m_nPathWidth, Y].TerrainType || m_MapData[X + m_nPathWidth, Y].TCellActor] + TerrainParams[m_MapData[X, Y - m_nPathWidth].TerrainType || m_MapData[X, Y - m_nPathWidth].TCellActor] + TerrainParams[m_MapData[X, Y + m_nPathWidth].TerrainType || m_MapData[X, Y + m_nPathWidth].TCellActor];
-                    if (Cost < 4 * TerrainParams[false])
-                    {
-                        result = -1;
-                    }
-                }
-                if (((Direction & 1) == 1) && (result > 0))
-                {
-                    result = result + (result >> 1);
-                }
-            }
+            //if ((X < 0) || (X >= m_MapHeader.wWidth) || (Y < 0) || (Y >= m_MapHeader.wHeight))
+            //{
+            //    result = -1;
+            //}
+            //else
+            //{
+            //    result = TerrainParams[m_MapData[X, Y].TerrainType || m_MapData[X, Y].TCellActor];
+            //    if ((X < m_MapHeader.wWidth - m_nPathWidth) && (X > m_nPathWidth) && (Y < m_MapHeader.wHeight - m_nPathWidth) && (Y > m_nPathWidth))
+            //    {
+            //        Cost = TerrainParams[m_MapData[X - m_nPathWidth, Y].TerrainType || m_MapData[X - m_nPathWidth, Y].TCellActor] + TerrainParams[m_MapData[X + m_nPathWidth, Y].TerrainType || m_MapData[X + m_nPathWidth, Y].TCellActor] + TerrainParams[m_MapData[X, Y - m_nPathWidth].TerrainType || m_MapData[X, Y - m_nPathWidth].TCellActor] + TerrainParams[m_MapData[X, Y + m_nPathWidth].TerrainType || m_MapData[X, Y + m_nPathWidth].TCellActor];
+            //        if (Cost < 4 * TerrainParams[false])
+            //        {
+            //            result = -1;
+            //        }
+            //    }
+            //    if (((Direction & 1) == 1) && (result > 0))
+            //    {
+            //        result = result + (result >> 1);
+            //    }
+            //}
             return result;
         }
 
@@ -119,27 +119,27 @@ namespace RobotSvr
             int Y;
             int c;
             int d;
-            for (d = 0; d <= 7; d++)
-            {
-                X = OldWave.item.X + DirToDX(d);
-                Y = OldWave.item.Y + DirToDY(d);
-                c = GetCost(X, Y, d);
-                if ((c >= 0) && (result[Y, X].Distance < 0))
-                {
-                    NewWave.Add(X, Y, c, d);
-                }
-            }
+            //for (d = 0; d <= 7; d++)
+            //{
+            //    X = OldWave.item.X + DirToDX(d);
+            //    Y = OldWave.item.Y + DirToDY(d);
+            //    c = GetCost(X, Y, d);
+            //    if ((c >= 0) && (result[Y, X].Distance < 0))
+            //    {
+            //        NewWave.Add(X, Y, c, d);
+            //    }
+            //}
         }
 
         public void FillPathMap_ExchangeWaves()
         {
-            TWave w = OldWave;
-            OldWave = NewWave;
-            NewWave = w;
-            NewWave.Clear();
+            //TWave w = OldWave;
+            //OldWave = NewWave;
+            //NewWave = w;
+            //NewWave.Clear();
         }
 
-        protected TPathMapCell[] FillPathMap(int X1, int Y1, int X2, int Y2)
+        protected TPathMapCell[,] FillPathMap(int X1, int Y1, int X2, int Y2)
         {
             TPathMapCell[,] result;
             int X;
@@ -151,9 +151,9 @@ namespace RobotSvr
             Finished = (X1 == X2) && (Y1 == Y2);
             if (Finished)
             {
-                return result;
+                return null;
             }
-            result = new TPathMapCell[m_MapHeader.wHeight];
+            result = new TPathMapCell[m_MapHeader.wHeight, m_MapHeader.wWidth];
             for (Y = 0; Y <= (m_MapHeader.wHeight - 1); Y++)
             {
                 for (X = 0; X <= (m_MapHeader.wWidth - 1); X++)

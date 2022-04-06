@@ -554,23 +554,22 @@ public class TActor
                     break;
                 case Grobal2.SM_SPELL:
                     m_btDir = (byte) Msg.Dir;
-                    UseMagic = (TUseMagicInfo) Msg.Feature;
-                    if (UseMagic != null)
-                    {
-                        m_CurMagic = UseMagic;
-                        m_CurMagic.ServerMagicCode = -1;
-                        m_CurMagic.targx = Msg.X;
-                        m_CurMagic.targy = Msg.Y;
-                        m_CurMagic.spelllv = Msg.X;
-                        m_CurMagic.Poison = Msg.Y;
-                        UseMagic = null;
-                        if (m_CurMagic.EffectNumber >= 60 && m_CurMagic.EffectNumber <= 66)
-                        {
-                            MShare.g_SeriesSkillFire = false;
-                            MShare.g_SeriesSkillFire_100 = false;
-                        }
-                    }
-
+                    //UseMagic = (TUseMagicInfo) Msg.Feature;
+                    //if (UseMagic != null)
+                    //{
+                    //    m_CurMagic = UseMagic;
+                    //    m_CurMagic.ServerMagicCode = -1;
+                    //    m_CurMagic.targx = Msg.X;
+                    //    m_CurMagic.targy = Msg.Y;
+                    //    m_CurMagic.spelllv = Msg.X;
+                    //    m_CurMagic.Poison = Msg.Y;
+                    //    UseMagic = null;
+                    //    if (m_CurMagic.EffectNumber >= 60 && m_CurMagic.EffectNumber <= 66)
+                    //    {
+                    //        MShare.g_SeriesSkillFire = false;
+                    //        MShare.g_SeriesSkillFire_100 = false;
+                    //    }
+                    //}
                     break;
                 case Grobal2.SM_FIREHIT:
                 case Grobal2.SM_POWERHIT:
@@ -579,7 +578,7 @@ public class TActor
                     m_nCurrX = Msg.X;
                     m_nCurrY = Msg.Y;
                     m_btDir = (byte) Msg.Dir;
-                    m_CurMagic.magfirelv = Msg.Saying;
+                    //m_CurMagic.magfirelv = Msg.Saying;
                     break;
                 default:
                     m_nCurrX = Msg.X;
@@ -685,11 +684,10 @@ public class TActor
                         m_CurMagic.EffectNumber = Msg.Dir % 255;
                         m_CurMagic.targx = Msg.Feature;
                         m_CurMagic.targy = Msg.State;
-                        m_CurMagic.magfirelv = Msg.Saying;
+                        //m_CurMagic.magfirelv = Msg.Saying;
                         m_CurMagic.Recusion = true;
                         fin = true;
                     }
-
                     break;
                 case Grobal2.SM_MAGICFIRE_FAIL:
                     if (m_CurMagic.ServerMagicCode != 0)
@@ -697,10 +695,8 @@ public class TActor
                         m_CurMagic.ServerMagicCode = 0;
                         fin = true;
                     }
-
                     break;
             }
-
             if (fin)
             {
                 m_MsgList[n] = null;
@@ -716,7 +712,6 @@ public class TActor
     public bool IsIdle()
     {
         return m_nCurrentAction == 0 && m_MsgList.Count == 0;
-        ;
     }
 
     public bool ActionFinished()

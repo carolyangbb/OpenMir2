@@ -24,6 +24,7 @@ namespace RobotSvr
 
         public PlayScene(RobotClient robotClient) : base(SceneType.stPlayGame, robotClient)
         {
+            ProcMagic = new ProcMagic();
             ProcMagic.NTargetX = -1;
             m_ActorList = new List<TActor>();
             MEffectList = new ArrayList();
@@ -109,12 +110,12 @@ namespace RobotSvr
             //robotClient.Map.UpdateMapPos(MShare.g_MySelf.m_nRx, MShare.g_MySelf.m_nRy);
         }
 
-        public void PlaySurface(Object sender)
+        public void PlaySurface(object sender)
         {
 
         }
 
-        public void MagicSurface(Object sender)
+        public void MagicSurface(object sender)
         {
 
         }
@@ -961,7 +962,7 @@ namespace RobotSvr
             return DeleteActor(id, false);
         }
 
-        public void DelActor(Object actor)
+        public void DelActor(object actor)
         {
             int i;
             for (i = 0; i < m_ActorList.Count; i++)
@@ -1036,7 +1037,7 @@ namespace RobotSvr
                         }
                         if (robotClient.Map.m_MapData.Length > 0)
                         {
-                            robotClient.Map.m_MapData = new TCellParams[0];
+                            robotClient.Map.m_MapData = new TCellParams[0, 0];
                             robotClient.Map.m_MapData = null;
                         }
                     }

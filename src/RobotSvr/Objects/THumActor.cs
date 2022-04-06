@@ -288,8 +288,7 @@ public class THumActor : TActor
             case Grobal2.SM_WIDEHIT:
             case Grobal2.SM_FIREHIT:
             case Grobal2.SM_CRSHIT:
-                m_nStartFrame = THumAction.HA.ActHit.start +
-                                m_btDir * (THumAction.HA.ActHit.frame + THumAction.HA.ActHit.skip);
+                m_nStartFrame = THumAction.HA.ActHit.start + m_btDir * (THumAction.HA.ActHit.frame + THumAction.HA.ActHit.skip);
                 m_nEndFrame = m_nStartFrame + THumAction.HA.ActHit.frame - 1;
                 m_dwFrameTime = THumAction.HA.ActHit.ftime;
                 m_dwStartTime = MShare.GetTickCount();
@@ -300,18 +299,18 @@ public class THumActor : TActor
                     m_boHitEffect = true;
                     m_nMagLight = 2;
                     m_nHitEffectNumber = 1;
-                    switch (m_CurMagic.magfirelv / 4)
-                    {
-                        case 1:
-                            m_nHitEffectNumber += 101;
-                            break;
-                        case 2:
-                            m_nHitEffectNumber += 201;
-                            break;
-                        case 3:
-                            m_nHitEffectNumber += 301;
-                            break;
-                    }
+                    //switch (m_CurMagic.magfirelv / 4)
+                    //{
+                    //    case 1:
+                    //        m_nHitEffectNumber += 101;
+                    //        break;
+                    //    case 2:
+                    //        m_nHitEffectNumber += 201;
+                    //        break;
+                    //    case 3:
+                    //        m_nHitEffectNumber += 301;
+                    //        break;
+                    //}
                 }
 
                 if (m_nCurrentAction == Grobal2.SM_LONGHIT)
@@ -319,18 +318,18 @@ public class THumActor : TActor
                     m_boHitEffect = true;
                     m_nMagLight = 2;
                     m_nHitEffectNumber = 2;
-                    switch (m_CurMagic.magfirelv / 4)
-                    {
-                        case 1:
-                            m_nHitEffectNumber += 101;
-                            break;
-                        case 2:
-                            m_nHitEffectNumber += 201;
-                            break;
-                        case 3:
-                            m_nHitEffectNumber += 301;
-                            break;
-                    }
+                    //switch (m_CurMagic.magfirelv / 4)
+                    //{
+                    //    case 1:
+                    //        m_nHitEffectNumber += 101;
+                    //        break;
+                    //    case 2:
+                    //        m_nHitEffectNumber += 201;
+                    //        break;
+                    //    case 3:
+                    //        m_nHitEffectNumber += 301;
+                    //        break;
+                    //}
                 }
 
                 if (m_nCurrentAction == Grobal2.SM_WIDEHIT)
@@ -338,18 +337,18 @@ public class THumActor : TActor
                     m_boHitEffect = true;
                     m_nMagLight = 2;
                     m_nHitEffectNumber = 3;
-                    switch (m_CurMagic.magfirelv / 4)
-                    {
-                        case 1:
-                            m_nHitEffectNumber += 101;
-                            break;
-                        case 2:
-                            m_nHitEffectNumber += 201;
-                            break;
-                        case 3:
-                            m_nHitEffectNumber += 301;
-                            break;
-                    }
+                    //switch (m_CurMagic.magfirelv / 4)
+                    //{
+                    //    case 1:
+                    //        m_nHitEffectNumber += 101;
+                    //        break;
+                    //    case 2:
+                    //        m_nHitEffectNumber += 201;
+                    //        break;
+                    //    case 3:
+                    //        m_nHitEffectNumber += 301;
+                    //        break;
+                    //}
                 }
 
                 if (m_nCurrentAction == Grobal2.SM_FIREHIT)
@@ -357,18 +356,18 @@ public class THumActor : TActor
                     m_boHitEffect = true;
                     m_nMagLight = 2;
                     m_nHitEffectNumber = 4;
-                    switch (m_CurMagic.magfirelv / 4)
-                    {
-                        case 1:
-                            m_nHitEffectNumber += 101;
-                            break;
-                        case 2:
-                            m_nHitEffectNumber += 201;
-                            break;
-                        case 3:
-                            m_nHitEffectNumber += 301;
-                            break;
-                    }
+                    //switch (m_CurMagic.magfirelv / 4)
+                    //{
+                    //    case 1:
+                    //        m_nHitEffectNumber += 101;
+                    //        break;
+                    //    case 2:
+                    //        m_nHitEffectNumber += 201;
+                    //        break;
+                    //    case 3:
+                    //        m_nHitEffectNumber += 301;
+                    //        break;
+                    //}
                 }
 
                 if (m_nCurrentAction == Grobal2.SM_CRSHIT)
@@ -533,15 +532,15 @@ public class THumActor : TActor
                         case 10:
                             // 灵魂火符
                             m_nMagLight = 2;
-                            if (m_CurMagic.spelllv > MShare.MAXMAGICLV) m_nSpellFrame = 10;
+                            //if (m_CurMagic.spelllv > MShare.MAXMAGICLV) 
+                            //    m_nSpellFrame = 10;
                             break;
                         case 15:
-                            if (m_CurMagic.spelllv > 3)
-                            {
-                                m_nMagLight = 2;
-                                m_nSpellFrame = 10;
-                            }
-
+                            //if (m_CurMagic.spelllv > 3)
+                            //{
+                            //    m_nMagLight = 2;
+                            //    m_nSpellFrame = 10;
+                            //}
                             break;
                         case 22: // 地狱雷光
                             m_nMagLight = 4;
@@ -552,7 +551,7 @@ public class THumActor : TActor
                             break;
                         case 34: // 灭天火
                             m_nMagLight = 2;
-                            if (m_CurMagic.spelllv > MShare.MAXMAGICLV) m_nSpellFrame = 10;
+                            //if (m_CurMagic.spelllv > MShare.MAXMAGICLV) m_nSpellFrame = 10;
                             break;
                         case 35: // 无极真气
                             m_nMagLight = 2;

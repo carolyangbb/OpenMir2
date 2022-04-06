@@ -70,14 +70,16 @@ public class TRedThunderZuma : TGasKuDeGi
     {
         bool bofly;
         if (m_nCurrentFrame - m_nStartFrame == 2)
+        {
             if (m_nCurrentAction == Grobal2.SM_LIGHTING)
+            {
                 if (boCasted)
                 {
                     boCasted = false;
-                    ClMain.g_PlayScene.NewMagic(this, 80, 80, m_nCurrX, m_nCurrY, m_nTargetX, m_nTargetY,
-                        m_nTargetRecog, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
+                    //ClMain.g_PlayScene.NewMagic(this, 80, 80, m_nCurrX, m_nCurrY, m_nTargetX, m_nTargetY,m_nTargetRecog, magiceff.TMagicType.mtRedThunder, false, 30, ref bofly);
                 }
-
+            }
+        }
         base.Run();
     }
 

@@ -170,7 +170,7 @@ namespace MakePlayer
             var DefMsg = Grobal2.MakeDefaultMsg(nIdent, nRecog, nParam, nTag, nSeries);
             SendSocket(EDcode.EncodeMessage(DefMsg));
         }
-
+        
         private void SendNewAccount(string sAccount, string sPassword)
         {
             MainOutMessage($"[{m_sLoginAccount}] 创建帐号");

@@ -11,8 +11,8 @@ namespace RobotSvr
         private bool _mBoOpenFirst = false;
         private TUserEntry _mNewIdRetryUe = null;
         private TUserEntryAdd _mNewIdRetryAdd = null;
-        public string MSLoginId = String.Empty;
-        public string MSLoginPasswd = String.Empty;
+        public string MSLoginId = string.Empty;
+        public string MSLoginPasswd = string.Empty;
         public long MEditIdHandle = 0;
         public object MEditIdPointer = null;
         public long MEditPassHandle = 0;

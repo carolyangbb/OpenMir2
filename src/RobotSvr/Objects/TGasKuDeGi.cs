@@ -21,7 +21,7 @@ public class TGasKuDeGi : TActor
 
     public override void CalcActorFrame()
     {
-        TMonsterAction pm;
+        TMonsterAction pm = null;
         TActor Actor;
         var scx = 0;
         var scy = 0;
@@ -52,7 +52,6 @@ public class TGasKuDeGi : TActor
                 if (m_nCurrentAction == Grobal2.SM_WALK)
                     Shift(m_btDir, m_nMoveStep, 0, m_nEndFrame - m_nStartFrame + 1);
                 else
-                    // sm_backstep
                     Shift(ClFunc.GetBack(m_btDir), m_nMoveStep, 0, m_nEndFrame - m_nStartFrame + 1);
                 break;
             case Grobal2.SM_HIT:

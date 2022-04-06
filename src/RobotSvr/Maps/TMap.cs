@@ -1,6 +1,4 @@
-﻿using Microsoft.Win32.SafeHandles;
-using System;
-using System.Collections;
+﻿using System;
 using System.Drawing;
 using System.IO;
 using SystemModule;
@@ -31,11 +29,12 @@ namespace RobotSvr
         public int m_nBlockTop = 0;
         public int m_nOldLeft = 0;
         public int m_nOldTop = 0;
-        public string m_sOldMap = String.Empty;
+        public string m_sOldMap = string.Empty;
         public int m_nCurUnitX = 0;
         public int m_nCurUnitY = 0;
-        public string m_sCurrentMap = String.Empty;
-        public int m_nCurrentMap;
+        public string m_sCurrentMap = string.Empty;
+        public FileStream m_nCurrentMap;
+        private int FileSeek;
         public int m_nSegXCount = 0;
         public int m_nSegYCount = 0;
 
@@ -45,7 +44,8 @@ namespace RobotSvr
             m_ClientRect = new Rectangle(0, 0, 0, 0);
             m_boChange = false;
             m_sCurrentMap = "";
-            m_nCurrentMap = 0;
+            m_nCurrentMap = null;
+            FileSeek = 0;
             m_nSegXCount = 0;
             m_nSegYCount = 0;
             m_nCurUnitX = -1;
@@ -53,6 +53,7 @@ namespace RobotSvr
             m_nBlockLeft = -1;
             m_nBlockTop = -1;
             m_sOldMap = "";
+            m_MArr = new TMapInfo[MShare.MAXX * 3, MShare.MAXY * 3];
         }
 
         public void LoadMapData(bool bFirst = false)
@@ -64,7 +65,7 @@ namespace RobotSvr
             TMapInfo_Old[] TempMapInfoArr;
             TMapInfo_2[] TempMapInfoArr2;
             bool canMove;
-            if (m_nCurrentMap != 0)
+            if (m_nCurrentMap != null)
             {
                 if (this.m_MapBuf == null)
                 {
@@ -101,7 +102,7 @@ namespace RobotSvr
                 {
                     if (this.m_MapData.Length <= 0)
                     {
-                        this.m_MapData = new TCellParams[this.m_MapHeader.wWidth];
+                        this.m_MapData = new TCellParams[this.m_MapHeader.wWidth, this.m_MapHeader.wHeight];
                     }
                     for (X = 0; X < this.m_MapHeader.wWidth; X++)
                     {
@@ -127,15 +128,13 @@ namespace RobotSvr
 
         public bool ReLoadMapData(bool IntActor = false)
         {
-            int nX;
-            int nY;
             TActor Actor;
             bool result = false;
-            if ((MShare.g_MySelf != null) && (m_nCurrentMap != 0) && (this.m_MapBuf != null))
+            if ((MShare.g_MySelf != null) && (m_nCurrentMap != null) && (this.m_MapBuf != null))
             {
-                for (nX = MShare.g_MySelf.m_nCurrX - 32; nX <= MShare.g_MySelf.m_nCurrX + 32; nX++)
+                for (var nX = MShare.g_MySelf.m_nCurrX - 32; nX <= MShare.g_MySelf.m_nCurrX + 32; nX++)
                 {
-                    for (nY = MShare.g_MySelf.m_nCurrY - 32; nY <= MShare.g_MySelf.m_nCurrY + 32; nY++)
+                    for (var nY = MShare.g_MySelf.m_nCurrY - 32; nY <= MShare.g_MySelf.m_nCurrY + 32; nY++)
                     {
                         if ((nX >= 0) && (nX < this.m_MapHeader.wWidth) && (nY >= 0) && (nY < this.m_MapHeader.wHeight))
                         {
@@ -164,14 +163,12 @@ namespace RobotSvr
 
         private void LoadMapArr(int nCurrX, int nCurrY)
         {
-            int i;
-            int j;
             int nAline;
             int nLx;
             int nRx;
             int nTy;
             int nBy;
-            if (m_nCurrentMap != 0)
+            if (m_nCurrentMap != null)
             {
                 //FillChar(m_MArr); 
                 nLx = (nCurrX - 1) * MShare.LOGICALMAPUNIT;
@@ -190,48 +187,54 @@ namespace RobotSvr
                 {
                     nBy = this.m_MapHeader.wHeight;
                 }
-                //switch ((byte)this.m_MapHeader.Reserved[0])
-                //{
-                //    case 6:
-                //        nAline = sizeof(TMapInfo) * this.m_MapHeader.wHeight;
-                //        for (i = nLx; i < nRx; i++)
-                //        {
-                //            if ((i >= 0) && (i < this.m_MapHeader.wWidth))
-                //            {
-                //                FileSeek(m_nCurrentMap); 
-                //                FileRead(m_nCurrentMap, m_MArr[i - nLx, 0]);
-                //            }
-                //        }
-                //        break;
-                //    case 2:
-                //        nAline = sizeof(TMapInfo_2) * this.m_MapHeader.wHeight;
-                //        for (i = nLx; i < nRx; i++)
-                //        {
-                //            if ((i >= 0) && (i < this.m_MapHeader.wWidth))
-                //            {
-                //                FileSeek(m_nCurrentMap); 
-                //                for (j = 0; j < nBy - nTy; j++)
-                //                {
-                //                    FileRead(m_nCurrentMap, m_MArr[i - nLx, j]);
-                //                }
-                //            }
-                //        }
-                //        break;
-                //    default:
-                //        nAline = sizeof(TMapInfo_Old) * this.m_MapHeader.wHeight;
-                //        for (i = nLx; i < nRx; i++)
-                //        {
-                //            if ((i >= 0) && (i < this.m_MapHeader.wWidth))
-                //            {
-                //                FileSeek(m_nCurrentMap); 
-                //                for (j = 0; j < nBy - nTy; j++)
-                //                {
-                //                    FileRead(m_nCurrentMap, m_MArr[i - nLx, j]);
-                //                }
-                //            }
-                //        }
-                //        break;
-                //}
+                switch ((byte)this.m_MapHeader.Reserved[0])
+                {
+                    case 6:
+                        nAline = TMapInfo.PacketSize * this.m_MapHeader.wHeight;
+                        for (var i = nLx; i < nRx; i++)
+                        {
+                            if ((i >= 0) && (i < this.m_MapHeader.wWidth))
+                            {
+                                m_nCurrentMap.Seek(TMapHeader.PacketSize + (nAline * i) + (TMapInfo.PacketSize * nTy), SeekOrigin.Begin);
+                                var readData = new byte[TMapInfo.PacketSize];
+                                m_nCurrentMap.Read(readData, 0, TMapInfo.PacketSize);
+                                m_MArr[i - nLx, 0] = new TMapInfo(readData);
+                            }
+                        }
+                        break;
+                    case 2:
+                        nAline = TMapInfo_2.PacketSize * this.m_MapHeader.wHeight;
+                        for (var i = nLx; i < nRx; i++)
+                        {
+                            if ((i >= 0) && (i < this.m_MapHeader.wWidth))
+                            {
+                                m_nCurrentMap.Seek(TMapHeader.PacketSize + (nAline * i) + (TMapInfo_2.PacketSize * nTy), SeekOrigin.Begin);
+                                for (var j = 0; j < nBy - nTy; j++)
+                                {
+                                    var readData = new byte[TMapInfo_2.PacketSize];
+                                    m_nCurrentMap.Read(readData, 0, TMapInfo_2.PacketSize);
+                                    m_MArr[i - nLx, j] = new TMapInfo(readData);
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        nAline = TMapInfo_Old.PacketSize * this.m_MapHeader.wHeight;
+                        for (var i = nLx; i < nRx; i++)
+                        {
+                            if ((i >= 0) && (i < this.m_MapHeader.wWidth))
+                            {
+                                m_nCurrentMap.Seek(TMapHeader.PacketSize + (nAline * i) + (TMapInfo_Old.PacketSize * nTy), SeekOrigin.Begin);
+                                for (var j = 0; j < nBy - nTy; j++)
+                                {
+                                    var readData = new byte[TMapInfo_Old.PacketSize];
+                                    m_nCurrentMap.Read(readData, 0, readData.Length);
+                                    m_MArr[i - nLx, j] = new TMapInfo(readData);
+                                }
+                            }
+                        }
+                        break;
+                }
             }
         }
 
@@ -253,12 +256,10 @@ namespace RobotSvr
 
         public void UpdateMapPos_Unmark(int xx, int yy, ref int cx, ref int cy)
         {
-            int ax;
-            int ay;
             if ((cx == xx / MShare.LOGICALMAPUNIT) && (cy == yy / MShare.LOGICALMAPUNIT))
             {
-                ax = xx - m_nBlockLeft;
-                ay = yy - m_nBlockTop;
+                int ax = xx - m_nBlockLeft;
+                int ay = yy - m_nBlockTop;
                 m_MArr[ax, ay].wFrImg = (ushort)(m_MArr[ax, ay].wFrImg & 0x7FFF);
                 m_MArr[ax, ay].wBkImg = (ushort)(m_MArr[ax, ay].wBkImg & 0x7FFF);
             }
@@ -293,23 +294,27 @@ namespace RobotSvr
             m_nCurUnitX = -1;
             m_nCurUnitY = -1;
             m_sCurrentMap = sMapName;
-            if (m_nCurrentMap != 0)
+            if (m_nCurrentMap != null)
             {
                 m_nCurrentMap.Close();
-                m_nCurrentMap = 0;
+                m_nCurrentMap.Dispose();
+                m_nCurrentMap = null;
             }
             string sFileName = string.Format("{0}{1}{2}", MAP_BASEPATH, m_sCurrentMap, ".map");
             if (File.Exists(sFileName))
             {
-                //m_nCurrentMap = File.Open(sFileName, (FileMode)FileAccess.Read | FileShare.ReadWrite);
-                //if (m_nCurrentMap != 0)
-                //{
-                //    if (FileRead(m_nCurrentMap, this.m_MapHeader));
-                //    {
-                //        m_nCurrentMap.Close();
-                //        m_nCurrentMap = 0;
-                //    }
-                //}
+                m_nCurrentMap = File.Open(sFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                if (m_nCurrentMap != null)
+                {
+                    var headerData = new byte[TMapHeader.PacketSize];
+                    m_nCurrentMap.Read(headerData, 0, headerData.Length);
+                    this.m_MapHeader = new TMapHeader(headerData);
+                    if (headerData.Length == 0)
+                    {
+                        m_nCurrentMap.Close();
+                        m_nCurrentMap = null;
+                    }
+                }
                 UpdateMapPos(nMx, nMy);
             }
             m_sOldMap = m_sCurrentMap;
@@ -421,7 +426,7 @@ namespace RobotSvr
             {
                 return result;
             }
-            if (robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x80 > 0)
+            if ((robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x80) > 0)
             {
                 idx = robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x7F;
                 for (i = cx - 10; i <= cx + 10; i++)
@@ -432,7 +437,7 @@ namespace RobotSvr
                         {
                             if ((robotClient.Map.m_MArr[i, j].btDoorIndex & 0x7F) == idx)
                             {
-                                robotClient.Map.m_MArr[i, j].btDoorOffset = robotClient.Map.m_MArr[i, j].btDoorOffset | 0x80;
+                                robotClient.Map.m_MArr[i, j].btDoorOffset = (byte)(robotClient.Map.m_MArr[i, j].btDoorOffset | 0x80);
                             }
                         }
                     }
@@ -456,7 +461,7 @@ namespace RobotSvr
             {
                 return result;
             }
-            if (robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x80 > 0)
+            if ((robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x80) > 0)
             {
                 idx = robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x7F;
                 for (i = cx - 8; i <= cx + 10; i++)
@@ -465,7 +470,7 @@ namespace RobotSvr
                     {
                         if ((robotClient.Map.m_MArr[i, j].btDoorIndex & 0x7F) == idx)
                         {
-                            robotClient.Map.m_MArr[i, j].btDoorOffset = robotClient.Map.m_MArr[i, j].btDoorOffset & 0x7F;
+                            robotClient.Map.m_MArr[i, j].btDoorOffset = (byte)(robotClient.Map.m_MArr[i, j].btDoorOffset & 0x7F);
                         }
                     }
                 }
