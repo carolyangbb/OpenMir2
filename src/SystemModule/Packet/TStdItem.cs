@@ -91,7 +91,24 @@ namespace SystemModule
 
         protected override void ReadPacket(BinaryReader reader)
         {
-            throw new NotImplementedException();
+            Name = reader.ReadPascalString(21);
+            StdMode = reader.ReadByte();
+            Shape = reader.ReadByte();
+            Weight = reader.ReadByte();
+            AniCount = reader.ReadByte();
+            Source = reader.ReadSByte();
+            reserved = reader.ReadByte();
+            NeedIdentify = reader.ReadByte();
+            Looks = reader.ReadUInt16();
+            DuraMax = reader.ReadInt32();
+            AC = reader.ReadInt32();
+            MAC = reader.ReadInt32();
+            DC = reader.ReadInt32();
+            MC = reader.ReadInt32();
+            SC = reader.ReadInt32();
+            Need = reader.ReadInt32();
+            NeedLevel = reader.ReadInt32();
+            Price = reader.ReadUInt32();
         }
 
         protected override void WritePacket(BinaryWriter writer)

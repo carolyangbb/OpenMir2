@@ -74,7 +74,6 @@ namespace RobotSvr
         public static string g_sBookLabel = "";
         public static int g_MaxExpFilter = 2000;
         public static string[] g_UnBindItems = { "万年雪霜", "疗伤药", "强效太阳水", "强效金创药", "强效魔法药", "金创药(小量)", "魔法药(小量)", "金创药(中量)", "魔法药(中量)", "地牢逃脱卷", "随机传送卷", "回城卷", "行会回城卷" };
-        public static string g_sLogoText = "LegendSoft";
         public static string g_sGoldName = "金币";
         public static string g_sGameGoldName = "元宝";
         public static string g_sGamePointName = "泡点";
@@ -102,10 +101,8 @@ namespace RobotSvr
         public static int g_SendSayListIdx = 0;
         public static IList<string> g_GroupMembers = null;
         public static int g_DxFontsMgrTick = 0;
-        public static TClientMagic[][] g_MagicArr = new TClientMagic[3][] { new TClientMagic[] { }, new TClientMagic[] { }, new TClientMagic[] { } };
-        public static ArrayList g_MagicList = null;
-        public static ArrayList g_IPMagicList = null;
-        public static ArrayList g_SaveItemList = null;
+        public static TClientMagic[] g_MagicArr = new TClientMagic[255];
+        public static IList<TClientMagic> g_MagicList = null;
         public static IList<TDropItem> g_DropedItemList = null;
         public static ArrayList g_ChangeFaceReadyList = null;
         public static IList<TActor> g_FreeActorList = null;
@@ -250,16 +247,10 @@ namespace RobotSvr
         public static TItemShine g_MovingItemShine = null;
         public static bool g_boBagLoaded = false;
         public static bool g_boServerChanging = false;
-        public static int g_nCaptureSerial = 0;
-        public static int g_nReceiveCount = 0;
-        public static int g_nTestSendCount = 0;
         public static int g_nTestReceiveCount = 0;
         public static int g_nSpellCount = 0;
         public static int g_nSpellFailCount = 0;
         public static int g_nFireCount = 0;
-        public static int g_nDebugCount = 0;
-        public static int g_nDebugCount1 = 0;
-        public static int g_nDebugCount2 = 0;
         public static TClientItem g_SellDlgItem = null;
         public static TMovingItem g_TakeBackItemWait = null;
         public static TMovingItem g_SellDlgItemSellWait = null;
@@ -274,7 +265,6 @@ namespace RobotSvr
         public static TClientItem[] g_DealRemoteItems = new TClientItem[19 + 1];
         public static int g_nDealGold = 0;
         public static int g_nDealRemoteGold = 0;
-        public static bool g_boDealEnd = false;
         public static string g_sDealWho = string.Empty;
         public static TClientItem g_MouseItem = null;
         public static TClientItem g_MouseStateItem = null;
@@ -295,10 +285,7 @@ namespace RobotSvr
         public static bool g_boSkill_68_MP = false;
         public static int g_nDayBright = 0;
         public static int g_nAreaStateValue = 0;
-        public static bool g_boNoDarkness = false;
         public static int g_nRunReadyCount = 0;
-        public static bool g_boLastViewFog = false;
-        public static bool g_boViewFog = false;
         public static bool g_boForceNotViewFog = true;
         public static TClientItem g_EatingItem = null;
         public static int g_dwEatTime = 0;

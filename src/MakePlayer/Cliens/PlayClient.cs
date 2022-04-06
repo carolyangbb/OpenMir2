@@ -1,4 +1,3 @@
-using System.Drawing;
 using SystemModule;
 using SystemModule.Packet;
 using SystemModule.Sockets;

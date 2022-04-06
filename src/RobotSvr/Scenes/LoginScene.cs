@@ -5,9 +5,6 @@ namespace RobotSvr
 {
     public class LoginScene : Scene
     {
-        private int _mNCurFrame = 0;
-        private int _mNMaxFrame = 0;
-        private long _mDwStartTime = 0;
         private bool _mBoOpenFirst = false;
         private TUserEntry _mNewIdRetryUe = null;
         private TUserEntryAdd _mNewIdRetryAdd = null;
@@ -25,8 +22,6 @@ namespace RobotSvr
 
         public override void OpenScene()
         {
-            _mNCurFrame = 0;
-            _mNMaxFrame = 10;
             MSLoginId = "";
             MSLoginPasswd = "";
             _mBoOpenFirst = true;
@@ -50,7 +45,6 @@ namespace RobotSvr
 
         public void OpenLoginDoor()
         {
-            _mDwStartTime = MShare.GetTickCount();
             HideLoginBox();
         }
 

@@ -26,7 +26,7 @@ namespace RobotSvr
             }
             for (i = 0; i < MShare.g_MySelf.m_SlaveObject.Count; i++)
             {
-                if (atc == ((TActor)MShare.g_MySelf.m_SlaveObject[i]))
+                if (atc == MShare.g_MySelf.m_SlaveObject[i])
                 {
                     result = true;
                     break;

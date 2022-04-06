@@ -1,5 +1,4 @@
-﻿
-using System.IO;
+﻿using System.IO;
 
 namespace SystemModule
 {
@@ -17,7 +16,12 @@ namespace SystemModule
 
         protected override void ReadPacket(BinaryReader reader)
         {
-            throw new System.NotImplementedException();
+            Key = reader.ReadChar();
+            Level = reader.ReadByte();
+            reader.ReadByte();
+            reader.ReadByte();
+            CurTrain = reader.ReadInt32();
+            Def = ToPacket<TMagic>(reader);
         }
 
         protected override void WritePacket(BinaryWriter writer)

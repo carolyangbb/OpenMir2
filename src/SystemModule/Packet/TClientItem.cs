@@ -17,7 +17,10 @@ namespace SystemModule
 
         protected override void ReadPacket(BinaryReader reader)
         {
-            throw new System.NotImplementedException();
+            Item = ToPacket<TStdItem>(reader);
+            MakeIndex = reader.ReadInt32();
+            Dura = reader.ReadUInt16();
+            DuraMax = reader.ReadUInt16();
         }
 
         protected override void WritePacket(BinaryWriter writer)

@@ -77,10 +77,28 @@ namespace SystemModule
 
         protected override void ReadPacket(BinaryReader reader)
         {
-            throw new System.NotImplementedException();
+            wMagicID = reader.ReadUInt16();
+            sMagicName = reader.ReadPascalString(13);
+            btEffectType = reader.ReadByte();
+            btEffect = reader.ReadByte();
+            wSpell = reader.ReadByte();
+            wPower = reader.ReadByte();
+            TrainLevel = reader.ReadBytes(4);
+            MaxTrain[0] = reader.ReadInt32();
+            MaxTrain[1] = reader.ReadInt32();
+            MaxTrain[2] = reader.ReadInt32();
+            MaxTrain[3] = reader.ReadInt32();
+            btTrainLv = reader.ReadByte();
+            btJob = reader.ReadByte();
+            dwDelayTime = reader.ReadByte();
+            btDefSpell = reader.ReadByte();
+            btDefPower = reader.ReadByte();
+            wMaxPower = reader.ReadByte();
+            btDefMaxPower = reader.ReadByte();
+            sDescr = reader.ReadPascalString(19);
         }
 
-        protected override void WritePacket(BinaryWriter writer)
+    protected override void WritePacket(BinaryWriter writer)
         {
             writer.Write(wMagicID);
             writer.Write(sMagicName.ToByte(13));

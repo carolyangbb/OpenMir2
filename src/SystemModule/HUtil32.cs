@@ -103,6 +103,15 @@ namespace SystemModule
             return (byte)W;
         }
 
+        public static int GetCodeMsgSize(double x)
+        {
+            if ((int)x <= x)
+            {
+                return (int)Math.Truncate(x) + 1;
+            }
+            return (int)Math.Truncate(x);
+        }
+
         public static bool IsVarNumber(string Str)
         {
             return (CompareLStr(Str, "HUMAN", 5)) || (CompareLStr(Str, "GUILD", 5)) || (CompareLStr(Str, "GLOBAL", 6));

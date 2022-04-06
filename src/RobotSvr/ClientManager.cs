@@ -56,9 +56,9 @@ namespace RobotSvr
             _Clients.TryAdd(sessionId, objClient);
         }
 
-        public static void DelClient(RobotClient objClient)
+        public static void DelClient(string sessionId)
         {
-            //_Clients.Remove(objClient);
+            _Clients.TryRemove(sessionId, out RobotClient robotClient);
         }
 
         public static void Run()

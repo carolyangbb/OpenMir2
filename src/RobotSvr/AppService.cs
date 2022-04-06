@@ -49,18 +49,6 @@ namespace RobotSvr
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             ClientManager.Start();
-            return Task.CompletedTask;
-        }
-
-        public override Task StartAsync(CancellationToken cancellationToken)
-        {
-            g_sServerName = "热血传奇";
-            g_sGameIPaddr = "10.10.0.101";
-            g_nGamePort = 7000;
-            g_boNewAccount = false;
-            g_nChrCount = HUtil32._MIN(g_nChrCount, g_nTotalChrCount);
-            g_dwLogonTick = HUtil32.GetTickCount() - 1000 * g_nChrCount;
-            g_sAccount = "mptalay";
 
             while (true)
             {
@@ -82,9 +70,9 @@ namespace RobotSvr
                             var playClient = new RobotClient();
                             playClient.SessionId = Guid.NewGuid().ToString("N");
                             playClient.m_boNewAccount = g_boNewAccount;
-                            playClient.LoginID = string.Concat(g_sAccount, g_nLoginIndex);
-                            playClient.LoginPasswd = playClient.LoginID;
-                            playClient.m_sCharName = playClient.LoginID;
+                            playClient.LoginID = "admin";
+                            playClient.LoginPasswd = "123123";
+                            playClient.m_sCharName = "gm01";
                             playClient.m_sServerName = g_sServerName;
                             playClient.ClientSocket.Host = g_sGameIPaddr;
                             playClient.ClientSocket.Port = g_nGamePort;
@@ -97,6 +85,18 @@ namespace RobotSvr
                 ClientManager.Run();
                 Thread.Sleep(TimeSpan.FromMilliseconds(50));
             }
+        }
+
+        public override Task StartAsync(CancellationToken cancellationToken)
+        {
+            g_sServerName = "热血传奇";
+            g_sGameIPaddr = "10.10.0.112";
+            g_nGamePort = 7000;
+            g_boNewAccount = false;
+            g_nChrCount = HUtil32._MIN(g_nChrCount, g_nTotalChrCount);
+            g_dwLogonTick = HUtil32.GetTickCount() - 1000 * g_nChrCount;
+            g_sAccount = "mptalay";
+            return base.StartAsync(cancellationToken);
         }
 
         public override Task StopAsync(CancellationToken cancellationToken)

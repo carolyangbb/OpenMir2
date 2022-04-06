@@ -10,9 +10,6 @@ namespace RobotSvr
     {
         public bool MBoPlayChange = false;
         public long MDwPlayChangeTick = 0;
-        private readonly long _mDwMoveTime = 0;
-        private readonly long _mDwAniTime = 0;
-        private readonly int _mNAniCount = 0;
         private readonly int _mNDefXx = 0;
         private readonly int _mNDefYy = 0;
         public IList<TActor> m_ActorList = null;
@@ -31,9 +28,6 @@ namespace RobotSvr
             MFlyList = new ArrayList();
             MDwBlinkTime = MShare.GetTickCount();
             MBoViewBlink = false;
-            _mDwMoveTime = MShare.GetTickCount();
-            _mDwAniTime = MShare.GetTickCount();
-            _mNAniCount = 0;
         }
 
         public bool CanDrawTileMap()
@@ -53,6 +47,7 @@ namespace RobotSvr
 
         public override void OpeningScene()
         {
+
         }
 
         public void CleanObjects()
@@ -140,21 +135,18 @@ namespace RobotSvr
 
         public TActor GetCharacter(int x, int y, int wantsel, ref int nowsel, bool liveonly)
         {
-            int k;
-            int i;
             int ccy = 0;
             int dx = 0;
             int dy = 0;
-            TActor a;
             TActor result = null;
             nowsel = -1;
-            for (k = ccy + 8; k >= ccy - 1; k--)
+            for (var k = ccy + 8; k >= ccy - 1; k--)
             {
-                for (i = m_ActorList.Count - 1; i >= 0; i--)
+                for (var i = m_ActorList.Count - 1; i >= 0; i--)
                 {
                     if (m_ActorList[i] != MShare.g_MySelf)
                     {
-                        a = m_ActorList[i];
+                        TActor a = m_ActorList[i];
                         if ((!liveonly || !a.m_boDeath) && a.m_boHoldPlace && a.m_boVisible)
                         {
                             if (a.m_nCurrY == k)
@@ -181,22 +173,19 @@ namespace RobotSvr
         // 取得鼠标所指坐标的角色
         public TActor GetAttackFocusCharacter(int x, int y, int wantsel, ref int nowsel, bool liveonly)
         {
-            TActor result;
-            int k;
-            int i;
             int ccy = 0;
             int dx = 0;
             int dy = 0;
             int centx = 0;
             int centy = 0;
             TActor a;
-            result = GetCharacter(x, y, wantsel, ref nowsel, liveonly);
+            TActor result = GetCharacter(x, y, wantsel, ref nowsel, liveonly);
             if (result == null)
             {
                 nowsel = -1;
-                for (k = ccy + 8; k >= ccy - 1; k--)
+                for (var k = ccy + 8; k >= ccy - 1; k--)
                 {
-                    for (i = m_ActorList.Count - 1; i >= 0; i--)
+                    for (var i = m_ActorList.Count - 1; i >= 0; i--)
                     {
                         if (m_ActorList[i] != MShare.g_MySelf)
                         {
@@ -243,17 +232,14 @@ namespace RobotSvr
 
         public bool IsSelectMyself(int x, int y)
         {
-            int k;
             int ccy = 0;
-            int dx = 0;
-            int dy = 0;
             bool result = false;
-            for (k = ccy + 2; k >= ccy - 1; k--)
+            for (var k = ccy + 2; k >= ccy - 1; k--)
             {
                 if (MShare.g_MySelf.m_nCurrY == k)
                 {
-                    dx = (MShare.g_MySelf.m_nRx - robotClient.Map.m_ClientRect.Left) * Grobal2.UNITX + _mNDefXx + MShare.g_MySelf.m_nPx + MShare.g_MySelf.m_nShiftX;
-                    dy = (MShare.g_MySelf.m_nRy - robotClient.Map.m_ClientRect.Top - 1) * Grobal2.UNITY + _mNDefYy + MShare.g_MySelf.m_nPy + MShare.g_MySelf.m_nShiftY;
+                    int dx = (MShare.g_MySelf.m_nRx - robotClient.Map.m_ClientRect.Left) * Grobal2.UNITX + _mNDefXx + MShare.g_MySelf.m_nPx + MShare.g_MySelf.m_nShiftX;
+                    int dy = (MShare.g_MySelf.m_nRy - robotClient.Map.m_ClientRect.Top - 1) * Grobal2.UNITY + _mNDefYy + MShare.g_MySelf.m_nPy + MShare.g_MySelf.m_nShiftY;
                     if (MShare.g_MySelf.CheckSelect(x - dx, y - dy))
                     {
                         result = true;
@@ -266,15 +252,13 @@ namespace RobotSvr
 
         public TDropItem GetDropItems(int x, int y, ref string inames)
         {
-            int i;
             int ccx = 0;
             int ccy = 0;
-            TDropItem dropItem;
             TDropItem result = null;
             inames = "";
-            for (i = 0; i < MShare.g_DropedItemList.Count; i++)
+            for (var i = 0; i < MShare.g_DropedItemList.Count; i++)
             {
-                dropItem = MShare.g_DropedItemList[i];
+                TDropItem dropItem = MShare.g_DropedItemList[i];
                 if ((dropItem.X == ccx) && (dropItem.Y == ccy))
                 {
                     if (result == null)
@@ -289,11 +273,9 @@ namespace RobotSvr
 
         public void GetXyDropItemsList(int nX, int nY, ref ArrayList itemList)
         {
-            int i;
-            TDropItem dropItem;
-            for (i = 0; i < MShare.g_DropedItemList.Count; i++)
+            for (var i = 0; i < MShare.g_DropedItemList.Count; i++)
             {
-                dropItem = MShare.g_DropedItemList[i];
+                TDropItem dropItem = MShare.g_DropedItemList[i];
                 if ((dropItem.X == nX) && (dropItem.Y == nY))
                 {
                     itemList.Add(dropItem);
@@ -303,13 +285,10 @@ namespace RobotSvr
 
         public TDropItem GetXyDropItems(int nX, int nY)
         {
-            TDropItem result;
-            int i;
-            TDropItem dropItem;
-            result = null;
-            for (i = 0; i < MShare.g_DropedItemList.Count; i++)
+            TDropItem result = null;
+            for (var i = 0; i < MShare.g_DropedItemList.Count; i++)
             {
-                dropItem = MShare.g_DropedItemList[i];
+                TDropItem dropItem = MShare.g_DropedItemList[i];
                 if ((dropItem.X == nX) && (dropItem.Y == nY))
                 {
                     result = dropItem;
@@ -352,11 +331,10 @@ namespace RobotSvr
 
         private bool CrashManEx(int mx, int my)
         {
-            TActor actor;
             bool result = false;
             for (var i = 0; i < m_ActorList.Count; i++)
             {
-                actor = m_ActorList[i];
+                TActor actor = m_ActorList[i];
                 if (actor == MShare.g_MySelf)
                 {
                     continue;
@@ -397,13 +375,10 @@ namespace RobotSvr
 
         public bool CrashMan(int mx, int my)
         {
-            bool result;
-            int i;
-            TActor a;
-            result = false;
-            for (i = 0; i < m_ActorList.Count; i++)
+            bool result = false;
+            for (var i = 0; i < m_ActorList.Count; i++)
             {
-                a = m_ActorList[i];
+                TActor a = m_ActorList[i];
                 if (a == MShare.g_MySelf)
                 {
                     continue;
@@ -422,7 +397,6 @@ namespace RobotSvr
             return robotClient.Map.CanFly(mx, my);
         }
 
-        // ------------------------ Actor ------------------------
         public TActor FindActor(int id)
         {
             TActor result = null;
@@ -488,6 +462,11 @@ namespace RobotSvr
             return result;
         }
 
+        public byte RACEfeature(int cfeature)
+        {
+            return (Byte)cfeature;
+        }
+
         public TActor NewActor(int chrid, int cx, int cy, ushort cdir, int cfeature, int cstate)
         {
             TActor actor;
@@ -504,7 +483,7 @@ namespace RobotSvr
             {
                 return result;
             }
-            switch (cfeature)
+            switch (RACEfeature(cfeature))
             {
                 case 0:
                     actor = new THumActor(robotClient);
@@ -838,20 +817,19 @@ namespace RobotSvr
             //actor.m_btWeapon = Grobal2.WEAPONfeature(cfeature);
             //actor.m_wAppearance = Grobal2.APPRfeature(cfeature);
             actor.m_Action = null;
-            if (actor.m_btRace == 0)
-            {
-                //actor.m_btSex = actor.m_btDress % 2;
-                //if (actor.m_btDress >= 24 && actor.m_btDress <= 27)
-                //{
-                //    actor.m_btDress = 18 + actor.m_btSex;
-                //}
-            }
-            else
-            {
-                actor.m_btSex = 0;
-            }
+            //if (actor.m_btRace == 0)
+            //{
+            //    actor.m_btSex = actor.m_btDress % 2;
+            //    if (actor.m_btDress >= 24 && actor.m_btDress <= 27)
+            //    {
+            //        actor.m_btDress = 18 + actor.m_btSex;
+            //    }
+            //}
+            //else
+            //{
+            //    actor.m_btSex = 0;
+            //}
             actor.m_nState = cstate;
-            actor.m_SayingArr[0] = "";
             m_ActorList.Add(actor);
             result = actor;
             return result;
@@ -859,9 +837,7 @@ namespace RobotSvr
 
         public void ActorDied(TActor actor)
         {
-            int i;
-            bool flag;
-            for (i = 0; i < m_ActorList.Count; i++)
+            for (var i = 0; i < m_ActorList.Count; i++)
             {
                 if (m_ActorList[i] == actor)
                 {
@@ -869,8 +845,8 @@ namespace RobotSvr
                     break;
                 }
             }
-            flag = false;
-            for (i = 0; i < m_ActorList.Count; i++)
+            bool flag = false;
+            for (var i = 0; i < m_ActorList.Count; i++)
             {
                 if (!m_ActorList[i].m_boDeath)
                 {
@@ -887,10 +863,9 @@ namespace RobotSvr
 
         public void SetActorDrawLevel(TActor actor, int level)
         {
-            int i;
             if (level == 0)
             {
-                for (i = 0; i < m_ActorList.Count; i++)
+                for (var i = 0; i < m_ActorList.Count; i++)
                 {
                     if (m_ActorList[i] == actor)
                     {
@@ -914,10 +889,8 @@ namespace RobotSvr
 
         public TActor DeleteActor(int id, bool boDeath)
         {
-            TActor result;
-            int i;
-            result = null;
-            i = 0;
+            TActor result = null;
+            int i = 0;
             while (true)
             {
                 if (i >= m_ActorList.Count)
@@ -964,8 +937,7 @@ namespace RobotSvr
 
         public void DelActor(object actor)
         {
-            int i;
-            for (i = 0; i < m_ActorList.Count; i++)
+            for (var i = 0; i < m_ActorList.Count; i++)
             {
                 if (m_ActorList[i] == actor)
                 {
@@ -1008,22 +980,25 @@ namespace RobotSvr
                     robotClient.g_PathBusy = true;
                     try
                     {
-                        if (robotClient.TimerAutoMove.Enabled)
+                        if (robotClient.TimerAutoMove != null)
                         {
-                            robotClient.TimerAutoMove.Enabled = false;
-                            TPathMap.g_MapPath = new Point[0];
-                            TPathMap.g_MapPath = null;
-                            robotClient.DScreen.AddChatBoardString("地图跳转，停止自动移动", robotClient.GetRGB(5), Color.White);
-                        }
-                        if (MShare.g_boOpenAutoPlay && robotClient.TimerAutoPlay.Enabled)
-                        {
-                            robotClient.TimerAutoPlay.Enabled = false;
-                            MShare.g_gcAss[0] = false;
-                            MShare.g_APMapPath = new Point[0];
-                            MShare.g_APMapPath2 = new Point[0];
-                            MShare.g_APStep = -1;
-                            MShare.g_APLastPoint.X = -1;
-                            robotClient.DScreen.AddChatBoardString("[挂机] 地图跳转，停止自动挂机", Color.Red, Color.White);
+                            if (robotClient.TimerAutoMove.Enabled)
+                            {
+                                robotClient.TimerAutoMove.Enabled = false;
+                                TPathMap.g_MapPath = new Point[0];
+                                TPathMap.g_MapPath = null;
+                                robotClient.DScreen.AddChatBoardString("地图跳转，停止自动移动", robotClient.GetRGB(5), Color.White);
+                            }
+                            if (MShare.g_boOpenAutoPlay && robotClient.TimerAutoPlay.Enabled)
+                            {
+                                robotClient.TimerAutoPlay.Enabled = false;
+                                MShare.g_gcAss[0] = false;
+                                MShare.g_APMapPath = new Point[0];
+                                MShare.g_APMapPath2 = new Point[0];
+                                MShare.g_APStep = -1;
+                                MShare.g_APLastPoint.X = -1;
+                                robotClient.DScreen.AddChatBoardString("[挂机] 地图跳转，停止自动挂机", Color.Red, Color.White);
+                            }
                         }
                         if (MShare.g_MySelf != null)
                         {
@@ -1035,7 +1010,7 @@ namespace RobotSvr
                             //FreeMem(robotClient.Map.m_MapBuf);
                             robotClient.Map.m_MapBuf = null;
                         }
-                        if (robotClient.Map.m_MapData.Length > 0)
+                        if (robotClient.Map.m_MapData != null)
                         {
                             robotClient.Map.m_MapData = new TCellParams[0, 0];
                             robotClient.Map.m_MapData = null;
@@ -1133,10 +1108,9 @@ namespace RobotSvr
                         case Grobal2.SM_FEATURECHANGED:
                             actor.m_nFeature = feature;
                             actor.m_nFeatureEx = state;
-                            if (str != "")
+                            if (!string.IsNullOrEmpty(str))
                             {
-                                mbw = new TMessageBodyW();
-                                EDcode.DecodeBuffer(str, ref mbw);
+                                mbw = EDcode.DecodeBuffer<TMessageBodyW>(str);
                                 actor.m_btTitleIndex = (byte)HUtil32.LoWord(mbw.Param1);
                             }
                             else
@@ -1152,7 +1126,7 @@ namespace RobotSvr
                         default:
                             if (ident == Grobal2.SM_TURN)
                             {
-                                if (str != "")
+                                if (!string.IsNullOrEmpty(str))
                                 {
                                     actor.m_sUserName = str;
                                 }

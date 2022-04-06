@@ -64,12 +64,13 @@ namespace SystemModule
             return Misc.DecodeBuf(bSrc, bSrc.Length, ref nLen);
         }
 
-        public static byte[] DecodeBuffer<T>(string src, ref T packet)
+        public static T DecodeBuffer<T>(string src) where T : Packets, new()
         {
             if (src == null) throw new ArgumentNullException(nameof(src));
             var bSrc = HUtil32.GetBytes(src);
             var nLen = 0;
-            return Misc.DecodeBuf(bSrc, bSrc.Length, ref nLen);
+            var data = Misc.DecodeBuf(bSrc, bSrc.Length, ref nLen);
+            return Packets.ToPacket<T>(data);
         }
 
         /// <summary>

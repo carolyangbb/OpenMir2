@@ -28,7 +28,27 @@ namespace SystemModule
 
         protected override void ReadPacket(BinaryReader reader)
         {
-            throw new System.NotImplementedException();
+            boClientCanSet = reader.ReadBoolean();
+            boRunHuman = reader.ReadBoolean();
+            boRunMon = reader.ReadBoolean();
+            boRunNpc = reader.ReadBoolean();
+            boWarRunAll = reader.ReadBoolean();
+            btDieColor = reader.ReadByte();
+            wSpellTime = reader.ReadUInt16();
+            wHitIime = reader.ReadUInt16();
+            wItemFlashTime = reader.ReadUInt16();
+            btItemSpeed = reader.ReadByte();
+            boCanStartRun = reader.ReadBoolean();
+            boParalyCanRun = reader.ReadBoolean();
+            boParalyCanWalk = reader.ReadBoolean();
+            boParalyCanHit = reader.ReadBoolean();
+            boParalyCanSpell = reader.ReadBoolean();
+            boShowRedHPLable = reader.ReadBoolean();
+            boShowHPNumber = reader.ReadBoolean();
+            boShowJobLevel = reader.ReadBoolean();
+            boDuraAlert = reader.ReadBoolean();
+            boMagicLock = reader.ReadBoolean();
+            boAutoPuckUpItem = reader.ReadBoolean();
         }
 
         protected override void WritePacket(BinaryWriter writer)

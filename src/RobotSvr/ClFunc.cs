@@ -125,9 +125,12 @@ namespace RobotSvr
 
         public static void ClearBag()
         {
-            int i;
-            for (i = 0; i < MShare.MAXBAGITEMCL; i++)
+            for (var i = 0; i < MShare.MAXBAGITEMCL; i++)
             {
+                if (MShare.g_ItemArr[i] == null)
+                {
+                    continue;
+                }
                 MShare.g_ItemArr[i].Item.Name = "";
             }
         }
@@ -136,13 +139,17 @@ namespace RobotSvr
         {
             bool result = false;
             bool InputCheck = false;
+            if (cu == null)
+            {
+                return false;
+            }
             if (cu.Item.Name == "")
             {
                 return result;
             }
             if (idx >= 0)
             {
-                if (MShare.g_ItemArr[idx].Item.Name == "")
+                if (MShare.g_ItemArr[idx] == null || MShare.g_ItemArr[idx].Item.Name == "")
                 {
                     MShare.g_ItemArr[idx] = cu;
                     result = true;
@@ -151,6 +158,10 @@ namespace RobotSvr
             }
             for (var i = 0; i < MShare.MAXBAGITEMCL; i++)
             {
+                if (MShare.g_ItemArr[i] == null)
+                {
+                    continue;
+                }
                 if ((MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex) && (MShare.g_ItemArr[i].Item.Name == cu.Item.Name))
                 {
                     return result;
@@ -164,7 +175,7 @@ namespace RobotSvr
             {
                 for (var i = 0; i <= 5; i++)
                 {
-                    if (MShare.g_ItemArr[i].Item.Name == "")
+                    if (MShare.g_ItemArr[i] == null || MShare.g_ItemArr[i].Item.Name == "")
                     {
                         MShare.g_ItemArr[i] = cu;
                         result = true;
@@ -278,12 +289,19 @@ namespace RobotSvr
         {
             for (var i = 0; i < MShare.MAXBAGITEMCL; i++)
             {
+                if (MShare.g_ItemArr[i] == null)
+                {
+                    continue;
+                }
                 if (MShare.g_ItemArr[i].Item.Name != "")
                 {
                     for (var k = i + 1; k < MShare.MAXBAGITEMCL; k++)
                     {
-                        // 清理复制
-                        if ((MShare.g_ItemArr[i].Item.Name == MShare.g_ItemArr[k].Item.Name) && (MShare.g_ItemArr[i].MakeIndex == MShare.g_ItemArr[k].MakeIndex))
+                        if (MShare.g_ItemArr[k] == null)
+                        {
+                            continue;
+                        }
+                        if ((MShare.g_ItemArr[i].Item.Name == MShare.g_ItemArr[k].Item.Name) && (MShare.g_ItemArr[i].MakeIndex == MShare.g_ItemArr[k].MakeIndex))// 清理复制
                         {
                             //if (MShare.g_ItemArr[i].Item.Overlap > 0)
                             //{
@@ -291,16 +309,23 @@ namespace RobotSvr
                             //}
                         }
                     }
-                    if ((MShare.g_ItemArr[i].Item.Name == MShare.g_MovingItem.Item.Item.Name) && (MShare.g_ItemArr[i].MakeIndex == MShare.g_MovingItem.Item.MakeIndex))
+                    if (MShare.g_MovingItem != null)
                     {
-                        MShare.g_MovingItem.Index = 0;
-                        MShare.g_MovingItem.Item.Item.Name = "";
-                        MShare.g_boItemMoving = false;
+                        if ((MShare.g_ItemArr[i].Item.Name == MShare.g_MovingItem.Item.Item.Name) && (MShare.g_ItemArr[i].MakeIndex == MShare.g_MovingItem.Item.MakeIndex))
+                        {
+                            MShare.g_MovingItem.Index = 0;
+                            MShare.g_MovingItem.Item.Item.Name = "";
+                            MShare.g_boItemMoving = false;
+                        }
                     }
                 }
             }
             for (var i = 46; i < MShare.MAXBAGITEMCL; i++)
             {
+                if (MShare.g_ItemArr[i] == null)
+                {
+                    continue;
+                }
                 if (MShare.g_ItemArr[i].Item.Name != "")
                 {
                     for (var k = 6; k <= 45; k++)

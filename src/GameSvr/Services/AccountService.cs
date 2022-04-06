@@ -116,6 +116,7 @@ namespace GameSvr
         {
             const string sFormatMsg = "({0}/{1}/{2}/{3})";
             SendSocket(string.Format(sFormatMsg, Grobal2.SS_SERVERINFO, M2Share.g_Config.sServerName, M2Share.nServerIndex, nCount));
+            Console.WriteLine("发送LoginSvr心跳");
         }
 
         public void Run()

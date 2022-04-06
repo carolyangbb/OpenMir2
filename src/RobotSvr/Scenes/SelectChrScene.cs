@@ -13,7 +13,9 @@ namespace RobotSvr
             _createChrMode = false;
             ChrArr = new SelChar[2];
             ChrArr[0].FreezeState = true;
+            ChrArr[0].UserChr = new TUserCharacterInfo();
             ChrArr[1].FreezeState = true;
+            ChrArr[1].UserChr = new TUserCharacterInfo();
             NewIndex = 0;
         }
 
@@ -48,7 +50,7 @@ namespace RobotSvr
         {
             if ((!ChrArr[1].Selected) && ChrArr[1].Valid && ChrArr[1].FreezeState)
             {
-                //ClMain.frmMain.SelectChr(ChrArr[1].UserChr.Name);
+                robotClient.SelectChr(ChrArr[1].UserChr.Name);
                 ChrArr[1].Selected = true;
                 ChrArr[0].Selected = false;
                 ChrArr[1].Unfreezing = true;
@@ -79,7 +81,7 @@ namespace RobotSvr
                     MShare.g_boDoFastFadeOut = true;
                     MShare.g_nFadeIndex = 29;
                 }
-                //ClMain.frmMain.SendSelChr(chrname);
+                robotClient.SendSelChr(chrname);
             }
             else
             {
@@ -120,10 +122,7 @@ namespace RobotSvr
             }
             if (ChrArr[n].Valid && (!ChrArr[n].FreezeState) && (ChrArr[n].UserChr.Name != ""))
             {
-                //if (System.Windows.Forms.DialogResult.Yes == FrmDlg.DMessageDlg("\"" + ChrArr[n].UserChr.Name + "\" 是否确认删除此游戏角色？", new object[] { MessageBoxButtons.YesNo, MessageBoxButtons.YesNo }))
-                //{
-                //    ClMain.frmMain.SendDelChr(ChrArr[n].UserChr.Name);
-                //}
+                robotClient.SendDelChr(ChrArr[n].UserChr.Name);
             }
         }
 
@@ -263,7 +262,7 @@ namespace RobotSvr
                         MShare.g_boDoFastFadeOut = true;
                         MShare.g_nFadeIndex = 29;
                     }
-                    // frmMain.SendSelChr(frmMain.m_sCharName);
+                    robotClient.SendSelChr(robotClient.m_sCharName);
                 }
             }
             for (var n = 0; n < 1; n++)

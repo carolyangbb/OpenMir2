@@ -22,7 +22,7 @@ namespace SystemModule
             binaryReader = new BinaryReader(new MemoryStream(segment));
         }
 
-        public BinaryReader BinaryReader => binaryReader;
+        private BinaryReader BinaryReader => binaryReader;
 
         public string ReadPascalString(int size)
         {
@@ -111,6 +111,21 @@ namespace SystemModule
             Packets packet = Activator.CreateInstance<T>();
             using var stream = new MemoryStream(rawBytes, 0, rawBytes.Length);
             using var reader = new BinaryReader(stream);
+            try
+            {
+                if (packet == null) return null;
+                packet.ReadPacket(reader);
+            }
+            catch
+            {
+                return null;
+            }
+            return (T)packet;
+        }
+
+        public static T ToPacket<T>(BinaryReader reader) where T : Packets, new()
+        {
+            Packets packet = Activator.CreateInstance<T>();
             try
             {
                 if (packet == null) return null;

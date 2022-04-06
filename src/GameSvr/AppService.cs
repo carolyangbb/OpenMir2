@@ -16,7 +16,10 @@ namespace GameSvr
             if (M2Share.boStartReady)
             {
                 M2Share.GateManager.Start();
-                await M2Share.GateManager.StartMessageQueue(stoppingToken);
+                //Task.Run(async () =>
+                //{
+                //   M2Share.GateManager.StartMessageQueue(stoppingToken);
+                //});
             }
             while (!stoppingToken.IsCancellationRequested)
             {

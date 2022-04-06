@@ -7,8 +7,6 @@ namespace RobotSvr
     public class DrawScreen
     {
         private readonly RobotClient robotClient;
-        private readonly long _mDwFrameTime = 0;
-        private readonly long _mDwFrameCount = 0;
         private readonly ArrayList _mSysMsgList = null;
         private readonly ArrayList _mSysMsgListEx = null;
         private readonly ArrayList _mSysMsgListEx2 = null;
@@ -21,9 +19,8 @@ namespace RobotSvr
 
         public DrawScreen(RobotClient robotClient)
         {
+            this.robotClient = robotClient;
             CurrentScene = null;
-            _mDwFrameTime = MShare.GetTickCount();
-            _mDwFrameCount = 0;
             _mSysMsgList = new ArrayList();
             _mSysMsgListEx = new ArrayList();
             _mSysMsgListEx2 = new ArrayList();
