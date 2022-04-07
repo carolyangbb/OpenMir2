@@ -464,7 +464,7 @@ namespace RobotSvr
 
         public byte RACEfeature(int cfeature)
         {
-            return (Byte)cfeature;
+            return (byte)cfeature;
         }
 
         public TActor NewActor(int chrid, int cx, int cy, ushort cdir, int cfeature, int cstate)

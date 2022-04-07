@@ -210,11 +210,13 @@ namespace RobotSvr
 
         public static bool UpdateItemBag(TClientItem cu)
         {
-            bool result;
-            int i;
-            result = false;
-            for (i = MShare.MAXBAGITEMCL - 1; i >= 0; i--)
+            bool result = false;
+            for (var i = MShare.MAXBAGITEMCL - 1; i >= 0; i--)
             {
+                if (MShare.g_ItemArr[i] == null)
+                {
+                    continue;
+                }
                 if ((MShare.g_ItemArr[i].Item.Name == cu.Item.Name) && (MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex))
                 {
                     MShare.g_ItemArr[i] = cu;
@@ -227,11 +229,13 @@ namespace RobotSvr
 
         public static bool UpdateBagStallItem(TClientItem cu, byte ststus)
         {
-            bool result;
-            int i;
-            result = false;
-            for (i = MShare.MAXBAGITEMCL - 1; i >= 6; i--)
+            bool result = false;
+            for (var i = MShare.MAXBAGITEMCL - 1; i >= 6; i--)
             {
+                if (MShare.g_ItemArr[i] == null)
+                {
+                    continue;
+                }
                 if ((MShare.g_ItemArr[i].Item.Name == cu.Item.Name) && (MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex))
                 {
                     MShare.g_ItemArr[i].Item.NeedIdentify = ststus;
@@ -244,11 +248,13 @@ namespace RobotSvr
 
         public static bool FillBagStallItem(byte ststus)
         {
-            bool result;
-            int i;
-            result = false;
-            for (i = MShare.MAXBAGITEMCL - 1; i >= 6; i--)
+            bool result = false;
+            for (var i = MShare.MAXBAGITEMCL - 1; i >= 6; i--)
             {
+                if (MShare.g_ItemArr[i] == null)
+                {
+                    continue;
+                }
                 if ((MShare.g_ItemArr[i].Item.Name != "") && (MShare.g_ItemArr[i].Item.NeedIdentify != ststus))
                 {
                     MShare.g_ItemArr[i].Item.NeedIdentify = ststus;
@@ -260,10 +266,13 @@ namespace RobotSvr
 
         public static bool DelItemBag(string iname, int iindex)
         {
-            int i;
             bool result = false;
-            for (i = MShare.MAXBAGITEMCL - 1; i >= 0; i--)
+            for (var i = MShare.MAXBAGITEMCL - 1; i >= 0; i--)
             {
+                if (MShare.g_ItemArr[i] == null)
+                {
+                    continue;
+                }
                 if ((MShare.g_ItemArr[i].Item.Name == iname) && (MShare.g_ItemArr[i].MakeIndex == iindex))
                 {
                     result = true;
@@ -272,7 +281,7 @@ namespace RobotSvr
             }
             if (MShare.g_MySelf != null)
             {
-                for (i = 10 - 1; i >= 0; i--)
+                for (var i = 10 - 1; i >= 0; i--)
                 {
                     if ((MShare.g_MySelf.m_StallMgr.mBlock.Items[i].Item.Name == iname) && (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].MakeIndex == iindex))
                     {
@@ -343,10 +352,7 @@ namespace RobotSvr
 
         public static void AddDropItem(TClientItem ci)
         {
-            TClientItem pc;
-            pc = new TClientItem();
-            pc = ci;
-            DropItems.Add(pc);
+            DropItems.Add(ci);
         }
 
         public static TClientItem GetDropItem(string iname, int makeIndex)
@@ -390,8 +396,7 @@ namespace RobotSvr
 
         public static void DelDroItemItem(string iname, int MakeIndex)
         {
-            int i;
-            for (i = 0; i < DropItems.Count; i++)
+            for (var i = 0; i < DropItems.Count; i++)
             {
                 if ((DropItems[i].Item.Name == iname) && (DropItems[i].MakeIndex == MakeIndex))
                 {
@@ -404,8 +409,7 @@ namespace RobotSvr
 
         public static void AddDealItem(TClientItem ci)
         {
-            int i;
-            for (i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 if ((MShare.g_DealItems[i].Item.Name == ci.Item.Name))
                 {
@@ -422,8 +426,7 @@ namespace RobotSvr
 
         public static void AddYbDealItem(TClientItem ci)
         {
-            int i;
-            for (i = 0; i <= 10 - 2; i++)
+            for (var i = 0; i <= 10 - 2; i++)
             {
                 if (MShare.g_YbDealItems[i].Item.Name == "")
                 {
@@ -435,10 +438,8 @@ namespace RobotSvr
 
         public static bool CanAddStallItem()
         {
-            bool result;
-            int i;
-            result = false;
-            for (i = 0; i < 10; i++)
+            bool result = false;
+            for (var i = 0; i < 10; i++)
             {
                 if (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].Item.Name == "")
                 {
@@ -451,15 +452,12 @@ namespace RobotSvr
 
         public static int StallItemCount()
         {
-            int result;
-            int i;
-            result = 0;
-            for (i = 0; i < 10; i++)
+            int result = 0;
+            for (var i = 0; i < 10; i++)
             {
                 if (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].Item.Name != "")
                 {
                     result++;
-                    // Break;
                 }
             }
             return result;
@@ -467,10 +465,8 @@ namespace RobotSvr
 
         public static bool AddStallItem(TClientItem ci)
         {
-            bool result;
-            int i;
-            result = false;
-            for (i = 0; i < 10; i++)
+            bool result = false;
+            for (var i = 0; i < 10; i++)
             {
                 if (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].Item.Name != "")
                 {
@@ -482,7 +478,7 @@ namespace RobotSvr
                     }
                 }
             }
-            for (i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 if (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].Item.Name == "")
                 {
@@ -511,8 +507,7 @@ namespace RobotSvr
 
         public static void DelDealItem(TClientItem ci)
         {
-            int i;
-            for (i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 if ((MShare.g_DealItems[i].Item.Name == ci.Item.Name) && (MShare.g_DealItems[i].MakeIndex == ci.MakeIndex))
                 {
@@ -550,8 +545,7 @@ namespace RobotSvr
 
         public static void DelDealRemoteItem(TClientItem ci)
         {
-            int i;
-            for (i = 0; i < 20; i++)
+            for (var i = 0; i < 20; i++)
             {
                 if ((MShare.g_DealRemoteItems[i].Item.Name == ci.Item.Name) && (MShare.g_DealRemoteItems[i].MakeIndex == ci.MakeIndex))
                 {
@@ -564,9 +558,7 @@ namespace RobotSvr
         // ----------------------------------------------------------
         public static int GetDistance(int sX, int sY, int dx, int dy)
         {
-            int result;
-            result = HUtil32._MAX(Math.Abs(sX - dx), Math.Abs(sY - dy));
-            return result;
+            return HUtil32._MAX(Math.Abs(sX - dx), Math.Abs(sY - dy));
         }
 
         public static void GetNextPosXY(byte dir, ref int X, ref int Y)
@@ -688,10 +680,9 @@ namespace RobotSvr
 
         public static byte GetNextDirection(int sX, int sY, int dx, int dy)
         {
-            byte result;
             int flagx;
             int flagy;
-            result = Grobal2.DR_DOWN;
+            byte result = Grobal2.DR_DOWN;
             if (sX < dx)
             {
                 flagx = 1;
@@ -767,8 +758,7 @@ namespace RobotSvr
 
         public static int GetBack(int dir)
         {
-            int result;
-            result = Grobal2.DR_UP;
+            int result = Grobal2.DR_UP;
             switch (dir)
             {
                 case Grobal2.DR_UP:
@@ -912,12 +902,9 @@ namespace RobotSvr
 
         public static int GetFlyDirection(int sX, int sY, int ttx, int tty)
         {
-            int result;
-            double fx;
-            double fy;
-            fx = ttx - sX;
-            fy = tty - sY;
-            result = Grobal2.DR_DOWN;
+            double fx = ttx - sX;
+            double fy = tty - sY;
+            int result = Grobal2.DR_DOWN;
             if (fx == 0)
             {
                 if (fy < 0)
@@ -1007,12 +994,9 @@ namespace RobotSvr
 
         public static int GetFlyDirection16(int sX, int sY, int ttx, int tty)
         {
-            int result;
-            double fx;
-            double fy;
-            fx = ttx - sX;
-            fy = tty - sY;
-            result = 0;
+            double fx = ttx - sX;
+            double fy = tty - sY;
+            int result = 0;
             if (fx == 0)
             {
                 if (fy < 0)
@@ -1150,8 +1134,7 @@ namespace RobotSvr
 
         public static int GetTakeOnPosition(TStdItem smode, TClientItem[] UseItems, bool bPos)
         {
-            int result;
-            result = -1;
+            int result = -1;
             switch (smode.StdMode)
             {
                 case 5:
@@ -1250,8 +1233,7 @@ namespace RobotSvr
 
         public static void DelChangeFace(int recogid)
         {
-            int i;
-            i = MShare.g_ChangeFaceReadyList.IndexOf(recogid);
+            int i = MShare.g_ChangeFaceReadyList.IndexOf(recogid);
             if (i > -1)
             {
                 MShare.g_ChangeFaceReadyList.RemoveAt(i);
@@ -1260,9 +1242,7 @@ namespace RobotSvr
 
         public static bool IsChangingFace(int recogid)
         {
-            bool result;
-            result = MShare.g_ChangeFaceReadyList.IndexOf(recogid) > -1;
-            return result;
+            return MShare.g_ChangeFaceReadyList.IndexOf(recogid) > -1;
         }
 
         public static bool ChangeItemCount(int mindex, short Count, short MsgNum, string iname)
@@ -1421,16 +1401,6 @@ namespace RobotSvr
                     MShare.g_ItemArr[i].Dura = Count;
                 }
             }
-        }
-
-        public void initialization()
-        {
-
-        }
-
-        public void finalization()
-        {
-
         }
     }
 }

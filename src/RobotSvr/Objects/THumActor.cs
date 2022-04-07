@@ -19,6 +19,7 @@ namespace RobotSvr
 
         public THumActor(RobotClient robotClient) : base(robotClient)
         {
+            m_StallMgr = new TStallMgr();
             m_SlaveObject = new List<TActor>();
             m_boWeaponEffect = false;
             m_boSSkill = false;
@@ -1058,6 +1059,11 @@ namespace RobotSvr
     {
         public TClientStallInfo mBlock;
         public bool OnSale;
+
+        public TStallMgr()
+        {
+            mBlock = new TClientStallInfo();
+        }
     }
 
     public class TClientStallInfo
