@@ -122,6 +122,7 @@ namespace GameGate
                         if (message.BufferLen < ClientPacket.PackSize) // 小于数据包大小的为无效封包
                         {
                             _session.Socket.Close();//直接关闭异常会话
+                            _logQueue.Enqueue("关闭异常会话信", 5);
                             return;
                         }
                         var tempBuff = message.Buffer[2..^1];//跳过#1....! 只保留消息内容

@@ -305,10 +305,8 @@ namespace RobotSvr
 
         public void UpdateMsg(short wIdent, int nX, int nY, int ndir, int nFeature, int nState, string sStr, int nSound)
         {
-            int i;
             TChrMsg Msg;
-            //m_MsgList.__Lock();
-            i = 0;
+            var i = 0;
             while (true)
             {
                 if (i >= m_MsgList.Count) break;
@@ -318,10 +316,8 @@ namespace RobotSvr
                     m_MsgList.RemoveAt(i);
                     continue;
                 }
-
                 i++;
             }
-
             SendMsg(wIdent, nX, nY, ndir, nFeature, nState, sStr, nSound);
         }
 
@@ -501,10 +497,17 @@ namespace RobotSvr
                         case Grobal2.CM_WIDEHIT:
                         case Grobal2.CM_CRSHIT:
                             if (Msg.Ident == Grobal2.CM_POWERHIT)
+                            {
                                 Msg.Saying = robotClient.GetMagicLv(this, 7);
+                            }
                             else if (Msg.Ident == Grobal2.CM_LONGHIT)
+                            {
                                 Msg.Saying = robotClient.GetMagicLv(this, 12);
-                            else if (Msg.Ident == Grobal2.CM_WIDEHIT) Msg.Saying = robotClient.GetMagicLv(this, 25);
+                            }
+                            else if (Msg.Ident == Grobal2.CM_WIDEHIT)
+                            {
+                                Msg.Saying = robotClient.GetMagicLv(this, 25);
+                            }
                             RealActionMsg = Msg;
                             Msg.Ident = Msg.Ident - 3000;
                             break;
@@ -736,14 +739,14 @@ namespace RobotSvr
         public bool Strucked()
         {
             var result = false;
-            //m_MsgList.__Lock();
             for (var i = 0; i < m_MsgList.Count; i++)
+            {
                 if (m_MsgList[i].Ident == Grobal2.SM_STRUCK)
                 {
                     result = true;
                     break;
                 }
-
+            }
             return result;
         }
 
