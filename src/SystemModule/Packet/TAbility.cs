@@ -100,7 +100,24 @@ namespace SystemModule
 
         protected override void ReadPacket(BinaryReader reader)
         {
-            throw new NotImplementedException();
+            Level = reader.ReadUInt16();
+            AC = reader.ReadInt32();
+            MAC = reader.ReadInt32();
+            DC = reader.ReadInt32();
+            MC = reader.ReadInt32();
+            SC = reader.ReadInt32();
+            HP = reader.ReadUInt16();
+            MP = reader.ReadUInt16();
+            MaxHP = reader.ReadUInt16();
+            MaxMP = reader.ReadUInt16();
+            Exp = reader.ReadInt32();
+            MaxExp = reader.ReadInt32();
+            Weight = reader.ReadUInt16();
+            MaxWeight = reader.ReadUInt16();
+            WearWeight = reader.ReadUInt16();
+            MaxWearWeight = reader.ReadUInt16();
+            HandWeight = reader.ReadUInt16();
+            MaxHandWeight = reader.ReadUInt16();
         }
 
         protected override void WritePacket(BinaryWriter writer)

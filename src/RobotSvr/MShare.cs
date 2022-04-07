@@ -1722,11 +1722,13 @@ namespace RobotSvr
         public byte nStep;
         public bool bSpell;
     }
+
     public struct TTempSeriesSkillA
     {
         public TClientMagic pm;
         public bool bo;
     }
+
     public enum TTimerCommand
     {
         tcSoftClose,
@@ -1734,6 +1736,7 @@ namespace RobotSvr
         tcFastQueryChr,
         tcQueryItemPrice
     }
+
     public enum TChrAction
     {
         caWalk,
@@ -1790,7 +1793,7 @@ namespace RobotSvr
         i_Other
     }
 
-    public class TChrMsg
+    public struct TChrMsg
     {
         public int Ident;
         public int X;

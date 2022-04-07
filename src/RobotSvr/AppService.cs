@@ -45,8 +45,7 @@ namespace RobotSvr
         /// </summary>
         private static long g_dwLogonTick = 0;
 
-
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             ClientManager.Start();
             Task.Run(() =>
@@ -56,9 +55,8 @@ namespace RobotSvr
             while (!stoppingToken.IsCancellationRequested)
             {
                 ClientManager.RunAutoPlay();
-                Task.Delay(TimeSpan.FromSeconds(2), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(2), stoppingToken);
             }
-            return Task.CompletedTask;
         }
 
         public void Start()
@@ -83,9 +81,9 @@ namespace RobotSvr
                             var playClient = new RobotClient();
                             playClient.SessionId = Guid.NewGuid().ToString("N");
                             playClient.m_boNewAccount = g_boNewAccount;
-                            playClient.LoginID = "admin";
-                            playClient.LoginPasswd = "123123";
-                            playClient.m_sCharName = "gm01";
+                            playClient.LoginID = "robot1";
+                            playClient.LoginPasswd = "robot1";
+                            playClient.m_sCharName = "robot1";
                             playClient.m_sServerName = g_sServerName;
                             playClient.ClientSocket.Host = g_sGameIPaddr;
                             playClient.ClientSocket.Port = g_nGamePort;

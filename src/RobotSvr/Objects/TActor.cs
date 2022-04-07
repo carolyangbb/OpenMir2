@@ -60,7 +60,7 @@ namespace RobotSvr
         public byte m_btTitleIndex;
         public byte m_btWeapon = 0; // 武器类型
         public byte m_btWeaponEffect; // 武器特效类型
-        public TChrMsg m_ChrMsg = null;
+        public TChrMsg m_ChrMsg;
         public TUseMagicInfo m_CurMagic = new TUseMagicInfo();
         public long m_dwAutoTecHeroTick = 0;
         public long m_dwAutoTecTick = 0;
@@ -315,7 +315,6 @@ namespace RobotSvr
                 Msg = m_MsgList[i];
                 if (this == MShare.g_MySelf && Msg.Ident >= 3000 && Msg.Ident <= 3099 || Msg.Ident == wIdent)
                 {
-                    Msg = null;
                     m_MsgList.RemoveAt(i);
                     continue;
                 }
@@ -328,21 +327,17 @@ namespace RobotSvr
 
         public void CleanUserMsgs()
         {
-            int i;
             TChrMsg Msg;
-            //m_MsgList.__Lock();
-            i = 0;
+            int i = 0;
             while (true)
             {
                 if (i >= m_MsgList.Count) break;
                 Msg = m_MsgList[i];
                 if (Msg.Ident >= 3000 && Msg.Ident <= 3099)
                 {
-                    Msg = null;
                     m_MsgList.RemoveAt(i);
                     continue;
                 }
-
                 i++;
             }
         }
@@ -390,8 +385,7 @@ namespace RobotSvr
                         Shift(m_btDir, m_nMoveStep, 0, m_nEndFrame - m_nStartFrame + 1);
                     break;
                 case Grobal2.SM_HIT:
-                    m_nStartFrame = m_Action.ActAttack.start +
-                                    m_btDir * (m_Action.ActAttack.frame + m_Action.ActAttack.skip);
+                    m_nStartFrame = m_Action.ActAttack.start +m_btDir * (m_Action.ActAttack.frame + m_Action.ActAttack.skip);
                     m_nEndFrame = m_nStartFrame + m_Action.ActAttack.frame - 1;
                     m_dwFrameTime = m_Action.ActAttack.ftime;
                     m_dwStartTime = MShare.GetTickCount();
@@ -608,24 +602,20 @@ namespace RobotSvr
             }
         }
 
-        private bool GetMessage(out TChrMsg ChrMsg)
+        private bool GetMessage(out TChrMsg chrMsg)
         {
-            int i;
-            TChrMsg Msg;
             bool result = false;
-            //m_MsgList.__Lock();
-            i = 0;
-            ChrMsg = null;
+            int i = 0;
+            chrMsg = default(TChrMsg);
             while (m_MsgList.Count > i)
             {
-                Msg = m_MsgList[i];
+                TChrMsg Msg = m_MsgList[i];
                 if (Msg.dwDelay != 0 && MShare.GetTickCount() < Msg.dwDelay)
                 {
                     i++;
                     continue;
                 }
-                ChrMsg = Msg;
-                Msg = null;
+                chrMsg = Msg;
                 m_MsgList.RemoveAt(i);
                 result = true;
                 break;
@@ -636,6 +626,7 @@ namespace RobotSvr
         public void ProcMsg()
         {
             while (m_nCurrentAction == 0 && GetMessage(out m_ChrMsg))
+            {
                 switch (m_ChrMsg.Ident)
                 {
                     case Grobal2.SM_STRUCK:
@@ -660,20 +651,18 @@ namespace RobotSvr
                         ReadyAction(m_ChrMsg);
                         break;
                 }
+            }
         }
 
         public void ProcHurryMsg()
         {
-            int n;
             TChrMsg Msg;
-            bool fin;
-            //m_MsgList.__Lock();
-            n = 0;
+            int n = 0;
             while (true)
             {
                 if (m_MsgList.Count <= n) break;
                 Msg = m_MsgList[n];
-                fin = false;
+                bool fin = false;
                 switch (Msg.Ident)
                 {
                     case Grobal2.SM_MAGICFIRE:
@@ -700,7 +689,6 @@ namespace RobotSvr
                 }
                 if (fin)
                 {
-                    m_MsgList[n] = null;
                     m_MsgList.RemoveAt(n);
                 }
                 else
@@ -738,7 +726,10 @@ namespace RobotSvr
         public int CanRun()
         {
             var result = 1;
-            if (m_Abil.HP < Actor.RUN_MINHEALTH) result = -1;
+            if (m_Abil.HP < Actor.RUN_MINHEALTH)
+            {
+                result = -1;
+            }
             return result;
         }
 

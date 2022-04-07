@@ -75,7 +75,6 @@ namespace RobotSvr
 
         public RobotClient()
         {
-            ClientSocket = new IClientScoket();
             SocketEvents();
             heroActor = new HeroActor(this);
             MShare.InitScreenConfig();
@@ -185,6 +184,11 @@ namespace RobotSvr
 
         private void SocketEvents()
         {
+            if (ClientSocket != null)
+            {
+                ClientSocket = null;
+            }
+            ClientSocket = new IClientScoket();
             ClientSocket.OnConnected -= CSocketConnect;
             ClientSocket.OnDisconnected -= CSocketDisconnect;
             ClientSocket.ReceivedDatagram -= CSocketRead;
@@ -199,6 +203,12 @@ namespace RobotSvr
         {
             Login();
             DoNotifyEvent();
+            if (MShare.g_MySelf != null)
+            {
+                MShare.g_MySelf.ProcMsg();
+                MShare.g_MySelf.ProcHurryMsg();
+            }
+            ProcessActionMessages();
         }
 
         private void Login()
@@ -210,7 +220,6 @@ namespace RobotSvr
                     m_dwConnectTick = HUtil32.GetTickCount();
                     try
                     {
-                        SocketEvents();
                         ClientSocket.Connect();
                         m_ConnectionStatus = TConnectionStatus.cns_Connect;
                     }
@@ -3094,22 +3103,19 @@ namespace RobotSvr
 
         public bool CanNextAction()
         {
-            bool result;
             if ((MShare.g_MySelf != null) && MShare.g_MySelf.m_StallMgr.OnSale)
             {
-                result = false;
-                return result;
+                return false;
             }
             if (!MShare.g_MySelf.m_boUseCboLib && MShare.g_MySelf.IsIdle() && ((MShare.g_MySelf.m_nState & 0x04000000) == 0) && ((MShare.g_MySelf.m_nState & 0x02000000) == 0)
                 && (MShare.GetTickCount() - MShare.g_dwDizzyDelayStart > MShare.g_dwDizzyDelayTime))
             {
-                result = true;
+                return true;
             }
             else
             {
-                result = false;
+                return false;
             }
-            return result;
         }
 
         /// <summary>
@@ -3337,6 +3343,8 @@ namespace RobotSvr
                                 MainOutMessage("密码输入错误超过3次，此帐号被暂时锁定，请稍候再登录！");
                                 break;
                             case -3:
+                                m_ConnectionStep = TConnectionStep.cnsConnect;
+                                FNotifyEvent = null;
                                 MainOutMessage("此帐号已经登录或被异常锁定，请稍候再登录！");
                                 break;
                             case -4:
@@ -6592,11 +6600,11 @@ namespace RobotSvr
                 case 0:
                     if (!EatItemName("回城卷") && !EatItemName("回城卷包") && !EatItemName("盟重传送石") && !EatItemName("比奇传送石"))
                     {
-                        DScreen.AddChatBoardString("[挂机] 你的回城卷已用完,已挂机停止!!!", Color.White, Color.Red);
+                        DScreen.AddChatBoardString("你的回城卷已用完,已挂机停止!!!", Color.White, Color.Red);
                     }
                     else
                     {
-                        DScreen.AddChatBoardString("[挂机] 回城并挂机停止!!!", Color.White, Color.Red);
+                        DScreen.AddChatBoardString("回城并挂机停止!!!", Color.White, Color.Red);
                     }
                     MShare.g_gcAss[0] = false;
                     MShare.g_APTagget = null;
@@ -6628,7 +6636,7 @@ namespace RobotSvr
                         MShare.g_nTargetY = MShare.g_AutoPicupItem.Y;
                         heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         MShare.g_nTargetX = -1;
-                        MShare.g_sAPStr = string.Format("物品目标：{0}({1},{2}) 正在去拾取", new object[] { MShare.g_AutoPicupItem.Name, MShare.g_AutoPicupItem.X, MShare.g_AutoPicupItem.Y });
+                        MShare.g_sAPStr = string.Format("物品目标：{0}({1},{2}) 正在去拾取", MShare.g_AutoPicupItem.Name, MShare.g_AutoPicupItem.X, MShare.g_AutoPicupItem.Y);
                     }
                     else if (MShare.g_AutoPicupItem != null)
                     {
@@ -6636,7 +6644,7 @@ namespace RobotSvr
                         MShare.g_nTargetY = MShare.g_AutoPicupItem.Y;
                         heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         MShare.g_nTargetX = -1;
-                        MShare.g_sAPStr = string.Format("物品目标：{0}({1},{2}) 正在去拾取", new object[] { MShare.g_AutoPicupItem.Name, MShare.g_AutoPicupItem.X, MShare.g_AutoPicupItem.Y });
+                        MShare.g_sAPStr = string.Format("物品目标：{0}({1},{2}) 正在去拾取", MShare.g_AutoPicupItem.Name, MShare.g_AutoPicupItem.X, MShare.g_AutoPicupItem.Y);
                     }
                     MShare.g_nAPStatus = 2;
                     MShare.g_boAPAutoMove = true;
@@ -6649,7 +6657,7 @@ namespace RobotSvr
                             MShare.g_nTargetX = MShare.g_APMapPath[MShare.g_APStep].X;
                             MShare.g_nTargetY = MShare.g_APMapPath[MShare.g_APStep].X;
                             heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
-                            MShare.g_sAPStr = string.Format("循路搜寻目标({0},{1})", new int[] { MShare.g_nTargetX, MShare.g_nTargetY });
+                            MShare.g_sAPStr = string.Format("循路搜寻目标({0},{1})", MShare.g_nTargetX, MShare.g_nTargetY);
                             MShare.g_nTargetX = -1;
                         }
                         else
@@ -6660,7 +6668,7 @@ namespace RobotSvr
                                 {
                                     heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                                 }
-                                MShare.g_sAPStr = string.Format("定点随机搜寻目标({0},{1})", new int[] { MShare.g_APMapPath[MShare.g_APStep].X, MShare.g_APMapPath[MShare.g_APStep].X });
+                                MShare.g_sAPStr = string.Format("定点随机搜寻目标({0},{1})", MShare.g_APMapPath[MShare.g_APStep].X, MShare.g_APMapPath[MShare.g_APStep].X);
                                 MShare.g_nTargetX = -1;
                             }
                         }
@@ -6693,7 +6701,7 @@ namespace RobotSvr
                             MShare.g_nTargetY = MShare.g_APMapPath[MShare.g_APStep].X;
                             heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         }
-                        MShare.g_sAPStr = string.Format("[挂机] 超出搜寻范围,返回({0},{1})", MShare.g_nTargetX, MShare.g_nTargetY);
+                        MShare.g_sAPStr = string.Format("超出搜寻范围,返回({0},{1})", MShare.g_nTargetX, MShare.g_nTargetY);
                         MShare.g_nTargetX = -1;
                     }
                     else if ((MShare.g_nTargetX == -1) || (MShare.g_APPathList.Count == 0))
@@ -6771,6 +6779,7 @@ namespace RobotSvr
             {
                 heroActor.Init_Queue2();
             }
+            Console.WriteLine(MShare.g_sAPStr);
         }
 
         public void InitSuiteStrs(int Len, string S)
