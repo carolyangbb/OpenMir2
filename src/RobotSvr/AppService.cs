@@ -81,9 +81,9 @@ namespace RobotSvr
                             var playClient = new RobotClient();
                             playClient.SessionId = Guid.NewGuid().ToString("N");
                             playClient.m_boNewAccount = g_boNewAccount;
-                            playClient.LoginID = "robot1";
-                            playClient.LoginPasswd = "robot1";
-                            playClient.m_sCharName = "robot1";
+                            playClient.LoginID = string.Concat(g_sAccount, g_nLoginIndex);
+                            playClient.LoginPasswd = playClient.LoginID;
+                            playClient.m_sCharName = playClient.LoginID;
                             playClient.m_sServerName = g_sServerName;
                             playClient.ClientSocket.Host = g_sGameIPaddr;
                             playClient.ClientSocket.Port = g_nGamePort;
@@ -103,10 +103,10 @@ namespace RobotSvr
             g_sServerName = "热血传奇";
             g_sGameIPaddr = "10.10.0.112";
             g_nGamePort = 7000;
-            g_boNewAccount = false;
+            g_boNewAccount = true;
             g_nChrCount = HUtil32._MIN(g_nChrCount, g_nTotalChrCount);
             g_dwLogonTick = HUtil32.GetTickCount() - 1000 * g_nChrCount;
-            g_sAccount = "mptalay";
+            g_sAccount = "rotbot";
             return base.StartAsync(cancellationToken);
         }
 

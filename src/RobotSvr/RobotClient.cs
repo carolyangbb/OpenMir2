@@ -2609,7 +2609,7 @@ namespace RobotSvr
             SendSocket(EDcode.EncodeMessage(DefMsg) + EDcode.EncodeString(svname));
         }
 
-        public void SendNewChr(string uid, string uname, string shair, string sjob, string ssex)
+        public void SendNewChr(string uid, string uname, byte shair, byte sjob, byte ssex)
         {
             ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_NEWCHR, 0, 0, 0, 0);
             SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(uid + "/" + uname + "/" + shair + "/" + sjob + "/" + ssex));
@@ -3317,6 +3317,7 @@ namespace RobotSvr
                 {
                     case Grobal2.SM_NEWID_SUCCESS:
                         MainOutMessage("您的帐号创建成功。\\" + "请妥善保管您的帐号和密码，\\并且不要因任何原因把帐号和密码告诉任何其他人。\\" + "如果忘记了密码,\\你可以通过我们的主页重新找回。");
+                        ClientNewIdSuccess("");
                         break;
                     case Grobal2.SM_NEWID_FAIL:
                         switch (msg.Recog)
@@ -4963,8 +4964,40 @@ namespace RobotSvr
             }
             else
             {
-               // SetNotifyEvent(NewChr, 3000);
+                SetNotifyEvent(NewChr, 3000);
             }
+        }
+
+        private void NewChr()
+        {
+            m_ConnectionStep = TConnectionStep.cnsNewChr;
+            SelectChrCreateNewChr(m_sCharName);
+        }
+
+        private void SelectChrCreateNewChr(string sCharName)
+        {
+            byte sHair = 0;
+            switch (RandomNumber.GetInstance().Random(1))
+            {
+                case 0:
+                    sHair = 2;
+                    break;
+                case 1:
+                    switch (new Random(1).Next())
+                    {
+                        case 0:
+                            sHair = 1;
+                            break;
+                        case 1:
+                            sHair = 3;
+                            break;
+                    }
+                    break;
+            }
+            byte sJob = (byte)RandomNumber.GetInstance().Random(2);
+            byte sSex = (byte)RandomNumber.GetInstance().Random(1);
+            SendNewChr(LoginID, sCharName, sHair, sJob, sSex);
+            MainOutMessage($"创建角色 {sCharName}");
         }
 
         private void ClientGetStartPlay(string body)
