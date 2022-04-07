@@ -378,12 +378,12 @@ namespace RobotSvr
             bool result = false;
             for (var i = 0; i < m_ActorList.Count; i++)
             {
-                TActor a = m_ActorList[i];
-                if (a == MShare.g_MySelf)
+                TActor actor = m_ActorList[i];
+                if (actor == null || actor == MShare.g_MySelf)
                 {
                     continue;
                 }
-                if (a.m_boVisible && a.m_boHoldPlace && (!a.m_boDeath) && (a.m_nCurrX == mx) && (a.m_nCurrY == my))
+                if (actor.m_boVisible && actor.m_boHoldPlace && (!actor.m_boDeath) && (actor.m_nCurrX == mx) && (actor.m_nCurrY == my))
                 {
                     result = true;
                     break;

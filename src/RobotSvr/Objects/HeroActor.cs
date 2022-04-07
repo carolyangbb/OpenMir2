@@ -35,42 +35,39 @@ namespace RobotSvr
             return result;
         }
 
-        public void enter_queue(Tree Node, int F)
+        public void Enterqueue(Tree Node, int F)
         {
-            Link P;
-            Link Father;
-            Link q;
-            P = MShare.g_APQueue;
-            Father = P;
+            Link P = MShare.g_APQueue;
+            Link Father = P;
             while (F > P.F)
             {
                 Father = P;
                 P = P.Next;
                 if (P == null) break;
             }
-
-            q = new Link();
+            Link q = new Link();
             q.F = F;
             q.Node = Node;
             q.Next = P;
             Father.Next = q;
         }
 
-        // 将离目的地估计最近的方案出队列
-        public Tree get_from_queue()
+        /// <summary>
+        /// 将离目的地估计最近的方案出队列
+        /// </summary>
+        /// <returns></returns>
+        public Tree Dequeue()
         {
-            Tree result;
-            Tree bestchoice;
-            Link Next;
-            bestchoice = MShare.g_APQueue.Next.Node;
-            Next = MShare.g_APQueue.Next.Next;
+            Tree bestchoice = MShare.g_APQueue.Next.Node;
+            Link Next = MShare.g_APQueue.Next.Next;
             Dispose(MShare.g_APQueue.Next);
             MShare.g_APQueue.Next = Next;
-            result = bestchoice;
-            return result;
+            return bestchoice;
         }
 
-        // 释放申请过的所有节点
+        /// <summary>
+        /// 释放申请过的所有节点
+        /// </summary>
         public void FreeTree()
         {
             Link P;
@@ -86,88 +83,92 @@ namespace RobotSvr
 
         public void Dispose(object obj)
         {
+            obj = null;
         }
 
         // 估价函数,估价 x,y 到目的地的距离,估计值必须保证比实际值小
         public int judge(int X, int Y, int end_x, int end_y)
         {
-            int result;
-            result = Math.Abs(end_x - X) + Math.Abs(end_y - Y);
-            return result;
+            return Math.Abs(end_x - X) + Math.Abs(end_y - Y);
         }
 
-        public bool Trytile_has(int X, int Y, int H)
+        public bool TrytileHas(int X, int Y, int H)
         {
-            bool result;
-            int cx;
-            int cy;
-            result = true;
-            cx = X - robotClient.Map.m_nBlockLeft;
-            cy = Y - robotClient.Map.m_nBlockTop;
+            bool result = true;
+            int cx = X - robotClient.Map.m_nBlockLeft;
+            int cy = Y - robotClient.Map.m_nBlockTop;
             if (cx > MShare.MAXX * 3 || cy > MShare.MAXY * 3) return result;
             if (cx < 0 || cy < 0) return result;
-            if (H < MShare.g_APPass[cx, cy]) result = false;
+            if (H <= MShare.g_APPass[cx, cy]) result = false;
             return result;
         }
 
         public bool Trytile(int X, int Y, int end_x, int end_y, Tree Father, byte dir)
         {
-            bool result;
-            Tree P;
-            int H;
-            result = false;
-            if (!robotClient.Map.CanMove(X, Y)) return result;
-            P = Father;
+            bool result = false;
+            if (!robotClient.Map.CanMove(X, Y))
+            {
+                return result;
+            }
+            Tree P = Father;
             while (P != null)
             {
-                if (X == P.X && Y == P.Y) return result;
-                // 如果 (x,y) 曾经经过,失败
+                if (X == P.X && Y == P.Y)
+                {
+                    return result; // 如果 (x,y) 曾经经过,失败
+                }
                 P = P.Father;
             }
-
-            H = Father.H + 1;
-            if (Trytile_has(X, Y, H)) return result;
-            // 如果曾经有更好的方案移动到 (x,y) 失败
-            MShare.g_APPass[X - robotClient.Map.m_nBlockLeft, Y - robotClient.Map.m_nBlockTop] = H;
-            // 记录这次到 (x,y) 的距离为历史最佳距离
+            int H = Father.H + 1;
+            if (TrytileHas(X, Y, H))// 如果曾经有更好的方案移动到 (x,y) 失败
+            {
+                return result;
+            }
+            MShare.g_APPass[X - robotClient.Map.m_nBlockLeft, Y - robotClient.Map.m_nBlockTop] = H;// 记录这次到 (x,y) 的距离为历史最佳距离
             P = new Tree();
             P.Father = Father;
             P.H = Father.H + 1;
             P.X = X;
             P.Y = Y;
             P.Dir = dir;
-            enter_queue(P, P.H + judge(X, Y, end_x, end_y));
+            Enterqueue(P, P.H + judge(X, Y, end_x, end_y));
             result = true;
             return result;
         }
 
-        // 路径寻找主函数
-        public void AP_findpath(int Startx, int Starty, int end_x, int end_y)
+        /// <summary>
+        /// 路径寻找
+        /// </summary>
+        public void AutoFindPath(int Startx, int Starty, int end_x, int end_y)
         {
-            Tree Root;
             Tree P;
             int i;
             int X;
             int Y;
             int dir;
             TFindNode Temp;
-            if (!robotClient.Map.CanMove(end_x, end_y)) return;
-            //FillChar(MShare.g_APPass);
+            if (!robotClient.Map.CanMove(end_x, end_y))
+            {
+                return;
+            }
+            MShare.g_APPass = MShare.g_APPassEmpty;
             Init_Queue();
-            Root = new Tree();
+            Tree Root = new Tree();
             Root.X = Startx;
             Root.Y = Starty;
             Root.H = 0;
             Root.Father = null;
-            enter_queue(Root, judge(Startx, Starty, end_x, end_y));
+            Enterqueue(Root, judge(Startx, Starty, end_x, end_y));
             while (true)
             {
-                Root = get_from_queue();
-                // 将第一个弹出
+                Root = Dequeue();
                 if (Root == null) break;
                 X = Root.X;
                 Y = Root.Y;
-                if (X == end_x && Y == end_y) break;
+                if (X == end_x && Y == end_y)
+                {
+                    break;
+                }
                 Trytile(X, Y - 1, end_x, end_y, Root, 0);// 尝试向上移动
                 Trytile(X + 1, Y - 1, end_x, end_y, Root, 1);// 尝试向右上移动
                 Trytile(X + 1, Y, end_x, end_y, Root, 2);// 尝试向右移动
@@ -179,7 +180,7 @@ namespace RobotSvr
             }
             for (i = MShare.g_APPathList.Count - 1; i >= 0; i--)
             {
-                Dispose((TFindNode)MShare.g_APPathList[i]);
+                Dispose(MShare.g_APPathList[i]);
             }
             MShare.g_APPathList.Clear();
             if (Root == null)
@@ -247,7 +248,7 @@ namespace RobotSvr
             MShare.g_APQueue.Next.Next = null;
             for (var i = MShare.g_APPathList.Count - 1; i >= 0; i--)
             {
-                Dispose((TFindNode)MShare.g_APPathList[i]);
+                Dispose(MShare.g_APPathList[i]);
             }
             MShare.g_APPathList.Clear();
         }
@@ -268,7 +269,7 @@ namespace RobotSvr
             }
             for (var i = MShare.g_APPathList.Count - 1; i >= 0; i--)
             {
-                Dispose((TFindNode)MShare.g_APPathList[i]);
+                Dispose(MShare.g_APPathList[i]);
             }
             MShare.g_APPathList.Clear();
         }
@@ -430,63 +431,53 @@ namespace RobotSvr
 
         public int GetDropItemsDis()
         {
-            int result;
-            int i;
             int dx;
-            TDropItem d;
-            result = 100000;
-            for (i = 0; i < MShare.g_DropedItemList.Count; i++)
+            int result = 100000;
+            for (var i = 0; i < MShare.g_DropedItemList.Count; i++)
             {
-                d = MShare.g_DropedItemList[i];
-                if (MShare.g_boPickUpAll || d.boPickUp)
+                TDropItem d = MShare.g_DropedItemList[i];
+                if (MShare.g_boPickUpAll || d.boPickUp)// 如果拾取过滤，则判断是否过滤
                 {
-                    // 如果拾取过滤，则判断是否过滤
                     dx = GetDis(d.X, d.Y, MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY);
-                    // 获取距离，选择最近的
-                    if (dx < result && dx != 0)
+                    if (dx < result && dx != 0) // 获取距离，选择最近的
                     {
                         MShare.g_AutoPicupItem = d;
                         result = dx;
                     }
                 }
             }
-
             return result;
         }
 
         public int GetAutoPalyStation()
         {
             int result;
-            bool has;
-            bool bPcaketfull;
-            int i;
             var Mobdistance = 0;
-            var ItemDistance = 0;
-            bPcaketfull = false;
+            bool bPcaketfull = false;
             if (IsBackToSafeZone(ref Mobdistance))
             {
                 result = 0;
                 return result;
             }
-
-            has = false;
-            for (i = 0; i <= 45; i++)
-                if (MShare.g_ItemArr[i].Item.Name == "")
+            bool has = false;
+            for (var i = 0; i <= 45; i++)
+            {
+                if (MShare.g_ItemArr[i] == null || MShare.g_ItemArr[i].Item.Name == "")
                 {
                     has = true;
                     break;
                 }
-
+            }
             if (!has) // 包满
+            {
                 bPcaketfull = true;
+            }
             if (MShare.g_nOverAPZone > 0)
             {
                 result = 4;
                 return result;
             }
-
-            if (MShare.g_APMapPath != null && MShare.g_APStep >= 0 &&
-                MShare.g_APStep <= MShare.g_APMapPath.GetUpperBound(0)) // 正在循路，超出范围。。。
+            if (MShare.g_APMapPath != null && MShare.g_APStep >= 0 && MShare.g_APStep <= MShare.g_APMapPath.GetUpperBound(0)) // 正在循路，超出范围。。。
             {
                 if (MShare.g_APLastPoint.X >= 0)
                 {
@@ -514,36 +505,54 @@ namespace RobotSvr
 
             // 获取最近的怪物
             if (MShare.g_APTagget != null)
+            {
                 if (MShare.g_APTagget.m_boDelActor || MShare.g_APTagget.m_boDeath)
+                { 
                     MShare.g_APTagget = null;
-            if (MShare.GetTickCount() - MShare.g_dwSearchEnemyTick > 4000 ||
-                MShare.GetTickCount() - MShare.g_dwSearchEnemyTick > 300 && MShare.g_APTagget == null)
+                }
+            }
+            if (MShare.GetTickCount() - MShare.g_dwSearchEnemyTick > 4000 || MShare.GetTickCount() - MShare.g_dwSearchEnemyTick > 300 && MShare.g_APTagget == null)
             {
                 MShare.g_dwSearchEnemyTick = MShare.GetTickCount();
                 MShare.g_APTagget = SearchTarget();
             }
-
             if (MShare.g_APTagget != null)
+            {
                 if (MShare.g_APTagget.m_boDelActor || MShare.g_APTagget.m_boDeath)
+                { 
                     MShare.g_APTagget = null;
+                }
+            }
             if (MShare.g_APTagget != null)
-                Mobdistance = GetDis(MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY, MShare.g_MySelf.m_nCurrX,
-                    MShare.g_MySelf.m_nCurrY);
+            {
+                Mobdistance = GetDis(MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY, MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY);
+            }
             else
+            {
                 Mobdistance = 100000;
-            ItemDistance = 0;
+            }
             // 获取最近的物品
+            var ItemDistance = 0;
             if (!bPcaketfull)
+            {
                 ItemDistance = GetDropItemsDis();
+            }
             else
+            {
                 MShare.g_AutoPicupItem = null;
-
+            }
             if (ItemDistance == 100000 && (Mobdistance == 100000 || Mobdistance == 0)) // 两者都没有发现
+            {
                 return 3; // 没有发现怪物或物品，随机走
+            }
             if (ItemDistance + 2 >= Mobdistance) // 优先杀怪
+            {
                 result = 1; // 发现怪物
+            }
             else
+            {
                 result = 2; // 发现物品
+            }
             return result;
         }
 

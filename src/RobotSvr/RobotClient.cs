@@ -76,13 +76,10 @@ namespace RobotSvr
         public RobotClient()
         {
             ClientSocket = new IClientScoket();
-            ClientSocket.OnConnected += CSocketConnect;
-            ClientSocket.OnDisconnected += CSocketDisconnect;
-            ClientSocket.ReceivedDatagram += CSocketRead;
-            ClientSocket.OnError += CSocketError;
+            SocketEvents();
             heroActor = new HeroActor(this);
             MShare.InitScreenConfig();
-            MShare.g_APPathList = new ArrayList();
+            MShare.g_APPathList = new List<TFindNode>();
             MShare.g_ShowItemList = new Dictionary<string, string>();
             DScreen = new DrawScreen(this);
             IntroScene = new IntroScene(this);
@@ -177,6 +174,25 @@ namespace RobotSvr
             MShare.LoadItemFilter();
             m_ConnectionStatus = TConnectionStatus.cns_Failure;
             //MaketSystem.Units.MaketSystem.g_Market = new TMarketItemManager();
+            for (int i = 0; i < MShare.MAXX * 3; i++)
+            {
+                for (int j = 0; j < MShare.MAXY * 3; j++)
+                {
+                    MShare.g_APPassEmpty[i, j] = 0xEF;
+                }
+            }
+        }
+
+        private void SocketEvents()
+        {
+            ClientSocket.OnConnected -= CSocketConnect;
+            ClientSocket.OnDisconnected -= CSocketDisconnect;
+            ClientSocket.ReceivedDatagram -= CSocketRead;
+            ClientSocket.OnError -= CSocketError;
+            ClientSocket.OnConnected += CSocketConnect;
+            ClientSocket.OnDisconnected += CSocketDisconnect;
+            ClientSocket.ReceivedDatagram += CSocketRead;
+            ClientSocket.OnError += CSocketError;
         }
 
         public void Run()
@@ -194,6 +210,7 @@ namespace RobotSvr
                     m_dwConnectTick = HUtil32.GetTickCount();
                     try
                     {
+                        SocketEvents();
                         ClientSocket.Connect();
                         m_ConnectionStatus = TConnectionStatus.cns_Connect;
                     }
@@ -721,75 +738,39 @@ namespace RobotSvr
             }
         }
 
-        public void FormKeyDown()
+        public void OpenAutoPlay()
         {
-            //if ((MShare.g_MySelf == null) || (DScreen.CurrentScene != g_PlayScene))
-            //{
-            //    return;
-            //}
-            //switch (Key)
-            //{
-            //    case (short)"Z":
-            //        if (new ArrayList(Shift).Contains(System.Windows.Forms.Keys.Control))
-            //        {
-            //            MShare.g_gcAss[0] = !MShare.g_gcAss[0];
-            //            frmMain.TimerAutoPlay.Enabled = MShare.g_gcAss[0];
-            //            if (frmMain.TimerAutoPlay.Enabled)
-            //            {
-            //                MShare.g_APTagget = null;
-            //                MShare.g_AutoPicupItem = null;
-            //                MShare.g_nAPStatus = -1;
-            //                MShare.g_nTargetX = -1;
-            //                MShare.g_APGoBack = false;
-            //                DScreen.AddChatBoardString("[挂机] 开始自动挂机...", Color.White, Color.Red);
-            //                SaveWayPoint();
-            //                if (MShare.g_APMapPath != null)
-            //                {
-            //                    MShare.g_APStep = 0;
-            //                    MShare.g_APLastPoint.X = -1;
-            //                    GetNearPoint();
-            //                }
-            //            }
-            //            else
-            //            {
-            //                DScreen.AddChatBoardString("[挂机] 停止自动挂机...", Color.White, Color.Red);
-            //            }
-            //            return;
-            //        }
-            //        break;
-            //    case (short)"X":
-            //        if (MShare.g_MySelf == null)
-            //        {
-            //            return;
-            //        }
-            //        if (MShare.g_boOpenAutoPlay)
-            //        {
-            //            MShare.g_gcAss[0] = !MShare.g_gcAss[0];
-            //            frmMain.TimerAutoPlay.Enabled = MShare.g_gcAss[0];
-            //            if (frmMain.TimerAutoPlay.Enabled)
-            //            {
-            //                MShare.g_APTagget = null;
-            //                MShare.g_AutoPicupItem = null;
-            //                MShare.g_nAPStatus = -1;
-            //                MShare.g_nTargetX = -1;
-            //                MShare.g_APGoBack = false;
-            //                DScreen.AddChatBoardString("[挂机] 开始自动挂机...", Color.White, Color.Red);
-            //                SaveWayPoint();
-            //                if (MShare.g_APMapPath != null)
-            //                {
-            //                    MShare.g_APStep = 0;
-            //                    MShare.g_APLastPoint.X = -1;
-            //                    GetNearPoint();
-            //                }
-            //            }
-            //            else
-            //            {
-            //                DScreen.AddChatBoardString("[挂机] 停止自动挂机...", Color.White, Color.Red);
-            //            }
-            //            return;
-            //        }
-            //        break;
-            //}
+            if (MShare.g_MySelf == null)
+            {
+                return;
+            }
+            MShare.g_gcAss[0] = !MShare.g_gcAss[0];
+            if (TimerAutoPlay == null)
+            {
+                TimerAutoPlay = new TimerAutoPlay();
+            }
+            TimerAutoPlay.Enabled = MShare.g_gcAss[0];
+            if (TimerAutoPlay.Enabled)
+            {
+                MShare.g_APTagget = null;
+                MShare.g_AutoPicupItem = null;
+                MShare.g_nAPStatus = -1;
+                MShare.g_nTargetX = -1;
+                MShare.g_APGoBack = false;
+                DScreen.AddChatBoardString("开始自动挂机...", Color.White, Color.Red);
+                SaveWayPoint();
+                if (MShare.g_APMapPath != null)
+                {
+                    MShare.g_APStep = 0;
+                    MShare.g_APLastPoint.X = -1;
+                    GetNearPoint();
+                }
+            }
+            else
+            {
+                DScreen.AddChatBoardString("停止自动挂机...", Color.White, Color.Red);
+            }
+            return;
         }
 
         public TClientMagic GetMagicByKey(char Key)
@@ -2526,9 +2507,9 @@ namespace RobotSvr
                     Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]链接超时...");
                     break;
             }
-            LoginOut();
-            m_ConnectionStatus = TConnectionStatus.cns_Failure;
-            ClientManager.DelClient(SessionId);
+            //LoginOut();
+            //m_ConnectionStatus = TConnectionStatus.cns_Failure;
+            //ClientManager.DelClient(SessionId);
         }
 
         public void CSocketRead(object sender, DSCClientDataInEventArgs e)
@@ -3539,6 +3520,8 @@ namespace RobotSvr
                     MShare.LoadUserConfig(m_sCharName);
                     MShare.LoadItemFilter2();
                     //SendClientMessage(Grobal2.CM_HIDEDEATHBODY, MShare.g_MySelf.m_nRecogId, (int)MShare.g_gcGeneral[8], 0, 0);
+                    MainOutMessage("成功进入游戏");
+                    MainOutMessage("-----------------------------------------------");
                     break;
                 case Grobal2.SM_SERVERCONFIG:
                     ClientGetServerConfig(msg, body);
@@ -4864,11 +4847,10 @@ namespace RobotSvr
 
         private void ClientGetPasswdSuccess(string body)
         {
-            string Str;
             string runaddr = string.Empty;
             string runport = string.Empty;
             string certifystr = string.Empty;
-            Str = EDcode.DeCodeString(body);
+            string Str = EDcode.DeCodeString(body);
             Str = HUtil32.GetValidStr3(Str, ref runaddr, new string[] { "/" });
             Str = HUtil32.GetValidStr3(Str, ref runport, new string[] { "/" });
             Str = HUtil32.GetValidStr3(Str, ref certifystr, new string[] { "/" });
@@ -4876,6 +4858,7 @@ namespace RobotSvr
             MShare.g_sSelChrAddr = runaddr;
             MShare.g_nSelChrPort = HUtil32.Str_ToInt(runport, 0);
             m_ConnectionStep = TConnectionStep.cnsQueryChr;
+            SocketEvents();
             ClientSocket.Host = MShare.g_sSelChrAddr;
             ClientSocket.Port = MShare.g_nSelChrPort;
             ClientSocket.Connect();
@@ -4985,6 +4968,7 @@ namespace RobotSvr
             MShare.g_nRunServerPort = HUtil32.Str_ToInt(sport, 0);
             MShare.g_sRunServerAddr = addr;
             MShare.g_ConnectionStep = TConnectionStep.cnsPlay;
+            SocketEvents();
             ClientSocket.Host = MShare.g_sRunServerAddr;
             ClientSocket.Port = MShare.g_nRunServerPort;
             ClientSocket.Connect();
@@ -4999,6 +4983,7 @@ namespace RobotSvr
             SaveBagsData();
             MShare.g_boServerChanging = true;
             MShare.g_ConnectionStep = TConnectionStep.cnsPlay;
+            SocketEvents();
             ClientSocket.Host = addr;
             ClientSocket.Port = HUtil32.Str_ToInt(sport, 0);
             ClientSocket.Connect();
@@ -6532,10 +6517,9 @@ namespace RobotSvr
             }
         }
 
-        public void TimerAutoPlayTimer_randomtag(ref bool b, ref byte ndir)
+        public void RunAutoPlayRandomtag(ref bool b, ref byte ndir)
         {
-            int i;
-            i = 0;
+            int i = 0;
             b = false;
             ndir = MShare.g_MySelf.m_btDir;
             if (new System.Random(28).Next() == 0)
@@ -6574,7 +6558,7 @@ namespace RobotSvr
             }
         }
 
-        public void TimerAutoPlayTimer(object Sender, System.EventArgs _e1)
+        public void RunAutoPlay()
         {
             TFindNode T;
             byte ndir = 0;
@@ -6631,7 +6615,7 @@ namespace RobotSvr
                     {
                         MShare.g_nTargetX = MShare.g_APTagget.m_nCurrX;
                         MShare.g_nTargetY = MShare.g_APTagget.m_nCurrY;
-                        heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY);
+                        heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY);
                     }
                     MShare.g_nTargetX = -1;
                     MShare.g_nAPStatus = 1;
@@ -6642,17 +6626,17 @@ namespace RobotSvr
                     {
                         MShare.g_nTargetX = MShare.g_AutoPicupItem.X;
                         MShare.g_nTargetY = MShare.g_AutoPicupItem.Y;
-                        heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                        heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         MShare.g_nTargetX = -1;
-                        MShare.g_sAPStr = string.Format("[挂机] 物品目标：%s(%d,%d) 正在去拾取", new object[] { MShare.g_AutoPicupItem.Name, MShare.g_AutoPicupItem.X, MShare.g_AutoPicupItem.Y });
+                        MShare.g_sAPStr = string.Format("物品目标：{0}({1},{2}) 正在去拾取", new object[] { MShare.g_AutoPicupItem.Name, MShare.g_AutoPicupItem.X, MShare.g_AutoPicupItem.Y });
                     }
                     else if (MShare.g_AutoPicupItem != null)
                     {
                         MShare.g_nTargetX = MShare.g_AutoPicupItem.X;
                         MShare.g_nTargetY = MShare.g_AutoPicupItem.Y;
-                        heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                        heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         MShare.g_nTargetX = -1;
-                        MShare.g_sAPStr = string.Format("[挂机] 物品目标：%s(%d,%d) 正在去拾取", new object[] { MShare.g_AutoPicupItem.Name, MShare.g_AutoPicupItem.X, MShare.g_AutoPicupItem.Y });
+                        MShare.g_sAPStr = string.Format("物品目标：{0}({1},{2}) 正在去拾取", new object[] { MShare.g_AutoPicupItem.Name, MShare.g_AutoPicupItem.X, MShare.g_AutoPicupItem.Y });
                     }
                     MShare.g_nAPStatus = 2;
                     MShare.g_boAPAutoMove = true;
@@ -6664,8 +6648,8 @@ namespace RobotSvr
                         {
                             MShare.g_nTargetX = MShare.g_APMapPath[MShare.g_APStep].X;
                             MShare.g_nTargetY = MShare.g_APMapPath[MShare.g_APStep].X;
-                            heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
-                            MShare.g_sAPStr = string.Format("[挂机] 循路搜寻目标(%d,%d)", new int[] { MShare.g_nTargetX, MShare.g_nTargetY });
+                            heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                            MShare.g_sAPStr = string.Format("循路搜寻目标({0},{1})", new int[] { MShare.g_nTargetX, MShare.g_nTargetY });
                             MShare.g_nTargetX = -1;
                         }
                         else
@@ -6674,22 +6658,21 @@ namespace RobotSvr
                             {
                                 if (b)
                                 {
-                                    heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                                    heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                                 }
-                                // memory leak !!!
-                                MShare.g_sAPStr = string.Format("[挂机] 定点随机搜寻目标(%d,%d)", new int[] { MShare.g_APMapPath[MShare.g_APStep].X, MShare.g_APMapPath[MShare.g_APStep].X });
+                                MShare.g_sAPStr = string.Format("定点随机搜寻目标({0},{1})", new int[] { MShare.g_APMapPath[MShare.g_APStep].X, MShare.g_APMapPath[MShare.g_APStep].X });
                                 MShare.g_nTargetX = -1;
                             }
                         }
                     }
                     else if ((MShare.g_nTargetX == -1) || (MShare.g_APPathList.Count == 0))
                     {
-                        TimerAutoPlayTimer_randomtag(ref b, ref ndir);
+                        RunAutoPlayRandomtag(ref b, ref ndir);
                         if (b)
                         {
-                            heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                            heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         }
-                        MShare.g_sAPStr = "[挂机] 随机搜寻目标...";
+                        MShare.g_sAPStr = "随机搜寻目标...";
                         MShare.g_nTargetX = -1;
                     }
                     MShare.g_nAPStatus = 3;
@@ -6702,25 +6685,25 @@ namespace RobotSvr
                         {
                             MShare.g_nTargetX = MShare.g_APLastPoint.X;
                             MShare.g_nTargetY = MShare.g_APLastPoint.X;
-                            heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                            heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         }
                         else
                         {
                             MShare.g_nTargetX = MShare.g_APMapPath[MShare.g_APStep].X;
                             MShare.g_nTargetY = MShare.g_APMapPath[MShare.g_APStep].X;
-                            heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                            heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         }
-                        MShare.g_sAPStr = string.Format("[挂机] 超出搜寻范围,返回(%d,%d)", new int[] { MShare.g_nTargetX, MShare.g_nTargetY });
+                        MShare.g_sAPStr = string.Format("[挂机] 超出搜寻范围,返回({0},{1})", MShare.g_nTargetX, MShare.g_nTargetY);
                         MShare.g_nTargetX = -1;
                     }
                     else if ((MShare.g_nTargetX == -1) || (MShare.g_APPathList.Count == 0))
                     {
-                        TimerAutoPlayTimer_randomtag(ref b, ref ndir);
+                        RunAutoPlayRandomtag(ref b, ref ndir);
                         if (b)
                         {
-                            heroActor.AP_findpath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
+                            heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         }
-                        MShare.g_sAPStr = string.Format("[挂机] 超出搜寻范围,随机搜寻目标(%d,%d)", new int[] { MShare.g_nTargetX, MShare.g_nTargetY });
+                        MShare.g_sAPStr = string.Format("超出搜寻范围,随机搜寻目标({0},{1})", MShare.g_nTargetX, MShare.g_nTargetY);
                         MShare.g_nTargetX = -1;
                     }
                     MShare.g_nAPStatus = 3;
@@ -6729,7 +6712,7 @@ namespace RobotSvr
             }
             if ((MShare.g_APPathList.Count > 0) && ((MShare.g_nTargetX == -1) || ((MShare.g_nTargetX == MShare.g_MySelf.m_nCurrX) && (MShare.g_nTargetY == MShare.g_MySelf.m_nCurrY))))
             {
-                T = (TFindNode)MShare.g_APPathList[0];
+                T = MShare.g_APPathList[0];
                 MShare.g_nTargetX = T.X;
                 MShare.g_nTargetY = T.Y;
                 if (MShare.g_nAPStatus >= 1 && MShare.g_nAPStatus <= 4)
@@ -6754,7 +6737,7 @@ namespace RobotSvr
                         AAAA:
                             if (MShare.g_APPathList.Count > 2)
                             {
-                                ndir = ClFunc.GetNextDirection(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, ((TFindNode)MShare.g_APPathList[2]).X, ((TFindNode)MShare.g_APPathList[2]).Y);
+                                ndir = ClFunc.GetNextDirection(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_APPathList[2].X, MShare.g_APPathList[2].Y);
                             }
                             else
                             {

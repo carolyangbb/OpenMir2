@@ -146,8 +146,9 @@ namespace RobotSvr
         public static TActor g_FocusCret = null;
         public static TActor g_MagicTarget = null;
         public static Link g_APQueue = null;
-        public static ArrayList g_APPathList = null;
-        public static double[,] g_APPass;
+        public static IList<TFindNode> g_APPathList = null;
+        public static double[,] g_APPass = new double[MAXX * 3, MAXY * 3];
+        public static double[,] g_APPassEmpty = new double[MAXX * 3, MAXY * 3];
         public static TActor g_APTagget = null;
         public static int g_APRunTick = 0;
         public static int g_APRunTick2 = 0;

@@ -49,7 +49,20 @@ namespace RobotSvr
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             ClientManager.Start();
+            Task.Run(() =>
+            {
+                Start();
+            }, stoppingToken);
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                ClientManager.RunAutoPlay();
+                Task.Delay(TimeSpan.FromSeconds(2), stoppingToken);
+            }
+            return Task.CompletedTask;
+        }
 
+        public void Start()
+        {
             while (true)
             {
                 if (g_nTotalChrCount > 0)

@@ -13,7 +13,9 @@ namespace RobotSvr
         private static int g_dwProcessTimeMax = 0;
         private static int g_nPosition = 0;
         private static int dwRunTick = 0;
+        private static int AutoRunTick = 0;
         private static readonly Channel<RecvicePacket> _reviceMsgList;
+        private static object _lock = new object();
 
         static ClientManager()
         {
@@ -84,6 +86,38 @@ namespace RobotSvr
             if (g_dwProcessTimeMin > g_dwProcessTimeMax)
             {
                 g_dwProcessTimeMax = g_dwProcessTimeMin;
+            }
+        }
+
+        public static void RunAutoPlay()
+        {
+            HUtil32.EnterCriticalSections(_lock);
+            try
+            {
+                AutoRunTick = HUtil32.GetTickCount();
+                var boProcessLimit = false;
+                var clientList = _Clients.Values.ToList();
+                if (clientList.Count > 0)
+                {
+                    for (var i = g_nPosition; i < _Clients.Count; i++)
+                    {
+                        clientList[i].RunAutoPlay();
+                        if (((HUtil32.GetTickCount() - AutoRunTick) > 200))
+                        {
+                            g_nPosition = i;
+                            boProcessLimit = true;
+                            break;
+                        }
+                    }
+                    if (!boProcessLimit)
+                    {
+                        g_nPosition = 0;
+                    }
+                }
+            }
+            finally
+            {
+                HUtil32.LeaveCriticalSections(_lock);
             }
         }
     }
