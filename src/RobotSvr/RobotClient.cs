@@ -2633,6 +2633,7 @@ namespace RobotSvr
             m_sCharName = chrname;
             ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_SELCHR, 0, 0, 0, 0);
             SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(LoginID + "/" + chrname));
+            MainOutMessage($"选择角色 {chrname}");
         }
 
         /// <summary>
@@ -4927,6 +4928,7 @@ namespace RobotSvr
             string Str = EDcode.DeCodeString(body);
             SelectChrScene selectChrScene = SelectChrScene;
             int select = 0;
+            int nChrCount = 0;
             for (var i = 0; i <= 1; i++)
             {
                 Str = HUtil32.GetValidStr3(Str, ref uname, new string[] { "/" });
@@ -4936,12 +4938,13 @@ namespace RobotSvr
                 Str = HUtil32.GetValidStr3(Str, ref ssex, new string[] { "/" });
                 if ((uname != "") && (slevel != "") && (ssex != ""))
                 {
-                    if (uname[1] == '*')
+                    if (uname[0] == '*')
                     {
                         select = i;
-                        uname = uname.Substring(2 - 1, uname.Length - 1);
+                        uname = uname.Substring(1, uname.Length - 1);
                     }
                     SelectChrScene.AddChr(uname, HUtil32.Str_ToInt(sjob, 0), HUtil32.Str_ToInt(shair, 0), HUtil32.Str_ToInt(slevel, 0), HUtil32.Str_ToInt(ssex, 0));
+                    nChrCount++;
                 }
                 if (select == 0)
                 {
@@ -4958,7 +4961,7 @@ namespace RobotSvr
                     selectChrScene.ChrArr[1].Selected = true;
                 }
             }
-            if (selectChrScene.ChrArr.Length > 0)
+            if (nChrCount > 0)
             {
                 SendSelChr(selectChrScene.ChrArr[select].UserChr.Name);
             }

@@ -74,7 +74,7 @@ namespace RobotSvr
             {
                 chrname = ChrArr[1].UserChr.Name;
             }
-            if (chrname != "")
+            if (!string.IsNullOrEmpty(chrname))
             {
                 if (!MShare.g_boDoFadeOut && !MShare.g_boDoFadeIn)
                 {

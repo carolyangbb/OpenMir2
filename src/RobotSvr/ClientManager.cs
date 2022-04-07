@@ -87,9 +87,10 @@ namespace RobotSvr
             {
                 g_dwProcessTimeMax = g_dwProcessTimeMin;
             }
+            RunAutoPlay();
         }
 
-        public static void RunAutoPlay()
+        private static void RunAutoPlay()
         {
             HUtil32.EnterCriticalSections(_lock);
             try

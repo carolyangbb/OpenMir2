@@ -45,21 +45,14 @@ namespace RobotSvr
         /// </summary>
         private static long g_dwLogonTick = 0;
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             ClientManager.Start();
-            Task.Run(() =>
-            {
-                Start();
-            }, stoppingToken);
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                ClientManager.RunAutoPlay();
-                await Task.Delay(TimeSpan.FromSeconds(2), stoppingToken);
-            }
+            Start();
+            return Task.CompletedTask;
         }
 
-        public void Start()
+        private void Start()
         {
             while (true)
             {
@@ -103,7 +96,7 @@ namespace RobotSvr
             g_sServerName = "热血传奇";
             g_sGameIPaddr = "10.10.0.112";
             g_nGamePort = 7000;
-            g_boNewAccount = true;
+            g_boNewAccount = false;
             g_nChrCount = HUtil32._MIN(g_nChrCount, g_nTotalChrCount);
             g_dwLogonTick = HUtil32.GetTickCount() - 1000 * g_nChrCount;
             g_sAccount = "rotbot";
