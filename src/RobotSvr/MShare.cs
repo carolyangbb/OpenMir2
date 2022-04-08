@@ -1793,7 +1793,7 @@ namespace RobotSvr
         i_Other
     }
 
-    public struct TChrMsg
+    public record struct TChrMsg
     {
         public int Ident;
         public int X;

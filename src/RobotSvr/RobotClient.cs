@@ -864,95 +864,24 @@ namespace RobotSvr
                         boContinue = true;
                         goto labSpell;
                     }
-                    if (pcm.Def.wMagicID == 26)
+                    switch (pcm.Def.wMagicID)
                     {
-                        // 烈火时间间隔
-                        if (MShare.g_boNextTimeFireHit || (MShare.GetTickCount() - MShare.g_dwLatestFireHitTick <= 10 * 1000))
-                        {
+                        case 26 when MShare.g_boNextTimeFireHit || (MShare.GetTickCount() - MShare.g_dwLatestFireHitTick <= 10 * 1000): // 烈火时间间隔
+                        case 66 when MShare.g_boCanSLonHit || (MShare.GetTickCount() - MShare.g_dwLatestSLonHitTick <= 8 * 1000):
+                        case 43 when MShare.g_boNextTimeTwinHit || (MShare.GetTickCount() - MShare.g_dwLatestTwinHitTick <= 15 * 1000):
+                        case 56 when MShare.g_boNextTimePursueHit || (MShare.GetTickCount() - MShare.g_dwLatestPursueHitTick <= 10 * 1000): // 野蛮时间间隔
+                        case 27 when MShare.GetTickCount() - MShare.g_dwLatestRushRushTick <= 3 * 1000:
                             return;
-                        }
-                    }
-                    if (pcm.Def.wMagicID == 66)
-                    {
-                        if (MShare.g_boCanSLonHit || (MShare.GetTickCount() - MShare.g_dwLatestSLonHitTick <= 8 * 1000))
-                        {
+                        case 100 when boContinue || (CanNextAction() && ServerAcceptNextAction() && CanNextHit()):
+                            break;
+                        case 100:
+                        case 101 when MShare.g_boNextTimeSmiteHit || (MShare.GetTickCount() - MShare.g_dwLatestSmiteHitTick <= 1 * 100):
+                        case 102 when MShare.g_boNextTimeSmiteLongHit || (MShare.GetTickCount() - MShare.g_dwLatestSmiteLongHitTick <= 1 * 100):
+                        case 103 when MShare.g_boNextTimeSmiteWideHit || (MShare.GetTickCount() - MShare.g_dwLatestSmiteWideHitTick <= 1 * 100):
+                        case 113 when MShare.g_boNextTimeSmiteLongHit2 || (MShare.GetTickCount() - MShare.g_dwLatestSmiteLongHitTick2 <= 10 * 1000):
+                        case 114 when MShare.g_boNextTimeSmiteWideHit2 || (MShare.GetTickCount() - MShare.g_dwLatestSmiteWideHitTick2 <= 2 * 1000):
+                        case 115 when MShare.g_boNextTimeSmiteLongHit3 || (MShare.GetTickCount() - MShare.g_dwLatestSmiteLongHitTick3 <= 2 * 1000):
                             return;
-                        }
-                    }
-                    if (pcm.Def.wMagicID == 43)
-                    {
-                        if (MShare.g_boNextTimeTwinHit || (MShare.GetTickCount() - MShare.g_dwLatestTwinHitTick <= 15 * 1000))
-                        {
-                            return;
-                        }
-                    }
-                    if (pcm.Def.wMagicID == 56)
-                    {
-                        if (MShare.g_boNextTimePursueHit || (MShare.GetTickCount() - MShare.g_dwLatestPursueHitTick <= 10 * 1000))
-                        {
-                            return;
-                        }
-                    }
-                    if (new ArrayList(new int[] { 27 }).Contains(pcm.Def.wMagicID))
-                    {
-                        // 野蛮时间间隔
-                        if (MShare.GetTickCount() - MShare.g_dwLatestRushRushTick <= 3 * 1000)
-                        {
-                            return;
-                        }
-                    }
-                    // /////////////////////////////////////////////
-                    if (pcm.Def.wMagicID == 100)
-                    {
-                        if (boContinue || (CanNextAction() && ServerAcceptNextAction() && CanNextHit()))
-                        {
-                        }
-                        else
-                        {
-                            return;
-                        }
-                    }
-                    if (pcm.Def.wMagicID == 101)
-                    {
-                        if (MShare.g_boNextTimeSmiteHit || (MShare.GetTickCount() - MShare.g_dwLatestSmiteHitTick <= 1 * 100))
-                        {
-                            return;
-                        }
-                    }
-                    if (pcm.Def.wMagicID == 102)
-                    {
-                        if (MShare.g_boNextTimeSmiteLongHit || (MShare.GetTickCount() - MShare.g_dwLatestSmiteLongHitTick <= 1 * 100))
-                        {
-                            return;
-                        }
-                    }
-                    if (pcm.Def.wMagicID == 103)
-                    {
-                        if (MShare.g_boNextTimeSmiteWideHit || (MShare.GetTickCount() - MShare.g_dwLatestSmiteWideHitTick <= 1 * 100))
-                        {
-                            return;
-                        }
-                    }
-                    if (pcm.Def.wMagicID == 113)
-                    {
-                        if (MShare.g_boNextTimeSmiteLongHit2 || (MShare.GetTickCount() - MShare.g_dwLatestSmiteLongHitTick2 <= 10 * 1000))
-                        {
-                            return;
-                        }
-                    }
-                    if (pcm.Def.wMagicID == 114)
-                    {
-                        if (MShare.g_boNextTimeSmiteWideHit2 || (MShare.GetTickCount() - MShare.g_dwLatestSmiteWideHitTick2 <= 2 * 1000))
-                        {
-                            return;
-                        }
-                    }
-                    if (pcm.Def.wMagicID == 115)
-                    {
-                        if (MShare.g_boNextTimeSmiteLongHit3 || (MShare.GetTickCount() - MShare.g_dwLatestSmiteLongHitTick3 <= 2 * 1000))
-                        {
-                            return;
-                        }
                     }
                     if (MShare.g_boSpeedRate)
                     {
@@ -960,7 +889,6 @@ namespace RobotSvr
                         {
                             MShare.g_dwLatestSpellTick = MShare.GetTickCount();
                             MShare.g_dwMagicDelayTime = 0;
-                            // x
                             SendSpellMsg(Grobal2.CM_SPELL, MShare.g_MySelf.m_btDir, 0, pcm.Def.wMagicID, 0, false);
                         }
                     }
@@ -970,15 +898,12 @@ namespace RobotSvr
                         {
                             MShare.g_dwLatestSpellTick = MShare.GetTickCount();
                             MShare.g_dwMagicDelayTime = 0;
-                            // x
                             SendSpellMsg(Grobal2.CM_SPELL, MShare.g_MySelf.m_btDir, 0, pcm.Def.wMagicID, 0, false);
                         }
                     }
-                    // g_MySelf.SendMsg(CM_SPELL, targx, targy, tdir, Integer(pmag), targid, '', 0);
-                    // DScreen.AddChatBoardString(string.Format('%d:%d', [pcm.Def.wMagicID, SpellSpend]), GetRGB(5), clWhite);
                 }
             labSpell:
-                fUnLockMagic = new ArrayList(new int[] { 2, 9, 10, 14, 21, 33, 37, 41, 46, 50, 58, 70, 72, 75 }).Contains(pcm.Def.wMagicID);
+                fUnLockMagic = new ArrayList(new[] { 2, 9, 10, 14, 21, 33, 37, 41, 46, 50, 58, 70, 72, 75 }).Contains(pcm.Def.wMagicID);
                 if (fUnLockMagic)
                 {
                     MShare.g_MagicTarget = MShare.g_FocusCret;
@@ -1061,10 +986,10 @@ namespace RobotSvr
                 {
                     MShare.g_dwLatestSpellTick = MShare.GetTickCount();
                     tdir = ClFunc.GetFlyDirection(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, targx, targy);
-                    //pmag = new TUseMagicInfo();
-                    //pmag.EffectNumber = pcm.Def.btEffect;
-                    //pmag.MagicSerial = pcm.Def.wMagicID;
-                    //pmag.ServerMagicCode = 0;
+                    var pmag = new TUseMagicInfo();
+                    pmag.EffectNumber = pcm.Def.btEffect;
+                    pmag.MagicSerial = pcm.Def.wMagicID;
+                    pmag.ServerMagicCode = 0;
                     MShare.g_dwMagicDelayTime = 200 + pcm.Def.dwDelayTime;
                     MShare.g_dwMagicPKDelayTime = 0;
                     if (MShare.g_MagicTarget != null)
@@ -1084,13 +1009,13 @@ namespace RobotSvr
                     if (MShare.GetTickCount() - MShare.g_IPointLessHintTick > 5000)
                     {
                         MShare.g_IPointLessHintTick = MShare.GetTickCount();
-                        DScreen.AddSysMsg(string.Format("需要 {0} 内力值才能释放 {1}", SpellSpend, pcm.Def.sMagicName));
+                        DScreen.AddSysMsg($"需要 {SpellSpend} 内力值才能释放 {pcm.Def.sMagicName}");
                     }
                 }
                 else if (MShare.GetTickCount() - MShare.g_MPLessHintTick > 1000)
                 {
                     MShare.g_MPLessHintTick = MShare.GetTickCount();
-                    DScreen.AddSysMsg(string.Format("需要 {0} 魔法值才能释放 {1}", SpellSpend, pcm.Def.sMagicName));
+                    DScreen.AddSysMsg($"需要 {SpellSpend} 魔法值才能释放 {pcm.Def.sMagicName}");
                 }
             }
         }
@@ -1100,13 +1025,13 @@ namespace RobotSvr
             TActor Actor = g_PlayScene.FindActor(who);
             if (Actor != null)
             {
-                //adir = ClFunc.GetFlyDirection(Actor.m_nCurrX, Actor.m_nCurrY, targetx, targety);
-                //TUseMagicInfo UseMagic = new TUseMagicInfo();
-                //UseMagic.EffectNumber = effnum % 255;
-                //UseMagic.ServerMagicCode = 0;
-                //UseMagic.MagicSerial = magic_id % 300;
-                //Actor.SendMsg(Grobal2.SM_SPELL, effnum / 255, magic_id / 300, adir, (int)UseMagic, 0, "", 0);
-                //MShare.g_nSpellCount++;
+                var adir = ClFunc.GetFlyDirection(Actor.m_nCurrX, Actor.m_nCurrY, targetx, targety);
+                TUseMagicInfo UseMagic = new TUseMagicInfo();
+                UseMagic.EffectNumber = effnum % 255;
+                UseMagic.ServerMagicCode = 0;
+                UseMagic.MagicSerial = magic_id % 300;
+                //Actor.SendMsg(Grobal2.SM_SPELL, effnum / 255, magic_id / 300, adir, UseMagic, 0, "", 0);
+                MShare.g_nSpellCount++;
             }
             else
             {
@@ -1116,13 +1041,10 @@ namespace RobotSvr
 
         private void UseMagicFire(int who, int efftype, int effnum, int targetx, int targety, int target, int maglv)
         {
-            TActor Actor;
-            int Sound;
-            Sound = 0;
-            Actor = g_PlayScene.FindActor(who);
+            var Actor = g_PlayScene.FindActor(who);
             if (Actor != null)
             {
-                Actor.SendMsg(Grobal2.SM_MAGICFIRE, target, efftype, effnum, targetx, targety, maglv.ToString(), Sound);
+                Actor.SendMsg(Grobal2.SM_MAGICFIRE, target, efftype, effnum, targetx, targety, maglv.ToString(), 0);
                 if (MShare.g_nFireCount < MShare.g_nSpellCount)
                 {
                     MShare.g_nFireCount++;
@@ -1133,8 +1055,7 @@ namespace RobotSvr
 
         private void UseMagicFireFail(int who)
         {
-            TActor Actor;
-            Actor = g_PlayScene.FindActor(who);
+            var Actor = g_PlayScene.FindActor(who);
             if (Actor != null)
             {
                 Actor.SendMsg(Grobal2.SM_MAGICFIRE_FAIL, 0, 0, 0, 0, 0, "", 0);
@@ -1612,11 +1533,9 @@ namespace RobotSvr
                     }
                     if ((MShare.g_EatingItem.Item.StdMode == 4) && (MShare.g_EatingItem.Item.Shape < 50))
                     {
-                        //if (System.Windows.Forms.DialogResult.Yes != DebugOutStr("是否确认开始练习 \"" + MShare.g_EatingItem.Item.Name + "\"？", new object[] { MessageBoxButtons.YesNo, MessageBoxButtons.YesNo }))
-                        //{
-                        //    ClFunc.AddItemBag(MShare.g_EatingItem);
-                        //    return;
-                        //}
+                        MainOutMessage($"练习{MShare.g_EatingItem.Item.Name}技能");
+                        ClFunc.AddItemBag(MShare.g_EatingItem);
+                        return;
                     }
                     idx = m_nEatRetIdx;
                     eatable = true;
@@ -1755,20 +1674,16 @@ namespace RobotSvr
 
         public bool TargetInSwordWideAttackRange(int ndir)
         {
-            bool result;
             int nX = 0;
             int nY = 0;
             int rx = 0;
             int ry = 0;
-            int mdir;
-            TActor Actor;
-            TActor ractor;
-            result = false;
+            var result = false;
             ClFunc.GetFrontPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, ndir, ref nX, ref nY);
-            Actor = g_PlayScene.FindActorXY(nX, nY);
-            mdir = (ndir + 1) % 8;
+            var Actor = g_PlayScene.FindActorXY(nX, nY);
+            var mdir = (ndir + 1) % 8;
             ClFunc.GetFrontPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, mdir, ref rx, ref ry);
-            ractor = g_PlayScene.FindActorXY(rx, ry);
+            var ractor = g_PlayScene.FindActorXY(rx, ry);
             if (ractor == null)
             {
                 mdir = (ndir + 2) % 8;
@@ -1793,17 +1708,15 @@ namespace RobotSvr
 
         public bool TargetInSwordLongAttackRangeX(int ndir)
         {
-            int nC;
             int nX = 0;
             int nY = 0;
-            TActor Actor;
+            int nC = 1;
             bool result = false;
-            nC = 1;
             while (true)
             {
                 if (GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, ndir, nC, ref nX, ref nY))
                 {
-                    Actor = g_PlayScene.FindActorXY(nX, nY);
+                    var Actor = g_PlayScene.FindActorXY(nX, nY);
                     if ((Actor != null) && !Actor.m_boDeath)
                     {
                         result = true;
@@ -1897,7 +1810,7 @@ namespace RobotSvr
                     MShare.g_boAPAutoMove = false;
                     if (MShare.g_APTagget != null)
                     {
-                        MShare.g_sAPStr = string.Format("怪物目标：{0} ({1},{2}) 正在使用普通攻击", MShare.g_APTagget.m_sUserName, MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY);
+                        MShare.g_sAPStr = $"怪物目标：{MShare.g_APTagget.m_sUserName} ({MShare.g_APTagget.m_nCurrX},{MShare.g_APTagget.m_nCurrY}) 正在使用普通攻击";
                     }
                 }
             lab:
@@ -1977,10 +1890,7 @@ namespace RobotSvr
                 if (TimerAutoPlay.Enabled)
                 {
                     MShare.g_boAPAutoMove = true;
-                    if (target != null)
-                    {
-                        MShare.g_sAPStr = string.Format("怪物目标：{0} ({1},{2}) 正在跑向", target.m_sUserName, target.m_nCurrX, target.m_nCurrY);
-                    }
+                    MShare.g_sAPStr = $"怪物目标：{target.m_sUserName} ({target.m_nCurrX},{target.m_nCurrY}) 正在跑向";
                 }
             }
             return result;
@@ -2542,7 +2452,7 @@ namespace RobotSvr
         {
             if (ClientSocket.IsConnected)
             {
-                ClientSocket.SendText(string.Format("#1{0}!", sendstr));
+                ClientSocket.SendText($"#1{sendstr}!");
             }
         }
 
@@ -2643,7 +2553,7 @@ namespace RobotSvr
         {
             MainOutMessage("进入游戏");
             m_ConnectionStep = TConnectionStep.cnsPlay;
-            var sSendMsg = string.Format("**{0}/{1}/{2}/{3}/{4}", LoginID, m_sCharName, Certification, Grobal2.CLIENT_VERSION_NUMBER, 0);
+            var sSendMsg = $"**{LoginID}/{m_sCharName}/{Certification}/{Grobal2.CLIENT_VERSION_NUMBER}/{0}";
             SendSocket(EDcode.EncodeString(sSendMsg));
         }
 
@@ -2801,7 +2711,7 @@ namespace RobotSvr
                         {
                             if ((sM != "") && (MShare.g_sMapTitle.ToLower().CompareTo(sM.ToLower()) != 0))// 自动移动
                             {
-                                DScreen.AddChatBoardString(string.Format("到达 {0} 之后才能使用自动走路", sM), Color.Blue, Color.White);
+                                DScreen.AddChatBoardString($"到达 {sM} 之后才能使用自动走路", Color.Blue, Color.White);
                                 return;
                             }
                             X = Convert.ToInt32(sx);
@@ -3239,7 +3149,8 @@ namespace RobotSvr
                             MShare.g_MySelf.m_nTagX = 0;
                             MShare.g_MySelf.m_nTagY = 0;
                             TimerAutoMove.Enabled = false;
-                            DScreen.AddChatBoardString(string.Format("自动移动目标({0}:{1})被占据，不可到达", MShare.g_MySelf.m_nTagX, MShare.g_MySelf.m_nTagY), GetRGB(5), Color.White);
+                            DScreen.AddChatBoardString(
+                                $"自动移动目标({MShare.g_MySelf.m_nTagX}:{MShare.g_MySelf.m_nTagY})被占据，不可到达", GetRGB(5), Color.White);
                         }
                     }
                     finally
@@ -3285,7 +3196,6 @@ namespace RobotSvr
             TActor Actor;
             TActor Actor2;
             //TClEvent __event;
-            ServerConfigPacket svrcfg;
             if ((btPacket == 0) && (datablock[0] == '+'))
             {
                 ProcessActMsg(datablock);
@@ -3537,7 +3447,7 @@ namespace RobotSvr
                     ClientGetServerConfig(msg, body);
                     break;
                 case Grobal2.SM_SERVERCONFIG2:
-                    svrcfg = EDcode.DecodeBuffer<ServerConfigPacket>(EDcode.DeCodeString(body));
+                    var svrcfg = EDcode.DecodeBuffer<ServerConfigPacket>(EDcode.DeCodeString(body));
                     MShare.g_boAutoSay = svrcfg.AutoSay;
                     MShare.g_boMutiHero = svrcfg.Reserved[0] != 0;
                     MShare.g_boSkill_114_MP = svrcfg.Reserved[1] != 0;
@@ -3906,7 +3816,7 @@ namespace RobotSvr
                     MShare.g_MySelf.m_Abil.Exp = msg.Recog;
                     if (!MShare.g_gcGeneral[3] || (HUtil32.MakeLong(msg.Param, msg.Tag) > MShare.g_MaxExpFilter))
                     {
-                        DScreen.AddSysMsgBottom(string.Format("经验值 +{0}", HUtil32.MakeLong(msg.Param, msg.Tag)));
+                        DScreen.AddSysMsgBottom($"经验值 +{HUtil32.MakeLong(msg.Param, msg.Tag)}");
                     }
                     break;
                 case Grobal2.SM_LEVELUP:
@@ -6154,14 +6064,11 @@ namespace RobotSvr
 
         public TClientMagic GetMagicByID(int magid)
         {
-            TClientMagic result;
-            result = null;
             if ((magid <= 0) || (magid >= 255))
             {
-                return result;
+                return null;
             }
-            result = MShare.g_MagicArr[magid];
-            return result;
+            return MShare.g_MagicArr[magid];
         }
 
         public void ProcessPacket(string str)
@@ -6672,7 +6579,8 @@ namespace RobotSvr
                         MShare.g_nTargetY = MShare.g_AutoPicupItem.Y;
                         heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         MShare.g_nTargetX = -1;
-                        MShare.g_sAPStr = string.Format("物品目标：{0}({1},{2}) 正在去拾取", MShare.g_AutoPicupItem.Name, MShare.g_AutoPicupItem.X, MShare.g_AutoPicupItem.Y);
+                        MShare.g_sAPStr =
+                            $"物品目标：{MShare.g_AutoPicupItem.Name}({MShare.g_AutoPicupItem.X},{MShare.g_AutoPicupItem.Y}) 正在去拾取";
                     }
                     else if (MShare.g_AutoPicupItem != null)
                     {
@@ -6680,7 +6588,8 @@ namespace RobotSvr
                         MShare.g_nTargetY = MShare.g_AutoPicupItem.Y;
                         heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         MShare.g_nTargetX = -1;
-                        MShare.g_sAPStr = string.Format("物品目标：{0}({1},{2}) 正在去拾取", MShare.g_AutoPicupItem.Name, MShare.g_AutoPicupItem.X, MShare.g_AutoPicupItem.Y);
+                        MShare.g_sAPStr =
+                            $"物品目标：{MShare.g_AutoPicupItem.Name}({MShare.g_AutoPicupItem.X},{MShare.g_AutoPicupItem.Y}) 正在去拾取";
                     }
                     MShare.g_nAPStatus = 2;
                     MShare.g_boAPAutoMove = true;
@@ -6693,7 +6602,7 @@ namespace RobotSvr
                             MShare.g_nTargetX = MShare.g_APMapPath[MShare.g_APStep].X;
                             MShare.g_nTargetY = MShare.g_APMapPath[MShare.g_APStep].X;
                             heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
-                            MShare.g_sAPStr = string.Format("循路搜寻目标({0},{1})", MShare.g_nTargetX, MShare.g_nTargetY);
+                            MShare.g_sAPStr = $"循路搜寻目标({MShare.g_nTargetX},{MShare.g_nTargetY})";
                             MShare.g_nTargetX = -1;
                         }
                         else
@@ -6704,7 +6613,8 @@ namespace RobotSvr
                                 {
                                     heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                                 }
-                                MShare.g_sAPStr = string.Format("定点随机搜寻目标({0},{1})", MShare.g_APMapPath[MShare.g_APStep].X, MShare.g_APMapPath[MShare.g_APStep].X);
+                                MShare.g_sAPStr =
+                                    $"定点随机搜寻目标({MShare.g_APMapPath[MShare.g_APStep].X},{MShare.g_APMapPath[MShare.g_APStep].X})";
                                 MShare.g_nTargetX = -1;
                             }
                         }
@@ -6737,7 +6647,7 @@ namespace RobotSvr
                             MShare.g_nTargetY = MShare.g_APMapPath[MShare.g_APStep].X;
                             heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         }
-                        MShare.g_sAPStr = string.Format("超出搜寻范围,返回({0},{1})", MShare.g_nTargetX, MShare.g_nTargetY);
+                        MShare.g_sAPStr = $"超出搜寻范围,返回({MShare.g_nTargetX},{MShare.g_nTargetY})";
                         MShare.g_nTargetX = -1;
                     }
                     else if ((MShare.g_nTargetX == -1) || (MShare.g_APPathList.Count == 0))
@@ -6747,7 +6657,7 @@ namespace RobotSvr
                         {
                             heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         }
-                        MShare.g_sAPStr = string.Format("超出搜寻范围,随机搜寻目标({0},{1})", MShare.g_nTargetX, MShare.g_nTargetY);
+                        MShare.g_sAPStr = $"超出搜寻范围,随机搜寻目标({MShare.g_nTargetX},{MShare.g_nTargetY})";
                         MShare.g_nTargetX = -1;
                     }
                     MShare.g_nAPStatus = 3;
@@ -6818,98 +6728,17 @@ namespace RobotSvr
             Console.WriteLine(MShare.g_sAPStr);
         }
 
-        public void InitSuiteStrs(int Len, string S)
-        {
-            //int i;
-            //int len2;
-            //TClientSuiteItems[] aaa;
-            //object P;
-            //object p2;
-            //int cnt;
-            //TClientSuiteItems SuiteItems;
-            //for (i = 0; i < MShare.g_SuiteItemsList.Count; i++)
-            //{
-            //    this.Dispose((TClientSuiteItems)MShare.g_SuiteItemsList[i]);
-            //}
-            //MShare.g_SuiteItemsList.Clear();
-            //if (Len == 0)
-            //{
-            //    return;
-            //}
-            //GetMem(P, Len);
-            //EDcode.DecodeBuffer2(S, P as string, Len);
-            //FVCLUnZip.ZLibDecompressBuffer(P, Len, p2, len2);
-            //FreeMem(P);
-            //cnt = len2 / sizeof(TClientSuiteItems);
-            //aaa = new TClientSuiteItems[cnt];
-            //Move(p2 as string, aaa[0], len2);
-            //FreeMem(p2);
-            //for (i = aaa.GetLowerBound(0); i <= aaa.GetUpperBound(0); i++)
-            //{
-            //    SuiteItems = new TClientSuiteItems();
-            //    SuiteItems = aaa[i];
-            //    MShare.g_SuiteItemsList.Add(SuiteItems);
-            //}
-        }
-
-        private void ClientGetFoxState(ClientPacket msg, string Buff)
-        {
-            //int i;
-            //string NameCol;
-            //string data;
-            //string Buff2;
-            //TCharDesc desc;
-            //TActor Actor;
-            //i = HUtil32.GetCodeMsgSize(sizeof(TCharDesc) * 4 / 3);
-            //if (Buff.Length > i)
-            //{
-            //    Buff2 = Buff.Substring(i + 1 - 1, Buff.Length);
-            //    data = EDcode.DeCodeString(Buff2);
-            //    Buff2 = Buff.Substring(1 - 1, i);
-            //    NameCol = HUtil32.GetValidStr3(data, ref data, new string[] { "/" });
-            //}
-            //else
-            //{
-            //    Buff2 = Buff;
-            //    data = "";
-            //}
-            //EDcode.DecodeBuffer(Buff2, desc);
-            //g_PlayScene.SendMsg(Grobal2.SM_TURN, msg.Recog, msg.Param, msg.Tag, msg.Series, desc.Feature, desc.Status, "", 0);
-            //if (data != "")
-            //{
-            //    Actor = g_PlayScene.FindActor(msg.Recog);
-            //    if (Actor != null)
-            //    {
-            //        Actor.m_sDescUserName = HUtil32.GetValidStr3(data, ref Actor.m_sUserName, new string[] { "\\" });
-            //        Actor.m_sUserNameOffSet = HGECanvas.Units.HGECanvas.g_DXCanvas.TextWidth(Actor.m_sUserName) / 2;
-            //        Actor.m_btNameColor = HUtil32.Str_ToInt(NameCol, 0);
-            //        if (Actor.m_btRace == Grobal2.RCC_MERCHANT)
-            //        {
-            //            Actor.m_nNameColor = Color.Lime;
-            //        }
-            //        else
-            //        {
-            //            Actor.m_nNameColor = GetRGB(Actor.m_btNameColor);
-            //        }
-            //        Actor.m_nTempState = HUtil32.HiByte(msg.Series);
-            //    }
-            //}
-        }
-
         private void ProcessActMsg(string datablock)
         {
             string data = string.Empty;
             string tagstr = string.Empty;
-            int cltime;
-            int svtime;
-            int rtime;
-            if ((datablock[2] == 'G') && (datablock[3] == 'D') && (datablock[4] == '/'))
+            if ((datablock[1] == 'G') && (datablock[2] == 'D') && (datablock[3] == '/'))
             {
                 data = datablock.Substring(1, datablock.Length - 1);
                 data = HUtil32.GetValidStr3(data, ref tagstr, new string[] { "/" });
                 if (data != "")
                 {
-                    rtime = HUtil32.Str_ToInt(data, 0);
+                    var rtime = HUtil32.Str_ToInt(data, 0);
                     if (rtime <= 0)
                     {
                         return;
@@ -6933,8 +6762,8 @@ namespace RobotSvr
                             MShare.g_dwFirstServerTime = rtime;
                             MShare.g_dwFirstClientTime = MShare.GetTickCount();
                         }
-                        cltime = MShare.GetTickCount() - MShare.g_dwFirstClientTime;
-                        svtime = rtime - MShare.g_dwFirstServerTime;
+                        var cltime = MShare.GetTickCount() - MShare.g_dwFirstClientTime;
+                        var svtime = rtime - MShare.g_dwFirstServerTime;
                         // DScreen.AddChatBoardString('[速度检测] 时间差：' + IntToStr(cltime - svtime), GetRGB(219), clWhite);
                         if (cltime > svtime + 4500)
                         {
@@ -6981,168 +6810,136 @@ namespace RobotSvr
             {
                 tagstr = datablock.Substring(2 - 1, datablock.Length - 1);
             }
-            if (tagstr == "DIG")
+            switch (tagstr)
             {
-                MShare.g_MySelf.m_boDigFragment = true;
-            }
-            else if (tagstr == "PWR")
-            {
-                MShare.g_boNextTimePowerHit = true;
-            }
-            else if (tagstr == "LNG")
-            {
-                MShare.g_boCanLongHit = true;
-            }
-            else if (tagstr == "ULNG")
-            {
-                MShare.g_boCanLongHit = false;
-            }
-            else if (tagstr == "WID")
-            {
-                MShare.g_boCanWideHit = true;
-            }
-            else if (tagstr == "UWID")
-            {
-                MShare.g_boCanWideHit = false;
-            }
-            else if (tagstr == "STN")
-            {
-                MShare.g_boCanStnHit = true;
-            }
-            else if (tagstr == "USTN")
-            {
-                MShare.g_boCanStnHit = false;
-            }
-            else if (tagstr == "CRS")
-            {
-                MShare.g_boCanCrsHit = true;
-                DScreen.AddChatBoardString("双龙斩开启", GetRGB(219), Color.White);
-            }
-            else if (tagstr == "UCRS")
-            {
-                MShare.g_boCanCrsHit = false;
-                DScreen.AddChatBoardString("双龙斩关闭", GetRGB(219), Color.White);
-            }
-            else if (tagstr == "TWN")
-            {
-                MShare.g_boNextTimeTwinHit = true;
-                MShare.g_dwLatestTwinHitTick = MShare.GetTickCount();
-                DScreen.AddChatBoardString("召集雷电力量成功", GetRGB(219), Color.White);
-            }
-            else if (tagstr == "UTWN")
-            {
-                MShare.g_boNextTimeTwinHit = false;
-                DScreen.AddChatBoardString("雷电力量消失", GetRGB(219), Color.White);
-            }
-            else if (tagstr == "SQU")
-            {
-                MShare.g_boCanSquHit = true;
-                DScreen.AddChatBoardString("[龙影剑法] 开启", GetRGB(219), Color.White);
-            }
-            else if (tagstr == "FIR")
-            {
-                MShare.g_boNextTimeFireHit = true;
-                MShare.g_dwLatestFireHitTick = MShare.GetTickCount();
-            }
-            else if (tagstr == "PUR")
-            {
-                MShare.g_boNextTimePursueHit = true;
-                MShare.g_dwLatestPursueHitTick = MShare.GetTickCount();
-            }
-            else if (tagstr == "RSH")
-            {
-                MShare.g_boNextTimeRushHit = true;
-                MShare.g_dwLatestRushHitTick = MShare.GetTickCount();
-            }
-            else if (tagstr == "SMI")
-            {
-                MShare.g_boNextTimeSmiteHit = true;
-                MShare.g_dwLatestSmiteHitTick = MShare.GetTickCount();
-            }
-            else if (tagstr == "SMIL3")
-            {
-                MShare.g_boNextTimeSmiteLongHit3 = true;
-                MShare.g_dwLatestSmiteLongHitTick3 = MShare.GetTickCount();
-                DScreen.AddChatBoardString("[血魂一击] 已准备...", GetRGB(219), Color.White);
-            }
-            else if (tagstr == "SMIL")
-            {
-                MShare.g_boNextTimeSmiteLongHit = true;
-                MShare.g_dwLatestSmiteLongHitTick = MShare.GetTickCount();
-            }
-            else if (tagstr == "SMIL2")
-            {
-                MShare.g_boNextTimeSmiteLongHit2 = true;
-                MShare.g_dwLatestSmiteLongHitTick2 = MShare.GetTickCount();
-                DScreen.AddChatBoardString("[断空斩] 已准备...", GetRGB(219), Color.White);
-            }
-            else if (tagstr == "SMIW")
-            {
-                MShare.g_boNextTimeSmiteWideHit = true;
-                MShare.g_dwLatestSmiteWideHitTick = MShare.GetTickCount();
-            }
-            else if (tagstr == "SMIW2")
-            {
-                MShare.g_boNextTimeSmiteWideHit2 = true;
-                MShare.g_dwLatestSmiteWideHitTick2 = MShare.GetTickCount();
-                DScreen.AddChatBoardString("[倚天辟地] 已准备", Color.Blue, Color.White);
-            }
-            else if (tagstr == "MDS")
-            {
-                DScreen.AddChatBoardString("[美杜莎之瞳] 技能可施展", Color.Blue, Color.White);
-            }
-            else if (tagstr == "UFIR")
-            {
-                MShare.g_boNextTimeFireHit = false;
-            }
-            else if (tagstr == "UPUR")
-            {
-                MShare.g_boNextTimePursueHit = false;
-            }
-            else if (tagstr == "USMI")
-            {
-                MShare.g_boNextTimeSmiteHit = false;
-            }
-            else if (tagstr == "URSH")
-            {
-                MShare.g_boNextTimeRushHit = false;
-            }
-            else if (tagstr == "USMIL")
-            {
-                MShare.g_boNextTimeSmiteLongHit = false;
-            }
-            else if (tagstr == "USML3")
-            {
-                MShare.g_boNextTimeSmiteLongHit3 = false;
-            }
-            else if (tagstr == "USML2")
-            {
-                MShare.g_boNextTimeSmiteLongHit2 = false;
-                // DScreen.AddChatBoardString('[断空斩] 力量消失...', clWhite, clRed);
-            }
-            else if (tagstr == "USMIW")
-            {
-                MShare.g_boNextTimeSmiteWideHit = false;
-            }
-            else if (tagstr == "USMIW2")
-            {
-                MShare.g_boNextTimeSmiteWideHit2 = false;
-            }
-            else if (tagstr == "USQU")
-            {
-                MShare.g_boCanSquHit = false;
-                DScreen.AddChatBoardString("[龙影剑法] 关闭", GetRGB(219), Color.White);
-            }
-            else if (tagstr == "SLON")
-            {
-                MShare.g_boCanSLonHit = true;
-                MShare.g_dwLatestSLonHitTick = MShare.GetTickCount();
-                DScreen.AddChatBoardString("[开天斩] 力量凝聚...", GetRGB(219), Color.White);
-            }
-            else if (tagstr == "USLON")
-            {
-                MShare.g_boCanSLonHit = false;
-                DScreen.AddChatBoardString("[开天斩] 力量消失", Color.White, Color.Red);
+                case "DIG":
+                    MShare.g_MySelf.m_boDigFragment = true;
+                    break;
+                case "PWR":
+                    MShare.g_boNextTimePowerHit = true;
+                    break;
+                case "LNG":
+                    MShare.g_boCanLongHit = true;
+                    break;
+                case "ULNG":
+                    MShare.g_boCanLongHit = false;
+                    break;
+                case "WID":
+                    MShare.g_boCanWideHit = true;
+                    break;
+                case "UWID":
+                    MShare.g_boCanWideHit = false;
+                    break;
+                case "STN":
+                    MShare.g_boCanStnHit = true;
+                    break;
+                case "USTN":
+                    MShare.g_boCanStnHit = false;
+                    break;
+                case "CRS":
+                    MShare.g_boCanCrsHit = true;
+                    DScreen.AddChatBoardString("双龙斩开启", GetRGB(219), Color.White);
+                    break;
+                case "UCRS":
+                    MShare.g_boCanCrsHit = false;
+                    DScreen.AddChatBoardString("双龙斩关闭", GetRGB(219), Color.White);
+                    break;
+                case "TWN":
+                    MShare.g_boNextTimeTwinHit = true;
+                    MShare.g_dwLatestTwinHitTick = MShare.GetTickCount();
+                    DScreen.AddChatBoardString("召集雷电力量成功", GetRGB(219), Color.White);
+                    break;
+                case "UTWN":
+                    MShare.g_boNextTimeTwinHit = false;
+                    DScreen.AddChatBoardString("雷电力量消失", GetRGB(219), Color.White);
+                    break;
+                case "SQU":
+                    MShare.g_boCanSquHit = true;
+                    DScreen.AddChatBoardString("[龙影剑法] 开启", GetRGB(219), Color.White);
+                    break;
+                case "FIR":
+                    MShare.g_boNextTimeFireHit = true;
+                    MShare.g_dwLatestFireHitTick = MShare.GetTickCount();
+                    break;
+                case "PUR":
+                    MShare.g_boNextTimePursueHit = true;
+                    MShare.g_dwLatestPursueHitTick = MShare.GetTickCount();
+                    break;
+                case "RSH":
+                    MShare.g_boNextTimeRushHit = true;
+                    MShare.g_dwLatestRushHitTick = MShare.GetTickCount();
+                    break;
+                case "SMI":
+                    MShare.g_boNextTimeSmiteHit = true;
+                    MShare.g_dwLatestSmiteHitTick = MShare.GetTickCount();
+                    break;
+                case "SMIL3":
+                    MShare.g_boNextTimeSmiteLongHit3 = true;
+                    MShare.g_dwLatestSmiteLongHitTick3 = MShare.GetTickCount();
+                    DScreen.AddChatBoardString("[血魂一击] 已准备...", GetRGB(219), Color.White);
+                    break;
+                case "SMIL":
+                    MShare.g_boNextTimeSmiteLongHit = true;
+                    MShare.g_dwLatestSmiteLongHitTick = MShare.GetTickCount();
+                    break;
+                case "SMIL2":
+                    MShare.g_boNextTimeSmiteLongHit2 = true;
+                    MShare.g_dwLatestSmiteLongHitTick2 = MShare.GetTickCount();
+                    DScreen.AddChatBoardString("[断空斩] 已准备...", GetRGB(219), Color.White);
+                    break;
+                case "SMIW":
+                    MShare.g_boNextTimeSmiteWideHit = true;
+                    MShare.g_dwLatestSmiteWideHitTick = MShare.GetTickCount();
+                    break;
+                case "SMIW2":
+                    MShare.g_boNextTimeSmiteWideHit2 = true;
+                    MShare.g_dwLatestSmiteWideHitTick2 = MShare.GetTickCount();
+                    DScreen.AddChatBoardString("[倚天辟地] 已准备", Color.Blue, Color.White);
+                    break;
+                case "MDS":
+                    DScreen.AddChatBoardString("[美杜莎之瞳] 技能可施展", Color.Blue, Color.White);
+                    break;
+                case "UFIR":
+                    MShare.g_boNextTimeFireHit = false;
+                    break;
+                case "UPUR":
+                    MShare.g_boNextTimePursueHit = false;
+                    break;
+                case "USMI":
+                    MShare.g_boNextTimeSmiteHit = false;
+                    break;
+                case "URSH":
+                    MShare.g_boNextTimeRushHit = false;
+                    break;
+                case "USMIL":
+                    MShare.g_boNextTimeSmiteLongHit = false;
+                    break;
+                case "USML3":
+                    MShare.g_boNextTimeSmiteLongHit3 = false;
+                    break;
+                case "USML2":
+                    MShare.g_boNextTimeSmiteLongHit2 = false;
+                    // DScreen.AddChatBoardString('[断空斩] 力量消失...', clWhite, clRed);
+                    break;
+                case "USMIW":
+                    MShare.g_boNextTimeSmiteWideHit = false;
+                    break;
+                case "USMIW2":
+                    MShare.g_boNextTimeSmiteWideHit2 = false;
+                    break;
+                case "USQU":
+                    MShare.g_boCanSquHit = false;
+                    DScreen.AddChatBoardString("[龙影剑法] 关闭", GetRGB(219), Color.White);
+                    break;
+                case "SLON":
+                    MShare.g_boCanSLonHit = true;
+                    MShare.g_dwLatestSLonHitTick = MShare.GetTickCount();
+                    DScreen.AddChatBoardString("[开天斩] 力量凝聚...", GetRGB(219), Color.White);
+                    break;
+                case "USLON":
+                    MShare.g_boCanSLonHit = false;
+                    DScreen.AddChatBoardString("[开天斩] 力量消失", Color.White, Color.Red);
+                    break;
             }
         }
 

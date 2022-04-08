@@ -6,6 +6,7 @@
     <file url="file://$PROJECT_DIR$/../Data/Mirserver/Mir200/String.conf" charset="GB2312" />
     <file url="file://$PROJECT_DIR$/src/DBSvr/bin/Debug/net6.0/dbsvr.conf" charset="GB2312" />
     <file url="file://$PROJECT_DIR$/src/LoginSvr/bin/Debug/net6.0/!AddrTable.txt" charset="GB2312" />
+    <file url="file://$PROJECT_DIR$/src/RobotSvr/ClFunc.cs" charset="GB2312" />
     <file url="file://$PROJECT_DIR$/src/RobotSvr/MShare.cs" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/RobotSvr/Objects/AxeMon.cs" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/RobotSvr/Scenes/IntroScn.cs" charset="GBK" />

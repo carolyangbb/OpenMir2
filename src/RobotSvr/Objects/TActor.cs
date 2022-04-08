@@ -231,7 +231,6 @@ namespace RobotSvr
             m_nDownDrawLevel = 0;
             m_nCurrentFrame = -1;
             m_nEffectFrame = -1;
-            RealActionMsg.Ident = 0;
             m_sUserName = "";
             m_sAutoSayMsg = "";
             m_btNameColor = 255;

@@ -1,38 +1,39 @@
-﻿namespace RobotSvr;
-
-public class Scene
+﻿namespace RobotSvr
 {
-    public SceneType Scenetype;
-    public RobotClient robotClient;
-
-    public Scene(SceneType scenetype, RobotClient robotClient)
+    public class Scene
     {
-        this.Scenetype = scenetype;
-        this.robotClient = robotClient;
-    }
+        public SceneType Scenetype;
+        public RobotClient robotClient;
 
-    public virtual void Initialize()
-    {
+        public Scene(SceneType scenetype, RobotClient robotClient)
+        {
+            this.Scenetype = scenetype;
+            this.robotClient = robotClient;
+        }
 
-    }
+        public virtual void Initialize()
+        {
 
-    public virtual void OpenScene()
-    {
+        }
 
-    }
+        public virtual void OpenScene()
+        {
 
-    public virtual void CloseScene()
-    {
+        }
 
-    }
+        public virtual void CloseScene()
+        {
 
-    public virtual void OpeningScene()
-    {
+        }
 
-    }
+        public virtual void OpeningScene()
+        {
 
-    public virtual void PlayScene()
-    {
+        }
 
+        public virtual void PlayScene()
+        {
+
+        }
     }
 }
