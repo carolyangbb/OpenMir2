@@ -565,6 +565,9 @@ namespace RobotSvr
                         m_ChrMsg.Ident = Grobal2.SM_TURN;
                         ReadyAction(m_ChrMsg);
                         break;
+                    default:
+                        ReadyAction(m_ChrMsg); //Damian
+                        break;
                 }
             }
         }
@@ -1084,23 +1087,25 @@ namespace RobotSvr
                             }
                         }
                     }
-
                     if (m_boUseMagic)
+                    {
                         if (m_nCurEffFrame == m_nSpellFrame - 1)
                         {
                             if (m_CurMagic.ServerMagicCode > 0)
                             {
                                 //robotClient.g_PlayScene.NewMagic(this, m_CurMagic.ServerMagicCode, m_CurMagic.EffectNumber, m_nCurrX, m_nCurrY, m_CurMagic.targx, m_CurMagic.targy, m_CurMagic.target, m_CurMagic.EffectType, m_CurMagic.Recusion, m_CurMagic.anitime, ref boFly, m_CurMagic.magfirelv);
                             }
-
                             m_CurMagic.ServerMagicCode = 0;
                         }
+                    }
                 }
-
-                if (new ArrayList(new[] { 0, 1, 43 }).Contains(m_wAppearance))
+                if (m_wAppearance == 0 || m_wAppearance == 1 || m_wAppearance == 43)
+                {
                     m_nCurrentDefFrame = -10;
-                else
+                }
+                {
                     m_nCurrentDefFrame = 0;
+                }
                 m_dwDefFrameTime = MShare.GetTickCount();
             }
             else if (MShare.GetTickCount() - m_dwSmoothMoveTime > 200)

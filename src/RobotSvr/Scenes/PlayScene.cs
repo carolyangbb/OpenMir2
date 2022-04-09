@@ -92,7 +92,57 @@ namespace RobotSvr
 
         public void BeginScene()
         {
-            //robotClient.Map.UpdateMapPos(MShare.g_MySelf.m_nRx, MShare.g_MySelf.m_nRy);
+            var i = 0;
+            while (true)
+            {
+                if (i >= m_ActorList.Count)
+                {
+                    break;
+                }
+                var actor = m_ActorList[i];
+                actor.ProcMsg();   //处理角色的消息
+                if (actor.Move())
+                {
+                    i++;
+                    continue;
+                }
+                actor.Run();
+                if (actor != MShare.g_MySelf)
+                {
+                    actor.ProcHurryMsg();
+                }
+                else if (actor == MShare.g_MySelf)
+                {
+                    actor.ProcHurryMsg();
+                }
+                if (actor.m_boDelActor || (Math.Abs(MShare.g_MySelf.m_nCurrX - actor.m_nCurrX) > 16) ||
+                    (Math.Abs(MShare.g_MySelf.m_nCurrY - actor.m_nCurrY) > 16))
+                {
+                    MShare.g_FreeActorList.Add(actor);
+                    m_ActorList.RemoveAt(i);
+                    if (MShare.g_TargetCret == actor)
+                    {
+                        MShare.g_TargetCret = null;
+                    }
+                    if (MShare.g_FocusCret == actor)
+                    {
+                        MShare.  g_FocusCret = null;
+                    }
+                    if (MShare.g_MagicLockActor == actor)
+                    {
+                        MShare. g_MagicLockActor = null;
+                    }
+                    if (MShare.g_MagicTarget == actor)
+                    {
+                        MShare.g_MagicTarget = null;
+                    }
+                }
+                else
+                {
+                    i++;
+                }
+            }
+            robotClient.Map.UpdateMapPos(MShare.g_MySelf.m_nRx, MShare.g_MySelf.m_nRy);
         }
 
         public void PlaySurface(object sender)

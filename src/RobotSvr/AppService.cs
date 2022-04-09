@@ -94,7 +94,7 @@ namespace RobotSvr
         public override Task StartAsync(CancellationToken cancellationToken)
         {
             g_sServerName = "热血传奇";
-            g_sGameIPaddr = "10.10.0.112";
+            g_sGameIPaddr = "10.10.0.110";
             g_nGamePort = 7000;
             g_boNewAccount = false;
             g_nChrCount = HUtil32._MIN(g_nChrCount, g_nTotalChrCount);

@@ -35,17 +35,17 @@ namespace RobotSvr
             return result;
         }
 
-        public void Enterqueue(Tree Node, int F)
+        public void Enterqueue(MapTree Node, int F)
         {
-            Link P = MShare.g_APQueue;
-            Link Father = P;
+            MapLink P = MShare.g_APQueue;
+            MapLink Father = P;
             while (F > P.F)
             {
                 Father = P;
                 P = P.Next;
                 if (P == null) break;
             }
-            Link q = new Link();
+            MapLink q = new MapLink();
             q.F = F;
             q.Node = Node;
             q.Next = P;
@@ -56,10 +56,10 @@ namespace RobotSvr
         /// 将离目的地估计最近的方案出队列
         /// </summary>
         /// <returns></returns>
-        public Tree Dequeue()
+        public MapTree Dequeue()
         {
-            Tree bestchoice = MShare.g_APQueue.Next.Node;
-            Link Next = MShare.g_APQueue.Next.Next;
+            MapTree bestchoice = MShare.g_APQueue.Next.Node;
+            MapLink Next = MShare.g_APQueue.Next.Next;
             Dispose(MShare.g_APQueue.Next);
             MShare.g_APQueue.Next = Next;
             return bestchoice;
@@ -70,7 +70,7 @@ namespace RobotSvr
         /// </summary>
         public void FreeTree()
         {
-            Link P;
+            MapLink P;
             while (MShare.g_APQueue != null)
             {
                 P = MShare.g_APQueue;
@@ -92,48 +92,44 @@ namespace RobotSvr
             return Math.Abs(end_x - X) + Math.Abs(end_y - Y);
         }
 
-        public bool TrytileHas(int X, int Y, int H)
+        private bool TryTileHas(int X, int Y, int H)
         {
-            bool result = true;
             int cx = X - robotClient.Map.m_nBlockLeft;
             int cy = Y - robotClient.Map.m_nBlockTop;
-            if (cx > MShare.MAXX * 3 || cy > MShare.MAXY * 3) return result;
-            if (cx < 0 || cy < 0) return result;
-            if (H <= MShare.g_APPass[cx, cy]) result = false;
-            return result;
+            if (cx > MShare.MAXX * 3 || cy > MShare.MAXY * 3) return true;
+            if (cx < 0 || cy < 0) return true;
+            if (H < MShare.g_APPass[cx, cy]) return false;
+            return true;
         }
 
-        public bool Trytile(int X, int Y, int end_x, int end_y, Tree Father, byte dir)
+        private void Trytile(int X, int Y, int end_x, int end_y, MapTree Father, byte dir)
         {
-            bool result = false;
             if (!robotClient.Map.CanMove(X, Y))
             {
-                return result;
+                return;
             }
-            Tree P = Father;
+            MapTree P = Father;
             while (P != null)
             {
                 if (X == P.X && Y == P.Y)
                 {
-                    return result; // 如果 (x,y) 曾经经过,失败
+                    return; // 如果 (x,y) 曾经经过,失败
                 }
                 P = P.Father;
             }
-            int H = Father.H + 1;
-            if (TrytileHas(X, Y, H))// 如果曾经有更好的方案移动到 (x,y) 失败
+            ushort H = (ushort)(Father.H + 1);
+            /*if (TryTileHas(X, Y, H))// 如果曾经有更好的方案移动到 (x,y) 失败
             {
-                return result;
-            }
+                return;
+            }*/
             MShare.g_APPass[X - robotClient.Map.m_nBlockLeft, Y - robotClient.Map.m_nBlockTop] = H;// 记录这次到 (x,y) 的距离为历史最佳距离
-            P = new Tree();
+            P = new MapTree();
             P.Father = Father;
             P.H = Father.H + 1;
             P.X = X;
             P.Y = Y;
             P.Dir = dir;
             Enterqueue(P, P.H + judge(X, Y, end_x, end_y));
-            result = true;
-            return result;
         }
 
         /// <summary>
@@ -141,44 +137,42 @@ namespace RobotSvr
         /// </summary>
         public void AutoFindPath(int Startx, int Starty, int end_x, int end_y)
         {
-            Tree P;
-            int i;
-            int X;
-            int Y;
-            int dir;
-            TFindNode Temp;
             if (!robotClient.Map.CanMove(end_x, end_y))
             {
                 return;
             }
             MShare.g_APPass = MShare.g_APPassEmpty;
             Init_Queue();
-            Tree Root = new Tree();
+            MapTree Root = new MapTree();
             Root.X = Startx;
             Root.Y = Starty;
             Root.H = 0;
             Root.Father = null;
             Enterqueue(Root, judge(Startx, Starty, end_x, end_y));
+            var aa = 0;
             while (true)
             {
                 Root = Dequeue();
                 if (Root == null) break;
-                X = Root.X;
-                Y = Root.Y;
+                var X = Root.X;
+                var Y = Root.Y;
                 if (X == end_x && Y == end_y)
                 {
                     break;
                 }
-                Trytile(X, Y - 1, end_x, end_y, Root, 0);// 尝试向上移动
-                Trytile(X + 1, Y - 1, end_x, end_y, Root, 1);// 尝试向右上移动
-                Trytile(X + 1, Y, end_x, end_y, Root, 2);// 尝试向右移动
-                Trytile(X + 1, Y + 1, end_x, end_y, Root, 3);// 尝试向右下移动
-                Trytile(X, Y + 1, end_x, end_y, Root, 4);// 尝试向下移动
-                Trytile(X - 1, Y + 1, end_x, end_y, Root, 5);// 尝试向左下移动
-                Trytile(X - 1, Y, end_x, end_y, Root, 6);// 尝试向左移动
-                Trytile(X - 1, Y - 1, end_x, end_y, Root, 7);// 尝试向左上移动
+                Trytile(X, Y - 1, end_x, end_y, Root, 0); // 尝试向上移动
+                Trytile(X + 1, Y - 1, end_x, end_y, Root, 1); // 尝试向右上移动
+                Trytile(X + 1, Y, end_x, end_y, Root, 2); // 尝试向右移动
+                Trytile(X + 1, Y + 1, end_x, end_y, Root, 3); // 尝试向右下移动
+                Trytile(X, Y + 1, end_x, end_y, Root, 4); // 尝试向下移动
+                Trytile(X - 1, Y + 1, end_x, end_y, Root, 5); // 尝试向左下移动
+                Trytile(X - 1, Y, end_x, end_y, Root, 6); // 尝试向左移动
+                Trytile(X - 1, Y - 1, end_x, end_y, Root, 7); // 尝试向左上移动
+                
+                Console.WriteLine(aa);
+                aa++;
             }
-            for (i = MShare.g_APPathList.Count - 1; i >= 0; i--)
+            for (var i = MShare.g_APPathList.Count - 1; i >= 0; i--)
             {
                 Dispose(MShare.g_APPathList[i]);
             }
@@ -188,18 +182,18 @@ namespace RobotSvr
                 FreeTree();
                 return;
             }
-            Temp = new TFindNode();
+            var Temp = new FindMapNode();
             Temp.X = Root.X;
             Temp.Y = Root.Y;
             MShare.g_APPathList.Add(Temp);
-            dir = Root.Dir;
-            P = Root;
+            int dir = Root.Dir;
+            var P = Root;
             Root = Root.Father;
             while (Root != null)
             {
                 if (dir != Root.Dir)
                 {
-                    Temp = new TFindNode();
+                    Temp = new FindMapNode();
                     Temp.X = P.X;
                     Temp.Y = P.Y;
                     MShare.g_APPathList.Insert(0, Temp);
@@ -239,10 +233,10 @@ namespace RobotSvr
                 Dispose(MShare.g_APQueue);
                 MShare.g_APQueue = null;
             }
-            MShare.g_APQueue = new Link();
+            MShare.g_APQueue = new MapLink();
             MShare.g_APQueue.Node = null;
             MShare.g_APQueue.F = -1;
-            MShare.g_APQueue.Next = new Link();
+            MShare.g_APQueue.Next = new MapLink();
             MShare.g_APQueue.Next.F = 0xFFFFFFF;
             MShare.g_APQueue.Next.Node = null;
             MShare.g_APQueue.Next.Next = null;
@@ -854,7 +848,7 @@ namespace RobotSvr
                                     MShare.m_dwTargetFocusTick = MShare.GetTickCount();
                                     if (AutoUseMagic(8, MShare.g_MySelf))
                                     {
-                                        if (MShare.m_btMagPassTh <= 0) MShare.m_btMagPassTh += 1 + new Random(2).Next();
+                                        if (MShare.m_btMagPassTh <= 0) MShare.m_btMagPassTh += 1 + RandomNumber.GetInstance().Random(2);
                                         return result;
                                     }
                                 }
@@ -1136,7 +1130,7 @@ namespace RobotSvr
                                     MShare.m_dwTargetFocusTick = MShare.GetTickCount();
                                     if (AutoUseMagic(48, MShare.g_MySelf))
                                     {
-                                        if (MShare.m_btMagPassTh <= 0) MShare.m_btMagPassTh += 1 + new Random(2).Next();
+                                        if (MShare.m_btMagPassTh <= 0) MShare.m_btMagPassTh += 1 + RandomNumber.GetInstance().Random(2);
                                         return result;
                                     }
                                 }

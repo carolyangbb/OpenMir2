@@ -145,10 +145,10 @@ namespace RobotSvr
         public static TActor g_TargetCret = null;
         public static TActor g_FocusCret = null;
         public static TActor g_MagicTarget = null;
-        public static Link g_APQueue = null;
-        public static IList<TFindNode> g_APPathList = null;
-        public static double[,] g_APPass = new double[MAXX * 3, MAXY * 3];
-        public static double[,] g_APPassEmpty = new double[MAXX * 3, MAXY * 3];
+        public static MapLink g_APQueue = null;
+        public static IList<FindMapNode> g_APPathList = null;
+        public static ushort[,] g_APPass = new ushort[MAXX * 3, MAXY * 3];
+        public static ushort[,] g_APPassEmpty = new ushort[MAXX * 3, MAXY * 3];
         public static TActor g_APTagget = null;
         public static int g_APRunTick = 0;
         public static int g_APRunTick2 = 0;
@@ -1621,26 +1621,26 @@ namespace RobotSvr
         public string[] Hint;
     }
 
-    public class TFindNode
+    public class FindMapNode
     {
         public int X;
         public int Y;
     }
 
-    public class Tree
+    public class MapTree
     {
         public int H;
         public int X;
         public int Y;
         public byte Dir;
-        public Tree Father;
+        public MapTree Father;
     }
-
-    public class Link
+    
+    public class MapLink
     {
-        public Tree Node;
+        public MapTree Node;
         public int F;
-        public Link Next;
+        public MapLink Next;
     }
 
     public struct TVirusSign

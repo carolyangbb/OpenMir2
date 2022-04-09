@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -9,6 +11,7 @@ namespace RobotSvr
     public static class ClientManager
     {
         private static readonly ConcurrentDictionary<string, RobotClient> _Clients;
+        private static IList<RobotClient> ClientList;
         private static int g_dwProcessTimeMin = 0;
         private static int g_dwProcessTimeMax = 0;
         private static int g_nPosition = 0;
@@ -65,60 +68,59 @@ namespace RobotSvr
 
         public static void Run()
         {
-            dwRunTick = HUtil32.GetTickCount();
-            var boProcessLimit = false;
-            var clientList = _Clients.Values.ToList();
-            for (var i = g_nPosition; i < _Clients.Count; i++)
-            {
-                clientList[i].Run();
-                if (((HUtil32.GetTickCount() - dwRunTick) > 20))
-                {
-                    g_nPosition = i;
-                    boProcessLimit = true;
-                    break;
-                }
-            }
-            if (!boProcessLimit)
-            {
-                g_nPosition = 0;
-            }
-            g_dwProcessTimeMin = HUtil32.GetTickCount() - dwRunTick;
-            if (g_dwProcessTimeMin > g_dwProcessTimeMax)
-            {
-                g_dwProcessTimeMax = g_dwProcessTimeMin;
-            }
-            RunAutoPlay();
-        }
-
-        private static void RunAutoPlay()
-        {
             HUtil32.EnterCriticalSections(_lock);
             try
             {
-                AutoRunTick = HUtil32.GetTickCount();
+                dwRunTick = HUtil32.GetTickCount();
                 var boProcessLimit = false;
-                var clientList = _Clients.Values.ToList();
-                if (clientList.Count > 0)
+                ClientList = _Clients.Values.ToList();
+                for (var i = g_nPosition; i < _Clients.Count; i++)
                 {
-                    for (var i = g_nPosition; i < _Clients.Count; i++)
+                    ClientList[i].Run();
+                    if (((HUtil32.GetTickCount() - dwRunTick) > 20))
                     {
-                        clientList[i].RunAutoPlay();
-                        if (((HUtil32.GetTickCount() - AutoRunTick) > 200))
-                        {
-                            g_nPosition = i;
-                            boProcessLimit = true;
-                            break;
-                        }
-                    }
-                    if (!boProcessLimit)
-                    {
-                        g_nPosition = 0;
+                        g_nPosition = i;
+                        boProcessLimit = true;
+                        break;
                     }
                 }
+                if (!boProcessLimit)
+                {
+                    g_nPosition = 0;
+                }
+                g_dwProcessTimeMin = HUtil32.GetTickCount() - dwRunTick;
+                if (g_dwProcessTimeMin > g_dwProcessTimeMax)
+                {
+                    g_dwProcessTimeMax = g_dwProcessTimeMin;
+                }
+                RunAutoPlay();
             }
             finally
             {
                 HUtil32.LeaveCriticalSections(_lock);
+            }
+        }
+
+        private static void RunAutoPlay()
+        {
+            AutoRunTick = HUtil32.GetTickCount();
+            var boProcessLimit = false;
+            if (ClientList.Count > 0)
+            {
+                for (var i = g_nPosition; i < _Clients.Count; i++)
+                {
+                    ClientList[i].RunAutoPlay();
+                    if (((HUtil32.GetTickCount() - AutoRunTick) > 200))
+                    {
+                        g_nPosition = i;
+                        boProcessLimit = true;
+                        break;
+                    }
+                }
+                if (!boProcessLimit)
+                {
+                    g_nPosition = 0;
+                }
             }
         }
     }

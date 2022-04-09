@@ -211,7 +211,7 @@ namespace RobotSvr
             //    _createChrMode = false;
             //    ChrArr[NewIndex].Selected = true;
             //    ChrArr[NewIndex].FreezeState = false;
-            //    shair = (1 + new System.Random(5).Next()).ToString();
+            //    shair = (1 +  RandomNumber.GetInstance().Random(5).Next()).ToString();
             //    sjob = ChrArr[NewIndex].UserChr.Job.ToString();
             //    ssex = ChrArr[NewIndex].UserChr.Sex.ToString();
             //    //ClMain.frmMain.SendNewChr(ClMain.frmMain.LoginID, chrname, shair, sjob, ssex);

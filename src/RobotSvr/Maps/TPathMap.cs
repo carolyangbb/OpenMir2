@@ -6,7 +6,7 @@ namespace RobotSvr
     {
         public static Point[] g_MapPath;
         public const int SCALE = 4;
-        public const string MAP_BASEPATH = @"D:\Legend of Mir\Map\";
+        public const string MAP_BASEPATH = @"/Volumes/Data/Mirserver/Mir200/Map/";
         public static int[] TerrainParams = new int[2] { 4, -1 };
         public TMapHeader m_MapHeader;
         public TCellParams[,] m_MapData;

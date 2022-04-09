@@ -77,7 +77,7 @@ namespace RobotSvr
             SocketEvents();
             heroActor = new HeroActor(this);
             MShare.InitScreenConfig();
-            MShare.g_APPathList = new List<TFindNode>();
+            MShare.g_APPathList = new List<FindMapNode>();
             MShare.g_ShowItemList = new Dictionary<string, string>();
             DScreen = new DrawScreen(this);
             IntroScene = new IntroScene(this);
@@ -166,19 +166,19 @@ namespace RobotSvr
             {
                 for (int j = 0; j < MShare.MAXY * 3; j++)
                 {
-                    MShare.g_APPassEmpty[i, j] = 0xEF;
+                    MShare.g_APPassEmpty[i, j] = 0xFF;
                 }
             }
         }
 
         private void SocketEvents()
         {
-            if (ClientSocket != null)
+            if (ClientSocket == null)
             {
-                ClientSocket.Disconnect();
-                ClientSocket = null;
+                //ClientSocket.Disconnect();
+                //ClientSocket = null;
+                ClientSocket = new IClientScoket();
             }
-            ClientSocket = new IClientScoket();
             ClientSocket.OnConnected -= CSocketConnect;
             ClientSocket.OnDisconnected -= CSocketDisconnect;
             ClientSocket.ReceivedDatagram -= CSocketRead;
@@ -188,17 +188,124 @@ namespace RobotSvr
             ClientSocket.ReceivedDatagram += CSocketRead;
             ClientSocket.OnError += CSocketError;
         }
+        
+                #region Socket Events
+        
+                private void CSocketConnect(object sender, DSCClientConnectedEventArgs e)
+                {
+                    MShare.g_boServerConnected = true;
+        
+                    if (m_ConnectionStep == TConnectionStep.cnsConnect)
+                    {
+                        if (m_boNewAccount)
+                        {
+                            SetNotifyEvent(NewAccount, 6000);
+                        }
+                        else
+                        {
+                            ClientNewIdSuccess("");
+                        }
+                    }
+                    else if (m_ConnectionStep == TConnectionStep.cnsPlay)
+                    {
+                        ClientSocket.IsConnected = true;
+                        SendRunLogin();
+                    }
+                    if (MShare.g_ConnectionStep == TConnectionStep.cnsLogin)
+                    {
+                        DScreen.ChangeScene(SceneType.stLogin);
+                    }
+                    if (MShare.g_ConnectionStep == TConnectionStep.cnsSelChr)
+                    {
+                        LoginScene.OpenLoginDoor();
+                    }
+                    if (MShare.g_ConnectionStep == TConnectionStep.cnsPlay)
+                    {
+                        if (!MShare.g_boServerChanging)
+                        {
+                            ClFunc.ClearBag();
+                            DScreen.ClearChatBoard();
+                            DScreen.ChangeScene(SceneType.stLoginNotice);
+                        }
+                        else
+                        {
+                            ChangeServerClearGameVariables();
+                        }
+                        SendRunLogin();
+                    }
+                    SocStr = string.Empty;
+                    BufferStr = "";
+                    //TimerPacket.Enabled = true;
+                }
+        
+                private void CSocketDisconnect(object sender, DSCClientConnectedEventArgs e)
+                {
+                    MShare.g_boServerConnected = false;
+                    if (MShare.g_SoftClosed)
+                    {
+                        MShare.g_SoftClosed = false;
+                        //ActiveCmdTimer(MShare.TTimerCommand.tcReSelConnect);
+                    }
+                    else if ((DScreen.CurrentScene == LoginScene) && !MShare.g_boSendLogin)
+                    {
+                        MainOutMessage("游戏连接已关闭...");
+                    }
+                    //TimerPacket.Enabled = false;
+                    LoginOut();
+                    ClientManager.DelClient(SessionId);
+                }
+        
+                private void CSocketError(object sender, DSCClientErrorEventArgs e)
+                {
+                    switch (e.ErrorCode)
+                    {
+                        case System.Net.Sockets.SocketError.ConnectionRefused:
+                            Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]拒绝链接...");
+                            break;
+                        case System.Net.Sockets.SocketError.ConnectionReset:
+                            Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]关闭连接...");
+                            break;
+                        case System.Net.Sockets.SocketError.TimedOut:
+                            Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]链接超时...");
+                            break;
+                    }
+                    //LoginOut();
+                    //m_ConnectionStatus = TConnectionStatus.cns_Failure;
+                    //ClientManager.DelClient(SessionId);
+                }
+        
+                private void CSocketRead(object sender, DSCClientDataInEventArgs e)
+                {
+                    string sData = HUtil32.GetString(e.Buff, 0, e.BuffLen);
+                    if (!string.IsNullOrEmpty(sData))
+                    {
+                        int n = sData.IndexOf("*", StringComparison.Ordinal);
+                        if (n > 0)
+                        {
+                            string data2 = sData.Substring(0, n - 1);
+                            sData = data2 + sData.Substring(n, sData.Length);
+                            ClientSocket.SendBuffer(HUtil32.GetBytes(activebuf));
+                        }
+                        SocStr = SocStr + sData;
+                        ClientManager.AddPacket(SessionId, sData);
+                    }
+                }
+        
+                #endregion
+
 
         public void Run()
         {
             Login();
             DoNotifyEvent();
+            ProcessActionMessages();
             if (MShare.g_MySelf != null)
             {
-                MShare.g_MySelf.ProcMsg();
-                MShare.g_MySelf.ProcHurryMsg();
+                if (DScreen.CurrentScene == g_PlayScene)
+                {
+                    g_PlayScene.BeginScene();
+                }
             }
-            ProcessActionMessages();
         }
 
         private void Login()
@@ -357,7 +464,7 @@ namespace RobotSvr
                         {
                             if (MShare.g_MagicTarget.m_btRace == 0)
                             {
-                                MShare.g_dwMagicPKDelayTime = 300 + new System.Random(1100).Next();
+                                MShare.g_dwMagicPKDelayTime = 300 +  RandomNumber.GetInstance().Random(1100);
                             }
                         }
                         //MShare.g_MySelf.SendMsg(Grobal2.CM_SPELL, targx, targy, tdir, pmag, targid, "", 0);
@@ -432,51 +539,43 @@ namespace RobotSvr
             }
             if ((MShare.g_nTargetX >= 0) && CanNextAction() && ServerAcceptNextAction())
             {
-                // ///////////////////////////////////////////////
                 if (MShare.g_boOpenAutoPlay && (MShare.g_APMapPath != null) && (MShare.g_APStep >= 0) && (0 < MShare.g_APMapPath.GetUpperBound(0)))
                 {
                     if ((Math.Abs(MShare.g_APMapPath[MShare.g_APStep].X - MShare.g_MySelf.m_nCurrX) <= 3) && (Math.Abs(MShare.g_APMapPath[MShare.g_APStep].X - MShare.g_MySelf.m_nCurrY) <= 3))
                     {
-                        if (MShare.g_APMapPath.GetUpperBound(0) >= 2)
+                        if (MShare.g_APMapPath.GetUpperBound(0) >= 2)// 3点以上
                         {
-                            // 3点以上
-                            if (MShare.g_APStep >= MShare.g_APMapPath.GetUpperBound(0))
+                            if (MShare.g_APStep >= MShare.g_APMapPath.GetUpperBound(0)) // 当前点在终点...
                             {
-                                // 当前点在终点...
                                 // 终点 <-> 起点 距离过远...
                                 if ((Math.Abs(MShare.g_APMapPath[MShare.g_APMapPath.GetUpperBound(0)].X - MShare.g_APMapPath[0].X) >= 36) || (Math.Abs(MShare.g_APMapPath[MShare.g_APMapPath.GetUpperBound(0)].X - MShare.g_APMapPath[0].X) >= 36))
                                 {
-                                    MShare.g_APGoBack = true;
-                                    // 原路返回
+                                    MShare.g_APGoBack = true; // 原路返回
                                     MShare.g_APLastPoint = MShare.g_APMapPath[MShare.g_APStep];
                                     MShare.g_APStep -= 1;
                                 }
                                 else
                                 {
-                                    // 循环到起点...
-                                    MShare.g_APGoBack = false;
+                                    MShare.g_APGoBack = false; // 循环到起点...
                                     MShare.g_APLastPoint = MShare.g_APMapPath[MShare.g_APStep];
                                     MShare.g_APStep = 0;
                                 }
                             }
                             else
                             {
-                                if (MShare.g_APGoBack)
+                                if (MShare.g_APGoBack) // 原路返回
                                 {
-                                    // 原路返回
                                     MShare.g_APLastPoint = MShare.g_APMapPath[MShare.g_APStep];
                                     MShare.g_APStep -= 1;
-                                    if (MShare.g_APStep <= 0)
+                                    if (MShare.g_APStep <= 0)// 已回到起点
                                     {
-                                        // 已回到起点
                                         MShare.g_APStep = 0;
                                         MShare.g_APGoBack = false;
                                     }
                                 }
                                 else
                                 {
-                                    // 循环...
-                                    MShare.g_APLastPoint = MShare.g_APMapPath[MShare.g_APStep];
+                                    MShare.g_APLastPoint = MShare.g_APMapPath[MShare.g_APStep]; // 循环...
                                     MShare.g_APStep++;
                                 }
                             }
@@ -986,7 +1085,7 @@ namespace RobotSvr
                     {
                         if (MShare.g_MagicTarget.m_btRace == 0)
                         {
-                            MShare.g_dwMagicPKDelayTime = 300 + new System.Random(1100).Next();
+                            MShare.g_dwMagicPKDelayTime = 300 +  RandomNumber.GetInstance().Random(1100);
                         }
                     }
                     //MShare.g_MySelf.SendMsg(Grobal2.CM_SPELL, targx, targy, tdir, pmag, targid, "", 0);
@@ -2326,107 +2425,7 @@ namespace RobotSvr
             //EventMan.ClearEvents();
             g_PlayScene.CleanObjects();
         }
-
-        public void CSocketConnect(object sender, DSCClientConnectedEventArgs e)
-        {
-            MShare.g_boServerConnected = true;
-
-            if (m_ConnectionStep == TConnectionStep.cnsConnect)
-            {
-                if (m_boNewAccount)
-                {
-                    SetNotifyEvent(NewAccount, 6000);
-                }
-                else
-                {
-                    ClientNewIdSuccess("");
-                }
-            }
-            else if (m_ConnectionStep == TConnectionStep.cnsPlay)
-            {
-                ClientSocket.IsConnected = true;
-                SendRunLogin();
-            }
-            if (MShare.g_ConnectionStep == TConnectionStep.cnsLogin)
-            {
-                DScreen.ChangeScene(SceneType.stLogin);
-            }
-            if (MShare.g_ConnectionStep == TConnectionStep.cnsSelChr)
-            {
-                LoginScene.OpenLoginDoor();
-            }
-            if (MShare.g_ConnectionStep == TConnectionStep.cnsPlay)
-            {
-                if (!MShare.g_boServerChanging)
-                {
-                    ClFunc.ClearBag();
-                    DScreen.ClearChatBoard();
-                    DScreen.ChangeScene(SceneType.stLoginNotice);
-                }
-                else
-                {
-                    ChangeServerClearGameVariables();
-                }
-                SendRunLogin();
-            }
-            SocStr = string.Empty;
-            BufferStr = "";
-            //TimerPacket.Enabled = true;
-        }
-
-        public void CSocketDisconnect(object sender, DSCClientConnectedEventArgs e)
-        {
-            MShare.g_boServerConnected = false;
-            if (MShare.g_SoftClosed)
-            {
-                MShare.g_SoftClosed = false;
-                //ActiveCmdTimer(MShare.TTimerCommand.tcReSelConnect);
-            }
-            else if ((DScreen.CurrentScene == LoginScene) && !MShare.g_boSendLogin)
-            {
-                MainOutMessage("游戏连接已关闭...");
-            }
-            //TimerPacket.Enabled = false;
-            LoginOut();
-            ClientManager.DelClient(SessionId);
-        }
-
-        public void CSocketError(object sender, DSCClientErrorEventArgs e)
-        {
-            switch (e.ErrorCode)
-            {
-                case System.Net.Sockets.SocketError.ConnectionRefused:
-                    Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]拒绝链接...");
-                    break;
-                case System.Net.Sockets.SocketError.ConnectionReset:
-                    Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]关闭连接...");
-                    break;
-                case System.Net.Sockets.SocketError.TimedOut:
-                    Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]链接超时...");
-                    break;
-            }
-            //LoginOut();
-            //m_ConnectionStatus = TConnectionStatus.cns_Failure;
-            //ClientManager.DelClient(SessionId);
-        }
-
-        private void CSocketRead(object sender, DSCClientDataInEventArgs e)
-        {
-            string sData = HUtil32.GetString(e.Buff, 0, e.BuffLen);
-            if (!string.IsNullOrEmpty(sData))
-            {
-                int n = sData.IndexOf("*", StringComparison.Ordinal);
-                if (n > 0)
-                {
-                    string data2 = sData.Substring(0, n - 1);
-                    sData = data2 + sData.Substring(n, sData.Length);
-                    ClientSocket.SendBuffer(HUtil32.GetBytes(activebuf));
-                }
-                SocStr = SocStr + sData;
-                ClientManager.AddPacket(SessionId, sData);
-            }
-        }
-
+        
         public void SendSocket(string sendstr)
         {
             if (ClientSocket.IsConnected)
@@ -2985,7 +2984,7 @@ namespace RobotSvr
             var result = true;
             if (ActionLock)
             {
-                if (MShare.GetTickCount() - ActionLockTime > 5 * 1000)
+                if ((MShare.GetTickCount() - ActionLockTime) > 5 * 1000)
                 {
                     ActionLock = false;
                 }
@@ -3195,6 +3194,11 @@ namespace RobotSvr
                 {
                     return;
                 }
+
+                if (msg.Cmd == Grobal2.SM_LOGON)
+                {
+                    Console.WriteLine("asd");
+                }
             }
             else
             {
@@ -3374,9 +3378,12 @@ namespace RobotSvr
                     MShare.g_dwFirstServerTime = 0;
                     MShare.g_dwFirstClientTime = 0;
                     wl = EDcode.DecodeBuffer<TMessageBodyWL>(body);
+                    if (msg.Series > 8)
+                    {
+                        msg.Series = (byte)RandomNumber.GetInstance().Random(8);
+                    }
                     g_PlayScene.SendMsg(Grobal2.SM_LOGON, msg.Recog, msg.Param, msg.Tag, msg.Series, wl.lParam1, wl.lParam2, "");
                     DScreen.ChangeScene(SceneType.stPlayGame);
-                    //SendClientMessage(Grobal2.CM_WANTVIEWRANGE, HUtil32.MakeLong(MShare.g_TileMapOffSetX, MShare.g_TileMapOffSetY), 0, 0, 0);
                     SendClientMessage(Grobal2.CM_QUERYBAGITEMS, 1, 0, 0, 0);
                     if (HUtil32.LoByte(HUtil32.LoWord(wl.lTag1)) == 1)
                     {
@@ -3729,6 +3736,7 @@ namespace RobotSvr
                     break;
                 case Grobal2.SM_OUTOFCONNECTION:
                     MainOutMessage("服务器连接被强行中断。\\连接时间可能超过限制");
+                    LoginOut();
                     break;
                 case Grobal2.SM_DEATH:
                 case Grobal2.SM_NOWDEATH:
@@ -4795,7 +4803,7 @@ namespace RobotSvr
             {
                 MShare.g_nAPReLogon = 2;
                 MShare.g_nAPReLogonWaitTick = MShare.GetTickCount();
-                MShare.g_nAPReLogonWaitTime = 5000 + new System.Random(10).Next() * 1000;
+                MShare.g_nAPReLogonWaitTime = 5000 +  RandomNumber.GetInstance().Random(10) * 1000;
             }
             SelectChrScene.ClearChrs();
             string Str = EDcode.DeCodeString(body);
@@ -5276,7 +5284,7 @@ namespace RobotSvr
             DropItem.Width = itmname.Length;
             DropItem.Height = itmname.Length;
             HUtil32.GetValidStr3(DropItem.Name, ref itmname, new string[] { "\\" });
-            DropItem.FlashTime = MShare.GetTickCount() - new System.Random(3000).Next();
+            DropItem.FlashTime = MShare.GetTickCount() -  RandomNumber.GetInstance().Random(3000);
             DropItem.BoFlash = false;
             DropItem.boNonSuch = false;
             DropItem.boShowName = MShare.g_ShowItemList.ContainsKey(itmname);
@@ -6000,7 +6008,7 @@ namespace RobotSvr
 
         private void ClientGetServerConfig(ClientPacket msg, string sBody)
         {
-            MShare.g_boOpenAutoPlay = HUtil32.LoByte(HUtil32.LoWord(msg.Recog)) == 1;
+            MShare.g_boOpenAutoPlay = true; //HUtil32.LoByte(HUtil32.LoWord(msg.Recog)) == 1;
             MShare.g_boSpeedRate = msg.Series != 0;
             MShare.g_boSpeedRateShow = MShare.g_boSpeedRate;
             MShare.g_boCanRunMon = HUtil32.HiByte(HUtil32.LoWord(msg.Recog)) == 1;
@@ -6435,9 +6443,9 @@ namespace RobotSvr
             int i = 0;
             b = false;
             ndir = MShare.g_MySelf.m_btDir;
-            if (new System.Random(28).Next() == 0)
+            if ( RandomNumber.GetInstance().Random(28) == 0)
             {
-                ndir = (byte)new System.Random(8).Next();
+                ndir = (byte) RandomNumber.GetInstance().Random(8);
             }
             while (i < 16)
             {
@@ -6446,7 +6454,7 @@ namespace RobotSvr
                     ClFunc.GetFrontPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, ndir, ref MShare.g_nTargetX, ref MShare.g_nTargetY);
                     if (!g_PlayScene.CanWalk(MShare.g_nTargetX, MShare.g_nTargetY))
                     {
-                        MShare.g_MySelf.SendMsg(Grobal2.CM_TURN, MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, new System.Random(8).Next(), 0, 0, "", 0);
+                        MShare.g_MySelf.SendMsg(Grobal2.CM_TURN, MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY,  RandomNumber.GetInstance().Random(8), 0, 0, "", 0);
                         i++;
                     }
                     else
@@ -6464,7 +6472,7 @@ namespace RobotSvr
                     }
                     else
                     {
-                        ndir = (byte)new System.Random(8).Next();
+                        ndir = (byte) RandomNumber.GetInstance().Random(8);
                         i++;
                     }
                 }
@@ -6473,7 +6481,7 @@ namespace RobotSvr
 
         public void RunAutoPlay()
         {
-            TFindNode T;
+            FindMapNode T;
             byte ndir = 0;
             int X1 = 0;
             int Y1 = 0;
@@ -6541,8 +6549,7 @@ namespace RobotSvr
                         MShare.g_nTargetY = MShare.g_AutoPicupItem.Y;
                         heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         MShare.g_nTargetX = -1;
-                        MShare.g_sAPStr =
-                            $"物品目标：{MShare.g_AutoPicupItem.Name}({MShare.g_AutoPicupItem.X},{MShare.g_AutoPicupItem.Y}) 正在去拾取";
+                        MShare.g_sAPStr = $"物品目标：{MShare.g_AutoPicupItem.Name}({MShare.g_AutoPicupItem.X},{MShare.g_AutoPicupItem.Y}) 正在去拾取";
                     }
                     else if (MShare.g_AutoPicupItem != null)
                     {
@@ -6550,8 +6557,7 @@ namespace RobotSvr
                         MShare.g_nTargetY = MShare.g_AutoPicupItem.Y;
                         heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                         MShare.g_nTargetX = -1;
-                        MShare.g_sAPStr =
-                            $"物品目标：{MShare.g_AutoPicupItem.Name}({MShare.g_AutoPicupItem.X},{MShare.g_AutoPicupItem.Y}) 正在去拾取";
+                        MShare.g_sAPStr = $"物品目标：{MShare.g_AutoPicupItem.Name}({MShare.g_AutoPicupItem.X},{MShare.g_AutoPicupItem.Y}) 正在去拾取";
                     }
                     MShare.g_nAPStatus = 2;
                     MShare.g_boAPAutoMove = true;
@@ -6575,8 +6581,7 @@ namespace RobotSvr
                                 {
                                     heroActor.AutoFindPath(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_nTargetX, MShare.g_nTargetY);
                                 }
-                                MShare.g_sAPStr =
-                                    $"定点随机搜寻目标({MShare.g_APMapPath[MShare.g_APStep].X},{MShare.g_APMapPath[MShare.g_APStep].X})";
+                                MShare.g_sAPStr = $"定点随机搜寻目标({MShare.g_APMapPath[MShare.g_APStep].X},{MShare.g_APMapPath[MShare.g_APStep].X})";
                                 MShare.g_nTargetX = -1;
                             }
                         }
@@ -6687,7 +6692,7 @@ namespace RobotSvr
             {
                 heroActor.Init_Queue2();
             }
-            Console.WriteLine(MShare.g_sAPStr);
+            //Console.WriteLine(MShare.g_sAPStr);
         }
 
         private void ProcessActMsg(string datablock)
@@ -7049,7 +7054,7 @@ namespace RobotSvr
             switch (btDir)
             {
                 case Grobal2.DR_UP:
-                    if (new System.Random(2).Next() == 0)
+                    if ( RandomNumber.GetInstance().Random(2) == 0)
                     {
                         nY += 2;
                         nX += 2;
@@ -7065,7 +7070,7 @@ namespace RobotSvr
                     }
                     break;
                 case Grobal2.DR_DOWN:
-                    if (new System.Random(2).Next() == 0)
+                    if ( RandomNumber.GetInstance().Random(2) == 0)
                     {
                         nY -= 2;
                         nX += 2;
@@ -7081,7 +7086,7 @@ namespace RobotSvr
                     }
                     break;
                 case Grobal2.DR_LEFT:
-                    if (new System.Random(2).Next() == 0)
+                    if ( RandomNumber.GetInstance().Random(2) == 0)
                     {
                         nX += 2;
                         nY += 2;
@@ -7097,7 +7102,7 @@ namespace RobotSvr
                     }
                     break;
                 case Grobal2.DR_RIGHT:
-                    if (new System.Random(2).Next() == 0)
+                    if ( RandomNumber.GetInstance().Random(2) == 0)
                     {
                         nX -= 2;
                         nY += 2;
@@ -7113,7 +7118,7 @@ namespace RobotSvr
                     }
                     break;
                 case Grobal2.DR_UPLEFT:
-                    if (new System.Random(2).Next() == 0)
+                    if ( RandomNumber.GetInstance().Random(2) == 0)
                     {
                         nX += 2;
                     }
@@ -7129,7 +7134,7 @@ namespace RobotSvr
                     }
                     break;
                 case Grobal2.DR_UPRIGHT:
-                    if (new System.Random(2).Next() == 0)
+                    if ( RandomNumber.GetInstance().Random(2) == 0)
                     {
                         nY += 2;
                         nY -= 1;
@@ -7146,7 +7151,7 @@ namespace RobotSvr
                     }
                     break;
                 case Grobal2.DR_DOWNLEFT:
-                    if (new System.Random(2).Next() == 0)
+                    if ( RandomNumber.GetInstance().Random(2) == 0)
                     {
                         nX += 2;
                     }
@@ -7161,7 +7166,7 @@ namespace RobotSvr
                     }
                     break;
                 case Grobal2.DR_DOWNRIGHT:
-                    if (new System.Random(2).Next() == 0)
+                    if ( RandomNumber.GetInstance().Random(2)== 0)
                     {
                         nX -= 2;
                     }
