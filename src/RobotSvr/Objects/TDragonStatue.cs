@@ -6,38 +6,7 @@ public class TDragonStatue : TSkeletonArcherMon
 {
     public TDragonStatue(RobotClient robotClient) : base(robotClient)
     {
-    }
-
-    public override void CalcActorFrame()
-    {
-        TMonsterAction pm;
-        m_btDir = 0;
-        m_nCurrentFrame = -1;
-        m_nBodyOffset = Actor.GetOffset(m_wAppearance);
-        pm = Actor.GetRaceByPM(m_btRace, m_wAppearance);
-        if (pm == null) return;
-        switch (m_nCurrentAction)
-        {
-            case Grobal2.SM_DIGUP:
-                Shift(0, 0, 0, 1);
-                m_nStartFrame = 0;
-                m_nEndFrame = 0;
-                m_dwFrameTime = 100;
-                m_dwStartTime = MShare.GetTickCount();
-                break;
-            case Grobal2.SM_LIGHTING:
-                m_nStartFrame = 0;
-                m_nEndFrame = 9;
-                m_dwFrameTime = 100;
-                m_dwStartTime = MShare.GetTickCount();
-                m_boUseEffect = true;
-                m_nEffectStart = 0;
-                m_nEffectFrame = 0;
-                m_nEffectEnd = 9;
-                m_dwEffectStartTime = MShare.GetTickCount();
-                m_dwEffectFrameTime = 100;
-                break;
-        }
+        
     }
 
     public override void Run()

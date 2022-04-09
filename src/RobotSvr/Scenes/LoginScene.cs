@@ -1,5 +1,4 @@
-﻿using System;
-using SystemModule.Packet;
+﻿using SystemModule.Packet;
 
 namespace RobotSvr
 {
@@ -10,10 +9,6 @@ namespace RobotSvr
         private TUserEntryAdd _mNewIdRetryAdd = null;
         public string MSLoginId = string.Empty;
         public string MSLoginPasswd = string.Empty;
-        public long MEditIdHandle = 0;
-        public object MEditIdPointer = null;
-        public long MEditPassHandle = 0;
-        public object MEditPassPointer = null;
 
         public LoginScene(RobotClient robotClient) : base(SceneType.stLogin, robotClient)
         {
@@ -76,11 +71,6 @@ namespace RobotSvr
             }
         }
 
-        public void NewClick()
-        {
-            ChangeLoginState(LoginState.LsNewid);
-        }
-
         public void NewIdRetry(bool boupdate)
         {
             ChangeLoginState(LoginState.LsNewidRetry);
@@ -90,68 +80,6 @@ namespace RobotSvr
         {
             _mNewIdRetryUe = ue;
             NewIdRetry(true);
-        }
-
-        public void OkClick()
-        {
-
-        }
-
-        public void ChgPwClick()
-        {
-            ChangeLoginState(LoginState.LsChgpw);
-        }
-
-        private bool CheckUserEntrys()
-        {
-            bool result;
-            result = true;
-            return result;
-        }
-
-        public void NewAccountOk()
-        {
-            TUserEntry ue;
-            TUserEntryAdd ua;
-            if (CheckUserEntrys())
-            {
-                ue = new TUserEntry();
-                ua = new TUserEntryAdd();
-                //ue.sAccount = FrmDlg.DEditNewID.Text.ToLower();
-                //ue.sPassword = FrmDlg.DEditNewPassWord.Text;
-                //ue.sUserName = FrmDlg.DEditNewYourName.Text;
-                //ue.sSSNo = FrmDlg.DEditNewIDcard.Text;
-                //ue.sQuiz = FrmDlg.DEditNewQuiz1.Text;
-                //ue.sAnswer = FrmDlg.DEditNewAnswer1.Text.Trim();
-                //ue.sPhone = FrmDlg.DEditNewPhone.Text;
-                //ue.sEMail = FrmDlg.DEditNewEMail.Text.Trim();
-                //ua.sQuiz2 = FrmDlg.DEditNewQuiz1.Text;
-                //ua.sAnswer2 = FrmDlg.DEditNewAnswer1.Text.Trim();
-                //ua.sBirthDay = FrmDlg.DEditNewBirthDay.Text;
-                //ua.sMobilePhone = FrmDlg.DEditNewMobPhone.Text;
-                _mNewIdRetryUe = ue;
-                _mNewIdRetryUe.sAccount = "";
-                _mNewIdRetryUe.sPassword = "";
-                _mNewIdRetryAdd = ua;
-                //ClMain.frmMain.SendNewAccount(ue, ua); // 发送注册帐号信息
-                NewAccountClose();
-                Console.WriteLine("注册账号");
-            }
-        }
-
-        public void NewAccountClose()
-        {
-            ChangeLoginState(LoginState.LsLogin);
-        }
-
-        public void ChgpwOk()
-        {
-
-        }
-
-        public void ChgpwCancel()
-        {
-            ChangeLoginState(LoginState.LsLogin);
         }
     }
 }

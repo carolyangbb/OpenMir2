@@ -555,7 +555,6 @@ namespace RobotSvr
             }
         }
 
-        // ----------------------------------------------------------
         public static int GetDistance(int sX, int sY, int dx, int dy)
         {
             return HUtil32._MAX(Math.Abs(sX - dx), Math.Abs(sY - dy));
@@ -1205,18 +1204,15 @@ namespace RobotSvr
                         result = Grobal2.U_BUJUK;
                     }
                     break;
-                case 27:
+                case 27: // 腰带
                     result = Grobal2.U_BELT;
                     break;
-                case 28:
-                    // 腰带
+                case 28:// 靴子
                     result = Grobal2.U_BOOTS;
                     break;
-                case 29:
-                    // 靴子
+                case 29:// 宝石
                     result = Grobal2.U_CHARM;
                     break;
-                    // 宝石
             }
             return result;
         }

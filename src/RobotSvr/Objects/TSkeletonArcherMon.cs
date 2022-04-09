@@ -10,12 +10,7 @@ namespace RobotSvr
 
         public TSkeletonArcherMon(RobotClient robotClient) : base(robotClient)
         {
-        }
-
-        public override void CalcActorFrame()
-        {
-            base.CalcActorFrame();
-            if (m_nCurrentAction == Grobal2.SM_NOWDEATH && m_btRace != 72) m_boNowDeath = true;
+            
         }
 
         public override void Run()

@@ -4,11 +4,7 @@
     {
         public TSpiderKing(RobotClient robotClient) : base(robotClient)
         {
-        }
 
-        public override void CalcActorFrame()
-        {
-            base.CalcActorFrame();
         }
     }
 }

@@ -1,8 +1,10 @@
-﻿namespace RobotSvr;
-
-public class TBossPigMon : TGasKuDeGi
+﻿namespace RobotSvr
 {
-    public TBossPigMon(RobotClient robotClient) : base(robotClient)
+    public class TBossPigMon : TGasKuDeGi
     {
+        public TBossPigMon(RobotClient robotClient) : base(robotClient)
+        {
+            
+        }
     }
 }

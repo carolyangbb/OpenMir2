@@ -76,11 +76,6 @@ namespace RobotSvr
             }
             if (!string.IsNullOrEmpty(chrname))
             {
-                if (!MShare.g_boDoFadeOut && !MShare.g_boDoFadeIn)
-                {
-                    MShare.g_boDoFastFadeOut = true;
-                    MShare.g_nFadeIndex = 29;
-                }
                 robotClient.SendSelChr(chrname);
             }
             else
@@ -257,11 +252,6 @@ namespace RobotSvr
                 {
                     MShare.g_nAPReLogonWaitTick = MShare.GetTickCount();
                     MShare.g_nAPReLogon = 3;
-                    if (!MShare.g_boDoFadeOut && !MShare.g_boDoFadeIn)
-                    {
-                        MShare.g_boDoFastFadeOut = true;
-                        MShare.g_nFadeIndex = 29;
-                    }
                     robotClient.SendSelChr(robotClient.m_sCharName);
                 }
             }

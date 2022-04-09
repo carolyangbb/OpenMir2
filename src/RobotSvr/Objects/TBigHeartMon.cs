@@ -1,14 +1,10 @@
-﻿namespace RobotSvr;
-
-public class TBigHeartMon : TKillingHerb
+﻿namespace RobotSvr
 {
-    public TBigHeartMon(RobotClient robotClient) : base(robotClient)
+    public class TBigHeartMon : TKillingHerb
     {
-    }
-
-    public override void CalcActorFrame()
-    {
-        m_btDir = 0;
-        base.CalcActorFrame();
+        public TBigHeartMon(RobotClient robotClient) : base(robotClient)
+        {
+            
+        }
     }
 }

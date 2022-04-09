@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Drawing;
 
 namespace RobotSvr
@@ -7,27 +6,12 @@ namespace RobotSvr
     public class DrawScreen
     {
         private readonly RobotClient robotClient;
-        private readonly ArrayList _mSysMsgList = null;
-        private readonly ArrayList _mSysMsgListEx = null;
-        private readonly ArrayList _mSysMsgListEx2 = null;
         public Scene CurrentScene = null;
-        public ArrayList ChatStrs = null;
-        public ArrayList ChatBks = null;
-        public ArrayList MAdList = null;
-        public ArrayList MAdList2 = null;
-
 
         public DrawScreen(RobotClient robotClient)
         {
             this.robotClient = robotClient;
             CurrentScene = null;
-            _mSysMsgList = new ArrayList();
-            _mSysMsgListEx = new ArrayList();
-            _mSysMsgListEx2 = new ArrayList();
-            ChatStrs = new ArrayList();
-            MAdList = new ArrayList();
-            MAdList2 = new ArrayList();
-            ChatBks = new ArrayList();
         }
 
         public void Initialize()
@@ -74,39 +58,22 @@ namespace RobotSvr
 
         public void AddSysMsg(string msg)
         {
-            if (_mSysMsgList.Count >= 10)
-            {
-                _mSysMsgList.Remove(0);
-            }
-            //_mSysMsgList.Add(msg, MShare.GetTickCount() as Object);
         }
 
         public void AddSysMsgBottom(string msg)
         {
-            if (_mSysMsgListEx.Count >= 10)
-            {
-                _mSysMsgListEx.Remove(0);
-            }
-            // _mSysMsgListEx.Add(msg, MShare.GetTickCount() as Object);
         }
 
         public void AddSysMsgBottom2(string msg)
         {
-            if (_mSysMsgListEx2.Count >= 10)
-            {
-                _mSysMsgListEx2.Remove(0);
-            }
-            // _mSysMsgListEx2.Add(msg, MShare.GetTickCount() as Object);
         }
 
         public void AddSysMsgCenter(string msg, Color fc, Color bc, int sec)
         {
-
         }
 
         public void AddSysMsgCenter(string msg, int fc, int bc, int sec)
         {
-
         }
 
         public void AddChatBoardString(string str, Color fcolor, Color bcolor)
@@ -126,11 +93,7 @@ namespace RobotSvr
 
         public void ClearChatBoard()
         {
-            _mSysMsgList.Clear();
-            _mSysMsgListEx.Clear();
-            _mSysMsgListEx2.Clear();
-            ChatStrs.Clear();
-            ChatBks.Clear();
+
         }
 
         public void ClearHint()

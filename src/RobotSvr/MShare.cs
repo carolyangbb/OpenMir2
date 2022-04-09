@@ -292,10 +292,6 @@ namespace RobotSvr
         public static int g_dwEatTime = 0;
         public static int g_dwDizzyDelayStart = 0;
         public static int g_dwDizzyDelayTime = 0;
-        public static bool g_boDoFadeOut = false;
-        public static bool g_boDoFadeIn = false;
-        public static int g_nFadeIndex = 0;
-        public static bool g_boDoFastFadeOut = false;
         public static bool g_boAutoDig = false;
         public static bool g_boAutoSit = false;
         public static int g_dwFirstServerTime = 0;

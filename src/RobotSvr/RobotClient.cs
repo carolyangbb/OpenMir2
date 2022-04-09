@@ -29,7 +29,6 @@ namespace RobotSvr
         public LoginScene LoginScene = null;
         public SelectChrScene SelectChrScene = null;
         public PlayScene g_PlayScene = null;
-        public ShakeScreen g_ShakeScreen = null;
         public LoginNotice LoginNoticeScene = null;
         //public ClEventManager EventMan = null;
         public TMap Map = null;
@@ -85,7 +84,6 @@ namespace RobotSvr
             LoginScene = new LoginScene(this);
             SelectChrScene = new SelectChrScene(this);
             g_PlayScene = new PlayScene(this);
-            g_ShakeScreen = new ShakeScreen();
             LoginNoticeScene = new LoginNotice(this);
             Map = new TMap(this);
             MShare.g_DropedItemList = new List<TDropItem>();
@@ -101,12 +99,6 @@ namespace RobotSvr
             }
             MShare.InitClientItems();
             MShare.g_DetectItemMineID = 0;
-            //MShare.g_DetectItem.Item.Name = "";
-            //MShare.g_WaitingUseItem.Item.Item.Name = "";
-            //MShare.g_WaitingDetectItem.Item.Item.Name = "";
-            //MShare.g_WaitingStallItem.Item.Item.Name = "";
-            //MShare.g_OpenBoxItem.Item.Item.Name = "";
-            //MShare.g_EatingItem.Item.Name = "";
             MShare.g_nLastMapMusic = -1;
             MShare.g_nTargetX = -1;
             MShare.g_nTargetY = -1;
@@ -147,9 +139,6 @@ namespace RobotSvr
             MShare.g_dwLatestSpellTick = MShare.GetTickCount();
             MShare.g_dwAutoPickupTick = MShare.GetTickCount();
             MShare.g_boItemMoving = false;
-            MShare.g_boDoFadeIn = false;
-            MShare.g_boDoFadeOut = false;
-            MShare.g_boDoFastFadeOut = false;
             MShare.g_boNextTimePowerHit = false;
             MShare.g_boCanLongHit = false;
             MShare.g_boCanWideHit = false;
@@ -1796,7 +1785,7 @@ namespace RobotSvr
 
         public bool AttackTarget(TActor target)
         {
-            bool result = false;
+            var result = false;
             int nHitMsg = Grobal2.CM_HIT;
             if (MShare.g_UseItems[Grobal2.U_WEAPON].Item.StdMode == 6)
             {
@@ -1860,9 +1849,8 @@ namespace RobotSvr
                         MShare.g_MySelf.SendMsg(nHitMsg, MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, 0, 0, "", 0);
                         MShare.g_dwLastAttackTick = MShare.GetTickCount();
                     }
-                    else if (MShare.g_boAutoLongAttack && MShare.g_gcTec[10] && TimerAutoPlay.Enabled)
+                    else if (MShare.g_boAutoLongAttack && MShare.g_gcTec[10] && TimerAutoPlay.Enabled)// 走刺杀位
                     {
-                        // 走刺杀位
                         result = true;
                         return result;
                     }
@@ -2361,11 +2349,6 @@ namespace RobotSvr
             if (MShare.g_ConnectionStep == TConnectionStep.cnsLogin)
             {
                 DScreen.ChangeScene(SceneType.stLogin);
-                if (!MShare.g_boDoFadeOut && !MShare.g_boDoFadeIn)
-                {
-                    MShare.g_boDoFadeIn = true;
-                    MShare.g_nFadeIndex = 0;
-                }
             }
             if (MShare.g_ConnectionStep == TConnectionStep.cnsSelChr)
             {
@@ -2378,11 +2361,6 @@ namespace RobotSvr
                     ClFunc.ClearBag();
                     DScreen.ClearChatBoard();
                     DScreen.ChangeScene(SceneType.stLoginNotice);
-                    if (!MShare.g_boDoFadeOut && !MShare.g_boDoFadeIn)
-                    {
-                        MShare.g_boDoFadeIn = true;
-                        MShare.g_nFadeIndex = 0;
-                    }
                 }
                 else
                 {
@@ -2431,16 +2409,16 @@ namespace RobotSvr
             //ClientManager.DelClient(SessionId);
         }
 
-        public void CSocketRead(object sender, DSCClientDataInEventArgs e)
+        private void CSocketRead(object sender, DSCClientDataInEventArgs e)
         {
             string sData = HUtil32.GetString(e.Buff, 0, e.BuffLen);
             if (!string.IsNullOrEmpty(sData))
             {
-                int n = sData.IndexOf("*");
+                int n = sData.IndexOf("*", StringComparison.Ordinal);
                 if (n > 0)
                 {
-                    string data2 = sData.Substring(1 - 1, n - 1);
-                    sData = data2 + sData.Substring(n + 1 - 1, sData.Length);
+                    string data2 = sData.Substring(0, n - 1);
+                    sData = data2 + sData.Substring(n, sData.Length);
                     ClientSocket.SendBuffer(HUtil32.GetBytes(activebuf));
                 }
                 SocStr = SocStr + sData;
@@ -2490,7 +2468,7 @@ namespace RobotSvr
 
         private void SendNewAccount(string sAccount, string sPassword)
         {
-            MainOutMessage($"创建帐号");
+            MainOutMessage("创建帐号");
             m_ConnectionStep = TConnectionStep.cnsNewAccount;
             UserFullEntry ue = new UserFullEntry();
             ue.UserEntry.sAccount = sAccount;
@@ -2709,7 +2687,7 @@ namespace RobotSvr
                         sM = HUtil32.GetValidStr3(param, ref sy, new string[] { " ", ":", ",", "\09" });
                         if ((sx != "") && (sy != ""))
                         {
-                            if ((sM != "") && (MShare.g_sMapTitle.ToLower().CompareTo(sM.ToLower()) != 0))// 自动移动
+                            if ((sM != "") && (string.Compare(MShare.g_sMapTitle, sM, StringComparison.OrdinalIgnoreCase) != 0))// 自动移动
                             {
                                 DScreen.AddChatBoardString($"到达 {sM} 之后才能使用自动走路", Color.Blue, Color.White);
                                 return;
@@ -2731,12 +2709,12 @@ namespace RobotSvr
                                         {
                                             g_MoveStep = 1;
                                             TimerAutoMove.Enabled = true;
-                                            DScreen.AddChatBoardString(string.Format("自动移动至坐标({0}:{1})，点击鼠标任意键停止……", new int[] { MShare.g_MySelf.m_nTagX, MShare.g_MySelf.m_nTagY }), GetRGB(5), Color.White);
+                                            DScreen.AddChatBoardString($"自动移动至坐标({MShare.g_MySelf.m_nTagX}:{MShare.g_MySelf.m_nTagY})，点击鼠标任意键停止……", GetRGB(5), Color.White);
                                         }
                                         else
                                         {
                                             TimerAutoMove.Enabled = false;
-                                            DScreen.AddChatBoardString(string.Format("自动移动坐标点({0}:{1})不可到达", new int[] { MShare.g_MySelf.m_nTagX, MShare.g_MySelf.m_nTagY }), GetRGB(5), Color.White);
+                                            DScreen.AddChatBoardString($"自动移动坐标点({MShare.g_MySelf.m_nTagX}:{MShare.g_MySelf.m_nTagY})不可到达", GetRGB(5), Color.White);
                                             MShare.g_MySelf.m_nTagX = 0;
                                             MShare.g_MySelf.m_nTagY = 0;
                                         }
@@ -3023,10 +3001,7 @@ namespace RobotSvr
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         /// <summary>
@@ -3149,8 +3124,7 @@ namespace RobotSvr
                             MShare.g_MySelf.m_nTagX = 0;
                             MShare.g_MySelf.m_nTagY = 0;
                             TimerAutoMove.Enabled = false;
-                            DScreen.AddChatBoardString(
-                                $"自动移动目标({MShare.g_MySelf.m_nTagX}:{MShare.g_MySelf.m_nTagY})被占据，不可到达", GetRGB(5), Color.White);
+                            DScreen.AddChatBoardString($"自动移动目标({MShare.g_MySelf.m_nTagX}:{MShare.g_MySelf.m_nTagY})被占据，不可到达", GetRGB(5), Color.White);
                         }
                     }
                     finally
@@ -3227,14 +3201,14 @@ namespace RobotSvr
                 switch (msg.Ident)
                 {
                     case Grobal2.SM_NEWID_SUCCESS:
-                        MainOutMessage("您的帐号创建成功。\\" + "请妥善保管您的帐号和密码，\\并且不要因任何原因把帐号和密码告诉任何其他人。\\" + "如果忘记了密码,\\你可以通过我们的主页重新找回。");
+                        MainOutMessage("您的帐号创建成功。请妥善保管您的帐号和密码，并且不要因任何原因把帐号和密码告诉任何其他人。如果忘记了密码,你可以通过我们的主页重新找回。");
                         ClientNewIdSuccess("");
                         break;
                     case Grobal2.SM_NEWID_FAIL:
                         switch (msg.Recog)
                         {
                             case 0:
-                                MainOutMessage("帐号 \"" + LoginID + "\" 已被其他的玩家使用了。\\" + "请选择其它帐号名注册");
+                                MainOutMessage($"帐号 [{LoginID}] 已被其他的玩家使用了。请选择其它帐号名注册");
                                 LoginScene.NewIdRetry(false);
                                 break;
                             case -2:
@@ -3278,7 +3252,7 @@ namespace RobotSvr
                         ClientGetNeedUpdateAccount(body);
                         break;
                     case Grobal2.SM_UPDATEID_SUCCESS:
-                        MainOutMessage("您的帐号信息更新成功。\\" + "请妥善保管您的帐号和密码。\\" + "并且不要因任何原因把帐号和密码告诉任何其他人。\\" + "如果忘记了密码，你可以通过我们的主页重新找回。");
+                        MainOutMessage("您的帐号信息更新成功。请妥善保管您的帐号和密码。并且不要因任何原因把帐号和密码告诉任何其他人。如果忘记了密码，你可以通过我们的主页重新找回。");
                         ClientGetSelectServer();
                         break;
                     case Grobal2.SM_UPDATEID_FAIL:
@@ -3295,9 +3269,6 @@ namespace RobotSvr
                         ClientGetReceiveChrs(body);
                         break;
                     case Grobal2.SM_QUERYCHR_FAIL:
-                        MShare.g_boDoFastFadeOut = false;
-                        MShare.g_boDoFadeIn = false;
-                        MShare.g_boDoFadeOut = false;
                         MainOutMessage("服务器认证失败！");
                         break;
                     case Grobal2.SM_NEWCHR_SUCCESS:
@@ -3350,12 +3321,10 @@ namespace RobotSvr
                         ClientGetStartPlay(body);
                         break;
                     case Grobal2.SM_STARTFAIL:
-                        MShare.g_boDoFastFadeOut = false;
                         MainOutMessage("此服务器满员！");
                         ClientGetSelectServer();
                         break;
                     case Grobal2.SM_VERSION_FAIL:
-                        MShare.g_boDoFastFadeOut = false;
                         MainOutMessage("游戏程序版本不正确，请下载最新版本游戏程序！");
                         break;
                     //case Grobal2.SM_OVERCLIENTCOUNT:
@@ -3368,8 +3337,6 @@ namespace RobotSvr
                     case Grobal2.SM_RECONNECT:
                     case Grobal2.SM_SENDNOTICE:
                     case Grobal2.SM_DLGMSG:
-                        break;
-                    default:
                         break;
                 }
             }
@@ -3406,11 +3373,6 @@ namespace RobotSvr
                     g_PlayScene.SendMsg(Grobal2.SM_LOGON, msg.Recog, msg.Param, msg.Tag, msg.Series, wl.lParam1, wl.lParam2, "");
                     DScreen.ChangeScene(SceneType.stPlayGame);
                     //SendClientMessage(Grobal2.CM_WANTVIEWRANGE, HUtil32.MakeLong(MShare.g_TileMapOffSetX, MShare.g_TileMapOffSetY), 0, 0, 0);
-                    if (!MShare.g_boDoFadeOut && !MShare.g_boDoFadeIn)
-                    {
-                        MShare.g_boDoFadeIn = true;
-                        MShare.g_nFadeIndex = 10;
-                    }
                     SendClientMessage(Grobal2.CM_QUERYBAGITEMS, 1, 0, 0, 0);
                     if (HUtil32.LoByte(HUtil32.LoWord(wl.lTag1)) == 1)
                     {
@@ -3762,9 +3724,6 @@ namespace RobotSvr
                     UseMagicFireFail(msg.Recog);
                     break;
                 case Grobal2.SM_OUTOFCONNECTION:
-                    MShare.g_boDoFastFadeOut = false;
-                    MShare.g_boDoFadeIn = false;
-                    MShare.g_boDoFadeOut = false;
                     MainOutMessage("服务器连接被强行中断。\\连接时间可能超过限制");
                     break;
                 case Grobal2.SM_DEATH:
@@ -5901,7 +5860,6 @@ namespace RobotSvr
 
         private void ClientGetSendNotice(string body)
         {
-            MShare.g_boDoFastFadeOut = false;
             if (MShare.g_boOpenAutoPlay && (MShare.g_nAPReLogon == 3))
             {
                 MShare.g_nAPReLogon = 4;
@@ -6084,7 +6042,7 @@ namespace RobotSvr
                     {
                         break;
                     }
-                    if (BufferStr.IndexOf("!") <= 0)
+                    if (BufferStr.IndexOf("!", StringComparison.Ordinal) <= 0)
                     {
                         break;
                     }
@@ -6955,18 +6913,14 @@ namespace RobotSvr
 
         public static void GetNearPoint()
         {
-            int i;
-            int nC;
-            int n10;
-            int n14;
             if ((MShare.g_APMapPath != null) && (MShare.g_APMapPath.GetUpperBound(0) > 0))
             {
-                n14 = 0;
+                var n14 = 0;
                 MShare.g_APLastPoint.X = -1;
-                n10 = 999;
-                for (i = MShare.g_APMapPath.GetLowerBound(0); i <= MShare.g_APMapPath.GetUpperBound(0); i++)
+                var n10 = 999;
+                for (var i = MShare.g_APMapPath.GetLowerBound(0); i <= MShare.g_APMapPath.GetUpperBound(0); i++)
                 {
-                    nC = Math.Abs(MShare.g_APMapPath[i].X - MShare.g_MySelf.m_nCurrX) + Math.Abs(MShare.g_APMapPath[i].X - MShare.g_MySelf.m_nCurrY);
+                    var nC = Math.Abs(MShare.g_APMapPath[i].X - MShare.g_MySelf.m_nCurrX) + Math.Abs(MShare.g_APMapPath[i].X - MShare.g_MySelf.m_nCurrY);
                     if (nC < n10)
                     {
                         n10 = nC;
@@ -7299,14 +7253,7 @@ namespace RobotSvr
             //    }
             //}
         }
-
-        public int NotifyCallback(int NotifyType, int NotifyData, object pCallbackContext)
-        {
-            MainOutMessage(string.Format("(Notify) Type: %d, Data: %.8x", new double[] { NotifyType, NotifyData }));
-            int result = 0;
-            return result;
-        }
-
+        
         public int GetMagicLv(TActor Actor, int magid)
         {
             if (Actor == null)
@@ -7317,18 +7264,8 @@ namespace RobotSvr
             {
                 return 0;
             }
-            if (MShare.g_MagicArr[magid] != null)
-            {
-                return MShare.g_MagicArr[magid].Level;
-            }
-            return 0;
+            return MShare.g_MagicArr[magid] != null ? MShare.g_MagicArr[magid].Level : 0;
         }
-    }
-
-    public enum TOneClickMode
-    {
-        toNone,
-        toKornetWorld
     }
 }
 

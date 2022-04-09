@@ -1,14 +1,10 @@
-﻿namespace RobotSvr;
-
-public class TSpiderHouseMon : TKillingHerb
+﻿namespace RobotSvr
 {
-    public TSpiderHouseMon(RobotClient robotClient) : base(robotClient)
+    public class TSpiderHouseMon : TKillingHerb
     {
-    }
-
-    public override void CalcActorFrame()
-    {
-        m_btDir = 0;
-        base.CalcActorFrame();
+        public TSpiderHouseMon(RobotClient robotClient) : base(robotClient)
+        {
+            
+        }
     }
 }

@@ -1,29 +1,10 @@
-﻿using SystemModule;
-
-namespace RobotSvr;
-
-public class TExplosionSpider : TGasKuDeGi
+﻿namespace RobotSvr
 {
-    public TExplosionSpider(RobotClient robotClient) : base(robotClient)
+    public class TExplosionSpider : TGasKuDeGi
     {
-    }
-
-    public override void CalcActorFrame()
-    {
-        base.CalcActorFrame();
-        switch (m_nCurrentAction)
+        public TExplosionSpider(RobotClient robotClient) : base(robotClient)
         {
-            case Grobal2.SM_HIT:
-                m_boUseEffect = false;
-                break;
-            case Grobal2.SM_NOWDEATH:
-                m_nEffectStart = m_nStartFrame;
-                m_nEffectFrame = m_nStartFrame;
-                m_dwEffectStartTime = MShare.GetTickCount();
-                m_dwEffectFrameTime = m_dwFrameTime;
-                m_nEffectEnd = m_nEndFrame;
-                m_boUseEffect = true;
-                break;
+            
         }
     }
 }

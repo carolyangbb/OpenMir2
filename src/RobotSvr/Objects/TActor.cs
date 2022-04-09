@@ -337,90 +337,6 @@ namespace RobotSvr
             }
         }
 
-        public virtual void CalcActorFrame()
-        {
-            m_boUseCboLib = false;
-            m_boUseMagic = false;
-            m_boNewMagic = false;
-            m_nCurrentFrame = -1;
-            m_nBodyOffset = Actor.GetOffset(m_wAppearance);
-            m_Action = Actor.GetRaceByPM(m_btRace, m_wAppearance);
-            if (m_Action == null) return;
-            switch (m_nCurrentAction)
-            {
-                case Grobal2.SM_TURN:
-                    m_nStartFrame = m_Action.ActStand.start + m_btDir * (m_Action.ActStand.frame + m_Action.ActStand.skip);
-                    m_nEndFrame = m_nStartFrame + m_Action.ActStand.frame - 1;
-                    m_dwFrameTime = m_Action.ActStand.ftime;
-                    m_dwStartTime = MShare.GetTickCount();
-                    m_nDefFrameCount = m_Action.ActStand.frame;
-                    Shift(m_btDir, 0, 0, 1);
-                    if (m_fHideMode)
-                    {
-                        m_fHideMode = false;
-                        m_dwSmoothMoveTime = 0;
-                        m_nCurrentAction = 0;
-                    }
-
-                    break;
-                case Grobal2.SM_WALK:
-                case Grobal2.SM_RUSH:
-                case Grobal2.SM_RUSHKUNG:
-                case Grobal2.SM_BACKSTEP:
-                    m_nStartFrame = m_Action.ActWalk.start + m_btDir * (m_Action.ActWalk.frame + m_Action.ActWalk.skip);
-                    m_nEndFrame = m_nStartFrame + m_Action.ActWalk.frame - 1;
-                    m_dwFrameTime = m_Action.ActWalk.ftime;
-                    m_dwStartTime = MShare.GetTickCount();
-                    m_nMaxTick = m_Action.ActWalk.usetick;
-                    m_nCurTick = 0;
-                    m_nMoveStep = 1;
-                    if (m_nCurrentAction == Grobal2.SM_BACKSTEP)
-                        Shift(ClFunc.GetBack(m_btDir), m_nMoveStep, 0, m_nEndFrame - m_nStartFrame + 1);
-                    else
-                        Shift(m_btDir, m_nMoveStep, 0, m_nEndFrame - m_nStartFrame + 1);
-                    break;
-                case Grobal2.SM_HIT:
-                    m_nStartFrame = m_Action.ActAttack.start +m_btDir * (m_Action.ActAttack.frame + m_Action.ActAttack.skip);
-                    m_nEndFrame = m_nStartFrame + m_Action.ActAttack.frame - 1;
-                    m_dwFrameTime = m_Action.ActAttack.ftime;
-                    m_dwStartTime = MShare.GetTickCount();
-                    m_dwWarModeTime = MShare.GetTickCount();
-                    Shift(m_btDir, 0, 0, 1);
-                    break;
-                case Grobal2.SM_STRUCK:
-                    if (m_btRace != 12)
-                    {
-                        m_nStartFrame = m_Action.ActStruck.start +
-                                        m_btDir * (m_Action.ActStruck.frame + m_Action.ActStruck.skip);
-                        m_nEndFrame = m_nStartFrame + m_Action.ActStruck.frame - 1;
-                        m_dwFrameTime = m_dwStruckFrameTime;
-                        m_dwStartTime = MShare.GetTickCount();
-                        Shift(m_btDir, 0, 0, 1);
-                    }
-
-                    break;
-                case Grobal2.SM_DEATH:
-                    m_nStartFrame = m_Action.ActDie.start + m_btDir * (m_Action.ActDie.frame + m_Action.ActDie.skip);
-                    m_nEndFrame = m_nStartFrame + m_Action.ActDie.frame - 1;
-                    m_nStartFrame = m_nEndFrame;
-                    m_dwFrameTime = m_Action.ActDie.ftime;
-                    m_dwStartTime = MShare.GetTickCount();
-                    break;
-                case Grobal2.SM_NOWDEATH:
-                    m_nStartFrame = m_Action.ActDie.start + m_btDir * (m_Action.ActDie.frame + m_Action.ActDie.skip);
-                    m_nEndFrame = m_nStartFrame + m_Action.ActDie.frame - 1;
-                    m_dwFrameTime = m_Action.ActDie.ftime;
-                    m_dwStartTime = MShare.GetTickCount();
-                    break;
-                case Grobal2.SM_SKELETON:
-                    m_nStartFrame = m_Action.ActDeath.start + m_btDir;
-                    m_nEndFrame = m_nStartFrame + m_Action.ActDeath.frame - 1;
-                    m_dwFrameTime = m_Action.ActDeath.ftime;
-                    m_dwStartTime = MShare.GetTickCount();
-                    break;
-            }
-        }
-
         public void ReadyAction(TChrMsg Msg)
         {
             int n;
@@ -585,14 +501,11 @@ namespace RobotSvr
                         m_btDir = (byte)Msg.Dir;
                         break;
                 }
-
                 m_nCurrentAction = Msg.Ident;
-                CalcActorFrame();
             }
             else if (Msg.Ident == Grobal2.SM_SKELETON)
             {
                 m_nCurrentAction = Msg.Ident;
-                CalcActorFrame();
                 m_boSkeleton = true;
             }
 

@@ -8,15 +8,9 @@ namespace RobotSvr
 {
     public class PlayScene : Scene
     {
-        public bool MBoPlayChange = false;
-        public long MDwPlayChangeTick = 0;
         private readonly int _mNDefXx = 0;
         private readonly int _mNDefYy = 0;
         public IList<TActor> m_ActorList = null;
-        public ArrayList MEffectList = null;
-        public ArrayList MFlyList = null;
-        public long MDwBlinkTime = 0;
-        public bool MBoViewBlink = false;
         public ProcMagic ProcMagic = null;
 
         public PlayScene(RobotClient robotClient) : base(SceneType.stPlayGame, robotClient)
@@ -24,10 +18,6 @@ namespace RobotSvr
             ProcMagic = new ProcMagic();
             ProcMagic.NTargetX = -1;
             m_ActorList = new List<TActor>();
-            MEffectList = new ArrayList();
-            MFlyList = new ArrayList();
-            MDwBlinkTime = MShare.GetTickCount();
-            MBoViewBlink = false;
         }
 
         public bool CanDrawTileMap()
