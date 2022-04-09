@@ -175,6 +175,7 @@ namespace RobotSvr
         {
             if (ClientSocket != null)
             {
+                ClientSocket.Disconnect();
                 ClientSocket = null;
             }
             ClientSocket = new IClientScoket();
@@ -2597,6 +2598,9 @@ namespace RobotSvr
             }
         }
 
+        /// <summary>
+        /// 发送角色动作消息（走路 攻击等）
+        /// </summary>
         public void SendActMsg(int ident, int X, int Y, int dir)
         {
             ClientPacket msg = Grobal2.MakeDefaultMsg(ident, HUtil32.MakeLong(X, Y), 0, dir, 0);

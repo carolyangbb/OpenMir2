@@ -147,7 +147,6 @@ namespace LoginSvr
                                 }
                                 SendServerMsgA(Grobal2.SS_KEEPALIVE, LSShare.nOnlineCountMin.ToString());
                                 RefServerLimit(sServerName);
-                                Console.WriteLine($"收到[{MsgServer.Socket.RemoteEndPoint.ToString()}]心跳包");
                                 break;
                             case Grobal2.UNKNOWMSG:
                                 SendServerMsgA(Grobal2.UNKNOWMSG, sMsg);
