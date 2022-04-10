@@ -280,10 +280,7 @@ namespace RobotSvr
                 ProcessActionMessages();
                 if (MShare.g_MySelf != null)
                 {
-                    if (DScreen.CurrentScene == g_PlayScene)
-                    {
-                        g_PlayScene.BeginScene();
-                    }
+                    g_PlayScene.BeginScene();
                 }
             }
         }
@@ -3166,7 +3163,6 @@ namespace RobotSvr
                         MainOutMessage("[错误信息] 删除游戏角色时出现错误！");
                         break;
                     case Grobal2.SM_STARTPLAY:
-                        Console.WriteLine("SM_STARTPLAY");
                         SelectChrScene.ClientGetStartPlay(body);
                         DScreen.ChangeScene(SceneType.stPlayGame);
                         break;
