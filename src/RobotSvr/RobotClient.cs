@@ -175,8 +175,6 @@ namespace RobotSvr
         {
             if (ClientSocket == null)
             {
-                //ClientSocket.Disconnect();
-                //ClientSocket = null;
                 ClientSocket = new IClientScoket();
             }
             ClientSocket.OnConnected -= CSocketConnect;
@@ -219,6 +217,11 @@ namespace RobotSvr
             {
                 LoginScene.OpenLoginDoor();
             }
+            if (m_ConnectionStep == TConnectionStep.cnsQueryChr)
+            {
+                SendQueryChr();
+                m_ConnectionStep = TConnectionStep.cnsSelChr;
+            }
             if (MShare.g_ConnectionStep == TConnectionStep.cnsPlay)
             {
                 if (!MShare.g_boServerChanging)
@@ -235,7 +238,6 @@ namespace RobotSvr
             }
             SocStr = string.Empty;
             BufferStr = "";
-            //TimerPacket.Enabled = true;
         }
 
         private void CSocketDisconnect(object sender, DSCClientConnectedEventArgs e)
@@ -250,9 +252,11 @@ namespace RobotSvr
             {
                 MainOutMessage("游戏连接已关闭...");
             }
-            //TimerPacket.Enabled = false;
-            LoginOut();
-            ClientManager.DelClient(SessionId);
+            if (DScreen.CurrentScene == g_PlayScene)
+            {
+                LoginOut();
+                ClientManager.DelClient(SessionId);
+            }
         }
 
         private void CSocketError(object sender, DSCClientErrorEventArgs e)
@@ -289,6 +293,7 @@ namespace RobotSvr
                 SocStr = SocStr + sData;
                 ClientManager.AddPacket(SessionId, sData);
             }
+            Console.WriteLine(sData);
         }
 
         #endregion
@@ -354,7 +359,6 @@ namespace RobotSvr
                 g_PlayScene.ClearActors();
                 MShare.g_SoftClosed = true;
                 //ActiveCmdTimer(MShare.TTimerCommand.tcSoftClose);
-                SaveBagsData();
                 MShare.SaveItemFilter();
             }
             finally
@@ -379,32 +383,12 @@ namespace RobotSvr
             try
             {
                 SendClientMessage(Grobal2.CM_SOFTCLOSE, 0, 0, 0, 0);
-                SaveBagsData();
                 MShare.SaveItemFilter();
             }
             finally
             {
                 MShare.g_boQueryExit = false;
             }
-        }
-
-        public void LoadBagsData()
-        {
-            //if (MShare.g_boBagLoaded)
-            //{
-            //    ClFunc.Loadbagsdat(".\\Config\\" + MShare.g_sServerName + "." + m_sCharName + ".itm-plus", MShare.g_ItemArr);
-            //}
-            MShare.g_boBagLoaded = false;
-        }
-
-        public void SaveBagsData()
-        {
-            //if (MShare.g_boBagLoaded)
-            //{
-            //    ClFunc.FillBagStallItem(0);
-            //    ClFunc.Savebagsdat(".\\Config\\" + MShare.g_sServerName + "." + m_sCharName + ".itm-plus", MShare.g_ItemArr);
-            //}
-            MShare.g_boBagLoaded = false;
         }
 
         private void ProcessMagic()
@@ -2432,6 +2416,18 @@ namespace RobotSvr
             {
                 ClientSocket.SendText($"#1{sendstr}!");
             }
+            else
+            {
+                MainOutMessage($"socket close {ClientSocket.Host}:{ClientSocket.Port}");
+            }
+        }
+
+        public void CloseSocket()
+        {
+            if (ClientSocket != null)
+            {
+                ClientSocket.Disconnect();
+            }
         }
 
         private void NewAccount()
@@ -2506,7 +2502,7 @@ namespace RobotSvr
         public void SendQueryChr()
         {
             ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_QUERYCHR, 0, 0, 0, 0);
-            SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(LoginID + "/" + Certification.ToString()));
+            SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(LoginID + "/" + Certification));
             MainOutMessage("查询角色.");
         }
 
@@ -4745,10 +4741,11 @@ namespace RobotSvr
             MShare.g_nSelChrPort = HUtil32.Str_ToInt(runport, 0);
             m_ConnectionStep = TConnectionStep.cnsQueryChr;
             SocketEvents();
+            CloseSocket();//断开登录网关链接
             ClientSocket.Host = MShare.g_sSelChrAddr;
             ClientSocket.Port = MShare.g_nSelChrPort;
             ClientSocket.Connect();
-            SendQueryChr();
+            MainOutMessage($"连接角色网关:[{MShare.g_sSelChrAddr}:{MShare.g_nSelChrPort}]");
         }
 
         private void ClientGetPasswordOK(ClientPacket msg, string sBody)
@@ -4889,6 +4886,7 @@ namespace RobotSvr
             MShare.g_sRunServerAddr = addr;
             MShare.g_ConnectionStep = TConnectionStep.cnsPlay;
             SocketEvents();
+            CloseSocket();//断开角色网关链接
             ClientSocket.Host = MShare.g_sRunServerAddr;
             ClientSocket.Port = MShare.g_nRunServerPort;
             ClientSocket.Connect();
@@ -4900,10 +4898,10 @@ namespace RobotSvr
             string sport = string.Empty;
             string Str = EDcode.DeCodeString(body);
             sport = HUtil32.GetValidStr3(Str, ref addr, new string[] { "/" });
-            SaveBagsData();
             MShare.g_boServerChanging = true;
             MShare.g_ConnectionStep = TConnectionStep.cnsPlay;
             SocketEvents();
+            CloseSocket();//断开游戏网关链接
             ClientSocket.Host = addr;
             ClientSocket.Port = HUtil32.Str_ToInt(sport, 0);
             ClientSocket.Connect();
@@ -6002,6 +6000,10 @@ namespace RobotSvr
 
         private void ClientGetServerConfig(ClientPacket msg, string sBody)
         {
+            TimerAutoMove = new TimerAutoPlay();
+            TimerAutoMove.Enabled = true;
+            TimerAutoPlay = new TimerAutoPlay();
+            TimerAutoPlay.Enabled = true;
             MShare.g_boOpenAutoPlay = true; //HUtil32.LoByte(HUtil32.LoWord(msg.Recog)) == 1;
             MShare.g_boSpeedRate = msg.Series != 0;
             MShare.g_boSpeedRateShow = MShare.g_boSpeedRate;
