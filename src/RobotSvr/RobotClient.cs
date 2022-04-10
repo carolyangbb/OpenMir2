@@ -3194,11 +3194,6 @@ namespace RobotSvr
                 {
                     return;
                 }
-
-                if (msg.Cmd == Grobal2.SM_LOGON)
-                {
-                    Console.WriteLine("asd");
-                }
             }
             else
             {

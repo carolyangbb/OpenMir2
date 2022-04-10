@@ -160,7 +160,6 @@ namespace RobotSvr
                 {
                     break;
                 }
-                
                 Trytile(X, Y - 1, end_x, end_y, Root, 0); // 尝试向上移动
                 Trytile(X + 1, Y - 1, end_x, end_y, Root, 1); // 尝试向右上移动
                 Trytile(X + 1, Y, end_x, end_y, Root, 2); // 尝试向右移动
@@ -169,7 +168,6 @@ namespace RobotSvr
                 Trytile(X - 1, Y + 1, end_x, end_y, Root, 5); // 尝试向左下移动
                 Trytile(X - 1, Y, end_x, end_y, Root, 6); // 尝试向左移动
                 Trytile(X - 1, Y - 1, end_x, end_y, Root, 7); // 尝试向左上移动
-
                 Console.WriteLine(aa);
                 aa++;
             }
