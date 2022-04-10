@@ -5250,7 +5250,7 @@ namespace RobotSvr
                 MShare.g_APMapPath2 = null;
                 GetNearPoint();
                 TimerAutoPlay.Enabled = MShare.g_gcAss[0];
-                DScreen.AddChatBoardString("[挂机] 开始自动挂机...", Color.White, Color.Red);
+                DScreen.AddChatBoardString("开始自动挂机...", Color.White, Color.Red);
                 SaveWayPoint();
             }
         }
@@ -5559,7 +5559,6 @@ namespace RobotSvr
         private void ClientGetMagicLvExp(int magid, int maglv, int magtrain)
         {
             magid = HUtil32.LoWord(magid);
-            //int nType = HUtil32.HiWord(magid);
             TClientMagic pcm = MShare.g_MagicArr[magid];
             if (pcm != null)
             {

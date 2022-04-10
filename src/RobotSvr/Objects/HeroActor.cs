@@ -118,10 +118,10 @@ namespace RobotSvr
                 P = P.Father;
             }
             ushort H = (ushort)(Father.H + 1);
-            /*if (TryTileHas(X, Y, H))// 如果曾经有更好的方案移动到 (x,y) 失败
+            if (TryTileHas(X, Y, H))// 如果曾经有更好的方案移动到 (x,y) 失败
             {
                 return;
-            }*/
+            }
             MShare.g_APPass[X - robotClient.Map.m_nBlockLeft, Y - robotClient.Map.m_nBlockTop] = H;// 记录这次到 (x,y) 的距离为历史最佳距离
             P = new MapTree();
             P.Father = Father;
