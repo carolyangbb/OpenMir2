@@ -4,7 +4,7 @@
     {
         public TSpiderHouseMon(RobotClient robotClient) : base(robotClient)
         {
-            
+
         }
     }
 }

@@ -4,7 +4,7 @@
     {
         public TKhazardMon(RobotClient robotClient) : base(robotClient)
         {
-            
+
         }
     }
 }

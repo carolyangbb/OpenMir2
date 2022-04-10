@@ -4,7 +4,7 @@
     {
         public TBlackFox(RobotClient robotClient) : base(robotClient)
         {
-            
+
         }
     }
 }

@@ -4,7 +4,7 @@
     {
         public TFlyingSpider(RobotClient robotClient) : base(robotClient)
         {
-        
+
         }
     }
 }

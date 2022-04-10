@@ -16,7 +16,7 @@
 
         public override void CloseScene()
         {
-            
+
         }
 
         public override void PlayScene()

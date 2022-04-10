@@ -10,7 +10,7 @@ namespace RobotSvr
 
         public TSkeletonArcherMon(RobotClient robotClient) : base(robotClient)
         {
-            
+
         }
 
         public override void Run()

@@ -4,7 +4,7 @@
     {
         public TBossPigMon(RobotClient robotClient) : base(robotClient)
         {
-            
+
         }
     }
 }

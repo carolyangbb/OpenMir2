@@ -4,7 +4,7 @@
     {
         public TExplosionSpider(RobotClient robotClient) : base(robotClient)
         {
-            
+
         }
     }
 }

@@ -4,7 +4,7 @@
     {
         public TBeeQueen(RobotClient robotClient) : base(robotClient)
         {
-            
+
         }
     }
 }

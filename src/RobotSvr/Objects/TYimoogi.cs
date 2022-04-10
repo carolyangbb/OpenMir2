@@ -4,7 +4,7 @@
     {
         public TYimoogi(RobotClient robotClient) : base(robotClient)
         {
-            
+
         }
     }
 }

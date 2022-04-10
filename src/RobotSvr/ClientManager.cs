@@ -17,7 +17,7 @@ namespace RobotSvr
         private static int dwRunTick = 0;
         private static int AutoRunTick = 0;
         private static readonly Channel<RecvicePacket> _reviceMsgList;
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
 
         static ClientManager()
         {

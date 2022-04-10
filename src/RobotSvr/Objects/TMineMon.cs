@@ -4,7 +4,7 @@
     {
         public TMineMon(RobotClient robotClient) : base(robotClient)
         {
-        
+
         }
     }
 }

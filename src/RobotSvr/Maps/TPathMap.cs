@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace RobotSvr
 {
@@ -6,7 +7,7 @@ namespace RobotSvr
     {
         public static Point[] g_MapPath;
         public const int SCALE = 4;
-        public const string MAP_BASEPATH = @"/Volumes/Data/Mirserver/Mir200/Map/";
+        public static string MAP_BASEPATH = GetMapPath();
         public static int[] TerrainParams = new int[2] { 4, -1 };
         public TMapHeader m_MapHeader;
         public TCellParams[,] m_MapData;
@@ -18,6 +19,23 @@ namespace RobotSvr
         {
             m_MapBuf = null;
             m_nPathWidth = 0;
+        }
+
+        public static string GetMapPath()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return "/Volumes/Data/Mirserver/Mir200/Map/";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
+            {
+                return "/opt/MirServer/Mir200/Map/";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "D:/Mirserver/Mir200/Map/";
+            }
+            return string.Empty;
         }
 
         public Point[] FindPathOnMap(int X, int Y)

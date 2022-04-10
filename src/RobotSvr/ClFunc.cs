@@ -91,38 +91,6 @@ namespace RobotSvr
             return result;
         }
 
-        public static void Savebagsdat(string flname, byte pbuf)
-        {
-            //int fhandle;
-            //if (File.Exists(flname))
-            //{
-            //    fhandle = File.Open(flname, (FileMode) FileAccess.Write | FileShare.ReadWrite);
-            //}
-            //else
-            //{
-            //    fhandle = File.Create(flname);
-            //}
-            //if (fhandle > 0)
-            //{
-            //    FileWrite(fhandle, pbuf * MShare.MAXBAGITEMCL);
-            //    fhandle.Close();
-            //}
-        }
-
-        public static void Loadbagsdat(string flname, byte pbuf)
-        {
-            //int fhandle;
-            //if (File.Exists(flname))
-            //{
-            //    fhandle = File.Open(flname, (FileMode) FileAccess.Read | FileShare.ReadWrite);
-            //    if (fhandle > 0)
-            //    {
-            //        FileRead(fhandle, pbuf * MShare.MAXBAGITEMCL);
-            //        fhandle.Close();
-            //    }
-            //}
-        }
-
         public static void ClearBag()
         {
             for (var i = 0; i < MShare.MAXBAGITEMCL; i++)

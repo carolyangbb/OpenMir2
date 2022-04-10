@@ -4,7 +4,7 @@
     {
         public TGreenCrystalSpider(RobotClient robotClient) : base(robotClient)
         {
-        
+
         }
     }
 }

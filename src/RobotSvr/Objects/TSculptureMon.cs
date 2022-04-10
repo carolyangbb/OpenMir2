@@ -4,7 +4,7 @@ namespace RobotSvr
 {
     public class TSculptureMon : TSkeletonOma
     {
-        private int firedir;
+        private readonly int firedir;
 
         public TSculptureMon(RobotClient robotClient) : base(robotClient)
         {

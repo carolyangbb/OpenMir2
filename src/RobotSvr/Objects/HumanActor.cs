@@ -35,7 +35,7 @@ namespace RobotSvr
         public TActionInfo ActMagic_113;
         public TActionInfo ActMagic_114;
     }
-    
+
     public class THumAction
     {
         public static THumanAction HA = new()
