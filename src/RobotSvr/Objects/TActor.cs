@@ -337,9 +337,8 @@ namespace RobotSvr
             }
         }
 
-        public void ReadyAction(TChrMsg Msg)
+        private void ReadyAction(TChrMsg Msg)
         {
-            int n;
             m_nActBeforeX = m_nCurrX;
             m_nActBeforeY = m_nCurrY;
             if (Msg.Ident == Grobal2.SM_ALIVE)
@@ -465,11 +464,6 @@ namespace RobotSvr
                 {
                     case Grobal2.SM_STRUCK:
                         m_nMagicStruckSound = Msg.X;
-                        n = HUtil32.Round(200 - m_Abil.Level * 5);
-                        if (n > 80)
-                            m_dwStruckFrameTime = n;
-                        else
-                            m_dwStruckFrameTime = 80;
                         m_dwLastStruckTime = MShare.GetTickCount();
                         break;
                     case Grobal2.SM_SPELL:
@@ -502,13 +496,14 @@ namespace RobotSvr
                         break;
                 }
                 m_nCurrentAction = Msg.Ident;
+                CalcActorFrame();
             }
             else if (Msg.Ident == Grobal2.SM_SKELETON)
             {
                 m_nCurrentAction = Msg.Ident;
+                CalcActorFrame();
                 m_boSkeleton = true;
             }
-
             if (Msg.Ident == Grobal2.SM_DEATH || Msg.Ident == Grobal2.SM_NOWDEATH)
             {
                 m_boDeath = true;
@@ -564,9 +559,6 @@ namespace RobotSvr
                     case Grobal2.SM_SPACEMOVE_SHOW2:
                         m_ChrMsg.Ident = Grobal2.SM_TURN;
                         ReadyAction(m_ChrMsg);
-                        break;
-                    default:
-                        ReadyAction(m_ChrMsg); //Damian
                         break;
                 }
             }
@@ -665,7 +657,6 @@ namespace RobotSvr
             return result;
         }
 
-        // 阴影闪烁修复  直接替换函数
         public void Shift(int dir, int step, int cur, int max)
         {
             int ss;
@@ -853,76 +844,7 @@ namespace RobotSvr
 
         public virtual void FeatureChanged()
         {
-            //int haircount;
-            //switch (m_btRace)
-            //{
-            //    case 0:
-            //        m_btHair = Grobal2.HAIRfeature(m_nFeature);
-            //        m_btDress = Grobal2.DRESSfeature(m_nFeature);
-            //        if (m_btDress >= 24 && m_btDress <= 27)
-            //        {
-            //            m_btDress = (byte)18 + m_btSex;
-            //        }
-            //        m_btWeapon = Grobal2.WEAPONfeature(m_nFeature);
-            //        m_btHorse = Grobal2.Horsefeature(m_nFeatureEx);
-            //        m_btWeaponEffect = m_btHorse;
-            //        m_btHorse = 0;
-            //        m_btEffect = Grobal2.Effectfeature(m_nFeatureEx);
-            //        m_nBodyOffset = Actor.HUMANFRAME * m_btDress;
-            //        if (m_btHair >= 10)
-            //        {
-            //            m_btHairEx = m_btHair / 10;
-            //            m_btHair = m_btHair % 10;
-            //        }
-            //        else
-            //        {
-            //            m_btHairEx = 0;
-            //        }
-            //        if (m_btHairEx > 0)
-            //        {
-            //            if (m_btHairEx > haircount)
-            //            {
-            //                m_btHairEx = haircount;
-            //            }
-            //            m_nHairOffsetEx = Actor.HUMANFRAME * ((m_btHairEx - 1) * 2 + m_btSex);
-            //        }
-            //        else
-            //        {
-            //            m_nHairOffsetEx = -1;
-            //        }
-            //        if (m_btHair > haircount - 1)
-            //        {
-            //            m_btHair = haircount - 1;
-            //        }
-            //        m_btHair = m_btHair * 2;
-            //        if (m_btHair > 1)
-            //        {
-            //            m_nHairOffset = Actor.HUMANFRAME * (m_btHair + m_btSex);
-            //        }
-            //        else
-            //        {
-            //            m_nHairOffset = -1;
-            //        }
-            //        m_nWeaponOffset = Actor.HUMANFRAME * m_btWeapon;
-            //        if (m_btEffect != 0)
-            //        {
-            //            if (m_btEffect == 50)
-            //            {
-            //                m_nHumWinOffset = 352;
-            //            }
-            //            else
-            //            {
-            //                m_nHumWinOffset = (m_btEffect - 1) * Actor.HUMANFRAME;
-            //            }
-            //        }
-            //        break;
-            //    case 50:
-            //        break;
-            //    default:
-            //        m_wAppearance = Grobal2.APPRfeature(m_nFeature);
-            //        m_nBodyOffset = Actor.GetOffset(m_wAppearance);
-            //        break;
-            //}
+            
         }
 
         public virtual int light()
@@ -987,6 +909,7 @@ namespace RobotSvr
 
         public virtual void RunFrameAction(int frame)
         {
+        
         }
 
         public virtual void ActionEnded()
@@ -995,6 +918,18 @@ namespace RobotSvr
 
         public virtual void ReadyNextAction()
         {
+        }
+
+        public virtual void CalcActorFrame()
+        {
+            if (m_nCurrentAction == Grobal2.SM_TURN)
+            {
+                if (m_fHideMode)
+                {
+                    m_fHideMode = false;
+                    m_nCurrentAction = 0;
+                }
+            }
         }
 
         public bool Run_MagicTimeOut()
@@ -1010,7 +945,6 @@ namespace RobotSvr
 
         public virtual void Run()
         {
-            int prv;
             long dwFrameTimetime;
             if (m_nCurrentAction == Grobal2.SM_WALK || m_nCurrentAction == Grobal2.SM_BACKSTEP ||
                 m_nCurrentAction == Grobal2.SM_RUN || m_nCurrentAction == Grobal2.SM_HORSERUN ||
@@ -1020,7 +954,7 @@ namespace RobotSvr
                 if (m_MsgList.Count >= 2)
                     m_boMsgMuch = true;
             RunFrameAction(m_nCurrentFrame - m_nStartFrame);
-            prv = m_nCurrentFrame;
+            var prv = m_nCurrentFrame;
             if (m_nCurrentAction != 0)
             {
                 if (m_nCurrentFrame < m_nStartFrame || m_nCurrentFrame > m_nEndFrame) m_nCurrentFrame = m_nStartFrame;

@@ -81,13 +81,13 @@ namespace RobotSvr
             }
         }
 
-        public void Dispose(object obj)
+        private void Dispose(object obj)
         {
             obj = null;
         }
 
         // 估价函数,估价 x,y 到目的地的距离,估计值必须保证比实际值小
-        public int judge(int X, int Y, int end_x, int end_y)
+        private int Judge(int X, int Y, int end_x, int end_y)
         {
             return Math.Abs(end_x - X) + Math.Abs(end_y - Y);
         }
@@ -118,10 +118,10 @@ namespace RobotSvr
                 P = P.Father;
             }
             ushort H = (ushort)(Father.H + 1);
-            /*if (TryTileHas(X, Y, H))// 如果曾经有更好的方案移动到 (x,y) 失败
+            if (TryTileHas(X, Y, H))// 如果曾经有更好的方案移动到 (x,y) 失败
             {
                 return;
-            }*/
+            }
             MShare.g_APPass[X - robotClient.Map.m_nBlockLeft, Y - robotClient.Map.m_nBlockTop] = H;// 记录这次到 (x,y) 的距离为历史最佳距离
             P = new MapTree();
             P.Father = Father;
@@ -129,7 +129,7 @@ namespace RobotSvr
             P.X = X;
             P.Y = Y;
             P.Dir = dir;
-            Enterqueue(P, P.H + judge(X, Y, end_x, end_y));
+            Enterqueue(P, P.H + Judge(X, Y, end_x, end_y));
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace RobotSvr
             Root.Y = Starty;
             Root.H = 0;
             Root.Father = null;
-            Enterqueue(Root, judge(Startx, Starty, end_x, end_y));
+            Enterqueue(Root, Judge(Startx, Starty, end_x, end_y));
             var aa = 0;
             while (true)
             {
@@ -160,6 +160,7 @@ namespace RobotSvr
                 {
                     break;
                 }
+                
                 Trytile(X, Y - 1, end_x, end_y, Root, 0); // 尝试向上移动
                 Trytile(X + 1, Y - 1, end_x, end_y, Root, 1); // 尝试向右上移动
                 Trytile(X + 1, Y, end_x, end_y, Root, 2); // 尝试向右移动

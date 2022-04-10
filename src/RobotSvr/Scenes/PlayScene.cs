@@ -8,6 +8,7 @@ namespace RobotSvr
 {
     public class PlayScene : Scene
     {
+        private int m_dwMoveTime = 0;
         private readonly int _mNDefXx = 0;
         private readonly int _mNDefYy = 0;
         public IList<TActor> m_ActorList = null;
@@ -18,6 +19,7 @@ namespace RobotSvr
             ProcMagic = new ProcMagic();
             ProcMagic.NTargetX = -1;
             m_ActorList = new List<TActor>();
+            m_dwMoveTime = HUtil32.GetTickCount();
         }
 
         public bool CanDrawTileMap()
@@ -90,8 +92,27 @@ namespace RobotSvr
             }
         }
 
-        public void BeginScene()
+        public void BeginScene() //todo 注意这里
         {
+            var movetick = false;
+            var tick = HUtil32.GetTickCount();
+            if (MShare.g_boSpeedRate)
+            {
+                if (tick - m_dwMoveTime >= (95 - MShare.g_MoveSpeedRate / 2))
+                {
+                    m_dwMoveTime = tick;
+                    movetick = true;
+                }
+            }
+            else
+            {
+                if (tick - m_dwMoveTime >= 95)
+                {
+                    m_dwMoveTime = tick;
+                    movetick = true;
+                }
+            }
+
             var i = 0;
             while (true)
             {
@@ -100,46 +121,58 @@ namespace RobotSvr
                     break;
                 }
                 var actor = m_ActorList[i];
-                actor.ProcMsg();   //处理角色的消息
-                if (actor.Move())
+                if(actor.m_boDeath && MShare.g_gcGeneral[8] && ! actor.m_boItemExplore && (actor.m_btRace != 0) && actor.IsIdle())
                 {
                     i++;
                     continue;
                 }
-                actor.Run();
-                if (actor != MShare.g_MySelf)
+                if (movetick)
                 {
-                    actor.ProcHurryMsg();
-                }
-                else if (actor == MShare.g_MySelf)
-                {
-                    actor.ProcHurryMsg();
-                }
-                if (actor.m_boDelActor || (Math.Abs(MShare.g_MySelf.m_nCurrX - actor.m_nCurrX) > 16) ||
-                    (Math.Abs(MShare.g_MySelf.m_nCurrY - actor.m_nCurrY) > 16))
-                {
-                    MShare.g_FreeActorList.Add(actor);
-                    m_ActorList.RemoveAt(i);
-                    if (MShare.g_TargetCret == actor)
+                    actor.m_boLockEndFrame = false;
+                    if (!actor.m_boLockEndFrame)
                     {
-                        MShare.g_TargetCret = null;
+                        actor.ProcMsg();   //处理角色的消息
+                        if (actor.Move())
+                        {
+                            i++;
+                            continue;
+                        }
+                        actor.Run();
+                        if (actor != MShare.g_MySelf)
+                        {
+                            actor.ProcHurryMsg();
+                        }
                     }
-                    if (MShare.g_FocusCret == actor)
+                    if (actor == MShare.g_MySelf)
                     {
-                        MShare.  g_FocusCret = null;
+                        actor.ProcHurryMsg();
                     }
-                    if (MShare.g_MagicLockActor == actor)
+                    if (actor.m_boDelActor || (Math.Abs(MShare.g_MySelf.m_nCurrX - actor.m_nCurrX) > 16) ||
+                        (Math.Abs(MShare.g_MySelf.m_nCurrY - actor.m_nCurrY) > 16))
                     {
-                        MShare. g_MagicLockActor = null;
+                        MShare.g_FreeActorList.Add(actor);
+                        m_ActorList.RemoveAt(i);
+                        if (MShare.g_TargetCret == actor)
+                        {
+                            MShare.g_TargetCret = null;
+                        }
+                        if (MShare.g_FocusCret == actor)
+                        {
+                            MShare.  g_FocusCret = null;
+                        }
+                        if (MShare.g_MagicLockActor == actor)
+                        {
+                            MShare. g_MagicLockActor = null;
+                        }
+                        if (MShare.g_MagicTarget == actor)
+                        {
+                            MShare.g_MagicTarget = null;
+                        }
                     }
-                    if (MShare.g_MagicTarget == actor)
+                    else
                     {
-                        MShare.g_MagicTarget = null;
+                        i++;
                     }
-                }
-                else
-                {
-                    i++;
                 }
             }
             robotClient.Map.UpdateMapPos(MShare.g_MySelf.m_nRx, MShare.g_MySelf.m_nRy);

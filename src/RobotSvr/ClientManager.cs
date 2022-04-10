@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,37 +67,29 @@ namespace RobotSvr
 
         public static void Run()
         {
-            HUtil32.EnterCriticalSections(_lock);
-            try
+            dwRunTick = HUtil32.GetTickCount();
+            var boProcessLimit = false;
+            ClientList = _Clients.Values.ToList();
+            for (var i = g_nPosition; i < _Clients.Count; i++)
             {
-                dwRunTick = HUtil32.GetTickCount();
-                var boProcessLimit = false;
-                ClientList = _Clients.Values.ToList();
-                for (var i = g_nPosition; i < _Clients.Count; i++)
+                ClientList[i].Run();
+                if (((HUtil32.GetTickCount() - dwRunTick) > 20))
                 {
-                    ClientList[i].Run();
-                    if (((HUtil32.GetTickCount() - dwRunTick) > 20))
-                    {
-                        g_nPosition = i;
-                        boProcessLimit = true;
-                        break;
-                    }
+                    g_nPosition = i;
+                    boProcessLimit = true;
+                    break;
                 }
-                if (!boProcessLimit)
-                {
-                    g_nPosition = 0;
-                }
-                g_dwProcessTimeMin = HUtil32.GetTickCount() - dwRunTick;
-                if (g_dwProcessTimeMin > g_dwProcessTimeMax)
-                {
-                    g_dwProcessTimeMax = g_dwProcessTimeMin;
-                }
-                RunAutoPlay();
             }
-            finally
+            if (!boProcessLimit)
             {
-                HUtil32.LeaveCriticalSections(_lock);
+                g_nPosition = 0;
             }
+            g_dwProcessTimeMin = HUtil32.GetTickCount() - dwRunTick;
+            if (g_dwProcessTimeMin > g_dwProcessTimeMax)
+            {
+                g_dwProcessTimeMax = g_dwProcessTimeMin;
+            }
+            RunAutoPlay();
         }
 
         private static void RunAutoPlay()
