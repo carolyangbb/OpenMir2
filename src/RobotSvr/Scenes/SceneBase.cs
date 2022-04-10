@@ -3,7 +3,7 @@ using SystemModule;
 
 namespace RobotSvr
 {
-    public class Scene
+    public class SceneBase
     {
         public SceneType Scenetype;
         public RobotClient robotClient;
@@ -14,7 +14,7 @@ namespace RobotSvr
         /// </summary>
         public TConnectionStep m_ConnectionStep;
 
-        public Scene(SceneType scenetype, RobotClient robotClient)
+        public SceneBase(SceneType scenetype, RobotClient robotClient)
         {
             this.Scenetype = scenetype;
             this.robotClient = robotClient;

@@ -1,6 +1,6 @@
 ﻿namespace RobotSvr
 {
-    public class IntroScene : Scene
+    public class IntroScene : SceneBase
     {
         public long m_dwStartTime = 0;
 

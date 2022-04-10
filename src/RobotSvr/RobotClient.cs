@@ -24,7 +24,7 @@ namespace RobotSvr
         public static int g_MoveStep = 0;
         public static int g_MoveErr = 0;
         public static int g_MoveErrTick = 0;
-        public DrawScreen DScreen = null;
+        public ScreenManager DScreen = null;
         public IntroScene IntroScene = null;
         public LoginScene LoginScene = null;
         public SelectChrScene SelectChrScene = null;
@@ -36,8 +36,6 @@ namespace RobotSvr
         public static long g_dwOverSpaceWarningTick = 0;
         public static char activebuf = '*';
         public const bool CHECKPACKED = true;
-        public string SocStr = string.Empty;
-        public string BufferStr = string.Empty;
         private readonly TTimerCommand TimerCmd;
         private int ActionLockTime = 0;
         private readonly short ActionKey = 0;
@@ -68,12 +66,11 @@ namespace RobotSvr
 
         public RobotClient()
         {
-            SocketEvents();
             heroActor = new HeroActor(this);
             MShare.InitScreenConfig();
             MShare.g_APPathList = new List<FindMapNode>();
             MShare.g_ShowItemList = new Dictionary<string, string>();
-            DScreen = new DrawScreen(this);
+            DScreen = new ScreenManager(this);
             IntroScene = new IntroScene(this);
             LoginScene = new LoginScene(this);
             SelectChrScene = new SelectChrScene(this);
@@ -121,7 +118,6 @@ namespace RobotSvr
             MShare.g_boSendLogin = false;
             MShare.g_boServerConnected = false;
             MShare.g_SoftClosed = false;
-            SocStr = string.Empty;
             ActionFailLock = false;
             MShare.g_boMapMoving = false;
             MShare.g_boMapMovingWait = false;
@@ -165,7 +161,7 @@ namespace RobotSvr
             }
         }
 
-        private void SocketEvents()
+        public void SocketEvents()
         {
             if (ClientSocket == null)
             {
@@ -179,6 +175,7 @@ namespace RobotSvr
             ClientSocket.OnDisconnected += CSocketDisconnect;
             ClientSocket.ReceivedDatagram += CSocketRead;
             ClientSocket.OnError += CSocketError;
+            ClientSocket.Connect(MShare.g_sRunServerAddr, MShare.g_nRunServerPort);
         }
 
         #region Socket Events
@@ -186,38 +183,14 @@ namespace RobotSvr
         private void CSocketConnect(object sender, DSCClientConnectedEventArgs e)
         {
             MShare.g_boServerConnected = true;
-
-            /*if (m_ConnectionStep == TConnectionStep.cnsConnect)
-            {
-                if (m_boNewAccount)
-                {
-                    SetNotifyEvent(NewAccount, 6000);
-                }
-                else
-                {
-                    ClientNewIdSuccess("");
-                }
-            }*/
-            /*else if (m_ConnectionStep == TConnectionStep.cnsPlay)
-            {
-                ClientSocket.IsConnected = true;
-                SendRunLogin();
-            }*/
             if (MShare.g_ConnectionStep == TConnectionStep.cnsLogin)
             {
                 DScreen.ChangeScene(SceneType.stLogin);
             }
-            if (MShare.g_ConnectionStep == TConnectionStep.cnsSelChr)
-            {
-                LoginScene.OpenLoginDoor();
-            }
-            /*if (m_ConnectionStep == TConnectionStep.cnsQueryChr)
-            {
-                SendQueryChr();
-                m_ConnectionStep = TConnectionStep.cnsSelChr;
-            }*/
             if (MShare.g_ConnectionStep == TConnectionStep.cnsPlay)
             {
+                ClientSocket.IsConnected = true;
+                SendRunLogin();
                 if (!MShare.g_boServerChanging)
                 {
                     ClFunc.ClearBag();
@@ -228,10 +201,7 @@ namespace RobotSvr
                 {
                     ChangeServerClearGameVariables();
                 }
-                //SendRunLogin();
             }
-            SocStr = string.Empty;
-            BufferStr = "";
         }
 
         private void CSocketDisconnect(object sender, DSCClientConnectedEventArgs e)
@@ -258,18 +228,20 @@ namespace RobotSvr
             switch (e.ErrorCode)
             {
                 case System.Net.Sockets.SocketError.ConnectionRefused:
-                    Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]拒绝链接...");
+                    Console.WriteLine($"游戏服务器[{ClientSocket.RemoteEndPoint}]拒绝链接...");
                     break;
                 case System.Net.Sockets.SocketError.ConnectionReset:
-                    Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]关闭连接...");
+                    Console.WriteLine($"游戏服务器[{ClientSocket.RemoteEndPoint}]关闭连接...");
                     break;
                 case System.Net.Sockets.SocketError.TimedOut:
-                    Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]链接超时...");
+                    Console.WriteLine($"游戏服务器[{ClientSocket.RemoteEndPoint}]链接超时...");
                     break;
             }
-            //LoginOut();
-            //m_ConnectionStatus = TConnectionStatus.cns_Failure;
-            //ClientManager.DelClient(SessionId);
+            if (DScreen.CurrentScene == g_PlayScene)
+            {
+                LoginOut();
+                ClientManager.DelClient(SessionId);
+            }
         }
 
         private void CSocketRead(object sender, DSCClientDataInEventArgs e)
@@ -284,7 +256,6 @@ namespace RobotSvr
                     sData = data2 + sData.Substring(n, sData.Length);
                     ClientSocket.SendBuffer(HUtil32.GetBytes(activebuf));
                 }
-                SocStr = SocStr + sData;
                 ClientManager.AddPacket(SessionId, sData);
             }
             Console.WriteLine(sData);
@@ -1327,7 +1298,7 @@ namespace RobotSvr
             }
         }
 
-        public void AutoSupplyBeltItem(int nType, int idx, string sItem)
+        private void AutoSupplyBeltItem(int nType, int idx, string sItem)
         {
             if (idx >= 0 && idx <= 5 && (sItem != ""))
             {
@@ -1347,7 +1318,7 @@ namespace RobotSvr
             }
         }
 
-        public void AutoSupplyBagItem(int nType, string sItem)
+        private void AutoSupplyBagItem(int nType, string sItem)
         {
             for (var i = MShare.MAXBAGITEMCL - 1; i >= 6; i--)
             {
@@ -1362,7 +1333,7 @@ namespace RobotSvr
         /// <summary>
         /// 自动解包物品
         /// </summary>
-        public void AutoUnBindItem(int nType, string sItem)
+        private void AutoUnBindItem(int nType, string sItem)
         {
             if ((sItem != "") && (nType != 0))
             {
@@ -1432,7 +1403,7 @@ namespace RobotSvr
             }
         }
 
-        public bool EatItemName(string Str)
+        private bool EatItemName(string Str)
         {
             bool result = false;
             if ((Str == "小退") && (MShare.g_MySelf.m_nHiterCode > 0))
@@ -1457,7 +1428,7 @@ namespace RobotSvr
             return result;
         }
 
-        public void EatItem(int idx)
+        private void EatItem(int idx)
         {
             int i;
             bool eatable = false;
@@ -1670,7 +1641,7 @@ namespace RobotSvr
             }
         }
 
-        public bool TargetInSwordLongAttackRange(int ndir)
+        private bool TargetInSwordLongAttackRange(int ndir)
         {
             int nX = 0;
             int nY = 0;
@@ -1696,7 +1667,7 @@ namespace RobotSvr
             return result;
         }
 
-        public bool TargetInSwordLongAttackRange2(int sx, int sy, int dx, int dy)
+        private bool TargetInSwordLongAttackRange2(int sx, int sy, int dx, int dy)
         {
             bool result = false;
             if ((Math.Abs(sx - dx) == 2) && (Math.Abs(sy - dy) == 0))
@@ -1717,7 +1688,7 @@ namespace RobotSvr
             return result;
         }
 
-        public bool TargetInSwordWideAttackRange(int ndir)
+        private bool TargetInSwordWideAttackRange(int ndir)
         {
             int nX = 0;
             int nY = 0;
@@ -1969,7 +1940,7 @@ namespace RobotSvr
                     {
                         if (MShare.g_UseItems[i].Item.Name != "")
                         {
-                            if (new ArrayList(new int[] { 7, 25 }).Contains(MShare.g_UseItems[i].Item.StdMode))
+                            if (MShare.g_UseItems[i].Item.StdMode == 7 || MShare.g_UseItems[i].Item.StdMode == 25)
                             {
                                 continue;
                             }
@@ -1977,7 +1948,7 @@ namespace RobotSvr
                             {
                                 if (MShare.g_gcGeneral[1])
                                 {
-                                    DScreen.AddSysMsgCenter(string.Format("你的[{0}]持久已到底限，请及时修理！", new string[] { MShare.g_UseItems[i].Item.Name }), Color.Lime, Color.Black, 10);
+                                    DScreen.AddSysMsgCenter($"你的[{MShare.g_UseItems[i].Item.Name}]持久已到底限，请及时修理！", Color.Lime, Color.Black, 10);
                                 }
                                 if (MShare.g_gcGeneral[9])
                                 {
@@ -1996,7 +1967,7 @@ namespace RobotSvr
                                     }
                                     else
                                     {
-                                        DScreen.AddSysMsgCenter(string.Format("你的修复神水已经用完，请及时补充！", new string[] { MShare.g_UseItems[i].Item.Name }), Color.Lime, Color.Black, 10);
+                                        DScreen.AddSysMsgCenter($"你的{MShare.g_UseItems[i].Item.Name}已经用完，请及时补充！", Color.Lime, Color.Black, 10);
                                     }
                                 }
                             }
@@ -2287,9 +2258,6 @@ namespace RobotSvr
             MShare.g_boNextTimeSmiteWideHit2 = false;
             MShare.InitClientItems();
             MShare.g_DetectItemMineID = 0;
-            SelectChrScene _wvar1 = SelectChrScene;
-            _wvar1.ChrArr[0].FreezeState = true;
-            _wvar1.ChrArr[1].FreezeState = true;
             g_PlayScene.ClearActors();
             ClearDropItems();
             //EventMan.ClearEvents();
@@ -2297,7 +2265,7 @@ namespace RobotSvr
             //MaketSystem.Units.MaketSystem.g_Market.Clear();
         }
 
-        public void ChangeServerClearGameVariables()
+        private void ChangeServerClearGameVariables()
         {
             CloseAllWindows();
             ClearDropItems();
@@ -2321,11 +2289,6 @@ namespace RobotSvr
             //}
             //MShare.g_IPMagicList.Clear();
             //FillChar(MShare.g_MagicArr, sizeof(MShare.g_MagicArr), 0);
-            //for (i = 0; i < MShare.g_HeroMagicList.Count; i++)
-            //{
-            //    this.Dispose((TClientMagic)MShare.g_HeroMagicList[i]);
-            //}
-            //MShare.g_HeroMagicList.Clear();
             //for (i = 0; i < MShare.g_HeroIPMagicList.Count; i++)
             //{
             //    this.Dispose((TClientMagic)MShare.g_HeroIPMagicList[i]);
@@ -2382,7 +2345,7 @@ namespace RobotSvr
             g_PlayScene.CleanObjects();
         }
 
-        public void SendSocket(string sendstr)
+        private void SendSocket(string sendstr)
         {
             if (ClientSocket.IsConnected)
             {
@@ -2407,7 +2370,17 @@ namespace RobotSvr
             ClientPacket dMsg = Grobal2.MakeDefaultMsg(msg, Recog, param, tag, series);
             SendSocket(EDcode.EncodeMessage(dMsg));
         }
-
+        
+        /// <summary>
+        /// 发送登录消息
+        /// </summary>
+        private void SendRunLogin()
+        {
+            MainOutMessage("进入游戏");
+            DScreen.CurrentScene.m_ConnectionStep = TConnectionStep.cnsPlay;
+            var sSendMsg = $"**{LoginID}/{m_sCharName}/{Certification}/{Grobal2.CLIENT_VERSION_NUMBER}/{0}";
+            SendSocket(EDcode.EncodeString(sSendMsg));
+        }
 
         public void SendSay(string Str)
         {
@@ -3086,7 +3059,6 @@ namespace RobotSvr
                         {
                             case 0:
                                 MainOutMessage($"帐号 [{LoginID}] 已被其他的玩家使用了。请选择其它帐号名注册");
-                                LoginScene.NewIdRetry(false);
                                 break;
                             case -2:
                                 MainOutMessage("此帐号名被禁止使用！");
@@ -3106,7 +3078,6 @@ namespace RobotSvr
                                 MainOutMessage("密码输入错误超过3次，此帐号被暂时锁定，请稍候再登录！");
                                 break;
                             case -3:
-                                //m_ConnectionStep = TConnectionStep.cnsConnect;
                                 MainOutMessage("此帐号已经登录或被异常锁定，请稍候再登录！");
                                 break;
                             case -4:
@@ -3129,11 +3100,11 @@ namespace RobotSvr
                         break;
                     case Grobal2.SM_UPDATEID_SUCCESS:
                         MainOutMessage("您的帐号信息更新成功。请妥善保管您的帐号和密码。并且不要因任何原因把帐号和密码告诉任何其他人。如果忘记了密码，你可以通过我们的主页重新找回。");
-                        ClientGetSelectServer();
+                        LoginScene.ClientGetSelectServer();
                         break;
                     case Grobal2.SM_UPDATEID_FAIL:
                         MainOutMessage("更新帐号失败！");
-                        ClientGetSelectServer();
+                        LoginScene.ClientGetSelectServer();
                         break;
                     case Grobal2.SM_PASSOK_SELECTSERVER:
                         LoginScene.ClientGetPasswordOK(msg, body);
@@ -3195,12 +3166,13 @@ namespace RobotSvr
                         MainOutMessage("[错误信息] 删除游戏角色时出现错误！");
                         break;
                     case Grobal2.SM_STARTPLAY:
+                        Console.WriteLine("SM_STARTPLAY");
                         SelectChrScene.ClientGetStartPlay(body);
-                        DScreen.ChangeScene(SceneType.stLoginNotice);
+                        DScreen.ChangeScene(SceneType.stPlayGame);
                         break;
                     case Grobal2.SM_STARTFAIL:
                         MainOutMessage("此服务器满员！");
-                        ClientGetSelectServer();
+                        LoginScene.ClientGetSelectServer();
                         break;
                     case Grobal2.SM_VERSION_FAIL:
                         MainOutMessage("游戏程序版本不正确，请下载最新版本游戏程序！");
@@ -3605,7 +3577,7 @@ namespace RobotSvr
                     UseMagicFireFail(msg.Recog);
                     break;
                 case Grobal2.SM_OUTOFCONNECTION:
-                    MainOutMessage("服务器连接被强行中断。\\连接时间可能超过限制");
+                    MainOutMessage("服务器连接被强行中断。连接时间可能超过限制");
                     LoginOut();
                     break;
                 case Grobal2.SM_DEATH:
@@ -3657,7 +3629,7 @@ namespace RobotSvr
                     MShare.g_MySelf.m_Abil.Exp = msg.Recog;
                     if (!MShare.g_gcGeneral[3] || (HUtil32.MakeLong(msg.Param, msg.Tag) > MShare.g_MaxExpFilter))
                     {
-                        DScreen.AddSysMsgBottom($"经验值 +{HUtil32.MakeLong(msg.Param, msg.Tag)}");
+                        DScreen.AddSysMsg($"经验值 +{HUtil32.MakeLong(msg.Param, msg.Tag)}");
                     }
                     break;
                 case Grobal2.SM_LEVELUP:
@@ -4606,15 +4578,10 @@ namespace RobotSvr
             }
         }
 
-        public void ClientGetSelectServer()
-        {
-            LoginScene.HideLoginBox();
-        }
-
         private void ClientGetNeedUpdateAccount(string body)
         {
-            TUserEntry ue = EDcode.DecodeBuffer<TUserEntry>(body);
-            LoginScene.UpdateAccountInfos(ue);
+            //TUserEntry ue = EDcode.DecodeBuffer<TUserEntry>(body);
+            //LoginScene.UpdateAccountInfos(ue);
         }
 
         private void ClientGetMapDescription(ClientPacket msg, string sBody)
@@ -5748,21 +5715,19 @@ namespace RobotSvr
         public void ProcessPacket(string str)
         {
             string data = string.Empty;
-            BufferStr = BufferStr + SocStr + str;
-            SocStr = string.Empty;
-            if (!string.IsNullOrEmpty(BufferStr))
+            if (!string.IsNullOrEmpty(str))
             {
-                while (BufferStr.Length >= 2)
+                while (str.Length >= 2)
                 {
                     if (MShare.g_boMapMovingWait)
                     {
                         break;
                     }
-                    if (BufferStr.IndexOf("!", StringComparison.Ordinal) <= 0)
+                    if (str.IndexOf("!", StringComparison.Ordinal) <= 0)
                     {
                         break;
                     }
-                    BufferStr = HUtil32.ArrestStringEx(BufferStr, "#", "!", ref data);
+                    str = HUtil32.ArrestStringEx(str, "#", "!", ref data);
                     if (!string.IsNullOrEmpty(data))
                     {
                         DecodeMessagePacket(data, 0);

@@ -117,7 +117,7 @@ namespace RobotSvr
                 }
                 P = P.Father;
             }
-            ushort H = (ushort)(Father.H + 1);
+            var H = (ushort)(Father.H + 1);
             if (TryTileHas(X, Y, H))// 如果曾经有更好的方案移动到 (x,y) 失败
             {
                 return;
@@ -149,7 +149,7 @@ namespace RobotSvr
             Root.H = 0;
             Root.Father = null;
             Enterqueue(Root, Judge(Startx, Starty, end_x, end_y));
-            var aa = 0;
+            var tryCount = 0;
             while (true)
             {
                 Root = Dequeue();
@@ -168,8 +168,11 @@ namespace RobotSvr
                 Trytile(X - 1, Y + 1, end_x, end_y, Root, 5); // 尝试向左下移动
                 Trytile(X - 1, Y, end_x, end_y, Root, 6); // 尝试向左移动
                 Trytile(X - 1, Y - 1, end_x, end_y, Root, 7); // 尝试向左上移动
-                Console.WriteLine(aa);
-                aa++;
+                tryCount++;
+                if (tryCount > 100)
+                {
+                    Console.WriteLine("自动寻路算法出错。");
+                }
             }
             for (var i = MShare.g_APPathList.Count - 1; i >= 0; i--)
             {

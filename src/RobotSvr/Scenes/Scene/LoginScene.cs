@@ -8,7 +8,7 @@ namespace RobotSvr
     /// <summary>
     /// 登陆场景
     /// </summary>
-    public class LoginScene : Scene
+    public class LoginScene : SceneBase
     {
         private readonly IClientScoket ClientSocket;
         private readonly TUserEntryAdd _mNewIdRetryAdd = null;
@@ -56,50 +56,14 @@ namespace RobotSvr
 
         public void PassWdFail()
         {
-
-        }
-
-        public void HideLoginBox()
-        {
-            ChangeLoginState(LoginState.LsCloseAll);
-        }
-
-        public void OpenLoginDoor()
-        {
-            HideLoginBox();
+            m_ConnectionStep = TConnectionStep.cnsConnect;
         }
 
         public override void PlayScene()
         {
 
         }
-
-        private void ChangeLoginState(LoginState state)
-        {
-            switch (state)
-            {
-                case LoginState.LsLogin:
-                    break;
-                case LoginState.LsNewidRetry:
-                case LoginState.LsNewid:
-                    break;
-                case LoginState.LsChgpw:
-                    break;
-                case LoginState.LsCloseAll:
-                    break;
-            }
-        }
-
-        public void NewIdRetry(bool boupdate)
-        {
-            ChangeLoginState(LoginState.LsNewidRetry);
-        }
-
-        public void UpdateAccountInfos(TUserEntry ue)
-        {
-            NewIdRetry(true);
-        }
-
+        
         /// <summary>
         /// 账号注册
         /// </summary>
@@ -150,18 +114,7 @@ namespace RobotSvr
             SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(uid + "/" + passwd));
             MShare.g_boSendLogin = true;
         }
-
-        /// <summary>
-        /// 发送登录消息
-        /// </summary>
-        private void SendRunLogin()
-        {
-            MainOutMessage("进入游戏");
-            m_ConnectionStep = TConnectionStep.cnsPlay;
-            var sSendMsg = $"**{robotClient.LoginID}/{robotClient.m_sCharName}/{robotClient.Certification}/{Grobal2.CLIENT_VERSION_NUMBER}/{0}";
-            SendSocket(EDcode.EncodeString(sSendMsg));
-        }
-
+        
         public void ClientGetPasswordOK(ClientPacket msg, string sBody)
         {
             MShare.g_wAvailIDDay = HUtil32.LoWord(msg.Recog);
@@ -183,12 +136,16 @@ namespace RobotSvr
             string sServerName = string.Empty;
             string sText = EDcode.DeCodeString(sBody);
             HUtil32.GetValidStr3(sText, ref sServerName, new[] { "/" });
-            robotClient.ClientGetSelectServer();
+            ClientGetSelectServer();
             SendSelectServer(sServerName);
         }
+        
+        public void ClientGetSelectServer()
+        {
+            
+        }
 
-
-        public void SendSelectServer(string svname)
+        private void SendSelectServer(string svname)
         {
             MainOutMessage($"选择服务器：{svname}");
             m_ConnectionStep = TConnectionStep.cnsSelServer;
@@ -222,7 +179,7 @@ namespace RobotSvr
             }
             else
             {
-                MainOutMessage($"Socket Close: {ClientSocket.Host}:{ClientSocket.Port}");
+                MainOutMessage($"Socket Close: {ClientSocket.RemoteEndPoint}");
             }
         }
 
@@ -241,47 +198,17 @@ namespace RobotSvr
             {
                 if (robotClient.m_boNewAccount)
                 {
-                    SetNotifyEvent(NewAccount, 6000);
+                    SetNotifyEvent(NewAccount, 3000);
                 }
                 else
                 {
                     ClientNewIdSuccess();
                 }
             }
-            else if (m_ConnectionStep == TConnectionStep.cnsPlay)
-            {
-                ClientSocket.IsConnected = true;
-                SendRunLogin();
-            }
             if (MShare.g_ConnectionStep == TConnectionStep.cnsLogin)
             {
                 robotClient.DScreen.ChangeScene(SceneType.stLogin);
             }
-            if (MShare.g_ConnectionStep == TConnectionStep.cnsSelChr)
-            {
-                OpenLoginDoor();
-            }
-            //if (m_ConnectionStep == TConnectionStep.cnsQueryChr)
-            //{
-            //    SendQueryChr();
-            //    m_ConnectionStep = TConnectionStep.cnsSelChr;
-            //}
-            if (MShare.g_ConnectionStep == TConnectionStep.cnsPlay)
-            {
-                if (!MShare.g_boServerChanging)
-                {
-                    ClFunc.ClearBag();
-                    robotClient.DScreen.ClearChatBoard();
-                    robotClient.DScreen.ChangeScene(SceneType.stLoginNotice);
-                }
-                else
-                {
-                    robotClient.ChangeServerClearGameVariables();
-                }
-                SendRunLogin();
-            }
-            robotClient.SocStr = string.Empty;
-            robotClient.BufferStr = "";
         }
 
         private void CSocketDisconnect(object sender, DSCClientConnectedEventArgs e)
@@ -311,7 +238,6 @@ namespace RobotSvr
                     Console.WriteLine($"游戏服务器[{ClientSocket.RemoteEndPoint}]链接超时...");
                     break;
             }
-            ClientManager.DelClient(robotClient.SessionId);
         }
 
         private void CSocketRead(object sender, DSCClientDataInEventArgs e)

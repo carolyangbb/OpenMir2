@@ -1,6 +1,6 @@
 ﻿namespace RobotSvr
 {
-    public class LoginNotice : Scene
+    public class LoginNotice : SceneBase
     {
         public LoginNotice(RobotClient robotClient) : base(SceneType.stLoginNotice, robotClient)
         {

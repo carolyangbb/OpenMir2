@@ -3,12 +3,12 @@ using System.Drawing;
 
 namespace RobotSvr
 {
-    public class DrawScreen
+    public class ScreenManager
     {
         private readonly RobotClient robotClient;
-        public Scene CurrentScene = null;
+        public SceneBase CurrentScene = null;
 
-        public DrawScreen(RobotClient robotClient)
+        public ScreenManager(RobotClient robotClient)
         {
             this.robotClient = robotClient;
             CurrentScene = null;
@@ -58,22 +58,16 @@ namespace RobotSvr
 
         public void AddSysMsg(string msg)
         {
+            
         }
-
-        public void AddSysMsgBottom(string msg)
-        {
-        }
-
-        public void AddSysMsgBottom2(string msg)
-        {
-        }
-
+        
         public void AddSysMsgCenter(string msg, Color fc, Color bc, int sec)
         {
         }
 
         public void AddSysMsgCenter(string msg, int fc, int bc, int sec)
         {
+            
         }
 
         public void AddChatBoardString(string str, Color fcolor, Color bcolor)
@@ -100,11 +94,7 @@ namespace RobotSvr
         {
 
         }
-
-        public void DrawHint()
-        {
-
-        }
+        
     }
 }
 

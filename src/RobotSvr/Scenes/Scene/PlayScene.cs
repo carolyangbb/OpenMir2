@@ -6,7 +6,7 @@ using SystemModule;
 
 namespace RobotSvr
 {
-    public class PlayScene : Scene
+    public class PlayScene : SceneBase
     {
         private int m_dwMoveTime = 0;
         private readonly int _mNDefXx = 0;
@@ -29,7 +29,7 @@ namespace RobotSvr
 
         public override void OpenScene()
         {
-
+            robotClient.SocketEvents();
         }
 
         public override void CloseScene()
@@ -983,7 +983,7 @@ namespace RobotSvr
                     {
                         MShare.g_MagicTarget = null;
                     }
-                    if (PlayScn.IsMySlaveObject(m_ActorList[i]))
+                    if (IsMySlaveObject(m_ActorList[i]))
                     {
                         if (!boDeath)
                         {
@@ -1130,7 +1130,7 @@ namespace RobotSvr
                         {
                             return;
                         }
-                        if (PlayScn.IsMySlaveObject(actor))
+                        if (IsMySlaveObject(actor))
                         {
                             if ((cdir != 0) || actor.m_boDeath)
                             {
@@ -1208,6 +1208,24 @@ namespace RobotSvr
                     }
                     break;
             }
+        }
+        
+        public static bool IsMySlaveObject(TActor atc)
+        {
+            var result = false;
+            if (MShare.g_MySelf == null)
+            {
+                return result;
+            }
+            for (var i = 0; i < MShare.g_MySelf.m_SlaveObject.Count; i++)
+            {
+                if (atc == MShare.g_MySelf.m_SlaveObject[i])
+                {
+                    result = true;
+                    break;
+                }
+            }
+            return result;
         }
     }
 }

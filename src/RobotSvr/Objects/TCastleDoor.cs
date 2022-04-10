@@ -14,7 +14,7 @@
             m_nDownDrawLevel = 1;
         }
 
-        private void ApplyDoorState(TDoorState dstate)
+        private void ApplyDoorState()
         {
             //bool bowalk;
             //ClMain.Map.MarkCanWalk(this.m_nCurrX, this.m_nCurrY - 2, true);

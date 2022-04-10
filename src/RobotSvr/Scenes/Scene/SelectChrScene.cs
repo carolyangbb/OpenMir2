@@ -4,11 +4,11 @@ using SystemModule.Sockets;
 
 namespace RobotSvr
 {
-    public class SelectChrScene : Scene
+    public class SelectChrScene : SceneBase
     {
         private readonly IClientScoket ClientSocket;
         private int NewIndex = 0;
-        public readonly SelChar[] ChrArr;
+        private readonly SelChar[] ChrArr;
 
         public SelectChrScene(RobotClient robotClient) : base(SceneType.stSelectChr, robotClient)
         {
@@ -36,72 +36,19 @@ namespace RobotSvr
         {
             SetNotifyEvent(CloseSocket, 1000);
         }
-
-        public void SelChrStartClick()
-        {
-            string chrname = "";
-            if (ChrArr[0].Valid && ChrArr[0].Selected)
-            {
-                chrname = ChrArr[0].UserChr.Name;
-            }
-            if (ChrArr[1].Valid && ChrArr[1].Selected)
-            {
-                chrname = ChrArr[1].UserChr.Name;
-            }
-            if (!string.IsNullOrEmpty(chrname))
-            {
-                SendSelChr(chrname);
-            }
-            else
-            {
-                Console.WriteLine("开始游戏前你应该先创建一个新角色！点击<创建角色>按钮创建一个游戏角色。");
-            }
-        }
-
+        
         private void SendSelChr(string chrname)
         {
+            if (string.IsNullOrEmpty(chrname))
+            {
+                return;
+            }
             robotClient.m_sCharName = chrname;
             ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_SELCHR, 0, 0, 0, 0);
             SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(robotClient.LoginID + "/" + chrname));
             MainOutMessage($"选择角色 {chrname}");
         }
-
-        public void SelChrNewChrClick()
-        {
-            if (!ChrArr[0].Valid || !ChrArr[1].Valid)
-            {
-                if (!ChrArr[0].Valid)
-                {
-                    MakeNewChar(0);
-                }
-                else
-                {
-                    MakeNewChar(1);
-                }
-            }
-            else
-            {
-                Console.WriteLine("一个帐号最多只能创建 2 个游戏角色！");
-            }
-        }
-
-        public void SelChrEraseChrClick()
-        {
-            var n = 0;
-            if (ChrArr[0].Valid && ChrArr[0].Selected)
-            {
-                n = 0;
-            }
-            if (ChrArr[1].Valid && ChrArr[1].Selected)
-            {
-                n = 1;
-            }
-            if (ChrArr[n].Valid && (!ChrArr[n].FreezeState) && (ChrArr[n].UserChr.Name != ""))
-            {
-                SendDelChr(ChrArr[n].UserChr.Name);
-            }
-        }
-
+        
         private void SendDelChr(string chrname)
         {
             ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_DELCHR, 0, 0, 0, 0);
@@ -216,7 +163,7 @@ namespace RobotSvr
             }
             else
             {
-                SetNotifyEvent(NewChr, 3000);
+                SetNotifyEvent(NewChr, 1000);
             }
         }
 
@@ -246,8 +193,8 @@ namespace RobotSvr
                     }
                     break;
             }
-            byte sJob = (byte)RandomNumber.GetInstance().Random(2);
-            byte sSex = (byte)RandomNumber.GetInstance().Random(1);
+            var sJob = (byte)RandomNumber.GetInstance().Random(2);
+            var sSex = (byte)RandomNumber.GetInstance().Random(1);
             SendNewChr(robotClient.LoginID, sCharName, sHair, sJob, sSex);
             MainOutMessage($"创建角色 {sCharName}");
         }
@@ -321,8 +268,6 @@ namespace RobotSvr
                 SetNotifyEvent(SendQueryChr, 1000);
                 m_ConnectionStep = TConnectionStep.cnsSelChr;
             }
-            robotClient.SocStr = string.Empty;
-            robotClient.BufferStr = "";
             MainOutMessage($"连接角色网关:[{MShare.g_sSelChrAddr}:{MShare.g_nSelChrPort}]");
         }
 
@@ -333,7 +278,6 @@ namespace RobotSvr
             {
                 MShare.g_SoftClosed = false;
             }
-            ClientManager.DelClient(robotClient.SessionId);
         }
 
         private void CSocketError(object sender, DSCClientErrorEventArgs e)
@@ -341,29 +285,46 @@ namespace RobotSvr
             switch (e.ErrorCode)
             {
                 case System.Net.Sockets.SocketError.ConnectionRefused:
-                    Console.WriteLine($"游戏服务器[{ClientSocket.RemoteEndPoint}拒绝链接...");
+                    Console.WriteLine($"角色服务器[{ClientSocket.RemoteEndPoint}拒绝链接...");
                     break;
                 case System.Net.Sockets.SocketError.ConnectionReset:
-                    Console.WriteLine($"游戏服务器[{ClientSocket.RemoteEndPoint}关闭连接...");
+                    Console.WriteLine($"角色服务器[{ClientSocket.RemoteEndPoint}关闭连接...");
                     break;
                 case System.Net.Sockets.SocketError.TimedOut:
-                    Console.WriteLine($"游戏服务器[{ClientSocket.RemoteEndPoint}链接超时...");
+                    Console.WriteLine($"角色服务器[{ClientSocket.RemoteEndPoint}链接超时...");
                     break;
             }
-            ClientManager.DelClient(robotClient.SessionId);
         }
 
         private void CSocketRead(object sender, DSCClientDataInEventArgs e)
         {
-            string sData = HUtil32.GetString(e.Buff, 0, e.BuffLen);
+            var sData = HUtil32.GetString(e.Buff, 0, e.BuffLen);
             if (!string.IsNullOrEmpty(sData))
             {
-                robotClient.SocStr += sData;
                 ClientManager.AddPacket(robotClient.SessionId, sData);
             }
         }
 
         #endregion
 
+    }
+    
+    public struct SelChar
+    {
+        public bool Valid;
+        public TUserCharacterInfo UserChr;
+        public bool Selected;
+        public bool FreezeState;
+        public bool Freezing;
+        public long StartTime;
+    }
+
+    public class TUserCharacterInfo
+    {
+        public string Name;
+        public byte Job;
+        public byte hair;
+        public ushort Level;
+        public byte Sex;
     }
 }
