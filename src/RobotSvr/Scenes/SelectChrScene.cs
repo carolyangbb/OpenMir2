@@ -164,7 +164,7 @@ namespace RobotSvr
                 ChrArr[0].Selected = false;
             }
         }
-     
+
         public override void PlayScene()
         {
             if (MShare.g_boOpenAutoPlay && (MShare.g_nAPReLogon == 2))
@@ -205,7 +205,7 @@ namespace RobotSvr
                 }
             }
         }
-        
+
         public void ClientGetReceiveChrs(string body)
         {
             string uname = string.Empty;
@@ -257,7 +257,7 @@ namespace RobotSvr
             }
             if (nChrCount > 0)
             {
-               SendSelChr(ChrArr[select].UserChr.Name);
+                SendSelChr(ChrArr[select].UserChr.Name);
             }
             else
             {
@@ -307,7 +307,7 @@ namespace RobotSvr
             MShare.g_sRunServerAddr = addr;
             MShare.g_ConnectionStep = TConnectionStep.cnsPlay;
             CloseSocket();//断开角色网关链接
-            
+
             //todo 游戏场景开始
             ClientSocket.Host = MShare.g_sRunServerAddr;
             ClientSocket.Port = MShare.g_nRunServerPort;
@@ -340,7 +340,7 @@ namespace RobotSvr
             var msg = Grobal2.MakeDefaultMsg(Grobal2.CM_NEWCHR, 0, 0, 0, 0);
             SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(uid + "/" + uname + "/" + shair + "/" + sjob + "/" + ssex));
         }
-        
+
         public void SendQueryChr()
         {
             m_ConnectionStep = TConnectionStep.cnsQueryChr;
@@ -348,7 +348,7 @@ namespace RobotSvr
             SendSocket(EDcode.EncodeMessage(DefMsg) + EDcode.EncodeString(robotClient.LoginID + "/" + robotClient.Certification));
             MainOutMessage("查询人物");
         }
-        
+
         private void SendSocket(string sendstr)
         {
             if (ClientSocket.IsConnected)
@@ -360,7 +360,7 @@ namespace RobotSvr
                 MainOutMessage($"Socket Close {ClientSocket.Host}:{ClientSocket.Port}");
             }
         }
-        
+
         #region Socket Events
 
         private void CSocketConnect(object sender, DSCClientConnectedEventArgs e)

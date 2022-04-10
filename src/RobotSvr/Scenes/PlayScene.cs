@@ -120,7 +120,7 @@ namespace RobotSvr
                     break;
                 }
                 var actor = m_ActorList[i];
-                if(actor.m_boDeath && MShare.g_gcGeneral[8] && ! actor.m_boItemExplore && (actor.m_btRace != 0) && actor.IsIdle())
+                if (actor.m_boDeath && MShare.g_gcGeneral[8] && !actor.m_boItemExplore && (actor.m_btRace != 0) && actor.IsIdle())
                 {
                     i++;
                     continue;
@@ -157,11 +157,11 @@ namespace RobotSvr
                         }
                         if (MShare.g_FocusCret == actor)
                         {
-                            MShare.  g_FocusCret = null;
+                            MShare.g_FocusCret = null;
                         }
                         if (MShare.g_MagicLockActor == actor)
                         {
-                            MShare. g_MagicLockActor = null;
+                            MShare.g_MagicLockActor = null;
                         }
                         if (MShare.g_MagicTarget == actor)
                         {

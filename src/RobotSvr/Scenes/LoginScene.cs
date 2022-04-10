@@ -12,7 +12,7 @@ namespace RobotSvr
     {
         private readonly IClientScoket ClientSocket;
         private readonly TUserEntryAdd _mNewIdRetryAdd = null;
-        
+
         public LoginScene(RobotClient robotClient) : base(SceneType.stLogin, robotClient)
         {
             ClientSocket = new IClientScoket();
@@ -99,7 +99,7 @@ namespace RobotSvr
         {
             NewIdRetry(true);
         }
-        
+
         /// <summary>
         /// 账号注册
         /// </summary>
@@ -113,11 +113,11 @@ namespace RobotSvr
         /// 账号注册成功
         /// </summary>
         /// <param name="sData"></param>
-        public void ClientNewIdSuccess(string sData)
+        public void ClientNewIdSuccess()
         {
             SendLogin(robotClient.LoginID, robotClient.LoginPasswd);
         }
-        
+
         private void SendNewAccount(string sAccount, string sPassword)
         {
             MainOutMessage("创建帐号");
@@ -140,17 +140,17 @@ namespace RobotSvr
             var Msg = Grobal2.MakeDefaultMsg(Grobal2.CM_ADDNEWUSER, 0, 0, 0, 0);
             SendSocket(EDcode.EncodeMessage(Msg) + EDcode.EncodeBuffer(ue));
         }
-        
+
         private void SendLogin(string uid, string passwd)
         {
+            MainOutMessage("开始登陆");
             robotClient.LoginID = uid;
             robotClient.LoginPasswd = passwd;
             ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_IDPASSWORD, 0, 0, 0, 0);
             SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(uid + "/" + passwd));
             MShare.g_boSendLogin = true;
-            MainOutMessage("开始登陆");
         }
-        
+
         /// <summary>
         /// 发送登录消息
         /// </summary>
@@ -161,22 +161,13 @@ namespace RobotSvr
             var sSendMsg = $"**{robotClient.LoginID}/{robotClient.m_sCharName}/{robotClient.Certification}/{Grobal2.CLIENT_VERSION_NUMBER}/{0}";
             SendSocket(EDcode.EncodeString(sSendMsg));
         }
-        
-        public void SendSelectServer(string svname)
-        {
-            MainOutMessage($"选择服务器：{svname}");
-            m_ConnectionStep = TConnectionStep.cnsSelServer;
-            var DefMsg = Grobal2.MakeDefaultMsg(Grobal2.CM_SELECTSERVER, 0, 0, 0, 0);
-            SendSocket(EDcode.EncodeMessage(DefMsg) + EDcode.EncodeString(svname));
-        }
-        
+
         public void SendQueryChr()
         {
             ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_QUERYCHR, 0, 0, 0, 0);
-            SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString( robotClient.LoginID + "/" + robotClient.Certification));
+            SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(robotClient.LoginID + "/" + robotClient.Certification));
             MainOutMessage("查询角色.");
         }
-        
 
         public void ClientGetPasswordOK(ClientPacket msg, string sBody)
         {
@@ -202,7 +193,16 @@ namespace RobotSvr
             robotClient.ClientGetSelectServer();
             SendSelectServer(sServerName);
         }
-        
+
+
+        public void SendSelectServer(string svname)
+        {
+            MainOutMessage($"选择服务器：{svname}");
+            m_ConnectionStep = TConnectionStep.cnsSelServer;
+            var DefMsg = Grobal2.MakeDefaultMsg(Grobal2.CM_SELECTSERVER, 0, 0, 0, 0);
+            SendSocket(EDcode.EncodeMessage(DefMsg) + EDcode.EncodeString(svname));
+        }
+
         /// <summary>
         /// 登陆成功
         /// </summary>
@@ -220,7 +220,7 @@ namespace RobotSvr
             MShare.g_nSelChrPort = HUtil32.Str_ToInt(runport, 0);
             m_ConnectionStep = TConnectionStep.cnsQueryChr;
         }
-        
+
         private void SendSocket(string sendstr)
         {
             if (ClientSocket.IsConnected)
@@ -252,7 +252,7 @@ namespace RobotSvr
                 }
                 else
                 {
-                    ClientNewIdSuccess("");
+                    ClientNewIdSuccess();
                 }
             }
             else if (m_ConnectionStep == TConnectionStep.cnsPlay)

@@ -13,7 +13,7 @@ namespace RobotSvr
         /// 当前游戏网络连接步骤
         /// </summary>
         public TConnectionStep m_ConnectionStep;
-        
+
         public Scene(SceneType scenetype, RobotClient robotClient)
         {
             this.Scenetype = scenetype;
@@ -44,13 +44,13 @@ namespace RobotSvr
         {
 
         }
-        
+
         protected void SetNotifyEvent(Action ANotifyEvent, int nTime)
         {
             m_dwNotifyEventTick = HUtil32.GetTickCount() + nTime;
             FNotifyEvent = ANotifyEvent;
         }
-        
+
         public void DoNotifyEvent()
         {
             if (FNotifyEvent != null)

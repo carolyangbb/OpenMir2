@@ -65,8 +65,6 @@ namespace RobotSvr
         public IClientScoket ClientSocket;
         public int m_dwConnectTick = 0;
         public TConnectionStatus m_ConnectionStatus;
-        private Action? FNotifyEvent = null;
-        public int m_dwNotifyEventTick = 0;
 
         public RobotClient()
         {
@@ -318,7 +316,7 @@ namespace RobotSvr
                 }
             }
         }
-        
+
         public void AppLogout()
         {
             if (MShare.g_boQueryExit)
@@ -2404,19 +2402,13 @@ namespace RobotSvr
             }
         }
 
-        private void SetNotifyEvent(Action ANotifyEvent, int nTime)
-        {
-            m_dwNotifyEventTick = HUtil32.GetTickCount() + nTime;
-            FNotifyEvent = ANotifyEvent;
-        }
-
         public void SendClientMessage(int msg, int Recog, int param, int tag, int series)
         {
             ClientPacket dMsg = Grobal2.MakeDefaultMsg(msg, Recog, param, tag, series);
             SendSocket(EDcode.EncodeMessage(dMsg));
         }
 
-    
+
         public void SendSay(string Str)
         {
             string sx = string.Empty;
@@ -3087,7 +3079,7 @@ namespace RobotSvr
                 {
                     case Grobal2.SM_NEWID_SUCCESS:
                         MainOutMessage("您的帐号创建成功。请妥善保管您的帐号和密码，并且不要因任何原因把帐号和密码告诉任何其他人。如果忘记了密码,你可以通过我们的主页重新找回。");
-                        LoginScene.ClientNewIdSuccess("");
+                        LoginScene.ClientNewIdSuccess();
                         break;
                     case Grobal2.SM_NEWID_FAIL:
                         switch (msg.Recog)
@@ -3115,7 +3107,6 @@ namespace RobotSvr
                                 break;
                             case -3:
                                 //m_ConnectionStep = TConnectionStep.cnsConnect;
-                                FNotifyEvent = null;
                                 MainOutMessage("此帐号已经登录或被异常锁定，请稍候再登录！");
                                 break;
                             case -4:
@@ -4613,7 +4604,7 @@ namespace RobotSvr
                     // g_PlayScene.MemoLog.Lines.Add('Series: ' + IntToStr(Msg.series));
             }
         }
-        
+
         public void ClientGetSelectServer()
         {
             LoginScene.HideLoginBox();

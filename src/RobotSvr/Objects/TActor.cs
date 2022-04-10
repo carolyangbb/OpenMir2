@@ -844,7 +844,7 @@ namespace RobotSvr
 
         public virtual void FeatureChanged()
         {
-            
+
         }
 
         public virtual int light()
@@ -909,7 +909,7 @@ namespace RobotSvr
 
         public virtual void RunFrameAction(int frame)
         {
-        
+
         }
 
         public virtual void ActionEnded()
