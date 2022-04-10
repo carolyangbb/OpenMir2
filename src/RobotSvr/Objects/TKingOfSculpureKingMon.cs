@@ -4,7 +4,7 @@
     {
         public TKingOfSculpureKingMon(RobotClient robotClient) : base(robotClient)
         {
-            
+
         }
     }
 }

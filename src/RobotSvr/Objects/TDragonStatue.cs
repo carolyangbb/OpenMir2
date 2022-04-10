@@ -6,7 +6,7 @@ public class TDragonStatue : TSkeletonArcherMon
 {
     public TDragonStatue(RobotClient robotClient) : base(robotClient)
     {
-        
+
     }
 
     public override void Run()

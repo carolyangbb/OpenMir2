@@ -8,14 +8,14 @@ namespace RobotSvr
         private readonly int m_nEffY = 0;
         private bool m_boDigUp;
         private long m_dwUseEffectTick;
-    
+
         public TNpcActor(RobotClient robotClient) : base(robotClient)
         {
             m_boHitEffect = false;
             m_nHitEffectNumber = 0;
             m_boDigUp = false;
         }
-    
+
         public override void Run()
         {
             int nEffectFrame;
@@ -45,14 +45,14 @@ namespace RobotSvr
                                 m_boDigUp = false;
                                 m_dwUseEffectTick = MShare.GetTickCount();
                             }
-    
+
                             m_nEffectFrame = m_nEffectStart;
                         }
                         else
                         {
                             m_nEffectFrame = m_nEffectStart;
                         }
-    
+
                         m_dwEffectStartTime = MShare.GetTickCount();
                     }
                 }

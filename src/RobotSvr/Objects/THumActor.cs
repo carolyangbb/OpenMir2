@@ -7,7 +7,7 @@ namespace RobotSvr
     public class THumActor : TActor
     {
         private readonly bool m_boHideWeapon = false;
-        private bool m_boSSkill;
+        private readonly bool m_boSSkill;
         private bool m_boWeaponEffect;
         public long m_dwFrameTick;
         private long m_dwWeaponpEffectTime;

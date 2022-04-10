@@ -1,6 +1,4 @@
-﻿using SystemModule;
-
-namespace RobotSvr;
+﻿namespace RobotSvr;
 
 public class TAngel : THumActor
 {

@@ -7,7 +7,7 @@ namespace RobotSvr
     {
         public TFireDragon(RobotClient robotClient) : base(robotClient)
         {
-            
+
         }
 
         public void LightningTimerTimer(object Sender)

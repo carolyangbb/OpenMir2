@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using SystemModule;
+﻿using SystemModule;
 
 namespace RobotSvr;
 
@@ -20,7 +19,7 @@ public class TSnowMon : TActor
         BoUseDieEffect = false;
         m_bowChrEffect = false;
     }
-    
+
     public override void Run()
     {
         long dwEffectFrameTimetime;

@@ -126,11 +126,11 @@ namespace RobotSvr
                     }
                     if (MShare.g_FocusCret == actor)
                     {
-                        MShare.  g_FocusCret = null;
+                        MShare.g_FocusCret = null;
                     }
                     if (MShare.g_MagicLockActor == actor)
                     {
-                        MShare. g_MagicLockActor = null;
+                        MShare.g_MagicLockActor = null;
                     }
                     if (MShare.g_MagicTarget == actor)
                     {

@@ -168,7 +168,7 @@ namespace RobotSvr
                 Trytile(X - 1, Y + 1, end_x, end_y, Root, 5); // 尝试向左下移动
                 Trytile(X - 1, Y, end_x, end_y, Root, 6); // 尝试向左移动
                 Trytile(X - 1, Y - 1, end_x, end_y, Root, 7); // 尝试向左上移动
-                
+
                 Console.WriteLine(aa);
                 aa++;
             }
@@ -501,7 +501,7 @@ namespace RobotSvr
             if (MShare.g_APTagget != null)
             {
                 if (MShare.g_APTagget.m_boDelActor || MShare.g_APTagget.m_boDeath)
-                { 
+                {
                     MShare.g_APTagget = null;
                 }
             }
@@ -513,7 +513,7 @@ namespace RobotSvr
             if (MShare.g_APTagget != null)
             {
                 if (MShare.g_APTagget.m_boDelActor || MShare.g_APTagget.m_boDeath)
-                { 
+                {
                     MShare.g_APTagget = null;
                 }
             }

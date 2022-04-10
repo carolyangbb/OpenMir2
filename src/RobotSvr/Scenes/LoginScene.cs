@@ -6,7 +6,7 @@ namespace RobotSvr
     {
         private bool _mBoOpenFirst = false;
         private TUserEntry _mNewIdRetryUe = null;
-        private TUserEntryAdd _mNewIdRetryAdd = null;
+        private readonly TUserEntryAdd _mNewIdRetryAdd = null;
         public string MSLoginId = string.Empty;
         public string MSLoginPasswd = string.Empty;
 
