@@ -533,7 +533,6 @@ namespace RobotSvr
             switch (dir)
             {
                 case Grobal2.DR_UP:
-                    X = X;
                     Y = Y - 1;
                     break;
                 case Grobal2.DR_UPRIGHT:
@@ -542,14 +541,12 @@ namespace RobotSvr
                     break;
                 case Grobal2.DR_RIGHT:
                     X = X + 1;
-                    Y = Y;
                     break;
                 case Grobal2.DR_DOWNRIGHT:
                     X = X + 1;
                     Y = Y + 1;
                     break;
                 case Grobal2.DR_DOWN:
-                    X = X;
                     Y = Y + 1;
                     break;
                 case Grobal2.DR_DOWNLEFT:
@@ -558,7 +555,6 @@ namespace RobotSvr
                     break;
                 case Grobal2.DR_LEFT:
                     X = X - 1;
-                    Y = Y;
                     break;
                 case Grobal2.DR_UPLEFT:
                     X = X - 1;
@@ -572,7 +568,6 @@ namespace RobotSvr
             switch (dir)
             {
                 case Grobal2.DR_UP:
-                    X = X;
                     Y = Y - 2;
                     break;
                 case Grobal2.DR_UPRIGHT:
@@ -581,14 +576,12 @@ namespace RobotSvr
                     break;
                 case Grobal2.DR_RIGHT:
                     X = X + 2;
-                    Y = Y;
                     break;
                 case Grobal2.DR_DOWNRIGHT:
                     X = X + 2;
                     Y = Y + 2;
                     break;
                 case Grobal2.DR_DOWN:
-                    X = X;
                     Y = Y + 2;
                     break;
                 case Grobal2.DR_DOWNLEFT:
@@ -597,7 +590,6 @@ namespace RobotSvr
                     break;
                 case Grobal2.DR_LEFT:
                     X = X - 2;
-                    Y = Y;
                     break;
                 case Grobal2.DR_UPLEFT:
                     X = X - 2;
@@ -611,7 +603,6 @@ namespace RobotSvr
             switch (dir)
             {
                 case Grobal2.DR_UP:
-                    X = X;
                     Y = Y - 3;
                     break;
                 case Grobal2.DR_UPRIGHT:
@@ -620,14 +611,12 @@ namespace RobotSvr
                     break;
                 case Grobal2.DR_RIGHT:
                     X = X + 3;
-                    Y = Y;
                     break;
                 case Grobal2.DR_DOWNRIGHT:
                     X = X + 3;
                     Y = Y + 3;
                     break;
                 case Grobal2.DR_DOWN:
-                    X = X;
                     Y = Y + 3;
                     break;
                 case Grobal2.DR_DOWNLEFT:
@@ -636,7 +625,6 @@ namespace RobotSvr
                     break;
                 case Grobal2.DR_LEFT:
                     X = X - 3;
-                    Y = Y;
                     break;
                 case Grobal2.DR_UPLEFT:
                     X = X - 3;

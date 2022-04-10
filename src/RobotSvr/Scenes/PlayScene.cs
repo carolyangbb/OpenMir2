@@ -72,9 +72,8 @@ namespace RobotSvr
 
         private void ClearDropItemA()
         {
-            int i;
             TDropItem dropItem;
-            for (i = MShare.g_DropedItemList.Count - 1; i >= 0; i--)
+            for (var i = MShare.g_DropedItemList.Count - 1; i >= 0; i--)
             {
                 dropItem = MShare.g_DropedItemList[i];
                 if (dropItem == null)

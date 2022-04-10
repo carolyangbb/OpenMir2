@@ -47,6 +47,8 @@ namespace SystemModule.Sockets
             try
             {
                 IsBusy = true;
+                Host = ip;
+                Port = port;
                 this.cli.BeginConnect(remoteEP, this.HandleConnect, this.cli);//开始异步连接
             }
             catch (ObjectDisposedException)

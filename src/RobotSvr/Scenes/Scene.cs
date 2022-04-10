@@ -1,10 +1,19 @@
-﻿namespace RobotSvr
+﻿using System;
+using SystemModule;
+
+namespace RobotSvr
 {
     public class Scene
     {
         public SceneType Scenetype;
         public RobotClient robotClient;
-
+        public Action? FNotifyEvent = null;
+        public int m_dwNotifyEventTick = 0;
+        /// <summary>
+        /// 当前游戏网络连接步骤
+        /// </summary>
+        public TConnectionStep m_ConnectionStep;
+        
         public Scene(SceneType scenetype, RobotClient robotClient)
         {
             this.Scenetype = scenetype;
@@ -34,6 +43,29 @@
         public virtual void PlayScene()
         {
 
+        }
+        
+        protected void SetNotifyEvent(Action ANotifyEvent, int nTime)
+        {
+            m_dwNotifyEventTick = HUtil32.GetTickCount() + nTime;
+            FNotifyEvent = ANotifyEvent;
+        }
+        
+        public void DoNotifyEvent()
+        {
+            if (FNotifyEvent != null)
+            {
+                if (HUtil32.GetTickCount() > m_dwNotifyEventTick)
+                {
+                    FNotifyEvent();
+                    FNotifyEvent = null;
+                }
+            }
+        }
+
+        public void MainOutMessage(string msg)
+        {
+            Console.WriteLine(msg);
         }
     }
 }

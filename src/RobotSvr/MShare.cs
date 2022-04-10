@@ -9,6 +9,8 @@ namespace RobotSvr
 {
     public class MShare
     {
+        public static string g_sGameIPaddr;
+        public static int g_nGamePort;
         public const int MAXX = 30;
         public const int MAXY = 40;
 #if DEBUG_LOGIN

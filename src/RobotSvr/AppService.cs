@@ -47,6 +47,8 @@ namespace RobotSvr
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            MShare.g_sGameIPaddr = g_sGameIPaddr;
+            MShare.g_nGamePort = g_nGamePort;
             ClientManager.Start();
             Start();
             return Task.CompletedTask;
@@ -78,8 +80,6 @@ namespace RobotSvr
                             playClient.LoginPasswd = playClient.LoginID;
                             playClient.m_sCharName = playClient.LoginID;
                             playClient.m_sServerName = g_sServerName;
-                            playClient.ClientSocket.Host = g_sGameIPaddr;
-                            playClient.ClientSocket.Port = g_nGamePort;
                             playClient.m_dwConnectTick = HUtil32.GetTickCount() + (i + 1) * 3000;
                             ClientManager.AddClient(playClient.SessionId, playClient);
                             g_nLoginIndex++;

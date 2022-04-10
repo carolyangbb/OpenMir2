@@ -1,12 +1,15 @@
 ﻿using System;
+using SystemModule;
+using SystemModule.Sockets;
 
 namespace RobotSvr
 {
     public class SelectChrScene : Scene
     {
+        private readonly IClientScoket ClientSocket;
         private bool _createChrMode = false;
-        public int NewIndex = 0;
-        public SelChar[] ChrArr;
+        private int NewIndex = 0;
+        public readonly SelChar[] ChrArr;
 
         public SelectChrScene(RobotClient robotClient) : base(SceneType.stSelectChr, robotClient)
         {
@@ -17,50 +20,22 @@ namespace RobotSvr
             ChrArr[1].FreezeState = true;
             ChrArr[1].UserChr = new TUserCharacterInfo();
             NewIndex = 0;
+            ClientSocket = new IClientScoket();
+            ClientSocket.OnConnected += CSocketConnect;
+            ClientSocket.OnDisconnected += CSocketDisconnect;
+            ClientSocket.ReceivedDatagram += CSocketRead;
+            ClientSocket.OnError += CSocketError;
         }
 
         public override void OpenScene()
         {
-
+            m_ConnectionStep = TConnectionStep.cnsQueryChr;
+            ClientSocket.Connect(MShare.g_sSelChrAddr, MShare.g_nSelChrPort);
         }
 
         public override void CloseScene()
         {
-
-        }
-
-        public void SelChrSelect1Click()
-        {
-            if ((!ChrArr[0].Selected) && ChrArr[0].Valid && ChrArr[0].FreezeState)
-            {
-                //ClMain.frmMain.SelectChr(ChrArr[0].UserChr.Name);
-                ChrArr[0].Selected = true;
-                ChrArr[1].Selected = false;
-                ChrArr[0].Unfreezing = true;
-                ChrArr[0].AniIndex = 0;
-                ChrArr[0].DarkLevel = 0;
-                ChrArr[0].EffIndex = 0;
-                ChrArr[0].StartTime = MShare.GetTickCount();
-                ChrArr[0].Moretime = MShare.GetTickCount();
-                ChrArr[0].Startefftime = MShare.GetTickCount();
-            }
-        }
-
-        public void SelChrSelect2Click()
-        {
-            if ((!ChrArr[1].Selected) && ChrArr[1].Valid && ChrArr[1].FreezeState)
-            {
-                robotClient.SelectChr(ChrArr[1].UserChr.Name);
-                ChrArr[1].Selected = true;
-                ChrArr[0].Selected = false;
-                ChrArr[1].Unfreezing = true;
-                ChrArr[1].AniIndex = 0;
-                ChrArr[1].DarkLevel = 0;
-                ChrArr[1].EffIndex = 0;
-                ChrArr[1].StartTime = MShare.GetTickCount();
-                ChrArr[1].Moretime = MShare.GetTickCount();
-                ChrArr[1].Startefftime = MShare.GetTickCount();
-            }
+            SetNotifyEvent(CloseSocket, 1000);
         }
 
         public void SelChrStartClick()
@@ -76,12 +51,20 @@ namespace RobotSvr
             }
             if (!string.IsNullOrEmpty(chrname))
             {
-                robotClient.SendSelChr(chrname);
+                SendSelChr(chrname);
             }
             else
             {
                 Console.WriteLine("开始游戏前你应该先创建一个新角色！\\点击<创建角色>按钮创建一个游戏角色。");
             }
+        }
+
+        private void SendSelChr(string chrname)
+        {
+            robotClient.m_sCharName = chrname;
+            ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_SELCHR, 0, 0, 0, 0);
+            SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(robotClient.LoginID + "/" + chrname));
+            MainOutMessage($"选择角色 {chrname}");
         }
 
         public void SelChrNewChrClick()
@@ -105,8 +88,7 @@ namespace RobotSvr
 
         public void SelChrEraseChrClick()
         {
-            int n;
-            n = 0;
+            var n = 0;
             if (ChrArr[0].Valid && ChrArr[0].Selected)
             {
                 n = 0;
@@ -117,26 +99,17 @@ namespace RobotSvr
             }
             if (ChrArr[n].Valid && (!ChrArr[n].FreezeState) && (ChrArr[n].UserChr.Name != ""))
             {
-                robotClient.SendDelChr(ChrArr[n].UserChr.Name);
+                SendDelChr(ChrArr[n].UserChr.Name);
             }
         }
 
-        public void SelChrCreditsClick()
+        private void SendDelChr(string chrname)
         {
-            // [失败] 没有找到被删除的角色。
-            // [失败] 客户端版本错误。
-            // [失败] 你没有这个角色。
-            // [失败] 角色已被删除。
-            // [失败] 角色数据读取失败，请稍候再试。
-            // [失败] 你选择的服务器用户满员。
+            ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_DELCHR, 0, 0, 0, 0);
+            SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(chrname));
         }
 
-        public void SelChrExitClick()
-        {
-            //ClMain.frmMain.Close();
-        }
-
-        public void ClearChrs()
+        private void ClearChrs()
         {
             ChrArr[0].FreezeState = false;
             ChrArr[1].FreezeState = true;
@@ -146,7 +119,7 @@ namespace RobotSvr
             ChrArr[1].UserChr.Name = "";
         }
 
-        public void AddChr(string uname, int job, int hair, int level, int sex)
+        private void AddChr(string uname, int job, int hair, int level, int sex)
         {
             int n;
             if (!ChrArr[0].Valid)
@@ -178,12 +151,10 @@ namespace RobotSvr
             SelectChr(NewIndex);
         }
 
-        public void SelectChr(int index)
+        private void SelectChr(int index)
         {
             ChrArr[index].Selected = true;
-            ChrArr[index].DarkLevel = 30;
             ChrArr[index].StartTime = MShare.GetTickCount();
-            ChrArr[index].Moretime = MShare.GetTickCount();
             if (index == 0)
             {
                 ChrArr[1].Selected = false;
@@ -193,57 +164,7 @@ namespace RobotSvr
                 ChrArr[0].Selected = false;
             }
         }
-
-        public void SelChrNewClose()
-        {
-            ChrArr[NewIndex].Valid = false;
-            _createChrMode = false;
-            ChrArr[NewIndex].Selected = true;
-            ChrArr[NewIndex].FreezeState = false;
-        }
-
-        public void SelChrNewOk()
-        {
-            //string chrname = FrmDlg.DEditChrName.Text.Trim();
-            //if (chrname != "")
-            //{
-            //    ChrArr[NewIndex].Valid = false;
-            //    _createChrMode = false;
-            //    ChrArr[NewIndex].Selected = true;
-            //    ChrArr[NewIndex].FreezeState = false;
-            //    shair = (1 +  RandomNumber.GetInstance().Random(5).Next()).ToString();
-            //    sjob = ChrArr[NewIndex].UserChr.Job.ToString();
-            //    ssex = ChrArr[NewIndex].UserChr.Sex.ToString();
-            //    //ClMain.frmMain.SendNewChr(ClMain.frmMain.LoginID, chrname, shair, sjob, ssex);
-            //}
-        }
-
-        public void SelChrNewJob(int job)
-        {
-            if (job >= 0 && job <= 2 && (ChrArr[NewIndex].UserChr.Job != job))
-            {
-                ChrArr[NewIndex].UserChr.Job = (byte)job;
-                SelectChr(NewIndex);
-            }
-        }
-
-        public void SelChrNewm_btSex(int sex)
-        {
-            if (sex != ChrArr[NewIndex].UserChr.Sex)
-            {
-                ChrArr[NewIndex].UserChr.Sex = (byte)sex;
-                SelectChr(NewIndex);
-            }
-        }
-
-        public void SelChrNewPrevHair()
-        {
-        }
-
-        public void SelChrNewNextHair()
-        {
-        }
-
+     
         public override void PlayScene()
         {
             if (MShare.g_boOpenAutoPlay && (MShare.g_nAPReLogon == 2))
@@ -252,36 +173,16 @@ namespace RobotSvr
                 {
                     MShare.g_nAPReLogonWaitTick = MShare.GetTickCount();
                     MShare.g_nAPReLogon = 3;
-                    robotClient.SendSelChr(robotClient.m_sCharName);
+                    SendSelChr(robotClient.m_sCharName);
                 }
             }
             for (var n = 0; n < 1; n++)
             {
                 if (ChrArr[n].Valid)
                 {
-                    if (ChrArr[n].Unfreezing)
-                    {
-                        if (MShare.GetTickCount() - ChrArr[n].StartTime > 110)
-                        {
-                            ChrArr[n].StartTime = MShare.GetTickCount();
-                            ChrArr[n].AniIndex = ChrArr[n].AniIndex + 1;
-                        }
-                        if (MShare.GetTickCount() - ChrArr[n].Startefftime > 110)
-                        {
-                            ChrArr[n].Startefftime = MShare.GetTickCount();
-                            ChrArr[n].EffIndex = ChrArr[n].EffIndex + 1;
-                        }
-                        if (ChrArr[n].AniIndex > IntroScn.Freezeframe - 1)
-                        {
-                            ChrArr[n].Unfreezing = false;
-                            ChrArr[n].FreezeState = false;
-                            ChrArr[n].AniIndex = 0;
-                        }
-                    }
-                    else if (!ChrArr[n].Selected && !ChrArr[n].FreezeState && !ChrArr[n].Freezing)
+                    if (!ChrArr[n].Selected && !ChrArr[n].FreezeState && !ChrArr[n].Freezing)
                     {
                         ChrArr[n].Freezing = true;
-                        ChrArr[n].AniIndex = 0;
                         ChrArr[n].StartTime = MShare.GetTickCount();
                     }
                     if (ChrArr[n].Freezing)
@@ -289,40 +190,230 @@ namespace RobotSvr
                         if (MShare.GetTickCount() - ChrArr[n].StartTime > 110)
                         {
                             ChrArr[n].StartTime = MShare.GetTickCount();
-                            ChrArr[n].AniIndex = ChrArr[n].AniIndex + 1;
-                        }
-                        if (ChrArr[n].AniIndex > IntroScn.Freezeframe - 1)
-                        {
-                            ChrArr[n].Freezing = false;
-                            ChrArr[n].FreezeState = true;
-                            ChrArr[n].AniIndex = 0;
                         }
                     }
-                    if (!ChrArr[n].Unfreezing && !ChrArr[n].Freezing)
+                    if (!ChrArr[n].Freezing)
                     {
                         if (ChrArr[n].Selected)
                         {
                             if (MShare.GetTickCount() - ChrArr[n].StartTime > 230)
                             {
                                 ChrArr[n].StartTime = MShare.GetTickCount();
-                                ChrArr[n].AniIndex = ChrArr[n].AniIndex + 1;
-                                if (ChrArr[n].AniIndex > IntroScn.Selectedframe - 1)
-                                {
-                                    ChrArr[n].AniIndex = 0;
-                                }
-                            }
-                            if (MShare.GetTickCount() - ChrArr[n].Moretime > 25)
-                            {
-                                ChrArr[n].Moretime = MShare.GetTickCount();
-                                if (ChrArr[n].DarkLevel > 0)
-                                {
-                                    ChrArr[n].DarkLevel = ChrArr[n].DarkLevel - 1;
-                                }
                             }
                         }
                     }
                 }
             }
         }
+        
+        public void ClientGetReceiveChrs(string body)
+        {
+            string uname = string.Empty;
+            string sjob = string.Empty;
+            string shair = string.Empty;
+            string slevel = string.Empty;
+            string ssex = string.Empty;
+            if (MShare.g_boOpenAutoPlay && (MShare.g_nAPReLogon == 1))
+            {
+                MShare.g_nAPReLogon = 2;
+                MShare.g_nAPReLogonWaitTick = MShare.GetTickCount();
+                MShare.g_nAPReLogonWaitTime = 5000 + RandomNumber.GetInstance().Random(10) * 1000;
+            }
+            ClearChrs();
+            string Str = EDcode.DeCodeString(body);
+            int select = 0;
+            int nChrCount = 0;
+            for (var i = 0; i <= 1; i++)
+            {
+                Str = HUtil32.GetValidStr3(Str, ref uname, new string[] { "/" });
+                Str = HUtil32.GetValidStr3(Str, ref sjob, new string[] { "/" });
+                Str = HUtil32.GetValidStr3(Str, ref shair, new string[] { "/" });
+                Str = HUtil32.GetValidStr3(Str, ref slevel, new string[] { "/" });
+                Str = HUtil32.GetValidStr3(Str, ref ssex, new string[] { "/" });
+                if ((uname != "") && (slevel != "") && (ssex != ""))
+                {
+                    if (uname[0] == '*')
+                    {
+                        select = i;
+                        uname = uname.Substring(1, uname.Length - 1);
+                    }
+                    AddChr(uname, HUtil32.Str_ToInt(sjob, 0), HUtil32.Str_ToInt(shair, 0), HUtil32.Str_ToInt(slevel, 0), HUtil32.Str_ToInt(ssex, 0));
+                    nChrCount++;
+                }
+                if (select == 0)
+                {
+                    this.ChrArr[0].FreezeState = false;
+                    this.ChrArr[0].Selected = true;
+                    this.ChrArr[1].FreezeState = true;
+                    this.ChrArr[1].Selected = false;
+                }
+                else
+                {
+                    this.ChrArr[0].FreezeState = true;
+                    this.ChrArr[0].Selected = false;
+                    this.ChrArr[1].FreezeState = false;
+                    this.ChrArr[1].Selected = true;
+                }
+            }
+            if (nChrCount > 0)
+            {
+               SendSelChr(ChrArr[select].UserChr.Name);
+            }
+            else
+            {
+                SetNotifyEvent(NewChr, 3000);
+            }
+        }
+
+        private void NewChr()
+        {
+            m_ConnectionStep = TConnectionStep.cnsNewChr;
+            SelectChrCreateNewChr(robotClient.m_sCharName);
+        }
+
+        private void SelectChrCreateNewChr(string sCharName)
+        {
+            byte sHair = 0;
+            switch (RandomNumber.GetInstance().Random(1))
+            {
+                case 0:
+                    sHair = 2;
+                    break;
+                case 1:
+                    switch (new Random(1).Next())
+                    {
+                        case 0:
+                            sHair = 1;
+                            break;
+                        case 1:
+                            sHair = 3;
+                            break;
+                    }
+                    break;
+            }
+            byte sJob = (byte)RandomNumber.GetInstance().Random(2);
+            byte sSex = (byte)RandomNumber.GetInstance().Random(1);
+            SendNewChr(robotClient.LoginID, sCharName, sHair, sJob, sSex);
+            MainOutMessage($"创建角色 {sCharName}");
+        }
+
+        public void ClientGetStartPlay(string body)
+        {
+            MainOutMessage("准备进入游戏");
+            string addr = string.Empty;
+            string Str = EDcode.DeCodeString(body);
+            string sport = HUtil32.GetValidStr3(Str, ref addr, new string[] { "/" });
+            MShare.g_nRunServerPort = HUtil32.Str_ToInt(sport, 0);
+            MShare.g_sRunServerAddr = addr;
+            MShare.g_ConnectionStep = TConnectionStep.cnsPlay;
+            CloseSocket();//断开角色网关链接
+            
+            //todo 游戏场景开始
+            ClientSocket.Host = MShare.g_sRunServerAddr;
+            ClientSocket.Port = MShare.g_nRunServerPort;
+            ClientSocket.Connect();
+        }
+
+        private void CloseSocket()
+        {
+            ClientSocket.Disconnect();
+        }
+
+        public void ClientGetReconnect(string body)
+        {
+            string addr = string.Empty;
+            string sport = string.Empty;
+            string Str = EDcode.DeCodeString(body);
+            sport = HUtil32.GetValidStr3(Str, ref addr, new string[] { "/" });
+            MShare.g_boServerChanging = true;
+            MShare.g_ConnectionStep = TConnectionStep.cnsPlay;
+            CloseSocket();//断开游戏网关链接
+            ClientSocket.Host = addr;
+            ClientSocket.Port = HUtil32.Str_ToInt(sport, 0);
+            ClientSocket.Connect();
+            robotClient.SocStr = string.Empty;
+            robotClient.BufferStr = string.Empty;
+        }
+
+        private void SendNewChr(string uid, string uname, byte shair, byte sjob, byte ssex)
+        {
+            var msg = Grobal2.MakeDefaultMsg(Grobal2.CM_NEWCHR, 0, 0, 0, 0);
+            SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(uid + "/" + uname + "/" + shair + "/" + sjob + "/" + ssex));
+        }
+        
+        public void SendQueryChr()
+        {
+            m_ConnectionStep = TConnectionStep.cnsQueryChr;
+            var DefMsg = Grobal2.MakeDefaultMsg(Grobal2.CM_QUERYCHR, 0, 0, 0, 0);
+            SendSocket(EDcode.EncodeMessage(DefMsg) + EDcode.EncodeString(robotClient.LoginID + "/" + robotClient.Certification));
+            MainOutMessage("查询人物");
+        }
+        
+        private void SendSocket(string sendstr)
+        {
+            if (ClientSocket.IsConnected)
+            {
+                ClientSocket.SendText($"#1{sendstr}!");
+            }
+            else
+            {
+                MainOutMessage($"Socket Close {ClientSocket.Host}:{ClientSocket.Port}");
+            }
+        }
+        
+        #region Socket Events
+
+        private void CSocketConnect(object sender, DSCClientConnectedEventArgs e)
+        {
+            MShare.g_boServerConnected = true;
+            if (m_ConnectionStep == TConnectionStep.cnsQueryChr)
+            {
+                SetNotifyEvent(SendQueryChr, 2000);
+                m_ConnectionStep = TConnectionStep.cnsSelChr;
+            }
+            robotClient.SocStr = string.Empty;
+            robotClient.BufferStr = "";
+            MainOutMessage($"连接角色网关:[{MShare.g_sSelChrAddr}:{MShare.g_nSelChrPort}]");
+        }
+
+        private void CSocketDisconnect(object sender, DSCClientConnectedEventArgs e)
+        {
+            MShare.g_boServerConnected = false;
+            if (MShare.g_SoftClosed)
+            {
+                MShare.g_SoftClosed = false;
+            }
+            ClientManager.DelClient(robotClient.SessionId);
+        }
+
+        private void CSocketError(object sender, DSCClientErrorEventArgs e)
+        {
+            switch (e.ErrorCode)
+            {
+                case System.Net.Sockets.SocketError.ConnectionRefused:
+                    Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]拒绝链接...");
+                    break;
+                case System.Net.Sockets.SocketError.ConnectionReset:
+                    Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]关闭连接...");
+                    break;
+                case System.Net.Sockets.SocketError.TimedOut:
+                    Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]链接超时...");
+                    break;
+            }
+            ClientManager.DelClient(robotClient.SessionId);
+        }
+
+        private void CSocketRead(object sender, DSCClientDataInEventArgs e)
+        {
+            string sData = HUtil32.GetString(e.Buff, 0, e.BuffLen);
+            if (!string.IsNullOrEmpty(sData))
+            {
+                robotClient.SocStr += sData;
+                ClientManager.AddPacket(robotClient.SessionId, sData);
+            }
+        }
+
+        #endregion
+
     }
 }

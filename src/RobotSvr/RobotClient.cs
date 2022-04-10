@@ -36,8 +36,8 @@ namespace RobotSvr
         public static long g_dwOverSpaceWarningTick = 0;
         public static char activebuf = '*';
         public const bool CHECKPACKED = true;
-        private string SocStr = string.Empty;
-        private string BufferStr = string.Empty;
+        public string SocStr = string.Empty;
+        public string BufferStr = string.Empty;
         private readonly TTimerCommand TimerCmd;
         private int ActionLockTime = 0;
         private readonly short ActionKey = 0;
@@ -63,10 +63,6 @@ namespace RobotSvr
         public int dwhIPTick = 0;
         private readonly HeroActor heroActor;
         public IClientScoket ClientSocket;
-        /// <summary>
-        /// 当前游戏网络连接步骤
-        /// </summary>
-        public TConnectionStep m_ConnectionStep;
         public int m_dwConnectTick = 0;
         public TConnectionStatus m_ConnectionStatus;
         private Action? FNotifyEvent = null;
@@ -193,7 +189,7 @@ namespace RobotSvr
         {
             MShare.g_boServerConnected = true;
 
-            if (m_ConnectionStep == TConnectionStep.cnsConnect)
+            /*if (m_ConnectionStep == TConnectionStep.cnsConnect)
             {
                 if (m_boNewAccount)
                 {
@@ -203,12 +199,12 @@ namespace RobotSvr
                 {
                     ClientNewIdSuccess("");
                 }
-            }
-            else if (m_ConnectionStep == TConnectionStep.cnsPlay)
+            }*/
+            /*else if (m_ConnectionStep == TConnectionStep.cnsPlay)
             {
                 ClientSocket.IsConnected = true;
                 SendRunLogin();
-            }
+            }*/
             if (MShare.g_ConnectionStep == TConnectionStep.cnsLogin)
             {
                 DScreen.ChangeScene(SceneType.stLogin);
@@ -217,11 +213,11 @@ namespace RobotSvr
             {
                 LoginScene.OpenLoginDoor();
             }
-            if (m_ConnectionStep == TConnectionStep.cnsQueryChr)
+            /*if (m_ConnectionStep == TConnectionStep.cnsQueryChr)
             {
                 SendQueryChr();
                 m_ConnectionStep = TConnectionStep.cnsSelChr;
-            }
+            }*/
             if (MShare.g_ConnectionStep == TConnectionStep.cnsPlay)
             {
                 if (!MShare.g_boServerChanging)
@@ -234,7 +230,7 @@ namespace RobotSvr
                 {
                     ChangeServerClearGameVariables();
                 }
-                SendRunLogin();
+                //SendRunLogin();
             }
             SocStr = string.Empty;
             BufferStr = "";
@@ -298,53 +294,31 @@ namespace RobotSvr
 
         #endregion
 
-
         public void Run()
         {
-            Login();
-            DoNotifyEvent();
-            ProcessActionMessages();
-            if (MShare.g_MySelf != null)
+            if (DScreen.CurrentScene == null)
             {
-                if (DScreen.CurrentScene == g_PlayScene)
-                {
-                    g_PlayScene.BeginScene();
-                }
+                DScreen.ChangeScene(SceneType.stLogin);
             }
-        }
-
-        private void Login()
-        {
-            if (m_ConnectionStep == TConnectionStep.cnsConnect && (FNotifyEvent == null) && !ClientSocket.IsConnected)
+            else
             {
-                if ((m_ConnectionStatus == TConnectionStatus.cns_Failure) && (HUtil32.GetTickCount() > m_dwConnectTick))
+                if (DScreen.CurrentScene == LoginScene)
                 {
-                    m_dwConnectTick = HUtil32.GetTickCount();
-                    try
+                    LoginScene.Login();
+                    return;
+                }
+                DScreen.CurrentScene.DoNotifyEvent();
+                ProcessActionMessages();
+                if (MShare.g_MySelf != null)
+                {
+                    if (DScreen.CurrentScene == g_PlayScene)
                     {
-                        ClientSocket.Connect();
-                        m_ConnectionStatus = TConnectionStatus.cns_Connect;
-                    }
-                    catch
-                    {
-                        m_ConnectionStatus = TConnectionStatus.cns_Failure;
+                        g_PlayScene.BeginScene();
                     }
                 }
             }
         }
-
-        private void DoNotifyEvent()
-        {
-            if (FNotifyEvent != null)
-            {
-                if (HUtil32.GetTickCount() > m_dwNotifyEventTick)
-                {
-                    FNotifyEvent();
-                    FNotifyEvent = null;
-                }
-            }
-        }
-
+        
         public void AppLogout()
         {
             if (MShare.g_boQueryExit)
@@ -2325,7 +2299,7 @@ namespace RobotSvr
             //MaketSystem.Units.MaketSystem.g_Market.Clear();
         }
 
-        private void ChangeServerClearGameVariables()
+        public void ChangeServerClearGameVariables()
         {
             CloseAllWindows();
             ClearDropItems();
@@ -2430,17 +2404,6 @@ namespace RobotSvr
             }
         }
 
-        private void NewAccount()
-        {
-            m_ConnectionStep = TConnectionStep.cnsNewAccount;
-            SendNewAccount(LoginID, LoginPasswd);
-        }
-
-        private void ClientNewIdSuccess(string sData)
-        {
-            SendLogin(LoginID, LoginPasswd);
-        }
-
         private void SetNotifyEvent(Action ANotifyEvent, int nTime)
         {
             m_dwNotifyEventTick = HUtil32.GetTickCount() + nTime;
@@ -2453,84 +2416,7 @@ namespace RobotSvr
             SendSocket(EDcode.EncodeMessage(dMsg));
         }
 
-        public void SendLogin(string uid, string passwd)
-        {
-            LoginID = uid;
-            LoginPasswd = passwd;
-            ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_IDPASSWORD, 0, 0, 0, 0);
-            SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(uid + "/" + passwd));
-            MShare.g_boSendLogin = true;
-        }
-
-        private void SendNewAccount(string sAccount, string sPassword)
-        {
-            MainOutMessage("创建帐号");
-            m_ConnectionStep = TConnectionStep.cnsNewAccount;
-            UserFullEntry ue = new UserFullEntry();
-            ue.UserEntry.sAccount = sAccount;
-            ue.UserEntry.sPassword = sPassword;
-            ue.UserEntry.sUserName = sAccount;
-            ue.UserEntry.sSSNo = "650101-1455111";
-            ue.UserEntry.sQuiz = sAccount;
-            ue.UserEntry.sAnswer = sAccount;
-            ue.UserEntry.sPhone = "";
-            ue.UserEntry.sEMail = "";
-            ue.UserEntryAdd.sQuiz2 = sAccount;
-            ue.UserEntryAdd.sAnswer2 = sAccount;
-            ue.UserEntryAdd.sBirthDay = "1978/01/01";
-            ue.UserEntryAdd.sMobilePhone = "";
-            ue.UserEntryAdd.sMemo = "";
-            ue.UserEntryAdd.sMemo2 = "";
-            var Msg = Grobal2.MakeDefaultMsg(Grobal2.CM_ADDNEWUSER, 0, 0, 0, 0);
-            SendSocket(EDcode.EncodeMessage(Msg) + EDcode.EncodeBuffer(ue));
-        }
-
-        public void SendSelectServer(string svname)
-        {
-            MainOutMessage($"选择服务器：{svname}");
-            m_ConnectionStep = TConnectionStep.cnsSelServer;
-            var DefMsg = Grobal2.MakeDefaultMsg(Grobal2.CM_SELECTSERVER, 0, 0, 0, 0);
-            SendSocket(EDcode.EncodeMessage(DefMsg) + EDcode.EncodeString(svname));
-        }
-
-        public void SendNewChr(string uid, string uname, byte shair, byte sjob, byte ssex)
-        {
-            ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_NEWCHR, 0, 0, 0, 0);
-            SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(uid + "/" + uname + "/" + shair + "/" + sjob + "/" + ssex));
-        }
-
-        public void SendQueryChr()
-        {
-            ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_QUERYCHR, 0, 0, 0, 0);
-            SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(LoginID + "/" + Certification));
-            MainOutMessage("查询角色.");
-        }
-
-        public void SendDelChr(string chrname)
-        {
-            ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_DELCHR, 0, 0, 0, 0);
-            SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(chrname));
-        }
-
-        public void SendSelChr(string chrname)
-        {
-            m_sCharName = chrname;
-            ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_SELCHR, 0, 0, 0, 0);
-            SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(LoginID + "/" + chrname));
-            MainOutMessage($"选择角色 {chrname}");
-        }
-
-        /// <summary>
-        /// 发送登录消息
-        /// </summary>
-        public void SendRunLogin()
-        {
-            MainOutMessage("进入游戏");
-            m_ConnectionStep = TConnectionStep.cnsPlay;
-            var sSendMsg = $"**{LoginID}/{m_sCharName}/{Certification}/{Grobal2.CLIENT_VERSION_NUMBER}/{0}";
-            SendSocket(EDcode.EncodeString(sSendMsg));
-        }
-
+    
         public void SendSay(string Str)
         {
             string sx = string.Empty;
@@ -3201,7 +3087,7 @@ namespace RobotSvr
                 {
                     case Grobal2.SM_NEWID_SUCCESS:
                         MainOutMessage("您的帐号创建成功。请妥善保管您的帐号和密码，并且不要因任何原因把帐号和密码告诉任何其他人。如果忘记了密码,你可以通过我们的主页重新找回。");
-                        ClientNewIdSuccess("");
+                        LoginScene.ClientNewIdSuccess("");
                         break;
                     case Grobal2.SM_NEWID_FAIL:
                         switch (msg.Recog)
@@ -3228,7 +3114,7 @@ namespace RobotSvr
                                 MainOutMessage("密码输入错误超过3次，此帐号被暂时锁定，请稍候再登录！");
                                 break;
                             case -3:
-                                m_ConnectionStep = TConnectionStep.cnsConnect;
+                                //m_ConnectionStep = TConnectionStep.cnsConnect;
                                 FNotifyEvent = null;
                                 MainOutMessage("此帐号已经登录或被异常锁定，请稍候再登录！");
                                 break;
@@ -3259,19 +3145,20 @@ namespace RobotSvr
                         ClientGetSelectServer();
                         break;
                     case Grobal2.SM_PASSOK_SELECTSERVER:
-                        ClientGetPasswordOK(msg, body);
+                        LoginScene.ClientGetPasswordOK(msg, body);
                         break;
                     case Grobal2.SM_SELECTSERVER_OK:
-                        ClientGetPasswdSuccess(body);
+                        LoginScene.ClientGetPasswdSuccess(body);
+                        DScreen.ChangeScene(SceneType.stSelectChr);
                         break;
                     case Grobal2.SM_QUERYCHR:
-                        ClientGetReceiveChrs(body);
+                        SelectChrScene.ClientGetReceiveChrs(body);
                         break;
                     case Grobal2.SM_QUERYCHR_FAIL:
                         MainOutMessage("服务器认证失败！");
                         break;
                     case Grobal2.SM_NEWCHR_SUCCESS:
-                        SendQueryChr();
+                        SelectChrScene.SendQueryChr();
                         break;
                     case Grobal2.SM_NEWCHR_FAIL:
                         switch (msg.Recog)
@@ -3311,13 +3198,13 @@ namespace RobotSvr
                         }
                         break;
                     case Grobal2.SM_DELCHR_SUCCESS:
-                        SendQueryChr();
+                        SelectChrScene.SendQueryChr();
                         break;
                     case Grobal2.SM_DELCHR_FAIL:
                         MainOutMessage("[错误信息] 删除游戏角色时出现错误！");
                         break;
                     case Grobal2.SM_STARTPLAY:
-                        ClientGetStartPlay(body);
+                        SelectChrScene.ClientGetStartPlay(body);
                         break;
                     case Grobal2.SM_STARTFAIL:
                         MainOutMessage("此服务器满员！");
@@ -3445,7 +3332,7 @@ namespace RobotSvr
                     MShare.g_boCanRunSafeZone = msg.Recog != 0;
                     break;
                 case Grobal2.SM_RECONNECT:
-                    ClientGetReconnect(body);
+                    SelectChrScene.ClientGetReconnect(body);
                     break;
                 case Grobal2.SM_TIMECHECK_MSG:
                     CheckSpeedHack(msg.Recog);
@@ -4726,54 +4613,8 @@ namespace RobotSvr
                     // g_PlayScene.MemoLog.Lines.Add('Series: ' + IntToStr(Msg.series));
             }
         }
-
-        private void ClientGetPasswdSuccess(string body)
-        {
-            string runaddr = string.Empty;
-            string runport = string.Empty;
-            string certifystr = string.Empty;
-            string Str = EDcode.DeCodeString(body);
-            Str = HUtil32.GetValidStr3(Str, ref runaddr, new string[] { "/" });
-            Str = HUtil32.GetValidStr3(Str, ref runport, new string[] { "/" });
-            Str = HUtil32.GetValidStr3(Str, ref certifystr, new string[] { "/" });
-            Certification = HUtil32.Str_ToInt(certifystr, 0);
-            MShare.g_sSelChrAddr = runaddr;
-            MShare.g_nSelChrPort = HUtil32.Str_ToInt(runport, 0);
-            m_ConnectionStep = TConnectionStep.cnsQueryChr;
-            SocketEvents();
-            CloseSocket();//断开登录网关链接
-            ClientSocket.Host = MShare.g_sSelChrAddr;
-            ClientSocket.Port = MShare.g_nSelChrPort;
-            ClientSocket.Connect();
-            MainOutMessage($"连接角色网关:[{MShare.g_sSelChrAddr}:{MShare.g_nSelChrPort}]");
-        }
-
-        private void ClientGetPasswordOK(ClientPacket msg, string sBody)
-        {
-            MShare.g_wAvailIDDay = HUtil32.LoWord(msg.Recog);
-            MShare.g_wAvailIDHour = HUtil32.HiWord(msg.Recog);
-            MShare.g_wAvailIPDay = msg.Param;
-            MShare.g_wAvailIPHour = msg.Tag;
-            if ((MShare.g_wAvailIDHour % 60) > 0)
-            {
-                MainOutMessage("个人帐户的期限: 剩余 " + (MShare.g_wAvailIDHour / 60).ToString() + " 小时 " + (MShare.g_wAvailIDHour % 60).ToString() + " 分钟.");
-            }
-            else if (MShare.g_wAvailIDHour > 0)
-            {
-                MainOutMessage("个人帐户的期限: 剩余 " + MShare.g_wAvailIDHour.ToString() + " 分钟.");
-            }
-            else
-            {
-                MainOutMessage("帐号登录成功！");
-            }
-            string sServerName = string.Empty;
-            string sText = EDcode.DeCodeString(sBody);
-            HUtil32.GetValidStr3(sText, ref sServerName, new[] { "/" });
-            ClientGetSelectServer();
-            SendSelectServer(sServerName);
-        }
-
-        private void ClientGetSelectServer()
+        
+        public void ClientGetSelectServer()
         {
             LoginScene.HideLoginBox();
         }
@@ -4782,131 +4623,6 @@ namespace RobotSvr
         {
             TUserEntry ue = EDcode.DecodeBuffer<TUserEntry>(body);
             LoginScene.UpdateAccountInfos(ue);
-        }
-
-        private void ClientGetReceiveChrs(string body)
-        {
-            string uname = string.Empty;
-            string sjob = string.Empty;
-            string shair = string.Empty;
-            string slevel = string.Empty;
-            string ssex = string.Empty;
-            if (MShare.g_boOpenAutoPlay && (MShare.g_nAPReLogon == 1))
-            {
-                MShare.g_nAPReLogon = 2;
-                MShare.g_nAPReLogonWaitTick = MShare.GetTickCount();
-                MShare.g_nAPReLogonWaitTime = 5000 + RandomNumber.GetInstance().Random(10) * 1000;
-            }
-            SelectChrScene.ClearChrs();
-            string Str = EDcode.DeCodeString(body);
-            SelectChrScene selectChrScene = SelectChrScene;
-            int select = 0;
-            int nChrCount = 0;
-            for (var i = 0; i <= 1; i++)
-            {
-                Str = HUtil32.GetValidStr3(Str, ref uname, new string[] { "/" });
-                Str = HUtil32.GetValidStr3(Str, ref sjob, new string[] { "/" });
-                Str = HUtil32.GetValidStr3(Str, ref shair, new string[] { "/" });
-                Str = HUtil32.GetValidStr3(Str, ref slevel, new string[] { "/" });
-                Str = HUtil32.GetValidStr3(Str, ref ssex, new string[] { "/" });
-                if ((uname != "") && (slevel != "") && (ssex != ""))
-                {
-                    if (uname[0] == '*')
-                    {
-                        select = i;
-                        uname = uname.Substring(1, uname.Length - 1);
-                    }
-                    SelectChrScene.AddChr(uname, HUtil32.Str_ToInt(sjob, 0), HUtil32.Str_ToInt(shair, 0), HUtil32.Str_ToInt(slevel, 0), HUtil32.Str_ToInt(ssex, 0));
-                    nChrCount++;
-                }
-                if (select == 0)
-                {
-                    selectChrScene.ChrArr[0].FreezeState = false;
-                    selectChrScene.ChrArr[0].Selected = true;
-                    selectChrScene.ChrArr[1].FreezeState = true;
-                    selectChrScene.ChrArr[1].Selected = false;
-                }
-                else
-                {
-                    selectChrScene.ChrArr[0].FreezeState = true;
-                    selectChrScene.ChrArr[0].Selected = false;
-                    selectChrScene.ChrArr[1].FreezeState = false;
-                    selectChrScene.ChrArr[1].Selected = true;
-                }
-            }
-            if (nChrCount > 0)
-            {
-                SendSelChr(selectChrScene.ChrArr[select].UserChr.Name);
-            }
-            else
-            {
-                SetNotifyEvent(NewChr, 3000);
-            }
-        }
-
-        private void NewChr()
-        {
-            m_ConnectionStep = TConnectionStep.cnsNewChr;
-            SelectChrCreateNewChr(m_sCharName);
-        }
-
-        private void SelectChrCreateNewChr(string sCharName)
-        {
-            byte sHair = 0;
-            switch (RandomNumber.GetInstance().Random(1))
-            {
-                case 0:
-                    sHair = 2;
-                    break;
-                case 1:
-                    switch (new Random(1).Next())
-                    {
-                        case 0:
-                            sHair = 1;
-                            break;
-                        case 1:
-                            sHair = 3;
-                            break;
-                    }
-                    break;
-            }
-            byte sJob = (byte)RandomNumber.GetInstance().Random(2);
-            byte sSex = (byte)RandomNumber.GetInstance().Random(1);
-            SendNewChr(LoginID, sCharName, sHair, sJob, sSex);
-            MainOutMessage($"创建角色 {sCharName}");
-        }
-
-        private void ClientGetStartPlay(string body)
-        {
-            MainOutMessage("准备进入游戏");
-            string addr = string.Empty;
-            string Str = EDcode.DeCodeString(body);
-            string sport = HUtil32.GetValidStr3(Str, ref addr, new string[] { "/" });
-            MShare.g_nRunServerPort = HUtil32.Str_ToInt(sport, 0);
-            MShare.g_sRunServerAddr = addr;
-            MShare.g_ConnectionStep = TConnectionStep.cnsPlay;
-            SocketEvents();
-            CloseSocket();//断开角色网关链接
-            ClientSocket.Host = MShare.g_sRunServerAddr;
-            ClientSocket.Port = MShare.g_nRunServerPort;
-            ClientSocket.Connect();
-        }
-
-        private void ClientGetReconnect(string body)
-        {
-            string addr = string.Empty;
-            string sport = string.Empty;
-            string Str = EDcode.DeCodeString(body);
-            sport = HUtil32.GetValidStr3(Str, ref addr, new string[] { "/" });
-            MShare.g_boServerChanging = true;
-            MShare.g_ConnectionStep = TConnectionStep.cnsPlay;
-            SocketEvents();
-            CloseSocket();//断开游戏网关链接
-            ClientSocket.Host = addr;
-            ClientSocket.Port = HUtil32.Str_ToInt(sport, 0);
-            ClientSocket.Connect();
-            SocStr = string.Empty;
-            BufferStr = string.Empty;
         }
 
         private void ClientGetMapDescription(ClientPacket msg, string sBody)
@@ -6040,9 +5756,9 @@ namespace RobotSvr
         public void ProcessPacket(string str)
         {
             string data = string.Empty;
-            BufferStr = BufferStr + SocStr;
+            BufferStr = BufferStr + SocStr + str;
             SocStr = string.Empty;
-            if (BufferStr != "")
+            if (!string.IsNullOrEmpty(BufferStr))
             {
                 while (BufferStr.Length >= 2)
                 {
@@ -6055,7 +5771,7 @@ namespace RobotSvr
                         break;
                     }
                     BufferStr = HUtil32.ArrestStringEx(BufferStr, "#", "!", ref data);
-                    if (data != "")
+                    if (!string.IsNullOrEmpty(data))
                     {
                         DecodeMessagePacket(data, 0);
                     }
