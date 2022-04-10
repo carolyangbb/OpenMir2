@@ -3196,6 +3196,7 @@ namespace RobotSvr
                         break;
                     case Grobal2.SM_STARTPLAY:
                         SelectChrScene.ClientGetStartPlay(body);
+                        DScreen.ChangeScene(SceneType.stLoginNotice);
                         break;
                     case Grobal2.SM_STARTFAIL:
                         MainOutMessage("此服务器满员！");

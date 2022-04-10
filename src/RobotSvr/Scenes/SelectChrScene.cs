@@ -7,13 +7,11 @@ namespace RobotSvr
     public class SelectChrScene : Scene
     {
         private readonly IClientScoket ClientSocket;
-        private bool _createChrMode = false;
         private int NewIndex = 0;
         public readonly SelChar[] ChrArr;
 
         public SelectChrScene(RobotClient robotClient) : base(SceneType.stSelectChr, robotClient)
         {
-            _createChrMode = false;
             ChrArr = new SelChar[2];
             ChrArr[0].FreezeState = true;
             ChrArr[0].UserChr = new TUserCharacterInfo();
@@ -31,6 +29,7 @@ namespace RobotSvr
         {
             m_ConnectionStep = TConnectionStep.cnsQueryChr;
             ClientSocket.Connect(MShare.g_sSelChrAddr, MShare.g_nSelChrPort);
+            Console.WriteLine("OpenScene");
         }
 
         public override void CloseScene()
@@ -55,7 +54,7 @@ namespace RobotSvr
             }
             else
             {
-                Console.WriteLine("开始游戏前你应该先创建一个新角色！\\点击<创建角色>按钮创建一个游戏角色。");
+                Console.WriteLine("开始游戏前你应该先创建一个新角色！点击<创建角色>按钮创建一个游戏角色。");
             }
         }
 
@@ -144,66 +143,22 @@ namespace RobotSvr
 
         private void MakeNewChar(int index)
         {
-            _createChrMode = true;
             NewIndex = index;
             ChrArr[NewIndex].Valid = true;
             ChrArr[NewIndex].FreezeState = false;
-            SelectChr(NewIndex);
-        }
-
-        private void SelectChr(int index)
-        {
-            ChrArr[index].Selected = true;
-            ChrArr[index].StartTime = MShare.GetTickCount();
-            if (index == 0)
-            {
-                ChrArr[1].Selected = false;
-            }
-            else
-            {
-                ChrArr[0].Selected = false;
-            }
         }
 
         public override void PlayScene()
         {
-            if (MShare.g_boOpenAutoPlay && (MShare.g_nAPReLogon == 2))
-            {
-                if (MShare.GetTickCount() - MShare.g_nAPReLogonWaitTick > MShare.g_nAPReLogonWaitTime)
-                {
-                    MShare.g_nAPReLogonWaitTick = MShare.GetTickCount();
-                    MShare.g_nAPReLogon = 3;
-                    SendSelChr(robotClient.m_sCharName);
-                }
-            }
-            for (var n = 0; n < 1; n++)
-            {
-                if (ChrArr[n].Valid)
-                {
-                    if (!ChrArr[n].Selected && !ChrArr[n].FreezeState && !ChrArr[n].Freezing)
-                    {
-                        ChrArr[n].Freezing = true;
-                        ChrArr[n].StartTime = MShare.GetTickCount();
-                    }
-                    if (ChrArr[n].Freezing)
-                    {
-                        if (MShare.GetTickCount() - ChrArr[n].StartTime > 110)
-                        {
-                            ChrArr[n].StartTime = MShare.GetTickCount();
-                        }
-                    }
-                    if (!ChrArr[n].Freezing)
-                    {
-                        if (ChrArr[n].Selected)
-                        {
-                            if (MShare.GetTickCount() - ChrArr[n].StartTime > 230)
-                            {
-                                ChrArr[n].StartTime = MShare.GetTickCount();
-                            }
-                        }
-                    }
-                }
-            }
+            //if (MShare.g_boOpenAutoPlay && (MShare.g_nAPReLogon == 2))
+            //{
+            //    if (MShare.GetTickCount() - MShare.g_nAPReLogonWaitTick > MShare.g_nAPReLogonWaitTime)
+            //    {
+            //        MShare.g_nAPReLogonWaitTick = MShare.GetTickCount();
+            //        MShare.g_nAPReLogon = 3;
+            //        SendSelChr(robotClient.m_sCharName);
+            //    }
+            //}
         }
 
         public void ClientGetReceiveChrs(string body)
@@ -306,12 +261,6 @@ namespace RobotSvr
             MShare.g_nRunServerPort = HUtil32.Str_ToInt(sport, 0);
             MShare.g_sRunServerAddr = addr;
             MShare.g_ConnectionStep = TConnectionStep.cnsPlay;
-            CloseSocket();//断开角色网关链接
-
-            //todo 游戏场景开始
-            ClientSocket.Host = MShare.g_sRunServerAddr;
-            ClientSocket.Port = MShare.g_nRunServerPort;
-            ClientSocket.Connect();
         }
 
         private void CloseSocket()
@@ -321,18 +270,18 @@ namespace RobotSvr
 
         public void ClientGetReconnect(string body)
         {
-            string addr = string.Empty;
-            string sport = string.Empty;
-            string Str = EDcode.DeCodeString(body);
-            sport = HUtil32.GetValidStr3(Str, ref addr, new string[] { "/" });
-            MShare.g_boServerChanging = true;
-            MShare.g_ConnectionStep = TConnectionStep.cnsPlay;
-            CloseSocket();//断开游戏网关链接
-            ClientSocket.Host = addr;
-            ClientSocket.Port = HUtil32.Str_ToInt(sport, 0);
-            ClientSocket.Connect();
-            robotClient.SocStr = string.Empty;
-            robotClient.BufferStr = string.Empty;
+            //string addr = string.Empty;
+            //string sport = string.Empty;
+            //string Str = EDcode.DeCodeString(body);
+            //sport = HUtil32.GetValidStr3(Str, ref addr, new string[] { "/" });
+            //MShare.g_boServerChanging = true;
+            //MShare.g_ConnectionStep = TConnectionStep.cnsPlay;
+            //CloseSocket();//断开游戏网关链接
+            //ClientSocket.Host = addr;
+            //ClientSocket.Port = HUtil32.Str_ToInt(sport, 0);
+            //ClientSocket.Connect();
+            //robotClient.SocStr = string.Empty;
+            //robotClient.BufferStr = string.Empty;
         }
 
         private void SendNewChr(string uid, string uname, byte shair, byte sjob, byte ssex)
@@ -346,7 +295,7 @@ namespace RobotSvr
             m_ConnectionStep = TConnectionStep.cnsQueryChr;
             var DefMsg = Grobal2.MakeDefaultMsg(Grobal2.CM_QUERYCHR, 0, 0, 0, 0);
             SendSocket(EDcode.EncodeMessage(DefMsg) + EDcode.EncodeString(robotClient.LoginID + "/" + robotClient.Certification));
-            MainOutMessage("查询人物");
+            MainOutMessage("查询角色.");
         }
 
         private void SendSocket(string sendstr)
@@ -365,10 +314,11 @@ namespace RobotSvr
 
         private void CSocketConnect(object sender, DSCClientConnectedEventArgs e)
         {
+            Console.WriteLine("123123");
             MShare.g_boServerConnected = true;
             if (m_ConnectionStep == TConnectionStep.cnsQueryChr)
             {
-                SetNotifyEvent(SendQueryChr, 2000);
+                SetNotifyEvent(SendQueryChr, 1000);
                 m_ConnectionStep = TConnectionStep.cnsSelChr;
             }
             robotClient.SocStr = string.Empty;
@@ -391,13 +341,13 @@ namespace RobotSvr
             switch (e.ErrorCode)
             {
                 case System.Net.Sockets.SocketError.ConnectionRefused:
-                    Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]拒绝链接...");
+                    Console.WriteLine($"游戏服务器[{ClientSocket.RemoteEndPoint}拒绝链接...");
                     break;
                 case System.Net.Sockets.SocketError.ConnectionReset:
-                    Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]关闭连接...");
+                    Console.WriteLine($"游戏服务器[{ClientSocket.RemoteEndPoint}关闭连接...");
                     break;
                 case System.Net.Sockets.SocketError.TimedOut:
-                    Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]链接超时...");
+                    Console.WriteLine($"游戏服务器[{ClientSocket.RemoteEndPoint}链接超时...");
                     break;
             }
             ClientManager.DelClient(robotClient.SessionId);

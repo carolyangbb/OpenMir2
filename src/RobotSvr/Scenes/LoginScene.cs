@@ -162,13 +162,6 @@ namespace RobotSvr
             SendSocket(EDcode.EncodeString(sSendMsg));
         }
 
-        public void SendQueryChr()
-        {
-            ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_QUERYCHR, 0, 0, 0, 0);
-            SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(robotClient.LoginID + "/" + robotClient.Certification));
-            MainOutMessage("查询角色.");
-        }
-
         public void ClientGetPasswordOK(ClientPacket msg, string sBody)
         {
             MShare.g_wAvailIDDay = HUtil32.LoWord(msg.Recog);
@@ -268,11 +261,11 @@ namespace RobotSvr
             {
                 OpenLoginDoor();
             }
-            if (m_ConnectionStep == TConnectionStep.cnsQueryChr)
-            {
-                SendQueryChr();
-                m_ConnectionStep = TConnectionStep.cnsSelChr;
-            }
+            //if (m_ConnectionStep == TConnectionStep.cnsQueryChr)
+            //{
+            //    SendQueryChr();
+            //    m_ConnectionStep = TConnectionStep.cnsSelChr;
+            //}
             if (MShare.g_ConnectionStep == TConnectionStep.cnsPlay)
             {
                 if (!MShare.g_boServerChanging)
@@ -309,13 +302,13 @@ namespace RobotSvr
             switch (e.ErrorCode)
             {
                 case System.Net.Sockets.SocketError.ConnectionRefused:
-                    Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]拒绝链接...");
+                    Console.WriteLine($"游戏服务器[{ClientSocket.RemoteEndPoint}]拒绝链接...");
                     break;
                 case System.Net.Sockets.SocketError.ConnectionReset:
-                    Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]关闭连接...");
+                    Console.WriteLine($"游戏服务器[{ClientSocket.RemoteEndPoint}]关闭连接...");
                     break;
                 case System.Net.Sockets.SocketError.TimedOut:
-                    Console.WriteLine("游戏服务器[" + ClientSocket.Host + ":" + ClientSocket.Port + "]链接超时...");
+                    Console.WriteLine($"游戏服务器[{ClientSocket.RemoteEndPoint}]链接超时...");
                     break;
             }
             ClientManager.DelClient(robotClient.SessionId);

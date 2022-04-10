@@ -28,6 +28,8 @@ namespace SystemModule.Sockets
             this.databuffer = new byte[this.buffersize];//创建缓冲区
         }
 
+        public EndPoint RemoteEndPoint => cli.RemoteEndPoint;
+
         public void Connect()
         {
             if (!string.IsNullOrEmpty(Host) && Port > 0)
