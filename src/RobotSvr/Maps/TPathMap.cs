@@ -7,13 +7,13 @@ namespace RobotSvr
     {
         public static Point[] g_MapPath;
         public const int SCALE = 4;
-        public static string MAP_BASEPATH = GetMapPath();
+        protected static string MAP_BASEPATH = GetMapPath();
         public static int[] TerrainParams = new int[2] { 4, -1 };
         public TMapHeader m_MapHeader;
         public TCellParams[,] m_MapData;
         public TMapInfo[] m_MapBuf;
-        public int m_nPathWidth = 0;
-        public TPathMapCell[,] m_PathMapArray;
+        protected int m_nPathWidth = 0;
+        protected TPathMapCell[,] m_PathMapArray;
 
         public TPathMap() : base()
         {
@@ -38,32 +38,32 @@ namespace RobotSvr
             return string.Empty;
         }
 
-        public Point[] FindPathOnMap(int X, int Y)
+        /// <summary>
+        /// 从TPathMap中找出 TPath
+        /// </summary>
+        protected Point[] FindPathOnMap(int X, int Y)
         {
-            Point[] result;
-            int Direction;
-            result = null;
             if ((X >= m_MapHeader.wWidth) || (Y >= m_MapHeader.wHeight))
             {
-                return result;
+                return null;
             }
             if (m_PathMapArray[Y, X].Distance < 0)
             {
-                return result;
+                return null;
             }
-            result = new Point[m_PathMapArray[Y, X].Distance + 1];
+            var result = new Point[m_PathMapArray[Y, X].Distance + 1];
             while (m_PathMapArray[Y, X].Distance > 0)
             {
                 result[m_PathMapArray[Y, X].Distance] = new Point(X, Y);
-                Direction = m_PathMapArray[Y, X].Direction;
-                X = X - DirToDX(Direction);
-                Y = Y - DirToDY(Direction);
+                var direction = m_PathMapArray[Y, X].Direction;
+                X = X - DirToDX(direction);
+                Y = Y - DirToDY(direction);
             }
             result[0] = new Point(X, Y);
             return result;
         }
 
-        public int DirToDX(int Direction)
+        private int DirToDX(int Direction)
         {
             int result;
             switch (Direction)
@@ -154,28 +154,22 @@ namespace RobotSvr
 
         protected TPathMapCell[,] FillPathMap(int X1, int Y1, int X2, int Y2)
         {
-            TPathMapCell[,] result;
-            int X;
-            int Y;
-            TWave OldWave;
-            TWave NewWave;
-            bool Finished;
             TWaveCell i;
-            Finished = (X1 == X2) && (Y1 == Y2);
+            var Finished = (X1 == X2) && (Y1 == Y2);
             if (Finished)
             {
                 return null;
             }
-            result = new TPathMapCell[m_MapHeader.wHeight, m_MapHeader.wWidth];
-            for (Y = 0; Y <= (m_MapHeader.wHeight - 1); Y++)
+            var result = new TPathMapCell[m_MapHeader.wHeight, m_MapHeader.wWidth];
+            for (var Y = 0; Y <= (m_MapHeader.wHeight - 1); Y++)
             {
-                for (X = 0; X <= (m_MapHeader.wWidth - 1); X++)
+                for (var X = 0; X <= (m_MapHeader.wWidth - 1); X++)
                 {
                     result[Y, X].Distance = -1;
                 }
             }
-            OldWave = new TWave();
-            NewWave = new TWave();
+            var OldWave = new TWave();
+            var NewWave = new TWave();
             result[Y1, X1].Distance = 0;
             OldWave.Add(X1, Y1, 0, 0);
             FillPathMap_TestNeighbours();

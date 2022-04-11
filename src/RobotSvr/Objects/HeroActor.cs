@@ -171,7 +171,8 @@ namespace RobotSvr
                 tryCount++;
                 if (tryCount > 100)
                 {
-                    Console.WriteLine("自动寻路算法出错。");
+                    Console.WriteLine("自动寻路算法出错,停止移动。");
+                    break;
                 }
             }
             for (var i = MShare.g_APPathList.Count - 1; i >= 0; i--)

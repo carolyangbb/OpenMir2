@@ -10,6 +10,9 @@ namespace RobotSvr
 
     public struct TPathMapCell
     {
+        /// <summary>
+        /// 绂昏捣鐐圭殑璺濈
+        /// </summary>
         public int Distance;
         public int Direction;
     }
@@ -20,13 +23,6 @@ namespace RobotSvr
         public int Y;
         public int Cost;
         public int Direction;
-    }
-
-    public struct TMapPrjInfo
-    {
-        public string[] ident;
-        public int ColCount;
-        public int RowCount;
     }
 
     public struct TMapHeader
@@ -86,7 +82,6 @@ namespace RobotSvr
 
     public struct TMapInfo
     {
-        // 新地图结构
         public ushort wBkImg;
         public ushort wMidImg;
         public ushort wFrImg;
@@ -94,8 +89,8 @@ namespace RobotSvr
         public byte btDoorOffset;
         public byte btAniFrame;
         public byte btAniTick;
-        public byte btArea;// 区域
-        public byte btLight;// 光
+        public byte btArea;
+        public byte btLight;
 
 
         public byte btBkIndex;
@@ -107,13 +102,12 @@ namespace RobotSvr
         public byte btTAniFrame;
         public ushort btTAniOffset;
         public byte btArea2;
-        public byte btLight2;// 光
+        public byte btLight2;
         public byte btTiles2;
         public byte btSmTiles2;
         public byte[] btUnknown;
 
         public const int PacketSize = 36;
-
 
         public TMapInfo(byte[] data)
         {
@@ -166,20 +160,8 @@ namespace RobotSvr
 
     public class TWave
     {
-        public TWaveCell item
-        {
-            get
-            {
-                return GetItem();
-            }
-        }
-        public int MinCost
-        {
-            get
-            {
-                return FMinCost;
-            }
-        }
+        public TWaveCell item => GetItem();
+        public int MinCost => FMinCost;
         private TWaveCell[] FData;
         private int FPos = 0;
         private int FCount = 0;
@@ -221,16 +203,13 @@ namespace RobotSvr
 
         public bool start()
         {
-            bool result;
             FPos = 0;
-            result = FCount > 0;
-            return result;
+            return FCount > 0;
         }
 
         public bool Next()
         {
-            bool result;
-            result = FPos < (FCount - 1);
+            var result = FPos < (FCount - 1);
             if (result)
             {
                 FPos++;

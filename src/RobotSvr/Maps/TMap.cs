@@ -124,8 +124,7 @@ namespace RobotSvr
 
         public bool ReLoadMapData(bool IntActor = false)
         {
-            TActor Actor;
-            bool result = false;
+            var result = false;
             if ((MShare.g_MySelf != null) && (m_nCurrentMap != null) && (this.m_MapBuf != null))
             {
                 for (var nX = MShare.g_MySelf.m_nCurrX - 32; nX <= MShare.g_MySelf.m_nCurrX + 32; nX++)
@@ -140,7 +139,7 @@ namespace RobotSvr
                 }
                 for (var i = 0; i < robotClient.g_PlayScene.m_ActorList.Count; i++)
                 {
-                    Actor = robotClient.g_PlayScene.m_ActorList[i];
+                    var Actor = robotClient.g_PlayScene.m_ActorList[i];
                     if (Actor == MShare.g_MySelf)
                     {
                         continue;
@@ -254,8 +253,8 @@ namespace RobotSvr
         {
             if ((cx == xx / MShare.LOGICALMAPUNIT) && (cy == yy / MShare.LOGICALMAPUNIT))
             {
-                int ax = xx - m_nBlockLeft;
-                int ay = yy - m_nBlockTop;
+                var ax = xx - m_nBlockLeft;
+                var ay = yy - m_nBlockTop;
                 m_MArr[ax, ay].wFrImg = (ushort)(m_MArr[ax, ay].wFrImg & 0x7FFF);
                 m_MArr[ax, ay].wBkImg = (ushort)(m_MArr[ax, ay].wBkImg & 0x7FFF);
             }
@@ -263,8 +262,8 @@ namespace RobotSvr
 
         public void UpdateMapPos(int mx, int my)
         {
-            int cx = mx / MShare.LOGICALMAPUNIT;
-            int cy = my / MShare.LOGICALMAPUNIT;
+            var cx = mx / MShare.LOGICALMAPUNIT;
+            var cy = my / MShare.LOGICALMAPUNIT;
             m_nBlockLeft = HUtil32._MAX(0, (cx - 1) * MShare.LOGICALMAPUNIT);
             m_nBlockTop = HUtil32._MAX(0, (cy - 1) * MShare.LOGICALMAPUNIT);
             UpdateMapSquare(cx, cy);
@@ -296,7 +295,7 @@ namespace RobotSvr
                 m_nCurrentMap.Dispose();
                 m_nCurrentMap = null;
             }
-            string sFileName = string.Format("{0}{1}{2}", MAP_BASEPATH, m_sCurrentMap, ".map");
+            var sFileName = $"{MAP_BASEPATH}{m_sCurrentMap}{".map"}";
             if (File.Exists(sFileName))
             {
                 m_nCurrentMap = File.Open(sFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -318,8 +317,8 @@ namespace RobotSvr
 
         public void MarkCanWalk(int mx, int my, bool bowalk)
         {
-            int cx = mx - m_nBlockLeft;
-            int cy = my - m_nBlockTop;
+            var cx = mx - m_nBlockLeft;
+            var cy = my - m_nBlockTop;
             if ((cx < 0) || (cy < 0))
             {
                 return;
@@ -336,14 +335,13 @@ namespace RobotSvr
 
         public bool CanMove(int mx, int my)
         {
-            bool result = false;
-            int cx = mx - m_nBlockLeft;
-            int cy = my - m_nBlockTop;
+            var cx = mx - m_nBlockLeft;
+            var cy = my - m_nBlockTop;
             if ((cx < 0) || (cy < 0))
             {
-                return result;
+                return false;
             }
-            result = ((robotClient.Map.m_MArr[cx, cy].wBkImg & 0x8000) + (robotClient.Map.m_MArr[cx, cy].wFrImg & 0x8000)) == 0;
+            var result = ((robotClient.Map.m_MArr[cx, cy].wBkImg & 0x8000) + (robotClient.Map.m_MArr[cx, cy].wFrImg & 0x8000)) == 0;
             if (result)
             {
                 if ((robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x80) > 0)
@@ -359,14 +357,13 @@ namespace RobotSvr
 
         public bool CanFly(int mx, int my)
         {
-            bool result = false;
-            int cx = mx - m_nBlockLeft;
-            int cy = my - m_nBlockTop;
+            var cx = mx - m_nBlockLeft;
+            var cy = my - m_nBlockTop;
             if ((cx < 0) || (cy < 0))
             {
-                return result;
+                return false;
             }
-            result = (robotClient.Map.m_MArr[cx, cy].wFrImg & 0x8000) == 0;
+            var result = (robotClient.Map.m_MArr[cx, cy].wFrImg & 0x8000) == 0;
             if (result)
             {
                 if ((robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x80) > 0)
@@ -382,9 +379,9 @@ namespace RobotSvr
 
         public int GetDoor(int mx, int my)
         {
-            int result = 0;
-            int cx = mx - m_nBlockLeft;
-            int cy = my - m_nBlockTop;
+            var result = 0;
+            var cx = mx - m_nBlockLeft;
+            var cy = my - m_nBlockTop;
             if ((robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x80) > 0)
             {
                 result = robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x7F;
@@ -394,12 +391,9 @@ namespace RobotSvr
 
         public bool IsDoorOpen(int mx, int my)
         {
-            bool result;
-            int cx;
-            int cy;
-            result = false;
-            cx = mx - m_nBlockLeft;
-            cy = my - m_nBlockTop;
+            var result = false;
+            var cx = mx - m_nBlockLeft;
+            var cy = my - m_nBlockTop;
             if ((robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x80) > 0)
             {
                 result = (robotClient.Map.m_MArr[cx, cy].btDoorOffset & 0x80) != 0;
@@ -407,27 +401,20 @@ namespace RobotSvr
             return result;
         }
 
-        public bool OpenDoor(int mx, int my)
+        public void OpenDoor(int mx, int my)
         {
-            bool result;
-            int i;
-            int j;
-            int cx;
-            int cy;
-            int idx;
-            result = false;
-            cx = mx - m_nBlockLeft;
-            cy = my - m_nBlockTop;
+            var cx = mx - m_nBlockLeft;
+            var cy = my - m_nBlockTop;
             if ((cx < 0) || (cy < 0))
             {
-                return result;
+                return;
             }
             if ((robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x80) > 0)
             {
-                idx = robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x7F;
-                for (i = cx - 10; i <= cx + 10; i++)
+                var idx = robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x7F;
+                for (var i = cx - 10; i <= cx + 10; i++)
                 {
-                    for (j = cy - 10; j <= cy + 10; j++)
+                    for (var j = cy - 10; j <= cy + 10; j++)
                     {
                         if ((i > 0) && (j > 0))
                         {
@@ -439,30 +426,23 @@ namespace RobotSvr
                     }
                 }
             }
-            return result;
         }
 
-        public bool CloseDoor(int mx, int my)
+        public void CloseDoor(int mx, int my)
         {
-            bool result;
-            int i;
-            int j;
-            int cx;
-            int cy;
-            int idx;
-            result = false;
-            cx = mx - m_nBlockLeft;
-            cy = my - m_nBlockTop;
+            var result = false;
+            var cx = mx - m_nBlockLeft;
+            var cy = my - m_nBlockTop;
             if ((cx < 0) || (cy < 0))
             {
-                return result;
+                return;
             }
             if ((robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x80) > 0)
             {
-                idx = robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x7F;
-                for (i = cx - 8; i <= cx + 10; i++)
+                var idx = robotClient.Map.m_MArr[cx, cy].btDoorIndex & 0x7F;
+                for (var i = cx - 8; i <= cx + 10; i++)
                 {
-                    for (j = cy - 8; j <= cy + 10; j++)
+                    for (var j = cy - 8; j <= cy + 10; j++)
                     {
                         if ((robotClient.Map.m_MArr[i, j].btDoorIndex & 0x7F) == idx)
                         {
@@ -471,24 +451,18 @@ namespace RobotSvr
                     }
                 }
             }
-            return result;
         }
 
         public Point[] FindPath(int StartX, int StartY, int StopX, int StopY, int PathSpace)
         {
-            Point[] result;
             this.m_nPathWidth = PathSpace;
             this.m_PathMapArray = this.FillPathMap(StartX, StartY, StopX, StopY);
-            // 费时
-            result = this.FindPathOnMap(StopX, StopY);
-            return result;
+            return this.FindPathOnMap(StopX, StopY);
         }
 
         public Point[] FindPath(int StopX, int StopY)
         {
-            Point[] result;
-            result = this.FindPathOnMap(StopX, StopY);
-            return result;
+            return this.FindPathOnMap(StopX, StopY);
         }
 
         public void SetStartPos(int StartX, int StartY, int PathSpace)
@@ -496,7 +470,6 @@ namespace RobotSvr
             this.m_nPathWidth = PathSpace;
             this.m_PathMapArray = this.FillPathMap(StartX, StartY, -1, -1);
         }
-
     }
 }
 

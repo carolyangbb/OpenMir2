@@ -391,7 +391,7 @@ namespace MakePlayer
             switch (nFailCode)
             {
                 case 0:
-                    MainOutMessage(string.Format("[{0}] 帐号已被其他的玩家使用了。请选择其它帐号名注册。", m_sLoginAccount));
+                    MainOutMessage($"[{m_sLoginAccount}] 帐号已被其他的玩家使用了。请选择其它帐号名注册。");
                     break;
                 case 1:
                     MainOutMessage($"[{m_sLoginAccount}] 验证码输入错误，请重新输入！！！");
@@ -520,20 +520,6 @@ namespace MakePlayer
                     }
                     ClientGetReceiveChrs_AddChr(sName, Convert.ToByte(sJob), Convert.ToByte(sHair), Convert.ToInt32(sLevel), Convert.ToByte(sSex));
                     nChrCount++;
-                }
-                if (nSelect == 0)
-                {
-                    m_ChrArr[0].boFreezeState = false;
-                    m_ChrArr[0].boSelected = true;
-                    m_ChrArr[1].boFreezeState = true;
-                    m_ChrArr[1].boSelected = false;
-                }
-                else
-                {
-                    m_ChrArr[0].boFreezeState = true;
-                    m_ChrArr[0].boSelected = false;
-                    m_ChrArr[1].boFreezeState = false;
-                    m_ChrArr[1].boSelected = true;
                 }
             }
             if (nChrCount > 0)
