@@ -13,9 +13,7 @@ namespace RobotSvr
         public SelectChrScene(RobotClient robotClient) : base(SceneType.stSelectChr, robotClient)
         {
             ChrArr = new SelChar[2];
-            ChrArr[0].FreezeState = true;
             ChrArr[0].UserChr = new TUserCharacterInfo();
-            ChrArr[1].FreezeState = true;
             ChrArr[1].UserChr = new TUserCharacterInfo();
             NewIndex = 0;
             ClientSocket = new IClientScoket();
@@ -29,7 +27,6 @@ namespace RobotSvr
         {
             m_ConnectionStep = TConnectionStep.cnsQueryChr;
             ClientSocket.Connect(MShare.g_sSelChrAddr, MShare.g_nSelChrPort);
-            Console.WriteLine("OpenScene");
         }
 
         public override void CloseScene()
@@ -57,10 +54,6 @@ namespace RobotSvr
 
         private void ClearChrs()
         {
-            ChrArr[0].FreezeState = false;
-            ChrArr[1].FreezeState = true;
-            ChrArr[0].Selected = true;
-            ChrArr[1].Selected = false;
             ChrArr[0].UserChr.Name = "";
             ChrArr[1].UserChr.Name = "";
         }
@@ -81,10 +74,6 @@ namespace RobotSvr
                 return;
             }
             ChrArr[n].UserChr.Name = uname;
-            ChrArr[n].UserChr.Job = (byte)job;
-            ChrArr[n].UserChr.hair = (byte)hair;
-            ChrArr[n].UserChr.Level = (byte)level;
-            ChrArr[n].UserChr.Sex = (byte)sex;
             ChrArr[n].Valid = true;
         }
 
@@ -92,7 +81,6 @@ namespace RobotSvr
         {
             NewIndex = index;
             ChrArr[NewIndex].Valid = true;
-            ChrArr[NewIndex].FreezeState = false;
         }
 
         public override void PlayScene()
@@ -141,20 +129,6 @@ namespace RobotSvr
                     }
                     AddChr(uname, HUtil32.Str_ToInt(sjob, 0), HUtil32.Str_ToInt(shair, 0), HUtil32.Str_ToInt(slevel, 0), HUtil32.Str_ToInt(ssex, 0));
                     nChrCount++;
-                }
-                if (select == 0)
-                {
-                    this.ChrArr[0].FreezeState = false;
-                    this.ChrArr[0].Selected = true;
-                    this.ChrArr[1].FreezeState = true;
-                    this.ChrArr[1].Selected = false;
-                }
-                else
-                {
-                    this.ChrArr[0].FreezeState = true;
-                    this.ChrArr[0].Selected = false;
-                    this.ChrArr[1].FreezeState = false;
-                    this.ChrArr[1].Selected = true;
                 }
             }
             if (nChrCount > 0)
@@ -261,7 +235,6 @@ namespace RobotSvr
 
         private void CSocketConnect(object sender, DSCClientConnectedEventArgs e)
         {
-            Console.WriteLine("123123");
             MShare.g_boServerConnected = true;
             if (m_ConnectionStep == TConnectionStep.cnsQueryChr)
             {
@@ -313,18 +286,10 @@ namespace RobotSvr
     {
         public bool Valid;
         public TUserCharacterInfo UserChr;
-        public bool Selected;
-        public bool FreezeState;
-        public bool Freezing;
-        public long StartTime;
     }
 
     public class TUserCharacterInfo
     {
         public string Name;
-        public byte Job;
-        public byte hair;
-        public ushort Level;
-        public byte Sex;
     }
 }

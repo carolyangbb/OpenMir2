@@ -246,13 +246,13 @@ namespace RobotSvr
 
         private void CSocketRead(object sender, DSCClientDataInEventArgs e)
         {
-            string sData = HUtil32.GetString(e.Buff, 0, e.BuffLen);
+            var sData = HUtil32.GetString(e.Buff, 0, e.BuffLen);
             if (!string.IsNullOrEmpty(sData))
             {
-                int n = sData.IndexOf("*", StringComparison.Ordinal);
+                var n = sData.IndexOf("*", StringComparison.Ordinal);
                 if (n > 0)
                 {
-                    string data2 = sData.Substring(0, n - 1);
+                    var data2 = sData.Substring(0, n - 1);
                     sData = data2 + sData.Substring(n, sData.Length);
                     ClientSocket.SendBuffer(HUtil32.GetBytes(activebuf));
                 }
@@ -285,7 +285,7 @@ namespace RobotSvr
             }
         }
 
-        public void AppLogout()
+        private void AppLogout()
         {
             if (MShare.g_boQueryExit)
             {
@@ -307,7 +307,7 @@ namespace RobotSvr
             }
         }
 
-        public void LoginOut()
+        private void LoginOut()
         {
             MainOutMessage("退出游戏.");
             SendClientMessage(Grobal2.CM_SOFTCLOSE, 0, 0, 0, 0);
@@ -2362,7 +2362,7 @@ namespace RobotSvr
             }
         }
 
-        public void SendClientMessage(int msg, int Recog, int param, int tag, int series)
+        private void SendClientMessage(int msg, int Recog, int param, int tag, int series)
         {
             ClientPacket dMsg = Grobal2.MakeDefaultMsg(msg, Recog, param, tag, series);
             SendSocket(EDcode.EncodeMessage(dMsg));
@@ -2444,7 +2444,7 @@ namespace RobotSvr
         /// <summary>
         /// 发送角色动作消息（走路 攻击等）
         /// </summary>
-        public void SendActMsg(int ident, int X, int Y, int dir)
+        private void SendActMsg(int ident, int X, int Y, int dir)
         {
             ClientPacket msg = Grobal2.MakeDefaultMsg(ident, HUtil32.MakeLong(X, Y), 0, dir, 0);
             SendSocket(EDcode.EncodeMessage(msg));
@@ -2452,7 +2452,7 @@ namespace RobotSvr
             ActionLockTime = MShare.GetTickCount();
         }
 
-        public void SendSpellMsg(int ident, int X, int Y, int dir, int target, bool bLock = false)
+        private void SendSpellMsg(int ident, int X, int Y, int dir, int target, bool bLock = false)
         {
             ClientPacket msg = Grobal2.MakeDefaultMsg(ident, HUtil32.MakeLong(X, Y), HUtil32.LoWord(target), dir, HUtil32.HiWord(target));
             SendSocket(EDcode.EncodeMessage(msg));
@@ -2476,13 +2476,13 @@ namespace RobotSvr
             SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(Name));
         }
 
-        public void SendPickup()
+        private void SendPickup()
         {
             ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_PICKUP, 0, MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, 0);
             SendSocket(EDcode.EncodeMessage(msg));
         }
 
-        public void SendTakeOnItem(int where, int itmindex, string itmname)
+        private void SendTakeOnItem(int where, int itmindex, string itmname)
         {
             ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_TAKEONITEM, itmindex, where, 0, 0);
             SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(itmname));
@@ -2495,13 +2495,13 @@ namespace RobotSvr
             SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(itmname));
         }
 
-        public void SendEat(int itmindex, string itmname, int nUnBindItem)
+        private void SendEat(int itmindex, string itmname, int nUnBindItem)
         {
             ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_EAT, itmindex, 0, 0, nUnBindItem);
             SendSocket(EDcode.EncodeMessage(msg));
         }
 
-        public void SendButchAnimal(int X, int Y, int dir, int actorid)
+        private void SendButchAnimal(int X, int Y, int dir, int actorid)
         {
             ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_BUTCH, actorid, X, Y, dir);
             SendSocket(EDcode.EncodeMessage(msg));
@@ -2513,7 +2513,7 @@ namespace RobotSvr
             SendSocket(EDcode.EncodeMessage(msg));
         }
 
-        public void SendMerchantDlgSelect(int merchant, string rstr)
+        private void SendMerchantDlgSelect(int merchant, string rstr)
         {
             const string sam = "@_automove ";
             int X;

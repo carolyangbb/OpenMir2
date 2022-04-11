@@ -45,7 +45,7 @@ namespace RobotSvr
 
         }
 
-        protected void SetNotifyEvent(Action ANotifyEvent, int nTime)
+        public void SetNotifyEvent(Action ANotifyEvent, int nTime)
         {
             m_dwNotifyEventTick = HUtil32.GetTickCount() + nTime;
             FNotifyEvent = ANotifyEvent;
