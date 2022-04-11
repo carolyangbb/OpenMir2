@@ -98,7 +98,10 @@ namespace RobotSvr
             var cy = Y - robotClient.Map.m_nBlockTop;
             if (cx > MShare.MAXX * 3 || cy > MShare.MAXY * 3) return true;
             if (cx < 0 || cy < 0) return true;
-            if (H < MShare.g_APPass[cx, cy]) return false;
+            if (H < MShare.g_APPass[cx, cy])
+            {
+                return false;
+            }
             return true;
         }
 
@@ -141,7 +144,8 @@ namespace RobotSvr
             {
                 return;
             }
-            MShare.g_APPass = MShare.g_APPassEmpty;
+            MShare.g_APPass = (ushort[,])MShare.g_APPassEmpty.Clone();
+            Console.WriteLine(MShare.g_APPass[34, 32]);
             Init_Queue();
             MapTree Root = new MapTree();
             Root.X = Startx;
@@ -665,7 +669,7 @@ namespace RobotSvr
             var result = false;
             MShare.g_boAPAutoMove = false;
             MShare.g_nTagCount = 0;
-            if (MShare.g_MySelf == null || MShare.g_MySelf.m_boDeath || MShare.g_APTagget == null || MShare.g_APTagget.m_boDeath) 
+            if (MShare.g_MySelf == null || MShare.g_MySelf.m_boDeath || MShare.g_APTagget == null || MShare.g_APTagget.m_boDeath)
                 return result;
             switch (MShare.g_MySelf.m_btJob)
             {

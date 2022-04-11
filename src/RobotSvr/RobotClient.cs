@@ -29,7 +29,6 @@ namespace RobotSvr
         public LoginScene LoginScene = null;
         public SelectChrScene SelectChrScene = null;
         public PlayScene g_PlayScene = null;
-        public LoginNotice LoginNoticeScene = null;
         //public ClEventManager EventMan = null;
         public TMap Map = null;
         public static TActor ShowMsgActor = null;
@@ -75,7 +74,6 @@ namespace RobotSvr
             LoginScene = new LoginScene(this);
             SelectChrScene = new SelectChrScene(this);
             g_PlayScene = new PlayScene(this);
-            LoginNoticeScene = new LoginNotice(this);
             Map = new TMap(this);
             MShare.g_DropedItemList = new List<TDropItem>();
             MShare.g_MagicList = new List<TClientMagic>();
@@ -195,7 +193,6 @@ namespace RobotSvr
                 {
                     ClFunc.ClearBag();
                     DScreen.ClearChatBoard();
-                    DScreen.ChangeScene(SceneType.stLoginNotice);
                 }
                 else
                 {
@@ -277,10 +274,13 @@ namespace RobotSvr
                     return;
                 }
                 DScreen.CurrentScene.DoNotifyEvent();
-                ProcessActionMessages();
-                if (MShare.g_MySelf != null)
+                if (DScreen.CurrentScene == g_PlayScene)
                 {
-                    g_PlayScene.BeginScene();
+                    ProcessActionMessages();
+                    if (MShare.g_MySelf != null)
+                    {
+                        g_PlayScene.BeginScene();
+                    }
                 }
             }
         }
@@ -2356,7 +2356,7 @@ namespace RobotSvr
             ClientPacket dMsg = Grobal2.MakeDefaultMsg(msg, Recog, param, tag, series);
             SendSocket(EDcode.EncodeMessage(dMsg));
         }
-        
+
         /// <summary>
         /// 发送登录消息
         /// </summary>
@@ -2405,7 +2405,7 @@ namespace RobotSvr
                                         else
                                         {
                                             //TimerAutoMove.Enabled = false;
-                                            DScreen.AddChatBoardString(string.Format("自动移动坐标点({0}:{1})不可到达",MShare.g_MySelf.m_nTagX, MShare.g_MySelf.m_nTagY), GetRGB(5), Color.White);
+                                            DScreen.AddChatBoardString(string.Format("自动移动坐标点({0}:{1})不可到达", MShare.g_MySelf.m_nTagX, MShare.g_MySelf.m_nTagY), GetRGB(5), Color.White);
                                             MShare.g_MySelf.m_nTagX = 0;
                                             MShare.g_MySelf.m_nTagY = 0;
                                         }
@@ -3210,7 +3210,6 @@ namespace RobotSvr
                         msg.Series = (byte)RandomNumber.GetInstance().Random(8);
                     }
                     g_PlayScene.SendMsg(Grobal2.SM_LOGON, msg.Recog, msg.Param, msg.Tag, msg.Series, wl.lParam1, wl.lParam2, "");
-                    DScreen.ChangeScene(SceneType.stPlayGame);
                     SendClientMessage(Grobal2.CM_QUERYBAGITEMS, 1, 0, 0, 0);
                     if (HUtil32.LoByte(HUtil32.LoWord(wl.lTag1)) == 1)
                     {
@@ -3308,7 +3307,7 @@ namespace RobotSvr
                         body2 = body.Substring(n, body.Length - n);
                         data = EDcode.DeCodeString(body2);
                         body2 = body.Substring(0, n);
-                        Str = HUtil32.GetValidStr3(data, ref data, new string[] { "/" });
+                        Str = HUtil32.GetValidStr3(data, ref data, HUtil32.Backslash);
                     }
                     else
                     {
@@ -3362,7 +3361,7 @@ namespace RobotSvr
                         body2 = body.Substring(n + 1 - 1, body.Length);
                         data = EDcode.DeCodeString(body2);
                         body2 = body.Substring(1 - 1, n);
-                        Str = HUtil32.GetValidStr3(data, ref data, new string[] { "/" });
+                        Str = HUtil32.GetValidStr3(data, ref data, HUtil32.Backslash);
                     }
                     else
                     {
@@ -3404,7 +3403,7 @@ namespace RobotSvr
                         body2 = body.Substring(n + 1 - 1, body.Length);
                         data = EDcode.DeCodeString(body2);
                         body2 = body.Substring(1 - 1, n);
-                        Str = HUtil32.GetValidStr3(data, ref data, new string[] { "/" });
+                        Str = HUtil32.GetValidStr3(data, ref data, HUtil32.Backslash);
                     }
                     else
                     {
@@ -4612,8 +4611,8 @@ namespace RobotSvr
             //string Str2;
             //string str3;
             //MShare.g_nBonusPoint = bonus;
-            //body = HUtil32.GetValidStr3(body, ref str1, new string[] { "/" });
-            //str3 = HUtil32.GetValidStr3(body, ref Str2, new string[] { "/" });
+            //body = HUtil32.GetValidStr3(body, ref str1, HUtil32.Backslash);
+            //str3 = HUtil32.GetValidStr3(body, ref Str2, HUtil32.Backslash);
             //EDcode.DecodeBuffer(str1, MShare.g_BonusTick);
             //EDcode.DecodeBuffer(Str2, MShare.g_BonusAbil);
             //EDcode.DecodeBuffer(str3, MShare.g_NakedAbil);
@@ -4714,8 +4713,8 @@ namespace RobotSvr
             body = EDcode.DeCodeString(body);
             while (body != "")
             {
-                body = HUtil32.GetValidStr3(body, ref iname, new string[] { "/" });
-                body = HUtil32.GetValidStr3(body, ref Str, new string[] { "/" });
+                body = HUtil32.GetValidStr3(body, ref iname, HUtil32.Backslash);
+                body = HUtil32.GetValidStr3(body, ref Str, HUtil32.Backslash);
                 if ((iname != "") && (!string.IsNullOrEmpty(Str)))
                 {
                     iindex = HUtil32.Str_ToInt(Str, 0);
@@ -4837,7 +4836,7 @@ namespace RobotSvr
                 {
                     break;
                 }
-                body = HUtil32.GetValidStr3(body, ref Str, new string[] { "/" });
+                body = HUtil32.GetValidStr3(body, ref Str, HUtil32.Backslash);
                 cu = EDcode.DecodeBuffer<TClientItem>(Str);
                 ClFunc.AddItemBag(cu);
             }
@@ -4998,8 +4997,8 @@ namespace RobotSvr
                 {
                     break;
                 }
-                body = HUtil32.GetValidStr3(body, ref Str, new string[] { "/" });
-                body = HUtil32.GetValidStr3(body, ref data, new string[] { "/" });
+                body = HUtil32.GetValidStr3(body, ref Str, HUtil32.Backslash);
+                body = HUtil32.GetValidStr3(body, ref data, HUtil32.Backslash);
                 Index = HUtil32.Str_ToInt(Str, -1);
                 if (Index >= 0 && Index <= 13)
                 {
@@ -5186,7 +5185,7 @@ namespace RobotSvr
                 {
                     break;
                 }
-                body = HUtil32.GetValidStr3(body, ref data, new string[] { "/" });
+                body = HUtil32.GetValidStr3(body, ref data, HUtil32.Backslash);
                 if (data != "")
                 {
                     var pcm = EDcode.DecodeBuffer<TClientMagic>(data);
@@ -5259,7 +5258,7 @@ namespace RobotSvr
             //    FrmDlg.ResetMenuDlg;
             //    FrmDlg.CloseMDlg;
             //}
-            //saying = HUtil32.GetValidStr3(saying, ref npcname, new string[] { "/" });
+            //saying = HUtil32.GetValidStr3(saying, ref npcname, HUtil32.Backslash);
             //FrmDlg.ShowMDlg(face, npcname, saying);
         }
 
@@ -5275,10 +5274,10 @@ namespace RobotSvr
             //body = EDcode.DeCodeString(body);
             //while (body != "")
             //{
-            //    body = HUtil32.GetValidStr3(body, ref gname, new string[] { "/" });
-            //    body = HUtil32.GetValidStr3(body, ref gsub, new string[] { "/" });
-            //    body = HUtil32.GetValidStr3(body, ref gprice, new string[] { "/" });
-            //    body = HUtil32.GetValidStr3(body, ref gstock, new string[] { "/" });
+            //    body = HUtil32.GetValidStr3(body, ref gname, HUtil32.Backslash);
+            //    body = HUtil32.GetValidStr3(body, ref gsub, HUtil32.Backslash);
+            //    body = HUtil32.GetValidStr3(body, ref gprice, HUtil32.Backslash);
+            //    body = HUtil32.GetValidStr3(body, ref gstock, HUtil32.Backslash);
             //    if ((gname != "") && (gprice != "") && (gstock != ""))
             //    {
             //        pcg = new TClientGoods();
@@ -5309,11 +5308,11 @@ namespace RobotSvr
             //body = EDcode.DeCodeString(body);
             //while (body != "")
             //{
-            //    body = HUtil32.GetValidStr3(body, ref gname, new string[] { "/" });
-            //    body = HUtil32.GetValidStr3(body, ref gjob, new string[] { "/" });
-            //    body = HUtil32.GetValidStr3(body, ref gsex, new string[] { "/" });
-            //    body = HUtil32.GetValidStr3(body, ref glevel, new string[] { "/" });
-            //    body = HUtil32.GetValidStr3(body, ref gsex, new string[] { "/" });
+            //    body = HUtil32.GetValidStr3(body, ref gname, HUtil32.Backslash);
+            //    body = HUtil32.GetValidStr3(body, ref gjob, HUtil32.Backslash);
+            //    body = HUtil32.GetValidStr3(body, ref gsex, HUtil32.Backslash);
+            //    body = HUtil32.GetValidStr3(body, ref glevel, HUtil32.Backslash);
+            //    body = HUtil32.GetValidStr3(body, ref gsex, HUtil32.Backslash);
             //    if ((gname != "") && (glevel != "") && (gsex != ""))
             //    {
             //        pcg = new TDelChar();
@@ -5343,10 +5342,10 @@ namespace RobotSvr
             //body = EDcode.DeCodeString(body);
             //while (body != "")
             //{
-            //    body = HUtil32.GetValidStr3(body, ref gname, new string[] { "/" });
-            //    body = HUtil32.GetValidStr3(body, ref gsub, new string[] { "/" });
-            //    body = HUtil32.GetValidStr3(body, ref gprice, new string[] { "/" });
-            //    body = HUtil32.GetValidStr3(body, ref gstock, new string[] { "/" });
+            //    body = HUtil32.GetValidStr3(body, ref gname, HUtil32.Backslash);
+            //    body = HUtil32.GetValidStr3(body, ref gsub, HUtil32.Backslash);
+            //    body = HUtil32.GetValidStr3(body, ref gprice, HUtil32.Backslash);
+            //    body = HUtil32.GetValidStr3(body, ref gstock, HUtil32.Backslash);
             //    if ((gname != "") && (gprice != "") && (gstock != ""))
             //    {
             //        pcg = new TClientGoods();
@@ -5451,7 +5450,7 @@ namespace RobotSvr
             //    {
             //        break;
             //    }
-            //    bodystr = HUtil32.GetValidStr3(bodystr, ref data, new string[] { "/" });
+            //    bodystr = HUtil32.GetValidStr3(bodystr, ref data, HUtil32.Backslash);
             //    if (data != "")
             //    {
             //        pc = new TClientItem();
@@ -5493,7 +5492,7 @@ namespace RobotSvr
             //    {
             //        break;
             //    }
-            //    bodystr = HUtil32.GetValidStr3(bodystr, ref data, new string[] { "/" });
+            //    bodystr = HUtil32.GetValidStr3(bodystr, ref data, HUtil32.Backslash);
             //    if (data != "")
             //    {
             //        pc = new TClientItem();
@@ -5543,7 +5542,7 @@ namespace RobotSvr
                 {
                     break;
                 }
-                bodystr = HUtil32.GetValidStr3(bodystr, ref memb, new string[] { "/" });
+                bodystr = HUtil32.GetValidStr3(bodystr, ref memb, HUtil32.Backslash);
                 if (memb != "")
                 {
                     MShare.g_GroupMembers.Add(memb);
@@ -5603,7 +5602,7 @@ namespace RobotSvr
 
         private void ClientGetChangeGuildName(string body)
         {
-            var Str = HUtil32.GetValidStr3(body, ref MShare.g_sGuildName, new string[] { "/" });
+            var Str = HUtil32.GetValidStr3(body, ref MShare.g_sGuildName, HUtil32.Backslash);
             MShare.g_sGuildRankName = Str.Trim();
         }
 
@@ -5634,7 +5633,7 @@ namespace RobotSvr
 
         private void ClientGetPasswordStatus(ClientPacket msg, string body)
         {
-            
+
         }
 
         public void SendPassword(string sPassword, int nIdent)
@@ -6329,7 +6328,7 @@ namespace RobotSvr
             if ((datablock[1] == 'G') && (datablock[2] == 'D') && (datablock[3] == '/'))
             {
                 data = datablock.Substring(1, datablock.Length - 1);
-                data = HUtil32.GetValidStr3(data, ref tagstr, new string[] { "/" });
+                data = HUtil32.GetValidStr3(data, ref tagstr, HUtil32.Backslash);
                 if (data != "")
                 {
                     var rtime = HUtil32.Str_ToInt(data, 0);
@@ -6536,7 +6535,7 @@ namespace RobotSvr
                     break;
             }
         }
-        
+
         public int GetRGB(byte c256)
         {
             return 255;
@@ -6897,7 +6896,7 @@ namespace RobotSvr
             }
             return MShare.g_MagicArr[magid] != null ? MShare.g_MagicArr[magid].Level : 0;
         }
-        
+
         private void MainOutMessage(string msg)
         {
             Console.WriteLine($"账号:[{LoginID}] {msg}");

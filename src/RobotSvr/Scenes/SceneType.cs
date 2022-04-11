@@ -8,7 +8,6 @@
         stSelectChr,
         stNewChr,
         stLoading,
-        stLoginNotice,
         stPlayGame
     }
 }

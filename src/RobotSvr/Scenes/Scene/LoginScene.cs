@@ -63,7 +63,7 @@ namespace RobotSvr
         {
 
         }
-        
+
         /// <summary>
         /// 账号注册
         /// </summary>
@@ -114,7 +114,7 @@ namespace RobotSvr
             SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(uid + "/" + passwd));
             MShare.g_boSendLogin = true;
         }
-        
+
         public void ClientGetPasswordOK(ClientPacket msg, string sBody)
         {
             MShare.g_wAvailIDDay = HUtil32.LoWord(msg.Recog);
@@ -139,10 +139,10 @@ namespace RobotSvr
             ClientGetSelectServer();
             SendSelectServer(sServerName);
         }
-        
+
         public void ClientGetSelectServer()
         {
-            
+
         }
 
         private void SendSelectServer(string svname)
@@ -162,9 +162,9 @@ namespace RobotSvr
             string runport = string.Empty;
             string certifystr = string.Empty;
             string Str = EDcode.DeCodeString(body);
-            Str = HUtil32.GetValidStr3(Str, ref runaddr, new string[] { "/" });
-            Str = HUtil32.GetValidStr3(Str, ref runport, new string[] { "/" });
-            Str = HUtil32.GetValidStr3(Str, ref certifystr, new string[] { "/" });
+            Str = HUtil32.GetValidStr3(Str, ref runaddr, HUtil32.Backslash);
+            Str = HUtil32.GetValidStr3(Str, ref runport, HUtil32.Backslash);
+            Str = HUtil32.GetValidStr3(Str, ref certifystr, HUtil32.Backslash);
             robotClient.Certification = HUtil32.Str_ToInt(certifystr, 0);
             MShare.g_sSelChrAddr = runaddr;
             MShare.g_nSelChrPort = HUtil32.Str_ToInt(runport, 0);

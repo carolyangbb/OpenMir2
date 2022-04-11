@@ -149,7 +149,7 @@ namespace RobotSvr
         public static TActor g_MagicTarget = null;
         public static MapLink g_APQueue = null;
         public static IList<FindMapNode> g_APPathList = null;
-        public static ushort[,] g_APPass = new ushort[MAXX * 3, MAXY * 3];
+        public static ushort[,] g_APPass = null;
         public static ushort[,] g_APPassEmpty = new ushort[MAXX * 3, MAXY * 3];
         public static TActor g_APTagget = null;
         public static int g_APRunTick = 0;

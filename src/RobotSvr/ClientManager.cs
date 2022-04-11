@@ -10,7 +10,7 @@ namespace RobotSvr
     public static class ClientManager
     {
         private static readonly ConcurrentDictionary<string, RobotClient> _Clients;
-        private static IList<RobotClient> ClientList;
+        private static IList<AutoPlayRunTime> AutoList;
         private static int g_dwProcessTimeMin = 0;
         private static int g_dwProcessTimeMax = 0;
         private static int g_nPosition = 0;
@@ -23,6 +23,7 @@ namespace RobotSvr
         {
             _Clients = new ConcurrentDictionary<string, RobotClient>();
             _reviceMsgList = Channel.CreateUnbounded<RecvicePacket>();
+            AutoList = new List<AutoPlayRunTime>();
         }
 
         public static void Start()
@@ -39,9 +40,16 @@ namespace RobotSvr
             {
                 if (_reviceMsgList.Reader.TryRead(out var message))
                 {
-                    if (_Clients.ContainsKey(message.SessionId))
+                    try
                     {
-                        _Clients[message.SessionId].ProcessPacket(message.ReviceData);
+                        if (_Clients.ContainsKey(message.SessionId))
+                        {
+                            _Clients[message.SessionId].ProcessPacket(message.ReviceData);
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        System.Console.WriteLine(ex.StackTrace);
                     }
                 }
             }
@@ -57,11 +65,29 @@ namespace RobotSvr
 
         public static void AddClient(string sessionId, RobotClient objClient)
         {
+            AutoList.Add(new AutoPlayRunTime()
+            {
+                SessionId = sessionId,
+                RunTick = HUtil32.GetTickCount()
+            });
             _Clients.TryAdd(sessionId, objClient);
         }
 
         public static void DelClient(string sessionId)
         {
+            AutoPlayRunTime findSession = null;
+            foreach (var item in AutoList)
+            {
+                if (item.SessionId == sessionId)
+                {
+                    findSession = item;
+                    break;
+                }
+            }
+            if (findSession != null)
+            {
+                AutoList.Remove(findSession);
+            }
             _Clients.TryRemove(sessionId, out RobotClient robotClient);
         }
 
@@ -69,8 +95,8 @@ namespace RobotSvr
         {
             dwRunTick = HUtil32.GetTickCount();
             var boProcessLimit = false;
-            ClientList = _Clients.Values.ToList();
-            for (var i = g_nPosition; i < _Clients.Count; i++)
+            var ClientList = _Clients.Values.ToList();
+            for (var i = g_nPosition; i < ClientList.Count; i++)
             {
                 ClientList[i].Run();
                 if (((HUtil32.GetTickCount() - dwRunTick) > 20))
@@ -89,28 +115,21 @@ namespace RobotSvr
             {
                 g_dwProcessTimeMax = g_dwProcessTimeMin;
             }
-            RunAutoPlay();
+            RunAutoPlay(ClientList);
         }
 
-        private static void RunAutoPlay()
+        private static void RunAutoPlay(IList<RobotClient> ClientList)
         {
             AutoRunTick = HUtil32.GetTickCount();
-            var boProcessLimit = false;
-            if (ClientList.Count > 0)
+            if (AutoList.Count > 0)
             {
-                for (var i = g_nPosition; i < _Clients.Count; i++)
+                for (var i = 0; i < AutoList.Count; i++)
                 {
-                    ClientList[i].RunAutoPlay();
-                    if (((HUtil32.GetTickCount() - AutoRunTick) > 200))
+                    if ((AutoRunTick - AutoList[i].RunTick) > 500)
                     {
-                        g_nPosition = i;
-                        boProcessLimit = true;
-                        break;
+                        ClientList[i].RunAutoPlay();
+                        AutoList[i].RunTick = HUtil32.GetTickCount();
                     }
-                }
-                if (!boProcessLimit)
-                {
-                    g_nPosition = 0;
                 }
             }
         }
@@ -120,5 +139,11 @@ namespace RobotSvr
     {
         public string SessionId;
         public string ReviceData;
+    }
+
+    public class AutoPlayRunTime
+    {
+        public string SessionId;
+        public int RunTick;
     }
 }

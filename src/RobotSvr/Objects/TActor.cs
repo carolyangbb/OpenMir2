@@ -549,7 +549,6 @@ namespace RobotSvr
                     case Grobal2.SM_ALIVE:
                     case Grobal2.SM_ACTION_MIN:
                     case Grobal2.SM_ACTION2_MIN:
-                    case 3000:
                         ReadyAction(m_ChrMsg);
                         break;
                     case Grobal2.SM_SPACEMOVE_SHOW:
@@ -559,6 +558,12 @@ namespace RobotSvr
                     case Grobal2.SM_SPACEMOVE_SHOW2:
                         m_ChrMsg.Ident = Grobal2.SM_TURN;
                         ReadyAction(m_ChrMsg);
+                        break;
+                    default:
+                        if (HUtil32.RangeInDefined(m_ChrMsg.Ident, 3000, 3099))
+                        {
+                            ReadyAction(m_ChrMsg);
+                        }
                         break;
                 }
             }

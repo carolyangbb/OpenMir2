@@ -1023,7 +1023,7 @@ namespace RobotSvr
             }
             else
             {
-                result = (byte) (ndir + 1);
+                result = (byte)(ndir + 1);
             }
             return result;
         }

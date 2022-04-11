@@ -83,6 +83,10 @@ namespace RobotSvr
 
         public void BeginScene()
         {
+            if (MShare.g_MySelf == null)
+            {
+                return;
+            }
             var movetick = false;
             var tick = HUtil32.GetTickCount();
             if (MShare.g_boSpeedRate)
@@ -117,50 +121,62 @@ namespace RobotSvr
                 if (movetick)
                 {
                     actor.m_boLockEndFrame = false;
-                    if (!actor.m_boLockEndFrame)
+                }
+                if (!actor.m_boLockEndFrame)
+                {
+                    actor.ProcMsg();   //处理角色的消息
+                    if (movetick)
                     {
-                        actor.ProcMsg();   //处理角色的消息
                         if (actor.Move())
                         {
                             i++;
                             continue;
                         }
-                        actor.Run();
-                        if (actor != MShare.g_MySelf)
-                        {
-                            actor.ProcHurryMsg();
-                        }
                     }
-                    if (actor == MShare.g_MySelf)
+                    actor.Run();
+                    if (actor != MShare.g_MySelf)
                     {
                         actor.ProcHurryMsg();
                     }
-                    if (actor.m_boDelActor || (Math.Abs(MShare.g_MySelf.m_nCurrX - actor.m_nCurrX) > 16) ||
-                        (Math.Abs(MShare.g_MySelf.m_nCurrY - actor.m_nCurrY) > 16))
+                }
+                if (actor == MShare.g_MySelf)
+                {
+                    actor.ProcHurryMsg();
+                }
+                if (actor.m_nWaitForRecogId != 0)
+                {
+                    if (actor.IsIdle())
                     {
-                        MShare.g_FreeActorList.Add(actor);
-                        m_ActorList.RemoveAt(i);
-                        if (MShare.g_TargetCret == actor)
-                        {
-                            MShare.g_TargetCret = null;
-                        }
-                        if (MShare.g_FocusCret == actor)
-                        {
-                            MShare.g_FocusCret = null;
-                        }
-                        if (MShare.g_MagicLockActor == actor)
-                        {
-                            MShare.g_MagicLockActor = null;
-                        }
-                        if (MShare.g_MagicTarget == actor)
-                        {
-                            MShare.g_MagicTarget = null;
-                        }
+                        ClFunc.DelChangeFace(actor.m_nWaitForRecogId);
+                        NewActor(actor.m_nWaitForRecogId, actor.m_nCurrX, actor.m_nCurrY, actor.m_btDir, actor.m_nWaitForFeature, actor.m_nWaitForStatus);
+                        actor.m_nWaitForRecogId = 0;
+                        actor.m_boDelActor = true;
                     }
-                    else
+                }
+                if (actor.m_boDelActor || (Math.Abs(MShare.g_MySelf.m_nCurrX - actor.m_nCurrX) > 16) || (Math.Abs(MShare.g_MySelf.m_nCurrY - actor.m_nCurrY) > 16))
+                {
+                    MShare.g_FreeActorList.Add(actor);
+                    m_ActorList.RemoveAt(i);
+                    if (MShare.g_TargetCret == actor)
                     {
-                        i++;
+                        MShare.g_TargetCret = null;
                     }
+                    if (MShare.g_FocusCret == actor)
+                    {
+                        MShare.g_FocusCret = null;
+                    }
+                    if (MShare.g_MagicLockActor == actor)
+                    {
+                        MShare.g_MagicLockActor = null;
+                    }
+                    if (MShare.g_MagicTarget == actor)
+                    {
+                        MShare.g_MagicTarget = null;
+                    }
+                }
+                else
+                {
+                    i++;
                 }
             }
             robotClient.Map.UpdateMapPos(MShare.g_MySelf.m_nRx, MShare.g_MySelf.m_nRy);
@@ -1198,7 +1214,7 @@ namespace RobotSvr
                     break;
             }
         }
-        
+
         public static bool IsMySlaveObject(TActor atc)
         {
             var result = false;

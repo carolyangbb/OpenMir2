@@ -33,7 +33,7 @@ namespace RobotSvr
         {
             SetNotifyEvent(CloseSocket, 1000);
         }
-        
+
         private void SendSelChr(string chrname)
         {
             if (string.IsNullOrEmpty(chrname))
@@ -45,7 +45,7 @@ namespace RobotSvr
             SendSocket(EDcode.EncodeMessage(msg) + EDcode.EncodeString(robotClient.LoginID + "/" + chrname));
             MainOutMessage($"选择角色 {chrname}");
         }
-        
+
         private void SendDelChr(string chrname)
         {
             ClientPacket msg = Grobal2.MakeDefaultMsg(Grobal2.CM_DELCHR, 0, 0, 0, 0);
@@ -115,11 +115,11 @@ namespace RobotSvr
             int nChrCount = 0;
             for (var i = 0; i <= 1; i++)
             {
-                Str = HUtil32.GetValidStr3(Str, ref uname, new string[] { "/" });
-                Str = HUtil32.GetValidStr3(Str, ref sjob, new string[] { "/" });
-                Str = HUtil32.GetValidStr3(Str, ref shair, new string[] { "/" });
-                Str = HUtil32.GetValidStr3(Str, ref slevel, new string[] { "/" });
-                Str = HUtil32.GetValidStr3(Str, ref ssex, new string[] { "/" });
+                Str = HUtil32.GetValidStr3(Str, ref uname, HUtil32.Backslash);
+                Str = HUtil32.GetValidStr3(Str, ref sjob, HUtil32.Backslash);
+                Str = HUtil32.GetValidStr3(Str, ref shair, HUtil32.Backslash);
+                Str = HUtil32.GetValidStr3(Str, ref slevel, HUtil32.Backslash);
+                Str = HUtil32.GetValidStr3(Str, ref ssex, HUtil32.Backslash);
                 if ((uname != "") && (slevel != "") && (ssex != ""))
                 {
                     if (uname[0] == '*')
@@ -178,7 +178,7 @@ namespace RobotSvr
             MainOutMessage("准备进入游戏");
             string addr = string.Empty;
             string Str = EDcode.DeCodeString(body);
-            string sport = HUtil32.GetValidStr3(Str, ref addr, new string[] { "/" });
+            string sport = HUtil32.GetValidStr3(Str, ref addr, HUtil32.Backslash);
             MShare.g_nRunServerPort = HUtil32.Str_ToInt(sport, 0);
             MShare.g_sRunServerAddr = addr;
             MShare.g_ConnectionStep = TConnectionStep.cnsPlay;
@@ -194,7 +194,7 @@ namespace RobotSvr
             //string addr = string.Empty;
             //string sport = string.Empty;
             //string Str = EDcode.DeCodeString(body);
-            //sport = HUtil32.GetValidStr3(Str, ref addr, new string[] { "/" });
+            //sport = HUtil32.GetValidStr3(Str, ref addr, HUtil32.Backslash);
             //MShare.g_boServerChanging = true;
             //MShare.g_ConnectionStep = TConnectionStep.cnsPlay;
             //CloseSocket();//断开游戏网关链接
@@ -281,7 +281,7 @@ namespace RobotSvr
         #endregion
 
     }
-    
+
     public struct SelChar
     {
         public bool Valid;

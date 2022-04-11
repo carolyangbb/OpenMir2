@@ -14,11 +14,6 @@ namespace RobotSvr
             CurrentScene = null;
         }
 
-        public void Initialize()
-        {
-
-        }
-
         public void ChangeScene(SceneType scenetype)
         {
             if (CurrentScene != null)
@@ -43,9 +38,6 @@ namespace RobotSvr
                     break;
                 case SceneType.stLoading:
                     break;
-                case SceneType.stLoginNotice:
-                    CurrentScene = robotClient.LoginNoticeScene;
-                    break;
                 case SceneType.stPlayGame:
                     CurrentScene = robotClient.g_PlayScene;
                     break;
@@ -58,16 +50,16 @@ namespace RobotSvr
 
         public void AddSysMsg(string msg)
         {
-            
+
         }
-        
+
         public void AddSysMsgCenter(string msg, Color fc, Color bc, int sec)
         {
         }
 
         public void AddSysMsgCenter(string msg, int fc, int bc, int sec)
         {
-            
+
         }
 
         public void AddChatBoardString(string str, Color fcolor, Color bcolor)
@@ -94,7 +86,7 @@ namespace RobotSvr
         {
 
         }
-        
+
     }
 }
 
