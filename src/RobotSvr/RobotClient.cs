@@ -447,16 +447,6 @@ namespace RobotSvr
 
         private void ProcessActionMessages()
         {
-            int mx;
-            int my;
-            int dx;
-            int dy;
-            int crun;
-            byte ndir;
-            byte adir;
-            byte mdir;
-            bool bowalk;
-            bool bostop;
             if (MShare.g_MySelf == null)
             {
                 return;
@@ -567,11 +557,13 @@ namespace RobotSvr
                         }
                     }
                 TTTT:
-                    mx = MShare.g_MySelf.m_nCurrX;
-                    my = MShare.g_MySelf.m_nCurrY;
-                    dx = MShare.g_nTargetX;
-                    dy = MShare.g_nTargetY;
-                    ndir = ClFunc.GetNextDirection(mx, my, dx, dy);
+                    var mx = MShare.g_MySelf.m_nCurrX;
+                    var my = MShare.g_MySelf.m_nCurrY;
+                    var dx = MShare.g_nTargetX;
+                    var dy = MShare.g_nTargetY;
+                    var ndir = ClFunc.GetNextDirection(mx, my, dx, dy);
+                    int crun;
+                    byte mdir;
                     switch (MShare.g_ChrAction)
                     {
                         case TChrAction.caWalk:
@@ -580,7 +572,7 @@ namespace RobotSvr
                             if (IsUnLockAction() && (crun > 0))
                             {
                                 ClFunc.GetNextPosXY(ndir, ref mx, ref my);
-                                bostop = false;
+                                var bostop = false;
                                 if (!g_PlayScene.CanWalk(mx, my))
                                 {
                                     if (MShare.g_boOpenAutoPlay && MShare.g_boAPAutoMove && (MShare.g_APPathList.Count > 0))
@@ -588,8 +580,8 @@ namespace RobotSvr
                                         heroActor.Init_Queue2();
                                         MShare.g_nTargetX = -1;
                                     }
-                                    bowalk = false;
-                                    adir = 0;
+                                    var bowalk = false;
+                                    byte adir = 0;
                                     if (!bowalk)
                                     {
                                         mx = MShare.g_MySelf.m_nCurrX;
@@ -600,18 +592,17 @@ namespace RobotSvr
                                             bostop = true;
                                         }
                                     }
-                                    // not
                                     if (!bostop && (g_PlayScene.CrashMan(mx, my) || !Map.CanMove(mx, my)))
                                     {
                                         mx = MShare.g_MySelf.m_nCurrX;
                                         my = MShare.g_MySelf.m_nCurrY;
-                                        adir = (byte)ClFunc.PrivDir(ndir);
+                                        adir = ClFunc.PrivDir(ndir);
                                         ClFunc.GetNextPosXY(adir, ref mx, ref my);
                                         if (!Map.CanMove(mx, my))
                                         {
                                             mx = MShare.g_MySelf.m_nCurrX;
                                             my = MShare.g_MySelf.m_nCurrY;
-                                            adir = (byte)ClFunc.NextDir(ndir);
+                                            adir = ClFunc.NextDir(ndir);
                                             ClFunc.GetNextPosXY(adir, ref mx, ref my);
                                             if (Map.CanMove(mx, my))
                                             {
@@ -653,12 +644,10 @@ namespace RobotSvr
                                 MShare.g_nTargetX = -1;
                             }
                             break;
-                        case TChrAction.caRun:
-                            // 免助跑
+                        case TChrAction.caRun: // 免助跑
                             if (MShare.g_boCanStartRun || (MShare.g_nRunReadyCount >= 1))
                             {
-                                crun = MShare.g_MySelf.CanRun();
-                                // 骑马开始
+                                crun = MShare.g_MySelf.CanRun();// 骑马开始
                                 if ((MShare.g_MySelf.m_btHorse != 0) && (ClFunc.GetDistance(mx, my, dx, dy) >= 3) && (crun > 0) && IsUnLockAction())
                                 {
                                     ClFunc.GetNextHorseRunXY(ndir, ref mx, ref my);
@@ -6166,7 +6155,7 @@ namespace RobotSvr
                     MShare.g_boAPAutoMove = true;
                     break;
                 case 1:// 此时为该怪物首次被发现，自动寻找路径
-                    if (heroActor.HeroAttackTagget(MShare.g_APTagget))
+                    if (heroActor.AttackTagget(MShare.g_APTagget))
                     {
                         return;
                     }

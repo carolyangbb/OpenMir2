@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Drawing;
 using SystemModule;
 
@@ -7,45 +6,47 @@ namespace RobotSvr
 {
     public class HeroActor
     {
-        public const int overdisc = 22;
+        private const int overdisc = 22;
         private readonly RobotClient robotClient;
-        public long g_hinttick1;
-        public long g_hinttick2;
+        private long g_hinttick1;
+        private long g_hinttick2;
 
         public HeroActor(RobotClient robotClient)
         {
             this.robotClient = robotClient;
         }
 
-        // 待处理节点入队列, 依靠对目的地估价距离插入排序
-        public bool CanNextSpell()
+        private bool CanNextSpell()
         {
             var result = false;
             if (MShare.g_boSpeedRate)
             {
-                if (MShare.GetTickCount() - MShare.g_dwLatestSpellTick > MShare.g_dwSpellTime + MShare.g_dwMagicDelayTime -
-                    (long)MShare.g_MagSpeedRate * 20) result = true;
+                if (MShare.GetTickCount() - MShare.g_dwLatestSpellTick > MShare.g_dwSpellTime + MShare.g_dwMagicDelayTime - MShare.g_MagSpeedRate * 20)
+                {
+                    result = true;
+                }
             }
             else
             {
-                if (MShare.GetTickCount() - MShare.g_dwLatestSpellTick >
-                    MShare.g_dwSpellTime + MShare.g_dwMagicDelayTime) result = true;
+                if (MShare.GetTickCount() - MShare.g_dwLatestSpellTick > MShare.g_dwSpellTime + MShare.g_dwMagicDelayTime)
+                {
+                    result = true;
+                }
             }
-
             return result;
         }
 
-        public void Enterqueue(MapTree Node, int F)
+        private void Enterqueue(MapTree Node, int F)
         {
-            MapLink P = MShare.g_APQueue;
-            MapLink Father = P;
+            var P = MShare.g_APQueue;
+            var Father = P;
             while (F > P.F)
             {
                 Father = P;
                 P = P.Next;
                 if (P == null) break;
             }
-            MapLink q = new MapLink();
+            var q = new MapLink();
             q.F = F;
             q.Node = Node;
             q.Next = P;
@@ -56,7 +57,7 @@ namespace RobotSvr
         /// 将离目的地估计最近的方案出队列
         /// </summary>
         /// <returns></returns>
-        public MapTree Dequeue()
+        private MapTree Dequeue()
         {
             MapTree bestchoice = MShare.g_APQueue.Next.Node;
             MapLink Next = MShare.g_APQueue.Next.Next;
@@ -68,12 +69,11 @@ namespace RobotSvr
         /// <summary>
         /// 释放申请过的所有节点
         /// </summary>
-        public void FreeTree()
+        private void FreeTree()
         {
-            MapLink P;
             while (MShare.g_APQueue != null)
             {
-                P = MShare.g_APQueue;
+                var P = MShare.g_APQueue;
                 if (P.Node != null) Dispose(P.Node);
                 P.Node = null;
                 MShare.g_APQueue = MShare.g_APQueue.Next;
@@ -94,8 +94,8 @@ namespace RobotSvr
 
         private bool TryTileHas(int X, int Y, int H)
         {
-            int cx = X - robotClient.Map.m_nBlockLeft;
-            int cy = Y - robotClient.Map.m_nBlockTop;
+            var cx = X - robotClient.Map.m_nBlockLeft;
+            var cy = Y - robotClient.Map.m_nBlockTop;
             if (cx > MShare.MAXX * 3 || cy > MShare.MAXY * 3) return true;
             if (cx < 0 || cy < 0) return true;
             if (H < MShare.g_APPass[cx, cy]) return false;
@@ -218,7 +218,7 @@ namespace RobotSvr
             return result;
         }
 
-        public void Init_Queue()
+        private void Init_Queue()
         {
             FreeTree();
             if (MShare.g_APQueue != null)
@@ -271,9 +271,8 @@ namespace RobotSvr
             MShare.g_APPathList.Clear();
         }
 
-        public bool IsBackToSafeZone(ref int ret)
+        private bool IsBackToSafeZone(ref int ret)
         {
-            int i;
             bool has;
             bool result = false;
             ret = 0;
@@ -281,14 +280,14 @@ namespace RobotSvr
             {
                 // 红没有回城
                 has = false;
-                for (i = 0; i < MShare.MAXBAGITEMCL; i++)
-                    if (MShare.g_ItemArr[i].Item.Name != "" && MShare.g_ItemArr[i].Item.AC > 0 &&
-                        MShare.g_ItemArr[i].Item.StdMode == 0)
+                for (var i = 0; i < MShare.MAXBAGITEMCL; i++)
+                {
+                    if (MShare.g_ItemArr[i].Item.Name != "" && MShare.g_ItemArr[i].Item.AC > 0 && MShare.g_ItemArr[i].Item.StdMode == 0)
                     {
                         has = true;
                         break;
                     }
-
+                }
                 if (!has)
                 {
                     ret = 1;
@@ -301,14 +300,15 @@ namespace RobotSvr
             {
                 // 蓝没有回城
                 has = false;
-                for (i = 0; i < MShare.MAXBAGITEMCL; i++)
+                for (var i = 0; i < MShare.MAXBAGITEMCL; i++)
+                {
                     if (MShare.g_ItemArr[i].Item.Name != "" && MShare.g_ItemArr[i].Item.MAC > 0 &&
                         MShare.g_ItemArr[i].Item.StdMode == 0)
                     {
                         has = true;
                         break;
                     }
-
+                }
                 if (!has)
                 {
                     ret = 2;
@@ -321,13 +321,14 @@ namespace RobotSvr
             if (MShare.g_gcAss[4])
             {
                 has = false;
-                for (i = 0; i <= 45; i++)
+                for (var i = 0; i <= 45; i++)
+                {
                     if (MShare.g_ItemArr[i].Item.Name == "")
                     {
                         has = true;
                         break;
                     }
-
+                }
                 if (!has)
                 {
                     ret = 3;
@@ -340,30 +341,29 @@ namespace RobotSvr
             if (MShare.g_gcAss[3])
             {
                 has = false;
-                for (i = 0; i < MShare.MAXBAGITEMCL; i++)
-                    if (MShare.g_ItemArr[i].Item.StdMode == 25 && MShare.g_ItemArr[i].Item.Name != "" &&
-                        MShare.g_ItemArr[i].Item.Name.IndexOf("符") > 0)
+                for (var i = 0; i < MShare.MAXBAGITEMCL; i++)
+                {
+                    if (MShare.g_ItemArr[i].Item.StdMode == 25 && MShare.g_ItemArr[i].Item.Name != "" && MShare.g_ItemArr[i].Item.Name.IndexOf("符") > 0)
                     {
                         has = true;
                         break;
                     }
-
+                }
                 if (!has)
                 {
                     ret = 4;
                     result = true;
                     return result;
                 }
-
                 has = false;
-                for (i = 0; i < MShare.MAXBAGITEMCL; i++)
-                    if (MShare.g_ItemArr[i].Item.StdMode == 25 && MShare.g_ItemArr[i].Item.Name != "" &&
-                        MShare.g_ItemArr[i].Item.Name.IndexOf("药") > 0)
+                for (var i = 0; i < MShare.MAXBAGITEMCL; i++)
+                {
+                    if (MShare.g_ItemArr[i].Item.StdMode == 25 && MShare.g_ItemArr[i].Item.Name != "" && MShare.g_ItemArr[i].Item.Name.IndexOf("药") > 0)
                     {
                         has = true;
                         break;
                     }
-
+                }
                 if (!has)
                 {
                     ret = 5;
@@ -371,50 +371,42 @@ namespace RobotSvr
                     return result;
                 }
             }
-
             return result;
         }
 
-        public int GetDis(int X1, int Y1, int X2, int Y2)
+        private int GetDis(int X1, int Y1, int X2, int Y2)
         {
             return (X1 - X2) * (X1 - X2) + (Y1 - Y2) * (Y1 - Y2);
         }
 
         public bool IsProperTarget(TActor Actor)
         {
-            return Actor != null && Actor.m_btRace != 0 && Actor.m_sUserName != "" &&
-                   !new ArrayList(new[] { 12, 50 }).Contains(Actor.m_btRace) && !Actor.m_boDeath && Actor.m_btRace != 12 &&
+            return Actor != null && Actor.m_btRace != 0 && !string.IsNullOrEmpty(Actor.m_sUserName) &&
+                   (Actor.m_btRace != 12 || Actor.m_btRace != 50) && !Actor.m_boDeath && Actor.m_btRace != 12 &&
                    (Actor.m_nState & Grobal2.STATE_STONE_MODE) == 0 && Actor.m_sUserName.IndexOf("(") == 0 &&
                    Actor.m_boVisible && !Actor.m_boDelActor && !Actor.m_btAFilter && MShare.g_gcAss[6] &&
                    !MShare.g_APMobList.ContainsKey(Actor.m_sUserName);
         }
 
-        public TActor SearchTarget()
+        private TActor SearchTarget()
         {
-            TActor result;
-            int i;
-            TActor Actor;
-            int dx;
-            int distance;
-            result = null;
-            distance = 10000;
+            TActor result = null;
+            var distance = 10000;
             if (MShare.g_APTagget != null)
-                if (!MShare.g_APTagget.m_boDeath && MShare.g_APTagget.m_nHiterCode == MShare.g_MySelf.m_nRecogId &&
-                    MShare.g_APTagget.m_boVisible && !MShare.g_APTagget.m_boDelActor)
-                {
-                    distance = GetDis(MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY, MShare.g_MySelf.m_nCurrX,
-                        MShare.g_MySelf.m_nCurrY);
-                    result = MShare.g_APTagget;
-                    // Exit;
-                }
-
-            var _wvar1 = robotClient.g_PlayScene;
-            for (i = 0; i < _wvar1.m_ActorList.Count; i++)
             {
-                Actor = _wvar1.m_ActorList[i];
+                if (!MShare.g_APTagget.m_boDeath && MShare.g_APTagget.m_nHiterCode == MShare.g_MySelf.m_nRecogId && MShare.g_APTagget.m_boVisible && !MShare.g_APTagget.m_boDelActor)
+                {
+                    distance = GetDis(MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY, MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY);
+                    result = MShare.g_APTagget;
+                }
+            }
+            var _wvar1 = robotClient.g_PlayScene;
+            for (var i = 0; i < _wvar1.m_ActorList.Count; i++)
+            {
+                var Actor = _wvar1.m_ActorList[i];
                 if (IsProperTarget(Actor))
                 {
-                    dx = GetDis(Actor.m_nCurrX, Actor.m_nCurrY, MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY);
+                    var dx = GetDis(Actor.m_nCurrX, Actor.m_nCurrY, MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY);
                     if (dx < distance)
                     {
                         distance = dx;
@@ -422,20 +414,18 @@ namespace RobotSvr
                     }
                 }
             }
-
             return result;
         }
 
-        public int GetDropItemsDis()
+        private int GetDropItemsDis()
         {
-            int dx;
             int result = 100000;
             for (var i = 0; i < MShare.g_DropedItemList.Count; i++)
             {
                 TDropItem d = MShare.g_DropedItemList[i];
                 if (MShare.g_boPickUpAll || d.boPickUp)// 如果拾取过滤，则判断是否过滤
                 {
-                    dx = GetDis(d.X, d.Y, MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY);
+                    var dx = GetDis(d.X, d.Y, MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY);
                     if (dx < result && dx != 0) // 获取距离，选择最近的
                     {
                         MShare.g_AutoPicupItem = d;
@@ -490,8 +480,7 @@ namespace RobotSvr
                 }
                 else
                 {
-                    if (Math.Abs(MShare.g_APMapPath[MShare.g_APStep].X - MShare.g_MySelf.m_nCurrX) >= overdisc ||
-                        Math.Abs(MShare.g_APMapPath[MShare.g_APStep].X - MShare.g_MySelf.m_nCurrY) >= overdisc)
+                    if (Math.Abs(MShare.g_APMapPath[MShare.g_APStep].X - MShare.g_MySelf.m_nCurrX) >= overdisc || Math.Abs(MShare.g_APMapPath[MShare.g_APStep].X - MShare.g_MySelf.m_nCurrY) >= overdisc)
                     {
                         MShare.g_nOverAPZone = 14;
                         result = 4;
@@ -553,19 +542,23 @@ namespace RobotSvr
             return result;
         }
 
-        public bool AutoUseMagic(byte Key, TActor target, int nx = 0, int ny = 0)
+        private bool AutoUseMagic(byte Key, TActor target, int nx = 0, int ny = 0)
         {
             var pcm = robotClient.GetMagicByID(Key);
             if (pcm == null) return false;
             MShare.g_FocusCret = target;
             if (nx >= 0)
+            {
                 robotClient.UseMagic(nx, ny, pcm, true);
+            }
             else
+            {
                 robotClient.UseMagic(target.m_nCurrX, target.m_nCurrY, pcm);
+            }
             return true;
         }
 
-        public int TargetCount(TActor target)
+        private int TargetCount(TActor target)
         {
             var result = 1;
             var rx = target.m_nCurrX + 1;
@@ -603,7 +596,7 @@ namespace RobotSvr
             return result;
         }
 
-        public int TargetCount2(TActor target)
+        private int TargetCount2(TActor target)
         {
             var result = 0;
             var _wvar1 = robotClient.g_PlayScene;
@@ -615,11 +608,10 @@ namespace RobotSvr
                     if (IsProperTarget(Actor))
                         result++;
             }
-
             return result;
         }
 
-        public int TargetCount3(TActor target)
+        private int TargetCount3(TActor target)
         {
             var result = 0;
             var _wvar1 = robotClient.g_PlayScene;
@@ -653,19 +645,12 @@ namespace RobotSvr
             return result;
         }
 
-        public bool XPATTACK()
+        public bool AttackTagget(TActor target)
         {
-            return false;
-        }
-
-        public bool HeroAttackTagget(TActor target)
-        {
-            bool result;
             int n;
             int m;
             int tdir;
             int MagicKey;
-            TClientMagic pcm;
             int i;
             int nTag;
             var nx = 0;
@@ -677,33 +662,35 @@ namespace RobotSvr
             var nTX = 0;
             var nTY = 0;
             int nOldDC;
-            result = false;
+            var result = false;
             MShare.g_boAPAutoMove = false;
             MShare.g_nTagCount = 0;
-            if (MShare.g_MySelf == null || MShare.g_MySelf.m_boDeath || MShare.g_APTagget == null ||
-                MShare.g_APTagget.m_boDeath) return result;
+            if (MShare.g_MySelf == null || MShare.g_MySelf.m_boDeath || MShare.g_APTagget == null || MShare.g_APTagget.m_boDeath) 
+                return result;
             switch (MShare.g_MySelf.m_btJob)
             {
                 case 0:
                     if (MShare.g_SeriesSkillReady) robotClient.SendFireSerieSkill();
                     if (MShare.g_gcTec[4] && (MShare.g_MySelf.m_nState & 0x00100000) == 0 && CanNextSpell())
+                    {
                         if (MShare.g_MagicArr[31] != null)
                         {
                             robotClient.UseMagic(MShare.SCREENWIDTH / 2, MShare.SCREENHEIGHT / 2, MShare.g_MagicArr[31]);
                             return result;
                         }
-
-                    if (XPATTACK() || robotClient.AttackTarget(MShare.g_APTagget))
-                    {
-                        result = true;
-                        return result;
                     }
-
+                    if (robotClient.AttackTarget(MShare.g_APTagget))
+                    {
+                        return true;
+                    }
                     break;
                 case 1:
                     if (MShare.g_MySelf.m_Abil.Level < 7)
                     {
-                        if (robotClient.AttackTarget(MShare.g_APTagget)) result = true;
+                        if (robotClient.AttackTarget(MShare.g_APTagget))
+                        {
+                            result = true;
+                        }
                         return result;
                     }
                     if (MShare.g_gcTec[4] && (MShare.g_MySelf.m_nState & 0x00100000) == 0 && CanNextSpell())
@@ -717,11 +704,6 @@ namespace RobotSvr
                     if (MShare.g_SeriesSkillReady && MShare.g_MagicLockActor != null && !MShare.g_MagicLockActor.m_boDeath)
                     {
                         robotClient.SendFireSerieSkill();
-                    }
-                    if (XPATTACK())
-                    {
-                        result = true;
-                        return result;
                     }
                     MagicKey = 11;
                     nAbsX = Math.Abs(MShare.g_MySelf.m_nCurrX - MShare.g_APTagget.m_nCurrX);
@@ -1013,7 +995,7 @@ namespace RobotSvr
                             if (MagicKey != 0)
                             {
                                 result = true;
-                                pcm = robotClient.GetMagicByID(MagicKey);
+                                var pcm = robotClient.GetMagicByID(MagicKey);
                                 if (pcm == null)
                                 {
                                     result = false;
@@ -1083,18 +1065,12 @@ namespace RobotSvr
                     if (MShare.g_MySelf.m_Abil.Level < 18 || MShare.g_MagicArr[13] == null || n == 0 && m == 0)
                     {
                         goto CCCC;
-
                         if (robotClient.AttackTarget(MShare.g_APTagget)) result = true;
                         return result;
                     }
                     if (MShare.g_SeriesSkillReady && MShare.g_MagicLockActor != null && !MShare.g_MagicLockActor.m_boDeath)
                     {
                         robotClient.SendFireSerieSkill();
-                    }
-                    if (XPATTACK())
-                    {
-                        result = true;
-                        return result;
                     }
                     MagicKey = 0;
                     nAbsX = Math.Abs(MShare.g_MySelf.m_nCurrX - MShare.g_APTagget.m_nCurrX);

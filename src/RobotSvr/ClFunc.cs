@@ -47,50 +47,6 @@ namespace RobotSvr
             }
         }
 
-        public static string fmstr(string Str, int Len)
-        {
-            string result;
-            int i;
-            try
-            {
-                result = Str + " ";
-                for (i = 1; i < Len - Str.Length; i++)
-                {
-                    result = result + " ";
-                }
-            }
-            catch
-            {
-                result = Str + " ";
-            }
-            return result;
-        }
-
-        public static string GetGoldStr(int gold)
-        {
-            string result;
-            int i;
-            int n;
-            string Str;
-            Str = gold.ToString();
-            n = 0;
-            result = "";
-            for (i = Str.Length; i >= 1; i--)
-            {
-                if (n == 3)
-                {
-                    result = Str[i] + "," + result;
-                    n = 1;
-                }
-                else
-                {
-                    result = Str[i] + result;
-                    n++;
-                }
-            }
-            return result;
-        }
-
         public static void ClearBag()
         {
             for (var i = 0; i < MShare.MAXBAGITEMCL; i++)
@@ -103,25 +59,23 @@ namespace RobotSvr
             }
         }
 
-        public static bool AddItemBag(TClientItem cu, int idx = 0)
+        public static void AddItemBag(TClientItem cu, int idx = 0)
         {
-            bool result = false;
             bool InputCheck = false;
             if (cu == null)
             {
-                return false;
+                return;
             }
             if (cu.Item.Name == "")
             {
-                return result;
+                return;
             }
             if (idx >= 0)
             {
                 if (MShare.g_ItemArr[idx] == null || MShare.g_ItemArr[idx].Item.Name == "")
                 {
                     MShare.g_ItemArr[idx] = cu;
-                    result = true;
-                    return result;
+                    return;
                 }
             }
             for (var i = 0; i < MShare.MAXBAGITEMCL; i++)
@@ -132,12 +86,12 @@ namespace RobotSvr
                 }
                 if ((MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex) && (MShare.g_ItemArr[i].Item.Name == cu.Item.Name))
                 {
-                    return result;
+                    return;
                 }
             }
             if (cu.Item.Name == "")
             {
-                return result;
+                return;
             }
             if (cu.Item.StdMode <= 3)
             {
@@ -146,8 +100,7 @@ namespace RobotSvr
                     if (MShare.g_ItemArr[i] == null || MShare.g_ItemArr[i].Item.Name == "")
                     {
                         MShare.g_ItemArr[i] = cu;
-                        result = true;
-                        return result;
+                        return;
                     }
                 }
             }
@@ -167,18 +120,15 @@ namespace RobotSvr
                     if (MShare.g_ItemArr[i].Item.Name == "")
                     {
                         MShare.g_ItemArr[i] = cu;
-                        result = true;
                         break;
                     }
                 }
             }
             ArrangeItembag();
-            return result;
         }
 
-        public static bool UpdateItemBag(TClientItem cu)
+        public static void UpdateItemBag(TClientItem cu)
         {
-            bool result = false;
             for (var i = MShare.MAXBAGITEMCL - 1; i >= 0; i--)
             {
                 if (MShare.g_ItemArr[i] == null)
@@ -188,16 +138,13 @@ namespace RobotSvr
                 if ((MShare.g_ItemArr[i].Item.Name == cu.Item.Name) && (MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex))
                 {
                     MShare.g_ItemArr[i] = cu;
-                    result = true;
                     break;
                 }
             }
-            return result;
         }
 
-        public static bool UpdateBagStallItem(TClientItem cu, byte ststus)
+        public static void UpdateBagStallItem(TClientItem cu, byte ststus)
         {
-            bool result = false;
             for (var i = MShare.MAXBAGITEMCL - 1; i >= 6; i--)
             {
                 if (MShare.g_ItemArr[i] == null)
@@ -207,11 +154,9 @@ namespace RobotSvr
                 if ((MShare.g_ItemArr[i].Item.Name == cu.Item.Name) && (MShare.g_ItemArr[i].MakeIndex == cu.MakeIndex))
                 {
                     MShare.g_ItemArr[i].Item.NeedIdentify = ststus;
-                    result = true;
                     break;
                 }
             }
-            return result;
         }
 
         public static bool FillBagStallItem(byte ststus)
@@ -232,9 +177,8 @@ namespace RobotSvr
             return result;
         }
 
-        public static bool DelItemBag(string iname, int iindex)
+        public static void DelItemBag(string iname, int iindex)
         {
-            bool result = false;
             for (var i = MShare.MAXBAGITEMCL - 1; i >= 0; i--)
             {
                 if (MShare.g_ItemArr[i] == null)
@@ -243,7 +187,6 @@ namespace RobotSvr
                 }
                 if ((MShare.g_ItemArr[i].Item.Name == iname) && (MShare.g_ItemArr[i].MakeIndex == iindex))
                 {
-                    result = true;
                     break;
                 }
             }
@@ -253,13 +196,11 @@ namespace RobotSvr
                 {
                     if ((MShare.g_MySelf.m_StallMgr.mBlock.Items[i].Item.Name == iname) && (MShare.g_MySelf.m_StallMgr.mBlock.Items[i].MakeIndex == iindex))
                     {
-                        result = true;
                         break;
                     }
                 }
             }
             ArrangeItembag();
-            return result;
         }
 
         public static void ArrangeItembag()
@@ -278,7 +219,7 @@ namespace RobotSvr
                         {
                             continue;
                         }
-                        if ((MShare.g_ItemArr[i].Item.Name == MShare.g_ItemArr[k].Item.Name) && (MShare.g_ItemArr[i].MakeIndex == MShare.g_ItemArr[k].MakeIndex))// 清理复制
+                        if ((MShare.g_ItemArr[i].Item.Name == MShare.g_ItemArr[k].Item.Name) && (MShare.g_ItemArr[i].MakeIndex == MShare.g_ItemArr[k].MakeIndex))// ????????
                         {
                             //if (MShare.g_ItemArr[i].Item.Overlap > 0)
                             //{
@@ -1059,30 +1000,30 @@ namespace RobotSvr
             return result;
         }
 
-        public static int PrivDir(int ndir)
+        public static byte PrivDir(byte ndir)
         {
-            int result;
+            byte result;
             if (ndir - 1 < 0)
             {
                 result = 7;
             }
             else
             {
-                result = ndir - 1;
+                result = (byte)(ndir - 1);
             }
             return result;
         }
 
-        public static int NextDir(int ndir)
+        public static byte NextDir(byte ndir)
         {
-            int result;
+            byte result;
             if (ndir + 1 > 7)
             {
                 result = 0;
             }
             else
             {
-                result = ndir + 1;
+                result = (byte) (ndir + 1);
             }
             return result;
         }
@@ -1160,13 +1101,13 @@ namespace RobotSvr
                         result = Grobal2.U_BUJUK;
                     }
                     break;
-                case 27: // 腰带
+                case 27: // ????
                     result = Grobal2.U_BELT;
                     break;
-                case 28:// 靴子
+                case 28:// ???
                     result = Grobal2.U_BOOTS;
                     break;
-                case 29:// 宝石
+                case 29:// ???
                     result = Grobal2.U_CHARM;
                     break;
             }
@@ -1288,7 +1229,7 @@ namespace RobotSvr
             //}
             //if (MsgNum == 1)
             //{
-            //    ClMain.Units.ClMain.DScreen.AddSysMsg(iname + " 被发现");
+            //    ClMain.Units.ClMain.DScreen.AddSysMsg(iname + " ??????");
             //}
             return result;
         }

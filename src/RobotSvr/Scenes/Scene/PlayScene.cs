@@ -22,11 +22,6 @@ namespace RobotSvr
             m_dwMoveTime = HUtil32.GetTickCount();
         }
 
-        public bool CanDrawTileMap()
-        {
-            return true;
-        }
-
         public override void OpenScene()
         {
             robotClient.SocketEvents();
@@ -65,11 +60,6 @@ namespace RobotSvr
             //MEffectList.Clear();
         }
 
-        public void DrawTileMap()
-        {
-
-        }
-
         private void ClearDropItemA()
         {
             TDropItem dropItem;
@@ -91,7 +81,7 @@ namespace RobotSvr
             }
         }
 
-        public void BeginScene() //todo 注意这里
+        public void BeginScene()
         {
             var movetick = false;
             var tick = HUtil32.GetTickCount();
@@ -111,7 +101,6 @@ namespace RobotSvr
                     movetick = true;
                 }
             }
-
             var i = 0;
             while (true)
             {

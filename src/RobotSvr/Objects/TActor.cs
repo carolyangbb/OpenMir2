@@ -920,7 +920,7 @@ namespace RobotSvr
         {
         }
 
-        public virtual void CalcActorFrame()
+        protected virtual void CalcActorFrame()
         {
             if (m_nCurrentAction == Grobal2.SM_TURN)
             {
