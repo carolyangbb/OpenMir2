@@ -4,8 +4,6 @@ namespace RobotSvr
 {
     public class TNpcActor : TActor
     {
-        private readonly int m_nEffX = 0;
-        private readonly int m_nEffY = 0;
         private bool m_boDigUp;
         private long m_dwUseEffectTick;
 

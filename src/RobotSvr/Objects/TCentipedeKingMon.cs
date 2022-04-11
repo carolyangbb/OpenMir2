@@ -6,7 +6,6 @@ namespace RobotSvr
     {
         private readonly int ax = 0;
         private readonly int ay = 0;
-        private bool BoUseDieEffect;
 
         public TCentipedeKingMon(RobotClient robotClient) : base(robotClient)
         {
@@ -16,17 +15,12 @@ namespace RobotSvr
         public override void Run()
         {
             if (m_nCurrentAction == Grobal2.SM_WALK || m_nCurrentAction == Grobal2.SM_BACKSTEP ||
-                m_nCurrentAction == Grobal2.SM_HORSERUN || m_nCurrentAction == Grobal2.SM_RUN) return;
-            if (BoUseDieEffect)
-                if (m_nCurrentFrame - m_nStartFrame >= 5)
-                {
-                    BoUseDieEffect = false;
-                    m_boUseEffect = true;
-                    m_dwEffectStartTime = MShare.GetTickCount();
-                    m_nEffectFrame = 0;
-                }
-
+                m_nCurrentAction == Grobal2.SM_HORSERUN || m_nCurrentAction == Grobal2.SM_RUN)
+            {
+                return;
+            }
             if (m_boUseEffect)
+            {
                 if (MShare.GetTickCount() - m_dwEffectStartTime > m_dwEffectFrameTime)
                 {
                     m_dwEffectStartTime = MShare.GetTickCount();
@@ -35,7 +29,7 @@ namespace RobotSvr
                     else
                         m_boUseEffect = false;
                 }
-
+            }
             base.Run();
         }
     }

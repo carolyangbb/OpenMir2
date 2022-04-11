@@ -33,7 +33,6 @@ namespace RobotSvr
         public int m_nCurUnitY = 0;
         public string m_sCurrentMap = string.Empty;
         public FileStream m_nCurrentMap;
-        private readonly int FileSeek;
         public int m_nSegXCount = 0;
         public int m_nSegYCount = 0;
 
@@ -44,7 +43,6 @@ namespace RobotSvr
             m_boChange = false;
             m_sCurrentMap = "";
             m_nCurrentMap = null;
-            FileSeek = 0;
             m_nSegXCount = 0;
             m_nSegYCount = 0;
             m_nCurUnitX = -1;

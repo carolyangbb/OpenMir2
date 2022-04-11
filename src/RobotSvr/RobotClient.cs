@@ -1815,7 +1815,6 @@ namespace RobotSvr
                         MShare.g_sAPStr = $"怪物目标：{MShare.g_APTagget.m_sUserName} ({MShare.g_APTagget.m_nCurrX},{MShare.g_APTagget.m_nCurrY}) 正在使用普通攻击";
                     }
                 }
-            lab:
                 if (CanNextAction() && ServerAcceptNextAction())
                 {
                     if (CanNextHit(false) || MShare.g_NextSeriesSkill)

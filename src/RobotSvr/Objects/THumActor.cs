@@ -8,11 +8,6 @@ namespace RobotSvr
     {
         private readonly bool m_boHideWeapon = false;
         private readonly bool m_boSSkill;
-        private bool m_boWeaponEffect;
-        public long m_dwFrameTick;
-        private long m_dwWeaponpEffectTime;
-        private int m_nCurBubbleStruck;
-        private int m_nCurWeaponEffect;
         public int m_nFrame;
         public IList<TActor> m_SlaveObject;
         public TStallMgr m_StallMgr;
@@ -21,10 +16,8 @@ namespace RobotSvr
         {
             m_StallMgr = new TStallMgr();
             m_SlaveObject = new List<TActor>();
-            m_boWeaponEffect = false;
             m_boSSkill = false;
             m_dwFrameTime = 150;
-            m_dwFrameTick = MShare.GetTickCount();
             m_nFrame = 0;
             m_nHumWinOffset = 0;
             m_nCboHumWinOffSet = 0;
@@ -84,114 +77,7 @@ namespace RobotSvr
 
         public override void DefaultMotion()
         {
-            int MaxIdx;
-            int frame;
-            base.DefaultMotion();
-            if (m_boUseCboLib)
-            {
-                if (m_btEffect == 50)
-                {
-                    if (m_nCurrentFrame <= 536)
-                        if (MShare.GetTickCount() - m_dwFrameTick > 100)
-                        {
-                            if (m_nFrame < 19)
-                                m_nFrame++;
-                            else
-                                m_nFrame = 0;
-                            m_dwFrameTick = MShare.GetTickCount();
-                        }
-                }
-                else if (m_btEffect != 0)
-                {
-                    MaxIdx = 0;
-                    frame = 0;
-                    switch (m_nCurrentAction)
-                    {
-                        case Grobal2.SM_SPELL:
-                            switch (m_CurMagic.EffectNumber)
-                            {
-                                case 104:
-                                    frame = 6;
-                                    MaxIdx = 640;
-                                    break;
-                                case 112:
-                                    frame = 6;
-                                    MaxIdx = 720;
-                                    break;
-                                case 106:
-                                    frame = 8;
-                                    MaxIdx = 800;
-                                    break;
-                                case 107:
-                                    frame = 13;
-                                    MaxIdx = 1040;
-                                    break;
-                                case 108:
-                                    frame = 6;
-                                    MaxIdx = 1200;
-                                    break;
-                                case 109:
-                                    frame = 12;
-                                    MaxIdx = 1440;
-                                    break;
-                                case 110:
-                                    frame = 12;
-                                    MaxIdx = 1600;
-                                    break;
-                                case 111:
-                                    frame = 14;
-                                    MaxIdx = 1760;
-                                    break;
-                                case 105:
-                                    // 112
-                                    frame = 10;
-                                    MaxIdx = 880;
-                                    break;
-                            }
-
-                            break;
-                    }
-
-                    // dscreen.AddChatBoardString(inttostr(m_nCboHumWinOffSet), clBlue, clWhite);
-                    if (m_nCurrentFrame < MaxIdx)
-                        if (MShare.GetTickCount() - m_dwFrameTick > MShare.HUMWINEFFECTTICK)
-                        {
-                            if (m_nFrame < frame - 1)
-                                m_nFrame++;
-                            else
-                                m_nFrame = 0;
-                            m_dwFrameTick = MShare.GetTickCount();
-                        }
-                }
-                else
-                {
-                    if (m_btEffect == 50)
-                    {
-                        if (m_nCurrentFrame <= 536)
-                            if (MShare.GetTickCount() - m_dwFrameTick > 100)
-                            {
-                                if (m_nFrame < 19)
-                                    m_nFrame++;
-                                else
-                                    m_nFrame = 0;
-                                m_dwFrameTick = MShare.GetTickCount();
-                            }
-                    }
-                    else if (m_btEffect != 0)
-                    {
-                        if (m_nCurrentFrame < 64)
-                            if (MShare.GetTickCount() - m_dwFrameTick > MShare.HUMWINEFFECTTICK)
-                            {
-                                // Blue
-                                if (m_nFrame < 7)
-                                    m_nFrame++;
-                                else
-                                    m_nFrame = 0;
-                                m_dwFrameTick = MShare.GetTickCount();
-                            }
-                    }
-                }
-            }
+            
         }
 
         public override int GetDefaultFrame(bool wmode)
@@ -273,8 +159,7 @@ namespace RobotSvr
 
         public void DoWeaponBreakEffect()
         {
-            m_boWeaponEffect = true;
-            m_nCurWeaponEffect = 0;
+ 
         }
 
         //public bool Run_MagicTimeOut()
@@ -308,17 +193,7 @@ namespace RobotSvr
                 m_dwGenAnicountTime = MShare.GetTickCount();
                 m_nGenAniCount++;
                 if (m_nGenAniCount > 100000) m_nGenAniCount = 0;
-                m_nCurBubbleStruck++;
             }
-
-            if (m_boWeaponEffect)
-                if (MShare.GetTickCount() - m_dwWeaponpEffectTime > 120)
-                {
-                    m_dwWeaponpEffectTime = MShare.GetTickCount();
-                    m_nCurWeaponEffect++;
-                    if (m_nCurWeaponEffect >= Actor.MAXWPEFFECTFRAME) m_boWeaponEffect = false;
-                }
-
             if (new ArrayList(new[] { 5, 9, 11, 13, 39 }).Contains(m_nCurrentAction)) return;
             m_boMsgMuch = this != MShare.g_MySelf && m_MsgList.Count >= 2;
             bss = new ArrayList(new[] { 105, 109 }).Contains(m_CurMagic.EffectNumber);

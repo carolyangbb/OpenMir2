@@ -674,7 +674,9 @@ namespace RobotSvr
             MShare.g_boAPAutoMove = false;
             MShare.g_nTagCount = 0;
             if (MShare.g_MySelf == null || MShare.g_MySelf.m_boDeath || MShare.g_APTagget == null || MShare.g_APTagget.m_boDeath)
+            {
                 return result;
+            }
             switch (MShare.g_MySelf.m_btJob)
             {
                 case 0:
@@ -721,7 +723,7 @@ namespace RobotSvr
                         if (nAbsX <= MShare.g_nMagicRange && nAbsY <= MShare.g_nMagicRange)
                         {
                             result = true;
-                            MShare.g_sAPStr = string.Format("[挂机] 怪物目标：{0} ({1},{2}) 正在使用魔法攻击", MShare.g_APTagget.m_sUserName, MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY);
+                            MShare.g_sAPStr = $"怪物目标：{MShare.g_APTagget.m_sUserName} ({MShare.g_APTagget.m_nCurrX},{MShare.g_APTagget.m_nCurrY}) 正在使用魔法攻击";
                             if (robotClient.CanNextAction() && robotClient.ServerAcceptNextAction())
                                 if (CanNextSpell())
                                 {
@@ -748,13 +750,10 @@ namespace RobotSvr
                                 FFFF:
                                     if (MShare.g_MagicArr[10] != null)
                                     {
-                                        tdir = ClFunc.GetNextDirection(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY,
-                                            MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY);
-                                        if (robotClient.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY,
-                                                tdir, 1, ref nNX, ref nNY))
+                                        tdir = ClFunc.GetNextDirection(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY);
+                                        if (robotClient.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, 1, ref nNX, ref nNY))
                                         {
-                                            robotClient.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY,
-                                                tdir, 8, ref nTX, ref nTY);
+                                            robotClient.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, 8, ref nTX, ref nTY);
                                             if (robotClient.CheckMagPassThrough(nNX, nNY, nTX, nTY, tdir) >= nOldDC)
                                             {
                                                 MShare.m_dwTargetFocusTick = MShare.GetTickCount();
@@ -763,16 +762,12 @@ namespace RobotSvr
                                             }
                                         }
                                     }
-
                                     if (MShare.g_MagicArr[9] != null)
                                     {
-                                        tdir = ClFunc.GetNextDirection(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY,
-                                            MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY);
-                                        if (robotClient.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY,
-                                                tdir, 1, ref nNX, ref nNY))
+                                        tdir = ClFunc.GetNextDirection(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, MShare.g_APTagget.m_nCurrX, MShare.g_APTagget.m_nCurrY);
+                                        if (robotClient.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, 1, ref nNX, ref nNY))
                                         {
-                                            robotClient.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY,
-                                                tdir, 5, ref nTX, ref nTY);
+                                            robotClient.GetNextPosition(MShare.g_MySelf.m_nCurrX, MShare.g_MySelf.m_nCurrY, tdir, 5, ref nTX, ref nTY);
                                             if (robotClient.CheckMagPassThrough(nNX, nNY, nTX, nTY, tdir) >= nOldDC)
                                             {
                                                 MShare.m_dwTargetFocusTick = MShare.GetTickCount();
@@ -781,7 +776,6 @@ namespace RobotSvr
                                             }
                                         }
                                     }
-
                                     if (MShare.m_btMagPassTh > 0)
                                     {
                                         MShare.m_btMagPassTh -= 1;

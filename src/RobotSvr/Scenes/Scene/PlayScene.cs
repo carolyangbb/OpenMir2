@@ -498,7 +498,7 @@ namespace RobotSvr
             for (var i = 0; i < m_ActorList.Count; i++)
             {
                 TActor actor = m_ActorList[i];
-                if (actor.m_sUserName.ToLower().CompareTo(sName.ToLower()) == 0)
+                if (string.Compare(actor.m_sUserName, sName, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     result = actor;
                     break;
@@ -566,54 +566,45 @@ namespace RobotSvr
                     actor = new THumActor(robotClient);
                     break;
                 case 9:
-                    // 人物
                     actor = new TSoccerBall(robotClient);
                     break;
                 case 13:
-                    // 足球
                     actor = new TKillingHerb(robotClient);
                     break;
                 case 14:
-                    // 食人花
                     actor = new TSkeletonOma(robotClient);
                     break;
                 case 15:
-                    // 骷髅
                     actor = new TDualAxeOma(robotClient);
                     break;
                 case 16:
-                    // 掷斧骷髅
                     actor = new TGasKuDeGi(robotClient);
                     break;
                 case 17:
-                    // 洞蛆
                     actor = new TCatMon(robotClient);
                     break;
                 case 18:
-                    // 钩爪猫
                     actor = new THuSuABi(robotClient);
                     break;
                 case 19:
-                    // 稻草人
                     actor = new TCatMon(robotClient);
                     break;
                 case 20:
-                    // 沃玛战士
                     actor = new TFireCowFaceMon(robotClient);
                     break;
-                case 21:// 火焰沃玛
+                case 21:
                     actor = new TCowFaceKing(robotClient);
                     break;
-                case 22:// 沃玛教主
+                case 22:
                     actor = new TDualAxeOma(robotClient);
                     break;
-                case 23:// 黑暗战士
+                case 23:
                     actor = new TWhiteSkeleton(robotClient);
                     break;
-                case 24:// 变异骷髅
+                case 24:
                     actor = new TSuperiorGuard(robotClient);
                     break;
-                case 25:// 带刀卫士
+                case 25:
                     actor = new TKingOfSculpureKingMon(robotClient);
                     break;
                 case 26:
@@ -631,25 +622,25 @@ namespace RobotSvr
                 case 30:
                     actor = new TCatMon(robotClient);
                     break;
-                case 31:// 朝俺窿
+                case 31:
                     actor = new TCatMon(robotClient);
                     break;
-                case 32:// 角蝇
+                case 32:
                     actor = new TScorpionMon(robotClient);
                     break;
-                case 33:// 蝎子
+                case 33:
                     actor = new TCentipedeKingMon(robotClient);
                     break;
-                case 34:// 触龙神
+                case 34:
                     actor = new TBigHeartMon(robotClient);
                     break;
-                case 35:// 赤月恶魔
+                case 35:
                     actor = new TSpiderHouseMon(robotClient);
                     break;
-                case 36:// 幻影蜘蛛
+                case 36:
                     actor = new TExplosionSpider(robotClient);
                     break;
-                case 37:// 月魔蜘蛛
+                case 37:
                     actor = new TFlyingSpider(robotClient);
                     break;
                 case 38:
@@ -661,31 +652,31 @@ namespace RobotSvr
                 case 40:
                     actor = new TZombiLighting(robotClient);
                     break;
-                case 41:// 僵尸1
+                case 41:
                     actor = new TZombiDigOut(robotClient);
                     break;
-                case 42:// 僵尸2
+                case 42:
                     actor = new TZombiZilkin(robotClient);
                     break;
-                case 43:// 僵尸3
+                case 43:
                     actor = new TBeeQueen(robotClient);
                     break;
-                case 44:// 角蝇巢
+                case 44:
                     actor = new TSnowMon(robotClient);
                     break;
                 case 45:
                     actor = new TArcherMon(robotClient);
                     break;
-                case 46:// 弓箭手
+                case 46:
                     actor = new TSnowMon(robotClient);
                     break;
                 case 47:
                     actor = new TSculptureMon(robotClient);
                     break;
-                case 48:// 祖玛雕像
+                case 48:
                     actor = new TSculptureMon(robotClient);
                     break;
-                case 49:// 祖玛教主
+                case 49:
                     actor = new TSculptureKingMon(robotClient);
                     break;
                 case 50:
@@ -698,30 +689,24 @@ namespace RobotSvr
                     actor = new TGasKuDeGi(robotClient);
                     break;
                 case 53:
-                    // 楔蛾
                     actor = new TGasKuDeGi(robotClient);
                     break;
                 case 54:
-                    // 粪虫
                     actor = new TSmallElfMonster(robotClient);
                     break;
                 case 55:
-                    // 神兽
                     actor = new TWarriorElfMonster(robotClient);
                     break;
                 case 56:
-                    // 神兽1
                     actor = new TAngel(robotClient);
                     break;
                 case 57:
                     actor = new TDualAxeOma(robotClient);
                     break;
                 case 58:
-                    // 1234
                     actor = new TDualAxeOma(robotClient);
                     break;
                 case 60:
-                    // 1234
                     actor = new TElectronicScolpionMon(robotClient);
                     break;
                 case 61:
@@ -889,10 +874,6 @@ namespace RobotSvr
                 // actor.m_btAFilter = MShare.g_APMobList.IndexOf(actor.m_sUserName) >= 0;
             }
             actor.m_btRace = RACEfeature(cfeature);
-            //actor.m_btHair = Grobal2.HAIRfeature(cfeature);
-            //actor.m_btDress = Grobal2.DRESSfeature(cfeature);
-            //actor.m_btWeapon = Grobal2.WEAPONfeature(cfeature);
-            //actor.m_wAppearance = Grobal2.APPRfeature(cfeature);
             actor.m_Action = null;
             actor.m_nState = cstate;
             m_ActorList.Add(actor);
