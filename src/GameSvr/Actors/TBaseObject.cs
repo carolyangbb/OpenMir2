@@ -658,11 +658,11 @@ namespace GameSvr
             m_nGoldMax = M2Share.g_Config.nHumanMaxGold;
             m_nCharStatus = 0;
             m_nCharStatusEx = 0;
-            m_wStatusTimeArr = new ushort[12];// FillChar(m_wStatusTimeArr, sizeof(grobal2.short), '\0');
-            m_BonusAbil = new TNakedAbility();// FillChar(m_BonusAbil, sizeof(TNakedAbility), '\0');
-            m_CurBonusAbil = new TNakedAbility();// FillChar(m_CurBonusAbil, sizeof(TNakedAbility), '\0');
-            m_wStatusArrValue = new ushort[6];// FillChar(m_wStatusArrValue, sizeof(m_wStatusArrValue), 0);
-            m_dwStatusArrTimeOutTick = new int[6];// FillChar(m_dwStatusArrTimeOutTick, sizeof(m_dwStatusArrTimeOutTick), '\0');
+            m_wStatusTimeArr = new ushort[12];
+            m_BonusAbil = new TNakedAbility();
+            m_CurBonusAbil = new TNakedAbility();
+            m_wStatusArrValue = new ushort[6];
+            m_dwStatusArrTimeOutTick = new int[6];
             m_boAllowGroup = false;
             m_boAllowGuild = false;
             btB2 = 0;
@@ -688,7 +688,7 @@ namespace GameSvr
             m_nMoXieSuite = 0;
             m_nHongMoSuite = 0;
             m_db3B0 = 0;
-            m_AddAbil = new TAddAbility();//FillChar(m_AddAbil, sizeof(TAddAbility), '\0');
+            m_AddAbil = new TAddAbility();
             m_MsgList = new List<SendMessage>();
             m_VisibleHumanList = new List<TBaseObject>();
             m_VisibleActors = new List<TVisibleBaseObject>();
@@ -701,7 +701,6 @@ namespace GameSvr
             m_nDealGolds = 0;
             m_MagicList = new List<TUserMagic>();
             m_StorageItemList = new List<TUserItem>();
-            //FillChar(m_UseItems, sizeof(grobal2.TUserItem), 0);
             m_UseItems = new TUserItem[13];
             m_GroupOwner = null;
             m_Castle = null;
@@ -716,9 +715,9 @@ namespace GameSvr
             m_boAllowGroupReCall = false;
             m_BlockWhisperList = new List<string>();
             m_SlaveList = new List<TBaseObject>();
-            m_WAbil = new TAbility();// FillChar(m_WAbil, sizeof(TAbility), '\0');
-            m_QuestUnitOpen = new byte[128];//FillChar(m_QuestUnitOpen, sizeof(grobal2.byte), '\0');
-            m_QuestUnit = new byte[128];// FillChar(m_QuestUnit, sizeof(grobal2.byte), '\0');
+            m_WAbil = new TAbility();
+            m_QuestUnitOpen = new byte[128];
+            m_QuestUnit = new byte[128];
             m_QuestFlag = new byte[128];
             m_Abil = new TAbility
             {

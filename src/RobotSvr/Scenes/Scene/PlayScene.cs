@@ -888,24 +888,12 @@ namespace RobotSvr
             {
                 // actor.m_btAFilter = MShare.g_APMobList.IndexOf(actor.m_sUserName) >= 0;
             }
-            //actor.m_btRace = Grobal2.RACEfeature(cfeature);
+            actor.m_btRace = RACEfeature(cfeature);
             //actor.m_btHair = Grobal2.HAIRfeature(cfeature);
             //actor.m_btDress = Grobal2.DRESSfeature(cfeature);
             //actor.m_btWeapon = Grobal2.WEAPONfeature(cfeature);
             //actor.m_wAppearance = Grobal2.APPRfeature(cfeature);
             actor.m_Action = null;
-            //if (actor.m_btRace == 0)
-            //{
-            //    actor.m_btSex = actor.m_btDress % 2;
-            //    if (actor.m_btDress >= 24 && actor.m_btDress <= 27)
-            //    {
-            //        actor.m_btDress = 18 + actor.m_btSex;
-            //    }
-            //}
-            //else
-            //{
-            //    actor.m_btSex = 0;
-            //}
             actor.m_nState = cstate;
             m_ActorList.Add(actor);
             result = actor;

@@ -619,10 +619,8 @@ namespace GameSvr
             if (PlayObject.m_btJob != nJob)
             {
                 PlayObject.m_btJob = (byte)nJob;
-                // 
                 // PlayObject.RecalcLevelAbilitys();
                 // PlayObject.RecalcAbilitys();
-                // 
                 PlayObject.HasLevelUp(0);
             }
         }

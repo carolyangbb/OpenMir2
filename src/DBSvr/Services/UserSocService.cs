@@ -548,7 +548,6 @@ namespace DBSvr
                     }
                     break;
                 case Grobal2.CM_SELCHR:
-                    Console.WriteLine("收到选择角色消息");
                     if (UserInfo.boChrQueryed)
                     {
                         if ((UserInfo.sAccount != "") && _loginService.CheckSession(UserInfo.sAccount, UserInfo.sUserIPaddr, UserInfo.nSessionID))

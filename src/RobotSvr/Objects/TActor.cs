@@ -278,6 +278,7 @@ namespace RobotSvr
             m_nMoveHpList = new ArrayList();
             m_nTempState = 1;
             m_fHideMode = false;
+            m_Abil = new TAbility();
         }
 
         public void SendMsg(int wIdent, int nX, int nY, int ndir, int nFeature, int nState, string sStr, int nSound, int dwDelay = 0)

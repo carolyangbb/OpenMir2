@@ -1,9 +1,10 @@
-﻿namespace RobotSvr;
-
-public class TBanyaGuardMon : TSkeletonArcherMon
+﻿namespace RobotSvr
 {
-    public TBanyaGuardMon(RobotClient robotClient) : base(robotClient)
+    public class TBanyaGuardMon : TSkeletonArcherMon
     {
+        public TBanyaGuardMon(RobotClient robotClient) : base(robotClient)
+        {
 
+        }
     }
 }

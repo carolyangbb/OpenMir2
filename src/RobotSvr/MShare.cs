@@ -166,7 +166,7 @@ namespace RobotSvr
         public static int g_nTagCount = 0;
         public static int m_dwTargetFocusTick = 0;
         public static Dictionary<string, string> g_APPickUpList = null;
-        public static Dictionary<string, string> g_APMobList = null;
+        public static Dictionary<string, string> g_APMobList = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         public static TActor g_AttackTarget = null;
         public static int g_dwSearchEnemyTick = 0;
         public static byte g_nAPReLogon = 0;
@@ -402,7 +402,7 @@ namespace RobotSvr
         public const int g_gnTecPracticeKey = 0;
         public static bool[] g_gcTec = { true, true, true, true, true, true, false, false, false, false, false, false, false, true, false };
         public static int[] g_gnTecTime = { 0, 0, 0, 0, 0, 0, 0, 0, 4000, 0, 0, 0, 0, 0, 0 };
-        public static bool[] g_gcAss = { false, false, false, false, false, false, false };
+        public static bool[] g_gcAss = { false, false, false, false, false, false, true };
         public static int g_HitSpeedRate = 0;
         public static int g_MagSpeedRate = 0;
         public static int g_MoveSpeedRate = 0;

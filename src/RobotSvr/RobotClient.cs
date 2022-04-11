@@ -1800,7 +1800,7 @@ namespace RobotSvr
         {
             var result = false;
             int nHitMsg = Grobal2.CM_HIT;
-            if (MShare.g_UseItems[Grobal2.U_WEAPON].Item.StdMode == 6)
+            if (MShare.g_UseItems[Grobal2.U_WEAPON] != null && MShare.g_UseItems[Grobal2.U_WEAPON].Item.StdMode == 6)
             {
                 nHitMsg = Grobal2.CM_HEAVYHIT;
             }
@@ -3654,9 +3654,8 @@ namespace RobotSvr
                         }
                         Actor.m_Abil.HP = msg.Param;
                         Actor.m_Abil.MaxHP = msg.Tag;
-                        if (MShare.g_boOpenAutoPlay && TimerAutoPlay.Enabled)
+                        if (MShare.g_boOpenAutoPlay && TimerAutoPlay.Enabled) //  自己受人攻击,小退
                         {
-                            // 0613 自己受人攻击,小退
                             Actor2 = g_PlayScene.FindActor(wl.lTag1);
                             if ((Actor2 == null) || ((Actor2.m_btRace != 0) && (Actor2.m_btIsHero != 1)))
                             {
@@ -3664,9 +3663,8 @@ namespace RobotSvr
                             }
                             if (MShare.g_MySelf != null)
                             {
-                                if (Actor == MShare.g_MySelf)
+                                if (Actor == MShare.g_MySelf) // 自己受人攻击,小退
                                 {
-                                    // 自己受人攻击,小退
                                     MShare.g_nAPReLogon = 1;
                                     MShare.g_nOverAPZone2 = MShare.g_nOverAPZone;
                                     MShare.g_APGoBack2 = MShare.g_APGoBack;

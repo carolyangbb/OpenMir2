@@ -38,7 +38,7 @@ namespace GameSvr
             {
                 sLineText = LoadList[i];
                 var nLv = -1;
-                if (sLineText != "" && sLineText[0] != ';')
+                if (!string.IsNullOrEmpty(sLineText) && sLineText[0] != ';')
                 {
                     if (sLineText[0] == '*')
                     {
