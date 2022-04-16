@@ -13,11 +13,7 @@ namespace RobotSvr
         public static int g_nGamePort;
         public const int MAXX = 30;
         public const int MAXY = 40;
-#if DEBUG_LOGIN
         public static byte g_fWZLFirst = 7;
-#else
-        public static byte g_fWZLFirst = 7;
-#endif
         public static int AAX = 26 + 14;
         public static int LMX = 30;
         public static int LMY = 26;
@@ -428,14 +424,10 @@ namespace RobotSvr
             }
             return result;
         }
-
-        public static void ShowMsg(string Str)
-        {
-            //  ClMain.DScreen.AddChatBoardString(Str, System.Drawing.Color.White, System.Drawing.Color.Black);
-        }
+        
         public static int GetTickCount()
         {
-            return HUtil32.GetTickCount(); ;
+            return HUtil32.GetTickCount();
         }
 
         public static bool IsDetectItem(int idx)
