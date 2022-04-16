@@ -59,10 +59,9 @@ namespace RobotSvr
         /// <returns></returns>
         private MapTree Dequeue()
         {
-            MapTree bestchoice = MShare.g_APQueue.Next.Node;
-            MapLink Next = MShare.g_APQueue.Next.Next;
+            var bestchoice = MShare.g_APQueue.Next.Node;
+            MShare.g_APQueue.Next = MShare.g_APQueue.Next.Next;
             Dispose(MShare.g_APQueue.Next);
-            MShare.g_APQueue.Next = Next;
             return bestchoice;
         }
 
@@ -145,7 +144,6 @@ namespace RobotSvr
                 return;
             }
             MShare.g_APPass = (ushort[,])MShare.g_APPassEmpty.Clone();
-            Console.WriteLine(MShare.g_APPass[34, 32]);
             Init_Queue();
             MapTree Root = new MapTree();
             Root.X = Startx;
@@ -952,7 +950,7 @@ namespace RobotSvr
                         if (MShare.GetTickCount() - g_hinttick1 > 60 * 1000)
                         {
                             g_hinttick1 = MShare.GetTickCount();
-                            robotClient.DScreen.AddChatBoardString("你的[药粉]已经用完，注意补充", Color.White, Color.Blue);
+                            robotClient.DScreen.AddChatBoardString("你的[药粉]已经用完，注意补充", ConsoleColor.Blue);
                         }
                     }
 
@@ -977,7 +975,7 @@ namespace RobotSvr
                         if (MShare.GetTickCount() - g_hinttick2 > 60 * 1000)
                         {
                             g_hinttick2 = MShare.GetTickCount();
-                            robotClient.DScreen.AddChatBoardString("你的[护身符]已经用完，注意补充", Color.White, Color.Blue);
+                            robotClient.DScreen.AddChatBoardString("你的[护身符]已经用完，注意补充", ConsoleColor.Blue);
                         }
                     }
                     if (MShare.GetTickCount() - MShare.m_dwRecallTick > 1000 * 6)

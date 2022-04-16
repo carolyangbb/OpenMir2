@@ -1033,7 +1033,7 @@ namespace RobotSvr
                                 robotClient.TimerAutoMove.Enabled = false;
                                 TPathMap.g_MapPath = new Point[0];
                                 TPathMap.g_MapPath = null;
-                                robotClient.DScreen.AddChatBoardString("地图跳转，停止自动移动", robotClient.GetRGB(5), Color.White);
+                                robotClient.DScreen.AddChatBoardString("地图跳转，停止自动移动", robotClient.GetRGB(5));
                             }
                             if (MShare.g_boOpenAutoPlay && robotClient.TimerAutoPlay.Enabled)
                             {
@@ -1043,7 +1043,7 @@ namespace RobotSvr
                                 MShare.g_APMapPath2 = new Point[0];
                                 MShare.g_APStep = -1;
                                 MShare.g_APLastPoint.X = -1;
-                                robotClient.DScreen.AddChatBoardString("[挂机] 地图跳转，停止自动挂机", Color.Red, Color.White);
+                                robotClient.DScreen.AddChatBoardString("[挂机] 地图跳转，停止自动挂机", ConsoleColor.Red);
                             }
                         }
                         if (MShare.g_MySelf != null)

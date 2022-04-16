@@ -55,38 +55,29 @@ namespace RobotSvr
 
         public void AddSysMsgCenter(string msg, Color fc, Color bc, int sec)
         {
+            
         }
 
-        public void AddSysMsgCenter(string msg, int fc, int bc, int sec)
+        public void AddChatBoardString(string str, int fcolor, ConsoleColor bcolor = ConsoleColor.White)
         {
-
-        }
-
-        public void AddChatBoardString(string str, Color fcolor, Color bcolor)
-        {
+            Console.BackgroundColor = bcolor;
+            Console.ForegroundColor = (ConsoleColor) fcolor;
             Console.WriteLine(str);
+            Console.ResetColor();
         }
-
-        public void AddChatBoardString(string str, int fcolor, Color bcolor)
+        
+        public void AddChatBoardString(string str, ConsoleColor fcolor, ConsoleColor bcolor = ConsoleColor.White)
         {
+            Console.BackgroundColor = bcolor;
+            Console.ForegroundColor = fcolor;
             Console.WriteLine(str);
+            Console.ResetColor();
         }
 
         public void AddChatBoardString(string str, int fcolor, int bcolor)
         {
             Console.WriteLine(str);
         }
-
-        public void ClearChatBoard()
-        {
-
-        }
-
-        public void ClearHint()
-        {
-
-        }
-
     }
 }
 
