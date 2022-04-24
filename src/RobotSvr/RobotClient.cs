@@ -1199,7 +1199,7 @@ namespace RobotSvr
                             bEatSp = true;
                             if (bHint)
                             {
-                                DScreen.AddSysMsgCenter("你的金创药已经用完！", Color.Lime, Color.Black, 10);
+                                DScreen.AddChatBoardString("你的金创药已经用完！", ConsoleColor.Green, ConsoleColor.Black);
                             }
                             bEatOK = false;
                         }
@@ -1231,7 +1231,7 @@ namespace RobotSvr
                             }
                             if (bHint)
                             {
-                                DScreen.AddSysMsgCenter("你的魔法药已经用完！", Color.Lime, Color.Black, 10);
+                                DScreen.AddChatBoardString("你的魔法药已经用完！", ConsoleColor.Green, ConsoleColor.Black);
                             }
                             bEatOK = false;
                         }
@@ -1255,7 +1255,7 @@ namespace RobotSvr
                         }
                         else if (bHint)
                         {
-                            DScreen.AddSysMsgCenter("你的特殊药品已经用完！", Color.Lime, Color.Black, 10);
+                            DScreen.AddChatBoardString("你的特殊药品已经用完！", ConsoleColor.Green, ConsoleColor.Black);
                         }
                     }
                 }
@@ -1275,7 +1275,7 @@ namespace RobotSvr
                     }
                     else if (bHint)
                     {
-                        DScreen.AddSysMsgCenter("你的" + MShare.g_sRenewBooks[MShare.g_gnProtectPercent[6]] + "已经用完！", Color.Lime, Color.Black, 10);
+                        DScreen.AddChatBoardString("你的" + MShare.g_sRenewBooks[MShare.g_gnProtectPercent[6]] + "已经用完！", ConsoleColor.Green, ConsoleColor.Black);
                     }
                 }
             }
@@ -1928,7 +1928,7 @@ namespace RobotSvr
                             {
                                 if (MShare.g_gcGeneral[1])
                                 {
-                                    DScreen.AddSysMsgCenter($"你的[{MShare.g_UseItems[i].Item.Name}]持久已到底限，请及时修理！", Color.Lime, Color.Black, 10);
+                                    DScreen.AddChatBoardString($"你的[{MShare.g_UseItems[i].Item.Name}]持久已到底限，请及时修理！", ConsoleColor.Green, ConsoleColor.Black);
                                 }
                                 if (MShare.g_gcGeneral[9])
                                 {
@@ -1947,7 +1947,7 @@ namespace RobotSvr
                                     }
                                     else
                                     {
-                                        DScreen.AddSysMsgCenter($"你的{MShare.g_UseItems[i].Item.Name}已经用完，请及时补充！", Color.Lime, Color.Black, 10);
+                                        DScreen.AddChatBoardString($"你的{MShare.g_UseItems[i].Item.Name}已经用完，请及时补充！", ConsoleColor.Green, ConsoleColor.Black);
                                     }
                                 }
                             }

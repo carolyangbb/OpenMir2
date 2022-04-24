@@ -52,12 +52,7 @@ namespace RobotSvr
         {
 
         }
-
-        public void AddSysMsgCenter(string msg, Color fc, Color bc, int sec)
-        {
-            
-        }
-
+        
         public void AddChatBoardString(string str, int fcolor, ConsoleColor bcolor = ConsoleColor.White)
         {
             Console.BackgroundColor = bcolor;

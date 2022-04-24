@@ -997,7 +997,7 @@ namespace GameGate
                         success = false;
                         return;
                     }
-                    if (szClientVerNO.Length != 9)
+                    if (szClientVerNO.Length < 8)
                     {
                         success = false;
                         return;

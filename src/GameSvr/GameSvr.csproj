@@ -24,7 +24,6 @@
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
       <Optimize>True</Optimize>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(RunConfiguration)' == 'MirServer' " />
    <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.28" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />

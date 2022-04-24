@@ -125,7 +125,7 @@ namespace RobotSvr
             {
                 for (var i = 0; i < AutoList.Count; i++)
                 {
-                    if ((AutoRunTick - AutoList[i].RunTick) > 600)
+                    if ((AutoRunTick - AutoList[i].RunTick) > 800)
                     {
                         AutoList[i].RunTick = HUtil32.GetTickCount();
                         ClientList[i].RunAutoPlay();
