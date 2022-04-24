@@ -1,0 +1,199 @@
+﻿using MirClient.MirControls;
+using MirClient.MirGraphics;
+using SharpDX.Direct3D9;
+using SharpDX.Mathematics.Interop;
+using System.Drawing;
+using System.Windows.Forms;
+using Color = System.Drawing.Color;
+
+namespace MirClient.MirScenes
+{
+    public abstract class MirScene : MirControl
+    {
+        public static MirScene ActiveScene = new LoginScene();
+
+        private static MouseButtons _buttons;
+        private static long _lastClickTime;
+        private static MirControl _clickedControl;
+
+        protected MirScene()
+        {
+            DrawControlTexture = true;
+            BackColour = Color.Magenta;
+            Size = new Size(Settings.ScreenWidth, Settings.ScreenHeight);
+        }
+
+        public sealed override Size Size
+        {
+            get { return base.Size; }
+            set { base.Size = value; }
+        }
+
+        public override void Draw()
+        {
+            if (IsDisposed || !Visible)
+                return;
+
+            OnBeforeShown();
+
+            DrawControl();
+
+            if (GameFrm.DebugBaseLabel != null && !GameFrm.DebugBaseLabel.IsDisposed)
+                GameFrm.DebugBaseLabel.Draw();
+
+            if (GameFrm.HintBaseLabel != null && !GameFrm.HintBaseLabel.IsDisposed)
+                GameFrm.HintBaseLabel.Draw();
+
+            OnShown();
+        }
+
+        protected override void CreateTexture()
+        {
+            if (Size != TextureSize)
+                DisposeTexture();
+
+            if (ControlTexture == null || ControlTexture.IsDisposed)
+            {
+                DXManager.ControlList.Add(this);
+                ControlTexture = new Texture(DXManager.Device, Size.Width, Size.Height, 1, Usage.RenderTarget, Format.A8R8G8B8, Pool.Default);
+                TextureSize = Size;
+            }
+            Surface oldSurface = DXManager.CurrentSurface;
+            Surface surface = ControlTexture.GetSurfaceLevel(0);
+            DXManager.SetSurface(surface);
+
+            RawColorBGRA black;
+            black.R = BackColour.R;
+            black.G = BackColour.G;
+            black.B = BackColour.B;
+            black.A = BackColour.A;
+            //new RawColorBGRA(BackColour.B, BackColour.G, BackColour.R, BackColour.A)
+            DXManager.Device.Clear(ClearFlags.Target, black, 0, 0);
+
+            BeforeDrawControl();
+            DrawChildControls();
+            AfterDrawControl();
+
+            DXManager.Sprite.Flush();
+
+
+            DXManager.SetSurface(oldSurface);
+            TextureValid = true;
+            surface.Dispose();
+        }
+
+        public override void OnMouseDown(MouseEventArgs e)
+        {
+            if (!Enabled)
+                return;
+
+            if (MouseControl != null && MouseControl != this)
+                MouseControl.OnMouseDown(e);
+            else
+                base.OnMouseDown(e);
+        }
+        public override void OnMouseUp(MouseEventArgs e)
+        {
+            if (!Enabled)
+                return;
+            if (MouseControl != null && MouseControl != this)
+                MouseControl.OnMouseUp(e);
+            else
+                base.OnMouseUp(e);
+        }
+        public override void OnMouseMove(MouseEventArgs e)
+        {
+            if (!Enabled)
+                return;
+
+            if (MouseControl != null && MouseControl != this && MouseControl.Moving)
+                MouseControl.OnMouseMove(e);
+            else
+                base.OnMouseMove(e);
+        }
+        public override void OnMouseWheel(MouseEventArgs e)
+        {
+            if (!Enabled)
+                return;
+
+            if (MouseControl != null && MouseControl != this)
+                MouseControl.OnMouseWheel(e);
+            else
+                base.OnMouseWheel(e);
+        }
+
+        public override void OnMouseClick(MouseEventArgs e)
+        {
+            if (!Enabled)
+                return;
+            if (_buttons == e.Button)
+            {
+                if (_lastClickTime + SystemInformation.DoubleClickTime >= GameFrm.Time)
+                {
+                    OnMouseDoubleClick(e);
+                    return;
+                }
+            }
+            else
+                _lastClickTime = 0;
+
+            if (ActiveControl != null && ActiveControl.IsMouseOver(GameFrm.MPoint) && ActiveControl != this)
+                ActiveControl.OnMouseClick(e);
+            else
+                base.OnMouseClick(e);
+
+            _clickedControl = ActiveControl;
+
+            _lastClickTime = GameFrm.Time;
+            _buttons = e.Button;
+        }
+
+        public override void OnMouseDoubleClick(MouseEventArgs e)
+        {
+            if (!Enabled)
+                return;
+            _lastClickTime = 0;
+            _buttons = MouseButtons.None;
+
+            if (ActiveControl != null && ActiveControl.IsMouseOver(GameFrm.MPoint) && ActiveControl != this)
+            {
+                if (ActiveControl == _clickedControl)
+                    ActiveControl.OnMouseDoubleClick(e);
+                else
+                    ActiveControl.OnMouseClick(e);
+            }
+            else
+            {
+                if (ActiveControl == _clickedControl)
+                    base.OnMouseDoubleClick(e);
+                else
+                    base.OnMouseClick(e);
+            }
+        }
+
+        public override void Redraw()
+        {
+            TextureValid = false;
+        }
+
+        public abstract void Process();
+
+        #region Disposable
+
+        protected override void Dispose(bool disposing)
+        {
+
+            base.Dispose(disposing);
+
+            if (!disposing) return;
+
+            if (ActiveScene == this) ActiveScene = null;
+
+            _buttons = 0;
+            _lastClickTime = 0;
+            _clickedControl = null;
+        }
+
+        #endregion
+    }
+}
