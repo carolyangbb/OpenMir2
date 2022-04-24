@@ -46,16 +46,16 @@ namespace MirClient
         {
             InitializeComponent();
 
-            //MouseClick += CMain_MouseClick;
-            //MouseDown += CMain_MouseDown;
-            //MouseUp += CMain_MouseUp;
-            //MouseMove += CMain_MouseMove;
-            //MouseDoubleClick += CMain_MouseDoubleClick;
-            //KeyPress += CMain_KeyPress;
-            //KeyDown += CMain_KeyDown;
-            //KeyUp += CMain_KeyUp;
-            //Deactivate += CMain_Deactivate;
-            //MouseWheel += CMain_MouseWheel;
+            MouseClick += CMain_MouseClick;
+            MouseDown += CMain_MouseDown;
+            MouseUp += CMain_MouseUp;
+            MouseMove += CMain_MouseMove;
+            MouseDoubleClick += CMain_MouseDoubleClick;
+            KeyPress += CMain_KeyPress;
+            KeyDown += CMain_KeyDown;
+            KeyUp += CMain_KeyUp;
+            Deactivate += CMain_Deactivate;
+            MouseWheel += CMain_MouseWheel;
 
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.Selectable, true);
             FormBorderStyle = Settings.FullScreen || Settings.Borderless ? FormBorderStyle.FixedSingle : FormBorderStyle.FixedDialog;

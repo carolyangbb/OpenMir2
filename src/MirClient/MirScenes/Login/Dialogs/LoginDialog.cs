@@ -50,31 +50,29 @@ namespace MirClient.MirScenes.Login
             {
                 Enabled = false,
                 Size = new Size(42, 42),
-                HoverIndex = 321,
                 Index = 62,
                 Library = Libraries.Prguse,
-                Location = new Point(227, 81),
+                Location = new Point(171, 165),
                 Parent = this,
                 PressedIndex = 322
             };
+            OKButton.Click -= (o, e) => Login();
             OKButton.Click += (o, e) => Login();
 
             AccountButton = new MirButton
             {
-                HoverIndex = 324,
                 Index = 61,
                 Library = Libraries.Prguse,
-                Location = new Point(60, 163),
+                Location = new Point(24, 207),
                 Parent = this,
                 PressedIndex = 325,
             };
 
             PassButton = new MirButton
             {
-                HoverIndex = 327,
-                Index = 326,
+                Index = 53,
                 Library = Libraries.Title,
-                Location = new Point(166, 163),
+                Location = new Point(130, 207),
                 Parent = this,
                 PressedIndex = 328,
             };
@@ -91,10 +89,9 @@ namespace MirClient.MirScenes.Login
 
             CloseButton = new MirButton
             {
-                HoverIndex = 330,
                 Index = 64,
                 Library = Libraries.Prguse,
-                Location = new Point(28, 252),
+                Location = new Point(252, 28),
                 Parent = this,
                 PressedIndex = 331
             };

@@ -44,7 +44,7 @@ namespace MirClient.MirControls
                         HoverIndex = 201,
                         Index = 361,
                         Library = Libraries.Prguse,
-                        Location = new Point(360, 157),
+                        Location = new Point(360, 126),
                         Parent = this,
                         PressedIndex = 202,
                     };
@@ -56,7 +56,7 @@ namespace MirClient.MirControls
                         HoverIndex = 201,
                         Index = 365,
                         Library = Libraries.Prguse,
-                        Location = new Point(260, 157),
+                        Location = new Point(260, 126),
                         Parent = this,
                         PressedIndex = 202,
                     };
@@ -66,7 +66,7 @@ namespace MirClient.MirControls
                         HoverIndex = 204,
                         Index = 203,
                         Library = Libraries.Prguse,
-                        Location = new Point(360, 157),
+                        Location = new Point(360, 126),
                         Parent = this,
                         PressedIndex = 205,
                     };
@@ -78,7 +78,7 @@ namespace MirClient.MirControls
                         HoverIndex = 207,
                         Index = 206,
                         Library = Libraries.Prguse,
-                        Location = new Point(260, 157),
+                        Location = new Point(260, 126),
                         Parent = this,
                         PressedIndex = 208,
                     };
@@ -88,7 +88,7 @@ namespace MirClient.MirControls
                         HoverIndex = 211,
                         Index = 210,
                         Library = Libraries.Prguse,
-                        Location = new Point(360, 157),
+                        Location = new Point(360, 126),
                         Parent = this,
                         PressedIndex = 212,
                     };
@@ -100,7 +100,7 @@ namespace MirClient.MirControls
                         HoverIndex = 207,
                         Index = 206,
                         Library = Libraries.Prguse,
-                        Location = new Point(160, 157),
+                        Location = new Point(160, 126),
                         Parent = this,
                         PressedIndex = 208,
                     };
@@ -110,7 +110,7 @@ namespace MirClient.MirControls
                         HoverIndex = 211,
                         Index = 210,
                         Library = Libraries.Prguse,
-                        Location = new Point(260, 157),
+                        Location = new Point(260, 126),
                         Parent = this,
                         PressedIndex = 212,
                     };
@@ -120,7 +120,7 @@ namespace MirClient.MirControls
                         HoverIndex = 204,
                         Index = 203,
                         Library = Libraries.Prguse,
-                        Location = new Point(360, 157),
+                        Location = new Point(360, 126),
                         Parent = this,
                         PressedIndex = 205,
                     };
@@ -129,12 +129,11 @@ namespace MirClient.MirControls
                 case MirMessageBoxButtons.Cancel:
                     CancelButton = new MirButton
                     {
-                        HoverIndex = 204,
                         Index = 361,
                         Library = Libraries.Prguse,
-                        Location = new Point(360, 157),
+                        Location = new Point(360, 126),
                         Parent = this,
-                        PressedIndex = 205,
+                        PressedIndex = 205
                     };
                     CancelButton.Click += (o, e) => Dispose();
                     break;

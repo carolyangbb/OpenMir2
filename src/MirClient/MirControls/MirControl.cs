@@ -138,6 +138,7 @@ namespace MirClient.MirControls
                 Redraw();
             }
         }
+
         protected virtual void CreateTexture()
         {
             if (ControlTexture == null || ControlTexture.IsDisposed)
@@ -251,7 +252,15 @@ namespace MirClient.MirControls
 
         #region Events
         protected bool HasShown;
-        public event EventHandler Click, DoubleClick, BeforeDraw, AfterDraw, MouseEnter, MouseLeave, Shown, BeforeShown, Disposing;
+        public event EventHandler Click;
+        public event EventHandler DoubleClick;
+        public event EventHandler BeforeDraw;
+        public event EventHandler AfterDraw;
+        public event EventHandler MouseEnter;
+        public event EventHandler MouseLeave;
+        public event EventHandler Shown;
+        public event EventHandler BeforeShown;
+        public event EventHandler Disposing;
         public event MouseEventHandler MouseWheel, MouseMove, MouseDown, MouseUp;
         public event KeyEventHandler KeyDown, KeyUp;
         public event KeyPressEventHandler KeyPress;
@@ -456,11 +465,9 @@ namespace MirClient.MirControls
 
         #region Size
 
-        // ReSharper disable InconsistentNaming
-        protected System.Drawing.Size _size;
-        // ReSharper restore InconsistentNaming
+        protected Size _size;
 
-        public virtual System.Drawing.Size Size
+        public virtual Size Size
         {
             get { return _size; }
             set
@@ -472,7 +479,7 @@ namespace MirClient.MirControls
             }
         }
 
-        public virtual System.Drawing.Size TrueSize
+        public virtual Size TrueSize
         {
             get { return _size; }
         }
@@ -750,9 +757,15 @@ namespace MirClient.MirControls
         protected void DrawChildControls()
         {
             if (Controls != null)
+            {
                 for (int i = 0; i < Controls.Count; i++)
+                {
                     if (Controls[i] != null)
+                    {
                         Controls[i].Draw();
+                    }
+                }
+            }
         }
 
         protected virtual void DrawBorder()
@@ -778,6 +791,7 @@ namespace MirClient.MirControls
             Moving = false;
             _movePoint = Point.Empty;
         }
+
         protected virtual void Dehighlight()
         {
             if (MouseControl != this)
@@ -785,6 +799,7 @@ namespace MirClient.MirControls
             MouseControl.OnMouseLeave();
             MouseControl = null;
         }
+
         protected virtual void Activate()
         {
             if (ActiveControl == this)
@@ -795,6 +810,7 @@ namespace MirClient.MirControls
 
             ActiveControl = this;
         }
+
         protected virtual void Highlight()
         {
             if (MouseControl == this)
@@ -816,6 +832,7 @@ namespace MirClient.MirControls
         {
             return Visible && (DisplayRectangle.Contains(p) || Moving || Modal) && !NotControl;
         }
+
         protected virtual void OnMouseEnter()
         {
             if (!_enabled && !AllowDisabledMouseOver)
@@ -826,6 +843,7 @@ namespace MirClient.MirControls
             if (MouseEnter != null)
                 MouseEnter.Invoke(this, EventArgs.Empty);
         }
+
         protected virtual void OnMouseLeave()
         {
             if (!_enabled && !AllowDisabledMouseOver)
@@ -836,6 +854,7 @@ namespace MirClient.MirControls
             if (MouseLeave != null)
                 MouseLeave.Invoke(this, EventArgs.Empty);
         }
+
         public virtual void OnMouseClick(MouseEventArgs e)
         {
             if (!Enabled)
@@ -847,6 +866,7 @@ namespace MirClient.MirControls
             if (Click != null)
                 InvokeMouseClick(e);
         }
+
         public virtual void OnMouseDoubleClick(MouseEventArgs e)
         {
             if (!Enabled)
@@ -861,20 +881,22 @@ namespace MirClient.MirControls
             else
                 OnMouseClick(e);
         }
+
         public void InvokeMouseClick(EventArgs e)
         {
             if (Click != null)
                 Click.Invoke(this, e);
         }
+
         public void InvokeMouseDoubleClick(EventArgs e)
         {
             DoubleClick.Invoke(this, e);
         }
+
         public virtual void OnMouseMove(MouseEventArgs e)
         {
             if (!_enabled && !AllowDisabledMouseOver)
                 return;
-
 
             if (Moving)
             {
@@ -1019,8 +1041,8 @@ namespace MirClient.MirControls
 
         public virtual void Redraw()
         {
-            if (Parent != null) Parent.Redraw();
-
+            if (Parent != null) 
+                Parent.Redraw();
         }
 
         #region Font
@@ -1144,8 +1166,5 @@ namespace MirClient.MirControls
             IsDisposed = true;
         }
         #endregion
-
-
-
     }
 }

@@ -60,18 +60,6 @@ namespace MirClient.MirScenes
 
         }
 
-        public override void Show()
-        {
-            if (Visible) return;
-            Visible = true;
-            //AccountIDTextBox.SetFocus();
-
-            //if (Settings.Password != string.Empty && Settings.AccountID != string.Empty)
-            //{
-            //    Login();
-            //}
-        }
-
         #region Disposable
         protected override void Dispose(bool disposing)
         {
@@ -80,6 +68,7 @@ namespace MirClient.MirScenes
                 _background = null;
                 Version = null;
                 _login = null;
+                _connectBox = null;
             }
 
             base.Dispose(disposing);

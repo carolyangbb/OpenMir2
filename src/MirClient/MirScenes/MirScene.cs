@@ -67,7 +67,6 @@ namespace MirClient.MirScenes
             black.G = BackColour.G;
             black.B = BackColour.B;
             black.A = BackColour.A;
-            //new RawColorBGRA(BackColour.B, BackColour.G, BackColour.R, BackColour.A)
             DXManager.Device.Clear(ClearFlags.Target, black, 0, 0);
 
             BeforeDrawControl();
@@ -75,7 +74,6 @@ namespace MirClient.MirScenes
             AfterDrawControl();
 
             DXManager.Sprite.Flush();
-
 
             DXManager.SetSurface(oldSurface);
             TextureValid = true;
@@ -92,6 +90,7 @@ namespace MirClient.MirScenes
             else
                 base.OnMouseDown(e);
         }
+
         public override void OnMouseUp(MouseEventArgs e)
         {
             if (!Enabled)
@@ -101,6 +100,7 @@ namespace MirClient.MirScenes
             else
                 base.OnMouseUp(e);
         }
+
         public override void OnMouseMove(MouseEventArgs e)
         {
             if (!Enabled)
@@ -111,6 +111,7 @@ namespace MirClient.MirScenes
             else
                 base.OnMouseMove(e);
         }
+
         public override void OnMouseWheel(MouseEventArgs e)
         {
             if (!Enabled)
