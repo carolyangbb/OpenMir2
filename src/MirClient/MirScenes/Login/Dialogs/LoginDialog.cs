@@ -9,7 +9,6 @@ namespace MirClient.MirScenes.Login
 {
     public sealed class LoginDialog : MirImageControl
     {
-        public MirImageControl TitleLabel, AccountIDLabel, PassLabel;
         public MirButton AccountButton, CloseButton, OKButton, PassButton, ViewKeyButton;
         public MirTextBox AccountIDTextBox, PasswordTextBox;
         private bool _accountIDValid, _passwordValid;
@@ -21,30 +20,6 @@ namespace MirClient.MirScenes.Login
             Location = new Point((Settings.ScreenWidth - Size.Width) / 2, (Settings.ScreenHeight - Size.Height) / 2);
             PixelDetect = false;
             Size = new Size(328, 220);
-
-            TitleLabel = new MirImageControl
-            {
-                Index = 30,
-                Library = Libraries.Title,
-                Parent = this,
-            };
-            TitleLabel.Location = new Point((Size.Width - TitleLabel.Size.Width) / 2, 12);
-
-            AccountIDLabel = new MirImageControl
-            {
-                Index = 31,
-                Library = Libraries.Title,
-                Parent = this,
-                Location = new Point(52, 83),
-            };
-
-            PassLabel = new MirImageControl
-            {
-                Index = 32,
-                Library = Libraries.Title,
-                Parent = this,
-                Location = new Point(43, 105)
-            };
 
             OKButton = new MirButton
             {
@@ -216,18 +191,13 @@ namespace MirClient.MirScenes.Login
         {
             if (disposing)
             {
-                TitleLabel = null;
-                AccountIDLabel = null;
-                PassLabel = null;
                 AccountButton = null;
                 CloseButton = null;
                 OKButton = null;
                 PassButton = null;
                 AccountIDTextBox = null;
                 PasswordTextBox = null;
-
             }
-
             base.Dispose(disposing);
         }
 

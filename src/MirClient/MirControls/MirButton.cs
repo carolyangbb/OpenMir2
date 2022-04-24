@@ -1,7 +1,9 @@
 ﻿using MirClient.MirSounds;
+using SharpDX;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Color = System.Drawing.Color;
 
 namespace MirClient.MirControls
 {
@@ -156,8 +158,22 @@ namespace MirClient.MirControls
                 _label.Text = value;
                 _label.Visible = !string.IsNullOrEmpty(value);
             }
+            get
+            {
+                return _label.Text;
+            }
         }
         #endregion
+
+        public void SetFont(Font font)
+        {
+            _label.Font = font;
+        }
+
+        public void DrawPosition(Vector3 vector)
+        {
+            _label.Location = new System.Drawing.Point((int)vector.X, (int)vector.Y);
+        }
 
         public bool OnlyDrawWhenActive;
 
@@ -187,16 +203,19 @@ namespace MirClient.MirControls
             Redraw();
             base.Highlight();
         }
+
         protected override void Activate()
         {
             Redraw();
             base.Activate();
         }
+
         protected override void Dehighlight()
         {
             Redraw();
             base.Dehighlight();
         }
+
         protected override void Deactivate()
         {
             Redraw();

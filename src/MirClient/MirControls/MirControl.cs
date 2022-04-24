@@ -1050,7 +1050,6 @@ namespace MirClient.MirControls
         {
             var theFont = new System.Drawing.Font(font.Name, font.Size * 96f / GameFrm.Graphics.DpiX, font.Style);
             font.Dispose();
-
             return theFont;
         }
         #endregion

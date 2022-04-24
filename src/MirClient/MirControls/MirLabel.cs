@@ -186,7 +186,6 @@ namespace MirClient.MirControls
             _outLine = true;
             _outLineColour = Color.Black;
             _text = string.Empty;
-
         }
 
         protected override unsafe void CreateTexture()

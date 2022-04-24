@@ -156,8 +156,10 @@
     <Compile Include="MirGraphics\MLibrary.cs" />
     <Compile Include="MirObjects\Frame.cs" />
     <Compile Include="MirScenes\Login\Dialogs\LoginDialog.cs" />
+    <Compile Include="MirScenes\Login\Dialogs\SelectServerDialog.cs" />
     <Compile Include="MirScenes\Login\LoginScene.cs" />
     <Compile Include="MirScenes\MirScene.cs" />
+    <Compile Include="MirScenes\SelChr\SelectScene.cs" />
     <Compile Include="MirSounds\Libraries\ISoundLibrary.cs" />
     <Compile Include="MirSounds\Libraries\NullLibrary.cs" />
     <Compile Include="MirSounds\Libraries\WavLibrary.cs" />
@@ -214,6 +216,7 @@
       <Version>4.2.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -16,6 +16,8 @@ namespace MirClient
             {
 
             }
+
+            Settings.UseTestConfig = true;
             //Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

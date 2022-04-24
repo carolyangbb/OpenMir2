@@ -15,6 +15,7 @@ namespace MirClient.MirScenes
         private MirAnimatedControl _background;
         private MirLabel Version;
         private LoginDialog _login;
+        private SelectServerDialog _selectServer;
         private MirMessageBox _connectBox;
 
         public LoginScene()
@@ -25,8 +26,8 @@ namespace MirClient.MirScenes
             _background = new MirAnimatedControl
             {
                 Animated = false,
-                AnimationCount = 19,
-                AnimationDelay = 100,
+                AnimationCount = 11,
+                AnimationDelay = 230,
                 Index = 22,
                 Library = Libraries.ChrSel,
                 Loop = false,
@@ -34,6 +35,8 @@ namespace MirClient.MirScenes
             };
 
             _login = new LoginDialog { Parent = _background, Visible = false };
+
+            _selectServer = new SelectServerDialog(this) { Parent = _background, Visible = false };
 
             Version = new MirLabel
             {
@@ -51,7 +54,21 @@ namespace MirClient.MirScenes
             Shown += (sender, agrs) =>
             {
                 //_connectBox.Show();
-                _login.Show();
+                _selectServer.Show();
+            };
+        }
+
+        public void OpenDoor()
+        {
+            Enabled = false;
+            _login.Dispose();
+
+            SoundManager.PlaySound(SoundList.LoginEffect);
+            _background.Animated = true;
+            _background.AfterAnimation += (o, e) =>
+            {
+                Dispose();
+                ActiveScene = new SelectScene();
             };
         }
 
