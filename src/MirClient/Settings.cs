@@ -9,7 +9,7 @@ namespace MirClient
     {
         public const long CleanDelay = 600000;
 
-        public static int ScreenWidth = 800, ScreenHeight = 600;
+        public static int ScreenWidth = 1024, ScreenHeight = 768;
         private static InIReader Reader = new InIReader(@".\Mir2Config.ini");
 
         private static bool _useTestConfig;
@@ -70,7 +70,7 @@ namespace MirClient
         public static int RemainingErrorLogs = 100;
 
         //Graphics
-        public static bool FullScreen = true, Borderless = true, TopMost = true, MouseClip = false;
+        public static bool FullScreen = false, Borderless = true, TopMost = true, MouseClip = false;
         public static string FontName = "Tahoma";
         public static float FontSize = 8F;
         public static bool UseMouseCursors = true;

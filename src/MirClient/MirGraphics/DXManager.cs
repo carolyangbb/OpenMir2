@@ -72,7 +72,7 @@ namespace MirClient.MirGraphics
                 BackBufferHeight = Settings.ScreenHeight,
                 SwapEffect = SwapEffect.Discard,
                 PresentationInterval = Settings.FPSCap ? PresentInterval.One : PresentInterval.Immediate,
-                Windowed = Settings.FullScreen
+                Windowed = !Settings.FullScreen
             };
 
             Direct3D d3d = new Direct3D();

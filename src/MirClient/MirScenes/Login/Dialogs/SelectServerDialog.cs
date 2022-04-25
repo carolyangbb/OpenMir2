@@ -41,7 +41,7 @@ namespace MirClient.MirScenes.Login
                 Library = Libraries.Prguse3,
                 Location = new Point(65, 200),
                 Parent = this,
-                PressedIndex = 325,
+                PressedIndex = 3,
             };
             SerButton.Click += (o, e) =>
             {
@@ -57,7 +57,8 @@ namespace MirClient.MirScenes.Login
                 Parent = SerButton,
                 Text = "江山如画",
             };
-            //SerNameLable.Font = new Font("宋体", 12, FontStyle.Bold);
+            SerNameLable.Font = new Font("宋体", 12, FontStyle.Bold);
+            SerNameLable.ForeColour = Color.Yellow;
         }
 
         public override void Show()

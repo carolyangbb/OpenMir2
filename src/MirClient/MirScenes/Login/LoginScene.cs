@@ -2,8 +2,10 @@
 using MirClient.MirGraphics;
 using MirClient.MirScenes.Login;
 using MirClient.MirSounds;
+using SharpDX.DirectWrite;
 using System.Drawing;
 using System.Windows.Forms;
+using Font = System.Drawing.Font;
 
 namespace MirClient.MirScenes
 {
@@ -13,7 +15,7 @@ namespace MirClient.MirScenes
     public sealed class LoginScene : MirScene
     {
         private MirAnimatedControl _background;
-        private MirLabel Version;
+        private MirLabel _version;
         private LoginDialog _login;
         private SelectServerDialog _selectServer;
         private MirMessageBox _connectBox;
@@ -38,17 +40,17 @@ namespace MirClient.MirScenes
 
             _selectServer = new SelectServerDialog(this) { Parent = _background, Visible = false };
 
-            Version = new MirLabel
+            _version = new MirLabel
             {
                 AutoSize = true,
                 BackColour = Color.FromArgb(200, 50, 50, 50),
                 Border = true,
                 BorderColour = Color.Black,
+                ForeColour = Color.Lime,
                 Location = new Point(5, Settings.ScreenHeight - 20),
                 Parent = _background,
                 Text = string.Format("Build: {0}.{1}.{2}", Globals.ProductCodename, Settings.UseTestConfig ? "Debug" : "Release", Application.ProductVersion),
             };
-
             _connectBox = new MirMessageBox("游戏连接已关闭...", MirMessageBoxButtons.Cancel);
             _connectBox.CancelButton.Click += (o, e) => Program.Form.Close();
             Shown += (sender, agrs) =>
@@ -83,7 +85,7 @@ namespace MirClient.MirScenes
             if (disposing)
             {
                 _background = null;
-                Version = null;
+                _version = null;
                 _login = null;
                 _connectBox = null;
             }
