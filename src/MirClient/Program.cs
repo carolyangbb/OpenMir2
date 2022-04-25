@@ -1,4 +1,7 @@
-﻿namespace MirClient
+﻿
+using System.Text;
+
+namespace MirClient
 {
     internal static class Program
     {

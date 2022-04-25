@@ -735,13 +735,13 @@ namespace MirClient.MirGraphics
             if (point.X >= Settings.ScreenWidth || point.Y >= Settings.ScreenHeight || point.X + mi.Width < 0 || point.Y + mi.Height < 0)
                 return;
 
-            if (section.Right > mi.Width)
-                //section.Width -= section.Right - mi.Width;
+            //if (section.Right > mi.Width)
+            //    section.Top -= section.Right - mi.Width;
 
-                if (section.Bottom > mi.Height)
-                    //section.Height -= section.Bottom - mi.Height;
+            //if (section.Bottom > mi.Height)
+            //    section.Left -= section.Bottom - mi.Height;
 
-                    DXManager.DrawOpaque(mi.Image, section, new Vector3(point.X, point.Y, 0.0F), colour, opacity);
+            DXManager.DrawOpaque(mi.Image, section, new Vector3(point.X, point.Y, 0.0F), colour, opacity);
 
             mi.CleanTime = GameFrm.Time + Settings.CleanDelay;
         }

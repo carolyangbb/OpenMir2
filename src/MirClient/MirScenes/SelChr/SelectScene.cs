@@ -1,13 +1,7 @@
 ﻿using MirClient.MirControls;
 using MirClient.MirGraphics;
 using MirClient.MirSounds;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace MirClient.MirScenes
 {
@@ -30,19 +24,23 @@ namespace MirClient.MirScenes
 
             ServerLabel = new MirLabel
             {
-                Location = new Point(432, 60),
+                AutoSize = true,
+                Location = new Point(Settings.ScreenWidth / 2 - TextWidth("江山如画") / 2, ((Settings.ScreenHeight - 600) / 2) + 4),
                 Parent = Background,
-                Size = new Size(155, 17),
-                Text = "Legend of Mir 2",
+                Text = "江山如画",
                 DrawFormat = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter
             };
+        }
 
-
+        private int TextWidth(string text)
+        {
+            var ascii = Encoding.ASCII.GetBytes(text);
+            return ascii.Length * 12;
         }
 
         public override void Process()
         {
-           
+
         }
     }
 }

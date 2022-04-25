@@ -1,7 +1,6 @@
 ﻿using MirClient.MirGraphics;
 using SharpDX;
-using System;
-using System.Drawing;
+using SharpDX.Mathematics.Interop;
 using Color = System.Drawing.Color;
 using Point = System.Drawing.Point;
 
@@ -164,7 +163,6 @@ namespace MirClient.MirControls
                 return base.TrueSize;
             }
         }
-
         #endregion
 
         public MirImageControl()

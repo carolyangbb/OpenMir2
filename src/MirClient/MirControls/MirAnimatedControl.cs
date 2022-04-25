@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MirClient.MirGraphics;
+using SharpDX;
 
 namespace MirClient.MirControls
 {
     public class MirAnimatedControl : MirImageControl
     {
-        public static List<MirAnimatedControl> Animations = new List<MirAnimatedControl>();
+        public static IList<MirAnimatedControl> Animations = new List<MirAnimatedControl>();
 
         #region Animated
 

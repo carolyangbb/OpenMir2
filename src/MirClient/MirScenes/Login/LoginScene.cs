@@ -10,7 +10,8 @@ namespace MirClient.MirScenes
     /// </summary>
     public sealed class LoginScene : MirScene
     {
-        private MirAnimatedControl _background;
+        private MirImageControl _background;
+        private MirAnimatedControl _openDoor;
         private MirLabel _version;
         private LoginDialog _login;
         private SelectServerDialog _selectServer;
@@ -21,7 +22,15 @@ namespace MirClient.MirScenes
             SoundManager.PlaySound(SoundList.IntroMusic, true);
             Disposing += (o, e) => SoundManager.StopSound(SoundList.IntroMusic);
 
-            _background = new MirAnimatedControl
+            _background = new MirImageControl
+            {
+                Index = 22,
+                Library = Libraries.ChrSel,
+                Parent = this,
+                Location = new Point((Settings.ScreenWidth - 800) / 2, (Settings.ScreenHeight - 600) / 2)
+            };
+
+            _openDoor = new MirAnimatedControl
             {
                 Animated = false,
                 AnimationCount = 11,
@@ -29,7 +38,7 @@ namespace MirClient.MirScenes
                 Index = 22,
                 Library = Libraries.ChrSel,
                 Loop = false,
-                Parent = this
+                Parent = _background
             };
 
             _login = new LoginDialog { Parent = _background, Visible = false };
@@ -45,7 +54,7 @@ namespace MirClient.MirScenes
                 ForeColour = Color.Lime,
                 Location = new Point(5, Settings.ScreenHeight - 20),
                 Parent = _background,
-                Text = string.Format("Build: {0}.{1}.{2}", Globals.ProductCodename, Settings.UseTestConfig ? "Debug" : "Release", Application.ProductVersion),
+                Text = string.Format("Build: {0}.{1}.{2}", Globals.ProductCodename, Settings.UseTestConfig ? "Debug" : "Release", Application.ProductVersion)
             };
             _connectBox = new MirMessageBox("游戏连接已关闭...", MirMessageBoxButtons.Cancel);
             _connectBox.CancelButton.Click += (o, e) => Program.Form.Close();
@@ -62,8 +71,9 @@ namespace MirClient.MirScenes
             _login.Dispose();
 
             SoundManager.PlaySound(SoundList.LoginEffect);
-            _background.Animated = true;
-            _background.AfterAnimation += (o, e) =>
+            _openDoor.Animated = true;
+            _openDoor.Location = new Point((Settings.ScreenWidth - 800) / 2 + 152, (Settings.ScreenHeight - 600) / 2 + 96);
+            _openDoor.AfterAnimation += (o, e) =>
             {
                 Dispose();
                 ActiveScene = new SelectScene();
@@ -84,6 +94,7 @@ namespace MirClient.MirScenes
                 _version = null;
                 _login = null;
                 _connectBox = null;
+                _openDoor = null;
             }
 
             base.Dispose(disposing);
