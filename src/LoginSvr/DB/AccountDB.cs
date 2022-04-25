@@ -87,7 +87,7 @@ namespace LoginSvr
             int nIndex = 0;
             bool boDeleted;
             string sAccount;
-            const string sSQL = "SELECT Id,FLD_DELETED，FLD_LOGINID FROM TBL_ACCOUNT";
+            const string sSQL = "SELECT Id,FLD_DELETED,FLD_LOGINID FROM TBL_ACCOUNT";
             _quickList.Clear();
             MySqlConnection dbConnection = null;
             if (!Open(ref dbConnection))
