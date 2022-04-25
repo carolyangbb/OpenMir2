@@ -33,16 +33,16 @@
             // 
             // GameFrm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(550, 480);
+            this.ClientSize = new System.Drawing.Size(1314, 760);
             this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(6);
+            this.Margin = new System.Windows.Forms.Padding(7, 8, 7, 8);
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(374, 333);
+            this.MinimumSize = new System.Drawing.Size(432, 409);
             this.Name = "GameFrm";
             this.Text = "Legend of Mir";
             this.Load += new System.EventHandler(this.GameFrm_Load);

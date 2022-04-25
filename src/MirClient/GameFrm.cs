@@ -5,19 +5,13 @@ using MirClient.MirSounds;
 using SharpDX.Direct3D9;
 using SharpDX.Mathematics.Interop;
 using SharpDX.Windows;
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Threading;
-using System.Windows.Forms;
 
 namespace MirClient
 {
@@ -143,6 +137,10 @@ namespace MirClient
             var curs = new Cursor(hCurs);
             // Note: force the cursor to own the handle so it gets released properly
             var fi = typeof(Cursor).GetField("ownHandle", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fi == null)
+            {
+                return curs;
+            }
             fi.SetValue(curs, true);
             return curs;
         }

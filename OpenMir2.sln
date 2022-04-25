@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MakePlayer", "src\MakePlaye
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RobotSvr", "src\RobotSvr\RobotSvr.csproj", "{CE027F17-B4FA-4408-9EDC-1538EA38C80C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MirClient", "src\MirClient\MirClient.csproj", "{35050645-A39D-483B-BB24-3EFCC5F7E720}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MirClient", "src\MirClient\MirClient.csproj", "{35050645-A39D-483B-BB24-3EFCC5F7E720}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

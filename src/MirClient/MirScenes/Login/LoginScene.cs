@@ -2,10 +2,6 @@
 using MirClient.MirGraphics;
 using MirClient.MirScenes.Login;
 using MirClient.MirSounds;
-using SharpDX.DirectWrite;
-using System.Drawing;
-using System.Windows.Forms;
-using Font = System.Drawing.Font;
 
 namespace MirClient.MirScenes
 {

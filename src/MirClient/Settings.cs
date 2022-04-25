@@ -1,7 +1,4 @@
 using MirClient.MirSounds;
-using System;
-using System.IO;
-using System.Windows.Forms;
 
 namespace MirClient
 {
@@ -9,7 +6,7 @@ namespace MirClient
     {
         public const long CleanDelay = 600000;
 
-        public static int ScreenWidth = 1024, ScreenHeight = 768;
+        public static int ScreenWidth = 800, ScreenHeight = 600;
         private static InIReader Reader = new InIReader(@".\Mir2Config.ini");
 
         private static bool _useTestConfig;
