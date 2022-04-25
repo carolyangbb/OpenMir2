@@ -111,7 +111,9 @@ namespace MirClient.MirScenes
             };
             DscStart.Click += (o, i) =>
             {
-                MessageBoxDlg("一开始你应该创建一个新角色。\r\n选择<创建角色>你就能建立一个新角色。");
+                ActiveScene = new NoticeScene();
+                Dispose();
+                //MessageBoxDlg("一开始你应该创建一个新角色。\r\n选择<创建角色>你就能建立一个新角色。");
             };
 
             DscNewChr = new MirButton()
@@ -173,7 +175,7 @@ namespace MirClient.MirScenes
         {
 
         }
-    
+
         private void UpdateInterface()
         {
             for (int i = 0; i < CharacterButtons.Length; i++)
@@ -221,7 +223,6 @@ namespace MirClient.MirScenes
             }
             MirMessageBox.Show();
         }
-
 
         public sealed class CharacterButton : MirImageControl
         {

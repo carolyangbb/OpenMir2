@@ -84,6 +84,21 @@ namespace MirClient
             }
         }
 
+        public static void DisplayChange(int width, int height)
+        {
+            if (Settings.ScreenWidth == width && Settings.ScreenHeight == height) return;
+
+            Settings.ScreenWidth = width;
+            Settings.ScreenHeight = height;
+            Program.Form.ClientSize = new Size(width, height);
+
+            DXManager.Device.Clear(ClearFlags.Target, new RawColorBGRA(Color.CornflowerBlue.B, Color.CornflowerBlue.G, Color.CornflowerBlue.R, Color.CornflowerBlue.A), 0, 0);
+            DXManager.Device.Present();
+            DXManager.ResetDevice();
+
+            Program.Form.CenterToScreen();
+        }
+
         public static void SetMouseCursor(MouseCursor cursor)
         {
             if (!Settings.UseMouseCursors) return;
