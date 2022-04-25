@@ -1,7 +1,5 @@
 ﻿using MirClient.MirGraphics;
 using MirClient.MirScenes;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace MirClient.MirControls
 {
@@ -155,7 +153,6 @@ namespace MirClient.MirControls
                     ((MirTextBox)T.Tag).DialogChanged();
             }
         }
-
 
         public override void OnKeyDown(KeyEventArgs e)
         {
