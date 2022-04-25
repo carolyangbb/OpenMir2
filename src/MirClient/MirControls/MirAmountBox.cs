@@ -1,9 +1,8 @@
 ﻿using MirClient.MirGraphics;
 using MirClient.MirScenes;
 using MirClient.MirSounds;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
+using Color = SharpDX.Color;
+using WColor = System.Drawing.Color;
 
 namespace MirClient.MirControls
 {
@@ -85,7 +84,7 @@ namespace MirClient.MirControls
             {
                 Parent = this,
                 Border = true,
-                BorderColour = Color.Lime,
+                BorderColour = WColor.Lime,
                 Location = new Point(58, 43),
                 Size = new Size(132, 19),
             };
@@ -124,7 +123,7 @@ namespace MirClient.MirControls
             {
                 AutoSize = true,
                 Location = new Point(60, 43),
-                ForeColour = Color.Yellow,
+                ForeColour = WColor.Yellow,
                 Parent = this,
                 NotControl = true,
                 Text = message
@@ -177,7 +176,7 @@ namespace MirClient.MirControls
         {
             if (uint.TryParse(InputTextBox.Text, out Amount) && Amount >= MinAmount)
             {
-                InputTextBox.BorderColour = Color.Lime;
+                InputTextBox.BorderColour = WColor.Lime;
 
                 OKButton.Visible = true;
                 if (Amount > MaxAmount)
@@ -188,11 +187,11 @@ namespace MirClient.MirControls
                 }
 
                 if (Amount == MaxAmount)
-                    InputTextBox.BorderColour = Color.Orange;
+                    InputTextBox.BorderColour = WColor.Orange;
             }
             else
             {
-                InputTextBox.BorderColour = Color.Red;
+                InputTextBox.BorderColour = WColor.Red;
                 OKButton.Visible = false;
             }
         }

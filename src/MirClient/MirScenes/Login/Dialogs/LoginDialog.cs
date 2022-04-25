@@ -1,9 +1,7 @@
 ﻿using MirClient.MirControls;
 using MirClient.MirGraphics;
-using System;
-using System.Drawing;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
+using WColor = System.Drawing.Color;
 
 namespace MirClient.MirScenes.Login
 {
@@ -106,13 +104,13 @@ namespace MirClient.MirScenes.Login
             {
                 _accountIDValid = false;
                 AccountIDTextBox.Border = !string.IsNullOrEmpty(AccountIDTextBox.Text);
-                AccountIDTextBox.BorderColour = Color.Red;
+                AccountIDTextBox.BorderColour = WColor.Red;
             }
             else
             {
                 _accountIDValid = true;
                 AccountIDTextBox.Border = true;
-                AccountIDTextBox.BorderColour = Color.Green;
+                AccountIDTextBox.BorderColour = WColor.Green;
             }
         }
 
@@ -124,13 +122,13 @@ namespace MirClient.MirScenes.Login
             {
                 _passwordValid = false;
                 PasswordTextBox.Border = !string.IsNullOrEmpty(PasswordTextBox.TextBox.Text);
-                PasswordTextBox.BorderColour = Color.Red;
+                PasswordTextBox.BorderColour = WColor.Red;
             }
             else
             {
                 _passwordValid = true;
                 PasswordTextBox.Border = true;
-                PasswordTextBox.BorderColour = Color.Green;
+                PasswordTextBox.BorderColour = WColor.Green;
             }
 
             RefreshLoginButton();

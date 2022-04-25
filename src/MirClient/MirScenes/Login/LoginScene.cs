@@ -2,6 +2,8 @@
 using MirClient.MirGraphics;
 using MirClient.MirScenes.Login;
 using MirClient.MirSounds;
+using Color = SharpDX.Color;
+using WColor = System.Drawing.Color;
 
 namespace MirClient.MirScenes
 {
@@ -48,10 +50,10 @@ namespace MirClient.MirScenes
             _version = new MirLabel
             {
                 AutoSize = true,
-                BackColour = Color.FromArgb(200, 50, 50, 50),
+                BackColour = WColor.FromArgb(200, 50, 50, 50),
                 Border = true,
-                BorderColour = Color.Black,
-                ForeColour = Color.Lime,
+                BorderColour = WColor.Black,
+                ForeColour = WColor.Lime,
                 Location = new Point(5, Settings.ScreenHeight - 20),
                 Parent = _background,
                 Text = string.Format("Build: {0}.{1}.{2}", Globals.ProductCodename, Settings.UseTestConfig ? "Debug" : "Release", Application.ProductVersion)

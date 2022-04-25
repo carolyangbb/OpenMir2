@@ -2,12 +2,9 @@
 using MirClient.MirScenes;
 using SharpDX;
 using SharpDX.Direct3D9;
-using System;
-using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Windows.Forms;
-using Color = System.Drawing.Color;
+using Color = SharpDX.Color;
+using WColor = System.Drawing.Color;
 using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;
 
@@ -254,7 +251,7 @@ namespace MirClient.MirControls
 
         public MirTextBox()
         {
-            BackColour = Color.Black;
+            BackColour = WColor.Black;
 
             DrawControlTexture = true;
             TextureValid = false;
@@ -370,7 +367,6 @@ namespace MirClient.MirControls
                 e.Handled = true;
             }
         }
-
 
         void MirTextBox_Shown(object sender, EventArgs e)
         {

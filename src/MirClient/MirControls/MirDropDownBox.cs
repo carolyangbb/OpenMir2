@@ -1,8 +1,8 @@
 ﻿using MirClient.MirGraphics;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
+using SharpDX;
+using Color = SharpDX.Color;
+using WColor = System.Drawing.Color;
+using Point = System.Drawing.Point;
 
 namespace MirClient.MirControls
 {
@@ -103,8 +103,8 @@ namespace MirClient.MirControls
 
         public MirDropDownBox()
         {
-            BackColour = Color.FromArgb(255, 6, 6, 6);
-            ForeColour = Color.White;
+            BackColour = WColor.FromArgb(255, 6, 6, 6);
+            ForeColour = WColor.White;
             Enabled = false;
             _label = new MirLabel
             {
@@ -128,7 +128,6 @@ namespace MirClient.MirControls
                         _label.Text = " ";
                     }
                     else
-
                         _label.Text = Items[SelectedIndex];
                 else
                     _label.Text = "None";
@@ -141,14 +140,14 @@ namespace MirClient.MirControls
                     Visible = false,
                     Location = new Point(0, 15 + (i * 13)),
                     ForeColour = ForeColour,
-                    BackColour = Color.FromArgb(255, 20, 20, 20),
+                    BackColour = WColor.FromArgb(255, 20, 20, 20),
                     Font = new Font(Settings.FontName, 8F)
                 };
                 int index = i;
-                _Option[index].MouseEnter += (o, e) => _Option[index].BackColour = Color.FromArgb(255, 140, 70, 0);
-                _Option[index].MouseLeave += (o, e) => _Option[index].BackColour = Color.FromArgb(255, 20, 20, 20);
-                _Option[index].MouseDown += (o, e) => _Option[index].BackColour = Color.FromArgb(255, 20, 20, 20);
-                _Option[index].MouseUp += (o, e) => _Option[index].BackColour = Color.FromArgb(255, 20, 20, 20);
+                _Option[index].MouseEnter += (o, e) => _Option[index].BackColour = WColor.FromArgb(255, 140, 70, 0);
+                _Option[index].MouseLeave += (o, e) => _Option[index].BackColour = WColor.FromArgb(255, 20, 20, 20);
+                _Option[index].MouseDown += (o, e) => _Option[index].BackColour = WColor.FromArgb(255, 20, 20, 20);
+                _Option[index].MouseUp += (o, e) => _Option[index].BackColour = WColor.FromArgb(255, 20, 20, 20);
                 _Option[index].Click += (o, e) => SelectOption(index);
 
                 _Option[index].BeforeDraw += (o, e) =>

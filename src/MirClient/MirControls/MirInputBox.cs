@@ -1,8 +1,6 @@
 ﻿using MirClient.MirGraphics;
 using MirClient.MirScenes;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
+using WColor = System.Drawing.Color;
 
 namespace MirClient.MirControls
 {
@@ -36,7 +34,7 @@ namespace MirClient.MirControls
             {
                 Parent = this,
                 Border = true,
-                BorderColour = Color.Lime,
+                BorderColour = WColor.Lime,
                 Location = new Point(23, 86),
                 Size = new Size(240, 19),
                 MaxLength = 50,

@@ -1,10 +1,8 @@
 ﻿using MirClient.MirControls;
 using MirClient.MirGraphics;
 using SharpDX.Direct3D9;
-using SharpDX.Mathematics.Interop;
-using System.Drawing;
-using System.Windows.Forms;
-using Color = System.Drawing.Color;
+using Color = SharpDX.Color;
+using WColor = System.Drawing.Color;
 
 namespace MirClient.MirScenes
 {
@@ -19,7 +17,7 @@ namespace MirClient.MirScenes
         protected MirScene()
         {
             DrawControlTexture = true;
-            BackColour = Color.Magenta;
+            BackColour = WColor.Magenta;
             Size = new Size(Settings.ScreenWidth, Settings.ScreenHeight);
         }
 
@@ -62,12 +60,7 @@ namespace MirClient.MirScenes
             Surface surface = ControlTexture.GetSurfaceLevel(0);
             DXManager.SetSurface(surface);
 
-            RawColorBGRA black;
-            black.R = BackColour.R;
-            black.G = BackColour.G;
-            black.B = BackColour.B;
-            black.A = BackColour.A;
-            DXManager.Device.Clear(ClearFlags.Target, black, 0, 0);
+            DXManager.Device.Clear(ClearFlags.Target, Color.Black, 0, 0);//BackColour
 
             BeforeDrawControl();
             DrawChildControls();

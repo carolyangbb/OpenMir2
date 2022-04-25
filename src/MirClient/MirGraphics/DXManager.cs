@@ -2,14 +2,14 @@
 using SharpDX;
 using SharpDX.Direct3D9;
 using SharpDX.Mathematics.Interop;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using Blend = SharpDX.Direct3D9.Blend;
-using Color = System.Drawing.Color;
+using Color = SharpDX.Color;
+using WColor = System.Drawing.Color;
 using Point = System.Drawing.Point;
-using Rectangle = System.Drawing.Rectangle;
+using Rectangle = SharpDX.Rectangle;
+using MirClient.MirScenes;
 
 namespace MirClient.MirGraphics
 {
@@ -17,7 +17,6 @@ namespace MirClient.MirGraphics
     {
         public static List<MImage> TextureList = new List<MImage>();
         public static List<MirControl> ControlList = new List<MirControl>();
-
 
         public static Device Device;
         public static Sprite Sprite;
@@ -105,17 +104,17 @@ namespace MirClient.MirGraphics
             var shaderGrayScalePath = Settings.ShadersPath + "grayscale.ps";
             var shaderMagicPath = Settings.ShadersPath + "magic.ps";
 
-            if (System.IO.File.Exists(shaderNormalPath))
+            if (File.Exists(shaderNormalPath))
             {
                 using (var gs = ShaderBytecode.AssembleFromFile(shaderNormalPath, ShaderFlags.None))
                     NormalPixelShader = new PixelShader(Device, gs);
             }
-            if (System.IO.File.Exists(shaderGrayScalePath))
+            if (File.Exists(shaderGrayScalePath))
             {
                 using (var gs = ShaderBytecode.AssembleFromFile(shaderGrayScalePath, ShaderFlags.None))
                     GrayScalePixelShader = new PixelShader(Device, gs);
             }
-            if (System.IO.File.Exists(shaderMagicPath))
+            if (File.Exists(shaderMagicPath))
             {
                 using (var gs = ShaderBytecode.AssembleFromFile(shaderMagicPath, ShaderFlags.None))
                     MagicPixelShader = new PixelShader(Device, gs);
@@ -138,7 +137,7 @@ namespace MirClient.MirGraphics
                 DataRectangle stream = RadarTexture.LockRectangle(0, LockFlags.Discard);
                 using (Bitmap image = new Bitmap(2, 2, 8, PixelFormat.Format32bppArgb, stream.DataPointer))
                 using (Graphics graphics = Graphics.FromImage(image))
-                    graphics.Clear(Color.White);
+                    graphics.Clear(WColor.White);
                 RadarTexture.UnlockRectangle(0);
             }
             if (PoisonDotBackground == null || PoisonDotBackground.IsDisposed)
@@ -148,7 +147,7 @@ namespace MirClient.MirGraphics
                 DataRectangle stream = PoisonDotBackground.LockRectangle(0, LockFlags.Discard);
                 using (Bitmap image = new Bitmap(5, 5, 20, PixelFormat.Format32bppArgb, stream.DataPointer))
                 using (Graphics graphics = Graphics.FromImage(image))
-                    graphics.Clear(Color.White);
+                    graphics.Clear(WColor.White);
                 PoisonDotBackground.UnlockRectangle(0);
             }
             CreateLights();
@@ -177,25 +176,15 @@ namespace MirClient.MirGraphics
                     {
                         using (GraphicsPath path = new GraphicsPath())
                         {
-                            //path.AddEllipse(new Rectangle(0, 0, width, height));
-                            //using (PathGradientBrush brush = new PathGradientBrush(path))
-                            //{
-                            //    graphics.Clear(Color.FromArgb(0, 0, 0, 0));
-                            //    brush.SurroundColors = new[] { Color.FromArgb(0, 255, 255, 255) };
-                            //    brush.CenterColor = Color.FromArgb(255, 255, 255, 255);
-                            //    graphics.FillPath(brush, path);
-                            //    graphics.Save();
-                            //}
-
-                            path.AddEllipse(new Rectangle(0, 0, width, height));
+                            path.AddEllipse(new System.Drawing.RectangleF(0, 0, width, height));
                             using (PathGradientBrush brush = new PathGradientBrush(path))
                             {
-                                Color[] blendColours = { Color.White,
-                                                     Color.FromArgb(255,210,210,210),
-                                                     Color.FromArgb(255,160,160,160),
-                                                     Color.FromArgb(255,70,70,70),
-                                                     Color.FromArgb(255,40,40,40),
-                                                     Color.FromArgb(0,0,0,0)};
+                                WColor[] blendColours = { WColor.White,
+                                                     WColor.FromArgb(255,210,210,210),
+                                                     WColor.FromArgb(255,160,160,160),
+                                                     WColor.FromArgb(255,70,70,70),
+                                                     WColor.FromArgb(255,40,40,40),
+                                                     WColor.FromArgb(0,0,0,0)};
 
                                 float[] radiusPositions = { 0f, .20f, .40f, .60f, .80f, 1.0f };
 
@@ -203,10 +192,10 @@ namespace MirClient.MirGraphics
                                 colourBlend.Colors = blendColours;
                                 colourBlend.Positions = radiusPositions;
 
-                                graphics.Clear(Color.FromArgb(0, 0, 0, 0));
+                                graphics.Clear(WColor.FromArgb(0, 0, 0, 0));
                                 brush.InterpolationColors = colourBlend;
                                 brush.SurroundColors = blendColours;
-                                brush.CenterColor = Color.White;
+                                brush.CenterColor = WColor.White;
                                 graphics.FillPath(brush, path);
                                 graphics.Save();
                             }
@@ -248,13 +237,13 @@ namespace MirClient.MirGraphics
             }
         }
 
-        public static void DrawOpaque(Texture texture, RawRectangle? sourceRect, Vector3? position, Color4 color, float opacity)
+        public static void DrawOpaque(Texture texture, Rectangle? sourceRect, Vector3? position, Color4 color, float opacity)
         {
             color.Alpha = opacity;
             Draw(texture, sourceRect, position, color);
         }
 
-        public static void Draw(Texture texture, RawRectangle? sourceRect, Vector3? position, Color4 color)
+        public static void Draw(Texture texture, Rectangle? sourceRect, Vector3? position, Color4 color)
         {
             ColorBGRA colorBGRA = new ColorBGRA(color);
             Sprite.Draw(texture, colorBGRA, sourceRect, Vector3.Zero, position);
@@ -344,14 +333,14 @@ namespace MirClient.MirGraphics
                 Device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
                 Device.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
                 Device.SetRenderState(RenderState.SourceBlendAlpha, Blend.One);
-                Device.SetRenderState(RenderState.BlendFactor, (float)Color.FromArgb(255, 255, 255, 255).ToArgb());
+                Device.SetRenderState(RenderState.BlendFactor, new Color(255, 255, 255, 255).ToRgba());
             }
             else
             {
                 Device.SetRenderState(RenderState.SourceBlend, Blend.BlendFactor);
                 Device.SetRenderState(RenderState.DestinationBlend, Blend.InverseBlendFactor);
                 Device.SetRenderState(RenderState.SourceBlendAlpha, Blend.SourceAlpha);
-                Device.SetRenderState(RenderState.BlendFactor, Color.FromArgb((byte)(255 * opacity), (byte)(255 * opacity), (byte)(255 * opacity), (byte)(255 * opacity)).ToArgb());
+                Device.SetRenderState(RenderState.BlendFactor, new Color((byte)(255 * opacity), (byte)(255 * opacity), (byte)(255 * opacity), (byte)(255 * opacity)).ToRgba());
             }
             Opacity = opacity;
             Sprite.Flush();
@@ -386,8 +375,8 @@ namespace MirClient.MirGraphics
                         Device.SetRenderState(RenderState.DestinationBlend, Blend.One);
                         break;
                 }
-                Device.SetRenderState(RenderState.BlendFactor, (float)Color.FromArgb((byte)(255 * BlendingRate), (byte)(255 * BlendingRate),
-                                                                (byte)(255 * BlendingRate), (byte)(255 * BlendingRate)).ToArgb());
+                Device.SetRenderState(RenderState.BlendFactor, new Color((byte)(255 * BlendingRate), (byte)(255 * BlendingRate),
+                                                                (byte)(255 * BlendingRate), (byte)(255 * BlendingRate)).ToRgba());
             }
             else
                 Sprite.Begin(SpriteFlags.AlphaBlend);
@@ -395,7 +384,7 @@ namespace MirClient.MirGraphics
             Device.SetRenderTarget(0, CurrentSurface);
         }
 
-        public static void SetNormal(float blend, Color tintcolor)
+        public static void SetNormal(float blend, Color4 tintcolor)
         {
             if (Device.PixelShader == NormalPixelShader)
                 return;
@@ -403,11 +392,11 @@ namespace MirClient.MirGraphics
             Sprite.Flush();
             Device.PixelShader = NormalPixelShader;
             Device.SetPixelShaderConstant(0, new RawVector4[] { new Vector4(1.0F, 1.0F, 1.0F, blend) });
-            Device.SetPixelShaderConstant(1, new RawVector4[] { new Vector4(tintcolor.R / 255, tintcolor.G / 255, tintcolor.B / 255, 1.0F) });
+            Device.SetPixelShaderConstant(1, new RawVector4[] { new Vector4(tintcolor.Red / 255, tintcolor.Green / 255, tintcolor.Blue / 255, 1.0F) });
             Sprite.Flush();
         }
 
-        public static void SetGrayscale(float blend, Color tintcolor)
+        public static void SetGrayscale(float blend, Color4 tintcolor)
         {
             if (Device.PixelShader == GrayScalePixelShader)
                 return;
@@ -415,11 +404,11 @@ namespace MirClient.MirGraphics
             Sprite.Flush();
             Device.PixelShader = GrayScalePixelShader;
             Device.SetPixelShaderConstant(0, new RawVector4[] { new Vector4(1.0F, 1.0F, 1.0F, blend) });
-            Device.SetPixelShaderConstant(1, new RawVector4[] { new Vector4(tintcolor.R / 255, tintcolor.G / 255, tintcolor.B / 255, 1.0F) });
+            Device.SetPixelShaderConstant(1, new RawVector4[] { new Vector4(tintcolor.Red / 255, tintcolor.Green / 255, tintcolor.Blue / 255, 1.0F) });
             Sprite.Flush();
         }
 
-        public static void SetBlendMagic(float blend, Color tintcolor)
+        public static void SetBlendMagic(float blend, Color4 tintcolor)
         {
             if (Device.PixelShader == MagicPixelShader || MagicPixelShader == null)
                 return;
@@ -427,7 +416,7 @@ namespace MirClient.MirGraphics
             Sprite.Flush();
             Device.PixelShader = MagicPixelShader;
             Device.SetPixelShaderConstant(0, new RawVector4[] { new Vector4(1.0F, 1.0F, 1.0F, blend) });
-            Device.SetPixelShaderConstant(1, new RawVector4[] { new Vector4(tintcolor.R / 255, tintcolor.G / 255, tintcolor.B / 255, 1.0F) });
+            Device.SetPixelShaderConstant(1, new RawVector4[] { new Vector4(tintcolor.Red / 255, tintcolor.Green / 255, tintcolor.Blue / 255, 1.0F) });
             Sprite.Flush();
         }
 
@@ -524,7 +513,7 @@ namespace MirClient.MirGraphics
                 }
 
                 FloorTexture = null;
-                //GameScene.Scene.MapControl.FloorValid = false;
+                GameScene.Scene.MapControl.FloorValid = false;
 
                 if (FloorSurface != null && !FloorSurface.IsDisposed)
                 {

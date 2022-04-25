@@ -4,6 +4,8 @@ using MirClient.MirSounds;
 using SharpDX;
 using System.Text;
 using Point = System.Drawing.Point;
+using Color = SharpDX.Color;
+using WColor = System.Drawing.Color;
 
 namespace MirClient.MirScenes
 {
@@ -75,7 +77,7 @@ namespace MirClient.MirScenes
             };
             CharacterDisplay.AfterDraw += (o, e) =>
             {
-                Libraries.ChrSel.DrawBlend(CharacterDisplay.Index + 560, CharacterDisplay.DisplayLocationWithoutOffSet, Color4.White, true);
+                Libraries.ChrSel.DrawBlend(CharacterDisplay.Index + 560, CharacterDisplay.DisplayLocationWithoutOffSet, Color.White, true);
             };
 
             CharacterButtons = new CharacterButton[2];

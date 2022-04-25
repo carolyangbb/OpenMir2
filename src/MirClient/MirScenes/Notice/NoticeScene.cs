@@ -1,5 +1,7 @@
 ﻿using MirClient.MirControls;
 using MirClient.MirGraphics;
+using Color = SharpDX.Color;
+using WColor = System.Drawing.Color;
 
 namespace MirClient.MirScenes
 {
@@ -13,7 +15,7 @@ namespace MirClient.MirScenes
             Background = new MirImageControl
             {
                 Parent = this,
-                BackColour = Color.Black
+                BackColour = WColor.Black
             };
 
             var noticeStr = "\n\n\n\n健康游戏公告\n\n\n\n抵制不良游戏，拒绝盗版游戏。\n 注意自我保护，谨防受骗上当。\n 适度游戏益脑，沉迷游戏伤身。 \n 合理安排时间，享受健康生活。\n\n\n\n热血管理";

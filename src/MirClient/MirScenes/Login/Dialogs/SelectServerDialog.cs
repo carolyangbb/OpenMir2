@@ -1,6 +1,5 @@
 ﻿using MirClient.MirControls;
 using MirClient.MirGraphics;
-using System.Drawing;
 
 namespace MirClient.MirScenes.Login
 {

@@ -3,7 +3,6 @@ using MirClient.MirGraphics;
 using MirClient.MirScenes;
 using MirClient.MirSounds;
 using SharpDX.Direct3D9;
-using SharpDX.Mathematics.Interop;
 using SharpDX.Windows;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -12,6 +11,8 @@ using System.Drawing.Text;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
+using Color = SharpDX.Color;
+using WColor = System.Drawing.Color;
 
 namespace MirClient
 {
@@ -35,6 +36,7 @@ namespace MirClient
         public static int DPSCounter;
         public static Cursor[] Cursors;
         public static MouseCursor CurrentCursor = MouseCursor.None;
+        public static readonly Random Random = new Random();
 
         public GameFrm()
         {
@@ -92,76 +94,12 @@ namespace MirClient
             Settings.ScreenHeight = height;
             Program.Form.ClientSize = new Size(width, height);
 
-            DXManager.Device.Clear(ClearFlags.Target, new RawColorBGRA(Color.CornflowerBlue.B, Color.CornflowerBlue.G, Color.CornflowerBlue.R, Color.CornflowerBlue.A), 0, 0);
+            DXManager.Device.Clear(ClearFlags.Target, Color.Black, 0, 0);
             DXManager.Device.Present();
             DXManager.ResetDevice();
 
             Program.Form.CenterToScreen();
         }
-
-        public static void SetMouseCursor(MouseCursor cursor)
-        {
-            if (!Settings.UseMouseCursors) return;
-
-            if (CurrentCursor != cursor)
-            {
-                CurrentCursor = cursor;
-                Program.Form.Cursor = Cursors[(byte)cursor];
-            }
-        }
-
-        private static void LoadMouseCursors()
-        {
-            Cursors = new Cursor[8];
-
-            Cursors[(int)MouseCursor.None] = Program.Form.Cursor;
-
-            string path = $"{Settings.MouseCursorPath}Cursor_Default.CUR";
-            if (File.Exists(path))
-                Cursors[(int)MouseCursor.Default] = LoadCustomCursor(path);
-
-            path = $"{Settings.MouseCursorPath}Cursor_Normal_Atk.CUR";
-            if (File.Exists(path))
-                Cursors[(int)MouseCursor.Attack] = LoadCustomCursor(path);
-
-            path = $"{Settings.MouseCursorPath}Cursor_Compulsion_Atk.CUR";
-            if (File.Exists(path))
-                Cursors[(int)MouseCursor.AttackRed] = LoadCustomCursor(path);
-
-            path = $"{Settings.MouseCursorPath}Cursor_Npc.CUR";
-            if (File.Exists(path))
-                Cursors[(int)MouseCursor.NPCTalk] = LoadCustomCursor(path);
-
-            path = $"{Settings.MouseCursorPath}Cursor_TextPrompt.CUR";
-            if (File.Exists(path))
-                Cursors[(int)MouseCursor.TextPrompt] = LoadCustomCursor(path);
-
-            path = $"{Settings.MouseCursorPath}Cursor_Trash.CUR";
-            if (File.Exists(path))
-                Cursors[(int)MouseCursor.Trash] = LoadCustomCursor(path);
-
-            path = $"{Settings.MouseCursorPath}Cursor_Upgrade.CUR";
-            if (File.Exists(path))
-                Cursors[(int)MouseCursor.Upgrade] = LoadCustomCursor(path);
-        }
-
-        public static Cursor LoadCustomCursor(string path)
-        {
-            IntPtr hCurs = LoadCursorFromFile(path);
-            if (hCurs == IntPtr.Zero) throw new Win32Exception();
-            var curs = new Cursor(hCurs);
-            // Note: force the cursor to own the handle so it gets released properly
-            var fi = typeof(Cursor).GetField("ownHandle", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (fi == null)
-            {
-                return curs;
-            }
-            fi.SetValue(curs, true);
-            return curs;
-        }
-
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        private static extern IntPtr LoadCursorFromFile(string path);
 
         private static void UpdateTime()
         {
@@ -278,7 +216,7 @@ namespace MirClient
                     Thread.Sleep(1);
                     return;
                 }
-                DXManager.Device.Clear(ClearFlags.Target, new RawColorBGRA(Color.CornflowerBlue.B, Color.CornflowerBlue.G, Color.CornflowerBlue.R, Color.CornflowerBlue.A), 0, 0);
+                DXManager.Device.Clear(ClearFlags.Target, Color.Black, 0, 0);
                 DXManager.Device.BeginScene();
                 DXManager.Sprite.Begin(SpriteFlags.AlphaBlend);
                 DXManager.SetSurface(DXManager.MainSurface);
@@ -499,26 +437,26 @@ namespace MirClient
 
                 text += string.Format(", Time: {0:HH:mm:ss UTC}", Now);
 
-                //if (MirControl.MouseControl is MapControl)
-                //    text += string.Format(", Co Ords: {0}", MapControl.MapLocation);
+                if (MirControl.MouseControl is MapControl)
+                    text += string.Format(", Co Ords: {0}", MapControl.MapLocation);
 
-                //if (MirControl.MouseControl is MirImageControl)
-                //    text += string.Format(", Control: {0}", MirControl.MouseControl.GetType().Name);
+                if (MirControl.MouseControl is MirImageControl)
+                    text += string.Format(", Control: {0}", MirControl.MouseControl.GetType().Name);
 
-                //if (MirScene.ActiveScene is MirScene)
-                //    text += string.Format(", Objects: {0}", MapControl.Objects.Count);
+                if (MirScene.ActiveScene is MirScene)
+                    text += string.Format(", Objects: {0}", MapControl.Objects.Count);
 
                 //if (MirScene.ActiveScene is MirScene && !string.IsNullOrEmpty(DebugText))
                 //    text += string.Format(", Debug: {0}", DebugText);
 
-                //if (MirObjects.MapObject.MouseObject != null)
-                //{
-                //    text += string.Format(", Target: {0}", MirObjects.MapObject.MouseObject.Name);
-                //}
-                //else
-                //{
-                //    text += string.Format(", Target: none");
-                //}
+                if (MirObjects.MapObject.MouseObject != null)
+                {
+                    text += string.Format(", Target: {0}", MirObjects.MapObject.MouseObject.Name);
+                }
+                else
+                {
+                    text += string.Format(", Target: none");
+                }
             }
             else
             {
@@ -537,9 +475,9 @@ namespace MirClient
                 {
                     DebugBaseLabel = new MirControl
                     {
-                        BackColour = Color.FromArgb(50, 50, 50),
+                        BackColour = WColor.FromArgb(50, 50, 50),
                         Border = true,
-                        BorderColour = Color.Black,
+                        BorderColour = WColor.Black,
                         DrawControlTexture = true,
                         Location = new Point(5, 5),
                         NotControl = true,
@@ -552,8 +490,8 @@ namespace MirClient
                     DebugTextLabel = new MirLabel
                     {
                         AutoSize = true,
-                        BackColour = Color.Transparent,
-                        ForeColour = Color.White,
+                        BackColour = WColor.Transparent,
+                        ForeColour = WColor.White,
                         Parent = DebugBaseLabel,
                     };
 
@@ -578,5 +516,69 @@ namespace MirClient
                 Program.Form.Text = $"OpenMir2 - {text}";
             }
         }
+
+        public static void SetMouseCursor(MouseCursor cursor)
+        {
+            if (!Settings.UseMouseCursors) return;
+
+            if (CurrentCursor != cursor)
+            {
+                CurrentCursor = cursor;
+                Program.Form.Cursor = Cursors[(byte)cursor];
+            }
+        }
+
+        private static void LoadMouseCursors()
+        {
+            Cursors = new Cursor[8];
+
+            Cursors[(int)MouseCursor.None] = Program.Form.Cursor;
+
+            string path = $"{Settings.MouseCursorPath}Cursor_Default.CUR";
+            if (File.Exists(path))
+                Cursors[(int)MouseCursor.Default] = LoadCustomCursor(path);
+
+            path = $"{Settings.MouseCursorPath}Cursor_Normal_Atk.CUR";
+            if (File.Exists(path))
+                Cursors[(int)MouseCursor.Attack] = LoadCustomCursor(path);
+
+            path = $"{Settings.MouseCursorPath}Cursor_Compulsion_Atk.CUR";
+            if (File.Exists(path))
+                Cursors[(int)MouseCursor.AttackRed] = LoadCustomCursor(path);
+
+            path = $"{Settings.MouseCursorPath}Cursor_Npc.CUR";
+            if (File.Exists(path))
+                Cursors[(int)MouseCursor.NPCTalk] = LoadCustomCursor(path);
+
+            path = $"{Settings.MouseCursorPath}Cursor_TextPrompt.CUR";
+            if (File.Exists(path))
+                Cursors[(int)MouseCursor.TextPrompt] = LoadCustomCursor(path);
+
+            path = $"{Settings.MouseCursorPath}Cursor_Trash.CUR";
+            if (File.Exists(path))
+                Cursors[(int)MouseCursor.Trash] = LoadCustomCursor(path);
+
+            path = $"{Settings.MouseCursorPath}Cursor_Upgrade.CUR";
+            if (File.Exists(path))
+                Cursors[(int)MouseCursor.Upgrade] = LoadCustomCursor(path);
+        }
+
+        public static Cursor LoadCustomCursor(string path)
+        {
+            IntPtr hCurs = LoadCursorFromFile(path);
+            if (hCurs == IntPtr.Zero) throw new Win32Exception();
+            var curs = new Cursor(hCurs);
+            // Note: force the cursor to own the handle so it gets released properly
+            var fi = typeof(Cursor).GetField("ownHandle", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fi == null)
+            {
+                return curs;
+            }
+            fi.SetValue(curs, true);
+            return curs;
+        }
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern IntPtr LoadCursorFromFile(string path);
     }
 }

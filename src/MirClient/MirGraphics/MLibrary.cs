@@ -1,15 +1,9 @@
 ﻿using MirClient.MirObjects;
 using SharpDX;
 using SharpDX.Direct3D9;
-using SharpDX.Mathematics.Interop;
-using System;
-using System.Drawing;
-using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using System.Threading;
+using Color = SharpDX.Color;
 using Frame = MirClient.MirObjects.Frame;
 using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;
@@ -65,16 +59,6 @@ namespace MirClient.MirGraphics
                                           CWeaponEffect,
                                           CHair,
                                           CHumEffect,
-                                          AArmours,
-                                          AWeaponsL,
-                                          AWeaponsR,
-                                          AHair,
-                                          AHumEffect,
-                                          ARArmours,
-                                          ARWeapons,
-                                          ARWeaponsS,
-                                          ARHair,
-                                          ARHumEffect,
                                           Monsters,
                                           Gates,
                                           Flags,
@@ -95,20 +79,6 @@ namespace MirClient.MirGraphics
             InitLibrary(ref CWeapons, Settings.CWeaponPath, "00");
             InitLibrary(ref CWeaponEffect, Settings.CWeaponEffectPath, "00");
             InitLibrary(ref CHumEffect, Settings.CHumEffectPath, "00");
-
-            //Assassin
-            InitLibrary(ref AArmours, Settings.AArmourPath, "00");
-            InitLibrary(ref AHair, Settings.AHairPath, "00");
-            InitLibrary(ref AWeaponsL, Settings.AWeaponPath, "00", " L");
-            InitLibrary(ref AWeaponsR, Settings.AWeaponPath, "00", " R");
-            InitLibrary(ref AHumEffect, Settings.AHumEffectPath, "00");
-
-            //Archer
-            InitLibrary(ref ARArmours, Settings.ARArmourPath, "00");
-            InitLibrary(ref ARHair, Settings.ARHairPath, "00");
-            InitLibrary(ref ARWeapons, Settings.ARWeaponPath, "00");
-            InitLibrary(ref ARWeaponsS, Settings.ARWeaponPath, "00", " S");
-            InitLibrary(ref ARHumEffect, Settings.ARHumEffectPath, "00");
 
             //Other
             InitLibrary(ref Monsters, Settings.MonsterPath, "000");
@@ -237,9 +207,7 @@ namespace MirClient.MirGraphics
         private static void LoadGameLibraries()
         {
             Count = MapLibs.Length + Monsters.Length + Gates.Length + Flags.Length + Siege.Length + NPCs.Length + CArmours.Length +
-                CHair.Length + CWeapons.Length + CWeaponEffect.Length + AArmours.Length + AHair.Length + AWeaponsL.Length + AWeaponsR.Length +
-                ARArmours.Length + ARHair.Length + ARWeapons.Length + ARWeaponsS.Length +
-                CHumEffect.Length + AHumEffect.Length + ARHumEffect.Length + Mounts.Length + Pets.Length +
+                CHair.Length + CWeapons.Length + CWeaponEffect.Length + CHumEffect.Length + Mounts.Length + Pets.Length +
                 Transform.Length + TransformMounts.Length + TransformEffect.Length + TransformWeaponEffect.Length + 18;
 
             Dragon.Initialize();
@@ -353,69 +321,9 @@ namespace MirClient.MirGraphics
                 Progress++;
             }
 
-            for (int i = 0; i < AArmours.Length; i++)
-            {
-                AArmours[i].Initialize();
-                Progress++;
-            }
-
-            for (int i = 0; i < AHair.Length; i++)
-            {
-                AHair[i].Initialize();
-                Progress++;
-            }
-
-            for (int i = 0; i < AWeaponsL.Length; i++)
-            {
-                AWeaponsL[i].Initialize();
-                Progress++;
-            }
-
-            for (int i = 0; i < AWeaponsR.Length; i++)
-            {
-                AWeaponsR[i].Initialize();
-                Progress++;
-            }
-
-            for (int i = 0; i < ARArmours.Length; i++)
-            {
-                ARArmours[i].Initialize();
-                Progress++;
-            }
-
-            for (int i = 0; i < ARHair.Length; i++)
-            {
-                ARHair[i].Initialize();
-                Progress++;
-            }
-
-            for (int i = 0; i < ARWeapons.Length; i++)
-            {
-                ARWeapons[i].Initialize();
-                Progress++;
-            }
-
-            for (int i = 0; i < ARWeaponsS.Length; i++)
-            {
-                ARWeaponsS[i].Initialize();
-                Progress++;
-            }
-
             for (int i = 0; i < CHumEffect.Length; i++)
             {
                 CHumEffect[i].Initialize();
-                Progress++;
-            }
-
-            for (int i = 0; i < AHumEffect.Length; i++)
-            {
-                AHumEffect[i].Initialize();
-                Progress++;
-            }
-
-            for (int i = 0; i < ARHumEffect.Length; i++)
-            {
-                ARHumEffect[i].Initialize();
                 Progress++;
             }
 
@@ -499,8 +407,9 @@ namespace MirClient.MirGraphics
                 int currentVersion = _reader.ReadInt32();
                 if (currentVersion < 2)
                 {
-                    System.Windows.Forms.MessageBox.Show("Wrong version, expecting lib version: " + LibVersion.ToString() + " found version: " + currentVersion.ToString() + ".", _fileName, System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error, System.Windows.Forms.MessageBoxDefaultButton.Button1);
-                    System.Windows.Forms.Application.Exit();
+                    MessageBox.Show("Wrong version, expecting lib version: " + LibVersion.ToString() + " found version: " + currentVersion.ToString() + ".", _fileName, 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                    Application.Exit();
                     return;
                 }
                 _count = _reader.ReadInt32();
@@ -561,7 +470,6 @@ namespace MirClient.MirGraphics
                 _fStream.Seek(_indexList[index] + 17, SeekOrigin.Begin);
                 mi.CreateTexture(_reader);
             }
-
             return true;
         }
 
@@ -638,7 +546,7 @@ namespace MirClient.MirGraphics
             if (x + mi.Width < 0 || y + mi.Height < 0)
                 return;
 
-            DXManager.Draw(mi.Image, new RawRectangle(0, 0, mi.Width, mi.Height), new Vector3(x, y, 0.0F), SharpDX.Color.White);
+            DXManager.Draw(mi.Image, new SharpDX.Rectangle(0, 0, mi.Width, mi.Height), new Vector3(x, y, 0.0F), Color.White);
 
             mi.CleanTime = GameFrm.Time + Settings.CleanDelay;
         }
@@ -655,7 +563,7 @@ namespace MirClient.MirGraphics
             if (point.X >= Settings.ScreenWidth || point.Y >= Settings.ScreenHeight || point.X + mi.Width < 0 || point.Y + mi.Height < 0)
                 return;
 
-            DXManager.Draw(mi.Image, new RawRectangle(0, 0, mi.Width, mi.Height), new Vector3(point.X, point.Y, 0.0F), colour);
+            DXManager.Draw(mi.Image, new SharpDX.Rectangle(0, 0, mi.Width, mi.Height), new Vector3(point.X, point.Y, 0.0F), colour);
 
             mi.CleanTime = GameFrm.Time + Settings.CleanDelay;
         }
@@ -671,7 +579,7 @@ namespace MirClient.MirGraphics
 
             if (point.X >= Settings.ScreenWidth || point.Y >= Settings.ScreenHeight || point.X + mi.Width < 0 || point.Y + mi.Height < 0)
                 return;
-            RawRectangle rawRectangle;
+            SharpDX.Rectangle rawRectangle;
             rawRectangle.Left = 0;
             rawRectangle.Top = 0;
             rawRectangle.Right = mi.Width;
@@ -695,13 +603,13 @@ namespace MirClient.MirGraphics
             bool oldBlend = DXManager.Blending;
             DXManager.SetBlend(true, rate);
 
-            DXManager.Draw(mi.Image, new RawRectangle(0, 0, mi.Width, mi.Height), new Vector3(point.X, point.Y, 0.0F), colour);
+            DXManager.Draw(mi.Image, new SharpDX.Rectangle(0, 0, mi.Width, mi.Height), new Vector3(point.X, point.Y, 0.0F), colour);
 
             DXManager.SetBlend(oldBlend);
             mi.CleanTime = GameFrm.Time + Settings.CleanDelay;
         }
 
-        public void Draw(int index, RawRectangle section, Point point, Color4 colour, bool offSet)
+        public void Draw(int index, SharpDX.Rectangle section, Point point, Color4 colour, bool offSet)
         {
             if (!CheckImage(index))
                 return;
@@ -724,7 +632,7 @@ namespace MirClient.MirGraphics
             mi.CleanTime = GameFrm.Time + Settings.CleanDelay;
         }
 
-        public void Draw(int index, RawRectangle section, Point point, Color4 colour, float opacity)
+        public void Draw(int index, SharpDX.Rectangle section, Point point, Color4 colour, float opacity)
         {
             if (!CheckImage(index))
                 return;
@@ -761,7 +669,7 @@ namespace MirClient.MirGraphics
 
             Matrix matrix = Matrix.Scaling(scaleX, scaleY, 0);
             DXManager.Sprite.Transform = matrix;
-            DXManager.Draw(mi.Image, new RawRectangle(0, 0, mi.Width, mi.Height), new Vector3(point.X / scaleX, point.Y / scaleY, 0.0F), Color4.White);
+            DXManager.Draw(mi.Image, new SharpDX.Rectangle(0, 0, mi.Width, mi.Height), new Vector3(point.X / scaleX, point.Y / scaleY, 0.0F), Color.White);
 
             DXManager.Sprite.Transform = Matrix.Identity;
 
@@ -780,11 +688,11 @@ namespace MirClient.MirGraphics
             if (point.X >= Settings.ScreenWidth || point.Y >= Settings.ScreenHeight || point.X + mi.Width < 0 || point.Y + mi.Height < 0)
                 return;
 
-            DXManager.Draw(mi.Image, new RawRectangle(0, 0, mi.Width, mi.Height), new Vector3(point.X, point.Y, 0.0F), colour);
+            DXManager.Draw(mi.Image, new SharpDX.Rectangle(0, 0, mi.Width, mi.Height), new Vector3(point.X, point.Y, 0.0F), colour);
 
             if (mi.HasMask)
             {
-                DXManager.Draw(mi.MaskImage, new RawRectangle(0, 0, mi.Width, mi.Height), new Vector3(point.X, point.Y, 0.0F), Tint);
+                DXManager.Draw(mi.MaskImage, new SharpDX.Rectangle(0, 0, mi.Width, mi.Height), new Vector3(point.X, point.Y, 0.0F), Tint);
             }
 
             mi.CleanTime = GameFrm.Time + Settings.CleanDelay;
@@ -805,7 +713,7 @@ namespace MirClient.MirGraphics
             if (x + mi.Width < 0 || y + mi.Height < 0)
                 return;
 
-            DXManager.Draw(mi.Image, new RawRectangle(0, 0, mi.Width, mi.Height), new Vector3(x, y, 0.0F), Color4.White);
+            DXManager.Draw(mi.Image, new SharpDX.Rectangle(0, 0, mi.Width, mi.Height), new Vector3(x, y, 0.0F), Color.White);
 
             mi.CleanTime = GameFrm.Time + Settings.CleanDelay;
         }
@@ -826,7 +734,7 @@ namespace MirClient.MirGraphics
             bool oldBlend = DXManager.Blending;
             DXManager.SetBlend(true, 1);
 
-            DXManager.Draw(mi.Image, new RawRectangle(0, 0, mi.Width, mi.Height), new Vector3(point.X, point.Y, 0.0F), Color4.White);
+            DXManager.Draw(mi.Image, new SharpDX.Rectangle(0, 0, mi.Width, mi.Height), new Vector3(point.X, point.Y, 0.0F), Color.White);
 
             DXManager.SetBlend(oldBlend);
             mi.CleanTime = GameFrm.Time + Settings.CleanDelay;

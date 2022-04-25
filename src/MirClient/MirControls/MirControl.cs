@@ -3,11 +3,8 @@ using MirClient.MirSounds;
 using SharpDX;
 using SharpDX.Direct3D9;
 using SharpDX.Mathematics.Interop;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
-using Color = System.Drawing.Color;
+using Color = SharpDX.Color;
+using WColor = System.Drawing.Color;
 using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;
 
@@ -26,8 +23,8 @@ namespace MirClient.MirControls
         public BlendMode BlendMode { get; set; }
 
         #region Back Colour
-        private Color _backColour;
-        public Color BackColour
+        private WColor _backColour;
+        public WColor BackColour
         {
             get { return _backColour; }
             set
@@ -100,8 +97,8 @@ namespace MirClient.MirControls
         #endregion
 
         #region Border Colour
-        private Color _borderColour;
-        public Color BorderColour
+        private WColor _borderColour;
+        public WColor BorderColour
         {
             get { return _borderColour; }
             set
@@ -147,18 +144,11 @@ namespace MirClient.MirControls
                 ControlTexture = new Texture(DXManager.Device, Size.Width, Size.Height, 1, Usage.RenderTarget, Format.A8R8G8B8, Pool.Default);
                 TextureSize = Size;
             }
-
             Surface oldSurface = DXManager.CurrentSurface;
             Surface surface = ControlTexture.GetSurfaceLevel(0);
             DXManager.SetSurface(surface);
-            RawColorBGRA colors;
-            colors.B = BackColour.B;
-            colors.G = BackColour.G;
-            colors.R = BackColour.R;
-            colors.A = BackColour.A;
-            DXManager.Device.Clear(ClearFlags.Target, colors, 0, 0);
+            DXManager.Device.Clear(ClearFlags.Target, new ColorBGRA(BackColour.R, BackColour.G, BackColour.B, BackColour.A), 0, 0);
             DXManager.SetSurface(oldSurface);
-
             TextureValid = true;
             surface.Dispose();
         }
@@ -267,8 +257,8 @@ namespace MirClient.MirControls
         #endregion
 
         #region Fore Colour
-        private Color _foreColour;
-        public Color ForeColour
+        private WColor _foreColour;
+        public WColor ForeColour
         {
             get { return _foreColour; }
             set
@@ -694,7 +684,7 @@ namespace MirClient.MirControls
             Controls = new List<MirControl>();
             _opacity = 1F;
             _enabled = true;
-            _foreColour = Color.White;
+            _foreColour = WColor.White;
             _visible = true;
             _sound = SoundList.None;
         }
@@ -745,12 +735,12 @@ namespace MirClient.MirControls
 
             if (ControlTexture == null || ControlTexture.IsDisposed)
                 return;
-            RawRectangle rectangle;
+            SharpDX.Rectangle rectangle;
             rectangle.Left = 0;
             rectangle.Top = 0;
             rectangle.Right = Size.Width;
             rectangle.Bottom = Size.Height;
-            DXManager.DrawOpaque(ControlTexture, rectangle, new Vector3?(new Vector3(DisplayLocation.X, DisplayLocation.Y, 0.0f)), Color4.White, Opacity);
+            DXManager.DrawOpaque(ControlTexture, rectangle, new Vector3?(new Vector3(DisplayLocation.X, DisplayLocation.Y, 0.0f)), Color.White, Opacity);
             CleanTime = GameFrm.Time + Settings.CleanDelay;
         }
 
@@ -773,7 +763,7 @@ namespace MirClient.MirControls
             if (!Border || BorderInfo == null)
                 return;
             DXManager.Sprite.Flush();
-            DXManager.Line.Draw(BorderInfo, new RawColorBGRA(_borderColour.B, _borderColour.G, _borderColour.R, _borderColour.A));
+            DXManager.Line.Draw(BorderInfo, new Color(_borderColour.R, _borderColour.G, _borderColour.B, _borderColour.A));
         }
 
         protected void AfterDrawControl()
@@ -1074,7 +1064,7 @@ namespace MirClient.MirControls
                 Disposing = null;
 
                 BackColourChanged = null;
-                _backColour = Color.Empty;
+                _backColour = WColor.Empty;
 
                 BorderChanged = null;
                 _border = false;
@@ -1082,7 +1072,7 @@ namespace MirClient.MirControls
                 _borderInfo = null;
 
                 BorderColourChanged = null;
-                _borderColour = Color.Empty;
+                _borderColour = WColor.Empty;
 
                 DrawControlTexture = false;
                 DisposeTexture();
@@ -1124,7 +1114,7 @@ namespace MirClient.MirControls
                 KeyDown = null;
 
                 ForeColourChanged = null;
-                _foreColour = Color.Empty;
+                _foreColour = WColor.Empty;
 
                 LocationChanged = null;
                 _location = Point.Empty;

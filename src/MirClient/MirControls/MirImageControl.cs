@@ -1,7 +1,8 @@
 ﻿using MirClient.MirGraphics;
 using SharpDX;
 using SharpDX.Mathematics.Interop;
-using Color = System.Drawing.Color;
+using Color = SharpDX.Color;
+using WColor = System.Drawing.Color;
 using Point = System.Drawing.Point;
 
 namespace MirClient.MirControls
@@ -169,7 +170,7 @@ namespace MirClient.MirControls
         {
             _drawImage = true;
             _index = -1;
-            ForeColour = Color.White;
+            ForeColour = WColor.White;
             _autoSize = true;
         }
 
@@ -185,11 +186,11 @@ namespace MirClient.MirControls
                 {
                     DXManager.SetGrayscale(true);
                 }
-                Color4 color;
-                color.Red = ForeColour.R;
-                color.Green = ForeColour.G;
-                color.Blue = ForeColour.B;
-                color.Alpha = ForeColour.A;
+                Color color;
+                color.R = ForeColour.R;
+                color.G = ForeColour.G;
+                color.B = ForeColour.B;
+                color.A = ForeColour.A;
                 if (Blending)
                     Library.DrawBlend(Index, DisplayLocation, color, false, BlendingRate);
                 else
