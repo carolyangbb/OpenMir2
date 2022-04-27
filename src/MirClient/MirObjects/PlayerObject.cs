@@ -1331,36 +1331,36 @@ namespace MirClient.MirObjects
         {
             int x = CurrentLocation.X - CurrentLocation.X % 2;
             int y = CurrentLocation.Y - CurrentLocation.Y % 2;
-            if (GameScene.Scene.MapControl.M2CellInfo[x, y].FrontIndex > 199) return; //prevents any move sounds on non mir2 maps atm
-            if (GameScene.Scene.MapControl.M2CellInfo[x, y].MiddleIndex > 199) return; //prevents any move sounds on non mir2 maps atm
-            if (GameScene.Scene.MapControl.M2CellInfo[x, y].BackIndex > 199) return; //prevents any move sounds on non mir2 maps atm
+            //if (GameScene.Scene.MapControl.M2CellInfo[x, y].FrontIndex > 199) return; //prevents any move sounds on non mir2 maps atm
+            //if (GameScene.Scene.MapControl.M2CellInfo[x, y].MiddleIndex > 199) return; //prevents any move sounds on non mir2 maps atm
+            //if (GameScene.Scene.MapControl.M2CellInfo[x, y].BackIndex > 199) return; //prevents any move sounds on non mir2 maps atm
 
-            int moveSound;
+            //int moveSound;
 
-            if (GameScene.Scene.MapControl.M2CellInfo[x, y].BackIndex > 99 && GameScene.Scene.MapControl.M2CellInfo[x, y].BackIndex < 199) //shanda tiles
-            {
-                PlayShandaStepSound(x, y, out moveSound);
-            }
-            else if (GameScene.Scene.MapControl.M2CellInfo[x, y].BackIndex > 199 && GameScene.Scene.MapControl.M2CellInfo[x, y].BackIndex < 299) //mir3 tiles
-            {
-                PlayWemadeMir3StepSound(x, y, out moveSound);
-            }
-            else //wemade tiles
-            {
-                PlayWemadeStepSound(x, y, out moveSound);
-            }
+            //if (GameScene.Scene.MapControl.M2CellInfo[x, y].BackIndex > 99 && GameScene.Scene.MapControl.M2CellInfo[x, y].BackIndex < 199) //shanda tiles
+            //{
+            //    PlayShandaStepSound(x, y, out moveSound);
+            //}
+            //else if (GameScene.Scene.MapControl.M2CellInfo[x, y].BackIndex > 199 && GameScene.Scene.MapControl.M2CellInfo[x, y].BackIndex < 299) //mir3 tiles
+            //{
+            //    PlayWemadeMir3StepSound(x, y, out moveSound);
+            //}
+            //else //wemade tiles
+            //{
+            //    PlayWemadeStepSound(x, y, out moveSound);
+            //}
 
-            if (RidingMount) moveSound = SoundList.MountWalkL;
+            //if (RidingMount) moveSound = SoundList.MountWalkL;
 
-            if (CurrentAction == MirAction.Running) moveSound += 2;
-            if (FrameIndex == 4) moveSound++;
+            //if (CurrentAction == MirAction.Running) moveSound += 2;
+            //if (FrameIndex == 4) moveSound++;
 
-            SoundManager.PlaySound(moveSound);
+            //SoundManager.PlaySound(moveSound);
         }
 
         private void PlayWemadeStepSound(int x, int y, out int moveSound)
         {
-            int index = (GameScene.Scene.MapControl.M2CellInfo[x, y].BackImage & 0x1FFFF) - 1;
+            int index = (GameScene.Scene.MapControl.M2CellInfo[x, y].BackIndex & 0x1FFFF) - 1;
             //index = (GameScene.Scene.MapControl.M2CellInfo[x, y].FrontIndex - 2) * 10000 + index;
 
             if (index >= 0 && index <= 10000)
@@ -1402,13 +1402,13 @@ namespace MirClient.MirObjects
                 if ((index >= 1375 && index <= 1799) && (index - 1375) / 25 % 2 == 0) moveSound = SoundList.WalkCaveL;
                 if (index == 1385 || index == 1386 || index == 1391 || index == 1392) moveSound = SoundList.WalkWoodL;
 
-                index = (GameScene.Scene.MapControl.M2CellInfo[x, y].MiddleImage & 0x7FFF);
+                index = (GameScene.Scene.MapControl.M2CellInfo[x, y].MiddleIndex & 0x7FFF);
                 if (index >= 0 && index <= 115)
                     moveSound = SoundList.WalkGroundL;
                 else if (index >= 120 && index <= 124)
                     moveSound = SoundList.WalkLawnL;
 
-                index = (GameScene.Scene.MapControl.M2CellInfo[x, y].FrontImage & 0x7FFF) - 1;
+                index = (GameScene.Scene.MapControl.M2CellInfo[x, y].FrontIndex & 0x7FFF) - 1;
                 if ((index >= 221 && index <= 289) || (index >= 583 && index <= 658) || (index >= 1183 && index <= 1206) ||
                     (index >= 7163 && index <= 7295) || (index >= 7404 && index <= 7414))
                     moveSound = SoundList.WalkStoneL;
@@ -1423,7 +1423,7 @@ namespace MirClient.MirObjects
 
         private void PlayShandaStepSound(int x, int y, out int moveSound)
         {
-            int index = (GameScene.Scene.MapControl.M2CellInfo[x, y].BackImage & 0x1FFFF) - 1;
+            int index = (GameScene.Scene.MapControl.M2CellInfo[x, y].BackIndex & 0x1FFFF) - 1;
             //index = (GameScene.Scene.MapControl.M2CellInfo[x, y].BackIndex - 100) * 100000 + index;
 
             var tt = GameScene.Scene.MapControl.M2CellInfo[x, y];
@@ -1774,7 +1774,7 @@ namespace MirClient.MirObjects
             }
             #endregion
 
-            index = (GameScene.Scene.MapControl.M2CellInfo[x, y].MiddleImage & 0x1FFFF);
+            index = (GameScene.Scene.MapControl.M2CellInfo[x, y].MiddleIndex & 0x1FFFF);
 
             #region Middle Tiles
             switch (GameScene.Scene.MapControl.M2CellInfo[x, y].MiddleIndex)
@@ -1976,10 +1976,10 @@ namespace MirClient.MirObjects
 
             int backIndex = (GameScene.Scene.MapControl.M2CellInfo[x, y].BackIndex);
             int midIndex = (GameScene.Scene.MapControl.M2CellInfo[x, y].MiddleIndex);
-            int midImage = GameScene.Scene.MapControl.M2CellInfo[x, y].MiddleImage;
+            int midImage = GameScene.Scene.MapControl.M2CellInfo[x, y].MiddleIndex;
 
             #region Shanda & Wemade Mir 3
-            int index = (GameScene.Scene.MapControl.M2CellInfo[x, y].BackImage & 0x1FFFF) - 1; // Back
+            int index = (GameScene.Scene.MapControl.M2CellInfo[x, y].BackIndex & 0x1FFFF) - 1; // Back
             #region Back 300 Tilesc*!
             if (backIndex == 300 || backIndex == 200)
             {   // Lawn
@@ -2382,7 +2382,7 @@ namespace MirClient.MirObjects
             }
             #endregion
 
-            index = GameScene.Scene.MapControl.M2CellInfo[x, y].MiddleImage;
+            index = GameScene.Scene.MapControl.M2CellInfo[x, y].MiddleIndex;
             #region Middle 310 smObjectsc
             if (midIndex == 310 || backIndex == 210 && midImage != 0)
                 // Wood

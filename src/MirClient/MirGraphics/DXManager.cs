@@ -36,8 +36,22 @@ namespace MirClient.MirGraphics
         public static List<Texture> Lights = new List<Texture>();
         public static Texture PoisonDotBackground;
 
-        public static Texture FloorTexture, LightTexture;
-        public static Surface FloorSurface, LightSurface;
+        /// <summary>
+        /// 地图纹理
+        /// </summary>
+        public static Texture MapTexture;
+        /// <summary>
+        /// 黑暗纹理
+        /// </summary>
+        public static Texture LightTexture;
+        /// <summary>
+        /// 地图画布
+        /// </summary>
+        public static Surface MapSurface;
+        /// <summary>
+        /// 黑暗画布
+        /// </summary>
+        public static Surface LightSurface;
 
         public static PixelShader GrayScalePixelShader;
         public static PixelShader NormalPixelShader;
@@ -237,16 +251,21 @@ namespace MirClient.MirGraphics
             }
         }
 
-        public static void DrawOpaque(Texture texture, Rectangle? sourceRect, Vector3? position, Color4 color, float opacity)
+        public static void DrawOpaque(Texture texture, Rectangle? sourceRect, Vector3? position, Color color, float opacity)
         {
-            color.Alpha = opacity;
+            color.A = 255;
             Draw(texture, sourceRect, position, color);
         }
 
-        public static void Draw(Texture texture, Rectangle? sourceRect, Vector3? position, Color4 color)
+        static RawColor4 ColorToRaw4(Color color)
         {
-            ColorBGRA colorBGRA = new ColorBGRA(color);
-            Sprite.Draw(texture, colorBGRA, sourceRect, Vector3.Zero, position);
+            const float n = 255f;
+            return new RawColor4(color.R / n, color.G / n, color.B / n, color.A / n);
+        }
+
+        public static void Draw(Texture texture, Rectangle? sourceRect, Vector3? position, Color color)
+        {
+            Sprite.Draw(texture, color, sourceRect, Vector3.Zero, position);
             GameFrm.DPSCounter++;
         }
 
@@ -333,14 +352,14 @@ namespace MirClient.MirGraphics
                 Device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
                 Device.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
                 Device.SetRenderState(RenderState.SourceBlendAlpha, Blend.One);
-                Device.SetRenderState(RenderState.BlendFactor, new Color(255, 255, 255, 255).ToRgba());
+                Device.SetRenderState(RenderState.BlendFactor, WColor.FromArgb(255, 255, 255, 255).ToArgb());
             }
             else
             {
                 Device.SetRenderState(RenderState.SourceBlend, Blend.BlendFactor);
                 Device.SetRenderState(RenderState.DestinationBlend, Blend.InverseBlendFactor);
                 Device.SetRenderState(RenderState.SourceBlendAlpha, Blend.SourceAlpha);
-                Device.SetRenderState(RenderState.BlendFactor, new Color((byte)(255 * opacity), (byte)(255 * opacity), (byte)(255 * opacity), (byte)(255 * opacity)).ToRgba());
+                Device.SetRenderState(RenderState.BlendFactor, WColor.FromArgb((byte)(255 * opacity), (byte)(255 * opacity), (byte)(255 * opacity), (byte)(255 * opacity)).ToArgb());
             }
             Opacity = opacity;
             Sprite.Flush();
@@ -505,22 +524,22 @@ namespace MirClient.MirGraphics
                 RadarTexture = null;
             }
 
-            if (FloorTexture != null)
+            if (MapTexture != null)
             {
-                if (!FloorTexture.IsDisposed)
+                if (!MapTexture.IsDisposed)
                 {
-                    FloorTexture.Dispose();
+                    MapTexture.Dispose();
                 }
 
-                FloorTexture = null;
+                MapTexture = null;
                 GameScene.Scene.MapControl.FloorValid = false;
 
-                if (FloorSurface != null && !FloorSurface.IsDisposed)
+                if (MapSurface != null && !MapSurface.IsDisposed)
                 {
-                    FloorSurface.Dispose();
+                    MapSurface.Dispose();
                 }
 
-                FloorSurface = null;
+                MapSurface = null;
             }
 
             if (LightTexture != null)

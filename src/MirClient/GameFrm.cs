@@ -3,6 +3,7 @@ using MirClient.MirGraphics;
 using MirClient.MirScenes;
 using MirClient.MirSounds;
 using SharpDX.Direct3D9;
+using SharpDX.Mathematics.Interop;
 using SharpDX.Windows;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -142,22 +143,6 @@ namespace MirClient
             }
         }
 
-        [SuppressUnmanagedCodeSecurity]
-        [DllImport("User32.dll", CharSet = CharSet.Auto)]
-        private static extern bool PeekMessage(out PeekMsg msg, IntPtr hWnd, uint messageFilterMin,
-                                               uint messageFilterMax, uint flags);
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct PeekMsg
-        {
-            private readonly IntPtr hWnd;
-            private readonly Message msg;
-            private readonly IntPtr wParam;
-            private readonly IntPtr lParam;
-            private readonly uint time;
-            private readonly Point p;
-        }
-
         private static void Application_Idle(object sender, EventArgs e)
         {
             try
@@ -206,6 +191,8 @@ namespace MirClient
             }
         }
 
+
+
         public static void RenderEnvironment()
         {
             try
@@ -216,13 +203,19 @@ namespace MirClient
                     Thread.Sleep(1);
                     return;
                 }
-                DXManager.Device.Clear(ClearFlags.Target, Color.Black, 0, 0);
+                DXManager.Device.Clear(ClearFlags.Target, Color.CornflowerBlue, 0, 0);
                 DXManager.Device.BeginScene();
                 DXManager.Sprite.Begin(SpriteFlags.AlphaBlend);
                 DXManager.SetSurface(DXManager.MainSurface);
 
                 if (MirScene.ActiveScene != null)
+                {
+                    if (GameScene.Scene != null && MirScene.ActiveScene == GameScene.Scene)
+                    {
+                        //GameScene.Scene.BeginScene();//先画游戏场景，在画地图
+                    }
                     MirScene.ActiveScene.Draw();
+                }
 
                 DXManager.Sprite.End();
                 DXManager.Device.EndScene();
@@ -580,5 +573,21 @@ namespace MirClient
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         private static extern IntPtr LoadCursorFromFile(string path);
+
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        private static extern bool PeekMessage(out PeekMsg msg, IntPtr hWnd, uint messageFilterMin,
+                                       uint messageFilterMax, uint flags);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct PeekMsg
+        {
+            private readonly IntPtr hWnd;
+            private readonly Message msg;
+            private readonly IntPtr wParam;
+            private readonly IntPtr lParam;
+            private readonly uint time;
+            private readonly Point p;
+        }
     }
 }

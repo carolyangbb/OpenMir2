@@ -4,7 +4,7 @@ using MirClient.MirSounds;
 using Color = SharpDX.Color;
 using WColor = System.Drawing.Color;
 using Point = System.Drawing.Point;
-
+ 
 namespace MirClient.MirScenes.Game
 {
     public sealed class MainDialog : MirImageControl
@@ -22,220 +22,221 @@ namespace MirClient.MirScenes.Game
             Location = new Point(((Settings.ScreenWidth / 2) - (Size.Width / 2)), Settings.ScreenHeight - Size.Height);
             PixelDetect = true;
 
-            LeftCap = new MirImageControl
-            {
-                Index = 12,
-                Library = Libraries.Prguse,
-                Location = new Point(-67, this.Size.Height - 96),
-                Parent = this,
-                Visible = false
-            };
-            RightCap = new MirImageControl
-            {
-                Index = 13,
-                Library = Libraries.Prguse,
-                Location = new Point(1024, this.Size.Height - 104),
-                Parent = this,
-                Visible = false
-            };
+            //LeftCap = new MirImageControl
+            //{
+            //    Index = 12,
+            //    Library = Libraries.Prguse,
+            //    Location = new Point(-67, this.Size.Height - 96),
+            //    Parent = this,
+            //    Visible = false
+            //};
 
-            if (Settings.Resolution > 1024)
-            {
-                LeftCap.Visible = true;
-                RightCap.Visible = true;
-            }
+            //RightCap = new MirImageControl
+            //{
+            //    Index = 13,
+            //    Library = Libraries.Prguse,
+            //    Location = new Point(1024, this.Size.Height - 104),
+            //    Parent = this,
+            //    Visible = false
+            //};
 
-            InventoryButton = new MirButton
-            {
-                HoverIndex = 1904,
-                Index = 1903,
-                Library = Libraries.Prguse,
-                Location = new Point(this.Size.Width - 96, 76),
-                Parent = this,
-                PressedIndex = 1905,
-                Sound = SoundList.ButtonA
-            };
-            InventoryButton.Click += (o, e) =>
-            {
+            //if (Settings.Resolution > 1024)
+            //{
+            //    LeftCap.Visible = true;
+            //    RightCap.Visible = true;
+            //}
+
+            //InventoryButton = new MirButton
+            //{
+            //    HoverIndex = 1904,
+            //    Index = 1903,
+            //    Library = Libraries.Prguse,
+            //    Location = new Point(this.Size.Width - 96, 76),
+            //    Parent = this,
+            //    PressedIndex = 1905,
+            //    Sound = SoundList.ButtonA
+            //};
+            //InventoryButton.Click += (o, e) =>
+            //{
   
-            };
+            //};
 
-            CharacterButton = new MirButton
-            {
-                HoverIndex = 1901,
-                Index = 1900,
-                Library = Libraries.Prguse,
-                Location = new Point(this.Size.Width - 119, 76),
-                Parent = this,
-                PressedIndex = 1902,
-                Sound = SoundList.ButtonA
-            };
-            CharacterButton.Click += (o, e) =>
-            {
-                //if (GameScene.Scene.CharacterDialog.Visible && GameScene.Scene.CharacterDialog.CharacterPage.Visible)
-                //    GameScene.Scene.CharacterDialog.Hide();
-                //else
-                //{
-                //    GameScene.Scene.CharacterDialog.Show();
-                //    GameScene.Scene.CharacterDialog.ShowCharacterPage();
-                //}
-            };
+            //CharacterButton = new MirButton
+            //{
+            //    HoverIndex = 1901,
+            //    Index = 1900,
+            //    Library = Libraries.Prguse,
+            //    Location = new Point(this.Size.Width - 119, 76),
+            //    Parent = this,
+            //    PressedIndex = 1902,
+            //    Sound = SoundList.ButtonA
+            //};
+            //CharacterButton.Click += (o, e) =>
+            //{
+            //    //if (GameScene.Scene.CharacterDialog.Visible && GameScene.Scene.CharacterDialog.CharacterPage.Visible)
+            //    //    GameScene.Scene.CharacterDialog.Hide();
+            //    //else
+            //    //{
+            //    //    GameScene.Scene.CharacterDialog.Show();
+            //    //    GameScene.Scene.CharacterDialog.ShowCharacterPage();
+            //    //}
+            //};
 
-            SkillButton = new MirButton
-            {
-                HoverIndex = 1907,
-                Index = 1906,
-                Library = Libraries.Prguse,
-                Location = new Point(this.Size.Width - 73, 76),
-                Parent = this,
-                PressedIndex = 1908,
-                Sound = SoundList.ButtonA
-            };
+            //SkillButton = new MirButton
+            //{
+            //    HoverIndex = 1907,
+            //    Index = 1906,
+            //    Library = Libraries.Prguse,
+            //    Location = new Point(this.Size.Width - 73, 76),
+            //    Parent = this,
+            //    PressedIndex = 1908,
+            //    Sound = SoundList.ButtonA
+            //};
        
-            HealthOrb = new MirControl
-            {
-                Parent = this,
-                Location = new Point(0, 30),
-                NotControl = true,
-            };
+            //HealthOrb = new MirControl
+            //{
+            //    Parent = this,
+            //    Location = new Point(0, 30),
+            //    NotControl = true,
+            //};
 
-            HealthOrb.BeforeDraw += HealthOrb_BeforeDraw;
+            //HealthOrb.BeforeDraw += HealthOrb_BeforeDraw;
 
-            HealthLabel = new MirLabel
-            {
-                AutoSize = true,
-                Location = new Point(0, 27),
-                Parent = HealthOrb
-            };
-            HealthLabel.SizeChanged += Label_SizeChanged;
+            //HealthLabel = new MirLabel
+            //{
+            //    AutoSize = true,
+            //    Location = new Point(0, 27),
+            //    Parent = HealthOrb
+            //};
+            //HealthLabel.SizeChanged += Label_SizeChanged;
 
-            ManaLabel = new MirLabel
-            {
-                AutoSize = true,
-                Location = new Point(0, 42),
-                Parent = HealthOrb
-            };
-            ManaLabel.SizeChanged += Label_SizeChanged;
+            //ManaLabel = new MirLabel
+            //{
+            //    AutoSize = true,
+            //    Location = new Point(0, 42),
+            //    Parent = HealthOrb
+            //};
+            //ManaLabel.SizeChanged += Label_SizeChanged;
 
-            TopLabel = new MirLabel
-            {
-                Size = new Size(85, 30),
-                DrawFormat = TextFormatFlags.HorizontalCenter,
-                Location = new Point(9, 20),
-                Parent = HealthOrb,
-            };
+            //TopLabel = new MirLabel
+            //{
+            //    Size = new Size(85, 30),
+            //    DrawFormat = TextFormatFlags.HorizontalCenter,
+            //    Location = new Point(9, 20),
+            //    Parent = HealthOrb,
+            //};
 
-            BottomLabel = new MirLabel
-            {
-                Size = new Size(85, 30),
-                DrawFormat = TextFormatFlags.HorizontalCenter,
-                Location = new Point(9, 50),
-                Parent = HealthOrb,
-            };
+            //BottomLabel = new MirLabel
+            //{
+            //    Size = new Size(85, 30),
+            //    DrawFormat = TextFormatFlags.HorizontalCenter,
+            //    Location = new Point(9, 50),
+            //    Parent = HealthOrb,
+            //};
 
-            LevelLabel = new MirLabel
-            {
-                AutoSize = true,
-                Parent = this,
-                Location = new Point(5, 108)
-            };
+            //LevelLabel = new MirLabel
+            //{
+            //    AutoSize = true,
+            //    Parent = this,
+            //    Location = new Point(5, 108)
+            //};
 
-            CharacterName = new MirLabel
-            {
-                DrawFormat = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter,
-                Parent = this,
-                Location = new Point(6, 120),
-                Size = new Size(90, 16)
-            };
+            //CharacterName = new MirLabel
+            //{
+            //    DrawFormat = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter,
+            //    Parent = this,
+            //    Location = new Point(6, 120),
+            //    Size = new Size(90, 16)
+            //};
 
 
-            ExperienceBar = new MirImageControl
-            {
-                Index = Settings.Resolution != 800 ? 8 : 7,
-                Library = Libraries.Prguse,
-                Location = new Point(9, 143),
-                Parent = this,
-                DrawImage = false,
-                NotControl = true,
-            };
-            ExperienceBar.BeforeDraw += ExperienceBar_BeforeDraw;
+            //ExperienceBar = new MirImageControl
+            //{
+            //    Index = Settings.Resolution != 800 ? 8 : 7,
+            //    Library = Libraries.Prguse,
+            //    Location = new Point(9, 143),
+            //    Parent = this,
+            //    DrawImage = false,
+            //    NotControl = true,
+            //};
+            //ExperienceBar.BeforeDraw += ExperienceBar_BeforeDraw;
 
-            ExperienceLabel = new MirLabel
-            {
-                AutoSize = true,
-                Parent = ExperienceBar,
-                NotControl = true,
-            };
+            //ExperienceLabel = new MirLabel
+            //{
+            //    AutoSize = true,
+            //    Parent = ExperienceBar,
+            //    NotControl = true,
+            //};
 
-            GoldLabel = new MirLabel
-            {
-                DrawFormat = TextFormatFlags.VerticalCenter,
-                Font = new Font(Settings.FontName, 8F),
-                Location = new Point(this.Size.Width - 105, 119),
-                Parent = this,
-                Size = new Size(99, 13),
-                Sound = SoundList.Gold,
-            };
-            GoldLabel.Click += (o, e) =>
-            {
-                //if (GameScene.SelectedCell == null)
-                //    GameScene.PickedUpGold = !GameScene.PickedUpGold && GameScene.Gold > 0;
-            };
+            //GoldLabel = new MirLabel
+            //{
+            //    DrawFormat = TextFormatFlags.VerticalCenter,
+            //    Font = new Font(Settings.FontName, 8F),
+            //    Location = new Point(this.Size.Width - 105, 119),
+            //    Parent = this,
+            //    Size = new Size(99, 13),
+            //    Sound = SoundList.Gold,
+            //};
+            //GoldLabel.Click += (o, e) =>
+            //{
+            //    //if (GameScene.SelectedCell == null)
+            //    //    GameScene.PickedUpGold = !GameScene.PickedUpGold && GameScene.Gold > 0;
+            //};
 
-            WeightBar = new MirImageControl
-            {
-                Index = 76,
-                Library = Libraries.Prguse,
-                Location = new Point(this.Size.Width - 105, 103),
-                Parent = this,
-                DrawImage = false,
-                NotControl = true,
-            };
-            WeightBar.BeforeDraw += WeightBar_BeforeDraw;
+            //WeightBar = new MirImageControl
+            //{
+            //    Index = 76,
+            //    Library = Libraries.Prguse,
+            //    Location = new Point(this.Size.Width - 105, 103),
+            //    Parent = this,
+            //    DrawImage = false,
+            //    NotControl = true,
+            //};
+            //WeightBar.BeforeDraw += WeightBar_BeforeDraw;
 
-            WeightLabel = new MirLabel
-            {
-                Parent = this,
-                Location = new Point(this.Size.Width - 105, 101),
-                Size = new Size(40, 14),
-            };
+            //WeightLabel = new MirLabel
+            //{
+            //    Parent = this,
+            //    Location = new Point(this.Size.Width - 105, 101),
+            //    Size = new Size(40, 14),
+            //};
 
-            SpaceLabel = new MirLabel
-            {
-                Parent = this,
-                Location = new Point(this.Size.Width - 30, 101),
-                Size = new Size(26, 14),
-            };
+            //SpaceLabel = new MirLabel
+            //{
+            //    Parent = this,
+            //    Location = new Point(this.Size.Width - 30, 101),
+            //    Size = new Size(26, 14),
+            //};
 
-            AModeLabel = new MirLabel
-            {
-                AutoSize = true,
-                ForeColour = WColor.Yellow,
-                OutLineColour = WColor.Black,
-                Parent = this,
-                Location = new Point(Settings.Resolution != 800 ? 899 : 675, Settings.Resolution != 800 ? -448 : -280),
-                Visible = Settings.ModeView
-            };
+            //AModeLabel = new MirLabel
+            //{
+            //    AutoSize = true,
+            //    ForeColour = WColor.Yellow,
+            //    OutLineColour = WColor.Black,
+            //    Parent = this,
+            //    Location = new Point(Settings.Resolution != 800 ? 899 : 675, Settings.Resolution != 800 ? -448 : -280),
+            //    Visible = Settings.ModeView
+            //};
 
-            PModeLabel = new MirLabel
-            {
-                AutoSize = true,
-                ForeColour = WColor.Orange,
-                OutLineColour = WColor.Black,
-                Parent = this,
-                Location = new Point(230, 125),
-                Visible = Settings.ModeView
-            };
+            //PModeLabel = new MirLabel
+            //{
+            //    AutoSize = true,
+            //    ForeColour = WColor.Orange,
+            //    OutLineColour = WColor.Black,
+            //    Parent = this,
+            //    Location = new Point(230, 125),
+            //    Visible = Settings.ModeView
+            //};
 
-            SModeLabel = new MirLabel
-            {
-                AutoSize = true,
-                ForeColour = WColor.LimeGreen,
-                OutLineColour = WColor.Black,
-                Parent = this,
-                Location = new Point(Settings.Resolution != 800 ? 899 : 675, Settings.Resolution != 800 ? -463 : -295),
-                Visible = Settings.ModeView
-            };
+            //SModeLabel = new MirLabel
+            //{
+            //    AutoSize = true,
+            //    ForeColour = WColor.LimeGreen,
+            //    OutLineColour = WColor.Black,
+            //    Parent = this,
+            //    Location = new Point(Settings.Resolution != 800 ? 899 : 675, Settings.Resolution != 800 ? -463 : -295),
+            //    Visible = Settings.ModeView
+            //};
         }
 
         public void Process()

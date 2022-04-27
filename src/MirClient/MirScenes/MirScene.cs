@@ -8,7 +8,7 @@ namespace MirClient.MirScenes
 {
     public abstract class MirScene : MirControl
     {
-        public static MirScene ActiveScene = new LoginScene();
+        public static MirScene ActiveScene = new GameScene();
 
         private static MouseButtons _buttons;
         private static long _lastClickTime;

@@ -51,7 +51,6 @@ namespace MirClient
                             AHumEffectPath = @".\Data\AHumEffect\",
                             ARHumEffectPath = @".\Data\ARHumEffect\",
                             MountPath = @".\Data\Mount\",
-                            FishingPath = @".\Data\Fishing\",
                             PetsPath = @".\Data\Pet\",
                             TransformPath = @".\Data\Transform\",
                             TransformMountsPath = @".\Data\TransformRide2\",

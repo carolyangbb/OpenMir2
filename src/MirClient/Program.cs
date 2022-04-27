@@ -19,23 +19,27 @@ namespace MirClient
         static void Main()
         {
             ApplicationConfiguration.Initialize();
-            LoadUnmanagedLibraryFromResource(Assembly.GetExecutingAssembly(), DxResName, "D3DX9_43.dll");
+            if (!File.Exists("D3DX9_43.dll"))
+            {
+                LoadUnmanagedLibraryFromResource(Assembly.GetExecutingAssembly(), DxResName, "D3DX9_43.dll");
+            }
             Settings.UseTestConfig = true;
             Application.Run(Form = new GameFrm());
         }
 
-        public static string LoadUnmanagedLibraryFromResource(Assembly assembly, string libraryResourceName,
-            string libraryName)
+        public static string LoadUnmanagedLibraryFromResource(Assembly assembly, string libraryResourceName, string libraryName)
         {
             string tempDllPath = string.Empty;
 
-            using (Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream(libraryResourceName))
+            using (var s = assembly.GetManifestResourceStream(libraryResourceName))
             {
                 byte[] data = new BinaryReader(s).ReadBytes((int)s.Length);
 
                 string assemblyPath = Path.GetDirectoryName(assembly.Location);
                 tempDllPath = Path.Combine(assemblyPath, libraryName);
                 File.WriteAllBytes(tempDllPath, data);
+                s.Close();
+                s.Dispose();
             }
 
             NativeMethods.LoadLibrary(libraryName);

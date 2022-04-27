@@ -4,39 +4,38 @@ namespace MirClient.Maps
 {
     public class CellInfo
     {
-        public short BackIndex;
-        public int BackImage
-        {
-            get
-            {
-                return BackIndex & 0x7FFF;
-            }
-        }
-        public short MiddleIndex;
-        public int MiddleImage
-        {
-            get
-            {
-                return MiddleIndex & 0x7FFF;
-            }
-        }
-        public short FrontIndex;
-        public int FrontImage
-        {
-            get
-            {
-                return FrontIndex & 0x7FFF;
-            }
-        }
+        public ushort BackIndex;
+        public int BackImage;
+        public ushort MiddleIndex;
+        public int MiddleImage;
+        public ushort FrontIndex;
+        public int FrontImage;
         public byte DoorIndex;
         public byte DoorOffset;
+        public byte btAniFrame;
+        public byte btAniTick;
+        public byte btArea;
+        public byte Light;
+        public byte TitleIndex;
+        public byte btsmTiles;
+        public ushort wBkImg2;
+        public ushort wMidImg2;
+        public ushort wFrImg2;
+        public byte btDoorIndex2;
+        public byte btDoorOffset2;
+        public ushort wAniFrame2;
+        public byte btArea2;
+        public byte btLight2;
+        public byte btTiles2;
+        public byte btsmTiles2;
+
         public byte FrontAnimationFrame;
         public byte FrontAnimationTick;
+
         public short TileAnimationImage;
         public short TileAnimationOffset;
         public byte TileAnimationFrames;
-        public byte Light;
-        public byte Unknown;
+
 
         public List<MapObject> CellObjects;
 
@@ -136,6 +135,37 @@ namespace MirClient.Maps
                 int i = ob2.Dead.CompareTo(ob1.Dead);
                 return i == 0 ? ob1.ObjectID.CompareTo(ob2.ObjectID) : i;
             });
+        }
+
+        public static CellInfo ToMap(byte[] buffer)
+        {
+            var cellInfo = new CellInfo();
+            var binaryReader = new BinaryReader(new MemoryStream(buffer));
+            cellInfo.BackIndex = binaryReader.ReadUInt16();
+            cellInfo.MiddleIndex = binaryReader.ReadUInt16();
+            cellInfo.FrontIndex = binaryReader.ReadUInt16();
+            cellInfo.DoorIndex = binaryReader.ReadByte();
+            cellInfo.DoorOffset = binaryReader.ReadByte();
+            cellInfo.btAniFrame = binaryReader.ReadByte();
+            cellInfo.btAniTick = binaryReader.ReadByte();
+            cellInfo.btArea = binaryReader.ReadByte();
+            cellInfo.Light = binaryReader.ReadByte();
+            if (buffer.Length > 12)
+            {
+                cellInfo.TitleIndex = binaryReader.ReadByte();
+                cellInfo.btsmTiles = binaryReader.ReadByte();
+                cellInfo.wBkImg2 = binaryReader.ReadUInt16();
+                cellInfo.wMidImg2 = binaryReader.ReadUInt16();
+                cellInfo.wFrImg2 = binaryReader.ReadUInt16();
+                cellInfo.btDoorIndex2 = binaryReader.ReadByte();
+                cellInfo.btDoorOffset2 = binaryReader.ReadByte();
+                cellInfo.wAniFrame2 = binaryReader.ReadUInt16();
+                cellInfo.btArea2 = binaryReader.ReadByte();
+                cellInfo.btLight2 = binaryReader.ReadByte();
+                cellInfo.btTiles2 = binaryReader.ReadByte();
+                cellInfo.btsmTiles2 = binaryReader.ReadByte();
+            }
+            return cellInfo;
         }
     }
 }

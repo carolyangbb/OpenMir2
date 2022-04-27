@@ -59,10 +59,16 @@ namespace MirClient.MirSounds
         {
             if (Program.Form == null || Program.Form.IsDisposed) return;
 
-            Device = new DirectSound();
-            Device.SetCooperativeLevel(Program.Form.Handle, CooperativeLevel.Normal);
+            try
+            {
+                Device = new DirectSound();
+                Device.SetCooperativeLevel(Program.Form.Handle, CooperativeLevel.Normal);
+            }
+            catch (Exception)
+            {
+              
+            }
             //Device.IsDefaultPool = false;
-
             LoadSoundList();
         }
 

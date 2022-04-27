@@ -21,7 +21,6 @@ namespace MirClient.MirGraphics
             Prguse2 = new MLibrary(Settings.DataPath + "Prguse2"),
             Prguse3 = new MLibrary(Settings.DataPath + "Prguse3"),
             BuffIcon = new MLibrary(Settings.DataPath + "BuffIcon"),
-            Help = new MLibrary(Settings.DataPath + "Help"),
             MiniMap = new MLibrary(Settings.DataPath + "MMap"),
             MapLinkIcon = new MLibrary(Settings.DataPath + "MapLinkIcon"),
             Title = new MLibrary(Settings.DataPath + "Title"),
@@ -31,8 +30,7 @@ namespace MirClient.MirGraphics
             Magic2 = new MLibrary(Settings.DataPath + "Magic2"),
             Magic3 = new MLibrary(Settings.DataPath + "Magic3"),
             Effect = new MLibrary(Settings.DataPath + "Effect"),
-            MagicC = new MLibrary(Settings.DataPath + "MagicC"),
-            GuildSkill = new MLibrary(Settings.DataPath + "GuildSkill");
+            MagicC = new MLibrary(Settings.DataPath + "MagicC");
 
         public static readonly MLibrary
             Background = new MLibrary(Settings.DataPath + "Background");
@@ -95,7 +93,7 @@ namespace MirClient.MirGraphics
 
             #region Maplibs
             //wemade mir2 (allowed from 0-99)
-            MapLibs[0] = new MLibrary(Settings.DataPath + "Map\\WemadeMir2\\Tiles");
+            MapLibs[0] = new MLibrary(Settings.DataPath + "Tiles");
             MapLibs[1] = new MLibrary(Settings.DataPath + "Map\\WemadeMir2\\Smtiles");
             MapLibs[2] = new MLibrary(Settings.DataPath + "Map\\WemadeMir2\\Objects");
             for (int i = 2; i < 27; i++)
@@ -119,50 +117,13 @@ namespace MirClient.MirGraphics
                 MapLibs[120 + i] = new MLibrary(Settings.DataPath + "Map\\ShandaMir2\\Objects" + (i + 1));
             }
             MapLibs[190] = new MLibrary(Settings.DataPath + "Map\\ShandaMir2\\AniTiles1");
-            //wemade mir3 (allowed from 200-299)
-            string[] Mapstate = { "", "wood\\", "sand\\", "snow\\", "forest\\" };
-            for (int i = 0; i < Mapstate.Length; i++)
-            {
-                MapLibs[200 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\WemadeMir3\\" + Mapstate[i] + "Tilesc");
-                MapLibs[201 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\WemadeMir3\\" + Mapstate[i] + "Tiles30c");
-                MapLibs[202 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\WemadeMir3\\" + Mapstate[i] + "Tiles5c");
-                MapLibs[203 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\WemadeMir3\\" + Mapstate[i] + "Smtilesc");
-                MapLibs[204 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\WemadeMir3\\" + Mapstate[i] + "Housesc");
-                MapLibs[205 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\WemadeMir3\\" + Mapstate[i] + "Cliffsc");
-                MapLibs[206 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\WemadeMir3\\" + Mapstate[i] + "Dungeonsc");
-                MapLibs[207 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\WemadeMir3\\" + Mapstate[i] + "Innersc");
-                MapLibs[208 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\WemadeMir3\\" + Mapstate[i] + "Furnituresc");
-                MapLibs[209 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\WemadeMir3\\" + Mapstate[i] + "Wallsc");
-                MapLibs[210 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\WemadeMir3\\" + Mapstate[i] + "smObjectsc");
-                MapLibs[211 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\WemadeMir3\\" + Mapstate[i] + "Animationsc");
-                MapLibs[212 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\WemadeMir3\\" + Mapstate[i] + "Object1c");
-                MapLibs[213 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\WemadeMir3\\" + Mapstate[i] + "Object2c");
-            }
-            Mapstate = new string[] { "", "wood", "sand", "snow", "forest" };
-            //shanda mir3 (allowed from 300-399)
-            for (int i = 0; i < Mapstate.Length; i++)
-            {
-                MapLibs[300 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\ShandaMir3\\" + "Tilesc" + Mapstate[i]);
-                MapLibs[301 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\ShandaMir3\\" + "Tiles30c" + Mapstate[i]);
-                MapLibs[302 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\ShandaMir3\\" + "Tiles5c" + Mapstate[i]);
-                MapLibs[303 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\ShandaMir3\\" + "Smtilesc" + Mapstate[i]);
-                MapLibs[304 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\ShandaMir3\\" + "Housesc" + Mapstate[i]);
-                MapLibs[305 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\ShandaMir3\\" + "Cliffsc" + Mapstate[i]);
-                MapLibs[306 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\ShandaMir3\\" + "Dungeonsc" + Mapstate[i]);
-                MapLibs[307 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\ShandaMir3\\" + "Innersc" + Mapstate[i]);
-                MapLibs[308 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\ShandaMir3\\" + "Furnituresc" + Mapstate[i]);
-                MapLibs[309 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\ShandaMir3\\" + "Wallsc" + Mapstate[i]);
-                MapLibs[310 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\ShandaMir3\\" + "smObjectsc" + Mapstate[i]);
-                MapLibs[311 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\ShandaMir3\\" + "Animationsc" + Mapstate[i]);
-                MapLibs[312 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\ShandaMir3\\" + "Object1c" + Mapstate[i]);
-                MapLibs[313 + (i * 15)] = new MLibrary(Settings.DataPath + "Map\\ShandaMir3\\" + "Object2c" + Mapstate[i]);
-            }
             #endregion
 
             LoadLibraries();
 
-            Thread thread = new Thread(LoadGameLibraries) { IsBackground = true };
-            thread.Start();
+            //Thread thread = new Thread(LoadGameLibraries) { IsBackground = true };
+            //thread.Start();
+            LoadGameLibraries();
         }
 
         static void InitLibrary(ref MLibrary[] library, string path, string toStringValue, string suffix = "")
@@ -216,9 +177,6 @@ namespace MirClient.MirGraphics
             BuffIcon.Initialize();
             Progress++;
 
-            Help.Initialize();
-            Progress++;
-
             MiniMap.Initialize();
             Progress++;
             MapLinkIcon.Initialize();
@@ -239,9 +197,6 @@ namespace MirClient.MirGraphics
             Progress++;
 
             Effect.Initialize();
-            Progress++;
-
-            GuildSkill.Initialize();
             Progress++;
 
             Background.Initialize();
@@ -442,10 +397,9 @@ namespace MirClient.MirGraphics
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _initialized = false;
-                throw;
             }
         }
 
@@ -551,7 +505,7 @@ namespace MirClient.MirGraphics
             mi.CleanTime = GameFrm.Time + Settings.CleanDelay;
         }
 
-        public void Draw(int index, Point point, Color4 colour, bool offSet = false)
+        public void Draw(int index, Point point, Color colour, bool offSet = false)
         {
             if (!CheckImage(index))
                 return;
@@ -568,7 +522,7 @@ namespace MirClient.MirGraphics
             mi.CleanTime = GameFrm.Time + Settings.CleanDelay;
         }
 
-        public void Draw(int index, Point point, Color4 colour, bool offSet, float opacity)
+        public void Draw(int index, Point point, Color colour, bool offSet, float opacity)
         {
             if (!CheckImage(index))
                 return;
@@ -588,7 +542,7 @@ namespace MirClient.MirGraphics
             mi.CleanTime = GameFrm.Time + Settings.CleanDelay;
         }
 
-        public void DrawBlend(int index, Point point, Color4 colour, bool offSet = false, float rate = 1)
+        public void DrawBlend(int index, Point point, Color colour, bool offSet = false, float rate = 1)
         {
             if (!CheckImage(index))
                 return;
@@ -609,7 +563,7 @@ namespace MirClient.MirGraphics
             mi.CleanTime = GameFrm.Time + Settings.CleanDelay;
         }
 
-        public void Draw(int index, SharpDX.Rectangle section, Point point, Color4 colour, bool offSet)
+        public void Draw(int index, SharpDX.Rectangle section, Point point, Color colour, bool offSet)
         {
             if (!CheckImage(index))
                 return;
@@ -632,7 +586,7 @@ namespace MirClient.MirGraphics
             mi.CleanTime = GameFrm.Time + Settings.CleanDelay;
         }
 
-        public void Draw(int index, SharpDX.Rectangle section, Point point, Color4 colour, float opacity)
+        public void Draw(int index, SharpDX.Rectangle section, Point point, Color colour, float opacity)
         {
             if (!CheckImage(index))
                 return;
@@ -676,7 +630,7 @@ namespace MirClient.MirGraphics
             mi.CleanTime = GameFrm.Time + Settings.CleanDelay;
         }
 
-        public void DrawTinted(int index, Point point, Color4 colour, Color4 Tint, bool offSet = false)
+        public void DrawTinted(int index, Point point, Color colour, Color Tint, bool offSet = false)
         {
             if (!CheckImage(index))
                 return;

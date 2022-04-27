@@ -186,11 +186,12 @@ namespace MirClient.MirControls
                 {
                     DXManager.SetGrayscale(true);
                 }
-                Color color;
-                color.R = ForeColour.R;
-                color.G = ForeColour.G;
-                color.B = ForeColour.B;
-                color.A = ForeColour.A;
+                Color color = Color.White;
+                //color.R = ForeColour.R;
+                //color.G = ForeColour.G;
+                //color.B = ForeColour.B;
+                //color.A = ForeColour.A;
+
                 if (Blending)
                     Library.DrawBlend(Index, DisplayLocation, color, false, BlendingRate);
                 else

@@ -9,6 +9,9 @@ using Color = SharpDX.Color;
 using WColor = System.Drawing.Color;
 using Effect = MirClient.MirObjects.Effects.Effect;
 using Point = System.Drawing.Point;
+using Rectangle = SharpDX.Rectangle;
+using MirClient.Extensions;
+using SharpDX.Mathematics.Interop;
 
 namespace MirClient.MirScenes
 {
@@ -24,7 +27,15 @@ namespace MirClient.MirScenes
 
         public const int CellWidth = 48;
         public const int CellHeight = 32;
+        public Rectangle m_ClientRect;
+        public Rectangle m_OldClientRect;
 
+        public int m_nBlockLeft;
+        public int m_nBlockTop;
+        public int m_nOldLeft;
+        public int m_nOldTop;
+        public string m_sCurrentMap;
+        public string m_sOldMap;
         public static int OffSetX;
         public static int OffSetY;
 
@@ -66,13 +77,13 @@ namespace MirClient.MirScenes
         public static Point MouseLocation;
         public static long InputDelay;
         public static long NextAction;
-
+        internal MapReader Map;
         public CellInfo[,] M2CellInfo;
         public List<Door> Doors = new List<Door>();
         public int Width, Height;
 
         public int Index;
-        public string FileName = String.Empty;
+        public string MapName = String.Empty;
         public string Title = String.Empty;
         public ushort MiniMap, BigMap, Music, SetMusic;
         public LightSetting Lights;
@@ -104,7 +115,7 @@ namespace MirClient.MirScenes
                 if (_autoRun == value) return;
                 _autoRun = value;
                 //if (GameScene.Scene != null)
-                    //GameScene.Scene.ChatDialog.ReceiveChat(value ? "[AutoRun: On]" : "[AutoRun: Off]", ChatType.Hint);
+                //GameScene.Scene.ChatDialog.ReceiveChat(value ? "[AutoRun: On]" : "[AutoRun: Off]", ChatType.Hint);
             }
         }
 
@@ -168,10 +179,10 @@ namespace MirClient.MirScenes
             MapObject.TargetObjectID = 0;
             MapObject.MagicObjectID = 0;
 
-            MapReader Map = new MapReader(FileName);
+            Map = new MapReader(MapName);
             M2CellInfo = Map.MapCells;
-            Width = Map.Width;
-            Height = Map.Height;
+            Width = Map.m_MapHeader.wWidth;
+            Height = Map.m_MapHeader.wHeight;
 
             PathFinder = new PathFinder(this);
 
@@ -278,15 +289,90 @@ namespace MirClient.MirScenes
         public override void Draw()
         {
             //Do nothing.
+
         }
 
+        public const int UNITY = 32;
+        public const int UNITX = 48;
+        public const int LOGICALMAPUNIT = 40;
+        public const int AAX = 16;
+
+        public bool CanDrawTileMap()
+        {
+            if ((m_ClientRect.Left == m_OldClientRect.Left) && (m_ClientRect.Top == m_OldClientRect.Top))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 画地图块
+        /// </summary>
+        private void DrawTileMap()
+        {
+            //if ((m_ClientRect.Left == m_OldClientRect.Left) && (m_ClientRect.Top == m_OldClientRect.Top))
+            //{
+            //    return;
+            //}
+            m_OldClientRect = m_ClientRect;
+
+            int nX, nY = 0;
+            nY = -UNITY * 2;
+            for (int j = (m_ClientRect.Top - m_nBlockTop - 1); j < m_ClientRect.Bottom - m_nBlockTop + 1; j++)
+            {
+                nX = AAX + 14 - UNITX;
+                for (int i = (m_ClientRect.Left - m_nBlockLeft - 2); i < (m_ClientRect.Right - m_nBlockLeft + 1); i++)
+                {
+                    if ((i >= 0) && (i < LOGICALMAPUNIT * 3) && (j >= 0) && (j < LOGICALMAPUNIT * 3))
+                    {
+                        if (((i % 2) == 0) && ((j % 2) == 0))
+                        {
+                            var nImgNumber = (M2CellInfo[i, j].BackIndex & 0x7FFF);
+                            if (nImgNumber > 0)
+                            {
+                                nImgNumber = nImgNumber - 1;
+                                Libraries.MapLibs[M2CellInfo[i, j].TitleIndex].Draw(nImgNumber, nX, nY);
+                            }
+                        }
+                    }
+                    nX += UNITX;
+                }
+                nY += UNITY;
+            }
+
+            //地图中间层
+            nY = -UNITY;
+            for (int j = (m_ClientRect.Top - m_nBlockTop - 1); j < (m_ClientRect.Bottom - m_nBlockTop + 1); j++)
+            {
+                nX = AAX + 14 - UNITX;
+                for (int i = (m_ClientRect.Left - m_nBlockLeft - 2); i < (m_ClientRect.Right - m_nBlockLeft + 1); i++)
+                {
+                    if ((i >= 0) && (i < LOGICALMAPUNIT * 3) && (j >= 0) && (j < LOGICALMAPUNIT * 3))
+                    {
+                        var nImgNumber = M2CellInfo[i, j].MiddleIndex;
+                        if (nImgNumber > 0)
+                        {
+                            nImgNumber = (ushort)(nImgNumber - 1);
+                            Libraries.MapLibs[M2CellInfo[i, j].btsmTiles].Draw(nImgNumber, nX, nY);
+                        }
+                    }
+                    nX += UNITX;
+                }
+                nY += UNITY;
+            }
+
+        }
+
+        /// <summary>
+        /// 创建画布纹理
+        /// </summary>
         protected override void CreateTexture()
         {
             if (User == null) return;
 
             if (!FloorValid)
-                DrawFloor();
-
+                DrawMap();
 
             if (Size != TextureSize)
                 DisposeTexture();
@@ -301,13 +387,14 @@ namespace MirClient.MirScenes
             Surface oldSurface = DXManager.CurrentSurface;
             Surface surface = ControlTexture.GetSurfaceLevel(0);
             DXManager.SetSurface(surface);
-            DXManager.Device.Clear(ClearFlags.Target, Color.Black, 0, 0);
+            DXManager.Device.Clear(ClearFlags.Target, Color.Green, 0, 0);
 
-            DrawBackground();
+            //DrawBackground();
 
             if (FloorValid)
             {
-                DXManager.Draw(DXManager.FloorTexture, new SharpDX.Rectangle(0, 0, Settings.ScreenWidth, Settings.ScreenHeight), Vector3.Zero, Color.White);
+ 
+                DXManager.Draw(DXManager.MapTexture, new Rectangle(0, 0, Settings.ScreenWidth, Settings.ScreenHeight), Vector3.Zero, Color.White);
             }
 
             DrawObjects();
@@ -321,47 +408,47 @@ namespace MirClient.MirScenes
                 DrawLights(setting);
             }
 
-            if (Settings.DropView || GameScene.DropViewTime > GameFrm.Time)
-            {
-                for (int i = 0; i < Objects.Count; i++)
-                {
-                    ItemObject ob = Objects[i] as ItemObject;
-                    if (ob == null) continue;
+            //if (Settings.DropView || GameScene.DropViewTime > GameFrm.Time)
+            //{
+            //    for (int i = 0; i < Objects.Count; i++)
+            //    {
+            //        ItemObject ob = Objects[i] as ItemObject;
+            //        if (ob == null) continue;
 
-                    if (!ob.MouseOver(MouseLocation))
-                        ob.DrawName();
-                }
-            }
+            //        if (!ob.MouseOver(MouseLocation))
+            //            ob.DrawName();
+            //    }
+            //}
 
-            if (MapObject.MouseObject != null && !(MapObject.MouseObject is ItemObject))
-                MapObject.MouseObject.DrawName();
+            //if (MapObject.MouseObject != null && !(MapObject.MouseObject is ItemObject))
+            //    MapObject.MouseObject.DrawName();
 
-            int offSet = 0;
+            //int offSet = 0;
 
-            if (Settings.DisplayBodyName)
-            {
-                for (int i = 0; i < Objects.Count; i++)
-                {
-                    MonsterObject ob = Objects[i] as MonsterObject;
-                    if (ob == null) continue;
+            //if (Settings.DisplayBodyName)
+            //{
+            //    for (int i = 0; i < Objects.Count; i++)
+            //    {
+            //        MonsterObject ob = Objects[i] as MonsterObject;
+            //        if (ob == null) continue;
 
-                    if (!ob.MouseOver(MouseLocation)) continue;
-                    ob.DrawName();
-                }
-            }
+            //        if (!ob.MouseOver(MouseLocation)) continue;
+            //        ob.DrawName();
+            //    }
+            //}
 
-            for (int i = 0; i < Objects.Count; i++)
-            {
-                ItemObject ob = Objects[i] as ItemObject;
-                if (ob == null) continue;
+            //for (int i = 0; i < Objects.Count; i++)
+            //{
+            //    ItemObject ob = Objects[i] as ItemObject;
+            //    if (ob == null) continue;
 
-                if (!ob.MouseOver(MouseLocation)) continue;
-                ob.DrawName(offSet);
-                offSet -= ob.NameLabel.Size.Height + (ob.NameLabel.Border ? 1 : 0);
-            }
+            //    if (!ob.MouseOver(MouseLocation)) continue;
+            //    ob.DrawName(offSet);
+            //    offSet -= ob.NameLabel.Size.Height + (ob.NameLabel.Border ? 1 : 0);
+            //}
 
-            if (MapObject.User.MouseOver(MouseLocation))
-                MapObject.User.DrawName();
+            //if (MapObject.User.MouseOver(MouseLocation))
+            //    MapObject.User.DrawName();
 
             DXManager.SetSurface(oldSurface);
             surface.Dispose();
@@ -382,7 +469,7 @@ namespace MirClient.MirScenes
             float oldOpacity = DXManager.Opacity;
 
             if (MapObject.User.Dead) DXManager.SetGrayscale(true);
-           
+
             DXManager.DrawOpaque(ControlTexture, new SharpDX.Rectangle(0, 0, Settings.ScreenWidth, Settings.ScreenHeight), Vector3.Zero, Color.White, Opacity);
 
             if (MapObject.User.Dead) DXManager.SetGrayscale(false);
@@ -390,22 +477,25 @@ namespace MirClient.MirScenes
             CleanTime = GameFrm.Time + Settings.CleanDelay;
         }
 
-        private void DrawFloor()
+        /// <summary>
+        /// 画地面
+        /// </summary>
+        private void DrawMap()
         {
-            if (DXManager.FloorTexture == null || DXManager.FloorTexture.IsDisposed)
+            if (DXManager.MapTexture == null || DXManager.MapTexture.IsDisposed)
             {
-                DXManager.FloorTexture = new Texture(DXManager.Device, Settings.ScreenWidth, Settings.ScreenHeight, 1, Usage.RenderTarget, Format.A8R8G8B8, Pool.Default);
-                DXManager.FloorSurface = DXManager.FloorTexture.GetSurfaceLevel(0);
+                DXManager.MapTexture = new Texture(DXManager.Device, Settings.ScreenWidth, Settings.ScreenHeight, 1, Usage.RenderTarget, Format.A8R8G8B8, Pool.Default);
+                DXManager.MapSurface = DXManager.MapTexture.GetSurfaceLevel(0);
             }
 
             Surface oldSurface = DXManager.CurrentSurface;
-
-            DXManager.SetSurface(DXManager.FloorSurface);
-            DXManager.Device.Clear(ClearFlags.Target, Color.Black, 0, 0); //Color.Black
+            DXManager.SetSurface(DXManager.MapSurface);
+            DXManager.Device.Clear(ClearFlags.Target, Color.Zero, 0, 0);
 
             int index;
             int drawY, drawX;
-
+            User.Movement.Y = 333;
+            User.Movement.X = 333;
             for (int y = User.Movement.Y - ViewRangeY; y <= User.Movement.Y + ViewRangeY; y++)
             {
                 if (y <= 0 || y % 2 == 1) continue;
@@ -435,7 +525,7 @@ namespace MirClient.MirScenes
                     if (x >= Width) break;
                     drawX = (x - User.Movement.X + OffSetX) * CellWidth - OffSetX + User.OffSetMove.X; //Moving OffSet
 
-                    index = M2CellInfo[x, y].MiddleImage;
+                    index = M2CellInfo[x, y].MiddleImage - 1;
 
                     if ((index < 0) || (M2CellInfo[x, y].MiddleIndex == -1)) continue;
                     if (M2CellInfo[x, y].MiddleIndex > 199)
@@ -447,6 +537,7 @@ namespace MirClient.MirScenes
                     Libraries.MapLibs[M2CellInfo[x, y].MiddleIndex].Draw(index, drawX, drawY);
                 }
             }
+
             for (int y = User.Movement.Y - ViewRangeY; y <= User.Movement.Y + ViewRangeY + 5; y++)
             {
                 if (y <= 0) continue;
@@ -494,7 +585,7 @@ namespace MirClient.MirScenes
 
         private void DrawBackground()
         {
-            string cleanFilename = FileName.Replace(Settings.MapPath, "");
+            string cleanFilename = MapName.Replace(Settings.MapPath, "");
 
             if (cleanFilename.StartsWith("ID1") || cleanFilename.StartsWith("ID2"))
             {
@@ -554,41 +645,41 @@ namespace MirClient.MirScenes
                     Size s;
 
                     #region Draw shanda's tile animation layer
-                    index = M2CellInfo[x, y].TileAnimationImage;
-                    animation = M2CellInfo[x, y].TileAnimationFrames;
-                    if ((index > 0) & (animation > 0))
-                    {
-                        index--;
-                        int animationoffset = M2CellInfo[x, y].TileAnimationOffset ^ 0x2000;
-                        index += animationoffset * (AnimationCount % animation);
-                        Libraries.MapLibs[190].DrawUp(index, drawX, drawY);
-                    }
+                    //index = M2CellInfo[x, y].TileAnimationImage;
+                    //animation = M2CellInfo[x, y].TileAnimationFrames;
+                    //if ((index > 0) & (animation > 0))
+                    //{
+                    //    index--;
+                    //    int animationoffset = M2CellInfo[x, y].TileAnimationOffset ^ 0x2000;
+                    //    index += animationoffset * (AnimationCount % animation);
+                    //    Libraries.MapLibs[190].DrawUp(index, drawX, drawY);
+                    //}
 
                     #endregion
 
                     #region Draw front layer
-                    index = (M2CellInfo[x, y].FrontImage & 0x7FFF) - 1;
+                    index = (M2CellInfo[x, y].FrontIndex & 0x7FFF) - 1;
 
                     if (index < 0) continue;
 
                     int fileIndex = M2CellInfo[x, y].FrontIndex;
                     if (fileIndex == -1) continue;
-                    animation = M2CellInfo[x, y].FrontAnimationFrame;
+                    //animation = M2CellInfo[x, y].FrontAnimationFrame;
+                    animation = 0;
+                    //if ((animation & 0x80) > 0)
+                    //{
+                    //    blend = true;
+                    //    animation &= 0x7F;
+                    //}
+                    //else
+                    //    blend = false;
+                    blend = false;
 
-                    if ((animation & 0x80) > 0)
-                    {
-                        blend = true;
-                        animation &= 0x7F;
-                    }
-                    else
-                        blend = false;
-
-
-                    if (animation > 0)
-                    {
-                        byte animationTick = M2CellInfo[x, y].FrontAnimationTick;
-                        index += (AnimationCount % (animation + (animation * animationTick))) / (1 + animationTick);
-                    }
+                    //if (animation > 0)
+                    //{
+                    //    byte animationTick = M2CellInfo[x, y].FrontAnimationTick;
+                    //    index += (AnimationCount % (animation + (animation * animationTick))) / (1 + animationTick);
+                    //}
 
 
                     if (M2CellInfo[x, y].DoorIndex > 0)
@@ -608,19 +699,19 @@ namespace MirClient.MirScenes
                         }
                     }
 
-                    s = Libraries.MapLibs[fileIndex].GetSize(index);
+                    s = Libraries.MapLibs[0].GetSize(index);
                     if (s.Width == CellWidth && s.Height == CellHeight && animation == 0) continue;
                     if ((s.Width == CellWidth * 2) && (s.Height == CellHeight * 2) && (animation == 0)) continue;
 
                     if (blend)
                     {
                         if ((fileIndex > 99) & (fileIndex < 199))
-                            Libraries.MapLibs[fileIndex].DrawBlend(index, new Point(drawX, drawY - (3 * CellHeight)), Color.White, true);
+                            Libraries.MapLibs[0].DrawBlend(index, new Point(drawX, drawY - (3 * CellHeight)), Color.White, true);
                         else
-                            Libraries.MapLibs[fileIndex].DrawBlend(index, new Point(drawX, drawY - s.Height), Color.White, (index >= 2723 && index <= 2732));
+                            Libraries.MapLibs[0].DrawBlend(index, new Point(drawX, drawY - s.Height), Color.White, (index >= 2723 && index <= 2732));
                     }
                     else
-                        Libraries.MapLibs[fileIndex].Draw(index, drawX, drawY - s.Height);
+                        Libraries.MapLibs[0].Draw(index, drawX, drawY - s.Height);
                     #endregion
                 }
 
@@ -888,7 +979,7 @@ namespace MirClient.MirScenes
                 {
                     if (x < 0) continue;
                     if (x >= Width) break;
-                    int imageIndex = (M2CellInfo[x, y].FrontImage & 0x7FFF) - 1;
+                    int imageIndex = (M2CellInfo[x, y].FrontIndex & 0x7FFF) - 1;
                     if (M2CellInfo[x, y].Light <= 0 || M2CellInfo[x, y].Light >= 10) continue;
                     if (M2CellInfo[x, y].Light == 0) continue;
 
@@ -927,8 +1018,8 @@ namespace MirClient.MirScenes
                         (y + OffSetY - MapObject.User.Movement.Y) * CellHeight + MapObject.User.OffSetMove.Y + 32);
 
 
-                    if (M2CellInfo[x, y].FrontAnimationFrame > 0)
-                        p.Offset(Libraries.MapLibs[fileIndex].GetOffSet(imageIndex));
+                    //if (M2CellInfo[x, y].FrontAnimationFrame > 0)
+                    //    p.Offset(Libraries.MapLibs[fileIndex].GetOffSet(imageIndex));
 
                     if (light >= DXManager.Lights.Count)
                         light = DXManager.Lights.Count - 1;
@@ -956,12 +1047,12 @@ namespace MirClient.MirScenes
 
         private static void OnMouseClick(object sender, EventArgs e)
         {
-            
+
         }
 
         private static void OnMouseDown(object sender, MouseEventArgs e)
         {
-           
+
         }
 
         private void CheckInput()
@@ -972,7 +1063,7 @@ namespace MirClient.MirScenes
             if (!CanRideAttack()) AutoHit = false;
 
             if (GameFrm.Time < InputDelay || User.Poison.HasFlag(PoisonType.Paralysis) || User.Poison.HasFlag(PoisonType.LRParalysis) || User.Poison.HasFlag(PoisonType.Frozen)) return;
-            
+
             if (GameFrm.Time < User.BlizzardStopTime || GameFrm.Time < User.ReincarnationStopTime) return;
 
             if (MapObject.TargetObject != null && !MapObject.TargetObject.Dead)
@@ -1107,7 +1198,7 @@ namespace MirClient.MirScenes
                             return;
                         }
 
-                        if (MapObject.MouseObject is MonsterObject  && MapObject.TargetObject != null && !MapObject.TargetObject.Dead && User.HasClassWeapon && !User.RidingMount) //ArcherTest - range attack
+                        if (MapObject.MouseObject is MonsterObject && MapObject.TargetObject != null && !MapObject.TargetObject.Dead && User.HasClassWeapon && !User.RidingMount) //ArcherTest - range attack
                         {
                             if (Functions.InRange(MapObject.MouseObject.CurrentLocation, User.CurrentLocation, Globals.MaxAttackRange))
                             {
@@ -1278,7 +1369,6 @@ namespace MirClient.MirScenes
             User.QueuedAction = new QueuedAction { Action = MirAction.Walking, Direction = direction, Location = Functions.PointMove(User.CurrentLocation, direction, 1) };
         }
 
-
         public static MirDirection MouseDirection(float ratio = 45F) //22.5 = 16
         {
             Point p = new Point(MouseLocation.X / CellWidth, MouseLocation.Y / CellHeight);
@@ -1338,7 +1428,7 @@ namespace MirClient.MirScenes
 
         public bool EmptyCell(Point p)
         {
-            if ((M2CellInfo[p.X, p.Y].BackImage & 0x20000000) != 0 || (M2CellInfo[p.X, p.Y].FrontImage & 0x8000) != 0) // + (M2CellInfo[P.X, P.Y].FrontImage & 0x7FFF) != 0)
+            if ((M2CellInfo[p.X, p.Y].BackIndex & 0x20000000) != 0 || (M2CellInfo[p.X, p.Y].FrontIndex & 0x8000) != 0) // + (M2CellInfo[P.X, P.Y].FrontImage & 0x7FFF) != 0)
                 return false;
 
             for (int i = 0; i < Objects.Count; i++)
@@ -1389,12 +1479,12 @@ namespace MirClient.MirScenes
             if (DoorInfo == null) return false;//if the door doesnt exist then it isnt even being shown on screen (and cant be open lol)
             if ((DoorInfo.DoorState == 0) || (DoorInfo.DoorState == DoorState.Closing))
             {
-                
+
                 return false;
             }
             if ((DoorInfo.DoorState == DoorState.Open) && (DoorInfo.LastTick + 4000 > GameFrm.Time))
             {
-                 
+
             }
             return true;
         }
@@ -1458,7 +1548,7 @@ namespace MirClient.MirScenes
         public bool ValidPoint(Point p)
         {
             //GameScene.Scene.ChatDialog.ReceiveChat(string.Format("cell: {0}", (M2CellInfo[p.X, p.Y].BackImage & 0x20000000)), ChatType.Hint);
-            return (M2CellInfo[p.X, p.Y].BackImage & 0x20000000) == 0;
+            return (M2CellInfo[p.X, p.Y].BackIndex & 0x20000000) == 0;
         }
 
         public bool HasTarget(Point p)
@@ -1513,7 +1603,7 @@ namespace MirClient.MirScenes
                 Height = 0;
 
                 Index = 0;
-                FileName = String.Empty;
+                MapName = String.Empty;
                 Title = String.Empty;
                 MiniMap = 0;
                 BigMap = 0;
