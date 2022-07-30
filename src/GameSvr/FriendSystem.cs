@@ -1,0 +1,486 @@
+using System.Collections.Generic;
+using SystemModule;
+
+namespace GameSvr
+{
+    public class TFriendInfo : ICommand
+    {
+
+        public string Name
+        {
+            get
+            {
+                return FName;
+            }
+            set
+            {
+                FName = value;
+            }
+        }
+        public string Ownner
+        {
+            get
+            {
+                return FOwnner;
+            }
+            set
+            {
+                FOwnner = value;
+            }
+        }
+        public int RegState
+        {
+            get
+            {
+                return FRegState;
+            }
+            set
+            {
+                FRegState = value;
+            }
+        }
+        public string Desc
+        {
+            get
+            {
+                return FDesc;
+            }
+            set
+            {
+                FDesc = value;
+            }
+        }
+        private string FOwnner = string.Empty;
+        public string FName = string.Empty;
+        private int FRegState = 0;
+        public string FDesc = string.Empty;
+
+        public TFriendInfo() : base()
+        {
+        
+        }
+    } 
+
+    public class TFriendMgr : ICommand
+    {
+        private readonly IList<TFriendInfo> FItems = null;
+        private bool FIsListSendAble = false;
+        private bool FWantListFlag = false;
+
+        public TFriendMgr() : base()
+        {
+            FItems = new List<TFriendInfo>();
+            FIsListSendAble = false;
+            FWantListFlag = false;
+        }
+
+        ~TFriendMgr()
+        {
+            RemoveAll();
+            //FItems.Free();
+        }
+
+        public void OnUserOpen()
+        {
+        }
+
+        public void OnUserClose()
+        {
+        }
+
+        public TFriendInfo Find(string UserName_)
+        {
+            TFriendInfo result = null;
+            for (var i = 0; i < FItems.Count; i++)
+            {
+                TFriendInfo Item = FItems[i];
+                if (Item.FName == UserName_)
+                {
+                    result = Item;
+                    return result;
+                }
+            }
+            return result;
+        }
+
+        public bool Add(TUserInfo UserInfo, string Friend, int RegState, string Desc)
+        {
+            TFriendInfo Info;
+            bool result = false;
+            if ((Friend != "") && (!IsFriend(Friend)))
+            {
+                Info = new TFriendInfo();
+                if (Info != null)
+                {
+                    Info.Name = Friend;
+                    Info.Ownner = UserInfo.UserName;
+                    Info.RegState = RegState;
+                    Info.Desc = Desc;
+                    FItems.Add(Info);
+                    result = true;
+                }
+                else
+                {
+                    this.ErrMsg("Nil Pointer When Create -[TFriendMgr.Add]");
+                }
+            }
+            else
+            {
+                this.ErrMsg("Empty \"Friend\" -[TFriendMgr.Add]");
+            }
+            return result;
+        }
+
+        public bool Delete(TUserInfo UserInfo, string Friend)
+        {
+            bool result = false;
+            TFriendInfo Item = Find(Friend);
+            if (Item != null)
+            {
+                int i = FItems.IndexOf(Item);
+                if (i >= 0)
+                {
+                    FItems.RemoveAt(i);
+                    //Item.Free();
+                    result = true;
+                }
+            }
+            return result;
+        }
+
+        public bool SetDesc(TUserInfo UserInfo, string Friend, string Desc)
+        {
+            bool result = false;
+            TFriendInfo Item = Find(Friend);
+            if (Item != null)
+            {
+                Item.FDesc = Desc;
+                result = true;
+            }
+            return result;
+        }
+
+        public bool IsFriend(string Name)
+        {
+            bool result = false;
+            TFriendInfo Item = Find(Name);
+            if (Item != null)
+            {
+                result = true;
+            }
+            return result;
+        }
+
+        private void RemoveAll()
+        {
+            for (var i = 0; i < FItems.Count; i++)
+            {
+                TFriendInfo Item = FItems[i];
+                if (Item != null)
+                {
+                    //Item.Free();
+                }
+            }
+            FItems.Clear();
+        }
+
+        public void OnMsgInfoToClient(TUserInfo UserInfo, string FriendName, int ConnState, int RegState, string Desc)
+        {
+            string str;
+            str = FriendName + "/" + Desc;
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_INFO, RegState, ConnState, 0, str);
+        }
+
+        public void OnMsgInfoToServer(TUserInfo UserInfo, string FriendName, int RegState, string Desc)
+        {
+            string str;
+            str = RegState.ToString() + ":" + FriendName + ":" + Desc;
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, 0, 0, 0, UserInfo.UserName, UserInfo.Recog, Grobal2.ISM_FRIEND_INFO, 0, 0, 0, str);
+        }
+
+        public void OnSendInfoToClient(TUserInfo UserInfo, string Friend)
+        {
+            TFriendInfo Item = Find(Friend);
+            if (Item != null)
+            {
+                OnMsgInfoToClient(UserInfo, Item.Name, Grobal2.CONNSTATE_DISCONNECT, Item.RegState, Item.Desc);
+            }
+        }
+
+        public void OnSendListToClient(TUserInfo UserInfo)
+        {
+            for (var i = 0; i < FItems.Count; i++)
+            {
+                TFriendInfo Item = FItems[i];
+                OnMsgInfoToClient(UserInfo, Item.Name, Grobal2.CONNSTATE_DISCONNECT, Item.RegState, Item.Desc);
+            }
+        }
+
+        public override void OnCmdChange(ref TCmdMsg Msg)
+        {
+            switch (Msg.CmdNum)
+            {
+                case Grobal2.CM_FRIEND_ADD:
+                    OnCmdCMAdd(Msg);
+                    break;
+                case Grobal2.CM_FRIEND_DELETE:
+                    OnCmdCMDelete(Msg);
+                    break;
+                case Grobal2.CM_FRIEND_EDIT:
+                    OnCmdCMEdit(Msg);
+                    break;
+                case Grobal2.CM_FRIEND_LIST:
+                    OnCmdCMList(Msg);
+                    break;
+                case Grobal2.ISM_FRIEND_INFO:
+                    OnCmdISMInfo(Msg);
+                    break;
+                case Grobal2.ISM_FRIEND_DELETE:
+                    OnCmdISMDelete(Msg);
+                    break;
+                case Grobal2.ISM_FRIEND_RESULT:
+                    OnCmdISMResult(Msg);
+                    break;
+                case Grobal2.DBR_FRIEND_LIST:
+                    OnCmdDBRList(Msg);
+                    break;
+                case Grobal2.DBR_FRIEND_RESULT:
+                    // DBR_FRIEND_WONLIST  : OnCmdDBROwnList( Msg );
+                    OnCmdDBRResult(Msg);
+                    break;
+            }
+        }
+
+        public void OnCmdCMList(TCmdMsg Cmd)
+        {
+            FWantListFlag = true;
+            if (FIsListSendAble)
+            {
+                OnSendListToClient(Cmd.pInfo);
+            }
+        }
+  
+        public void OnCmdCMAdd(TCmdMsg Cmd)
+        {
+            string friend;
+            string owner;
+            int regstate;
+            TUserInfo userinfo;
+            int forceflag;
+            // 패킷변환
+            owner = Cmd.UserName;
+            friend = Cmd.body;
+            regstate = Cmd.Msg.Param;
+            forceflag = Cmd.Msg.Tag;
+#if DEBUG
+            this.ErrMsg("Cmd_CM_Add" + owner + "/" + friend + "/" + (regstate).ToString());
+#endif
+            if (svMain.UserMgrEngine.InterGetUserInfo(friend, ref userinfo))
+            {
+                // 추가가 잘되는지 테스트 ... 나중에 DB 명령어에 가반하여 바꿔야됨
+                if (Add(Cmd.pInfo, friend, regstate, ""))
+                {
+                    // 데이터 베이스로 명령어 전송
+                    OnCmdDBAdd(Cmd.pInfo, friend, regstate, "");
+                    OnMsgInfoToClient(Cmd.pInfo, friend, userinfo.ConnState, regstate, "");
+                }
+            }
+            else
+            {
+                // 운영자에 의한 강제 입력일 경우
+                if (forceflag == 1)
+                {
+                    if (Add(Cmd.pInfo, friend, regstate, ""))
+                    {
+                        // 디비에는 저장하지 않고 클라이언트만 알려준다.
+                        OnMsgInfoToClient(Cmd.pInfo, friend, Grobal2.CONNSTATE_DISCONNECT, regstate, "");
+                    }
+                }
+            }
+        }
+
+        // ------------------------------------------------------------------------------
+        // CM_FRIEND_DELETEADD  : 친구삭제
+        // Params  : 삭제할 케릭명
+        // ------------------------------------------------------------------------------
+        public void OnCmdCMDelete(TCmdMsg Cmd)
+        {
+            string Owner;
+            string Friend;
+            Owner = Cmd.UserName;
+            Friend = Cmd.body;
+#if DEBUG
+            this.ErrMsg("Cmd_CM_Delete" + Owner + "/" + Friend);
+#endif
+            if (true == Delete(Cmd.pInfo, Friend))
+            {
+                OnCmdSMDelete(Cmd.pInfo, Friend);
+                OnCmdDBDelete(Cmd.pInfo, Friend);
+            }
+            else
+            {
+                OnCmdSMResult(Cmd.pInfo, Cmd.CmdNum, Grobal2.CR_DONTDELETE);
+            }
+        }
+
+        // ------------------------------------------------------------------------------
+        // CM_FRIEND_EDIT  : 친구정보수정
+        // Params  : 변경할 케릭명 , 변경정보
+        // ------------------------------------------------------------------------------
+        public void OnCmdCMEdit(TCmdMsg Cmd)
+        {
+            string Friend = string.Empty;
+            string Desc = string.Empty;
+            string Owner = Cmd.UserName;
+            Desc = HUtil32.GetValidStr3(Cmd.body, ref Friend, new string[] { "/" });
+#if DEBUG
+            this.ErrMsg("Cmd_CM_SerDesc" + Friend + "/" + Desc);
+#endif
+            if (true == SetDesc(Cmd.pInfo, Friend, Desc))
+            {
+                OnSendInfoToClient(Cmd.pInfo, Friend);
+                OnCmdDBEdit(Cmd.pInfo, Friend, Desc);
+            }
+        }
+
+        public void OnCmdSMInfo(TUserInfo UserInfo, string FriendName, short RegState, short Conn, string Desc)
+        {
+            string str;
+            str = Desc;
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_INFO, RegState, Conn, 0, str);
+        }
+
+        public void OnCmdSMDelete(TUserInfo UserInfo, string FriendName)
+        {
+            string str;
+            str = FriendName;
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_DELETE, 0, 0, 0, str);
+        }
+
+        public void OnCmdSMResult(TUserInfo UserInfo, short CmdNum, short Value)
+        {
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_RESULT, CmdNum, Value, 0, "");
+        }
+
+        public void OnCmdISMInfo(TCmdMsg Cmd)
+        {
+            string Friend = string.Empty;
+            string RegState = string.Empty;
+            string TempStr = HUtil32.GetValidStr3(Cmd.body, ref RegState, new string[] { ":" });
+            string Desc = HUtil32.GetValidStr3(TempStr, ref Friend, new string[] { ":" });
+            if (!Add(Cmd.pInfo, Friend, HUtil32.Str_ToInt(RegState, 0), Desc))
+            {
+                this.ErrMsg("OnCmdISMInfo Dont Add Friend :" + Cmd.body);
+            }
+        }
+
+        public void OnCmdISMDelete(TCmdMsg Cmd)
+        {
+            string Friend;
+            Friend = Cmd.body;
+            if (!Delete(Cmd.pInfo, Friend))
+            {
+                this.ErrMsg("OnCmdISMInfo Dont Delete Friend :" + Cmd.body);
+            }
+        }
+
+        public void OnCmdISMResult(TCmdMsg Cmd)
+        {
+            this.ErrMsg("OnCmdISMRsult :" + Cmd.body);
+        }
+
+        public void OnCmdOSMInfo(string UserName, ushort SvrIndex, string FriendName, int RegState, int Conn, string Desc)
+        {
+            string str;
+            str = RegState.ToString() + ":" + Conn.ToString() + ":" + FriendName;
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_FRIEND_INFO, SvrIndex, 0, 0, str);
+        }
+
+        public void OnCmdOSMDelete(string UserName, ushort SvrIndex, string FriendName)
+        {
+            string str;
+            str = FriendName;
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_FRIEND_DELETE, SvrIndex, 0, 0, str);
+        }
+
+        public void OnCmdOSMResult(string UserName, ushort SvrIndex, short CmdNum, short ResultValue)
+        {
+            string str;
+            str = CmdNum.ToString() + ":" + ResultValue.ToString();
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_FRIEND_RESULT, SvrIndex, 0, 0, str);
+        }
+
+        public void OnCmdDBList(TUserInfo UserInfo)
+        {
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_LIST, 0, 0, 0, "");
+        }
+
+        public void OnCmdDBAdd(TUserInfo UserInfo, string Friend, short RegState, string Desc)
+        {
+            string str;
+            str = RegState.ToString() + ":" + Friend + ":" + Desc + "/";
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_ADD, RegState, 0, 0, str);
+        }
+
+        public void OnCmdDBDelete(TUserInfo UserInfo, string Friend)
+        {
+            string str;
+            str = Friend + "/";
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_DELETE, 0, 0, 0, str);
+        }
+
+        public void OnCmdDBEdit(TUserInfo UserInfo, string Friend, string Desc)
+        {
+            string str;
+            str = Friend + ":" + Desc + "/";
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_EDIT, 0, 0, 0, str);
+        }
+
+        public void OnCmdDBRList(TCmdMsg Cmd)
+        {
+            int ListCount;
+            string Friend = string.Empty;
+            string RegState = string.Empty;
+            string Desc = string.Empty;
+            string TempStr = string.Empty;
+            string BodyStr = string.Empty;
+            BodyStr = HUtil32.GetValidStr3(Cmd.body, ref TempStr, new string[] { "/" });
+            ListCount = HUtil32.Str_ToInt(TempStr, 0);
+            for (var i = 0; i < ListCount; i++)
+            {
+                BodyStr = HUtil32.GetValidStr3(BodyStr, ref TempStr, new string[] { "/" });
+                if (TempStr != "")
+                {
+                    TempStr = HUtil32.GetValidStr3(TempStr, ref RegState, new string[] { ":" });
+                    Desc = HUtil32.GetValidStr3(TempStr, ref Friend, new string[] { ":" });
+                    Add(Cmd.pInfo, Friend, HUtil32.Str_ToInt(RegState, 0), Desc);
+                }
+            }
+            FIsListSendAble = true;
+            if (FWantListFlag)
+            {
+                OnSendListToClient(Cmd.pInfo);
+            }
+        }
+
+        public void OnCmdDBRResult(TCmdMsg Cmd)
+        {
+            string ErrCode = string.Empty;
+            this.ErrMsg("CmdDBRResult[Friend] :" + Cmd.body);
+            string CmdNum = HUtil32.GetValidStr3(Cmd.body, ref ErrCode, new string[] { "/" });
+            switch (HUtil32.Str_ToInt(CmdNum, 0))
+            {
+                case Grobal2.DB_FRIEND_LIST:
+                    break;
+                case Grobal2.DB_FRIEND_ADD:
+                    break;
+                case Grobal2.DB_FRIEND_DELETE:
+                    break;
+                case Grobal2.DB_FRIEND_OWNLIST:
+                    break;
+                case Grobal2.DB_FRIEND_EDIT:
+                    break;
+            }
+        }
+    }
+}

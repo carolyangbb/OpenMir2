@@ -1,5 +1,6 @@
 [EN](https://github.com/dwbeta/OpenMir2/blob/master/README.md)  | [中文](https://github.com/dwbeta/OpenMir2/blob/master/README.cn.md)  
 
+This is a brand new Mir2 code branch warehouse. The original Master branch has been moved to old, and will be merged into the current new warehouse according to the situation.  
 
 Legend of Mir 2 complete game server, support 1.10-1.76 classic game functions, support online and multiplayer interaction.
 

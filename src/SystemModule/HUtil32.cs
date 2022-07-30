@@ -8,9 +8,6 @@ namespace SystemModule
     {
         public const string Backslash = "/";
 
-        public static TUserItem DelfautItem = new TUserItem();
-        public static TMagicRcd DetailtMagicRcd = new TMagicRcd();
-
         /// <summary>
         /// 根据GUID获取唯一数字序列
         /// </summary>
@@ -26,6 +23,60 @@ namespace SystemModule
             }
 
             return sequence;
+        }
+
+        /// <summary>
+        /// 小数保留位数处理
+        /// </summary>
+        /// <param name="value">值</param>
+        /// <param name="digitNum">保留位数</param>
+        /// <param name="MR">数学舍入方法</param>
+        /// <returns></returns>
+        public static decimal MathRound(decimal value, int digitNum, MidpointRounding MR)
+        {
+            return Math.Round(value, digitNum, MR);
+        }
+
+        public static int MathRound(double value)
+        {
+            return (int)MathRound((decimal)value, 1, MidpointRounding.ToEven);//四舍六入五留双
+        }
+
+        public static int MathRound(decimal value)
+        {
+            return (int)MathRound(value, 1, MidpointRounding.ToEven);//四舍六入五留双
+        }
+
+        public static int MathRound(int value)
+        {
+            return (int)MathRound(value, 1, MidpointRounding.ToEven);//四舍六入五留双
+        }
+
+        /// <summary>
+        /// 小数保留位数处理（默认四舍六入五留双）
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="digitNum"></param>
+        /// <returns></returns>
+        public static double MathRound(double value, int digitNum)
+        {
+            return (double)MathRound((decimal)value, digitNum, MidpointRounding.ToEven);//四舍六入五留双
+        }
+
+        public static string EncodeString(string Str)
+        {
+            byte[] EncBuf = new byte[4096];
+            var tempBuf = GetBytes(Str);
+            var buffLen = PacketEncrypt.EncodeBuf(tempBuf, Str.Length, EncBuf);
+            return HUtil32.GetString(EncBuf, 0, buffLen);
+        }
+
+        public static string DecodeString(string Str)
+        {
+            var tempBuf = HUtil32.GetBytes(Str);
+            var buffLen = 0;
+            var encBuf = PacketEncrypt.DecodeBuf(tempBuf, Str.Length, ref buffLen);
+            return HUtil32.GetString(encBuf, 0, buffLen);
         }
 
         public static int GetTickCount()
@@ -101,6 +152,15 @@ namespace SystemModule
         public static byte LoByte(int W)
         {
             return (byte)W;
+        }
+
+        public static int GetCodeMsgSize(double x)
+        {
+            if ((int)x <= x)
+            {
+                return (int)Math.Truncate(x) + 1;
+            }
+            return (int)Math.Truncate(x);
         }
 
         public static bool IsVarNumber(string Str)
@@ -351,21 +411,6 @@ namespace SystemModule
             for (var i = 0; i < DividerAry.Length; i++) Div[i] = DividerAry[i][0];
             var Ary = Str.Split(Div, 2, StringSplitOptions.RemoveEmptyEntries); //返回不包含空的值
             Dest = Ary.Length > 0 ? Ary[0] : "";
-            return Ary.Length > 1 ? Ary[1] : "";
-        }
-
-        public static string GetValidStr3(string Str, ref int Dest, string[] DividerAry)
-        {
-            var Div = new char[DividerAry.Length];
-            for (var i = 0; i < DividerAry.Length; i++) Div[i] = DividerAry[i][0];
-            var Ary = Str.Split(Div, 2, StringSplitOptions.RemoveEmptyEntries); //返回不包含空的值
-            if (Ary.Length > 0)
-            {
-                if (!int.TryParse(Ary[0], out Dest))
-                {
-                    Dest = -1;
-                }
-            }
             return Ary.Length > 1 ? Ary[1] : "";
         }
 
@@ -733,6 +778,17 @@ namespace SystemModule
                 StringToBytePtr(str, pb, 1);
             }
             return ret;
+        }
+
+        public static bool CompareBytes(byte[] a, byte[] b)
+        {
+            if (a == b) return true;
+
+            if (a == null || b == null || a.Length != b.Length) return false;
+
+            for (int i = 0; i < a.Length; i++) if (a[i] != b[i]) return false;
+
+            return true;
         }
 
         public static bool CompareBackLStr(string Src, string targ, int compn)

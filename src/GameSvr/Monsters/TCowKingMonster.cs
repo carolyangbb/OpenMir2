@@ -1,0 +1,114 @@
+﻿using SystemModule;
+
+namespace GameSvr
+{
+    public class TCowKingMonster : TATMonster
+    {
+        private long JumpTime = 0;
+        // 鉴埃捞悼阑 茄促.
+        private bool CrazyReadyMode = false;
+        private bool CrazyKingMode = false;
+        private int CrazyCount = 0;
+        private long crazyready = 0;
+        private long crazytime = 0;
+        private int oldhittime = 0;
+        private int oldwalktime = 0;
+        // ---------------------------------------------------------------------------
+        // TCowKingMonster    快搁蓖空
+        //Constructor  Create()
+        public TCowKingMonster() : base()
+        {
+            this.SearchRate = 500 + ((long)new System.Random(1500).Next());
+            JumpTime = GetTickCount;
+            this.RushMode = true;
+            // 付过俊 嘎酒档 倒柳茄促.
+            CrazyCount = 0;
+            CrazyReadyMode = false;
+            CrazyKingMode = false;
+        }
+        public override void Attack(TCreature target, byte dir)
+        {
+            int pwr;
+            TAbility _wvar1 = this.WAbil;
+            pwr = this.GetAttackPower(_wvar1.Lobyte(_wvar1.DC), (short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC));
+            // inherited
+            this.HitHit2(target, pwr / 2, pwr / 2, true);
+        }
+
+        public override void Initialize()
+        {
+            oldhittime = this.NextHitTime;
+            oldwalktime = this.NextWalkTime;
+            base.Initialize();
+        }
+
+        public override void Run()
+        {
+            int nx=0;
+            int ny=0;
+            int old;
+            if (!this.Death && !this.RunDone && !this.BoGhost)
+            {
+                if (GetTickCount - JumpTime > 30 * 1000)
+                {
+                    JumpTime = GetTickCount;
+                    if ((this.TargetCret != null) && (this.SiegeLockCount() >= 5))
+                    {
+                        // 4疙俊霸 笛矾 阶烙
+                        // nn := Random(VisibleActors.Count-2) + 1;
+                        // ncret := TCreature (PTVisibleActor(VisibleActors[nn]).cret);
+                        // if ncret <> nil then SelectTarget (ncret);
+                        M2Share.GetBackPosition(this.TargetCret, ref (short)nx, ref (short)ny);
+                        if (this.PEnvir.CanWalk(nx, ny, false))
+                        {
+                            this.SpaceMove(this.PEnvir.MapName, (short)nx, (short)ny, 0);
+                        }
+                        else
+                        {
+                            this.RandomSpaceMove(this.PEnvir.MapName, 0);
+                        }
+                        return;
+                    }
+                }
+                old = CrazyCount;
+                CrazyCount = 7 - this.WAbil.HP / (this.WAbil.MaxHP / 7);
+                if ((CrazyCount >= 2) && (CrazyCount != old))
+                {
+                    CrazyReadyMode = true;
+                    crazyready = GetTickCount;
+                }
+                if (CrazyReadyMode)
+                {
+                    // 嘎绊父 乐澜
+                    if (GetTickCount - crazyready < 8 * 1000)
+                    {
+                        this.NextHitTime = 10000;
+                    }
+                    else
+                    {
+                        CrazyReadyMode = false;
+                        CrazyKingMode = true;
+                        crazytime = GetTickCount;
+                    }
+                }
+                if (CrazyKingMode)
+                {
+                    // 气林
+                    if (GetTickCount - crazytime < 8 * 1000)
+                    {
+                        this.NextHitTime = 500;
+                        this.NextWalkTime = 400;
+                    }
+                    else
+                    {
+                        CrazyKingMode = false;
+                        this.NextHitTime = oldhittime;
+                        this.NextWalkTime = oldwalktime;
+                    }
+                }
+            }
+            base.Run();
+        }
+
+    }
+}
