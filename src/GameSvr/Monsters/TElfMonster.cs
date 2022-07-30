@@ -55,7 +55,7 @@ namespace GameSvr
             if (this.Death)
             {
                 // 脚荐绰 矫眉啊 绝促.
-                if (GetTickCount - this.DeathTime > 2 * 1000)
+                if (HUtil32.GetTickCount() - this.DeathTime > 2 * 1000)
                 {
                     this.MakeGhost(1);
                 }

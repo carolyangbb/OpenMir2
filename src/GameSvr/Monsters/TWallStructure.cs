@@ -49,7 +49,7 @@ namespace GameSvr
         public override void Die()
         {
             base.Die();
-            BrokenTime = GetTickCount;
+            BrokenTime  =  HUtil32.GetTickCount();
         }
 
         public override void Run()
@@ -57,7 +57,7 @@ namespace GameSvr
             int newdir;
             if (this.Death)
             {
-                this.DeathTime = GetTickCount;
+                this.DeathTime  =  HUtil32.GetTickCount();
                 // 绝绢瘤瘤 臼绰促.
                 if (BoBlockPos)
                 {

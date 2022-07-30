@@ -48,7 +48,7 @@ namespace GameSvr
             this.NextHitTime = 3300 - (this.SlaveMakeLevel * 300);
             this.NextWalkTime = 500;
             this.WalkTime = GetCurrentTime + 2000;
-            NextMPSpendTime = GetTickCount;
+            NextMPSpendTime  =  HUtil32.GetTickCount();
             MPSpendTickTime = 600 * 30;
             if (this.Master != null)
             {
@@ -145,7 +145,7 @@ namespace GameSvr
                 if (this.Death)
                 {
                     // 盒脚篮 矫眉啊 绝促.
-                    if (GetTickCount - this.DeathTime > 1500)
+                    if (HUtil32.GetTickCount() - this.DeathTime > 1500)
                     {
                         this.MakeGhost(8);
                     }
@@ -165,9 +165,9 @@ namespace GameSvr
                             this.BoDisapear = true;
                             this.WAbil.HP = 0;
                         }
-                        if (GetTickCount >= NextMPSpendTime + MPSpendTickTime)
+                        if (HUtil32.GetTickCount() >= NextMPSpendTime + MPSpendTickTime)
                         {
-                            NextMPSpendTime = GetTickCount;
+                            NextMPSpendTime  =  HUtil32.GetTickCount();
                             // 170
                             if (this.Master.WAbil.MP >= 200)
                             {

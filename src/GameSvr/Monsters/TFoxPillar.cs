@@ -14,7 +14,7 @@ namespace GameSvr
             this.ViewRange = 12;
             this.RunNextTick = 250;
             this.SearchRate = 2500 + ((long)new System.Random(1500).Next());
-            this.SearchTime = GetTickCount;
+            this.SearchTime  =  HUtil32.GetTickCount();
             this.HideMode = false;
             this.StickMode = true;
             this.BoDontMove = true;

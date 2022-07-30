@@ -485,7 +485,7 @@ namespace GameSvr
                             {
                                 if ((pArticleLoad.OrgNum == OrgNum) && (pArticleLoad.SrcNum1 == SrcNum1) && (pArticleLoad.SrcNum2 == SrcNum2) && (pArticleLoad.SrcNum3 == SrcNum3))
                                 {
-                                    result = OrgNum.ToString() + "/" + SrcNum1.ToString() + "/" + SrcNum2.ToString() + "/" + SrcNum3.ToString() + "/" + pArticleLoad.UserName + "/" + (pArticleLoad.Content as string);
+                                    result = OrgNum.ToString() + "/" + SrcNum1.ToString() + "/" + SrcNum2.ToString() + "/" + SrcNum3.ToString() + "/" + pArticleLoad.UserName + "/" + pArticleLoad.Content;
                                     return result;
                                 }
                             }

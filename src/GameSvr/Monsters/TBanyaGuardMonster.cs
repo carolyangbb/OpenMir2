@@ -24,10 +24,10 @@ namespace GameSvr
             int i;
             int pwr;
             int dam;
-            int sx;
-            int sy;
-            int tx;
-            int ty;
+            short sx = 0;
+            short sy = 0;
+            short tx = 0;
+            short ty = 0;
             ArrayList list;
             TCreature cret;
             if (targ == null)
@@ -52,10 +52,6 @@ namespace GameSvr
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            // wparam
-                            // lparam1
-                            // lparam2
-                            // hiter
                             cret.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                         }
                     }
@@ -66,9 +62,8 @@ namespace GameSvr
 
         protected override bool AttackTarget()
         {
-            bool result;
-            byte targdir;
-            result = false;
+            byte targdir=0;
+            bool result = false;
             if (this.TargetCret != null)
             {
                 if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
@@ -78,7 +73,7 @@ namespace GameSvr
                     {
                         if (this.TargetInAttackRange(this.TargetCret, ref targdir) && (new System.Random(3).Next() != 0))
                         {
-                            this.TargetFocusTime = GetTickCount;
+                            this.TargetFocusTime  =  HUtil32.GetTickCount();
                             Attack(this.TargetCret, targdir);
                             result = true;
                         }
@@ -87,7 +82,7 @@ namespace GameSvr
                             if (this.ChainShot < this.ChainShotCount - 1)
                             {
                                 this.ChainShot++;
-                                this.TargetFocusTime = GetTickCount;
+                                this.TargetFocusTime  =  HUtil32.GetTickCount();
                                 RangeAttack(this.TargetCret);
                             }
                             else
@@ -112,13 +107,11 @@ namespace GameSvr
                         else
                         {
                             this.LoseTarget();
-                            // <!!林狼> TargetCret := nil肺 官柴
                         }
                     }
                 }
             }
             return result;
         }
-
     }
 }

@@ -17,12 +17,12 @@ namespace GameSvr
             int i;
             int pwr;
             int dam;
-            int sx;
-            int sy;
-            int tx;
-            int ty;
+            short sx=0;
+            short sy=0;
+            short tx=0;
+            short ty =0;
             TCreature cret;
-            int ndir;
+            byte ndir;
             // 汾牢厘 静磊
             this.Dir = M2Share.GetNextDirection(this.CX, this.CY, targ.CX, targ.CY);
             this.SendRefMsg(Grobal2.RM_LIGHTING, this.Dir, this.CX, this.CY, targ.ActorId, "");
@@ -64,7 +64,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir;
+            byte targdir=0;
             result = false;
             // 辟立秦 老阑锭俊绰 辟立 塞 傍拜阑
             // 盔芭府 老锭绰 盔芭府 付过傍拜阑 茄促.
@@ -77,7 +77,7 @@ namespace GameSvr
                     {
                         if (this.TargetInAttackRange(this.TargetCret, ref targdir))
                         {
-                            this.TargetFocusTime = GetTickCount;
+                            this.TargetFocusTime  =  HUtil32.GetTickCount();
                             this.Attack(this.TargetCret, targdir);
                             // 辟立老锭 刀 吧府霸...
                             if (new System.Random(3).Next() == 0)

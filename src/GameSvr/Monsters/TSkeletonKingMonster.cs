@@ -88,7 +88,7 @@ namespace GameSvr
 
         protected override bool AttackTarget()
         {
-            byte targdir;
+            byte targdir=0;
             bool result = false;
             if (this.TargetCret != null)
             {
@@ -99,7 +99,7 @@ namespace GameSvr
                     {
                         if (this.TargetInAttackRange(this.TargetCret, ref targdir))
                         {
-                            this.TargetFocusTime = GetTickCount;
+                            this.TargetFocusTime  =  HUtil32.GetTickCount();
                             Attack(this.TargetCret, targdir);
                             result = true;
                         }
@@ -108,7 +108,7 @@ namespace GameSvr
                             if (ChainShot < ChainShotCount - 1)
                             {
                                 ChainShot++;
-                                this.TargetFocusTime = GetTickCount;
+                                this.TargetFocusTime  =  HUtil32.GetTickCount();
                                 RangeAttack(this.TargetCret);
                             }
                             else

@@ -16,7 +16,7 @@ namespace GameSvr
         }
         public override void Initialize()
         {
-            WarpTime = GetTickCount;
+            WarpTime  =  HUtil32.GetTickCount();
             this.ViewRange = 7;
             base.Initialize();
         }
@@ -61,10 +61,10 @@ namespace GameSvr
             int i;
             int pwr;
             int dam;
-            int sx;
-            int sy;
-            int tx;
-            int ty;
+            short sx=0;
+            short sy=0;
+            short tx=0;
+            short ty =0;
             ArrayList list;
             TCreature cret;
             if (targ == null)
@@ -143,9 +143,9 @@ namespace GameSvr
                         if (new System.Random(100).Next() < 30)
                         {
                             // 2檬 掉饭捞
-                            if ((GetTickCount - WarpTime > 2000) && (!this.Death))
+                            if ((HUtil32.GetTickCount() - WarpTime > 2000) && (!this.Death))
                             {
-                                WarpTime = GetTickCount;
+                                WarpTime  =  HUtil32.GetTickCount();
                                 // 况橇
                                 this.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, this.CX, this.CY, Grobal2.NE_FOX_MOVEHIDE, "");
                                 this.RandomSpaceMoveInRange(2, 4, 4);

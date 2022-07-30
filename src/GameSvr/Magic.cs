@@ -56,10 +56,10 @@ namespace GameSvr
                             levelgap = user.Abil.Level - cret.Abil.Level;
                             if (new System.Random(20).Next() < 6 + pushlevel * 3 + levelgap)
                             {
-                                // ¼ö·ÃÁ¤µµ¿¡ µû¶ó¼­
+                                // èè®¿æ²¥æ¡£ä¿Š è¶æ‰¼è¾‘
                                 if (user.IsProperTarget(cret))
                                 {
-                                    push = 1 + _MAX(0, pushlevel - 1) + new System.Random(2).Next();
+                                    push = 1 + HUtil32._MAX(0, pushlevel - 1) + new System.Random(2).Next();
                                     ndir = M2Share.GetNextDirection(user.CX, user.CY, cret.CX, cret.CY);
                                     cret.CharPushed(ndir, push);
                                     cret.PushedCount++;
@@ -144,11 +144,11 @@ namespace GameSvr
                                             target.WAbil.HP = (ushort)(target.WAbil.HP / 10);
                                         }
                                         target.Master = user;
-                                        target.MasterRoyaltyTime = GetTickCount + ((long)20 + shocklevel * 20 + new System.Random(user.Abil.Level * 2).Next()) * 60 * 1000;
+                                        target.MasterRoyaltyTime = HUtil32.GetTickCount()+ ((long)20 + shocklevel * 20 + new System.Random(user.Abil.Level * 2).Next()) * 60 * 1000;
                                         target.SlaveMakeLevel = (byte)shocklevel;
                                         if (target.SlaveLifeTime == 0)
                                         {
-                                            target.SlaveLifeTime = GetTickCount;
+                                            target.SlaveLifeTime  =  HUtil32.GetTickCount();
                                         }
                                         target.BreakHolySeize();
                                         if (target.NextWalkTime > 1500 - (shocklevel * 200))
@@ -219,11 +219,11 @@ namespace GameSvr
                 if (target.TargetCret == null)
                 {
                     ((TAnimal)target).BoRunAwayMode = true;
-                    ((TAnimal)target).RunAwayStart = GetTickCount;
+                    ((TAnimal)target).RunAwayStart  =  HUtil32.GetTickCount();
                     ((TAnimal)target).RunAwayTime = 10 * 1000;
                 }
                 user.SelectTarget(target);
-                if ((target.Abil.Level < (_MIN(user.Abil.Level, 51) - 1 + new System.Random(4).Next())) && (target.Abil.Level < M2Share.MAXKINGLEVEL - 1))
+                if ((target.Abil.Level < (HUtil32._MIN(user.Abil.Level, 51) - 1 + new System.Random(4).Next())) && (target.Abil.Level < M2Share.MAXKINGLEVEL - 1))
                 {
                     lvgap = user.Abil.Level - target.Abil.Level;
                     if (new System.Random(100).Next() < (15 + mlevel * 7 + lvgap))
@@ -247,7 +247,7 @@ namespace GameSvr
             {
                 if (!(user.PEnvir.NoEscapeMove || user.PEnvir.NoTeleportMove))
                 {
-                    // ¾Æ°øÇà¹ı »ç¿ëºÒ°¡(sonmg)
+                    // é…’å‚é’è¿‡ è¤ä¾©é˜‚å•Š(sonmg)
                     if (new System.Random(11).Next() < 4 + slevel * 2)
                     {
                         user.SendRefMsg(Grobal2.RM_SPACEMOVE_HIDE2, 0, 0, 0, 0, "");
@@ -297,7 +297,7 @@ namespace GameSvr
                             phs = M2Share.THolySeizeInfo = new THolySeizeInfo();
                             //FillChar(phs, sizeof(THolySeizeInfo), '\0');
                             phs.seizelist = new ArrayList();
-                            phs.OpenTime = GetTickCount;
+                            phs.OpenTime  =  HUtil32.GetTickCount();
                             phs.SeizeTime = htime * 1000;
                         }
                         phs.seizelist.Add(cret);
@@ -337,7 +337,7 @@ namespace GameSvr
                     svMain.EventMan.AddEvent(__event);
                     phs.earr[7] = __event;
                     svMain.UserEngine.HolySeizeList.Add(phs);
-                    // °á°èÃß°¡
+                    // æ¬æ‹Œçœ å•Š
                 }
                 else
                 {
@@ -451,7 +451,7 @@ namespace GameSvr
                 cret = (TCreature)rlist[i];
                 if (cret.LifeAttrib != Grobal2.LA_UNDEAD)
                 {
-                    // ¾ğµ¥µå °è¿­ ¸ó½ºÅÍ¿¡°Ô °ø°İ·ÂÀÌ ÀÖÀ½
+                    // æ”«å•é› æ‹Œå‡¯ é˜èƒ¶ç£ä¿Šéœ¸ å‚æ‹œä»¿æ ä¹æ¾œ
                     acpwr = pwr / 10;
                 }
                 else
@@ -468,9 +468,9 @@ namespace GameSvr
             return result;
         }
 
-        // ¼úÀÚ°¡ Àº½ÅÀÌ µÈ´Ù. ³ª¸¦ °ø°İÇÏ°í ÀÖ´Â ¸÷µéÀÌ ³ª¸¦ ¸ô¶óº»´Ù.
-        // ¼úÀÚ°¡ ¶§¸®¸é °ø°İÇÔ.
-        // ¼úÀÚ°¡ ÀÌµ¿ÇÏ¸é ÇØÁ¦µÈ´Ù.
+        // è´±ç£Šå•Š ç¯®è„šæ ç­‰ä¿ƒ. å”±ç”« å‚æ‹œçªç»Š ä¹ç»° å„ç”¸æ å”±ç”« éš”æ‰¼å¤¯ä¿ƒ.
+        // è´±ç£Šå•Š é”­åºœæ å‚æ‹œçªƒ.
+        // è´±ç£Šå•Š ææ‚¼çªæ ç§¦åŠ›ç­‰ä¿ƒ.
         public bool MagMakePrivateTransparent(TCreature user, int htime)
         {
             bool result;
@@ -482,7 +482,7 @@ namespace GameSvr
             {
                 return result;
             }
-            // ÀÌ¹Ì Åõ¸í
+            // æå›º æ§ç–™
             rlist = new ArrayList();
             user.GetMapCreatures(user.PEnvir, user.CX, user.CY, 9, rlist);
             for (i = 0; i < rlist.Count; i++)
@@ -492,7 +492,7 @@ namespace GameSvr
                 {
                     if (cret.TargetCret == user)
                     {
-                        // °¡±îÀÌ ÀÖ´Â³ğÀº 1/2 Àº ³Ñ¾î°£´Ù.
+                        // å•Šé³–æ ä¹ç»°ä»‡ç¯® 1/2 ç¯® é€ç»¢åŸƒä¿ƒ.
                         if ((Math.Abs(cret.CX - user.CX) > 1) || (Math.Abs(cret.CY - user.CY) > 1) || (new System.Random(2).Next() == 0))
                         {
                             cret.TargetCret = null;
@@ -506,7 +506,7 @@ namespace GameSvr
             user.CharStatusChanged();
             user.BoHumHideMode = true;
             user.BoFixedHideMode = true;
-            // ÇÑ ÀÚ¸®¿¡¼­¸¸ Àº½Å°¡´É, ÀÌµ¿ÇÏ¸é Àº½ÅÀÌ Ç®¸°´Ù.
+            // èŒ„ ç£Šåºœä¿Šè¾‘çˆ¶ ç¯®è„šå•Šç“·, ææ‚¼çªæ ç¯®è„šæ é’±èµ´ä¿ƒ.
             result = true;
             return result;
         }
@@ -529,7 +529,7 @@ namespace GameSvr
                     // . or (cret.Master <> nil) then begin  //
                     if (cret.StatusArr[Grobal2.STATE_TRANSPARENT] == 0)
                     {
-                        // Åõ¸íÀÌ ¾Æ´Ñ »óÅÂ
+                        // æ§ç–™æ é…’å›± æƒ‘æ€•
                         cret.SendDelayMsg(cret, Grobal2.RM_TRANSPARENT, 0, htime, 0, 0, "", 800);
                         // if MagMakePrivateTransparent (cret, htime) then
                         result = true;
@@ -540,7 +540,7 @@ namespace GameSvr
             return result;
         }
 
-        // 2003/07/15 ½Å±Ô¹«°ø
+        // 2003/07/15 è„šç—¹å…¬å‚
         public bool MagMakePrivateClean(TCreature user, int x, int y, int pct)
         {
             bool result;
@@ -611,7 +611,7 @@ namespace GameSvr
             pwr = 0;
             isnear = false;
             rlist = new ArrayList();
-            // ¹üÀ§ÀÇ ÁÜ½ÉÀÌ µÇ´Â ÁÂÇ¥ º¯°æ
+            // è£¹å›°ç‹¼ æ·‹ç¼´æ ç™»ç»° è°…é’ å‡½ç‰ˆ
             xx = user.CX;
             yy = user.CY;
             f1x = xx;
@@ -621,22 +621,22 @@ namespace GameSvr
             switch (user.Dir)
             {
                 case 0:
-                    // °­ÇÏ°Ô Å¸°İÀÌ µé¾î°¡´Â ÁÂÇ¥ ¼³Á¤
+                    // ç¢çªéœ¸ é¸¥æ‹œæ ç”¸ç»¢å•Šç»° è°…é’ æ±²æ²¥
                     f1x = xx;
                     f1y = yy - 1;
                     f2x = xx;
                     f2y = yy - 2;
-                    // Áß¾ÓÁÂÇ¥ ¼³Á¤
+                    // åå±…è°…é’ æ±²æ²¥
                     yy = yy - 2;
                     user.GetMapCreatures(user.PEnvir, xx, yy, 1, rlist);
                     break;
                 case 1:
-                    // °­ÇÏ°Ô Å¸°İÀÌ µé¾î°¡´Â ÁÂÇ¥ ¼³Á¤
+                    // ç¢çªéœ¸ é¸¥æ‹œæ ç”¸ç»¢å•Šç»° è°…é’ æ±²æ²¥
                     f1x = xx + 1;
                     f1y = yy - 1;
                     f2x = xx + 2;
                     f2y = yy - 2;
-                    // Áß¾ÓÁÂÇ¥ ¼³Á¤
+                    // åå±…è°…é’ æ±²æ²¥
                     // xx := xx + 1;
                     // yy := yy - 1;
                     xx = xx + 2;
@@ -644,22 +644,22 @@ namespace GameSvr
                     user.GetObliqueMapCreatures(user.PEnvir, xx, yy, 1, user.Dir, rlist);
                     break;
                 case 2:
-                    // °­ÇÏ°Ô Å¸°İÀÌ µé¾î°¡´Â ÁÂÇ¥ ¼³Á¤
+                    // ç¢çªéœ¸ é¸¥æ‹œæ ç”¸ç»¢å•Šç»° è°…é’ æ±²æ²¥
                     f1x = xx + 1;
                     f1y = yy;
                     f2x = xx + 2;
                     f2y = yy;
-                    // Áß¾ÓÁÂÇ¥ ¼³Á¤
+                    // åå±…è°…é’ æ±²æ²¥
                     xx = xx + 2;
                     user.GetMapCreatures(user.PEnvir, xx, yy, 1, rlist);
                     break;
                 case 3:
-                    // °­ÇÏ°Ô Å¸°İÀÌ µé¾î°¡´Â ÁÂÇ¥ ¼³Á¤
+                    // ç¢çªéœ¸ é¸¥æ‹œæ ç”¸ç»¢å•Šç»° è°…é’ æ±²æ²¥
                     f1x = xx + 1;
                     f1y = yy + 1;
                     f2x = xx + 2;
                     f2y = yy + 2;
-                    // Áß¾ÓÁÂÇ¥ ¼³Á¤
+                    // åå±…è°…é’ æ±²æ²¥
                     // xx := xx + 1;
                     // yy := yy + 1;
                     xx = xx + 2;
@@ -667,22 +667,22 @@ namespace GameSvr
                     user.GetObliqueMapCreatures(user.PEnvir, xx, yy, 1, user.Dir, rlist);
                     break;
                 case 4:
-                    // °­ÇÏ°Ô Å¸°İÀÌ µé¾î°¡´Â ÁÂÇ¥ ¼³Á¤
+                    // ç¢çªéœ¸ é¸¥æ‹œæ ç”¸ç»¢å•Šç»° è°…é’ æ±²æ²¥
                     f1x = xx;
                     f1y = yy + 1;
                     f2x = xx;
                     f2y = yy + 2;
-                    // Áß¾ÓÁÂÇ¥ ¼³Á¤
+                    // åå±…è°…é’ æ±²æ²¥
                     yy = yy + 2;
                     user.GetMapCreatures(user.PEnvir, xx, yy, 1, rlist);
                     break;
                 case 5:
-                    // °­ÇÏ°Ô Å¸°İÀÌ µé¾î°¡´Â ÁÂÇ¥ ¼³Á¤
+                    // ç¢çªéœ¸ é¸¥æ‹œæ ç”¸ç»¢å•Šç»° è°…é’ æ±²æ²¥
                     f1x = xx - 1;
                     f1y = yy + 1;
                     f2x = xx - 2;
                     f2y = yy + 2;
-                    // Áß¾ÓÁÂÇ¥ ¼³Á¤
+                    // åå±…è°…é’ æ±²æ²¥
                     // xx := xx - 1;
                     // yy := yy + 1;
                     xx = xx - 2;
@@ -690,22 +690,22 @@ namespace GameSvr
                     user.GetObliqueMapCreatures(user.PEnvir, xx, yy, 1, user.Dir, rlist);
                     break;
                 case 6:
-                    // °­ÇÏ°Ô Å¸°İÀÌ µé¾î°¡´Â ÁÂÇ¥ ¼³Á¤
+                    // ç¢çªéœ¸ é¸¥æ‹œæ ç”¸ç»¢å•Šç»° è°…é’ æ±²æ²¥
                     f1x = xx - 1;
                     f1y = yy;
                     f2x = xx - 2;
                     f2y = yy;
-                    // Áß¾ÓÁÂÇ¥ ¼³Á¤
+                    // åå±…è°…é’ æ±²æ²¥
                     xx = xx - 2;
                     user.GetMapCreatures(user.PEnvir, xx, yy, 1, rlist);
                     break;
                 case 7:
-                    // °­ÇÏ°Ô Å¸°İÀÌ µé¾î°¡´Â ÁÂÇ¥ ¼³Á¤
+                    // ç¢çªéœ¸ é¸¥æ‹œæ ç”¸ç»¢å•Šç»° è°…é’ æ±²æ²¥
                     f1x = xx - 1;
                     f1y = yy - 1;
                     f2x = xx - 2;
                     f2y = yy - 2;
-                    // Áß¾ÓÁÂÇ¥ ¼³Á¤
+                    // åå±…è°…é’ æ±²æ²¥
                     // xx := xx - 1;
                     // yy := yy - 1;
                     xx = xx - 2;
@@ -713,10 +713,10 @@ namespace GameSvr
                     user.GetObliqueMapCreatures(user.PEnvir, xx, yy, 1, user.Dir, rlist);
                     break;
             }
-            // ¸ğ¼ÇÀ» ÃëÇÏ°Ô ÇÑ´ÙÀ½¿¡
+            // è‘›è®°é˜‘ ç§’çªéœ¸ èŒ„ä¿ƒæ¾œä¿Š
             // user.HitMotion( RM_HIT, user.Dir, user.CX, user.CY);
             // user.SendRefMsg( RM_WINDCUT , user.Dir , user.CX , user.CY , 0, '');
-            // Àåºñ Çà¿îÄ¡·Î Å©¸®Æ¼ÄÃ È®·ü °áÁ¤
+            // å˜åš é’æ¬¾æ‘¹è‚º å†œåºœèæ‹¿ çŠ¬ä¼ æ¬æ²¥
             CriticalDamage = false;
             if (new System.Random(100).Next() <= (1 + user.UseItems[Grobal2.U_WEAPON].Desc[3] - user.UseItems[Grobal2.U_WEAPON].Desc[4]))
             {
@@ -727,7 +727,7 @@ namespace GameSvr
                 cret = (TCreature)rlist[i];
                 if (user.IsProperTarget(cret) && (!cret.Death) && (!cret.BoGhost))
                 {
-                    // Å¸°İÀÌ °­ÇÏ°Ô µé¾î°¡¾ßµÉ ³Ñ°ú ¾àÇÏ°Ô µé¾î°¡¾ßµÉ ³Ñ ÆÇ´Ü.
+                    // é¸¥æ‹œæ ç¢çªéœ¸ ç”¸ç»¢å•Šå…·çª é€è‹ è·çªéœ¸ ç”¸ç»¢å•Šå…·çª é€ é­„çªœ.
                     if (((cret.CX == f1x) && (cret.CY == f1y)) || ((cret.CX == f2x) && (cret.CY == f2y)))
                     {
                         isnear = true;
@@ -736,40 +736,34 @@ namespace GameSvr
                     {
                         isnear = false;
                     }
-                    // Å©¸®Æ¼ÄÃ µ¥¹ÌÁö
+                    // å†œåºœèæ‹¿ å•å›ºç˜¤
                     if (CriticalDamage)
                     {
-                        DcRandom = HiByte(user.WAbil.DC);
+                        DcRandom = HUtil32.HiByte(user.WAbil.DC);
                     }
                     else
                     {
-                        DcRandom = new System.Random(HiByte(user.WAbil.DC)).Next();
+                        DcRandom = new System.Random(HUtil32.HiByte(user.WAbil.DC)).Next();
                     }
-                    // Àü¹æ 1*2ÀÇ ¹üÀ§:
+                    // å‚ˆè§„ 1*2ç‹¼ è£¹å›°:
                     // ((1.2+0.3*(Lv_S+(LV/20)) * Random(Dcmax)/3+DC
-                    // ±× ¿Ü ¹üÀ§: ((0.8+0.2*(Lv_S+LV/20)) * Random(Dcmax)/3+DC
-                    // Å¸°İÄ¡°¡ ´Ù¸¥°Ô Àû¿ëµÊ
+                    // å¼Š å¯‡ è£¹å›°: ((0.8+0.2*(Lv_S+LV/20)) * Random(Dcmax)/3+DC
+                    // é¸¥æ‹œæ‘¹å•Š ä¿ƒå¼—éœ¸ åˆ©ä¾©å‡³
                     if (isnear)
                     {
-                        pwr = (12 + 3 * (skilllevel + user.Abil.Level / 20)) * DcRandom / 30 + Lobyte(user.WAbil.DC);
+                        pwr = (12 + 3 * (skilllevel + user.Abil.Level / 20)) * DcRandom / 30 + HUtil32.LoByte(user.WAbil.DC);
                     }
                     else
                     {
-                        pwr = (8 + 2 * (skilllevel + user.Abil.Level / 20)) * DcRandom / 30 + Lobyte(user.WAbil.DC);
+                        pwr = (8 + 2 * (skilllevel + user.Abil.Level / 20)) * DcRandom / 30 + HUtil32.LoByte(user.WAbil.DC);
                     }
-                    // Å©¸®Æ¼ÄÃ µ¥¹ÌÁö
+                    // å†œåºœèæ‹¿ å•å›ºç˜¤
                     if (CriticalDamage)
                     {
                         pwr = pwr * 2;
                     }
                     if (pwr > 0)
                     {
-                        // Å×½ºÆ®¿ë
-                        // 
-                        // if isnear then
-                        // cret.MakePoison( POISON_STONE , 2 ,1 )
-                        // else
-                        // cret.MakePoison( POISON_SLOW , 2 ,1 );
                         WindCutHit(user, cret, pwr, 0);
                         result = true;
                     }
@@ -779,8 +773,8 @@ namespace GameSvr
             return result;
         }
 
-        // 2004/06/23 ½Å±Ô¹«°ø
-        // Æ÷½Â°Ë
+        // 2004/06/23 è„šç—¹å…¬å‚
+        // å™¨é“°å…«
         public bool MagPullMon(TCreature user, TCreature target, int skilllevel)
         {
             bool result;
@@ -798,17 +792,17 @@ namespace GameSvr
             }
             if (target != null)
             {
-                // »ç¶÷ÇÑÅ× ¾µ ¼ö ¾øÀ½.
+                // è¤æ©èŒ„æŠ› é•œ è ç»æ¾œ.
                 if (target.RaceServer == Grobal2.RC_USERHUMAN)
                 {
                     return result;
                 }
-                // ¿òÁ÷ÀÌÁö ¾Ê´Â ¸ó½ºÅÍ´Â ²ø¾î¿Ã ¼ö ¾øÀ½(2004/12/01)
+                // æ¡†æµæç˜¤ è‡¼ç»° é˜èƒ¶ç£ç»° ç¼ ç»¢æ£µ è ç»æ¾œ(2004/12/01)
                 if (target.StickMode)
                 {
                     return result;
                 }
-                // ³Ê¹« °¡±îÀÌ ÀÖÀ¸¸é ±â¼úÀ» ¾µ ¼ö ¾øÀ½.
+                // å‘ˆå…¬ å•Šé³–æ ä¹æ æ æ‰è´±é˜‘ é•œ è ç»æ¾œ.
                 if ((Math.Abs(user.CX - target.CX) < 3) && (Math.Abs(user.CY - target.CY) < 3))
                 {
                     user.SysMsg("Target is too close.", 0);
@@ -816,13 +810,13 @@ namespace GameSvr
                 }
                 else if ((Math.Abs(user.CX - target.CX) > 7) && (Math.Abs(user.CY - target.CY) > 7))
                 {
-                    // user.SysMsg('»ó´ë°¡ ³Ê¹« ¸Ö¸® ÀÖ½À´Ï´Ù.', 0);
+                    // user.SysMsg('æƒ‘æªå•Š å‘ˆå…¬ é’¢åºœ ä¹åš¼èªä¿ƒ.', 0);
                     return result;
                 }
-                // ¸Ö¸®ÀÖ´Â ÀûÀ» ²ø¾î´ç±ä´Ù.
+                // é’¢åºœä¹ç»° åˆ©é˜‘ ç¼ ç»¢å¯¸å˜ä¿ƒ.
                 user.Dir = M2Share.GetNextDirectionNew(user.CX, user.CY, target.CX, target.CY);
                 // user.SendRefMsg (RM_LIGHTING, user.Dir, user.CX, user.CY, Integer(target), '');
-                // ¹æÇâº° ²ø¾î´ç±â´Â °Å¸® Á¶Àı
+                // è§„æ°¢å–Š ç¼ ç»¢å¯¸æ‰ç»° èŠ­åºœ ç‚¼ä¾‹
                 rushdir = (user.Dir + 4) % 8;
                 if (new ArrayList(new int[] { 0, 4 }).Contains(rushdir))
                 {
@@ -834,13 +828,13 @@ namespace GameSvr
                 }
                 else
                 {
-                    rushDist = _MAX(0, _MIN(Math.Abs(user.CX - target.CX) - 2, Math.Abs(user.CY - target.CY) - 2));
+                    rushDist = HUtil32._MAX(0, HUtil32._MIN(Math.Abs(user.CX - target.CX) - 2, Math.Abs(user.CY - target.CY) - 2));
                 }
                 if (user.IsProperTarget(target))
                 {
-                    // ½ÃÃ¼°¡ ¾Æ´Ï°í ²¿ºÀ¸÷ÀÌ ¾Æ´Ï¾î¾ß ÇÔ.
+                    // çŸ«çœ‰å•Š é…’èªç»Š éƒ¨è±ªå„æ é…’èªç»¢å…· çªƒ.
                     // if (not target.Death) and (target.Master = nil) then begin
-                    // ½ÃÃ¼°¡ ¾Æ´Ï¾î¾ß ÇÔ. ²¿ºÀ¸÷Àº °¡´ÉÇÏ°Ô ¼öÁ¤(sonmg 2005/11/2)
+                    // çŸ«çœ‰å•Š é…’èªç»¢å…· çªƒ. éƒ¨è±ªå„ç¯® å•Šç“·çªéœ¸ èæ²¥(sonmg 2005/11/2)
                     if (!target.Death)
                     {
                         if ((target.Abil.Level < user.Abil.Level + 5 + new System.Random(8).Next()) && (target.Abil.Level < 60))
@@ -862,21 +856,21 @@ namespace GameSvr
                             }
                             if (SuccessFlag)
                             {
-                                // Á÷¼±¿¡ ÀÖ´Â³Ñ¸¸ ¶¯±ä´Ù.(1Ä­¾¿ ÁÂ¿ì·Î ÀÖ´Â ³Ñµµ ¶¯±ä´Ù)
+                                // æµæ€¥ä¿Š ä¹ç»°é€çˆ¶ åŠ¨å˜ä¿ƒ.(1æ²«ç©¶ è°…å¿«è‚º ä¹ç»° é€æ¡£ åŠ¨å˜ä¿ƒ)
                                 if ((user.CX == target.CX) || (user.CY == target.CY) || (Math.Abs(user.CX - target.CX) == Math.Abs(user.CY - target.CY)) || (user.CX + 1 == target.CX) || (user.CY + 1 == target.CY) || (Math.Abs(Math.Abs(user.CX - target.CX) - Math.Abs(user.CY - target.CY)) == 1) || (user.CX - 1 == target.CX) || (user.CY - 1 == target.CY))
                                 {
                                     rush = rushDist;
                                     target.CharDrawingRush(rushdir, rush, false);
                                     if (target.RaceServer != Grobal2.RC_USERHUMAN)
                                     {
-                                        Dur = HUtil32.MathRound((skilllevel + 1) * 1.6) + _MAX(1, 10 - target.SpeedPoint);
+                                        Dur = HUtil32.MathRound((skilllevel + 1) * 1.6) + HUtil32._MAX(1, 10 - target.SpeedPoint);
                                     }
                                     else
                                     {
-                                        Dur = HUtil32.MathRound((skilllevel + 1) * 0.8) + _MAX(1, 10 - target.SpeedPoint);
+                                        Dur = HUtil32.MathRound((skilllevel + 1) * 0.8) + HUtil32._MAX(1, 10 - target.SpeedPoint);
                                         if (user.RaceServer == Grobal2.RC_USERHUMAN)
                                         {
-                                            // Á¤´ç¹æ¾î¸¦ À§ÇÑ ±â·Ï..
+                                            // æ²¥å¯¸è§„ç»¢ç”« å›°èŒ„ æ‰åºŸ..
                                             target.AddPkHiter(user);
                                         }
                                     }
@@ -886,7 +880,7 @@ namespace GameSvr
                                 }
                                 else
                                 {
-                                    // user.SysMsg('²ø¾î ´ç±æ ¼ö ¾ø´Â À§Ä¡¿¡ ÀÖ½À´Ï´Ù.', 0);
+                                    // user.SysMsg('ç¼ ç»¢ å¯¸è¾¨ è ç»ç»° å›°æ‘¹ä¿Š ä¹åš¼èªä¿ƒ.', 0);
                                 }
                             }
                         }
@@ -899,29 +893,29 @@ namespace GameSvr
         public byte MagBlindEye_GetRPow(short pw)
         {
             byte result;
-            if (HiByte(pw) > Lobyte(pw))
+            if (HUtil32.HiByte(pw) > HUtil32.LoByte(pw))
             {
-                result = Lobyte(pw) + new System.Random(HiByte(pw) - Lobyte(pw) + 1).Next();
+                result = (byte)(HUtil32.LoByte(pw) + new System.Random(HUtil32.HiByte(pw) - HUtil32.LoByte(pw) + 1).Next());
             }
             else
             {
-                result = Lobyte(pw);
+                result = HUtil32.LoByte(pw);
             }
             return result;
         }
 
-        public int MagBlindEye_GetPower(int pw)
+        public int MagBlindEye_GetPower(TUserMagic pum, int pw)
         {
             int result;
-            // ¼ö·Ã 0 ´Ü°è¿¡¼­´Â 1/4ÀÇ ÆÄ¿öÀÓ
+            // èè®¿ 0 çªœæ‹Œä¿Šè¾‘ç»° 1/4ç‹¼ é¢‡å†µçƒ™
             result = HUtil32.MathRound(pw / (pum.pDef.MaxTrainLevel + 1) * (pum.Level + 1)) + pum.pDef.DefMinPower + new System.Random(pum.pDef.DefMaxPower - pum.pDef.DefMinPower).Next();
             return result;
         }
 
-        public int MagBlindEye_GetPower13(int pw)
+        public int MagBlindEye_GetPower13(TUserMagic pum, int pw)
         {
             int result;
-            // ¼ö·Ã 0 ´Ü°è¿¡µµ 1/3ÀÇ ÆÄ¿ö°¡ ³²
+            // èè®¿ 0 çªœæ‹Œä¿Šæ¡£ 1/3ç‹¼ é¢‡å†µå•Š å·¢
             double p1;
             double p2;
             p1 = pw / 3;
@@ -932,35 +926,24 @@ namespace GameSvr
 
         public bool MagBlindEye(TCreature user, TCreature target, TUserMagic pum)
         {
-            bool result;
             int pwr;
             int levelgap;
-            // flag : Boolean;
-            result = false;
-            // flag := FALSE;
+            bool result = false;
             if (user.IsProperTarget(target))
             {
-                // ¸ó½ºÅÍ¿¡¸¸ °É¸².
                 if (target.RaceServer >= Grobal2.RC_ANIMAL)
                 {
-                    // ½ºÅ³Á¤µµ¿¡ µû¶ó ¼º°ø¿©ºÎ°¡ °áÁ¤
                     levelgap = user.Abil.Level - target.Abil.Level;
                     if ((20 - (pum.Level + 1) * 2) <= new System.Random(MagBlindEye_GetRPow((short)user.WAbil.SC) + (user.Abil.Level / 5) + (levelgap * 2)).Next())
                     {
-                        // (»ó´ë¹æ ·¹º§ < ½ÃÀüÀÚ ·¹º§+1+Random(3)) and (»ó´ë¹æ·¹º§ < 55)
                         if ((target.Abil.Level < user.Abil.Level + 1 + new System.Random(3).Next()) && (target.Abil.Level < 55))
                         {
                             if (target.BoGoodCrazyMode == false)
                             {
-                                // Áßº¹ÇØ¼­ °É¸®Áö ¾Ê´Â´Ù.
-                                // pwr = ÆøÁÖ½Ã°£
-                                pwr = MagBlindEye_GetPower13(10) + HUtil32.MathRound(MagBlindEye_GetRPow((short)user.WAbil.SC) / 3);
+                                pwr = MagBlindEye_GetPower13(pum, 10) + HUtil32.MathRound(MagBlindEye_GetRPow((short)user.WAbil.SC) / 3);
                                 pwr = pwr + new System.Random(20).Next();
                                 target.TargetCret = null;
                                 target.MakeGoodCrazyMode(pwr);
-                                // target.SendRefMsg (RM_LOOPNORMALEFFECT, integer(target), pwr * 1000, 0, NE_BLINDEFFECT, '');
-                                // flag := TRUE;
-                                // user.SysMsg('¶°µµ´Â ¿µÈ¥À» ºùÀÇ½ÃÄ×½À´Ï´Ù.', 1);
                             }
                         }
                         result = true;
@@ -968,38 +951,35 @@ namespace GameSvr
                     user.SelectTarget(target);
                 }
             }
-            // if flag = FALSE then
-            // user.SysMsg('¶°µµ´Â ¿µÈ¥À» ºùÀÇ½ÃÅ°Áö ¸øÇß½À´Ï´Ù.', 0);
-
             return result;
         }
 
         public byte SpellNow_GetRPow(short pw)
         {
             byte result;
-            if (HiByte(pw) > Lobyte(pw))
+            if (HUtil32.HiByte(pw) > HUtil32.LoByte(pw))
             {
-                result = Lobyte(pw) + new System.Random(HiByte(pw) - Lobyte(pw) + 1).Next();
+                result = (byte)(HUtil32.LoByte(pw) + new System.Random(HUtil32.HiByte(pw) - HUtil32.LoByte(pw) + 1).Next());
             }
             else
             {
-                result = Lobyte(pw);
+                result = HUtil32.LoByte(pw);
             }
             return result;
         }
 
-        public int SpellNow_GetPower(int pw)
+        public int SpellNow_GetPower(TUserMagic pum, int pw)
         {
             int result;
-            // ¼ö·Ã 0 ´Ü°è¿¡¼­´Â 1/4ÀÇ ÆÄ¿öÀÓ
+            // èè®¿ 0 çªœæ‹Œä¿Šè¾‘ç»° 1/4ç‹¼ é¢‡å†µçƒ™
             result = HUtil32.MathRound(pw / (pum.pDef.MaxTrainLevel + 1) * (pum.Level + 1)) + pum.pDef.DefMinPower + new System.Random(pum.pDef.DefMaxPower - pum.pDef.DefMinPower).Next();
             return result;
         }
 
-        public int SpellNow_GetPower13(int pw)
+        public int SpellNow_GetPower13(TUserMagic pum, int pw)
         {
             int result;
-            // ¼ö·Ã 0 ´Ü°è¿¡µµ 1/3ÀÇ ÆÄ¿ö°¡ ³²
+            // èè®¿ 0 çªœæ‹Œä¿Šæ¡£ 1/3ç‹¼ é¢‡å†µå•Š å·¢
             double p1;
             double p2;
             p1 = pw / 3;
@@ -1013,7 +993,7 @@ namespace GameSvr
             int result;
             TStdItem pstd;
             result = 0;
-            // 2003/03/15 COPARK ¾ÆÀÌÅÛ ÀÎº¥Åä¸® È®Àå
+            // 2003/03/15 COPARK é…’æè¢ ç‰¢äº¥é…åºœ çŠ¬å˜
             if (user.UseItems[Grobal2.U_BUJUK].Index > 0)
             {
                 // U_ARMRINGL->U_BUJUK
@@ -1022,7 +1002,7 @@ namespace GameSvr
                 {
                     if ((pstd.StdMode == 25) && (pstd.Shape == 5))
                     {
-                        // ºÎÀû
+                        // ä½•åˆ©
                         if (HUtil32.MathRound(user.UseItems[Grobal2.U_BUJUK].Dura / 100) >= (count - 1))
                         {
                             result = 1;
@@ -1037,7 +1017,7 @@ namespace GameSvr
                 {
                     if ((pstd.StdMode == 25) && (pstd.Shape == 5))
                     {
-                        // ºÎÀû
+                        // ä½•åˆ©
                         if (HUtil32.MathRound(user.UseItems[Grobal2.U_ARMRINGL].Dura / 100) >= (count - 1))
                         {
                             result = 2;
@@ -1052,22 +1032,22 @@ namespace GameSvr
         {
             TUserHuman hum;
             TStdItem pstd;
-            // 2003/03/15 COPARK ¾ÆÀÌÅÛ ÀÎº¥Åä¸® È®Àå
-            // ´Ù ¾´ ºÎÀûÀº »ç¶óÁø´Ù.
+            // 2003/03/15 COPARK é…’æè¢ ç‰¢äº¥é…åºœ çŠ¬å˜
+            // ä¿ƒ æ•¬ ä½•åˆ©ç¯® è¤æ‰¼æŸ³ä¿ƒ.
             if (user.UseItems[Grobal2.U_BUJUK].Index > 0)
             {
                 if (user.UseItems[Grobal2.U_BUJUK].Dura < 100)
                 {
                     // U_ARMRINGL->U_BUJUK
                     user.UseItems[Grobal2.U_BUJUK].Dura = 0;
-                    // ´Ù ¾´ ºÎÀûÀº »ç¶óÁø´Ù.
+                    // ä¿ƒ æ•¬ ä½•åˆ©ç¯® è¤æ‰¼æŸ³ä¿ƒ.
                     if (user.RaceServer == Grobal2.RC_USERHUMAN)
                     {
                         hum = (TUserHuman)user;
                         hum.SendDelItem(user.UseItems[Grobal2.U_BUJUK]);
-                        // Å¬¶óÀÌ¾ğÆ®¿¡ ¾ø¾îÁø°Å º¸³¿
-                        hum.SysMsg("ÄãµÄ»¤Éí·ûÒÑ¾­ºÄ¾¡¡£", 0);
-                        // ºÎÀû ´Ù ´â¾ÒÀ» ¶§ ¸Ş½ÃÁö(2004/11/15)
+                        // åŠªæ‰¼ææ”«é£˜ä¿Š ç»ç»¢æŸ³èŠ­ ç„Šæ™¨
+                        hum.SysMsg("ä½ çš„æŠ¤èº«ç¬¦å·²ç»è€—å°½ã€‚", 0);
+                        // ä½•åˆ© ä¿ƒ ç²¹ç–½é˜‘ é”­ çš‹çŸ«ç˜¤(2004/11/15)
                     }
                     user.UseItems[Grobal2.U_BUJUK].Index = 0;
                 }
@@ -1086,7 +1066,7 @@ namespace GameSvr
                             {
                                 hum = (TUserHuman)user;
                                 hum.SendDelItem(user.UseItems[Grobal2.U_ARMRINGL]);
-                                hum.SysMsg("ÄãµÄ»¤Éí·ûÒÑ¾­ºÄ¾¡¡£", 0);
+                                hum.SysMsg("ä½ çš„æŠ¤èº«ç¬¦å·²ç»è€—å°½ã€‚", 0);
                             }
                             user.UseItems[Grobal2.U_ARMRINGL].Index = 0;
                         }
@@ -1095,12 +1075,12 @@ namespace GameSvr
             }
         }
 
-        public bool SpellNow(TCreature user, TUserMagic pum, int xx, int yy, TCreature target, int spell)
+        public bool SpellNow(TCreature user, TUserMagic pum, short xx, short yy, TCreature target, int spell)
         {
             bool result;
-            int sx;
-            int sy;
-            int ndir;
+            short sx = 0;
+            short sy = 0;
+            byte ndir;
             int pwr;
             int sec;
             int MoC;
@@ -1119,13 +1099,13 @@ namespace GameSvr
             {
                 return result;
             }
-            // ¸¶¹ı ÁØºñµ¿ÀÛÀ» ¸ÕÀú º¸³¿
+            // ä»˜è¿‡ éœ–åšæ‚¼ç´¯é˜‘ åˆšå† ç„Šæ™¨
             user.SendRefMsg(Grobal2.RM_SPELL, pum.pDef.Effect, xx, yy, pum.pDef.MagicId, "");
             if (target != null)
             {
                 if (target.Death)
                 {
-                    // Å¸°ÙÀÌ Á×Àº°æ¿ì.....
+                    // é¸¥ç™¾æ ç£·ç¯®ç‰ˆå¿«.....
                     target = null;
                 }
             }
@@ -1137,15 +1117,15 @@ namespace GameSvr
             {
                 case 1:
                 case 5:
-                    // È­¿°Àå
-                    // ±İ°­È­¿°Àå
+                    // æ‹³å ªå˜
+                    // é™›ç¢æ‹³å ªå˜
                     if (user.MagCanHitTarget(user.CX, user.CY, target))
                     {
                         if (user.IsProperTarget(target))
                         {
                             if ((target.AntiMagic <= new System.Random(50).Next()) && (Math.Abs(target.CX - xx) <= 1) && (Math.Abs(target.CY - yy) <= 1))
                             {
-                                pwr = user.GetAttackPower(SpellNow_GetPower(MPow(pum)) + user.Lobyte(user.WAbil.MC), (short)HiByte(user.WAbil.MC) - user.Lobyte(user.WAbil.MC) + 1);
+                                pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.MC), (short)HUtil32.HiByte(user.WAbil.MC) - user.HUtil32.LoByte(user.WAbil.MC) + 1);
                                 user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (ushort)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 600);
                                 if (target.RaceServer >= Grobal2.RC_ANIMAL)
                                 {
@@ -1179,7 +1159,7 @@ namespace GameSvr
                     if (M2Share.GetNextPosition(user.PEnvir, user.CX, user.CY, ndir, 1, ref sx, ref sy))
                     {
                         M2Share.GetNextPosition(user.PEnvir, user.CX, user.CY, ndir, 5, ref xx, ref yy);
-                        pwr = user.GetAttackPower(SpellNow_GetPower(MPow(pum)) + user.Lobyte(user.WAbil.MC), (short)HiByte(user.WAbil.MC) - user.Lobyte(user.WAbil.MC) + 1);
+                        pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.MC), (short)HUtil32.HiByte(user.WAbil.MC) - user.HUtil32.LoByte(user.WAbil.MC) + 1);
                         if (user.MagPassThroughMagic(sx, sy, xx, yy, ndir, pwr, false) > 0)
                         {
                             train = true;
@@ -1191,7 +1171,7 @@ namespace GameSvr
                     if (M2Share.GetNextPosition(user.PEnvir, user.CX, user.CY, ndir, 1, ref sx, ref sy))
                     {
                         M2Share.GetNextPosition(user.PEnvir, user.CX, user.CY, ndir, 8, ref xx, ref yy);
-                        pwr = user.GetAttackPower(SpellNow_GetPower(MPow(pum)) + user.Lobyte(user.WAbil.MC), (short)HiByte(user.WAbil.MC) - user.Lobyte(user.WAbil.MC) + 1);
+                        pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.MC), (short)HUtil32.HiByte(user.WAbil.MC) - user.HUtil32.LoByte(user.WAbil.MC) + 1);
                         if (user.MagPassThroughMagic(sx, sy, xx, yy, ndir, pwr, true) > 0)
                         {
                             train = true;
@@ -1204,7 +1184,7 @@ namespace GameSvr
                     {
                         if (target.AntiMagic <= new System.Random(50).Next())
                         {
-                            pwr = user.GetAttackPower(SpellNow_GetPower(MPow(pum)) + user.Lobyte(user.WAbil.MC), (short)HiByte(user.WAbil.MC) - user.Lobyte(user.WAbil.MC) + 1);
+                            pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.MC), (short)HUtil32.HiByte(user.WAbil.MC) - user.HUtil32.LoByte(user.WAbil.MC) + 1);
                             if (pum.pDef.MagicId == 11)
                             {
                                 if (target.LifeAttrib == Grobal2.LA_UNDEAD)
@@ -1236,7 +1216,7 @@ namespace GameSvr
                     }
                     break;
                 case 20:
-                    // ·ÚÈ¥°İ
+                    // æ±¾å»æ‹œ
                     if (user.IsProperTarget(target))
                     {
                         if (MagLightingShock(user, target, xx, yy, pum.Level))
@@ -1246,7 +1226,7 @@ namespace GameSvr
                     }
                     break;
                 case 32:
-                    // »çÀÚÀ±È¸
+                    // è¤ç£Šè¾£é›€
                     if (user.IsProperTarget(target))
                     {
                         if (MagTurnUndead(user, target, xx, yy, pum.Level))
@@ -1256,7 +1236,7 @@ namespace GameSvr
                     }
                     break;
                 case 21:
-                    // ¾Æ°øÇà¹ı
+                    // é…’å‚é’è¿‡
                     user.SendRefMsg(Grobal2.RM_MAGICFIRE, 0, MakeWord(pum.pDef.EffectType, pum.pDef.Effect), HUtil32.MakeLong(xx, yy), target.ActorId, "");
                     needfire = false;
                     if (MagLightingSpaceMove(user, pum.Level))
@@ -1265,51 +1245,51 @@ namespace GameSvr
                     }
                     break;
                 case 22:
-                    // Áö¿°¼ú
-                    if (MagMakeFireCross(user, user.GetAttackPower(SpellNow_GetPower(MPow(pum)) + Lobyte(user.WAbil.MC), (short)HiByte(user.WAbil.MC) - Lobyte(user.WAbil.MC) + 1), SpellNow_GetPower(10) + SpellNow_GetRPow((short)user.WAbil.MC) / 2, xx, yy) > 0)
+                    // ç˜¤å ªè´±
+                    if (MagMakeFireCross(user, user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + HUtil32.LoByte(user.WAbil.MC), HUtil32.HiByte(user.WAbil.MC) - HUtil32.LoByte(user.WAbil.MC) + 1), SpellNow_GetPower(pum, 10) + SpellNow_GetRPow((short)user.WAbil.MC) / 2, xx, yy) > 0)
                     {
                         train = true;
                     }
                     break;
                 case 23:
-                    // Æø¿­ÆÄ
-                    if (MagBigExplosion(user, user.GetAttackPower(SpellNow_GetPower(MPow(pum)) + Lobyte(user.WAbil.MC), (short)HiByte(user.WAbil.MC) - Lobyte(user.WAbil.MC) + 1), xx, yy, 1))
+                    // æ°”å‡¯é¢‡
+                    if (MagBigExplosion(user, user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + HUtil32.LoByte(user.WAbil.MC), HUtil32.HiByte(user.WAbil.MC) - HUtil32.LoByte(user.WAbil.MC) + 1), xx, yy, 1))
                     {
                         train = true;
                     }
                     break;
                 case 45:
-                    // È­·æ±â¿°
+                    // æ‹³é”‹æ‰å ª
                     // Random(0.8+(0.5*(Lv_S+1)))*Mcmax)+(1.2*Lv_S)*Mc
-                    pwr = (new System.Random(8 + (5 * (pum.Level + 1))).Next() * HiByte(user.WAbil.MC) + 12 * pum.Level * user.Lobyte(user.WAbil.MC)) / 10;
+                    pwr = (new System.Random(8 + (5 * (pum.Level + 1))).Next() * HUtil32.HiByte(user.WAbil.MC) + 12 * pum.Level * user.HUtil32.LoByte(user.WAbil.MC)) / 10;
                     if (MagDragonFire(user, pwr, pum.Level))
                     {
                         train = true;
                     }
                     break;
                 case 33:
-                    // ºù¼³Ç³
-                    if (MagBigExplosion(user, user.GetAttackPower(SpellNow_GetPower(MPow(pum)) + Lobyte(user.WAbil.MC), (short)HiByte(user.WAbil.MC) - Lobyte(user.WAbil.MC) + 1), xx, yy, 1))
+                    // è‘«æ±²æµ…
+                    if (MagBigExplosion(user, user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + HUtil32.LoByte(user.WAbil.MC), HUtil32.HiByte(user.WAbil.MC) - HUtil32.LoByte(user.WAbil.MC) + 1), xx, yy, 1))
                     {
                         train = true;
                     }
                     break;
                 case 24:
-                    // ·Ú¼³È­
-                    if (MagElecBlizzard(user, user.GetAttackPower(SpellNow_GetPower(MPow(pum)) + Lobyte(user.WAbil.MC), (short)HiByte(user.WAbil.MC) - Lobyte(user.WAbil.MC) + 1)))
+                    // æ±¾æ±²æ‹³
+                    if (MagElecBlizzard(user, user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + HUtil32.LoByte(user.WAbil.MC), HUtil32.HiByte(user.WAbil.MC) - HUtil32.LoByte(user.WAbil.MC) + 1)))
                     {
                         train = true;
                     }
                     break;
                 case 31:
-                    // ÁÖ¼úÀÇ¸·
-                    if (user.MagBubbleDefenceUp(pum.Level, SpellNow_GetPower(15 + SpellNow_GetRPow((short)user.WAbil.MC))))
+                    // æ—è´±ç‹¼é˜œ
+                    if (user.MagBubbleDefenceUp(pum.Level, SpellNow_GetPower(pum, 15 + SpellNow_GetRPow((short)user.WAbil.MC))))
                     {
                         train = true;
                     }
                     break;
                 case 2:
-                    // È¸º¹¼ú
+                    // é›€æ±—è´±
                     if (target == null)
                     {
                         target = user;
@@ -1318,7 +1298,7 @@ namespace GameSvr
                     }
                     if (user.IsProperFriend(target))
                     {
-                        pwr = user.GetAttackPower(SpellNow_GetPower(MPow(pum)) + user.Lobyte(user.WAbil.SC) * 2, ((short)HiByte(user.WAbil.SC) - user.Lobyte(user.WAbil.SC)) * 2 + 1);
+                        pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.SC) * 2, ((short)HUtil32.HiByte(user.WAbil.SC) - user.HUtil32.LoByte(user.WAbil.SC)) * 2 + 1);
                         if (target.WAbil.HP < target.WAbil.MaxHP)
                         {
                             target.SendDelayMsg(user, Grobal2.RM_MAGHEALING, 0, pwr, 0, 0, "", 800);
@@ -1331,22 +1311,22 @@ namespace GameSvr
                     }
                     break;
                 case 29:
-                    // ´ëÈ¸º¹¼ú
-                    pwr = user.GetAttackPower(SpellNow_GetPower(MPow(pum)) + user.Lobyte(user.WAbil.SC) * 2, ((short)HiByte(user.WAbil.SC) - user.Lobyte(user.WAbil.SC)) * 2 + 1);
+                    // æªé›€æ±—è´±
+                    pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.SC) * 2, ((short)HUtil32.HiByte(user.WAbil.SC) - user.HUtil32.LoByte(user.WAbil.SC)) * 2 + 1);
                     if (MagBigHealing(user, pwr, xx, yy))
                     {
                         train = true;
                     }
                     break;
                 case 6:
-                    // ¾Ï¿¬¼ú
+                    // é æ¥·è´±
                     nofire = true;
                     bhasitem = 0;
                     pstd = null;
                     if (user.IsProperTarget(target))
                     {
-                        // ¾Ï¿¬¼úÀº µ¶°¡·çÁÖ¸Ó´Ï°¡ ÀÖ¾î¾ß ÇÑ´Ù.
-                        // 2003/03/15 COPARK ¾ÆÀÌÅÛ ÀÎº¥Åä¸® È®Àå
+                        // é æ¥·è´±ç¯® åˆ€å•Šé£æ—èµ£èªå•Š ä¹ç»¢å…· èŒ„ä¿ƒ.
+                        // 2003/03/15 COPARK é…’æè¢ ç‰¢äº¥é…åºœ çŠ¬å˜
                         if (user.UseItems[Grobal2.U_BUJUK].Index > 0)
                         {
                             // U_ARMRINGL->U_BUJUK
@@ -1355,11 +1335,11 @@ namespace GameSvr
                             {
                                 if ((pstd.StdMode == 25) && (pstd.Shape <= 2))
                                 {
-                                    // 25:µ¶ÁÖ¸Ó´Ï
+                                    // 25:åˆ€æ—èµ£èª
                                     if (user.UseItems[Grobal2.U_BUJUK].Dura >= 100)
                                     {
                                         user.UseItems[Grobal2.U_BUJUK].Dura = (ushort)(user.UseItems[Grobal2.U_BUJUK].Dura - 100);
-                                        // ³»±¸¼º º¯°æÀº ¾Ë¸²
+                                        // éƒ´å¤‡å·± å‡½ç‰ˆç¯® èˆ…è¦†
                                         user.SendMsg(user, Grobal2.RM_DURACHANGE, Grobal2.U_BUJUK, user.UseItems[Grobal2.U_BUJUK].Dura, user.UseItems[Grobal2.U_BUJUK].DuraMax, 0, "");
                                         bhasitem = 1;
                                     }
@@ -1373,11 +1353,11 @@ namespace GameSvr
                             {
                                 if ((pstd.StdMode == 25) && (pstd.Shape <= 2))
                                 {
-                                    // 25:µ¶ÁÖ¸Ó´Ï
+                                    // 25:åˆ€æ—èµ£èª
                                     if (user.UseItems[Grobal2.U_ARMRINGL].Dura >= 100)
                                     {
                                         user.UseItems[Grobal2.U_ARMRINGL].Dura = (ushort)(user.UseItems[Grobal2.U_ARMRINGL].Dura - 100);
-                                        // ³»±¸¼º º¯°æÀº ¾Ë¸²
+                                        // éƒ´å¤‡å·± å‡½ç‰ˆç¯® èˆ…è¦†
                                         user.SendMsg(user, Grobal2.RM_DURACHANGE, Grobal2.U_ARMRINGL, user.UseItems[Grobal2.U_ARMRINGL].Dura, user.UseItems[Grobal2.U_ARMRINGL].DuraMax, 0, "");
                                         bhasitem = 2;
                                     }
@@ -1388,56 +1368,56 @@ namespace GameSvr
                         {
                             if (bhasitem > 0)
                             {
-                                // ½ºÅ³Á¤µµ¿¡ µû¶ó ¼º°ø¿©ºÎ°¡ °áÁ¤
+                                // èƒ¶æ‡¦æ²¥æ¡£ä¿Š è¶æ‰¼ å·±å‚å’¯ä½•å•Š æ¬æ²¥
                                 if (6 >= new System.Random(7 + target.AntiPoison).Next())
                                 {
                                     switch (pstd.Shape)
                                     {
                                         case 1:
-                                            // È¸»öµ¶°¡·ç: Áßµ¶
-                                            // sec = Áßµ¶½Ã°£  60ÃÊ + ¾ËÆÄ
-                                            sec = SpellNow_GetPower13(30) + 2 * SpellNow_GetRPow((short)user.WAbil.SC);
+                                            // é›€ç¥¸åˆ€å•Šé£: ååˆ€
+                                            // sec = ååˆ€çŸ«åŸƒ  60æª¬ + èˆ…é¢‡
+                                            sec = SpellNow_GetPower13(pum, 30) + 2 * SpellNow_GetRPow((short)user.WAbil.SC);
                                             // pwr := pum.Level;
-                                            pwr = pum.Level + _MAX(0, _MIN(3, _MAX(0, HiByte(user.WAbil.SC) - 30) * 15 / 100));
+                                            pwr = pum.Level + HUtil32._MAX(0, HUtil32._MIN(3, HUtil32._MAX(0, HUtil32.HiByte(user.WAbil.SC) - 30) * 15 / 100));
                                             // wparam
                                             target.SendDelayMsg(user, Grobal2.RM_MAKEPOISON, Grobal2.POISON_DECHEALTH, sec, user.ActorId, pwr, "", 1000);
                                             break;
                                         case 2:
-                                            // È²»öµ¶°¡·ç: ¹æ¾î·Â°¨¼Ò
-                                            // ³ìµ¶À» °Ç »ó´ë°¡ ´©±¸ÀÎÁö ¸ğ¸¥ »óÅÂ¿¡¼­ »¡µ¶À» °É¸é ³ìµ¶Àº »ç¶óÁø´Ù.(sonmg 2004/12/27)
+                                            // ç‚”ç¥¸åˆ€å•Šé£: è§„ç»¢ä»¿çš‘å®¶
+                                            // è¸Œåˆ€é˜‘ æ‰’ æƒ‘æªå•Š ç©¿å¤‡ç‰¢ç˜¤ è‘›å¼— æƒ‘æ€•ä¿Šè¾‘ å¼§åˆ€é˜‘ å§æ è¸Œåˆ€ç¯® è¤æ‰¼æŸ³ä¿ƒ.(sonmg 2004/12/27)
                                             if ((target.LastHiter == null) && (target.StatusArr[Grobal2.POISON_DECHEALTH] > 0))
                                             {
                                                 target.StatusArr[Grobal2.POISON_DECHEALTH] = 0;
                                             }
-                                            // sec = Áßµ¶½Ã°£ 40ÃÊ + ¾ËÆÄ
-                                            sec = SpellNow_GetPower13(40) + 2 * SpellNow_GetRPow((short)user.WAbil.SC);
-                                            // (Lobyte(user.WAbil.SC) + Random(ShortInt(HiByte(user.WAbil.SC)-Lobyte(user.WAbil.SC)) + 1));
+                                            // sec = ååˆ€çŸ«åŸƒ 40æª¬ + èˆ…é¢‡
+                                            sec = SpellNow_GetPower13(pum, 40) + 2 * SpellNow_GetRPow((short)user.WAbil.SC);
+                                            // (HUtil32.LoByte(user.WAbil.SC) + Random(ShortInt(HUtil32.HiByte(user.WAbil.SC)-HUtil32.LoByte(user.WAbil.SC)) + 1));
                                             // pwr := 2{pum.Level};
-                                            pwr = _MAX(2, _MIN(5, HiByte(user.WAbil.SC) / 10));
+                                            pwr = HUtil32._MAX(2, HUtil32._MIN(5, HUtil32.HiByte(user.WAbil.SC) / 10));
                                             // wparam
                                             target.SendDelayMsg(user, Grobal2.RM_MAKEPOISON, Grobal2.POISON_DAMAGEARMOR, sec, user.ActorId, pwr, "", 1000);
                                             break;
                                     }
                                     // -----------------------------------------
-                                    // °¥ÇÇ Ã¼Å©(sonmg 2005/11/28)
+                                    // å“ä¹” çœ‰å†œ(sonmg 2005/11/28)
                                     if ((target.RaceServer == Grobal2.RC_USERHUMAN) && (user.RaceServer == Grobal2.RC_USERHUMAN))
                                     {
-                                        // Á¤´ç¹æ¾î¸¦ À§ÇÑ ±â·Ï..
+                                        // æ²¥å¯¸è§„ç»¢ç”« å›°èŒ„ æ‰åºŸ..
                                         target.AddPkHiter(user);
                                         target.SetLastHiter(user);
                                     }
                                     else if (target.Master != null)
                                     {
-                                        // Áßµ¶µÈ ¼ÒÈ¯¸÷ÀÇ ÁÖÀÎÀÌ ¶§¸°»ç¶÷ÀÌ ¾Æ´Ï¸é
+                                        // ååˆ€ç­‰ å®¶åˆ¸å„ç‹¼ æ—ç‰¢æ é”­èµ´è¤æ©æ é…’èªæ
                                         if (target.Master != user)
                                         {
-                                            // Á¤´ç¹æ¾î¸¦ À§ÇÑ ±â·Ï..
+                                            // æ²¥å¯¸è§„ç»¢ç”« å›°èŒ„ æ‰åºŸ..
                                             target.AddPkHiter(user);
                                             target.SetLastHiter(user);
                                         }
                                     }
                                     // -----------------------------------------
-                                    // »ç¶÷,¸ó½ºÅÍ¿¡°Ô °É¾úÀ»¶§ ¼ö·ÃµÈ´Ù.
+                                    // è¤æ©,é˜èƒ¶ç£ä¿Šéœ¸ å§èŒé˜‘é”­ èè®¿ç­‰ä¿ƒ.
                                     if ((target.RaceServer == Grobal2.RC_USERHUMAN) || (target.RaceServer >= Grobal2.RC_ANIMAL))
                                     {
                                         train = true;
@@ -1447,20 +1427,20 @@ namespace GameSvr
                                 nofire = false;
                             }
                         }
-                        // ´Ù ¾´ ¾àÀº »ç¶óÁø´Ù.
+                        // ä¿ƒ æ•¬ è·ç¯® è¤æ‰¼æŸ³ä¿ƒ.
                         if (bhasitem == 1)
                         {
                             if (user.UseItems[Grobal2.U_BUJUK].Dura < 100)
                             {
                                 user.UseItems[Grobal2.U_BUJUK].Dura = 0;
-                                // ´Ù ¾´¾àÀº »ç¶óÁø´Ù.
+                                // ä¿ƒ æ•¬è·ç¯® è¤æ‰¼æŸ³ä¿ƒ.
                                 if (user.RaceServer == Grobal2.RC_USERHUMAN)
                                 {
                                     hum = (TUserHuman)user;
                                     hum.SendDelItem(user.UseItems[Grobal2.U_BUJUK]);
-                                    // Å¬¶óÀÌ¾ğÆ®¿¡ ¾ø¾îÁø°Å º¸³¿
+                                    // åŠªæ‰¼ææ”«é£˜ä¿Š ç»ç»¢æŸ³èŠ­ ç„Šæ™¨
                                     hum.SysMsg("The Poison item has been exhausted.", 0);
-                                    // µ¶°¡·ç ´Ù ´â¾ÒÀ» ¶§ ¸Ş½ÃÁö(2004/11/15)
+                                    // åˆ€å•Šé£ ä¿ƒ ç²¹ç–½é˜‘ é”­ çš‹çŸ«ç˜¤(2004/11/15)
                                 }
                                 user.UseItems[Grobal2.U_BUJUK].Index = 0;
                             }
@@ -1472,18 +1452,18 @@ namespace GameSvr
                             {
                                 if (pstd.StdMode == 25)
                                 {
-                                    // 25:µ¶ÁÖ¸Ó´Ï
+                                    // 25:åˆ€æ—èµ£èª
                                     if (user.UseItems[Grobal2.U_ARMRINGL].Dura < 100)
                                     {
                                         user.UseItems[Grobal2.U_ARMRINGL].Dura = 0;
-                                        // ´Ù ¾´¾àÀº »ç¶óÁø´Ù.
+                                        // ä¿ƒ æ•¬è·ç¯® è¤æ‰¼æŸ³ä¿ƒ.
                                         if (user.RaceServer == Grobal2.RC_USERHUMAN)
                                         {
                                             hum = (TUserHuman)user;
                                             hum.SendDelItem(user.UseItems[Grobal2.U_ARMRINGL]);
-                                            // Å¬¶óÀÌ¾ğÆ®¿¡ ¾ø¾îÁø°Å º¸³¿
+                                            // åŠªæ‰¼ææ”«é£˜ä¿Š ç»ç»¢æŸ³èŠ­ ç„Šæ™¨
                                             hum.SysMsg("The Poison item has been exhausted.", 0);
-                                            // µ¶°¡·ç ´Ù ´â¾ÒÀ» ¶§ ¸Ş½ÃÁö(2004/11/15)
+                                            // åˆ€å•Šé£ ä¿ƒ ç²¹ç–½é˜‘ é”­ çš‹çŸ«ç˜¤(2004/11/15)
                                         }
                                         user.UseItems[Grobal2.U_ARMRINGL].Index = 0;
                                     }
@@ -1503,18 +1483,18 @@ namespace GameSvr
                 case 41:
                 case 46:
                 case 49:
-                    // 2003/03/15 ½Å±Ô¹«°ø Ãß°¡
-                    // ¹«±ØÁø±â
-                    // Æø»ì°è(µµ»ç)
-                    // Ç×¸¶Áø¹ı
-                    // ´ëÁö¿øÈ£
-                    // °á°è
-                    // ¹é°ñ¼ÒÈ¯¼ú
-                    // Àº½Å¼ú
-                    // ´ëÀº½Å¼ú
-                    // Ãµ³à¼ÒÈ¯(Á¤È¥¼ÒÈ¯-¿ù·É)
-                    // ÀúÁÖ¼ú
-                    // ¸Í¾È¼ú(¹ÌÈ¥¼ú)
+                    // 2003/03/15 è„šç—¹å…¬å‚ çœ å•Š
+                    // å…¬å¿…æŸ³æ‰
+                    // æ°”æ··æ‹Œ(æ¡£è¤)
+                    // äº²ä»˜æŸ³è¿‡
+                    // æªç˜¤ç›”é¾‹
+                    // æ¬æ‹Œ
+                    // å½’æ¦œå®¶åˆ¸è´±
+                    // ç¯®è„šè´±
+                    // æªç¯®è„šè´±
+                    // ç«èµ¤å®¶åˆ¸(æ²¥å»å®¶åˆ¸-å²¿é£)
+                    // å†æ—è´±
+                    // ç«¿æ•‘è´±(å›ºå»è´±)
                     nofire = true;
                     bujuckcount = 1;
                     try
@@ -1522,7 +1502,7 @@ namespace GameSvr
                         switch (pum.pDef.MagicId)
                         {
                             case 41:
-                                // Ãµ³à¼ÒÈ¯(Á¤È¥¼ÒÈ¯-¿ù·É)ÀÏ°æ¿ì¿¡´Â 5°³ ¼Òºñ
+                                // ç«èµ¤å®¶åˆ¸(æ²¥å»å®¶åˆ¸-å²¿é£)è€ç‰ˆå¿«ä¿Šç»° 5ä¿º å®¶åš
                                 TempCret = user.GetExistSlave(svMain.__AngelMob);
                                 if (TempCret != null)
                                 {
@@ -1558,7 +1538,7 @@ namespace GameSvr
                     {
                         if (bhasitem == 1)
                         {
-                            // 2003/03/15 COPARK ¾ÆÀÌÅÛ ÀÎº¥Åä¸® È®Àå
+                            // 2003/03/15 COPARK é…’æè¢ ç‰¢äº¥é…åºœ çŠ¬å˜
                             if (user.UseItems[Grobal2.U_BUJUK].Dura >= (bujuckcount * 100))
                             {
                                 // U_ARMRINGL->U_BUJUK
@@ -1585,17 +1565,17 @@ namespace GameSvr
                         switch (pum.pDef.MagicId)
                         {
                             case 13:
-                                // Æø»ì°è
+                                // æ°”æ··æ‹Œ
                                 if (user.MagCanHitTarget(user.CX, user.CY, target))
                                 {
                                     if (user.IsProperTarget(target))
                                     {
                                         if ((target.AntiMagic <= new System.Random(50).Next()) && (Math.Abs(target.CX - xx) <= 1) && (Math.Abs(target.CY - yy) <= 1))
                                         {
-                                            // ÆÄ¿ö
-                                            pwr = user.GetAttackPower(SpellNow_GetPower(MPow(pum)) + user.Lobyte(user.WAbil.SC), (short)HiByte(user.WAbil.SC) - user.Lobyte(user.WAbil.SC) + 1);
-                                            // Å¸°Ù ¸ÂÀ½, ÈÄ¿¡ È¿°ú³ªÅ¸³²
-                                            // target.SendDelayMsg (user, RM_MAGSTRUCK, 0, pwr, 0, 0, '', 1200 + _MAX(Abs(CX-xx),Abs(CY-yy)) * 50 );
+                                            // é¢‡å†µ
+                                            pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.SC), (short)HUtil32.HiByte(user.WAbil.SC) - user.HUtil32.LoByte(user.WAbil.SC) + 1);
+                                            // é¸¥ç™¾ å˜æ¾œ, é¥¶ä¿Š ç“¤è‹å”±é¸¥å·¢
+                                            // target.SendDelayMsg (user, RM_MAGSTRUCK, 0, pwr, 0, 0, '', 1200 + HUtil32._MAX(Abs(CX-xx),Abs(CY-yy)) * 50 );
                                             // user.SelectTarget (target);
                                             user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (ushort)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 1200);
                                             if (target.RaceServer >= Grobal2.RC_ANIMAL)
@@ -1611,17 +1591,17 @@ namespace GameSvr
                                 }
                                 break;
                             case 14:
-                                // Ç×¸¶Áø¹ı
-                                pwr = user.GetAttackPower(SpellNow_GetPower13(60) + 5 * Lobyte(user.WAbil.SC), 5 * ((short)HiByte(user.WAbil.SC) - Lobyte(user.WAbil.SC) + 1));
-                                // ÃÊ
+                                // äº²ä»˜æŸ³è¿‡
+                                pwr = user.GetAttackPower(SpellNow_GetPower13(pum, 60) + 5 * HUtil32.LoByte(user.WAbil.SC), 5 * (HUtil32.HiByte(user.WAbil.SC) - HUtil32.LoByte(user.WAbil.SC) + 1));
+                                // æª¬
                                 if (user.MagMakeDefenceArea(xx, yy, 3, pwr, true) > 0)
                                 {
                                     train = true;
                                 }
                                 break;
                             case 46:
-                                // ÀúÁÖ¼ú
-                                sec = (((pum.Level + 1) * 24) + HiByte(user.WAbil.SC) + user.Abil.Level) / 2;
+                                // å†æ—è´±
+                                sec = (((pum.Level + 1) * 24) + HUtil32.HiByte(user.WAbil.SC) + user.Abil.Level) / 2;
                                 switch (pum.Level)
                                 {
                                     case 0:
@@ -1643,24 +1623,24 @@ namespace GameSvr
                                 }
                                 break;
                             case 36:
-                                // 2003/03/15 ½Å±Ô¹«°ø Ãß°¡
-                                // ¹«±ØÁø±â
-                                sec = user.GetAttackPower(SpellNow_GetPower13(60) + 5 * Lobyte(user.WAbil.SC), 5 * ((short)HiByte(user.WAbil.SC) - Lobyte(user.WAbil.SC) + 1));
-                                // Áõ°¡µÇ´Â ÆÄ±«·Â
-                                pwr = ((HiByte(user.WAbil.SC) - 1) / 5) + 1;
+                                // 2003/03/15 è„šç—¹å…¬å‚ çœ å•Š
+                                // å…¬å¿…æŸ³æ‰
+                                sec = user.GetAttackPower(SpellNow_GetPower13(pum, 60) + 5 * HUtil32.LoByte(user.WAbil.SC), 5 * (HUtil32.HiByte(user.WAbil.SC) - HUtil32.LoByte(user.WAbil.SC) + 1));
+                                // åˆ˜å•Šç™»ç»° é¢‡é²ä»¿
+                                pwr = ((HUtil32.HiByte(user.WAbil.SC) - 1) / 5) + 1;
                                 if (pwr > 8)
                                 {
                                     pwr = 8;
                                 }
-                                // ÃÊ
+                                // æª¬
                                 if (user.MagDcUp(sec, pwr))
                                 {
                                     train = true;
                                 }
-                                // Å¸ÄÏÀÇ ´É·ÂÄ¡¸¦ ¿Ã·ÁÁÜ(sonmg 2005/06/07)
+                                // é¸¥å—ç‹¼ ç“·ä»¿æ‘¹ç”« æ£µå¦¨æ·‹(sonmg 2005/06/07)
                                 if ((target != null) && (target.RaceServer == Grobal2.RC_USERHUMAN))
                                 {
-                                    // ÃÊ
+                                    // æª¬
                                     if (target.MagDcUp(sec, pwr))
                                     {
                                         target.SendRefMsg(Grobal2.RM_LOOPNORMALEFFECT, (ushort)target.ActorId, 0, 0, Grobal2.NE_BIGFORCE, "");
@@ -1669,24 +1649,24 @@ namespace GameSvr
                                 }
                                 break;
                             case 15:
-                                // ´ëÁö¿øÈ£
-                                pwr = user.GetAttackPower(SpellNow_GetPower13(60) + 5 * Lobyte(user.WAbil.SC), 5 * ((short)HiByte(user.WAbil.SC) - Lobyte(user.WAbil.SC) + 1));
-                                // ÃÊ
+                                // æªç˜¤ç›”é¾‹
+                                pwr = user.GetAttackPower(SpellNow_GetPower13(pum, 60) + 5 * HUtil32.LoByte(user.WAbil.SC), 5 * (HUtil32.HiByte(user.WAbil.SC) - HUtil32.LoByte(user.WAbil.SC) + 1));
+                                // æª¬
                                 if (user.MagMakeDefenceArea(xx, yy, 3, pwr, false) > 0)
                                 {
                                     train = true;
                                 }
                                 break;
                             case 16:
-                                // °á°è
-                                // Lobyte(user.WAbil.SC),
-                                if (MagMakeHolyCurtain(user, SpellNow_GetPower13(40) + 3 * SpellNow_GetRPow((short)user.WAbil.SC), xx, yy) > 0)
+                                // æ¬æ‹Œ
+                                // HUtil32.LoByte(user.WAbil.SC),
+                                if (MagMakeHolyCurtain(user, SpellNow_GetPower13(pum, 40) + 3 * SpellNow_GetRPow((short)user.WAbil.SC), xx, yy) > 0)
                                 {
                                     train = true;
                                 }
                                 break;
                             case 17:
-                                // ¹é°ñ¼ÒÈ¯¼ú
+                                // å½’æ¦œå®¶åˆ¸è´±
                                 try
                                 {
                                     TempCret = user.GetExistSlave(svMain.__WhiteSkeleton);
@@ -1707,27 +1687,27 @@ namespace GameSvr
                                 }
                                 break;
                             case 18:
-                                // Àº½Å
-                                if (MagMakePrivateTransparent(user, SpellNow_GetPower13(30) + 3 * SpellNow_GetRPow((short)user.WAbil.SC)))
+                                // ç¯®è„š
+                                if (MagMakePrivateTransparent(user, SpellNow_GetPower13(pum, 30) + 3 * SpellNow_GetRPow((short)user.WAbil.SC)))
                                 {
                                     train = true;
                                 }
                                 break;
                             case 19:
-                                // ´ëÀº½Å
-                                if (MagMakeGroupTransparent(user, xx, yy, SpellNow_GetPower13(30) + 3 * SpellNow_GetRPow((short)user.WAbil.SC)))
+                                // æªç¯®è„š
+                                if (MagMakeGroupTransparent(user, xx, yy, SpellNow_GetPower13(pum, 30) + 3 * SpellNow_GetRPow((short)user.WAbil.SC)))
                                 {
                                     train = true;
                                 }
                                 break;
                             case 41:
-                                // Ãµ³à¼ÒÈ¯¼ú(Á¤È¥¼ÒÈ¯¼ú)
+                                // ç«èµ¤å®¶åˆ¸è´±(æ²¥å»å®¶åˆ¸è´±)
                                 try
                                 {
                                     TempCret = user.GetExistSlave(svMain.__AngelMob);
                                     if (TempCret == null)
                                     {
-                                        // Ãµ³à(¿ù·É)°¡ ¾ø´Ù.
+                                        // ç«èµ¤(å²¿é£)å•Š ç»ä¿ƒ.
                                         if (user.MakeSlave(svMain.__AngelMob, pum.Level, 1, 10 * 24 * 60 * 60) != null)
                                         {
                                             train = true;
@@ -1740,7 +1720,7 @@ namespace GameSvr
                                 }
                                 break;
                             case 49:
-                                // ¸Í¾È¼ú(¹ÌÈ¥¼ú)
+                                // ç«¿æ•‘è´±(å›ºå»è´±)
                                 if (MagBlindEye(user, target, pum))
                                 {
                                     train = true;
@@ -1752,7 +1732,7 @@ namespace GameSvr
                     }
                     break;
                 case 30:
-                    // ½Å¼ö¼ÒÈ¯
+                    // è„šèå®¶åˆ¸
                     nofire = true;
                     try
                     {
@@ -1771,7 +1751,7 @@ namespace GameSvr
                         {
                             if (bhasitem == 1)
                             {
-                                // 2003/03/15 COPARK ¾ÆÀÌÅÛ ÀÎº¥Åä¸® È®Àå
+                                // 2003/03/15 COPARK é…’æè¢ ç‰¢äº¥é…åºœ çŠ¬å˜
                                 if (user.UseItems[Grobal2.U_BUJUK].Dura >= 500)
                                 {
                                     // U_ARMRINGL->U_BUJUK
@@ -1781,7 +1761,7 @@ namespace GameSvr
                                 {
                                     user.UseItems[Grobal2.U_BUJUK].Dura = 0;
                                 }
-                                // ³»±¸¼º º¯°æÀº ¾Ë¸²
+                                // éƒ´å¤‡å·± å‡½ç‰ˆç¯® èˆ…è¦†
                                 user.SendMsg(user, Grobal2.RM_DURACHANGE, Grobal2.U_BUJUK, user.UseItems[Grobal2.U_BUJUK].Dura, user.UseItems[Grobal2.U_BUJUK].DuraMax, 0, "");
                             }
                             if (bhasitem == 2)
@@ -1799,7 +1779,7 @@ namespace GameSvr
                             switch (pum.pDef.MagicId)
                             {
                                 case 30:
-                                    // ½Å¼ö¼ÒÈ¯
+                                    // è„šèå®¶åˆ¸
                                     if (user.GetExistSlave(svMain.__WhiteSkeleton) == null)
                                     {
                                         if (user.MakeSlave(svMain.__ShinSu, pum.Level, 1, 10 * 24 * 60 * 60) != null)
@@ -1811,7 +1791,7 @@ namespace GameSvr
                             }
                             nofire = false;
                             SpellNow_UseBujuk(user);
-                            // ¹ö±× ¼öÁ¤(2004/09/01 sonmg)
+                            // æ»šå¼Š èæ²¥(2004/09/01 sonmg)
                         }
                     }
                     catch
@@ -1820,20 +1800,20 @@ namespace GameSvr
                     }
                     break;
                 case 42:
-                    // ºĞ½Å¼ÒÈ¯
+                    // ç›’è„šå®¶åˆ¸
                     try
                     {
                         TempCret = user.GetExistSlave(svMain.__CloneMob);
                         if (TempCret != null)
                         {
-                            // ºĞ½ÅÇÑ³ÑÀÌ ÀÖ´Ù.
+                            // ç›’è„šèŒ„é€æ ä¹ä¿ƒ.
                             TempCret.BoDisapear = true;
-                            // MP ´Ù½Ã ´õÇØÁÖÀÚ
+                            // MP ä¿ƒçŸ« æ­¹ç§¦æ—ç£Š
                             user.WAbil.MP = (ushort)(user.WAbil.MP + spell);
                         }
                         else
                         {
-                            // ºĞ½ÅÇÑ³ÑÀÌ ¾ø´Ù.
+                            // ç›’è„šèŒ„é€æ ç»ä¿ƒ.
                             TempCret = user.MakeSlave(svMain.__CloneMob, pum.Level, 5, 10 * 24 * 60 * 60);
                             if (TempCret != null)
                             {
@@ -1848,15 +1828,15 @@ namespace GameSvr
                     }
                     break;
                 case 28:
-                    // Å½±âÆÄ¿¬
+                    // æ²¤æ‰é¢‡æ¥·
                     if (target != null)
                     {
                         if (!target.BoOpenHealth)
                         {
                             if (new System.Random(6).Next() <= 3 + pum.Level)
                             {
-                                target.OpenHealthStart = GetTickCount;
-                                target.OpenHealthTime = SpellNow_GetPower13(30 + SpellNow_GetRPow((short)user.WAbil.SC) * 2) * 1000;
+                                target.OpenHealthStart  =  HUtil32.GetTickCount();
+                                target.OpenHealthTime = SpellNow_GetPower13(pum, 30 + SpellNow_GetRPow((short)user.WAbil.SC) * 2) * 1000;
                                 target.SendDelayMsg(target, Grobal2.RM_DOOPENHEALTH, 0, 0, 0, 0, "", 1500);
                                 train = true;
                             }
@@ -1864,20 +1844,20 @@ namespace GameSvr
                     }
                     break;
                 case 39:
-                    // 2003/07/15 ½Å±Ô¹«°ø
-                    // °áºùÀå
+                    // 2003/07/15 è„šç—¹å…¬å‚
+                    // æ¬è‘«å˜
                     if (user.MagCanHitTarget(user.CX, user.CY, target))
                     {
                         if (user.IsProperTarget(target))
                         {
                             if ((target.AntiMagic <= new System.Random(50).Next()) && (Math.Abs(target.CX - xx) <= 1) && (Math.Abs(target.CY - yy) <= 1))
                             {
-                                // °áºùÀå °ø½Ä ¼öÁ¤(sonmg 2004/10/20)
-                                // Dur := (Round (0.4+pum.Level*0.2) * (Lobyte(WAbil.MC) + HiByte(WAbil.MC)));
-                                Dur = HUtil32.MathRound(0.4 + pum.Level * 0.2) * (user.Lobyte(user.WAbil.MC) + new System.Random(HiByte(user.WAbil.MC)).Next() + (HiByte(user.WAbil.MC) / 2));
+                                // æ¬è‘«å˜ å‚ä¾¥ èæ²¥(sonmg 2004/10/20)
+                                // Dur := (Round (0.4+pum.Level*0.2) * (HUtil32.LoByte(WAbil.MC) + HUtil32.HiByte(WAbil.MC)));
+                                Dur = HUtil32.MathRound(0.4 + pum.Level * 0.2) * (user.HUtil32.LoByte(user.WAbil.MC) + new System.Random(HUtil32.HiByte(user.WAbil.MC)).Next() + (HUtil32.HiByte(user.WAbil.MC) / 2));
                                 pwr = pum.pDef.MinPower + Dur;
                                 user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (ushort)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 600);
-                                // »óÅÂÀÌ»ó...µĞÈ­ÆÇÁ¤
+                                // æƒ‘æ€•ææƒ‘...æ•Œæ‹³é­„æ²¥
                                 if ((target.Abil.Level < 60) && (target.StatusArr[Grobal2.POISON_SLOW] == 0) && (target.StatusArr[Grobal2.POISON_ICE] == 0) && (new System.Random(50).Next() > target.AntiMagic))
                                 {
                                     // 100->50
@@ -1933,14 +1913,14 @@ namespace GameSvr
                     }
                     break;
                 case 40:
-                    // Á¤È­¼ú
+                    // æ²¥æ‹³è´±
                     if (MagMakePrivateClean(user, xx, yy, pum.Level * 15 + 45))
                     {
                         train = true;
                     }
                     break;
                 case 43:
-                    // »çÀÚÈÄ
+                    // è¤ç£Šé¥¶
                     try
                     {
                         // nofire := true;   //sonmg(2004/05/19)
@@ -1953,27 +1933,26 @@ namespace GameSvr
                     train = false;
                     break;
                 case 44:
-                    // °øÆÄ¼¶
+                    // å‚é¢‡çº§
                     if (MagWindCut(user, pum.Level))
                     {
                         train = true;
                     }
                     break;
                 case 47:
-                    // Æ÷½Â°Ë
+                    // å™¨é“°å…«
                     if (MagPullMon(user, target, pum.Level))
                     {
                         train = true;
                     }
                     break;
                 case 48:
-                    // ÈíÇ÷¼ú
+                    // è½¯è¶‹è´±
                     if (user.IsProperTarget(target))
                     {
                         if (target.AntiMagic <= new System.Random(50).Next())
                         {
-                            pwr = user.GetAttackPower(SpellNow_GetPower(MPow(pum)) + user.Lobyte(user.WAbil.MC), (short)HiByte(user.WAbil.MC) - user.Lobyte(user.WAbil.MC) + 1);
-                            // user.SelectTarget (target);
+                            pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.MC), (short)HUtil32.HiByte(user.WAbil.MC) - user.HUtil32.LoByte(user.WAbil.MC) + 1);
                             if ((target.LifeAttrib != Grobal2.LA_UNDEAD) && (target.RaceServer != Grobal2.RC_USERHUMAN))
                             {
                                 pwr = HUtil32.MathRound(pwr * 1.2);
@@ -1981,16 +1960,13 @@ namespace GameSvr
                             user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (ushort)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 0);
                             if (target.RaceServer >= Grobal2.RC_ANIMAL)
                             {
-                                // ¸÷¿¡°Ô »ç¿ëÇÑ °æ¿ì »¯¾î¿À´Â HP·®.
                                 user.IncHealth = (byte)((pwr * (pum.Level + 1) * 10 + new System.Random(20).Next()) / 100);
                                 train = true;
                             }
                             else
                             {
-                                // »ç¶÷¿¡°Ô »ç¿ëÇÑ °æ¿ì »¯¾î¿À´Â HP·®.
-                                user.IncHealth = (pwr * (pum.Level + 1) * 10 + new System.Random(10).Next()) / 100 * _MAX(0, 1 - target.AntiMagic / 25);
+                                user.IncHealth = (byte)((pwr * (pum.Level + 1) * 10 + new System.Random(10).Next()) / 100 * HUtil32._MAX(0, 1 - target.AntiMagic / 25));
                             }
-                            // user.SendRefMsg (RM_LOOPNORMALEFFECT, integer(user), 0, 0, NE_BLOODSUCK, '');
                             user.SendDelayMsg(user, Grobal2.RM_LOOPNORMALEFFECT, (ushort)user.ActorId, 0, 0, Grobal2.NE_BLOODSUCK, "", 1000);
                         }
                         else
@@ -2010,13 +1986,10 @@ namespace GameSvr
                 {
                     user.SendRefMsg(Grobal2.RM_MAGICFIRE, 0, MakeWord(pum.pDef.EffectType, pum.pDef.Effect), HUtil32.MakeLong(xx, yy), target.ActorId, "");
                 }
-                // 2003/03/15 ½Å±Ô¹«°ø Ãß°¡
-                // ¸ÂÀº »ó´ë
                 if ((pum.Level < 3) && train)
                 {
                     if (user.Abil.Level >= pum.pDef.NeedLevel[pum.Level])
                     {
-                        // ¼ö·Ã·¹º§¿¡ µµ´ŞÇÑ °æ¿ì
                         user.TrainSkill(pum, 1 + new System.Random(3).Next());
                         if (!user.CheckMagicLevelup(pum))
                         {
@@ -2028,8 +2001,5 @@ namespace GameSvr
             }
             return result;
         }
-
-    } // end TMagicManager
-
+    }
 }
-

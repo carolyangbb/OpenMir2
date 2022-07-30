@@ -158,7 +158,7 @@ namespace GameSvr
                                             pgw.WarGuild = svMain.GuildMan.GetGuild(data);
                                             if (pgw.WarGuild != null)
                                             {
-                                                pgw.WarStartTime = GetTickCount;
+                                                pgw.WarStartTime  =  HUtil32.GetTickCount();
                                                 pgw.WarRemain = HUtil32.Str_ToInt(rtstr.Trim(), 0);
                                                 KillGuilds.Add(pgw.WarGuild.GuildName, pgw as Object);
                                             }
@@ -245,7 +245,7 @@ namespace GameSvr
             for (i = 0; i < KillGuilds.Count; i++)
             {
                 pgw = KillGuilds.Values[i] as TGuildWarInfo;
-                remain = pgw.WarRemain - (GetTickCount - pgw.WarStartTime);
+                remain = pgw.WarRemain - (HUtil32.GetTickCount() - pgw.WarStartTime);
                 if (remain > 0)
                 {
                     strlist.Add("+" + KillGuilds[i] + " " + remain.ToString());
@@ -294,7 +294,7 @@ namespace GameSvr
         public void GuildInfoChange()
         {
             dosave = true;
-            guildsavetime = GetTickCount;
+            guildsavetime  =  HUtil32.GetTickCount();
             SaveGuild();
         }
 
@@ -303,7 +303,7 @@ namespace GameSvr
             if (dosave)
             {
                 // 咯扁辑 矫埃登搁 历厘窃.
-                if (GetTickCount - guildsavetime > 30 * 1000)
+                if (HUtil32.GetTickCount() - guildsavetime > 30 * 1000)
                 {
                     // 函版等瘤 30檬
                     dosave = false;
@@ -1246,6 +1246,13 @@ namespace GameSvr
             return result;
         }
 
-    } // end TGuild
+        public void Dispose(object obj)
+        {
+            if (obj != null)
+            {
+                obj = null;
+            }
+        }
+    }
 }
 

@@ -110,7 +110,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir;
+            byte targdir=0;
             result = false;
             if (DontAttack)
             {
@@ -336,7 +336,7 @@ namespace GameSvr
         {
             int nx=0;
             int ny=0;
-            byte targdir;
+            byte targdir=0;
             // 贸澜 鸥百阑 官操瘤 臼澜.
             if (OldTargetCret != this.TargetCret)
             {
@@ -377,10 +377,10 @@ namespace GameSvr
                             this.SpaceMove(this.MapName, (short)(this.TargetCret.CX + nx), (short)(this.TargetCret.CY + ny), 2);
                             CallFollower();
                             // 何窍甸阑 阂矾晨
-                            ComeoutTime = GetTickCount;
+                            ComeoutTime  =  HUtil32.GetTickCount();
                         }
                         // 矫埃捞 儒福搁
-                        if ((ComeoutTime != 0) && (GetTickCount - ComeoutTime > 10000))
+                        if ((ComeoutTime != 0) && (HUtil32.GetTickCount() - ComeoutTime > 10000))
                         {
                             // 皋牢 各 傍拜 葛靛肺
                             if (DontAttack)
@@ -397,9 +397,9 @@ namespace GameSvr
                             {
                                 if (TargetDisappearTime == 0)
                                 {
-                                    if ((ComeoutTime != 0) && (GetTickCount - ComeoutTime > 15000))
+                                    if ((ComeoutTime != 0) && (HUtil32.GetTickCount() - ComeoutTime > 15000))
                                     {
-                                        TargetDisappearTime = GetTickCount;
+                                        TargetDisappearTime  =  HUtil32.GetTickCount();
                                     }
                                 }
                             }
@@ -408,13 +408,13 @@ namespace GameSvr
                         {
                             if (TargetDisappearTime == 0)
                             {
-                                if ((ComeoutTime != 0) && (GetTickCount - ComeoutTime > 15000))
+                                if ((ComeoutTime != 0) && (HUtil32.GetTickCount() - ComeoutTime > 15000))
                                 {
-                                    TargetDisappearTime = GetTickCount;
+                                    TargetDisappearTime  =  HUtil32.GetTickCount();
                                 }
                             }
                         }
-                        if ((TargetDisappearTime != 0) && (GetTickCount - TargetDisappearTime > 10000))
+                        if ((TargetDisappearTime != 0) && (HUtil32.GetTickCount() - TargetDisappearTime > 10000))
                         {
                             if (!this.Death)
                             {

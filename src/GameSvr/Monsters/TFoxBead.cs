@@ -21,19 +21,19 @@ namespace GameSvr
             this.ViewRange = 16;
             this.RunNextTick = 250;
             this.SearchRate = 1500 + ((long)new System.Random(1500).Next());
-            this.SearchTime = GetTickCount;
+            this.SearchTime  =  HUtil32.GetTickCount();
             this.HideMode = false;
             this.StickMode = true;
             this.BoDontMove = true;
             this.BodyState = 1;
             OrgNextHitTime = this.NextHitTime;
-            sectick = GetTickCount;
+            sectick  =  HUtil32.GetTickCount();
         }
         public override void Run()
         {
-            if (GetTickCount - sectick > 3000)
+            if (HUtil32.GetTickCount() - sectick > 3000)
             {
-                sectick = GetTickCount;
+                sectick  =  HUtil32.GetTickCount();
                 if ((!this.Death) && (!this.BoGhost))
                 {
                     if (this.WAbil.HP >= this.WAbil.MaxHP * 4 / 5)
@@ -286,10 +286,10 @@ namespace GameSvr
             int i;
             int pwr;
             int dam;
-            int sx;
-            int sy;
-            int tx;
-            int ty;
+           short sx=0;
+           short sy=0;
+           short tx=0;
+            short ty =0;
             ArrayList list;
             TCreature cret;
             if (targ == null)

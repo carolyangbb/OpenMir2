@@ -13,11 +13,11 @@ namespace GameSvr
         {
             DupMode = false;
             RunDone = false;
-            thinktime = GetTickCount;
+            thinktime  =  HUtil32.GetTickCount();
             this.ViewRange = 5;
             this.RunNextTick = 250;
             this.SearchRate = 3000 + ((long)new System.Random(2000).Next());
-            this.SearchTime = GetTickCount;
+            this.SearchTime  =  HUtil32.GetTickCount();
             this.RaceServer = Grobal2.RC_MONSTER;
         }
 
@@ -61,9 +61,9 @@ namespace GameSvr
             int oldx;
             int oldy;
             result = false;
-            if (GetTickCount - thinktime > 3000)
+            if (HUtil32.GetTickCount() - thinktime > 3000)
             {
-                thinktime = GetTickCount;
+                thinktime  =  HUtil32.GetTickCount();
                 if (this.PEnvir.GetDupCount(this.CX, this.CY) >= 2)
                 {
                     DupMode = true;
@@ -100,7 +100,7 @@ namespace GameSvr
                         if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                         {
                             this.HitTime = GetCurrentTime;
-                            this.TargetFocusTime = GetTickCount;
+                            this.TargetFocusTime  =  HUtil32.GetTickCount();
                             this.Attack(this.TargetCret, targdir);
                             this.BreakHolySeize();
                         }
@@ -148,7 +148,7 @@ namespace GameSvr
                     {
                         this.WalkCurStep = 0;
                         this.BoWalkWaitMode = true;
-                        this.WalkWaitCurTime = GetTickCount;
+                        this.WalkWaitCurTime  =  HUtil32.GetTickCount();
                     }
                     if (!this.BoRunAwayMode)
                     {
@@ -229,7 +229,7 @@ namespace GameSvr
                         if (this.RunAwayTime > 0)
                         {
                             // 矫埃 力茄捞 乐澜
-                            if (GetTickCount - this.RunAwayStart > RunAwayTime)
+                            if (HUtil32.GetTickCount() - this.RunAwayStart > RunAwayTime)
                             {
                                 this.BoRunAwayMode = false;
                                 this.RunAwayTime = 0;

@@ -15,7 +15,7 @@ namespace GameSvr
             this.ViewRange = 9;
             this.RunNextTick = 250;
             this.SearchRate = 2500 + ((long)new System.Random(1500).Next());
-            this.SearchTime = GetTickCount;
+            this.SearchTime  =  HUtil32.GetTickCount();
             this.StickMode = true;
             childlist = new ArrayList();
         }
@@ -59,7 +59,7 @@ namespace GameSvr
                     if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                     {
                         // 惑加罐篮 run 俊辑 HitTime 犁汲沥窃.
-                        this.HitTime = GetTickCount;
+                        this.HitTime  =  HUtil32.GetTickCount();
                         this.MonsterNormalAttack();
                         if (this.TargetCret != null)
                         {

@@ -8,7 +8,7 @@ namespace GameSvr
         public int iBase;
     }
 
-    public struct TSlaveInfo
+    public class TSlaveInfo
     {
         public string SlaveName;
         public int SlaveExp;

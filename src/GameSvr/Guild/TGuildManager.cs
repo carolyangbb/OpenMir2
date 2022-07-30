@@ -178,7 +178,7 @@ namespace GameSvr
                 for (k = g.KillGuilds.Count - 1; k >= 0; k--)
                 {
                     pgw = g.KillGuilds.Values[k] as TGuildWarInfo;
-                    if (GetTickCount - pgw.WarStartTime > pgw.WarRemain)
+                    if (HUtil32.GetTickCount() - pgw.WarStartTime > pgw.WarRemain)
                     {
                         g.CanceledGuildWar(pgw.WarGuild);
                         g.KillGuilds.Remove(k);

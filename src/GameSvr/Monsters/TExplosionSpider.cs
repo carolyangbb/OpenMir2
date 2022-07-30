@@ -13,7 +13,7 @@ namespace GameSvr
             this.RunNextTick = 250;
             this.SearchRate = 2500 + ((long)new System.Random(1500).Next());
             this.SearchTime = 0;
-            maketime = GetTickCount;
+            maketime  =  HUtil32.GetTickCount();
         }
         
         public void DoSelfExplosion()
@@ -52,7 +52,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir;
+            byte targdir=0;
             result = false;
             if (this.TargetCret != null)
             {
@@ -61,7 +61,7 @@ namespace GameSvr
                     if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                     {
                         this.HitTime = GetCurrentTime;
-                        this.TargetFocusTime = GetTickCount;
+                        this.TargetFocusTime  =  HUtil32.GetTickCount();
                         // 磊气....
                         DoSelfExplosion();
                     }
@@ -87,10 +87,10 @@ namespace GameSvr
         {
             if ((!this.Death) && (!this.BoGhost))
             {
-                if (GetTickCount - maketime > 1 * 60 * 1000)
+                if (HUtil32.GetTickCount() - maketime > 1 * 60 * 1000)
                 {
                     // 磊气
-                    maketime = GetTickCount;
+                    maketime  =  HUtil32.GetTickCount();
                     DoSelfExplosion();
                 }
             }

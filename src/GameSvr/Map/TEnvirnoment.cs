@@ -186,9 +186,9 @@ namespace GameSvr
                                     for (k = 0; k < DoorList.Count; k++)
                                     {
                                         // 鞍篮 Door 贸府
-                                        if ((Math.Abs(pd.DoorX - (DoorList[k] as TDoorInfo).DoorX) <= 10) && (Math.Abs(pd.DoorY - (DoorList[k] as TDoorInfo).DoorY) <= 10) && (door == (DoorList[k] as TDoorInfo).DoorNumber))
+                                        if ((Math.Abs(pd.DoorX - DoorList[k].DoorX) <= 10) && (Math.Abs(pd.DoorY - DoorList[k].DoorY) <= 10) && (door == DoorList[k].DoorNumber))
                                         {
-                                            pd.PCore = (DoorList[k] as TDoorInfo).PCore;
+                                            pd.PCore = DoorList[k].PCore;
                                             break;
                                         }
                                     }
@@ -817,7 +817,7 @@ namespace GameSvr
                                 pthing.Shape = Grobal2.OS_MOVINGOBJECT;
                                 Down = 18;
                                 pthing.AObject = obj;
-                                pthing.ATime = GetTickCount;
+                                pthing.ATime  =  HUtil32.GetTickCount();
                                 // 甘俊 眠啊等 矫埃
                                 Down = 19;
                                 pm.OBJList.Add(pthing);
@@ -868,7 +868,7 @@ namespace GameSvr
                             if (objtype == Grobal2.OS_ITEMOBJECT)
                             {
                                 // '陛傈'
-                                if (((TMapItem)obj).Name == Units.Envir.NAME_OF_GOLD)
+                                if (((TMapItem)obj).Name == Envir.NAME_OF_GOLD)
                                 {
                                     for (i = 0; i < pm.OBJList.Count; i++)
                                     {
@@ -877,7 +877,7 @@ namespace GameSvr
                                         {
                                             pmitem = (TMapItem)((TAThing)pm.OBJList[i]).AObject;
                                             // '陛傈'
-                                            if (pmitem.Name == Units.Envir.NAME_OF_GOLD)
+                                            if (pmitem.Name == Envir.NAME_OF_GOLD)
                                             {
                                                 cnt = pmitem.Count + ((TMapItem)obj).Count;
                                                 if (cnt <= ObjBase.BAGGOLD)
@@ -886,7 +886,7 @@ namespace GameSvr
                                                     pmitem.Looks = GetGoldLooks(cnt);
                                                     pmitem.AniCount = 0;
                                                     pmitem.Reserved = 0;
-                                                    pthing.ATime = GetTickCount;
+                                                    pthing.ATime  =  HUtil32.GetTickCount();
                                                     // 矫埃 犁汲沥
                                                     result = pmitem;
                                                     // 捞固 乐绰 巴捞搁 弊 器牢磐甫 搬苞蔼栏肺 焊晨
@@ -951,7 +951,7 @@ namespace GameSvr
                             pthing.Shape = objtype;
                             pthing.AObject = obj;
                             // TCreature(obj), PTUseItem(obj)
-                            pthing.ATime = GetTickCount;
+                            pthing.ATime  =  HUtil32.GetTickCount();
                             // 甘俊 眠啊等 矫埃
                             pm.OBJList.Add(pthing);
                             result = obj;
@@ -1000,7 +1000,7 @@ namespace GameSvr
                             pthing.Shape = objtype;
                             pthing.AObject = obj;
                             // TCreature(obj), PTUseItem(obj)
-                            pthing.ATime = GetTickCount;
+                            pthing.ATime  =  HUtil32.GetTickCount();
                             // 甘俊 眠啊等 矫埃
                             pm.OBJList.Add(pthing);
                             result = obj;
@@ -1047,7 +1047,7 @@ namespace GameSvr
                         pthing.Shape = objtype;
                         pthing.AObject = obj;
                         // TCreature(obj), PTUseItem(obj)
-                        pthing.ATime = GetTickCount;
+                        pthing.ATime  =  HUtil32.GetTickCount();
                         // 甘俊 眠啊等 矫埃
                         pm.OBJList.Add(pthing);
                         result = obj;
@@ -1168,7 +1168,7 @@ namespace GameSvr
                                 pthing = (TAThing)pm.OBJList[i];
                                 if ((pthing.Shape == Grobal2.OS_MOVINGOBJECT) && (pthing.AObject == obj))
                                 {
-                                    pthing.ATime = GetTickCount;
+                                    pthing.ATime  =  HUtil32.GetTickCount();
                                     break;
                                 }
                             }
@@ -1187,7 +1187,7 @@ namespace GameSvr
             TDoorInfo pd;
             for (var i = 0; i < DoorList.Count; i++)
             {
-                pd = DoorList[i] as TDoorInfo;
+                pd = DoorList[i];
                 if (null == AddToMap(pd.DoorX, pd.DoorY, Grobal2.OS_DOOR, pd))
                 {
                     // MainOutMessage('NOT ApplyDoors'+MapName+','+IntTostr(pd.DoorX)+','+IntTostr( pd.DoorY ));
@@ -1200,9 +1200,9 @@ namespace GameSvr
             TDoorInfo result = null;
             for (var i = 0; i < DoorList.Count; i++)
             {
-                if (((DoorList[i] as TDoorInfo).DoorX == x) && ((DoorList[i] as TDoorInfo).DoorY == y))
+                if ((DoorList[i].DoorX == x) && (DoorList[i].DoorY == y))
                 {
-                    result = DoorList[i] as TDoorInfo;
+                    result = DoorList[i];
                     break;
                 }
             }
@@ -1218,9 +1218,9 @@ namespace GameSvr
             {
                 for (i = 0; i < DoorList.Count; i++)
                 {
-                    if ((Math.Abs((DoorList[i] as TDoorInfo).DoorX - x) <= 1) && (Math.Abs((DoorList[i] as TDoorInfo).DoorY - y) <= 1))
+                    if ((Math.Abs(DoorList[i].DoorX - x) <= 1) && (Math.Abs(DoorList[i].DoorY - y) <= 1))
                     {
-                        if (!(DoorList[i] as TDoorInfo).PCore.DoorOpenState)
+                        if (!DoorList[i].PCore.DoorOpenState)
                         {
                             result = false;
                             break;
@@ -1397,6 +1397,14 @@ namespace GameSvr
                 }
             }
             return result;
+        }
+
+        public void Dispose(object obj)
+        {
+            if (obj != null)
+            {
+                obj = null;
+            }
         }
     }
 }

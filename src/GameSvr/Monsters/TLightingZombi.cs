@@ -10,15 +10,15 @@ namespace GameSvr
             this.SearchRate = 1500 + ((long)new System.Random(1500).Next());
         }
 
-        public void LightingAttack(int dir)
+        public void LightingAttack(byte dir)
         {
-            int sx;
-            int sy;
-            int tx;
-            int ty;
+            short sx = 0;
+            short sy = 0;
+            short tx = 0;
+            short ty = 0;
             int pwr;
-            this.Dir = (byte)dir;
-            this.SendRefMsg(Grobal2.RM_LIGHTING, 1, this.CX, this.CY, this.ActorId.TargetCret, "");
+            this.Dir = dir;
+            this.SendRefMsg(Grobal2.RM_LIGHTING, 1, this.CX, this.CY, this.TargetCret.ActorId, "");
             if (M2Share.GetNextPosition(this.PEnvir, this.CX, this.CY, dir, 1, ref sx, ref sy))
             {
                 M2Share.GetNextPosition(this.PEnvir, this.CX, this.CY, dir, 9, ref tx, ref ty);
@@ -34,9 +34,9 @@ namespace GameSvr
             int targdir;
             if (!this.RunDone && this.IsMoveAble())
             {
-                if ((GetTickCount - this.SearchEnemyTime > 8000) || ((GetTickCount - this.SearchEnemyTime > 1000) && (this.TargetCret == null)))
+                if ((HUtil32.GetTickCount() - this.SearchEnemyTime > 8000) || ((HUtil32.GetTickCount() - this.SearchEnemyTime > 1000) && (this.TargetCret == null)))
                 {
-                    this.SearchEnemyTime = GetTickCount;
+                    this.SearchEnemyTime  =  HUtil32.GetTickCount();
                     this.MonsterNormalAttack();
                 }
                 if (GetCurrentTime - this.WalkTime > this.GetNextWalkTime())

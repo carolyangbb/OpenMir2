@@ -200,7 +200,7 @@ namespace GameSvr
             StringList strlist = new StringList();
             for (var i = 0; i < AttackerList.Count; i++)
             {
-                strlist.Add((AttackerList[i] as TAttackerInfo).GuildName + "       \"" + (AttackerList[i] as TAttackerInfo).AttackDate.ToString() + "\"");
+                strlist.Add(AttackerList[i].GuildName + "       \"" + AttackerList[i].AttackDate.ToString() + "\"");
             }
             try
             {
@@ -231,7 +231,7 @@ namespace GameSvr
                 strlist.LoadFromFile(flname);
                 for (var i = 0; i < AttackerList.Count; i++)
                 {
-                    Dispose(AttackerList[i] as TAttackerInfo);
+                    Dispose(AttackerList[i]);
                 }
                 AttackerList.Clear();
                 for (var i = 0; i < strlist.Count; i++)
@@ -418,17 +418,17 @@ namespace GameSvr
                     RushGuildList.Clear();
                     for (i = AttackerList.Count - 1; i >= 0; i--)
                     {
-                        ayear2 = (AttackerList[i] as TAttackerInfo).AttackDate.Year;
-                        amon2 = (AttackerList[i] as TAttackerInfo).AttackDate.Month;
-                        aday2 = (AttackerList[i] as TAttackerInfo).AttackDate.Day;
+                        ayear2 = AttackerList[i].AttackDate.Year;
+                        amon2 = AttackerList[i].AttackDate.Month;
+                        aday2 = AttackerList[i].AttackDate.Day;
                         if ((ayear == ayear2) && (amon == amon2) && (aday == aday2))
                         {
                             BoCastleUnderAttack = true;
                             BoCastleWarTimeOut10min = false;
                             LatestWarDateTime = DateTime.Now;
                             CastleAttackStarted = HUtil32.GetTickCount();
-                            RushGuildList.Add((AttackerList[i] as TAttackerInfo).Guild);
-                            Dispose(AttackerList[i] as TAttackerInfo);
+                            RushGuildList.Add(AttackerList[i].Guild);
+                            Dispose(AttackerList[i]);
                             AttackerList.RemoveAt(i);
                         }
                     }
@@ -642,7 +642,7 @@ namespace GameSvr
             }
             for (i = 0; i < ((TGuild)hum.MyGuild).AllyGuilds.Count; i++)
             {
-                if (IsOurCastle((TGuild)((TGuild)hum.MyGuild).AllyGuilds[i]))
+                if (IsOurCastle(((TGuild)hum.MyGuild).AllyGuilds[i]))
                 {
                     result = true;
                     return result;
@@ -896,7 +896,7 @@ namespace GameSvr
             bool result = false;
             for (var i = 0; i < AttackerList.Count; i++)
             {
-                if (aguild == (AttackerList[i] as TAttackerInfo).Guild)
+                if (aguild == AttackerList[i].Guild)
                 {
                     result = true;
                     break;
@@ -930,17 +930,17 @@ namespace GameSvr
             {
                 if (svMain.ENGLISHVERSION)
                 {
-                    result = (AttackerList[0] as TAttackerInfo).AttackDate.ToString();
+                    result = AttackerList[0].AttackDate.ToString();
                 }
                 else if (svMain.PHILIPPINEVERSION)
                 {
-                    result = (AttackerList[0] as TAttackerInfo).AttackDate.ToString();
+                    result = AttackerList[0].AttackDate.ToString();
                 }
                 else
                 {
-                    var ayear = (AttackerList[0] as TAttackerInfo).AttackDate.Year;
-                    var amon = (AttackerList[0] as TAttackerInfo).AttackDate.Month;
-                    var aday = (AttackerList[0] as TAttackerInfo).AttackDate.Day;
+                    var ayear = AttackerList[0].AttackDate.Year;
+                    var amon = AttackerList[0].AttackDate.Month;
+                    var aday = AttackerList[0].AttackDate.Day;
                     result = ayear.ToString() + "年" + amon.ToString() + "月" + aday.ToString() + "日";
                 }
             }
@@ -957,9 +957,9 @@ namespace GameSvr
             int len = 0;
             for (var i = 0; i < AttackerList.Count; i++)
             {
-                var y = (AttackerList[i] as TAttackerInfo).AttackDate.Year;
-                var m = (AttackerList[i] as TAttackerInfo).AttackDate.Month;
-                var d = (AttackerList[i] as TAttackerInfo).AttackDate.Day;
+                var y = AttackerList[i].AttackDate.Year;
+                var m = AttackerList[i].AttackDate.Month;
+                var d = AttackerList[i].AttackDate.Day;
                 if ((y != ayear) || (m != amon) || (d != aday))
                 {
                     ayear = y;
@@ -971,11 +971,11 @@ namespace GameSvr
                     }
                     if (svMain.ENGLISHVERSION)
                     {
-                        result = result + (AttackerList[i] as TAttackerInfo).AttackDate.ToString() + "\\";
+                        result = result + AttackerList[i].AttackDate.ToString() + "\\";
                     }
                     else if (svMain.PHILIPPINEVERSION)
                     {
-                        result = result + (AttackerList[i] as TAttackerInfo).AttackDate.ToString() + "\\";
+                        result = result + AttackerList[i].AttackDate.ToString() + "\\";
                     }
                     else
                     {
@@ -988,7 +988,7 @@ namespace GameSvr
                     result = result + "\\";
                     len = 0;
                 }
-                str = "\"" + (AttackerList[i] as TAttackerInfo).GuildName + "\" ";
+                str = "\"" + AttackerList[i].GuildName + "\" ";
                 len = len + str.Length;
                 result = result + str;
             }

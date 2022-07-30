@@ -66,10 +66,10 @@ namespace GameSvr
             int i;
             int pwr;
             int dam;
-            int sx;
-            int sy;
-            int tx;
-            int ty;
+            short sx = 0;
+            short sy = 0;
+            short tx = 0;
+            short ty = 0;
             ArrayList list;
             TCreature cret;
             if (targ == null)
@@ -94,10 +94,6 @@ namespace GameSvr
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            // wparam
-                            // lparam1
-                            // lparam2
-                            // hiter
                             cret.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                         }
                     }
@@ -177,7 +173,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir;
+            byte targdir=0;
             result = false;
             if (this.TargetCret != null)
             {
@@ -188,7 +184,7 @@ namespace GameSvr
                     {
                         if (this.TargetInAttackRange(this.TargetCret, ref targdir) && (new System.Random(10).Next() < 8))
                         {
-                            this.TargetFocusTime = GetTickCount;
+                            this.TargetFocusTime  =  HUtil32.GetTickCount();
                             Attack(this.TargetCret, targdir);
                             result = true;
                         }

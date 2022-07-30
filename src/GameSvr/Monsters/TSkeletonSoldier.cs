@@ -58,7 +58,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir;
+            byte targdir=0;
             result = false;
             if (this.TargetCret != null)
             {
@@ -67,7 +67,7 @@ namespace GameSvr
                     if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                     {
                         this.HitTime = GetCurrentTime;
-                        this.TargetFocusTime = GetTickCount;
+                        this.TargetFocusTime  =  HUtil32.GetTickCount();
                         RangeAttack(targdir);
                         this.BreakHolySeize();
                     }

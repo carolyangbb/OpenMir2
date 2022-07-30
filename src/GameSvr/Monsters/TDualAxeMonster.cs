@@ -17,7 +17,7 @@ namespace GameSvr
             this.SearchRate = 3000;
             ChainShot = 0;
             ChainShotCount = 2;
-            this.SearchTime = GetTickCount;
+            this.SearchTime  =  HUtil32.GetTickCount();
             this.RaceServer = Grobal2.RC_DUALAXESKELETON;
         }
 
@@ -70,7 +70,7 @@ namespace GameSvr
                         if (ChainShot < ChainShotCount - 1)
                         {
                             ChainShot++;
-                            this.TargetFocusTime = GetTickCount;
+                            this.TargetFocusTime  =  HUtil32.GetTickCount();
                             FlyAxeAttack(this.TargetCret);
                         }
                         else
@@ -117,9 +117,9 @@ namespace GameSvr
             // (StatusArr[POISON_STUN] = 0) then begin
             if (!RunDone && this.IsMoveAble())
             {
-                if (GetTickCount - this.SearchEnemyTime > 5000)
+                if (HUtil32.GetTickCount() - this.SearchEnemyTime > 5000)
                 {
-                    this.SearchEnemyTime = GetTickCount;
+                    this.SearchEnemyTime  =  HUtil32.GetTickCount();
                     // 惑加罐篮 run 俊辑 HitTime 犁汲沥窃.
                     for (i = 0; i < this.VisibleActors.Count; i++)
                     {

@@ -26,22 +26,22 @@ namespace GameSvr
             EGateLoad.Value = svMain.GATELOAD;
             CbViewHack.Checked = svMain.BoViewHackCode;
             CkViewAdmfail.Checked = svMain.BoViewAdmissionfail;
-            if (this.ShowModal == System.Windows.Forms.DialogResult.OK)
-            {
-                svMain.HumLimitTime = _MIN(150, EHum.Value);
-                svMain.MonLimitTime = _MIN(150, EMon.Value);
-                svMain.ZenLimitTime = _MIN(150, EZen.Value);
-                svMain.SocLimitTime = _MIN(150, ESoc.Value);
-                svMain.DecLimitTime = _MIN(150, EDec.Value);
-                svMain.NpcLimitTime = _MIN(150, ENpc.Value);
-                svMain.SENDBLOCK = _MAX(10, ESendBlock.Value);
-                svMain.SENDCHECKBLOCK = _MAX(10, ECheckBlock.Value);
-                svMain.SENDAVAILABLEBLOCK = _MAX(10, EAvailableBlock.Value);
-                svMain.GATELOAD = EGateLoad.Value;
-                svMain.BoViewHackCode = CbViewHack.Checked;
-                svMain.BoViewAdmissionfail = CkViewAdmfail.Checked;
-                result = true;
-            }
+            //if (this.ShowModal == System.Windows.Forms.DialogResult.OK)
+            //{
+            //    svMain.HumLimitTime = HUtil32._MIN(150, EHum.Value);
+            //    svMain.MonLimitTime = HUtil32._MIN(150, EMon.Value);
+            //    svMain.ZenLimitTime = HUtil32._MIN(150, EZen.Value);
+            //    svMain.SocLimitTime = HUtil32._MIN(150, ESoc.Value);
+            //    svMain.DecLimitTime = HUtil32._MIN(150, EDec.Value);
+            //    svMain.NpcLimitTime = HUtil32._MIN(150, ENpc.Value);
+            //    svMain.SENDBLOCK = _MAX(10, ESendBlock.Value);
+            //    svMain.SENDCHECKBLOCK = _MAX(10, ECheckBlock.Value);
+            //    svMain.SENDAVAILABLEBLOCK = _MAX(10, EAvailableBlock.Value);
+            //    svMain.GATELOAD = EGateLoad.Value;
+            //    svMain.BoViewHackCode = CbViewHack.Checked;
+            //    svMain.BoViewAdmissionfail = CkViewAdmfail.Checked;
+            //    result = true;
+            //}
             return result;
         }
 

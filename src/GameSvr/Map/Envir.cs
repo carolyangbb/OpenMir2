@@ -17,7 +17,7 @@ namespace GameSvr
         public long OpenTime;
     }
 
-    public struct TDoorInfo
+    public class TDoorInfo
     {
         public int DoorX;
         public int DoorY;

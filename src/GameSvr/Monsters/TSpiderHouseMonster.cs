@@ -12,7 +12,7 @@ namespace GameSvr
             this.ViewRange = 9;
             this.RunNextTick = 250;
             this.SearchRate = 2500 + ((long)new System.Random(1500).Next());
-            this.SearchTime = GetTickCount;
+            this.SearchTime  =  HUtil32.GetTickCount();
             this.StickMode = true;
             childlist = new ArrayList();
         }
@@ -64,7 +64,7 @@ namespace GameSvr
                     this.WalkTime = GetCurrentTime;
                     if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                     {
-                        this.HitTime = GetTickCount;
+                        this.HitTime  =  HUtil32.GetTickCount();
                         this.MonsterNormalAttack();
                         if (this.TargetCret != null)
                         {

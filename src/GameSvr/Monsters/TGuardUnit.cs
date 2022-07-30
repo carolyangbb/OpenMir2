@@ -15,7 +15,7 @@ namespace GameSvr
             if (this.Castle != null)
             {
                 hiter.BoCrimeforCastle = true;
-                hiter.CrimeforCastleTime = GetTickCount;
+                hiter.CrimeforCastleTime  =  HUtil32.GetTickCount();
             }
         }
 
@@ -31,7 +31,7 @@ namespace GameSvr
                 }
                 if (target.BoCrimeforCastle)
                 {
-                    if (GetTickCount - target.CrimeforCastleTime < 2 * 60 * 1000)
+                    if (HUtil32.GetTickCount() - target.CrimeforCastleTime < 2 * 60 * 1000)
                     {
                         // 5盒
                         result = true;

@@ -21,9 +21,9 @@
             // (StatusArr[POISON_STUN] = 0) then begin
             if (!this.RunDone && this.IsMoveAble())
             {
-                if ((GetTickCount - this.SearchEnemyTime > 8000) || ((GetTickCount - this.SearchEnemyTime > 1000) && (this.TargetCret == null)))
+                if ((HUtil32.GetTickCount() - this.SearchEnemyTime > 8000) || ((HUtil32.GetTickCount() - this.SearchEnemyTime > 1000) && (this.TargetCret == null)))
                 {
-                    this.SearchEnemyTime = GetTickCount;
+                    this.SearchEnemyTime  =  HUtil32.GetTickCount();
                     this.MonsterNormalAttack();
                 }
             }

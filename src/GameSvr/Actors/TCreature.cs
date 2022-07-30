@@ -393,7 +393,7 @@ namespace GameSvr
             GhostTime = 0;
             Death = false;
             DeathTime = 0;
-            WatchTime = GetTickCount;
+            WatchTime  =  HUtil32.GetTickCount();
             Dir = Grobal2.DR_DOWN;
             RaceServer = Grobal2.RC_ANIMAL;
             RaceImage = 0;
@@ -413,7 +413,7 @@ namespace GameSvr
             HitDouble = 0;
             BodyLuck = 0;
             CGHIUseTime = 0;
-            CGHIstart = GetTickCount;
+            CGHIstart  =  HUtil32.GetTickCount();
             BoCGHIEnable = false;
             BoOldVersionUser_Italy = false;
             BoReadyAdminPassword = false;
@@ -448,7 +448,7 @@ namespace GameSvr
             PerHealth = 5;
             PerHealing = 5;
             PerSpell = 5;
-            IncHealthSpellTime = GetTickCount;
+            IncHealthSpellTime  =  HUtil32.GetTickCount();
             RedPoisonLevel = 0;
             PoisonLevel = 0;
             PlusPoisonFactor = 0;
@@ -576,27 +576,27 @@ namespace GameSvr
             RunTime = (int)(GetCurrentTime + new System.Random(1500).Next());
             RunNextTick = 250;
             SearchRate = 2000 + ((long)new System.Random(2000).Next());
-            SearchTime = GetTickCount;
-            time4hour = GetTickCount;
-            time10min = GetTickCount;
-            time500ms = GetTickCount;
-            poisontime = GetTickCount;
-            time60sec = GetTickCount;
-            time30sec = GetTickCount;
-            time10sec = GetTickCount;
-            time5sec = GetTickCount;
-            ticksec = GetTickCount;
+            SearchTime  =  HUtil32.GetTickCount();
+            time4hour  =  HUtil32.GetTickCount();
+            time10min  =  HUtil32.GetTickCount();
+            time500ms  =  HUtil32.GetTickCount();
+            poisontime  =  HUtil32.GetTickCount();
+            time60sec  =  HUtil32.GetTickCount();
+            time30sec  =  HUtil32.GetTickCount();
+            time10sec  =  HUtil32.GetTickCount();
+            time5sec  =  HUtil32.GetTickCount();
+            ticksec  =  HUtil32.GetTickCount();
             LatestCryTime = 0;
             // GetTickCount;
             LatestSpaceMoveTime = 0;
             LatestSpaceScrollTime = 0;
             LatestSearchWhoTime = 0;
-            MapMoveTime = GetTickCount;
+            MapMoveTime  =  HUtil32.GetTickCount();
             SlaveLifeTime = 0;
             NextWalkTime = 1400;
             NextHitTime = 3000;
             WalkCurStep = 0;
-            WalkWaitCurTime = GetTickCount;
+            WalkWaitCurTime  =  HUtil32.GetTickCount();
             BoWalkWaitMode = false;
             HealthTick = 0;
             SpellTick = 0;
@@ -1512,7 +1512,7 @@ namespace GameSvr
                     pmsg = (TMessageInfoPtr)MsgList[n];
                     if (pmsg.deliverytime != 0)
                     {
-                        if (GetTickCount < pmsg.deliverytime)
+                        if (HUtil32.GetTickCount() < pmsg.deliverytime)
                         {
                             n++;
                             continue;
@@ -1721,9 +1721,9 @@ namespace GameSvr
                 return;
             }
             objshape = 0;
-            if ((GetTickCount - WatchTime >= 500) || (MsgTargetList.Count == 0))
+            if ((HUtil32.GetTickCount() - WatchTime >= 500) || (MsgTargetList.Count == 0))
             {
-                WatchTime = GetTickCount;
+                WatchTime  =  HUtil32.GetTickCount();
                 MsgTargetList.Clear();
                 stx = CX - 12;
                 enx = CX + 12;
@@ -1753,7 +1753,7 @@ namespace GameSvr
                                         }
                                         if (objshape == Grobal2.OS_MOVINGOBJECT)
                                         {
-                                            if (GetTickCount - ((TAThing)pm.OBJList[k]).ATime >= 5 * 60 * 1000)
+                                            if (HUtil32.GetTickCount() - ((TAThing)pm.OBJList[k]).ATime >= 5 * 60 * 1000)
                                             {
                                                 try
                                                 {
@@ -2065,7 +2065,7 @@ namespace GameSvr
                                         {
                                             // 儡惑 八荤窍咯 瘤款促.
                                             // 2003/01/22 矫埃 5盒俊辑 10盒栏肺 函版...NPC 濒冠烙 规瘤
-                                            if (GetTickCount - ((TAThing)pm.OBJList[k]).ATime >= 10 * 60 * 1000)
+                                            if (HUtil32.GetTickCount() - ((TAThing)pm.OBJList[k]).ATime >= 10 * 60 * 1000)
                                             {
                                                 try
                                                 {
@@ -2116,7 +2116,7 @@ namespace GameSvr
                                             if (((TAThing)pm.OBJList[k]).Shape == Grobal2.OS_ITEMOBJECT)
                                             {
                                                 down = 7;
-                                                if (GetTickCount - ((TAThing)pm.OBJList[k]).ATime > 60 * 60 * 1000)
+                                                if (HUtil32.GetTickCount() - ((TAThing)pm.OBJList[k]).ATime > 60 * 60 * 1000)
                                                 {
                                                     // 厘盔操固扁 酒捞袍篮 扒靛府瘤 臼绰促.
                                                     pmapitem = (TMapItem)((TAThing)pm.OBJList[k]).AObject;
@@ -2157,7 +2157,7 @@ namespace GameSvr
                                                         UpdateVisibleItems((ushort)i, (ushort)j, pmapitem);
                                                         if ((pmapitem.Ownership != null) || (pmapitem.Droper != null))
                                                         {
-                                                            if (GetTickCount - pmapitem.Droptime > ObjBase.ANTI_MUKJA_DELAY)
+                                                            if (HUtil32.GetTickCount() - pmapitem.Droptime > ObjBase.ANTI_MUKJA_DELAY)
                                                             {
                                                                 pmapitem.Ownership = null;
                                                                 pmapitem.Droper = null;
@@ -2355,7 +2355,7 @@ namespace GameSvr
                             {
                                 if (__event.Check == 0)
                                 {
-                                    SendMsg(this, Grobal2.RM_HIDEEVENT, 0, (int)__event, __event.X, __event.Y, "");
+                                    SendMsg(this, Grobal2.RM_HIDEEVENT, 0, __event.EventId, __event.X, __event.Y, "");
                                     VisibleEvents.RemoveAt(i);
                                     if (VisibleEvents.Count > 0)
                                     {
@@ -2370,7 +2370,7 @@ namespace GameSvr
                                 {
                                     if (__event.Check == 2)
                                     {
-                                        SendMsg(this, Grobal2.RM_SHOWEVENT, __event.EventType, (int)__event, HUtil32.MakeLong(__event.X, __event.EventParam), __event.Y, "");
+                                        SendMsg(this, Grobal2.RM_SHOWEVENT, __event.EventType, __event.EventId, HUtil32.MakeLong(__event.X, __event.EventParam), __event.Y, "");
                                     }
                                 }
                             }
@@ -2577,7 +2577,7 @@ namespace GameSvr
             else
             {
                 Death = true;
-                DeathTime = GetTickCount;
+                DeathTime  =  HUtil32.GetTickCount();
                 MakeGhost(3);
             }
         }
@@ -2675,7 +2675,7 @@ namespace GameSvr
                             else
                             {
                                 hum = this as TUserHuman;
-                                if (GetTickCount - hum.LatestDropTime > 1000)
+                                if (HUtil32.GetTickCount() - hum.LatestDropTime > 1000)
                                 {
                                     // 辑滚 捞悼 check disappear
                                     if (Disappear(1) == true)
@@ -2865,7 +2865,7 @@ namespace GameSvr
                 SendMsg(this, Grobal2.RM_CHANGEMAP, 0, 0, 0, 0, enterenvir.GetGuildAgitRealMapName());
                 if (Appear())
                 {
-                    MapMoveTime = GetTickCount;
+                    MapMoveTime  =  HUtil32.GetTickCount();
                     SpaceMoved = true;
                     // WalkTo啊 角菩窍瘤 臼霸 窍妨绊..
                     result = true;
@@ -2973,7 +2973,7 @@ namespace GameSvr
         {
             // 肯傈洒 磷澜, 荤扼龙 抗沥
             BoGhost = true;
-            GhostTime = GetTickCount;
+            GhostTime  =  HUtil32.GetTickCount();
             if (Disappear(3) == false)
             {
                 svMain.MainOutMessage("Not MakeGhost: " + this.UserName + "," + this.MapName + "," + this.CX.ToString() + "," + this.CY.ToString() + ":" + num.ToString());
@@ -3495,17 +3495,16 @@ namespace GameSvr
             }
         }
 
-        // 磷篮 惑怕, 荤恩牢版快父 犁积且 荐 乐澜.
         public char Die_BoolToChar(bool flag)
         {
             char result;
             if (flag)
             {
-                result = "T";
+                result = 'T';
             }
             else
             {
-                result = "F";
+                result = 'F';
             }
             return result;
         }
@@ -3532,7 +3531,7 @@ namespace GameSvr
                 return;
             }
             Death = true;
-            DeathTime = GetTickCount;
+            DeathTime  =  HUtil32.GetTickCount();
             ClearPkHiterList();
             if (Master != null)
             {
@@ -4071,15 +4070,15 @@ namespace GameSvr
                     LastHiterRace = LastHiter.RaceServer;
                 }
             }
-            LastHitTime = GetTickCount;
+            LastHitTime  =  HUtil32.GetTickCount();
             if (ExpHiter == null)
             {
                 ExpHiter = hiter;
-                ExpHitTime = GetTickCount;
+                ExpHitTime  =  HUtil32.GetTickCount();
             }
             else if (ExpHiter == hiter)
             {
-                ExpHitTime = GetTickCount;
+                ExpHitTime  =  HUtil32.GetTickCount();
             }
         }
 
@@ -4091,7 +4090,7 @@ namespace GameSvr
                 {
                     if (!BoIllegalAttack)
                     {
-                        hiter.IllegalAttackTime = GetTickCount;
+                        hiter.IllegalAttackTime  =  HUtil32.GetTickCount();
                         if (!hiter.BoIllegalAttack)
                         {
                             hiter.BoIllegalAttack = true;
@@ -4107,7 +4106,7 @@ namespace GameSvr
             long DuringIllegalTime = 60 * 1000;
             if (BoIllegalAttack)
             {
-                if (GetTickCount - IllegalAttackTime > DuringIllegalTime)
+                if (HUtil32.GetTickCount() - IllegalAttackTime > DuringIllegalTime)
                 {
                     BoIllegalAttack = false;
                     ChangeNameColor();
@@ -4181,9 +4180,9 @@ namespace GameSvr
             bool result;
             // 堪拳搬
             result = false;
-            if (GetTickCount - LatestFireHitTime > 10 * 1000)
+            if (HUtil32.GetTickCount() - LatestFireHitTime > 10 * 1000)
             {
-                LatestFireHitTime = GetTickCount;
+                LatestFireHitTime  =  HUtil32.GetTickCount();
                 BoAllowFireHit = true;
                 SysMsg("您的武器因精神火焰而炙热。", 1);
                 result = true;
@@ -4200,9 +4199,9 @@ namespace GameSvr
             bool result;
             // 街锋曼
             result = false;
-            if (GetTickCount - LatestTwinHitTime > 1000)
+            if (HUtil32.GetTickCount() - LatestTwinHitTime > 1000)
             {
-                LatestTwinHitTime = GetTickCount;
+                LatestTwinHitTime  =  HUtil32.GetTickCount();
                 BoAllowTwinHit = 1;
                 // SysMsg ('街锋曼捞 惯悼登菌嚼聪促.', 1);
                 result = true;
@@ -4456,7 +4455,7 @@ namespace GameSvr
                                     SendRefMsg(Grobal2.RM_SPACEMOVE_SHOW_NO, Dir, CX, CY, 0, "");
                                     break;
                             }
-                            MapMoveTime = GetTickCount;
+                            MapMoveTime  =  HUtil32.GetTickCount();
                             SpaceMoved = true;
                             success = true;
                         }
@@ -4572,9 +4571,9 @@ namespace GameSvr
                             // 傍己傈 吝牢 郴己狼 版快
                             if (svMain.UserCastle.BoCastleUnderAttack && (PEnvir == svMain.UserCastle.CorePEnvir))
                             {
-                                if (GetTickCount - LatestSpaceScrollTime > 10 * 1000)
+                                if (HUtil32.GetTickCount() - LatestSpaceScrollTime > 10 * 1000)
                                 {
-                                    LatestSpaceScrollTime = GetTickCount;
+                                    LatestSpaceScrollTime  =  HUtil32.GetTickCount();
                                     SendRefMsg(Grobal2.RM_SPACEMOVE_HIDE, 0, 0, 0, 0, "");
                                     UserSpaceMove(MapName, "", "");
                                     // 公累困 傍埃捞悼
@@ -4582,7 +4581,7 @@ namespace GameSvr
                                 }
                                 else
                                 {
-                                    SysMsg((10 - (GetTickCount - LatestSpaceScrollTime) / 1000).ToString() + "秒后才可以使用。", 0);
+                                    SysMsg((10 - (HUtil32.GetTickCount() - LatestSpaceScrollTime) / 1000).ToString() + "秒后才可以使用。", 0);
                                     result = false;
                                 }
                             }
@@ -5067,7 +5066,7 @@ namespace GameSvr
         public void MakeHolySeize(int htime)
         {
             BoHolySeize = true;
-            HolySeizeStart = GetTickCount;
+            HolySeizeStart  =  HUtil32.GetTickCount();
             HolySeizeTime = htime;
             ChangeNameColor();
         }
@@ -5081,7 +5080,7 @@ namespace GameSvr
         public void MakeCrazyMode(int csec)
         {
             BoCrazyMode = true;
-            CrazyModeStart = GetTickCount;
+            CrazyModeStart  =  HUtil32.GetTickCount();
             CrazyModeTime = csec * 1000;
             ChangeNameColor();
         }
@@ -5089,7 +5088,7 @@ namespace GameSvr
         public void MakeGoodCrazyMode(int csec)
         {
             BoGoodCrazyMode = true;
-            CrazyModeStart = GetTickCount;
+            CrazyModeStart  =  HUtil32.GetTickCount();
             CrazyModeTime = csec * 1000;
             ChangeNameColor();
         }
@@ -5698,8 +5697,8 @@ namespace GameSvr
         public bool InSafeZone()
         {
             string map;
-            int sx;
-            int sy;
+            int sx=0;
+            int sy=0;
             bool result = PEnvir.LawFull;
             if (!result)
             {
@@ -5739,8 +5738,8 @@ namespace GameSvr
             bool result;
             string map;
             int i;
-            int sx;
-            int sy;
+            int sx=0;
+            int sy=0;
             result = PEnvir.LawFull;
             if (!result)
             {
@@ -8620,13 +8619,11 @@ namespace GameSvr
             }
         }
 
-        // value: 0 or 1
         public int GetQuestOpenIndexMark(int idx)
         {
-            int result;
             int dcount;
             int mcount;
-            result = 0;
+            int result = 0;
             idx = idx - 1;
             if (idx >= 0)
             {
@@ -8864,8 +8861,8 @@ namespace GameSvr
 
         public bool _Attack_SwordLongAttack(int damage)
         {
-            int xx = 0;
-            int yy = 0;
+            short xx = 0;
+            short yy = 0;
             TCreature target;
             bool result = false;
             if (M2Share.GetNextPosition(PEnvir, CX, CY, Dir, 2, ref xx, ref yy))
@@ -8889,8 +8886,8 @@ namespace GameSvr
             int[] valarr = { 7, 1, 2 };
             int i;
             int ndir = 0;
-            int xx = 0;
-            int yy = 0;
+            short xx = 0;
+            short yy = 0;
             TCreature target;
             result = false;
             for (i = 0; i <= 2; i++)
@@ -8918,14 +8915,14 @@ namespace GameSvr
             bool result;
             int[] valarr = { 7, 1, 2, 3, 4, 5, 6 };
             int i;
-            int ndir = 0;
-            int xx = 0;
-            int yy = 0;
+            byte ndir = 0;
+            short xx = 0;
+            short yy = 0;
             TCreature target;
             result = false;
             for (i = 0; i <= 6; i++)
             {
-                ndir = (Dir + valarr[i]) % 8;
+                ndir = (byte)((Dir + valarr[i]) % 8);
                 if (M2Share.GetNextPosition(PEnvir, CX, CY, ndir, 1, ref xx, ref yy))
                 {
                     target = PEnvir.GetCreature(xx, yy, true) as TCreature;
@@ -9671,11 +9668,11 @@ namespace GameSvr
             int result;
             // 绢恫 塞俊 狼秦辑 剐妨唱促.
             int i;
-            int nx = 0;
-            int ny = 0;
+            short nx = 0;
+            short ny = 0;
             int olddir;
-            int oldx;
-            int oldy;
+            short oldx;
+            short oldy;
             bool flag;
             result = 0;
             olddir = Dir;
@@ -9693,7 +9690,6 @@ namespace GameSvr
             for (i = 0; i < pushcount; i++)
             {
                 M2Share.GetFrontPosition(this, ref nx, ref ny);
-                // 扳魔倾侩救窃
                 if (PEnvir.CanWalk(nx, ny, false))
                 {
                     if (PEnvir.MoveToMovingObject(CX, CY, this, nx, ny, false) > 0)
@@ -9706,7 +9702,6 @@ namespace GameSvr
                         {
                             WalkTime = WalkTime + 800;
                         }
-                        // 剐府搁辑 词霸 锭赴促.
                         flag = true;
                     }
                     else
@@ -9753,8 +9748,8 @@ namespace GameSvr
         {
             bool result;
             int i;
-            int nx = 0;
-            int ny = 0;
+            short nx = 0;
+            short ny = 0;
             int damage;
             int damagelevel;
             int mydamagelevel;
@@ -9808,8 +9803,8 @@ namespace GameSvr
                                 M2Share.GetFrontPosition(this, ref nx, ref ny);
                                 if (PEnvir.MoveToMovingObject(CX, CY, this, nx, ny, false) > 0)
                                 {
-                                    CX = (short)nx;
-                                    CY = (short)ny;
+                                    CX = nx;
+                                    CY = ny;
                                     SendRefMsg(Grobal2.RM_RUSH, ndir, CX, CY, 0, "");
                                     crash = false;
                                     result = true;
@@ -9836,8 +9831,8 @@ namespace GameSvr
                     M2Share.GetFrontPosition(this, ref nx, ref ny);
                     if (PEnvir.MoveToMovingObject(CX, CY, this, nx, ny, false) > 0)
                     {
-                        CX = (short)nx;
-                        CY = (short)ny;
+                        CX = nx;
+                        CY = ny;
                         SendRefMsg(Grobal2.RM_RUSH, ndir, CX, CY, 0, "");
                         mydamagelevel -= 1;
                     }
@@ -9932,8 +9927,8 @@ namespace GameSvr
         {
             bool result;
             int i;
-            int nx = 0;
-            int ny = 0;
+            short nx = 0;
+            short ny = 0;
             int damage;
             int damagelevel;
             int mydamagelevel;
@@ -9949,39 +9944,7 @@ namespace GameSvr
             cret = GetFrontCret();
             if (cret != null)
             {
-                // //器铰八 荐沥
-                // for i:=0 to _MAX(2,rushlevel+1) do begin
-                // cret := GetFrontCret;
-                // if cret <> nil then begin
-                // mydamagelevel := 0;
-                // if CanPush (cret) then begin
-                // if rushlevel >= 3 then
-                // if GetNextPosition (PEnvir, CX, CY, Dir, 2, nx, ny) then begin
-                // cret2 := TCreature (PEnvir.GetCreature (nx, ny, TRUE));
-                // if cret2 <> nil then begin
-                // if CanPush (cret2) then begin
-                // cret2.CharPushed (Dir, 1);
-                // end;
-                // end;
-                // end;
-                // attackcret := cret;
-                // if cret.CharPushed (Dir, 1) = 1 then begin
-                // GetFrontPosition (self, nx, ny);
-                // if PEnvir.MoveToMovingObject (CX, CY, self, nx, ny, FALSE) > 0 then begin
-                // CX := nx;
-                // CY := ny;
-                // SendRefMsg (RM_RUSH, ndir, CX, CY, 0, '');
-                // crash := FALSE;
-                // Result := TRUE;
-                // end;
-                // Dec (damagelevel);
-                // end else begin
-                // break;
-                // end;
-                // end else
-                // break;
-                // end;
-                // end;
+               
             }
             else
             {
@@ -10129,7 +10092,7 @@ namespace GameSvr
                 {
                     StatusArr[poison] = (ushort)sec;
                 }
-                StatusTimes[poison] = GetTickCount;
+                StatusTimes[poison]  =  HUtil32.GetTickCount();
                 CharStatus = GetCharStatus();
                 if (poison == Grobal2.POISON_DAMAGEARMOR)
                 {
@@ -10179,8 +10142,8 @@ namespace GameSvr
 
         public TCreature GetFrontCret()
         {
-            int fx = 0;
-            int fy = 0;
+            short fx = 0;
+            short fy = 0;
             TCreature result = null;
             if (M2Share.GetFrontPosition(this, ref fx, ref fy))
             {
@@ -10245,12 +10208,11 @@ namespace GameSvr
 
         public TCreature MakeSlave(string sname, int slevel, int max_slave, int royaltysec)
         {
-            TCreature result;
-            int nx = 0;
-            int ny = 0;
+            short nx = 0;
+            short ny = 0;
             TCreature mon;
             int AddPlus;
-            result = null;
+            TCreature result = null;
             try
             {
                 AddPlus = 0;
@@ -10671,12 +10633,12 @@ namespace GameSvr
         public bool WalkTo(byte dir, bool allowdup)
         {
             bool result;
-            int prx = 0;
-            int pry = 0;
-            int nwx = 0;
-            int nwy = 0;
-            int masx = 0;
-            int masy = 0;
+            short prx = 0;
+            short pry = 0;
+            short nwx = 0;
+            short nwy = 0;
+            short masx = 0;
+            short masy = 0;
             TEnvirnoment oldpenvir;
             bool flag;
             int down;
@@ -10699,35 +10661,35 @@ namespace GameSvr
                 {
                     case Grobal2.DR_UP:
                         nwx = CX;
-                        nwy = CY - 1;
+                        nwy = (short)(CY - 1);
                         break;
                     case Grobal2.DR_DOWN:
                         nwx = CX;
-                        nwy = CY + 1;
+                        nwy = (short)(CY + 1);
                         break;
                     case Grobal2.DR_LEFT:
-                        nwx = CX - 1;
+                        nwx = (short)(CX - 1);
                         nwy = CY;
                         break;
                     case Grobal2.DR_RIGHT:
-                        nwx = CX + 1;
+                        nwx = (short)(CX + 1);
                         nwy = CY;
                         break;
                     case Grobal2.DR_UPLEFT:
-                        nwx = CX - 1;
-                        nwy = CY - 1;
+                        nwx = (short)(CX - 1);
+                        nwy = (short)(CY - 1);
                         break;
                     case Grobal2.DR_UPRIGHT:
-                        nwx = CX + 1;
-                        nwy = CY - 1;
+                        nwx = (short)(CX + 1);
+                        nwy = (short)(CY - 1);
                         break;
                     case Grobal2.DR_DOWNLEFT:
-                        nwx = CX - 1;
-                        nwy = CY + 1;
+                        nwx = (short)(CX - 1);
+                        nwy = (short)(CY + 1);
                         break;
                     case Grobal2.DR_DOWNRIGHT:
-                        nwx = CX + 1;
-                        nwy = CY + 1;
+                        nwx = (short)(CX + 1);
+                        nwy = (short)(CY + 1);
                         break;
                 }
                 down = 2;
@@ -10737,7 +10699,6 @@ namespace GameSvr
                     flag = true;
                     if (BoFearFire)
                     {
-                        // 阂阑 公辑况窃
                         down = 4;
                         if (!PEnvir.CanSafeWalk(nwx, nwy))
                         {
@@ -10746,7 +10707,6 @@ namespace GameSvr
                     }
                     if (Master != null)
                     {
-                        // 林牢捞 乐绰 各, 林牢狼 菊阑 啊肺 阜瘤 臼绰促.
                         down = 5;
                         M2Share.GetNextPosition(Master.PEnvir, Master.CX, Master.CY, Master.Dir, 1, ref masx, ref masy);
                         if ((nwx == masx) && (nwy == masy))
@@ -10759,8 +10719,8 @@ namespace GameSvr
                         down = 6;
                         if (PEnvir.MoveToMovingObject(CX, CY, this, nwx, nwy, allowdup) > 0)
                         {
-                            CX = (short)nwx;
-                            CY = (short)nwy;
+                            CX = nwx;
+                            CY = nwy;
                         }
                     }
                 }
@@ -10769,13 +10729,10 @@ namespace GameSvr
                     if (Walk(Grobal2.RM_WALK))
                     {
                         down = 7;
-                        // 篮脚贱 秦力
                         if (BoFixedHideMode)
                         {
-                            // 绊沥 篮脚贱..
                             if (BoHumHideMode)
                             {
-                                // 捞悼茄版快俊绰 篮脚贱捞 钱赴促.
                                 StatusArr[Grobal2.STATE_TRANSPARENT] = 1;
                             }
                         }
@@ -10787,8 +10744,8 @@ namespace GameSvr
                         if (1 == PEnvir.DeleteFromMap(CX, CY, Grobal2.OS_MOVINGOBJECT, this))
                         {
                             PEnvir = oldpenvir;
-                            CX = (short)prx;
-                            CY = (short)pry;
+                            CX = prx;
+                            CY = pry;
                             if (null == PEnvir.AddToMap(CX, CY, Grobal2.OS_MOVINGOBJECT, this))
                             {
                                 svMain.MainOutMessage("NOT ADDTOMAP WorkTo:" + PEnvir.MapName + "," + CX.ToString() + "," + CY.ToString());
@@ -10806,10 +10763,9 @@ namespace GameSvr
 
         public bool RunTo(int dir, bool allowdup)
         {
-            bool result;
             int prx;
             int pry;
-            result = false;
+            bool result = false;
             try
             {
                 prx = CX;
@@ -11423,7 +11379,7 @@ namespace GameSvr
             return result;
         }
 
-        public bool GetRecallPosition(int x, int y, int wide, ref int dx, ref int dy)
+        public bool GetRecallPosition(short x, short y, int wide, ref short dx, ref short dy)
         {
             bool result;
             int i;
@@ -11465,11 +11421,8 @@ namespace GameSvr
             }
             if (!result)
             {
-                // 酒聪搁 磊扁 磊府...
                 dx = x;
-                // - wide + Random(wide*2+1);
                 dy = y;
-                // - wide + Random(wide*2+1);
             }
             return result;
         }
@@ -11538,7 +11491,7 @@ namespace GameSvr
                 pmi.Reserved = 0;
                 pmi.Count = 1;
                 pmi.Ownership = ownership;
-                pmi.Droptime = GetTickCount;
+                pmi.Droptime  =  HUtil32.GetTickCount();
                 pmi.Droper = droper;
                 GetDropPosition(CX, CY, scatterrange, ref dx, ref dy);
                 // -----------------------------------------
@@ -11558,7 +11511,7 @@ namespace GameSvr
                         pmi.Count = 1;
                         pmi.Ownership = droper;
                         // 冻绢哆赴 荤恩狼 家蜡...
-                        pmi.Droptime = GetTickCount;
+                        pmi.Droptime  =  HUtil32.GetTickCount();
                         pmi.Droper = droper;
                         // 惑泅林赣聪 加己 汲沥 棺 List俊 历厘
                         decoitem.Name = svMain.GuildAgitMan.GetDecoItemName(ui.Dura, ref pricestr);
@@ -11605,7 +11558,7 @@ namespace GameSvr
                     else
                     {
                         logcap = "7\09";
-                        (this as TUserHuman).LatestDropTime = GetTickCount;
+                        (this as TUserHuman).LatestDropTime  =  HUtil32.GetTickCount();
                     }
                     GetValidStrNoVal(UserName, ShowName);
                     // 物品掉落提醒
@@ -11642,7 +11595,7 @@ namespace GameSvr
             pmi.Count = goldcount;
             pmi.Looks = GetGoldLooks(goldcount);
             pmi.Ownership = ownership;
-            pmi.Droptime = GetTickCount;
+            pmi.Droptime  =  HUtil32.GetTickCount();
             pmi.Droper = droper;
             GetDropPosition(CX, CY, 3, ref dx, ref dy);
             pr = (TMapItem)PEnvir.AddToMap(dx, dy, Grobal2.OS_ITEMOBJECT, pmi);
@@ -11663,7 +11616,7 @@ namespace GameSvr
                     else
                     {
                         logcap = "7\09";
-                        (this as TUserHuman).LatestDropTime = GetTickCount;
+                        (this as TUserHuman).LatestDropTime  =  HUtil32.GetTickCount();
                     }
                     svMain.AddUserLog(logcap + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + Envir.NAME_OF_GOLD + "\09" + goldcount.ToString() + "\09" + BoolToInt(RaceServer == Grobal2.RC_USERHUMAN).ToString() + "\09" + "0");
                 }
@@ -11691,7 +11644,7 @@ namespace GameSvr
             {
                 HUtil32.GetValidStr3(itmname, ref itmname, new string[] { " " });
             }
-            if (GetTickCount - DealItemChangeTime > 3000)
+            if (HUtil32.GetTickCount() - DealItemChangeTime > 3000)
             {
                 for (var i = 0; i < ItemList.Count; i++)
                 {
@@ -11818,7 +11771,7 @@ namespace GameSvr
             {
                 HUtil32.GetValidStr3(itmname, ref itmname, new string[] { " " });
             }
-            if (GetTickCount - DealItemChangeTime > 3000)
+            if (HUtil32.GetTickCount() - DealItemChangeTime > 3000)
             {
                 for (i = 0; i < ItemList.Count; i++)
                 {
@@ -12134,7 +12087,7 @@ namespace GameSvr
             if (pmi != null)
             {
                 // 冈磊 阜绰 风凭
-                if (GetTickCount - pmi.Droptime > ObjBase.ANTI_MUKJA_DELAY)
+                if (HUtil32.GetTickCount() - pmi.Droptime > ObjBase.ANTI_MUKJA_DELAY)
                 {
                     pmi.Ownership = null;
                 }
@@ -12397,7 +12350,7 @@ namespace GameSvr
                             {
                                 ExtraAbil[Grobal2.EABIL_DCUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_DCUP], Lobyte(std.DC));
                                 ExtraAbilFlag[Grobal2.EABIL_DCUP] = 0;
-                                ExtraAbilTimes[Grobal2.EABIL_DCUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_DCUP], (int)(GetTickCount + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000));
+                                ExtraAbilTimes[Grobal2.EABIL_DCUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_DCUP], HUtil32.GetTickCount() + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000);
                                 SysMsg("攻击力瞬间提高" + (HiByte(std.DC) + HiByte(std.MAC) / 60).ToString() + "分" + (HiByte(std.MAC) % 60).ToString() + "秒。", 1);
                                 boneedrecalc = true;
                             }
@@ -12405,7 +12358,7 @@ namespace GameSvr
                             {
                                 ExtraAbil[Grobal2.EABIL_MCUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_MCUP], Lobyte(std.MC));
                                 ExtraAbilFlag[Grobal2.EABIL_MCUP] = 0;
-                                ExtraAbilTimes[Grobal2.EABIL_MCUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_MCUP], (int)(GetTickCount + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000));
+                                ExtraAbilTimes[Grobal2.EABIL_MCUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_MCUP], HUtil32.GetTickCount() + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000);
                                 SysMsg("魔法力瞬间提高" + (HiByte(std.DC) + HiByte(std.MAC) / 60).ToString() + "分" + (HiByte(std.MAC) % 60).ToString() + "sec.", 1);
                                 boneedrecalc = true;
                             }
@@ -12413,7 +12366,7 @@ namespace GameSvr
                             {
                                 ExtraAbil[Grobal2.EABIL_SCUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_SCUP], Lobyte(std.SC));
                                 ExtraAbilFlag[Grobal2.EABIL_SCUP] = 0;
-                                ExtraAbilTimes[Grobal2.EABIL_SCUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_SCUP], (int)(GetTickCount + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000));
+                                ExtraAbilTimes[Grobal2.EABIL_SCUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_SCUP], HUtil32.GetTickCount() + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000);
                                 SysMsg("精神力瞬间提高" + (HiByte(std.DC) + HiByte(std.MAC) / 60).ToString() + "分" + (HiByte(std.MAC) % 60).ToString() + "秒。", 1);
                                 boneedrecalc = true;
                             }
@@ -12421,7 +12374,7 @@ namespace GameSvr
                             {
                                 ExtraAbil[Grobal2.EABIL_HITSPEEDUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_HITSPEEDUP], HiByte(std.AC));
                                 ExtraAbilFlag[Grobal2.EABIL_HITSPEEDUP] = 0;
-                                ExtraAbilTimes[Grobal2.EABIL_HITSPEEDUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_HITSPEEDUP], (int)(GetTickCount + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000));
+                                ExtraAbilTimes[Grobal2.EABIL_HITSPEEDUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_HITSPEEDUP], HUtil32.GetTickCount() + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000);
                                 SysMsg("敏捷度瞬间提高" + (HiByte(std.DC) + HiByte(std.MAC) / 60).ToString() + "分" + (HiByte(std.MAC) % 60).ToString() + "秒。", 1);
                                 boneedrecalc = true;
                             }
@@ -12429,7 +12382,7 @@ namespace GameSvr
                             {
                                 ExtraAbil[Grobal2.EABIL_HPUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_HPUP], Lobyte(std.AC));
                                 ExtraAbilFlag[Grobal2.EABIL_HPUP] = 0;
-                                ExtraAbilTimes[Grobal2.EABIL_HPUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_HPUP], (int)(GetTickCount + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000));
+                                ExtraAbilTimes[Grobal2.EABIL_HPUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_HPUP], HUtil32.GetTickCount() + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000);
                                 SysMsg("体力值瞬间提高" + (HiByte(std.DC) + HiByte(std.MAC) / 60).ToString() + "分" + (HiByte(std.MAC) % 60).ToString() + "秒。", 1);
                                 boneedrecalc = true;
                             }
@@ -12437,7 +12390,7 @@ namespace GameSvr
                             {
                                 ExtraAbil[Grobal2.EABIL_MPUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_MPUP], Lobyte(std.MAC));
                                 ExtraAbilFlag[Grobal2.EABIL_MPUP] = 0;
-                                ExtraAbilTimes[Grobal2.EABIL_MPUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_MPUP], (int)(GetTickCount + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000));
+                                ExtraAbilTimes[Grobal2.EABIL_MPUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_MPUP], HUtil32.GetTickCount() + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000);
                                 SysMsg("魔法值瞬间提高" + (HiByte(std.DC) + HiByte(std.MAC) / 60).ToString() + "分" + (HiByte(std.MAC) % 60).ToString() + "秒。", 1);
                                 boneedrecalc = true;
                             }
@@ -12633,23 +12586,18 @@ namespace GameSvr
 
         public int GetSpellPoint(TUserMagic pum)
         {
-            int result;
-            // 努扼捞攫飘客 老摹矫难具 窃(sonmg)
-            result = HUtil32.MathRound(pum.pDef.Spell / (pum.pDef.MaxTrainLevel + 1) * (pum.Level + 1)) + pum.pDef.DefSpell;
+            int result = HUtil32.MathRound(pum.pDef.Spell / (pum.pDef.MaxTrainLevel + 1) * (pum.Level + 1)) + pum.pDef.DefSpell;
             return result;
         }
 
-        // 鸥百狼 利例窃篮 固府 八刘秦具窃.
-        public bool DoSpell(TUserMagic pum, int xx, int yy, TCreature target)
+        public bool DoSpell(TUserMagic pum, short xx, short yy, TCreature target)
         {
-            bool result;
             int spell;
-            result = false;
+            bool result = false;
             if (svMain.MagicMan.IsSwordSkill(pum.MagicId))
             {
                 return result;
             }
-            // 鞘夸 Spell捞 面盒茄啊?
             spell = GetSpellPoint(pum);
             if (spell > 0)
             {
@@ -12658,7 +12606,6 @@ namespace GameSvr
                     DamageSpell(spell);
                     if (pum.MagicId != 42)
                     {
-                        // 盒脚贱捞 酒聪搁 傈价
                         HealthSpellChanged();
                     }
                 }
@@ -12666,21 +12613,16 @@ namespace GameSvr
                 {
                     return result;
                 }
-                // 付仿捞 何练窃.
             }
             result = svMain.MagicMan.SpellNow(this, pum, xx, yy, target, spell);
             if (pum.MagicId == 42)
             {
-                // 盒脚贱捞搁 傈价
                 HealthSpellChanged();
             }
             return result;
         }
 
-        // ------------------------------ 付过 瓤苞 -----------------------------
-        // 矫累困摹俊辑 促澜 困摹鳖瘤狼 利俊霸 鸥拜阑 涝腮促.
-        // Result: 嘎篮 付府荐
-        public int MagPassThroughMagic(int sx, int sy, int tx, int ty, int ndir, int magpwr, bool undeadattack)
+        public int MagPassThroughMagic(short sx, short sy, short tx, short ty, byte ndir, int magpwr, bool undeadattack)
         {
             int result;
             int i;
@@ -12693,16 +12635,12 @@ namespace GameSvr
                 cret = PEnvir.GetCreature(sx, sy, true) as TCreature;
                 if (cret != null)
                 {
-                    // if (RaceServer = RC_USERHUMAN) and (cret.RaceServer = RC_USERHUMAN) and ((cret.InSafeZone) or (InSafeZone)) then
-                    // continue;  //救傈瘤措
                     if (IsProperTarget(cret))
                     {
                         if (cret.AntiMagic <= new System.Random(50).Next())
                         {
-                            // 付过 雀乔啊 乐澜
                             if (undeadattack)
                             {
-                                // 攫单靛 阁胶磐俊霸 傍拜仿 碍拳牢 版快
                                 acpwr = HUtil32.MathRound(magpwr * 1.5);
                             }
                             else
@@ -12731,14 +12669,13 @@ namespace GameSvr
             return result;
         }
 
-        public bool MagCanHitTarget(int sx, int sy, TCreature target)
+        public bool MagCanHitTarget(short sx, short sy, TCreature target)
         {
-            bool result;
             int i;
-            int ndir;
+            byte ndir;
             int dis;
             int olddis;
-            result = false;
+            bool result = false;
             if (target != null)
             {
                 olddis = Math.Abs(sx - target.CX) + Math.Abs(sy - target.CY);
@@ -12788,7 +12725,7 @@ namespace GameSvr
                 StatusArr[Grobal2.STATE_DEFENCEUP] = (ushort)sec;
                 result = true;
             }
-            StatusTimes[Grobal2.STATE_DEFENCEUP] = GetTickCount;
+            StatusTimes[Grobal2.STATE_DEFENCEUP]  =  HUtil32.GetTickCount();
             StatusValue[Grobal2.STATE_DEFENCEUP] = (byte)_MIN(255, value);
             SysMsg("防御力上升" + sec.ToString() + "秒。", 1);
             RecalcAbilitys();
@@ -12814,7 +12751,7 @@ namespace GameSvr
                 StatusArr[Grobal2.STATE_MAGDEFENCEUP] = (ushort)sec;
                 result = true;
             }
-            StatusTimes[Grobal2.STATE_MAGDEFENCEUP] = GetTickCount;
+            StatusTimes[Grobal2.STATE_MAGDEFENCEUP]  =  HUtil32.GetTickCount();
             StatusValue[Grobal2.STATE_MAGDEFENCEUP] = (byte)_MIN(255, value);
             SysMsg("魔法防御力上升" + sec.ToString() + "秒。", 1);
             RecalcAbilitys();
@@ -12831,7 +12768,7 @@ namespace GameSvr
             {
                 old = CharStatus;
                 StatusArr[Grobal2.STATE_BUBBLEDEFENCEUP] = (ushort)sec;
-                StatusTimes[Grobal2.STATE_BUBBLEDEFENCEUP] = GetTickCount;
+                StatusTimes[Grobal2.STATE_BUBBLEDEFENCEUP]  =  HUtil32.GetTickCount();
                 CharStatus = GetCharStatus();
                 if (old != CharStatus)
                 {
@@ -13051,7 +12988,7 @@ namespace GameSvr
             UpDC = pwr;
             ExtraAbil[Grobal2.EABIL_DCUP] = (byte)_MIN(255, _MAX(ExtraAbil[Grobal2.EABIL_DCUP], UpDC));
             ExtraAbilFlag[Grobal2.EABIL_DCUP] = 0;
-            ExtraAbilTimes[Grobal2.EABIL_DCUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_DCUP], (int)(GetTickCount + (sec * 1000)));
+            ExtraAbilTimes[Grobal2.EABIL_DCUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_DCUP], HUtil32.GetTickCount() + (sec * 1000));
             SysMsg("攻击力提高" + ((ExtraAbilTimes[Grobal2.EABIL_DCUP] - GetTickCount) / 1000 / 60).ToString() + "分 " + ((ExtraAbilTimes[Grobal2.EABIL_DCUP] - GetTickCount) / 1000 % 60).ToString() + "秒。", 1);
             RecalcAbilitys();
             SendMsg(this, Grobal2.RM_ABILITY, 0, 0, 0, 0, "");
@@ -13064,11 +13001,11 @@ namespace GameSvr
                     {
                         cret.ExtraAbil[Grobal2.EABIL_DCUP] = (byte)_MIN(255, _MAX(cret.ExtraAbil[Grobal2.EABIL_DCUP], UpDC));
                         cret.ExtraAbilFlag[Grobal2.EABIL_DCUP] = 0;
-                        cret.ExtraAbilTimes[Grobal2.EABIL_DCUP] = _MAX(cret.ExtraAbilTimes[Grobal2.EABIL_DCUP], (int)(GetTickCount + ((long)sec * 1000)));
+                        cret.ExtraAbilTimes[Grobal2.EABIL_DCUP] = _MAX(cret.ExtraAbilTimes[Grobal2.EABIL_DCUP], (int)(HUtil32.GetTickCount() + ((long)sec * 1000)));
                         // 檬窜困
                         cret.ExtraAbil[Grobal2.EABIL_MCUP] = (byte)_MIN(255, _MAX(cret.ExtraAbil[Grobal2.EABIL_MCUP], UpDC));
                         cret.ExtraAbilFlag[Grobal2.EABIL_MCUP] = 0;
-                        cret.ExtraAbilTimes[Grobal2.EABIL_MCUP] = _MAX(cret.ExtraAbilTimes[Grobal2.EABIL_MCUP], (int)(GetTickCount + ((long)sec * 1000)));
+                        cret.ExtraAbilTimes[Grobal2.EABIL_MCUP] = _MAX(cret.ExtraAbilTimes[Grobal2.EABIL_MCUP], (int)(HUtil32.GetTickCount() + ((long)sec * 1000)));
                         // 檬窜困
                         cret.RecalcAbilitys();
                     }
@@ -13081,10 +13018,10 @@ namespace GameSvr
         public void MagCurse(int sec, int pwrrate)
         {
             MakePoison(Grobal2.POISON_SLOW, sec, 1);
-            if (ExtraAbilTimes[Grobal2.EABIL_PWRRATE] < (GetTickCount + ((long)sec * 1000)))
+            if (ExtraAbilTimes[Grobal2.EABIL_PWRRATE] < (HUtil32.GetTickCount() + ((long)sec * 1000)))
             {
                 ExtraAbil[Grobal2.EABIL_PWRRATE] = (byte)pwrrate;
-                ExtraAbilTimes[Grobal2.EABIL_PWRRATE] = (int)(GetTickCount + ((long)sec * 1000));
+                ExtraAbilTimes[Grobal2.EABIL_PWRRATE] = (int)(HUtil32.GetTickCount() + ((long)sec * 1000));
                 // 檬窜困
                 if (pwrrate < 100)
                 {
@@ -13436,9 +13373,9 @@ namespace GameSvr
                     WAbil.MP = WAbil.MaxMP;
                 }
                 test = 2;
-                n = (int)((GetTickCount - ticksec) / 20);
+                n = (int)((HUtil32.GetTickCount() - ticksec) / 20);
                 // 檬寸 50
-                ticksec = GetTickCount;
+                ticksec  =  HUtil32.GetTickCount();
                 HealthTick += n;
                 SpellTick += n;
                 test = 4;
@@ -13490,9 +13427,9 @@ namespace GameSvr
                         if (BoAbilRevival)
                         {
                             // 犁积 瓷仿捞 乐促.
-                            if (GetTickCount - LatestRevivalTime > 60 * 1000)
+                            if (HUtil32.GetTickCount() - LatestRevivalTime > 60 * 1000)
                             {
-                                LatestRevivalTime = GetTickCount;
+                                LatestRevivalTime  =  HUtil32.GetTickCount();
                                 // 馆瘤甫 粹霸 茄促.
                                 ItemDamageRevivalRing();
                                 WAbil.HP = WAbil.MaxHP;
@@ -13517,7 +13454,7 @@ namespace GameSvr
                 else
                 {
                     test = 7;
-                    if (GetTickCount - DeathTime > 3 * 60 * 1000)
+                    if (HUtil32.GetTickCount() - DeathTime > 3 * 60 * 1000)
                     {
                         MakeGhost(5);
                     }
@@ -13532,10 +13469,10 @@ namespace GameSvr
                 if (!Death && ((IncSpell > 0) || (IncHealth > 0) || (IncHealing > 0)))
                 {
                     inchstime = 600 - _MIN(400, Abil.Level * 10);
-                    if ((GetTickCount - IncHealthSpellTime >= inchstime) && !Death)
+                    if ((HUtil32.GetTickCount() - IncHealthSpellTime >= inchstime) && !Death)
                     {
                         // 眉距,付距阑 冈栏搁 玫玫洒 蛮促.
-                        n = _MIN(200, (int)(GetTickCount - IncHealthSpellTime - inchstime));
+                        n = _MIN(200, (int)(HUtil32.GetTickCount() - IncHealthSpellTime - inchstime));
                         IncHealthSpellTime = GetTickCount + n;
                         if ((IncHealth > 0) || (IncSpell > 0) || (PerHealing > 0))
                         {
@@ -13599,7 +13536,7 @@ namespace GameSvr
                 }
                 else
                 {
-                    IncHealthSpellTime = GetTickCount;
+                    IncHealthSpellTime  =  HUtil32.GetTickCount();
                 }
                 if (HealthTick < -ObjBase.HEALTHFILLTICK)
                 {
@@ -13621,7 +13558,7 @@ namespace GameSvr
             {
                 if (TargetCret != null)
                 {
-                    if ((GetTickCount - TargetFocusTime > 30 * 1000) || TargetCret.Death || TargetCret.BoGhost || (Math.Abs(TargetCret.CX - CX) > 15) || (Math.Abs(TargetCret.CY - CY) > 15))
+                    if ((HUtil32.GetTickCount() - TargetFocusTime > 30 * 1000) || TargetCret.Death || TargetCret.BoGhost || (Math.Abs(TargetCret.CX - CX) > 15) || (Math.Abs(TargetCret.CY - CY) > 15))
                     {
                         TargetCret = null;
                     }
@@ -13639,7 +13576,7 @@ namespace GameSvr
                         DuringIllegalTime = 60 * 1000;
                     }
                     // 荤恩捞搁 1盒埃 瘤加...
-                    if (GetTickCount - LastHitTime > DuringIllegalTime)
+                    if (HUtil32.GetTickCount() - LastHitTime > DuringIllegalTime)
                     {
                         LastHiter = null;
                     }
@@ -13652,7 +13589,7 @@ namespace GameSvr
                 if (ExpHiter != null)
                 {
                     // sonmg(2004/07/02)
-                    if ((GetTickCount - ExpHitTime > 6 * 1000) || ExpHiter.Death || ExpHiter.BoGoodCrazyMode || ExpHiter.BoGhost)
+                    if ((HUtil32.GetTickCount() - ExpHitTime > 6 * 1000) || ExpHiter.Death || ExpHiter.BoGoodCrazyMode || ExpHiter.BoGhost)
                     {
                         ExpHiter = null;
                     }
@@ -13671,7 +13608,7 @@ namespace GameSvr
                         }
                     }
                     test = 5;
-                    if ((Master.Death && (GetTickCount > 1000 + Master.DeathTime)) || (Master.BoGhost && (GetTickCount > waittime + Master.GhostTime)))
+                    if ((Master.Death && (HUtil32.GetTickCount() > 1000 + Master.DeathTime)) || (Master.BoGhost && (HUtil32.GetTickCount() > waittime + Master.GhostTime)))
                     {
                         WAbil.HP = 0;
                         // Die;
@@ -13700,7 +13637,7 @@ namespace GameSvr
                 test = 7;
                 if (BoHolySeize)
                 {
-                    if (GetTickCount - HolySeizeStart > HolySeizeTime)
+                    if (HUtil32.GetTickCount() - HolySeizeStart > HolySeizeTime)
                     {
                         BreakHolySeize();
                     }
@@ -13708,7 +13645,7 @@ namespace GameSvr
                 test = 8;
                 if (BoCrazyMode || BoGoodCrazyMode)
                 {
-                    if (GetTickCount - CrazyModeStart > CrazyModeTime)
+                    if (HUtil32.GetTickCount() - CrazyModeStart > CrazyModeTime)
                     {
                         BreakCrazyMode();
                     }
@@ -13716,7 +13653,7 @@ namespace GameSvr
                 test = 9;
                 if (BoOpenHealth)
                 {
-                    if (GetTickCount - OpenHealthStart > OpenHealthTime)
+                    if (HUtil32.GetTickCount() - OpenHealthStart > OpenHealthTime)
                     {
                         BreakOpenHealth();
                     }
@@ -13728,15 +13665,15 @@ namespace GameSvr
             }
             try
             {
-                if (GetTickCount - time10min > 2 * 1000 * 60)
+                if (HUtil32.GetTickCount() - time10min > 2 * 1000 * 60)
                 {
-                    time10min = GetTickCount;
+                    time10min  =  HUtil32.GetTickCount();
                     if (PlayerKillingPoint > 0)
                     {
                         DecPKPoint(1);
                     }
                 }
-                if (GetTickCount - time500ms > 1000)
+                if (HUtil32.GetTickCount() - time500ms > 1000)
                 {
                     time500ms = time500ms + 1000;
                     if (RaceServer == Grobal2.RC_USERHUMAN)
@@ -13744,20 +13681,20 @@ namespace GameSvr
                         UseLamp();
                     }
                 }
-                if (GetTickCount - time5sec > 5 * 1000)
+                if (HUtil32.GetTickCount() - time5sec > 5 * 1000)
                 {
-                    time5sec = GetTickCount;
+                    time5sec  =  HUtil32.GetTickCount();
                     if (RaceServer == Grobal2.RC_USERHUMAN)
                     {
                         CheckTimeOutPkHiterList();
                     }
                 }
-                if (GetTickCount - time10sec > 10 * 1000)
+                if (HUtil32.GetTickCount() - time10sec > 10 * 1000)
                 {
-                    time10sec = GetTickCount;
+                    time10sec  =  HUtil32.GetTickCount();
                     if (Master != null)
                     {
-                        if (GetTickCount > MasterRoyaltyTime)
+                        if (HUtil32.GetTickCount() > MasterRoyaltyTime)
                         {
                             for (i = Master.SlaveList.Count - 1; i >= 0; i--)
                             {
@@ -13773,7 +13710,7 @@ namespace GameSvr
                         }
                         if (SlaveLifeTime != 0)
                         {
-                            if (GetTickCount - SlaveLifeTime > 12 * 60 * 60 * 1000)
+                            if (HUtil32.GetTickCount() - SlaveLifeTime > 12 * 60 * 60 * 1000)
                             {
                                 WAbil.HP = 0;
                                 BoDisapear = true;
@@ -13783,9 +13720,9 @@ namespace GameSvr
                 }
                 if ((RaceServer == Grobal2.RC_USERHUMAN) && (Abil.Level > M2Share.g_nExpErienceLevel) && M2Share.boSecondCardSystem)
                 {
-                    if (GetTickCount - time60sec > 60 * 1000)
+                    if (HUtil32.GetTickCount() - time60sec > 60 * 1000)
                     {
-                        time60sec = GetTickCount;
+                        time60sec  =  HUtil32.GetTickCount();
                         hum = this as TUserHuman;
                         if ((hum.SecondsCard <= 0) && (PEnvir.MapName != M2Share.RECHARGINGMAP))
                         {
@@ -13810,9 +13747,9 @@ namespace GameSvr
                         }
                     }
                 }
-                if (GetTickCount - time30sec > 30 * 1000)
+                if (HUtil32.GetTickCount() - time30sec > 30 * 1000)
                 {
-                    time30sec = GetTickCount;
+                    time30sec  =  HUtil32.GetTickCount();
                     if (GroupOwner != null)
                     {
                         if (GroupOwner.BoGhost)
@@ -13856,7 +13793,7 @@ namespace GameSvr
                     {
                         if (StatusArr[i] < 60000)
                         {
-                            if (GetTickCount - StatusTimes[i] > 1000)
+                            if (HUtil32.GetTickCount() - StatusTimes[i] > 1000)
                             {
                                 StatusArr[i] = (ushort)(StatusArr[i] - 1);
                                 StatusTimes[i] = StatusTimes[i] + 1000;
@@ -13904,7 +13841,7 @@ namespace GameSvr
                 {
                     if (ExtraAbil[i] > 0)
                     {
-                        if (GetTickCount > ExtraAbilTimes[i])
+                        if (HUtil32.GetTickCount() > ExtraAbilTimes[i])
                         {
                             ExtraAbil[i] = 0;
                             ExtraAbilFlag[i] = 0;
@@ -13934,7 +13871,7 @@ namespace GameSvr
                                     break;
                             }
                         }
-                        else if ((ExtraAbilFlag[i] == 0) && (GetTickCount > ExtraAbilTimes[i] - 10000))
+                        else if ((ExtraAbilFlag[i] == 0) && (HUtil32.GetTickCount() > ExtraAbilTimes[i] - 10000))
                         {
                             ExtraAbilFlag[i] = 1;
                             switch (i)
@@ -13980,9 +13917,9 @@ namespace GameSvr
             try
             {
                 // 惑怕... 吝刀(眉仿捞 皑家)
-                if (GetTickCount - poisontime > 2500)
+                if (HUtil32.GetTickCount() - poisontime > 2500)
                 {
-                    poisontime = GetTickCount;
+                    poisontime  =  HUtil32.GetTickCount();
                     if (StatusArr[Grobal2.POISON_DECHEALTH] > 0)
                     {
                         if (BoAnimal)
@@ -14062,7 +13999,7 @@ namespace GameSvr
                     }
                 }
             }
-            if ((GetTickCount - MapMoveTime < 3000) || (GetTickCount - target.MapMoveTime < 3000))
+            if ((HUtil32.GetTickCount() - MapMoveTime < 3000) || (HUtil32.GetTickCount() - target.MapMoveTime < 3000))
             {
                 result = false;
             }
@@ -14511,7 +14448,7 @@ namespace GameSvr
         public void SelectTarget(TCreature target)
         {
             TargetCret = target;
-            TargetFocusTime = GetTickCount;
+            TargetFocusTime  =  HUtil32.GetTickCount();
         }
 
         public virtual void LoseTarget()

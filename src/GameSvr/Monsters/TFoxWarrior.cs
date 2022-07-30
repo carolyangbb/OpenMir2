@@ -20,7 +20,7 @@ namespace GameSvr
         }
         public override void Initialize()
         {
-            CrazyTime = GetTickCount;
+            CrazyTime  =  HUtil32.GetTickCount();
             oldhittime = this.NextHitTime;
             oldwalktime = this.NextWalkTime;
             this.ViewRange = 7;
@@ -95,7 +95,7 @@ namespace GameSvr
                 if (CrazyKingMode)
                 {
                     // 气林
-                    if (GetTickCount - CrazyTime < 60 * 1000)
+                    if (HUtil32.GetTickCount() - CrazyTime < 60 * 1000)
                     {
                         this.NextHitTime = oldhittime * 2 / 5;
                         this.NextWalkTime = oldwalktime * 1 / 2;
@@ -112,7 +112,7 @@ namespace GameSvr
                     if (this.WAbil.HP < this.WAbil.MaxHP / 4)
                     {
                         CrazyKingMode = true;
-                        CrazyTime = GetTickCount;
+                        CrazyTime  =  HUtil32.GetTickCount();
 #if DEBUG
                     // UserEngine.CryCry (RM_CRY, PEnvir, CX, CY, 10000, ' CrazyKingMode : ' + TargetCret.UserName);//test
 #endif
@@ -125,7 +125,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir;
+            byte targdir=0;
             result = false;
             if (this.TargetCret != null)
             {
@@ -134,7 +134,7 @@ namespace GameSvr
                     if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                     {
                         this.HitTime = GetCurrentTime;
-                        this.TargetFocusTime = GetTickCount;
+                        this.TargetFocusTime  =  HUtil32.GetTickCount();
                         if (new System.Random(100).Next() < 20)
                         {
                             CriticalMode = true;

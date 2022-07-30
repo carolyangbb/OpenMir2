@@ -19,7 +19,7 @@ namespace GameSvr
 
         public void FormCreate(System.Object Sender, System.EventArgs _e1)
         {
-            FillChar(ServerArr, sizeof(TServerMsgInfo) * InterServerMsg.MAXSERVER, '\0');
+            //FillChar(ServerArr, sizeof(TServerMsgInfo) * InterServerMsg.MAXSERVER, '\0');
             WorkHum = new TUserHuman();
         }
 
@@ -127,7 +127,7 @@ namespace GameSvr
             string snumstr;
             string head;
             string body= string.Empty;
-            int ident;
+            int ident=0;
             int snum;
             if (ps.SocData.IndexOf(")") <= 0)
             {
@@ -288,29 +288,29 @@ namespace GameSvr
             {
                 try
                 {
-                    fhandle = File.Open(svMain.ShareBaseDir + ufilename, (FileMode)FileAccess.Read | FileShare.ReadWrite);
-                    if (fhandle > 0)
-                    {
-                        psui = new TServerShiftUserInfo();
-                        FileRead(fhandle, psui, sizeof(TServerShiftUserInfo));
-                        FileRead(fhandle, filechecksum, sizeof(int));
-                        fhandle.Close();
-                    }
-                    File.Delete(svMain.ShareBaseDir + ufilename);
-                    checksum = 0;
-                    for (i = 0; i < sizeof(TServerShiftUserInfo); i++)
-                    {
-                        checksum = checksum + ((byte)psui + i);
-                    }
-                    if (checksum == filechecksum)
-                    {
-                        svMain.UserEngine.AddServerWaitUser(psui);
-                        svMain.UserEngine.SendInterServerMsg(Grobal2.ISM_CHANGESERVERRECIEVEOK.ToString() + "/" + EDcode.EncodeString(svMain.ServerIndex.ToString()) + "/" + EDcode.EncodeString(ufilename));
-                    }
-                    else
-                    {
-                        this.Dispose(psui);
-                    }
+                    //fhandle = File.Open(svMain.ShareBaseDir + ufilename, (FileMode)FileAccess.Read | FileShare.ReadWrite);
+                    //if (fhandle > 0)
+                    //{
+                    //    psui = new TServerShiftUserInfo();
+                    //    FileRead(fhandle, psui, sizeof(TServerShiftUserInfo));
+                    //    FileRead(fhandle, filechecksum, sizeof(int));
+                    //    fhandle.Close();
+                    //}
+                    //File.Delete(svMain.ShareBaseDir + ufilename);
+                    //checksum = 0;
+                    //for (i = 0; i < sizeof(TServerShiftUserInfo); i++)
+                    //{
+                    //    checksum = checksum + ((byte)psui + i);
+                    //}
+                    //if (checksum == filechecksum)
+                    //{
+                    //    svMain.UserEngine.AddServerWaitUser(psui);
+                    //    svMain.UserEngine.SendInterServerMsg(Grobal2.ISM_CHANGESERVERRECIEVEOK.ToString() + "/" + EDcode.EncodeString(svMain.ServerIndex.ToString()) + "/" + EDcode.EncodeString(ufilename));
+                    //}
+                    //else
+                    //{
+                    //    this.Dispose(psui);
+                    //}
                 }
                 catch
                 {
@@ -420,19 +420,15 @@ namespace GameSvr
 
         public void MsgGetAddGuild(int snum, string body)
         {
-            string gname;
-            string mname;
+            string gname = string.Empty;
             body = EDcode.DecodeString(body);
-            mname = HUtil32.GetValidStr3(body, ref gname, new string[] { "/" });
+            string mname = HUtil32.GetValidStr3(body, ref gname, new string[] { "/" });
             svMain.GuildMan.AddGuild(gname, mname);
         }
 
         public void MsgGetDelGuild(int snum, string body)
         {
-            string gname;
-            gname = EDcode.DecodeString(body);
-            //       ȯ       Ļ   .
-            // GuildAgitMan.DelGuildAgit( gname );
+            string gname = EDcode.DecodeString(body);
             svMain.GuildMan.DelGuild(gname);
         }
 
@@ -507,7 +503,7 @@ namespace GameSvr
                     warguild = svMain.GuildMan.GetGuild(warguildname);
                     if ((g != null) && (warguild != null))
                     {
-                        currenttick = GetTickCount;
+                        currenttick  =  HUtil32.GetTickCount();
                         if (svMain.ServerTickDifference == 0)
                         {
                             svMain.ServerTickDifference = Convert.ToInt64(starttime) - currenttick;
@@ -608,9 +604,9 @@ namespace GameSvr
             TUserHuman hum;
             int dx=0;
             int dy=0;
-            string dxstr;
-            string dystr;
-            string str;
+            string dxstr = string.Empty;
+            string dystr = string.Empty;
+            string str = string.Empty;
             string uname = string.Empty;
             if (snum == svMain.ServerIndex)
             {
@@ -721,11 +717,11 @@ namespace GameSvr
         public void MsgGetRecall(int snum, string body)
         {
             TUserHuman hum;
-            int dx=0;
-            int dy=0;
-            string dxstr;
-            string dystr;
-            string str;
+            int dx = 0;
+            int dy = 0;
+            string dxstr = string.Empty;
+            string dystr = string.Empty;
+            string str = string.Empty;
             string uname = string.Empty;
             if (snum == svMain.ServerIndex)
             {
@@ -783,7 +779,7 @@ namespace GameSvr
 
         public void MsgGetMarketOpen(bool WantOpen)
         {
-            SqlEngn.Units.SqlEngn.SqlEngine.Open(WantOpen);
+            SqlEngn.SqlEngn.SqlEngine.Open(WantOpen);
         }
 
         public void Run()
@@ -807,7 +803,7 @@ namespace GameSvr
         }
     }
 
-    public struct TServerShiftUserInfo
+    public class TServerShiftUserInfo
     {
         public string UserName;
         public FDBRecord rcd;

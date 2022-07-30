@@ -74,9 +74,9 @@ namespace GameSvr
             hum.CGHIUseTime = (ushort)_wvar1.CGHIUseTime;
             hum.BodyLuck = _wvar1.SolveDouble(_wvar1.BodyLuck);
             hum.BoEnableRecall = _wvar1.BoEnableGRecall;
-            Move(_wvar1.QuestOpenIndex, hum.QuestIndexOpenStates, Grobal2.MAXQUESTINDEXBYTE);
-            Move(_wvar1.QuestFinIndex, hum.QuestIndexFinStates, Grobal2.MAXQUESTINDEXBYTE);
-            Move(_wvar1.Quest, hum.QuestStates, Grobal2.MAXQUESTBYTE);
+            //Move(_wvar1.QuestOpenIndex, hum.QuestIndexOpenStates, Grobal2.MAXQUESTINDEXBYTE);
+            //Move(_wvar1.QuestFinIndex, hum.QuestIndexFinStates, Grobal2.MAXQUESTINDEXBYTE);
+            //Move(_wvar1.Quest, hum.QuestStates, Grobal2.MAXQUESTBYTE);
             hum.NotReadTag = _wvar1.HorseRace;
             hum.SecondsCard = _wvar1.SecondsCard;
             hum.HairColorR = _wvar1.HairColorR;
@@ -326,21 +326,21 @@ namespace GameSvr
             string data = string.Empty;
             string certify = string.Empty;
             string cc;
-            TDefaultMessage msg= new TDefaultMessage();
+            TDefaultMessage msg = new TDefaultMessage();
             string head;
-            string body= string.Empty;
+            string body = string.Empty;
             bool flag;
             int waitcnt;
             int EndPosition;
             flag = false;
             result = false;
-            start = GetTickCount;
+            start = HUtil32.GetTickCount();
             waitcnt = 0;
             str = "";
             while (true)
             {
                 waitcnt = 1;
-                if (GetTickCount - start > waittime)
+                if (HUtil32.GetTickCount() - start > waittime)
                 {
                     LatestDBError = LatestDBSendMsg;
                     break;
@@ -365,7 +365,7 @@ namespace GameSvr
                     waitcnt = 4;
                     if (data != "")
                     {
-                        data = GetValidStr3(data, certify, new string[] { "/" });
+                        data = HUtil32.GetValidStr3(data, ref certify, new string[] { "/" });
                         if (HUtil32.Str_ToInt(certify, 0) == 0)
                         {
                             continue;
@@ -421,9 +421,9 @@ namespace GameSvr
             {
                 svMain.MainOutMessage("[RunDB] DB Wait Error (" + waittime.ToString() + ")" + DateTime.Now.ToString() + ":" + waitcnt.ToString());
             }
-            if (GetTickCount - start > svMain.CurrentDBloadingTime)
+            if (HUtil32.GetTickCount() - start > svMain.CurrentDBloadingTime)
             {
-                svMain.CurrentDBloadingTime = GetTickCount - start;
+                svMain.CurrentDBloadingTime = HUtil32.GetTickCount() - start;
             }
             svMain.ReadyDBReceive = false;
             return result;
@@ -432,18 +432,18 @@ namespace GameSvr
         public static bool LoadHumanRcd(string uid, string uname, string useraddr, int certify, ref FDBRecord rcd)
         {
             bool result;
-            int ident;
-            int recog;
+            int ident=0;
+            int recog=0;
             int cer;
-            string body= string.Empty;
+            string body = string.Empty;
             string str;
             string runame;
-            TDefaultMessage Def;
+            TDefaultMessage Def = null;
             TLoadHuman lhuman;
             cer = svMain.GetCertifyNumber();
             MakeDefMsg(ref Def, Grobal2.DB_LOADHUMANRCD, 0, 0, 0, 0);
             lhuman.CertifyCode = certify;
-            str = EDcodeEncodeMessage(Def) + EDcode.EncodeBuffer(lhuman, sizeof(TLoadHuman));
+            str = EDcode.EncodeMessage(Def) + EDcode.EncodeBuffer(lhuman, sizeof(TLoadHuman));
             LatestDBSendMsg = Grobal2.DB_LOADHUMANRCD;
             SendRDBSocket(cer, str);
             if (RunDBWaitMsg(cer, ref ident, ref recog, ref body, 5000))
@@ -453,7 +453,7 @@ namespace GameSvr
                 {
                     if (recog == 1)
                     {
-                        body = GetValidStr3(body, str, new string[] { "/" });
+                        body = HUtil32.GetValidStr3(body, ref str, new string[] { "/" });
                         runame = EDcode.DecodeString(str);
                         if (runame == uname)
                         {
@@ -484,15 +484,15 @@ namespace GameSvr
 
         public static bool SaveHumanRcd(string uid, string uname, int certify, FDBRecord rcd)
         {
-            int ident;
-            int recog;
-            string body= string.Empty;
-            TDefaultMessage Def;
+            int ident=0;
+            int recog=0;
+            string body = string.Empty;
+            TDefaultMessage Def = null;
             int cer = svMain.GetCertifyNumber();
             bool result = false;
             LatestDBSendMsg = Grobal2.DB_SAVEHUMANRCD;
             MakeDefMsg(ref Def, Grobal2.DB_SAVEHUMANRCD, certify, 0, 0, 0);
-            SendRDBSocket(cer, EDcodeEncodeMessage(Def) + EDcode.EncodeString(uid) + "/" + EDcode.EncodeString(uname) + "/" + EDcode.EncodeBuffer(rcd, sizeof(FDBRecord)));
+            SendRDBSocket(cer, EDcode.EncodeMessage(Def) + EDcode.EncodeString(uid) + "/" + EDcode.EncodeString(uname) + "/" + EDcode.EncodeBuffer(rcd, sizeof(FDBRecord)));
             if (RunDBWaitMsg(cer, ref ident, ref recog, ref body, 4999))
             {
                 if (ident == Grobal2.DBR_SAVEHUMANRCD)
@@ -512,12 +512,12 @@ namespace GameSvr
             {
                 return;
             }
-            string body= string.Empty;
-            int ident;
-            int recog;
+            string body = string.Empty;
+            int ident=0;
+            int recog=0;
             int cer = svMain.GetCertifyNumber();
             string scert = certify.ToString();
-            TDefaultMessage Def;
+            TDefaultMessage Def = null;
             MakeDefMsg(ref Def, Grobal2.DB_RUNCLOSEUSER, 0, 0, 0, 0);
             LatestDBSendMsg = Grobal2.DB_RUNCLOSEUSER;
             SendRDBSocket(cer, EDcode.EncodeMessage(Def) + EDcode.EncodeString(uid + "/" + scert));
@@ -526,11 +526,11 @@ namespace GameSvr
 
         public static void SendChangeServer(string uid, string chrname, int certify)
         {
-            string body= string.Empty;
-            int ident;
-            int recog;
+            string body = string.Empty;
+            int ident=0;
+            int recog=0;
             int cer;
-            TDefaultMessage Def;
+            TDefaultMessage Def = null;
             cer = svMain.GetCertifyNumber();
             MakeDefMsg(ref Def, Grobal2.DB_CHANGESERVER, certify, 0, 0, 0);
             LatestDBSendMsg = Grobal2.DB_CHANGESERVER;

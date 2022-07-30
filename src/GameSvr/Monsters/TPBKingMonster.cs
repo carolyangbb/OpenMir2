@@ -209,7 +209,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir;
+            byte targdir=0;
             result = false;
             if (this.TargetCret != null)
             {
@@ -220,7 +220,7 @@ namespace GameSvr
                     {
                         if (this.TargetInSpitRange(this.TargetCret, ref targdir) && (new System.Random(3).Next() != 0))
                         {
-                            this.TargetFocusTime = GetTickCount;
+                            this.TargetFocusTime  =  HUtil32.GetTickCount();
                             Attack(this.TargetCret, targdir);
                             try
                             {
@@ -244,7 +244,7 @@ namespace GameSvr
                             if (this.ChainShot < this.ChainShotCount - 1)
                             {
                                 this.ChainShot++;
-                                this.TargetFocusTime = GetTickCount;
+                                this.TargetFocusTime  =  HUtil32.GetTickCount();
                                 RangeAttack(this.TargetCret);
                             }
                             else
@@ -262,7 +262,7 @@ namespace GameSvr
                                         if (this.TargetCret != null)
                                         {
                                             this.SetTargetXY(this.TargetCret.CX, this.TargetCret.CY);
-                                            this.TargetFocusTime = GetTickCount;
+                                            this.TargetFocusTime  =  HUtil32.GetTickCount();
                                         }
                                     }
                                 }

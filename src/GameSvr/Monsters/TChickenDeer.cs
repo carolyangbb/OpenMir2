@@ -58,18 +58,15 @@ namespace GameSvr
                 {
                     if (GetCurrentTime - this.WalkTime > this.GetNextWalkTime())
                     {
-                        // 惑加罐篮 run俊辑 WalkTime 犁汲沥窃
                         if ((Math.Abs(this.CX - this.TargetCret.CX) <= 6) && (Math.Abs(this.CY - this.TargetCret.CY) <= 6))
                         {
-                            // 档噶皑.
                             ndir = M2Share.GetNextDirection(this.TargetCret.CX, this.TargetCret.CY, this.CX, this.CY);
-                            M2Share.GetNextPosition(this.PEnvir, this.TargetCret.CX, this.TargetCret.CY, ndir, 5, ref (int)this.TargetX, ref (int)this.TargetY);
+                            M2Share.GetNextPosition(this.PEnvir, this.TargetCret.CX, this.TargetCret.CY, ndir, 5, ref this.TargetX, ref this.TargetY);
                         }
                     }
                 }
             }
             base.Run();
         }
-
-    } // end TChickenDeer
+    }
 }

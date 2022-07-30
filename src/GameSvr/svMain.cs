@@ -306,9 +306,9 @@ namespace GameSvr
             //svMain.UserEngine.Free();
             //svMain.UserMgrEngine.Interrupts;
             //svMain.UserMgrEngine.Free();
-            //SqlEngn.Units.SqlEngn.SqlEngine.Interrupts;
-            //DBSQL.Units.DBSQL.g_DBSQL.Free();
-            //SqlEngn.Units.SqlEngn.SqlEngine.Free();
+            //SqlEngn.SqlEngn.SqlEngine.Interrupts;
+            //DBSQL.DBSQL.g_DBSQL.Free();
+            //SqlEngn.SqlEngn.SqlEngine.Free();
             //svMain.RunSocket.Free();
             //svMain.MainMsg.Free();
             //svMain.UserLogs.Free();
@@ -779,7 +779,7 @@ namespace GameSvr
 //                checkstr = checkstr + " DEBUG";
 //#endif
 //                down = 3;
-//                runsec = (GetTickCount - svMain.serverruntime) / 1000;
+//                runsec = (HUtil32.GetTickCount() - svMain.serverruntime) / 1000;
 //                ahour = runsec / 3600;
 //                amin = (runsec % 3600) / 60;
 //                asec = runsec % 60;
@@ -1038,7 +1038,7 @@ namespace GameSvr
                 }
             }
             svMain.rcount++;
-            if (GetTickCount - svMain.runstart > 250)
+            if (HUtil32.GetTickCount() - svMain.runstart > 250)
             {
                 svMain.runstart = HUtil32.GetTickCount;
                 svMain.curruncount = svMain.rcount;
@@ -1132,7 +1132,7 @@ namespace GameSvr
             //FileStream ini;
             //string fname;
             //string bostr;
-            //if (FSrvValue.Units.FSrvValue.FrmServerValue.Execute())
+            //if (FSrvValue.FSrvValue.FrmServerValue.Execute())
             //{
             //    fname = ".\\!setup.txt";
             //    ini = new FileStream(fname);
@@ -1205,9 +1205,9 @@ namespace GameSvr
 
         public void SpeedButton2Click(System.Object Sender, System.EventArgs _e1)
         {
-            //FGameSet.Units.FGameSet.FrmGameConfig.Top = this.Top + 20;
-            //FGameSet.Units.FGameSet.FrmGameConfig.Left = this.Left;
-            //if (FGameSet.Units.FGameSet.FrmGameConfig.Execute())
+            //FGameSet.FGameSet.FrmGameConfig.Top = this.Top + 20;
+            //FGameSet.FGameSet.FrmGameConfig.Left = this.Left;
+            //if (FGameSet.FGameSet.FrmGameConfig.Execute())
             //{
             //    M2Share.SaveConfig();
             //}
@@ -1569,7 +1569,7 @@ namespace GameSvr
             //            {
             //                continue;
             //            }
-            //            str = GetValidStr3(str, snum, new string[] { " ", "\09" });
+            //            str  =  HUtil32.GetValidStr3(str, snum, new string[] { " ", "\09" });
             //            if (str != "")
             //            {
             //                slist = new ArrayList();
@@ -1579,8 +1579,8 @@ namespace GameSvr
             //                    {
             //                        break;
             //                    }
-            //                    str = GetValidStr3(str, saddr, new string[] { " ", "\09" });
-            //                    str = GetValidStr3(str, sport, new string[] { " ", "\09" });
+            //                    str  =  HUtil32.GetValidStr3(str, saddr, new string[] { " ", "\09" });
+            //                    str  =  HUtil32.GetValidStr3(str, sport, new string[] { " ", "\09" });
             //                    if ((saddr != "") && (sport != ""))
             //                    {
             //                        slist.Add(saddr, ((HUtil32.Str_ToInt(sport, 0)) as Object));

@@ -87,7 +87,7 @@ namespace GameSvr
             int i;
             try
             {
-                for (i = 0; i < Units.DragonSystem.DRAGON_MAX_LEVEL; i++)
+                for (i = 0; i < DragonSystem.DRAGON_MAX_LEVEL; i++)
                 {
                     FLevelInfo[i].Level = i + 1;
                     FLevelInfo[i].DropExp = (i + 1) * 10000;
@@ -106,9 +106,9 @@ namespace GameSvr
             FLevel = 1;
             FExp = 0;
             FExpDivider = 1;
-            FLastChangeExpTime = GetTickCount;
-            FLastAttackTme = GetTickCount;
-            FInitFileName = Units.DragonSystem.DRAGONITEMFILE;
+            FLastChangeExpTime = HUtil32.GetTickCount();
+            FLastAttackTme = HUtil32.GetTickCount();
+            FInitFileName = DragonSystem.DRAGONITEMFILE;
         }
 
         private void RemoveAll()
@@ -117,7 +117,7 @@ namespace GameSvr
             int j;
             try
             {
-                for (i = 0; i < Units.DragonSystem.DRAGON_MAX_LEVEL; i++)
+                for (i = 0; i < DragonSystem.DRAGON_MAX_LEVEL; i++)
                 {
                     if (FLevelInfo[i].DropItemList != null)
                     {
@@ -182,13 +182,13 @@ namespace GameSvr
                         infostr = str[1];
                         if (infostr == "!")
                         {
-                            str2 = GetValidStr3(str, str1, new string[] { " ", "\09" });
+                            str2 = HUtil32.GetValidStr3(str, ref str1, new string[] { " ", "\09" });
                             if (str1.ToLower().CompareTo("!LEVEL".ToLower()) == 0)
                             {
                                 CurrentLevel = HUtil32.Str_ToInt(str2.Trim(), 1);
-                                if ((CurrentLevel <= 0) && (CurrentLevel > Units.DragonSystem.DRAGON_MAX_LEVEL))
+                                if ((CurrentLevel <= 0) && (CurrentLevel > DragonSystem.DRAGON_MAX_LEVEL))
                                 {
-                                    result = "[" + (i + 1).ToString() + "] " + "ERROR! LevelInfo Worng 1~" + Units.DragonSystem.DRAGON_MAX_LEVEL.ToString() + ":" + str2;
+                                    result = "[" + (i + 1).ToString() + "] " + "ERROR! LevelInfo Worng 1~" + DragonSystem.DRAGON_MAX_LEVEL.ToString() + ":" + str2;
                                     return result;
                                 }
                                 levelCount++;
@@ -213,13 +213,13 @@ namespace GameSvr
                             }
                             else if (str1.ToLower().CompareTo("!DROPAREA".ToLower()) == 0)
                             {
-                                str2 = GetValidStr3(str2, str3, new string[] { " ", "\09" });
+                                str2 = HUtil32.GetValidStr3(str2, ref str3, new string[] { " ", "\09" });
                                 FDropItemRect.Left = HUtil32.Str_ToInt(str3, -1);
-                                str2 = GetValidStr3(str2, str3, new string[] { " ", "\09" });
+                                str2 = HUtil32.GetValidStr3(str2, ref str3, new string[] { " ", "\09" });
                                 FDropItemRect.Top = HUtil32.Str_ToInt(str3, -1);
-                                str2 = GetValidStr3(str2, str3, new string[] { " ", "\09" });
+                                str2 = HUtil32.GetValidStr3(str2, ref str3, new string[] { " ", "\09" });
                                 FDropItemRect.Right = HUtil32.Str_ToInt(str3, -1);
-                                str2 = GetValidStr3(str2, str3, new string[] { " ", "\09" });
+                                str2 = HUtil32.GetValidStr3(str2, ref str3, new string[] { " ", "\09" });
                                 FDropItemRect.Bottom = HUtil32.Str_ToInt(str3, -1);
                             }
                             else
@@ -231,15 +231,15 @@ namespace GameSvr
                         else
                         {
                             pDropItemInfo = new TDropItemInfo();
-                            str2 = GetValidStr3(str, str1, new string[] { " ", "\09" });
+                            str2 = HUtil32.GetValidStr3(str,ref str1, new string[] { " ", "\09" });
                             pDropItemInfo.Name = str1.Trim();
-                            str2 = GetValidStr3(str2, str1, new string[] { " ", "\09" });
+                            str2 = HUtil32.GetValidStr3(str2, ref str1, new string[] { " ", "\09" });
                             pDropItemInfo.FirstRate = HUtil32.Str_ToInt(str1, 0);
-                            str2 = GetValidStr3(str2, str1, new string[] { " ", "\09" });
+                            str2 = HUtil32.GetValidStr3(str2, ref str1, new string[] { " ", "\09" });
                             pDropItemInfo.SecondRate = HUtil32.Str_ToInt(str1, 1);
-                            str2 = GetValidStr3(str2, str1, new string[] { " ", "\09" });
+                            str2 = HUtil32.GetValidStr3(str2, ref str1, new string[] { " ", "\09" });
                             pDropItemInfo.Amount = HUtil32.Str_ToInt(str1, 1);
-                            str2 = GetValidStr3(str2, str1, new string[] { " ", "\09" });
+                            str2 = HUtil32.GetValidStr3(str2, ref str1, new string[] { " ", "\09" });
                             pDropItemInfo.DropCount = HUtil32.Str_ToInt(str1, 1);
                             if (pDropItemInfo.FirstRate > pDropItemInfo.SecondRate)
                             {
@@ -303,7 +303,7 @@ namespace GameSvr
         private int GetNextLevelExp()
         {
             int result;
-            if ((FLevel > 0) && (FLevel <= Units.DragonSystem.DRAGON_MAX_LEVEL))
+            if ((FLevel > 0) && (FLevel <= DragonSystem.DRAGON_MAX_LEVEL))
             {
                 result = FLevelInfo[FLevel - 1].DropExp / FExpDivider;
             }
@@ -444,8 +444,8 @@ namespace GameSvr
 
         public void ChangeExp(int exp)
         {
-            FLastChangeExpTime = GetTickCount;
-            if (FLevel < Units.DragonSystem.DRAGON_MAX_LEVEL)
+            FLastChangeExpTime = HUtil32.GetTickCount();
+            if (FLevel < DragonSystem.DRAGON_MAX_LEVEL)
             {
                 if (exp > 0)
                 {
@@ -493,14 +493,14 @@ namespace GameSvr
         {
             try
             {
-                if (GetTickCount - FLastChangeExpTime > Units.DragonSystem.DRAGON_RESETTIME)
+                if (HUtil32.GetTickCount() - FLastChangeExpTime > DragonSystem.DRAGON_RESETTIME)
                 {
-                    FLastChangeExpTime = GetTickCount;
+                    FLastChangeExpTime = HUtil32.GetTickCount();
                     ResetLevel();
                 }
-                if (GetTickCount - FLastAttackTme > Units.DragonSystem.MAP_ATTACK_TIME)
+                if (HUtil32.GetTickCount() - FLastAttackTme > DragonSystem.MAP_ATTACK_TIME)
                 {
-                    FLastAttackTme = GetTickCount;
+                    FLastAttackTme = HUtil32.GetTickCount();
                     OnMapAutoAttack();
                 }
             }
@@ -510,8 +510,14 @@ namespace GameSvr
             }
         }
 
-    } // end TDragonSystem
-
+        public void dispose(object obj)
+        {
+            if (obj != null)
+            {
+                obj = null;
+            }
+        }
+    }
 }
 
 namespace GameSvr

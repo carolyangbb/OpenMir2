@@ -1,4 +1,5 @@
 using System.Collections;
+using SystemModule;
 
 namespace GameSvr
 {
@@ -50,9 +51,9 @@ namespace GameSvr
                         break;
                     }
                     __event = EventList[i] as TEvent;
-                    if (__event.Active && (GetTickCount - __event.runstart > __event.runtick))
+                    if (__event.Active && (HUtil32.GetTickCount() - __event.runstart > __event.runtick))
                     {
-                        __event.runstart = GetTickCount;
+                        __event.runstart  =  HUtil32.GetTickCount();
                         __event.Run();
                         if (__event.Closed)
                         {
@@ -78,7 +79,7 @@ namespace GameSvr
             {
                 for (i = 0; i < ClosedList.Count; i++)
                 {
-                    if (GetTickCount - (ClosedList[i] as TEvent).CloseTime > 5 * 60 * 1000)
+                    if (HUtil32.GetTickCount() - (ClosedList[i] as TEvent).CloseTime > 5 * 60 * 1000)
                     {
                         try
                         {

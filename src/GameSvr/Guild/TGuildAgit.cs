@@ -375,17 +375,11 @@ namespace GameSvr
             bool result;
             DateTime SaleDateTime;
             result = false;
-            // 芭贰啊 己荤等 厘盔吝俊辑
             if (IsSoldOut())
             {
-                // 泅犁 矫埃捞 魄概矫埃 + ForSaleWait 焊促 瘤车栏搁 Expired
                 SaleDateTime = ConvertStringToDatetime(ForSaleTime);
-                // {$IFNDEF UNDEF_DEBUG}   //sonmg
-                // if Now > SaleDateTime + ForSaleWait then begin
-                // {$ELSE}
                 if (DateTime.Now > SaleDateTime + (ForSaleWait / 24 / 60))
                 {
-                    // {$ENDIF}
                     result = true;
                 }
             }
@@ -411,32 +405,20 @@ namespace GameSvr
             {
                 return result;
             }
-            // 捞傈 厘盔狼 巢篮 措咯扁埃
             RemainDateTime = GetGuildAgitRemainDateTime();
-            // 厘盔 巩颇甫 货 巩颇肺 背眉
             GuildName = ForSaleGuildName;
-            // 厘盔 巩林甫 货 巩林肺 背眉
             GuildMasterName = ForSaleGuildMasterName;
             GuildMasterNameSecond = "";
-            // 殿废老 荐沥(泅犁矫阿)
             RegistrationTime = ConvertDateTimeToString(DateTime.Now);
-            // 措咯扁埃 檬扁拳
-            // ContractPeriod := GUILDAGIT_DAYUNIT;
-            // 措咯扁埃 : 7老 捞惑 巢疽栏搁 7老肺 檬扁拳, 7老 捞窍捞搁 弊措肺 蜡瘤(?)
             if (RemainDateTime <= 0)
             {
                 ContractPeriod = 0;
-                // end else if RemainDateTime >= GUILDAGIT_DAYUNIT then begin
-                // ContractPeriod := GUILDAGIT_DAYUNIT;
             }
             else
             {
-                // 巢篮 扁埃 馆棵覆
                 ContractPeriod = HUtil32.MathRound(RemainDateTime.ToOADate());
             }
-            // 厘盔 扁何陛(檬扁拳? or 弊措肺 牢拌?)
             GuildAgitTotalGold = GuildAgitTotalGold;
-            // 0;
             result = true;
             return result;
         }
@@ -445,7 +427,6 @@ namespace GameSvr
         {
             string result = String.Empty;
             TGuild aguild;
-            // 巩林甫 泅犁 巩林肺 弥脚拳矫挪促.
             if (GuildName != "")
             {
                 aguild = svMain.GuildMan.GetGuild(GuildName);

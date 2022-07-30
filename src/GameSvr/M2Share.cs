@@ -241,7 +241,7 @@ namespace GameSvr
             return result;
         }
 
-        public static bool GetFrontPosition(TCreature cret, ref int newx, ref int newy)
+        public static bool GetFrontPosition(TCreature cret, ref short newx, ref short newy)
         {
             bool result;
             TEnvirnoment penv;
@@ -253,53 +253,53 @@ namespace GameSvr
                 case Grobal2.DR_UP:
                     if (newy > 0)
                     {
-                        newy = newy - 1;
+                        newy = (short)(newy - 1);
                     }
                     break;
                 case Grobal2.DR_DOWN:
                     if (newy < penv.MapHeight - 1)
                     {
-                        newy = newy + 1;
+                        newy = (short)(newy + 1);
                     }
                     break;
                 case Grobal2.DR_LEFT:
                     if (newx > 0)
                     {
-                        newx = newx - 1;
+                        newx = (short)(newx - 1);
                     }
                     break;
                 case Grobal2.DR_RIGHT:
                     if (newx < penv.MapWidth - 1)
                     {
-                        newx = newx + 1;
+                        newx = (short)(newx + 1);
                     }
                     break;
                 case Grobal2.DR_UPLEFT:
                     if ((newx > 0) && (newy > 0))
                     {
-                        newx = newx - 1;
-                        newy = newy - 1;
+                        newx = (short)(newx - 1);
+                        newy = (short)(newy - 1);
                     }
                     break;
                 case Grobal2.DR_UPRIGHT:
                     if ((newx > 0) && (newy < penv.MapHeight - 1))
                     {
-                        newx = newx + 1;
-                        newy = newy - 1;
+                        newx = (short)(newx + 1);
+                        newy = (short)(newy - 1);
                     }
                     break;
                 case Grobal2.DR_DOWNLEFT:
                     if ((newx < penv.MapWidth - 1) && (newy > 0))
                     {
-                        newx = newx - 1;
-                        newy = newy + 1;
+                        newx = (short)(newx - 1);
+                        newy = (short)(newy + 1);
                     }
                     break;
                 case Grobal2.DR_DOWNRIGHT:
                     if ((newx < penv.MapWidth - 1) && (newy < penv.MapHeight - 1))
                     {
-                        newx = newx + 1;
-                        newy = newy + 1;
+                        newx = (short)(newx + 1);
+                        newy = (short)(newy + 1);
                     }
                     break;
             }
@@ -373,8 +373,7 @@ namespace GameSvr
             return result;
         }
 
-        // dis: 얼마나 멀리 뒤로..
-        public static bool GetNextPosition(TEnvirnoment penv, int sx, int sy, int dir, int dis, ref int newx, ref int newy)
+        public static bool GetNextPosition(TEnvirnoment penv, short sx, short sy, byte dir, int dis, ref short newx, ref short newy)
         {
             bool result;
             newx = sx;
@@ -384,53 +383,53 @@ namespace GameSvr
                 case Grobal2.DR_UP:
                     if (newy > (dis - 1))
                     {
-                        newy = newy - dis;
+                        newy = (short)(newy - dis);
                     }
                     break;
                 case Grobal2.DR_DOWN:
                     if (newy < penv.MapHeight - dis)
                     {
-                        newy = newy + dis;
+                        newy = (short)(newy + dis);
                     }
                     break;
                 case Grobal2.DR_LEFT:
                     if (newx > (dis - 1))
                     {
-                        newx = newx - dis;
+                        newx = (short)(newx - dis);
                     }
                     break;
                 case Grobal2.DR_RIGHT:
                     if (newx < penv.MapWidth - dis)
                     {
-                        newx = newx + dis;
+                        newx = (short)(newx + dis);
                     }
                     break;
                 case Grobal2.DR_UPLEFT:
                     if ((newx > dis - 1) && (newy > dis - 1))
                     {
-                        newx = newx - dis;
-                        newy = newy - dis;
+                        newx = (short)(newx - dis);
+                        newy = (short)(newy - dis);
                     }
                     break;
                 case Grobal2.DR_UPRIGHT:
                     if ((newx > dis - 1) && (newy < penv.MapHeight - dis))
                     {
-                        newx = newx + dis;
-                        newy = newy - dis;
+                        newx = (short)(newx + dis);
+                        newy = (short)(newy - dis);
                     }
                     break;
                 case Grobal2.DR_DOWNLEFT:
                     if ((newx < penv.MapWidth - dis) && (newy > dis - 1))
                     {
-                        newx = newx - dis;
-                        newy = newy + dis;
+                        newx = (short)(newx - dis);
+                        newy = (short)(newy + dis);
                     }
                     break;
                 case Grobal2.DR_DOWNRIGHT:
                     if ((newx < penv.MapWidth - dis) && (newy < penv.MapHeight - dis))
                     {
-                        newx = newx + dis;
-                        newy = newy + dis;
+                        newx = (short)(newx + dis);
+                        newy = (short)(newy + dis);
                     }
                     break;
             }

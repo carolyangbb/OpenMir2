@@ -134,7 +134,7 @@ namespace GameSvr
         public override void Die()
         {
             base.Die();
-            BrokenTime = GetTickCount;
+            BrokenTime  =  HUtil32.GetTickCount();
             ActiveDoorWall(TDoorState.dsBroken);
             // 捞悼啊瓷窍霸
 
@@ -145,7 +145,7 @@ namespace GameSvr
             int newdir;
             if (this.Death && (this.Castle != null))
             {
-                this.DeathTime = GetTickCount;
+                this.DeathTime  =  HUtil32.GetTickCount();
                 // 绝绢瘤瘤 臼绰促.
             }
             else

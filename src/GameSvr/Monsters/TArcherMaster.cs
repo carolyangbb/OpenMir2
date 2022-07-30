@@ -52,9 +52,9 @@ namespace GameSvr
             TCreature nearcret = null;
             if (!this.RunDone && this.IsMoveAble())
             {
-                if (GetTickCount - this.SearchEnemyTime > 5000)
+                if (HUtil32.GetTickCount() - this.SearchEnemyTime > 5000)
                 {
-                    this.SearchEnemyTime = GetTickCount;
+                    this.SearchEnemyTime  =  HUtil32.GetTickCount();
                     for (var i = 0; i < this.VisibleActors.Count; i++)
                     {
                         TCreature cret = (TCreature)this.VisibleActors[i].cret;

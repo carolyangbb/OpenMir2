@@ -749,7 +749,7 @@ namespace GameSvr
         {
             int result = Grobal2.UMResult_Fail;
             FADOQuery.SQL.Clear();
-            FADOQuery.SQL.Add("INSERT INTO TBL_GABOARD Values(" + pArticleLoad.AgitNum.ToString() + ",\'" + pArticleLoad.GuildName + "\'," + pArticleLoad.OrgNum.ToString() + "," + pArticleLoad.SrcNum1.ToString() + "," + pArticleLoad.SrcNum2.ToString() + "," + pArticleLoad.SrcNum3.ToString() + "," + pArticleLoad.Kind.ToString() + ",\'" + pArticleLoad.UserName + "\',\'" + (pArticleLoad.Content as string) + "\'" + ")");
+            FADOQuery.SQL.Add("INSERT INTO TBL_GABOARD Values(" + pArticleLoad.AgitNum.ToString() + ",\'" + pArticleLoad.GuildName + "\'," + pArticleLoad.OrgNum.ToString() + "," + pArticleLoad.SrcNum1.ToString() + "," + pArticleLoad.SrcNum2.ToString() + "," + pArticleLoad.SrcNum3.ToString() + "," + pArticleLoad.Kind.ToString() + ",\'" + pArticleLoad.UserName + "\',\'" + pArticleLoad.Content + "\'" + ")");
             try
             {
                 FADOQuery.ExecSQL;
@@ -807,7 +807,7 @@ namespace GameSvr
         {
             int result = Grobal2.UMResult_Fail;
             FADOQuery.SQL.Clear();
-            FADOQuery.SQL.Add("UPDATE TBL_GABOARD SET FLD_CONTENT = \'" + (pArticleLoad.Content as string) + "\' WHERE " + "FLD_GUILDNAME = \'" + pArticleLoad.GuildName + "\' AND " + "FLD_ORGNUM = " + pArticleLoad.OrgNum.ToString() + " AND " + "FLD_SRCNUM1 = " + pArticleLoad.SrcNum1.ToString() + " AND " + "FLD_SRCNUM2 = " + pArticleLoad.SrcNum2.ToString() + " AND " + "FLD_SRCNUM3 = " + pArticleLoad.SrcNum3.ToString());
+            FADOQuery.SQL.Add("UPDATE TBL_GABOARD SET FLD_CONTENT = \'" + pArticleLoad.Content + "\' WHERE " + "FLD_GUILDNAME = \'" + pArticleLoad.GuildName + "\' AND " + "FLD_ORGNUM = " + pArticleLoad.OrgNum.ToString() + " AND " + "FLD_SRCNUM1 = " + pArticleLoad.SrcNum1.ToString() + " AND " + "FLD_SRCNUM2 = " + pArticleLoad.SrcNum2.ToString() + " AND " + "FLD_SRCNUM3 = " + pArticleLoad.SrcNum3.ToString());
             try
             {
                 FADOQuery.ExecSQL;

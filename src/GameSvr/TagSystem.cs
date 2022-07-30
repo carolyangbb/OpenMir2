@@ -154,7 +154,7 @@ namespace GameSvr
         public bool IsTagAddAble()
         {
             var result = false;
-            if (GetTagCount() < Units.TagSystem.MAX_TAG_COUNT)
+            if (GetTagCount() < TagSystem.MAX_TAG_COUNT)
             {
                 result = true;
             }
@@ -344,7 +344,7 @@ namespace GameSvr
             // 捞抚捞 乐绊
             // 捞固 甸绢乐瘤 臼绊
             // 弥措 俺荐甫 逞瘤臼酒具窃
-            if ((Name != "") && (false == FindRejecter(Name, Str)) && (GetRejecterCount() < Units.TagSystem.MAX_REJECTER_COUNT))
+            if ((Name != "") && (false == FindRejecter(Name, Str)) && (GetRejecterCount() < TagSystem.MAX_REJECTER_COUNT))
             {
                 result = true;
             }
@@ -543,8 +543,8 @@ namespace GameSvr
             }
             else
             {
-                startnum = (PageNum - 1) * Units.TagSystem.MAX_TAG_PAGE_COUNT;
-                endnum = startnum + Units.TagSystem.MAX_TAG_PAGE_COUNT;
+                startnum = (PageNum - 1) * TagSystem.MAX_TAG_PAGE_COUNT;
+                endnum = startnum + TagSystem.MAX_TAG_PAGE_COUNT;
             }
             TempStr = "";
             // 傈价 矫累锅龋啊 府胶飘 农扁 救栏肺 甸绢坷绊
@@ -593,30 +593,16 @@ namespace GameSvr
             OnCmdSMRejectList(UserInfo, Cnt, TempStr);
         }
 
-        // 努扼捞攫飘俊辑 坷绰 疙飞绢甸 ........................................
-        // //////////////////////////////////////////////////////////////////////////////
-        // 努扼捞攫飘俊辑 坷绰 疙飞绢甸
-        // //////////////////////////////////////////////////////////////////////////////
-        // ------------------------------------------------------------------------------
-        // CM_TAG_ADD : 率瘤 眠啊
-        // 荐脚磊 / 率瘤郴侩
-        // ------------------------------------------------------------------------------
         public void OnCmdCMAdd(TCmdMsg Cmd)
         {
-            string reciever;
-            string tagmsg;
-            string senddate;
             TUserInfo recieverinfo;
-            // 疙妨绢 盒籍
-            tagmsg = GetValidStr3(Cmd.body, reciever, new string[] { "/" });
-            senddate = GenerateSendDate();
-            // 立加秦 乐栏搁 立加磊俊霸 舅妨霖促.
+            string reciever;
+            string tagmsg = HUtil32.GetValidStr3(Cmd.body, ref reciever, new string[] { "/" });
+            string senddate = GenerateSendDate();
             if (svMain.UserMgrEngine.InterGetUserInfo(reciever, ref recieverinfo))
             {
-                // 郴寇何 辑滚肺 傈价
                 OnCmdOSMSend(reciever, recieverinfo.ConnState - Grobal2.CONNSTATE_CONNECT_0, Cmd.UserName, senddate, 0, tagmsg);
             }
-            // DB 俊 历厘窍磊
             OnCmdDBAdd(Cmd.pInfo, reciever, senddate, 0, tagmsg);
         }
 
@@ -628,39 +614,17 @@ namespace GameSvr
             string senddate;
             TUserInfo receiverinfo;
             TUserInfo receiverinfo2;
-            // 疙飞绢 盒籍
-            tagmsg = GetValidStr3(Cmd.body, receiver, new string[] { "/" });
-            tagmsg = GetValidStr3(tagmsg, receiver2, new string[] { "/" });
-            // 焊郴绰 矫埃 扁废.
+            tagmsg  =  HUtil32.GetValidStr3(Cmd.body, ref receiver, new string[] { "/" });
+            tagmsg  =  HUtil32.GetValidStr3(tagmsg, ref receiver2, new string[] { "/" });
             senddate = GenerateSendDate();
-            // ///////////////////////////////
-            // 霉锅掳 荐脚磊俊霸 傈价.
-            // 焊郴绰 荤恩苞 罐绰 荤恩捞 鞍栏搁 焊郴瘤 臼澜.(sonmg : 2004/05/03)
             if (receiver != Cmd.UserName)
             {
-                // 立加秦 乐栏搁 立加磊俊霸 舅妨霖促.
                 if (svMain.UserMgrEngine.InterGetUserInfo(receiver, ref receiverinfo))
                 {
-                    // 郴寇何 辑滚肺 傈价
                     OnCmdOSMSend(receiver, receiverinfo.ConnState - Grobal2.CONNSTATE_CONNECT_0, Cmd.UserName, senddate, 0, tagmsg);
                 }
-                // 率瘤 傈价 皋矫瘤 免仿
-                // 捞芭 捞犯纳 静搁 动户牢单.. 唱吝俊 绊摹磊 静饭靛 窃何肺 静绊 乐澜
-                // TagLock.Enter();
-                // try
-                // 
-                // hum := UserEngine.GetUserHuman( Cmd.UserName );
-                // if hum <> nil then begin
-                // hum.SysMsg(receiver + '丛俊霸 率瘤甫 傈价沁嚼聪促.', 0);
-                // end;
-                // 
-                // finally
-                // TagLock.Leave();
-                // end;
-                // DB 俊 历厘窍磊
                 OnCmdDBAdd(Cmd.pInfo, receiver, senddate, 0, tagmsg);
             }
-            // ///////////////////////////////
             // 滴锅掳 荐脚磊俊霸 傈价.
             if (receiver2 != Cmd.UserName)
             {
@@ -668,35 +632,14 @@ namespace GameSvr
                 {
                     return;
                 }
-                // 立加秦 乐栏搁 立加磊俊霸 舅妨霖促.
                 if (svMain.UserMgrEngine.InterGetUserInfo(receiver2, ref receiverinfo2))
                 {
-                    // 郴寇何 辑滚肺 傈价
                     OnCmdOSMSend(receiver2, receiverinfo2.ConnState - Grobal2.CONNSTATE_CONNECT_0, Cmd.UserName, senddate, 0, tagmsg);
                 }
-                // 率瘤 傈价 皋矫瘤 免仿
-                // 捞芭 捞犯纳 静搁 动户牢单.. 唱吝俊 绊摹磊 静饭靛 窃何肺 静绊 乐澜
-                // TagLock.Enter();
-                // try
-                // 
-                // hum := UserEngine.GetUserHuman( Cmd.UserName );
-                // if hum <> nil then begin
-                // hum.SysMsg(receiver2 + '丛俊霸 率瘤甫 傈价沁嚼聪促.', 0);
-                // end;
-                // 
-                // finally
-                // TagLock.Leave();
-                // end;
-                // DB 俊 历厘窍磊
                 OnCmdDBAdd(Cmd.pInfo, receiver2, senddate, 0, tagmsg);
             }
         }
 
-        // sonmg
-        // ------------------------------------------------------------------------------
-        // CM_TAG_DELETE    : 率瘤 昏力
-        // Param    : 率瘤朝楼
-        // ------------------------------------------------------------------------------
         public void OnCmdCMDelete(TCmdMsg Cmd)
         {
             string senddate;
@@ -876,7 +819,7 @@ namespace GameSvr
         {
             string str;
             str = TagList;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_LIST, PageNum, ListCount, 0, str);
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_LIST, (ushort)PageNum, (ushort)ListCount, 0, str);
         }
 
         // 率瘤 惑怕 傈价
@@ -888,7 +831,7 @@ namespace GameSvr
         {
             string str;
             str = SendDate;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_INFO, State, 0, 0, str);
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_INFO, (ushort)State, 0, 0, str);
         }
 
         // 率瘤眠啊 傈价
@@ -904,234 +847,134 @@ namespace GameSvr
             // pagenum = 0 , sendnum = 1;
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_LIST, 0, 1, 0, str);
         }
-
-        // 率瘤 昏力 傈价
-        // ------------------------------------------------------------------------------
-        // 率瘤绰 角力肺 皋葛府俊辑 昏力凳栏肺父 钎矫登绊 DB俊绰 角力肺 昏力矫糯
-        // 蝶扼辑 唱吝俊 蜡历啊 犁 立加窍搁 荤扼瘤霸凳
-        // +----------------------------------------------------------------------------
-        // SM_TAG_DELETE    : 率瘤 昏力 沥焊 傈价
-        // Param    : 率瘤朝楼 , 惑怕沥焊 ( 昏力凳 栏肺 函版 )
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdSMDelete(TUserInfo UserInfo, string SendDate, int State)
         {
-            string str;
-            // 惑怕: 朝楼:傈价磊:"郴侩"
-            str = SendDate;
-            // pagenum = 0 , sendnum = 1;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_INFO, State, 0, 0, str);
+            var str = SendDate;
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_INFO, (ushort)State, 0, 0, str);
         }
-
-        // 芭何磊 府胶飘 傈价
-        // ------------------------------------------------------------------------------
-        // SM_TAG_REJECT_LIST   : 芭何磊 府胶飘 傈价
-        // Param    : 芭何磊 俺荐 , 芭何磊 府胶飘
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdSMRejectList(TUserInfo UserInfo, int ListCount, string RejectList)
         {
-            string str;
-            str = RejectList;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_REJECT_LIST, ListCount, 0, 0, str);
+            var str = RejectList;
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_REJECT_LIST, (ushort)ListCount, 0, 0, str);
         }
-
-        // 芭何磊 眠啊 傈价
-        // ------------------------------------------------------------------------------
-        // SM_TAG_REJECT_ADD   : 芭何磊 眠啊 傈价
-        // Param    : 芭何磊疙
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdSMRejectAdd(TUserInfo UserInfo, string Rejecter)
         {
-            string str;
-            str = Rejecter;
+            var str = Rejecter;
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_REJECT_ADD, 0, 0, 0, str);
         }
-
-        // 芭何磊 昏力 傈价
-        // ------------------------------------------------------------------------------
-        // SM_TAG_REJECT_DELETE   : 芭何磊 昏力 傈价
-        // Param    : 芭何磊疙
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdSMRejectDelete(TUserInfo UserInfo, string Rejecter)
         {
-            string str;
-            str = Rejecter;
+            var str = Rejecter;
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_REJECT_DELETE, 0, 0, 0, str);
         }
-
-        // 率瘤 佬瘤 臼篮 俺荐 傈价
-        // ------------------------------------------------------------------------------
-        // SM_TAG_NOTREADCOUNT   : 佬瘤臼篮 率瘤 俺荐 傈价
-        // Param    : 佬瘤臼篮 率瘤 俺荐
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdSMNotReadCount(TUserInfo UserInfo, int NotReadCount)
         {
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_ALARM, NotReadCount, 0, 0, "");
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_ALARM, (ushort)NotReadCount, 0, 0, "");
         }
 
-        // 努扼攫飘 疙飞绢俊 措茄 搬苞蔼
-        // ------------------------------------------------------------------------------
-        // SM_TAG_RESULT   : 努扼捞攫飘 疙飞绢俊 措茄 搬苞蔼
-        // Param    : 傈价等 疙飞绢 , 搬苞蔼
-        // ------------------------------------------------------------------------------
         public void OnCmdSMResult(TUserInfo UserInfo, short CmdNum, short ResultValue)
         {
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_RESULT, CmdNum, ResultValue, 0, "");
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_RESULT, (ushort)CmdNum, (ushort)ResultValue, 0, "");
         }
-
-        // 辑滚埃俊 傈价罐绰 疙飞绢甸 ..........................................
-        // 辑滚啊 率瘤 傈价罐澜
-        // //////////////////////////////////////////////////////////////////////////////
-        // 辑滚埃俊 傈价罐绰 疙飞绢甸
-        // //////////////////////////////////////////////////////////////////////////////
-        // ------------------------------------------------------------------------------
-        // ISM_TAG_SEND   : 辑滚埃俊 率瘤 傈价罐澜
-        // Param    : 率瘤惑怕 , 朝楼 , 傈价磊 , 郴侩
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdISMSend(TCmdMsg Cmd)
         {
-            string sender;
-            string senddate;
-            string statestr;
-            int state;
-            string sendmsg;
-            string tempstr;
+            string sender=String.Empty;
+            string senddate=String.Empty;
+            string statestr=String.Empty;
+            int state = 0;
+            string sendmsg=String.Empty;
+            string tempstr=String.Empty;
             TUserInfo userinfo;
-            // 惑怕:朝楼:傈价茄纳腐疙:"郴侩"
-            tempstr = GetValidStr3(Cmd.body, statestr, new string[] { ":" });
-            tempstr = GetValidStr3(tempstr, senddate, new string[] { ":" });
-            sendmsg = GetValidStr3(tempstr, sender, new string[] { ":" });
+            tempstr = HUtil32.GetValidStr3(Cmd.body, ref statestr, new string[] { ":" });
+            tempstr = HUtil32.GetValidStr3(tempstr, ref senddate, new string[] { ":" });
+            sendmsg = HUtil32.GetValidStr3(tempstr, ref sender, new string[] { ":" });
             userinfo = Cmd.pInfo;
             state = HUtil32.Str_ToInt(statestr, 0);
-            // 芭何磊啊 酒聪搁
             if (!IsRejecter(sender))
             {
-                // 率瘤甫 眠啊茄促.
                 if (Add(userinfo, sender, senddate, state, sendmsg))
                 {
-                    // 农扼捞攫飘啊 府胶飘甫 傈价罐疽促搁 率瘤沥焊 傈价
                     if (FClientGetList)
                     {
                         OnCmdSMAdd(userinfo, sender, senddate, state, sendmsg);
                     }
-                    // 率瘤吭澜 舅覆 傈价
                     OnCmdSMNotReadCount(userinfo, FNotReadCount);
                 }
             }
         }
-
-        // 辑滚扒 疙飞俊 措茄 搬苞蔼罐澜
-        // ------------------------------------------------------------------------------
-        // ISM_TAG_RESULT   : 辑滚埃俊 搬苞 傈价 罐澜
-        // Param    : 傈价疙飞绢 , 搬苞蔼
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdISMResult(TCmdMsg Cmd)
         {
         }
-
-        // 辑滚埃俊 傈价窍绰 疙飞绢甸 ..........................................
-        // 辑滚埃俊 率扁 傈价
-        // //////////////////////////////////////////////////////////////////////////////
-        // 辑滚埃俊 傈价窍绰 疙飞绢甸
-        // //////////////////////////////////////////////////////////////////////////////
-        // ------------------------------------------------------------------------------
-        // ISM_TAG_SEND   : 辑滚埃俊 率瘤 傈价窃
-        // Param    : 率瘤惑怕 , 朝楼 , 傈价磊 , 郴侩
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdOSMSend(string UserName, int SvrIndex, string Sender, string SendDate, int State, string SendMsg)
         {
-            string str;
-            // 惑怕:朝楼:傈价茄纳腐疙:"郴侩"
-            str = State.ToString() + ":" + SendDate + ":" + Sender + ":" + SendMsg;
+            var str = State.ToString() + ":" + SendDate + ":" + Sender + ":" + SendMsg;
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_TAG_SEND, (ushort)SvrIndex, 0, 0, str);
         }
-
-        // 辑滚埃 疙飞俊 措茄 搬侞 傈价
-        // ------------------------------------------------------------------------------
-        // ISM_TAG_RESULT   : 辑滚埃俊 搬苞 傈价窃
-        // Param    : 傈价疙飞绢 , 搬苞蔼
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdOSMResult(string UserName, int SvrIndex, short CmdNum, short ResultValue)
         {
             string str;
             str = CmdNum.ToString() + ":" + ResultValue.ToString();
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_TAG_RESULT, (ushort)SvrIndex, 0, 0, str);
         }
-
-        // DB 肺何磐 坷绰 疙飞绢甸 .............................................
-        // 率瘤 府胶飘 罐澜
-        // //////////////////////////////////////////////////////////////////////////////
-        // DB 肺何磐 坷绰 疙飞绢甸
-        // //////////////////////////////////////////////////////////////////////////////
-        // ------------------------------------------------------------------------------
-        // DBR_TAG_LIST   : DB肺何磐 率瘤 府胶飘 罐澜
-        // Param    : 俺荐 , 府胶飘
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdDBRList(TCmdMsg Cmd)
         {
-            string tagcountstr;
-            string sender;
-            string senddate;
-            string statestr;
-            string sendmsg;
-            string tempstr;
-            string tagstr;
-            int tagcount;
-            int i;
+            string tagcountstr=String.Empty;
+            string sender=String.Empty;
+            string senddate=String.Empty;
+            string statestr=String.Empty;
+            string sendmsg=String.Empty;
+            string tempstr=String.Empty;
+            string tagstr=String.Empty;
+            int tagcount = 0;
             TUserInfo userinfo;
-            tempstr = GetValidStr3(Cmd.body, tagcountstr, new string[] { "/" });
+            tempstr = HUtil32.GetValidStr3(Cmd.body,ref tagcountstr, new string[] { "/" });
             tagcount = HUtil32.Str_ToInt(tagcountstr, 0);
             userinfo = Cmd.pInfo;
-            // 啊瘤绊乐绰 葛电 府胶飘撇 瘤款促.
             RemoveAll();
-            for (i = 0; i < tagcount; i++)
+            for (var i = 0; i < tagcount; i++)
             {
-                // 率瘤俊 包访等逞阑 啊廉柯促.
-                tempstr = GetValidStr3(tempstr, tagstr, new string[] { "/" });
-                // 率瘤 牢磊甫 盒府茄促.
-                tagstr = GetValidStr3(tagstr, statestr, new string[] { ":" });
-                tagstr = GetValidStr3(tagstr, senddate, new string[] { ":" });
-                sendmsg = GetValidStr3(tagstr, sender, new string[] { ":" });
-                // 率瘤 眠啊
+                tempstr = HUtil32.GetValidStr3(tempstr,ref  tagstr, new string[] { "/" });
+                tagstr = HUtil32.GetValidStr3(tagstr,ref  statestr, new string[] { ":" });
+                tagstr = HUtil32.GetValidStr3(tagstr,ref  senddate, new string[] { ":" });
+                sendmsg = HUtil32.GetValidStr3(tagstr,ref  sender, new string[] { ":" });
                 if (!Add(userinfo, sender, senddate, HUtil32.Str_ToInt(statestr, 0), sendmsg))
                 {
-                    // 眠啊救登绰 捞蜡甫 钎矫窍磊
                     // MainOutMessage('Tag didn''t Added...');
                 }
             }
-            // 府胶飘 霖厚啊 登菌促
             FIsTagListSendAble = true;
-            // 率瘤吭澜 舅覆 傈价 2003-08-21 : 皋牢俊辑 舅妨霖促.. 荐沥凳
-            // OnCmdSMNotReadCount( userinfo , FNotReadCount );
-            // 努扼捞攫飘啊 府胶飘甫 盔窃 林磊
             if (FWantTagListFlag)
             {
-                // 努扼捞攫飘俊霸 府胶撇 焊辰饶
                 OnMsgList(userinfo, FWantTagListPage);
-                // 努扼捞攫飘俊霸 焊陈澜阑 悸泼
                 FWantTagListFlag = false;
             }
         }
-
-        // 芭何磊 府胶飘 罐澜
-        // ------------------------------------------------------------------------------
-        // DBR_TAG_REJECT_LIST   : DB肺何磐 芭何磊 府胶飘 罐澜
-        // Param    : 俺荐 , 府胶飘
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdDBRRejectList(TCmdMsg Cmd)
         {
-            string tempstr;
-            string rejecter;
-            string rejectcountstr;
-            int rejectcount;
+            string tempstr=String.Empty;
+            string rejecter=String.Empty;
+            string rejectcountstr=String.Empty;
+            int rejectcount = 0;
             int i;
             TUserInfo userinfo;
-            tempstr = GetValidStr3(Cmd.body, rejectcountstr, new string[] { "/" });
+            tempstr  =  HUtil32.GetValidStr3(Cmd.body, ref rejectcountstr, new string[] { "/" });
             rejectcount = HUtil32.Str_ToInt(rejectcountstr, 0);
             userinfo = Cmd.pInfo;
             for (i = 0; i < rejectcount; i++)
             {
                 // 率瘤俊 包访等逞阑 啊廉柯促.
-                tempstr = GetValidStr3(tempstr, rejecter, new string[] { "/" });
+                tempstr  =  HUtil32.GetValidStr3(tempstr, ref rejecter, new string[] { "/" });
                 if (!AddRejecter(rejecter))
                 {
                     // 眠啊救登绰 捞蜡甫 钎矫窍磊
@@ -1146,33 +989,19 @@ namespace GameSvr
                 FWantRejectListFlag = false;
             }
         }
-
-        // 佬瘤臼篮 率瘤 俺荐 罐澜
-        // ------------------------------------------------------------------------------
-        // DBR_TAG_NOTREADCOUNT   : DB肺何磐 佬瘤臼篮 率瘤 俺荐 罐澜
-        // Param    : 俺荐
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdDBRNotReadCount(TCmdMsg Cmd)
         {
-            string notreadcountstr;
-            TUserInfo userinfo;
-            notreadcountstr = Cmd.body;
-            userinfo = Cmd.pInfo;
+            var notreadcountstr = Cmd.body;
+            var userinfo = Cmd.pInfo;
             OnCmdSMNotReadCount(userinfo, HUtil32.Str_ToInt(notreadcountstr, 0));
         }
-
-        // 搬苞蔼 罐澜
-        // ------------------------------------------------------------------------------
-        // DBR_TAG_RESULT   : DB肺何磐 搬苞蔼 罐澜
-        // Param    : 傈价茄 疙飞绢 搬苞蔼
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdDBRResult(TCmdMsg Cmd)
         {
-            string CmdNum;
-            string ErrCode;
-            // TO TEST:
+            string ErrCode = String.Empty;
             this.ErrMsg("CmdDBRResult[Tag] :" + Cmd.body);
-            CmdNum = GetValidStr3(Cmd.body, ErrCode, new string[] { "/" });
+            string CmdNum  =  HUtil32.GetValidStr3(Cmd.body, ref ErrCode, new string[] { "/" });
             switch (HUtil32.Str_ToInt(CmdNum, 0))
             {
                 case Grobal2.DB_TAG_ADD:
@@ -1196,15 +1025,6 @@ namespace GameSvr
             }
         }
 
-        // DB 肺 焊郴绰 疙飞绢甸 ................................................
-        // DB 俊 率瘤 眠啊
-        // //////////////////////////////////////////////////////////////////////////////
-        // DB 肺 焊郴绰 疙飞绢甸
-        // //////////////////////////////////////////////////////////////////////////////
-        // ------------------------------------------------------------------------------
-        // DB_TAG_ADD   : DB俊 率瘤 眠啊 傈价
-        // Param    : 惑怕 , 朝楼 , 荐脚磊 , 郴侩
-        // ------------------------------------------------------------------------------
         public void OnCmdDBAdd(TUserInfo UserInfo, string Reciever, string SendDate, int State, string SendMsg)
         {
             string str;
@@ -1212,55 +1032,30 @@ namespace GameSvr
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_ADD, 0, 0, 0, str);
         }
 
-        // DB 俊 率瘤 惑怕 函版
-        // ------------------------------------------------------------------------------
-        // DB_TAG_INFO   : DB俊 率瘤 惑怕 函版 傈价
-        // Param    : 朝楼 , 惑怕
-        // ------------------------------------------------------------------------------
         public void OnCmdDBInfo(TUserInfo UserInfo, string SendDate, int State)
         {
             string str;
             str = State.ToString() + ":" + SendDate + "/";
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_SETINFO, 0, 0, 0, str);
         }
-
-        // DB俊  率瘤 昏力
-        // ------------------------------------------------------------------------------
-        // DB_TAG_DELETE   : DB俊 率瘤 昏力 傈价
-        // Param    : 朝楼
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdDBDelete(TUserInfo UserInfo, string SendDate)
         {
             string str;
             str = SendDate + "/";
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_DELETE, 0, 0, 0, str);
         }
-
-        // DB俊 佬篮 率瘤 傈何 昏力
-        // ------------------------------------------------------------------------------
-        // DB_TAG_DELETEALL   : DB俊 率瘤 傈何昏力 傈价 ( 佬瘤臼篮巴苞 昏力陛瘤等巴篮 力寇)
-        // Param    : 绝澜
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdDBDeleteAll(TUserInfo UserInfo)
         {
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_DELETEALL, 0, 0, 0, "");
         }
-
-        // DB俊 率瘤 府胶飘 夸没
-        // ------------------------------------------------------------------------------
-        // DB_TAG_LIST   : DB俊 率瘤府胶飘 夸没
-        // Param    : 绝澜
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdDBList(TUserInfo UserInfo)
         {
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_LIST, 0, 0, 0, "");
         }
-
-        // DB俊 芭何磊 眠啊
-        // ------------------------------------------------------------------------------
-        // DB_TAG_REJECT_ADD   : DB俊 芭何磊 府胶飘 眠啊
-        // Param    : 芭何磊疙
-        // ------------------------------------------------------------------------------
+        
         public void OnCmdDBRejectAdd(TUserInfo UserInfo, string Rejecter)
         {
             string str;

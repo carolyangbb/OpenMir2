@@ -13,7 +13,7 @@ namespace GameSvr
             this.DigupRange = 4;
             this.DigdownRange = 6;
             this.BoAnimal = false;
-            appeartime = GetTickCount;
+            appeartime  =  HUtil32.GetTickCount();
         }
         protected bool FindTarget()
         {
@@ -59,7 +59,7 @@ namespace GameSvr
                         {
                             if ((Math.Abs(this.CX - cret.CX) <= this.ViewRange) && (Math.Abs(this.CY - cret.CY) <= this.ViewRange))
                             {
-                                this.TargetFocusTime = GetTickCount;
+                                this.TargetFocusTime  =  HUtil32.GetTickCount();
                                 this.SendDelayMsg(this, Grobal2.RM_DELAYMAGIC, pwr, HUtil32.MakeLong(cret.CX, cret.CY), 2, (int)cret, "", 600);
                                 // cret.SendDelayMsg (self, RM_MAGSTRUCK, 0, acpwr, 0, 0, '', 600);
                                 if (new System.Random(4).Next() == 0)
@@ -103,7 +103,7 @@ namespace GameSvr
                     if (this.HideMode)
                     {
                         // 酒流 葛嚼阑 唱鸥郴瘤 臼疽澜.
-                        if (GetTickCount - appeartime > 10 * 1000)
+                        if (HUtil32.GetTickCount() - appeartime > 10 * 1000)
                         {
                             for (i = 0; i < this.VisibleActors.Count; i++)
                             {
@@ -114,7 +114,7 @@ namespace GameSvr
                                     {
                                         ComeOut();
                                         // 观栏肺 唱坷促. 焊牢促.
-                                        appeartime = GetTickCount;
+                                        appeartime  =  HUtil32.GetTickCount();
                                         break;
                                     }
                                 }
@@ -123,7 +123,7 @@ namespace GameSvr
                     }
                     else
                     {
-                        if (GetTickCount - appeartime > 3 * 1000)
+                        if (HUtil32.GetTickCount() - appeartime > 3 * 1000)
                         {
                             if (AttackTarget())
                             {
@@ -133,10 +133,10 @@ namespace GameSvr
                             else
                             {
                                 // 利捞 绝澜
-                                if (GetTickCount - appeartime > 10 * 1000)
+                                if (HUtil32.GetTickCount() - appeartime > 10 * 1000)
                                 {
                                     this.ComeDown();
-                                    appeartime = GetTickCount;
+                                    appeartime  =  HUtil32.GetTickCount();
                                 }
                             }
                         }

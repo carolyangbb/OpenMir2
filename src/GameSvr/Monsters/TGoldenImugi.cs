@@ -27,7 +27,7 @@ namespace GameSvr
             this.ViewRange = 12;
             TwinGenDelay = 100;
             // 3檬窜困
-            sectick = GetTickCount;
+            sectick  =  HUtil32.GetTickCount();
             // DontBagItemDrop := TRUE;
             // DontBagGoldDrop := TRUE;
             this.BoNoItem = true;
@@ -38,10 +38,10 @@ namespace GameSvr
             InitialState = false;
             ChildMobRecalled = false;
             FinalWarp = false;
-            RevivalTime = GetTickCount;
-            WarpTime = GetTickCount;
-            TargetTime = GetTickCount;
-            RangeAttackTime = GetTickCount;
+            RevivalTime  =  HUtil32.GetTickCount();
+            WarpTime  =  HUtil32.GetTickCount();
+            TargetTime  =  HUtil32.GetTickCount();
+            RangeAttackTime  =  HUtil32.GetTickCount();
             OldTargetCret = null;
         }
         public override void RunMsg(TMessageInfo msg)
@@ -57,28 +57,22 @@ namespace GameSvr
 
         public override void Run()
         {
-            int ix;
-            int iy;
-            int ndir;
+            byte ndir;
             int nx=0;
             int ny=0;
             TCreature cret;
-            int imugicount;
-            int snakecount;
             cret = null;
-            snakecount = 0;
-            // 娄捞公扁 积己 炼扒
-            // 3檬俊 茄锅究 八荤
-            if (GetTickCount - sectick > 3000)
+            int snakecount = 0;
+            if (HUtil32.GetTickCount() - sectick > 3000)
             {
                 this.BreakHolySeize();
-                imugicount = 0;
-                sectick = GetTickCount;
+                int imugicount = 0;
+                sectick  =  HUtil32.GetTickCount();
                 if (this.PEnvir != null)
                 {
-                    for (ix = 0; ix < this.PEnvir.MapWidth; ix++)
+                    for (var ix = 0; ix < this.PEnvir.MapWidth; ix++)
                     {
-                        for (iy = 0; iy < this.PEnvir.MapHeight; iy++)
+                        for (var iy = 0; iy < this.PEnvir.MapHeight; iy++)
                         {
                             cret = (TCreature)this.PEnvir.GetCreature(ix, iy, true);
                             if (cret != null)
@@ -113,27 +107,23 @@ namespace GameSvr
                                                 // 况橇 NormalEffect
                                                 this.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, this.CX, this.CY, Grobal2.NE_SN_MOVEHIDE, "");
                                                 this.SpaceMove(cret.PEnvir.MapName, cret.CX, cret.CY, 0);
-                                                WarpTime = GetTickCount;
+                                                WarpTime  =  HUtil32.GetTickCount();
                                                 this.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, this.CX, this.CY, Grobal2.NE_SN_MOVESHOW, "");
                                             }
                                             else
                                             {
-                                                // 郴啊 WarpTime捞 弥辟捞搁 WarpTime捞 坷贰等 捞公扁啊 况橇茄促.
-                                                // 况橇 NormalEffect
                                                 cret.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, cret.CX, cret.CY, Grobal2.NE_SN_MOVEHIDE, "");
                                                 cret.SpaceMove(this.PEnvir.MapName, this.CX, this.CY, 0);
-                                                (cret as TGoldenImugi).WarpTime = GetTickCount;
+                                                (cret as TGoldenImugi).WarpTime  =  HUtil32.GetTickCount();
                                                 cret.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, cret.CX, cret.CY, Grobal2.NE_SN_MOVESHOW, "");
                                             }
                                         }
-                                        // 呈公 啊鳖捞 乐栏搁 冻绢哆赴促.
                                         if ((Math.Abs(cret.CX - this.CX) <= 2) && (Math.Abs(cret.CY - this.CY) <= 2))
                                         {
-                                            // 档噶皑.
                                             if (new System.Random(3).Next() == 0)
                                             {
                                                 ndir = M2Share.GetNextDirection(cret.CX, cret.CY, this.CX, this.CY);
-                                                M2Share.GetNextPosition(this.PEnvir, cret.CX, cret.CY, ndir, 5, ref (int)this.TargetX, ref (int)this.TargetY);
+                                                M2Share.GetNextPosition(this.PEnvir, cret.CX, cret.CY, ndir, 5, ref this.TargetX, ref this.TargetY);
                                             }
                                         }
                                     }
@@ -146,13 +136,11 @@ namespace GameSvr
                         }
                     }
                 }
-                // 贸澜 眉农牢 版快
                 if (FirstCheck)
                 {
                     FirstCheck = false;
                     TwinGenDelay = 1;
                 }
-                // 捞公扁啊 去磊 乐栏搁 娄捞公扁甫 积己茄促.(何劝)
                 if (imugicount == 1)
                 {
                     if (TwinGenDelay <= 0)
@@ -164,27 +152,21 @@ namespace GameSvr
                             {
                                 svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " -" + svMain.__GoldenImugi + " has recalled its clone.");
                             }
-                            // 何劝 矫挪 矫埃
-                            RevivalTime = GetTickCount;
-                            // 何劝 矫傈 NormalEffect
+                            RevivalTime  =  HUtil32.GetTickCount();
                             this.SendRefMsg(Grobal2.RM_LIGHTING, this.Dir, this.CX, this.CY, this.ActorId, "");
-                            // 何劝 NormalEffect
                             cret.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, cret.CX, cret.CY, Grobal2.NE_SN_RELIVE, "");
-                            // 眉仿 炼沥
                             if (!DontAttack)
                             {
                                 cret.WAbil.HP = (ushort)(cret.WAbil.MaxHP / 3 * 2);
                             }
                             if (DontAttack)
                             {
-                                // 傍拜 惑怕啊 酒聪搁 何劝 矫挪 饶俊 促矫 泪电促.
                                 InitialState = false;
                             }
                         }
                         TwinGenDelay = 100;
                     }
                     TwinGenDelay -= 1;
-                    // 捞公扁啊 茄付府 巢酒 乐栏搁 矫眉甫 父甸瘤 臼绰促.
                     if (this.Death)
                     {
                         this.MakeGhost(8);
@@ -214,7 +196,6 @@ namespace GameSvr
                     this.BoDontMove = true;
                 }
             }
-            // 归荤 付府荐 * 眉仿 雀汗樊
             if (snakecount > 0)
             {
                 this.AddAbil.HealthRecover = (ushort)(snakecount * 2);
@@ -225,7 +206,6 @@ namespace GameSvr
                 this.AddAbil.HealthRecover = 0;
                 this.HealthRecover = (byte)this.AddAbil.HealthRecover;
             }
-            // 眉仿捞 50% 巢疽阑锭 归荤 家券
             if (this.WAbil.HP <= this.WAbil.MaxHP / 2)
             {
                 if (!ChildMobRecalled)
@@ -236,25 +216,20 @@ namespace GameSvr
                     ChildMobRecalled = true;
                 }
             }
-            // 眉仿捞 10% 巢疽阑锭 罚待 况橇
             if (this.WAbil.HP <= this.WAbil.MaxHP / 10)
             {
                 if (!FinalWarp)
                 {
-                    // 60檬 悼救 规绢仿/付规仿 刘啊
                     this.MagDefenceUp(60, 20);
                     this.MagMagDefenceUp(60, 20);
                     this.LoseTarget();
-                    // 况橇 NormalEffect
                     this.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, this.CX, this.CY, Grobal2.NE_SN_MOVEHIDE, "");
-                    // SpaceMove (PEnvir.MapName, Random(PEnvir.MapWidth), Random(PEnvir.MapHeight), 0);
                     this.RandomSpaceMoveInRange(0, 30, 80);
-                    WarpTime = GetTickCount;
+                    WarpTime  =  HUtil32.GetTickCount();
                     this.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, this.CX, this.CY, Grobal2.NE_SN_MOVESHOW, "");
                     FinalWarp = true;
                 }
             }
-            // 扁粮 角青阑 茄促.
             base.Run();
         }
 
@@ -311,10 +286,10 @@ namespace GameSvr
             int i;
             int pwr;
             int dam;
-            int sx;
-            int sy;
-            int tx;
-            int ty;
+            short sx=0;
+            short sy=0;
+            short tx=0;
+            short ty =0;
             ArrayList list;
             TCreature cret;
             if (targ == null)
@@ -384,7 +359,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir;
+            byte targdir=0;
             TCreature cret;
             result = false;
             cret = null;
@@ -407,9 +382,9 @@ namespace GameSvr
                     this.HitTime = GetCurrentTime;
                     if ((Math.Abs(this.CX - this.TargetCret.CX) <= 11) && (Math.Abs(this.CY - this.TargetCret.CY) <= 11))
                     {
-                        if ((this.TargetInSpitRange(this.TargetCret, ref targdir) && (new System.Random(3).Next() < 2)) || (GetTickCount - RevivalTime < 3000))
+                        if ((this.TargetInSpitRange(this.TargetCret, ref targdir) && (new System.Random(3).Next() < 2)) || (HUtil32.GetTickCount() - RevivalTime < 3000))
                         {
-                            this.TargetFocusTime = GetTickCount;
+                            this.TargetFocusTime  =  HUtil32.GetTickCount();
                             this.Dir = M2Share.GetNextDirection(this.CX, this.CY, this.TargetCret.CX, this.TargetCret.CY);
                             Attack(this.TargetCret, targdir);
                             // UserEngine.CryCry (RM_CRY, PEnvir, CX, CY, 10000, ' Attack : ' + TargetCret.UserName);//test
@@ -419,7 +394,7 @@ namespace GameSvr
                         {
                             if (GetCurrentTime < (8000 + TargetTime))
                             {
-                                this.TargetFocusTime = GetTickCount;
+                                this.TargetFocusTime  =  HUtil32.GetTickCount();
                                 if ((GetCurrentTime < (30000 + RangeAttackTime)) && (new System.Random(10).Next() < 8))
                                 {
                                     RangeAttack(this.TargetCret);
@@ -428,7 +403,7 @@ namespace GameSvr
                                 else
                                 {
                                     RangeAttack2(this.TargetCret);
-                                    RangeAttackTime = GetTickCount;
+                                    RangeAttackTime  =  HUtil32.GetTickCount();
                                     // UserEngine.CryCry (RM_CRY, PEnvir, CX, CY, 10000, ' RangeAttack (2)');//test
                                 }
                             }
@@ -447,8 +422,8 @@ namespace GameSvr
                                                 OldTargetCret = this.TargetCret;
                                                 // UserEngine.CryCry (RM_CRY, PEnvir, CX, CY, 10000, ' Targeting : ' + TargetCret.UserName);//test
                                                 this.SetTargetXY(this.TargetCret.CX, this.TargetCret.CY);
-                                                this.TargetFocusTime = GetTickCount;
-                                                TargetTime = GetTickCount;
+                                                this.TargetFocusTime  =  HUtil32.GetTickCount();
+                                                TargetTime  =  HUtil32.GetTickCount();
                                             }
                                         }
                                     }

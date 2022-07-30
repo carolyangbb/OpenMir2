@@ -101,17 +101,15 @@ namespace SystemModule
         public int lParam2;
         public int lParam3;
         public Object sender;
-        // target  : TObject;
         public long deliverytime;
-        // 档馒 矫埃...
         public string descptr;
-    } // end TMessageInfoPtr
+    }
 
-    public struct TShortMessage
+    public class TShortMessage : ClientPacket
     {
         public ushort Ident;
         public ushort msg;
-    } // end TShortMessage
+    }
 
     public struct TMessageBodyW
     {
@@ -291,7 +289,7 @@ namespace SystemModule
     } // end TUserItem
 
     // 固福2
-    public struct TAbility
+    public class TAbility : ClientPacket
     {
         public byte Level;
         public byte reserved1;
@@ -461,7 +459,7 @@ namespace SystemModule
         public bool boShowName;
     } // end TDropItem
 
-    public struct TDefMagic
+    public class TDefMagic
     {
         public ushort MagicId;
         public string MagicName;
@@ -711,7 +709,7 @@ namespace SystemModule
         public ArrayList ItemList;
     } // end TMonsterInfo
 
-    public struct TZenInfo
+    public class TZenInfo
     {
         public string MapName;
         public int X;

@@ -4,6 +4,7 @@ namespace GameSvr
 {
     public class TEvent
     {
+        public int EventId;
         public bool Visible
         {
             get
@@ -31,7 +32,7 @@ namespace GameSvr
 
         public TEvent(TEnvirnoment penv, int ax, int ay, int etype, int etime, bool bovisible)
         {
-            OpenStartTime = GetTickCount;
+            OpenStartTime  =  HUtil32.GetTickCount();
             EventType = etype;
             EventParam = 0;
             ContinueTime = etime;
@@ -43,7 +44,7 @@ namespace GameSvr
             Active = true;
             Damage = 0;
             OwnCret = null;
-            runstart = GetTickCount;
+            runstart  =  HUtil32.GetTickCount();
             runtick = 500;
             AddToMap();
         }
@@ -70,7 +71,7 @@ namespace GameSvr
 
         public void Close()
         {
-            CloseTime = GetTickCount;
+            CloseTime  =  HUtil32.GetTickCount();
             if (FVisible)
             {
                 FVisible = false;
@@ -84,7 +85,7 @@ namespace GameSvr
 
         public virtual void Run()
         {
-            if (GetTickCount - OpenStartTime > ContinueTime)
+            if (HUtil32.GetTickCount() - OpenStartTime > ContinueTime)
             {
                 Closed = true;
                 Close();

@@ -137,7 +137,7 @@ namespace GameSvr
             string str = String.Empty;
             string head = String.Empty;
             string body = String.Empty;
-            int ident;
+            int ident=0;
             try
             {
                 svMain.csShare.Enter();
@@ -278,9 +278,9 @@ namespace GameSvr
                 svMain.csShare.Enter();
                 for (i = 0; i < AdmissionList.Count; i++)
                 {
-                    if ((AdmissionList[i] as TAdmission).Certification == certify)
+                    if (AdmissionList[i].Certification == certify)
                     {
-                        kickid = (AdmissionList[i] as TAdmission).usrid;
+                        kickid = AdmissionList[i].usrid;
                         //this.Dispose(AdmissionList[i] as TAdmission);
                         AdmissionList.RemoveAt(i);
                         break;
@@ -337,9 +337,9 @@ namespace GameSvr
                     svMain.csShare.Enter();
                     for (i = 0; i < AdmissionList.Count; i++)
                     {
-                        if ((AdmissionList[i] as TAdmission).Certification == cert)
+                        if (AdmissionList[i].Certification == cert)
                         {
-                            switch ((AdmissionList[i] as TAdmission).PayMode)
+                            switch (AdmissionList[i].PayMode)
                             {
                                 case 2:
                                     result = 3;
@@ -351,8 +351,8 @@ namespace GameSvr
                                     result = 1;
                                     break;
                             }
-                            availmode = (AdmissionList[i] as TAdmission).AvailableMode;
-                            clversion = (AdmissionList[i] as TAdmission).ClientVersion;
+                            availmode = AdmissionList[i].AvailableMode;
+                            clversion = AdmissionList[i].ClientVersion;
                             break;
                         }
                     }

@@ -19,7 +19,7 @@ namespace GameSvr
         public TCowKingMonster() : base()
         {
             this.SearchRate = 500 + ((long)new System.Random(1500).Next());
-            JumpTime = GetTickCount;
+            JumpTime  =  HUtil32.GetTickCount();
             this.RushMode = true;
             // 付过俊 嘎酒档 倒柳茄促.
             CrazyCount = 0;
@@ -44,24 +44,20 @@ namespace GameSvr
 
         public override void Run()
         {
-            int nx=0;
-            int ny=0;
+            short nx = 0;
+            short ny = 0;
             int old;
             if (!this.Death && !this.RunDone && !this.BoGhost)
             {
-                if (GetTickCount - JumpTime > 30 * 1000)
+                if (HUtil32.GetTickCount() - JumpTime > 30 * 1000)
                 {
-                    JumpTime = GetTickCount;
+                    JumpTime  =  HUtil32.GetTickCount();
                     if ((this.TargetCret != null) && (this.SiegeLockCount() >= 5))
                     {
-                        // 4疙俊霸 笛矾 阶烙
-                        // nn := Random(VisibleActors.Count-2) + 1;
-                        // ncret := TCreature (PTVisibleActor(VisibleActors[nn]).cret);
-                        // if ncret <> nil then SelectTarget (ncret);
-                        M2Share.GetBackPosition(this.TargetCret, ref (short)nx, ref (short)ny);
+                        M2Share.GetBackPosition(this.TargetCret, ref nx, ref ny);
                         if (this.PEnvir.CanWalk(nx, ny, false))
                         {
-                            this.SpaceMove(this.PEnvir.MapName, (short)nx, (short)ny, 0);
+                            this.SpaceMove(this.PEnvir.MapName, nx, ny, 0);
                         }
                         else
                         {
@@ -75,12 +71,11 @@ namespace GameSvr
                 if ((CrazyCount >= 2) && (CrazyCount != old))
                 {
                     CrazyReadyMode = true;
-                    crazyready = GetTickCount;
+                    crazyready  =  HUtil32.GetTickCount();
                 }
                 if (CrazyReadyMode)
                 {
-                    // 嘎绊父 乐澜
-                    if (GetTickCount - crazyready < 8 * 1000)
+                    if (HUtil32.GetTickCount() - crazyready < 8 * 1000)
                     {
                         this.NextHitTime = 10000;
                     }
@@ -88,13 +83,12 @@ namespace GameSvr
                     {
                         CrazyReadyMode = false;
                         CrazyKingMode = true;
-                        crazytime = GetTickCount;
+                        crazytime  =  HUtil32.GetTickCount();
                     }
                 }
                 if (CrazyKingMode)
                 {
-                    // 气林
-                    if (GetTickCount - crazytime < 8 * 1000)
+                    if (HUtil32.GetTickCount() - crazytime < 8 * 1000)
                     {
                         this.NextHitTime = 500;
                         this.NextWalkTime = 400;
@@ -109,6 +103,5 @@ namespace GameSvr
             }
             base.Run();
         }
-
     }
 }

@@ -13,7 +13,7 @@ namespace GameSvr
             this.RunDone = false;
             this.ViewRange = 7;
             this.SearchRate = 2500 + ((long)new System.Random(1500).Next());
-            this.SearchTime = GetTickCount;
+            this.SearchTime  =  HUtil32.GetTickCount();
             this.RaceServer = Grobal2.RC_DIGOUTZOMBI;
             this.HideMode = true;
         }
@@ -25,7 +25,7 @@ namespace GameSvr
             {
                 svMain.EventMan.AddEvent(__event);
                 this.HideMode = false;
-                this.SendRefMsg(Grobal2.RM_DIGUP, this.Dir, this.CX, this.CY, (int)__event, "");
+                this.SendRefMsg(Grobal2.RM_DIGUP, this.Dir, this.CX, this.CY, __event.EventId, "");
                 return;
             }
             if (__event != null)
@@ -45,7 +45,7 @@ namespace GameSvr
             {
                 if (GetCurrentTime - this.WalkTime > this.GetNextWalkTime())
                 {
-                    // WalkTime := GetTickCount;  惑加罐篮 run俊辑 犁汲沥窃
+                    // WalkTime : =  HUtil32.GetTickCount();  惑加罐篮 run俊辑 犁汲沥窃
                     if (this.HideMode)
                     {
                         // 酒流 葛嚼阑 唱鸥郴瘤 臼疽澜.
@@ -66,9 +66,9 @@ namespace GameSvr
                     }
                     else
                     {
-                        if ((GetTickCount - this.SearchEnemyTime > 8000) || ((GetTickCount - this.SearchEnemyTime > 1000) && (this.TargetCret == null)))
+                        if ((HUtil32.GetTickCount() - this.SearchEnemyTime > 8000) || ((HUtil32.GetTickCount() - this.SearchEnemyTime > 1000) && (this.TargetCret == null)))
                         {
-                            this.SearchEnemyTime = GetTickCount;
+                            this.SearchEnemyTime  =  HUtil32.GetTickCount();
                             this.MonsterNormalAttack();
                         }
                     }

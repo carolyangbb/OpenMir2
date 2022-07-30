@@ -44,7 +44,7 @@ namespace GameSvr
             int i;
             for (i = 0; i < GuildAgitList.Count; i++)
             {
-                (GuildAgitList[i] as TGuildAgit).Free();
+                GuildAgitList[i].Free();
             }
             GuildAgitList.Clear();
         }
@@ -183,14 +183,14 @@ namespace GameSvr
                 {
                     for (i = 0; i < GuildAgitList.Count; i++)
                     {
-                        strlist.Add((GuildAgitList[i] as TGuildAgit).GuildAgitNumber.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).GuildName + "\09" + (GuildAgitList[i] as TGuildAgit).GuildMasterName + "\09" + (GuildAgitList[i] as TGuildAgit).RegistrationTime + "\09" + (GuildAgitList[i] as TGuildAgit).ContractPeriod.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleFlag.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleMoney.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleWait.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleGuildName + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleGuildMasterName + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleTime);
+                        strlist.Add(GuildAgitList[i].GuildAgitNumber.ToString() + "\09" + GuildAgitList[i].GuildName + "\09" + GuildAgitList[i].GuildMasterName + "\09" + GuildAgitList[i].RegistrationTime + "\09" + GuildAgitList[i].ContractPeriod.ToString() + "\09" + GuildAgitList[i].ForSaleFlag.ToString() + "\09" + GuildAgitList[i].ForSaleMoney.ToString() + "\09" + GuildAgitList[i].ForSaleWait.ToString() + "\09" + GuildAgitList[i].ForSaleGuildName + "\09" + GuildAgitList[i].ForSaleGuildMasterName + "\09" + GuildAgitList[i].ForSaleTime);
                     }
                 }
                 else
                 {
                     for (i = 0; i < GuildAgitList.Count; i++)
                     {
-                        strlist.Add((GuildAgitList[i] as TGuildAgit).GuildAgitNumber.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).GuildName + "\09" + (GuildAgitList[i] as TGuildAgit).GuildMasterName + "\09" + (GuildAgitList[i] as TGuildAgit).RegistrationTime + "\09" + (GuildAgitList[i] as TGuildAgit).ContractPeriod.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).GuildAgitTotalGold.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleFlag.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleMoney.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleWait.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleGuildName + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleGuildMasterName + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleTime);
+                        strlist.Add(GuildAgitList[i].GuildAgitNumber.ToString() + "\09" + GuildAgitList[i].GuildName + "\09" + GuildAgitList[i].GuildMasterName + "\09" + GuildAgitList[i].RegistrationTime + "\09" + GuildAgitList[i].ContractPeriod.ToString() + "\09" + GuildAgitList[i].GuildAgitTotalGold.ToString() + "\09" + GuildAgitList[i].ForSaleFlag.ToString() + "\09" + GuildAgitList[i].ForSaleMoney.ToString() + "\09" + GuildAgitList[i].ForSaleWait.ToString() + "\09" + GuildAgitList[i].ForSaleGuildName + "\09" + GuildAgitList[i].ForSaleGuildMasterName + "\09" + GuildAgitList[i].ForSaleTime);
                     }
                 }
                 try
@@ -210,9 +210,9 @@ namespace GameSvr
             TGuildAgit result = null;
             for (var i = 0; i < GuildAgitList.Count; i++)
             {
-                if ((GuildAgitList[i] as TGuildAgit).GuildName == gname)
+                if (GuildAgitList[i].GuildName == gname)
                 {
-                    result = GuildAgitList[i] as TGuildAgit;
+                    result = GuildAgitList[i];
                     break;
                 }
             }
@@ -256,7 +256,7 @@ namespace GameSvr
             result = false;
             for (i = 0; i < GuildAgitList.Count; i++)
             {
-                guildagit = GuildAgitList[i] as TGuildAgit;
+                guildagit = GuildAgitList[i];
                 if (guildagit != null)
                 {
                     if (guildagit.GuildName == gname)
@@ -291,7 +291,7 @@ namespace GameSvr
             {
                 for (i = 0; i < GuildAgitList.Count; i++)
                 {
-                    if ((GuildAgitList[i] as TGuildAgit).GuildAgitNumber == j)
+                    if (GuildAgitList[i].GuildAgitNumber == j)
                     {
                         break;
                     }
@@ -319,7 +319,7 @@ namespace GameSvr
             guildagit = null;
             for (i = GuildAgitList.Count - 1; i >= 0; i--)
             {
-                guildagit = GuildAgitList[i] as TGuildAgit;
+                guildagit = GuildAgitList[i];
                 if (gaCount == 0)
                 {
                     guildagit.UpdateGuildMaster();
@@ -467,7 +467,7 @@ namespace GameSvr
             string AnotherGuildMaster = "";
             for (var i = 0; i < GuildAgitList.Count; i++)
             {
-                TGuildAgit guildagit = GuildAgitList[i] as TGuildAgit;
+                TGuildAgit guildagit = GuildAgitList[i];
                 strStatus = "Normal";
                 if (guildagit.IsForSale())
                 {
@@ -525,7 +525,7 @@ namespace GameSvr
             bool result = false;
             for (var i = 0; i < GuildAgitList.Count; i++)
             {
-                guildagit = GuildAgitList[i] as TGuildAgit;
+                guildagit = GuildAgitList[i];
                 if (guildagit != null)
                 {
                     if (guildagit.GuildName == gname)
@@ -550,7 +550,7 @@ namespace GameSvr
             }
             for (var i = 0; i < GuildAgitList.Count; i++)
             {
-                TGuildAgit guildagit = GuildAgitList[i] as TGuildAgit;
+                TGuildAgit guildagit = GuildAgitList[i];
                 if (guildagit != null)
                 {
                     if ((guildagit.GuildName == gname) && (guildagit.ForSaleFlag == 1))
@@ -575,7 +575,7 @@ namespace GameSvr
             bool result = false;
             for (var i = 0; i < GuildAgitList.Count; i++)
             {
-                guildagit = GuildAgitList[i] as TGuildAgit;
+                guildagit = GuildAgitList[i];
                 if (guildagit != null)
                 {
                     if (guildagit.ForSaleGuildName == gname)
@@ -598,7 +598,7 @@ namespace GameSvr
             {
                 for (i = 0; i < GuildAgitList.Count; i++)
                 {
-                    guildagit = GuildAgitList[i] as TGuildAgit;
+                    guildagit = GuildAgitList[i];
                     if (guildagit != null)
                     {
                         if (guildagit.GuildAgitNumber == AgitNum)
@@ -622,7 +622,7 @@ namespace GameSvr
             {
                 for (i = 0; i < GuildAgitList.Count; i++)
                 {
-                    guildagit = GuildAgitList[i] as TGuildAgit;
+                    guildagit = GuildAgitList[i];
                     if (guildagit != null)
                     {
                         if (guildagit.GuildAgitNumber == AgitNum)
@@ -643,7 +643,7 @@ namespace GameSvr
             int count = 0;
             for (var i = 0; i < AgitDecoMonList.Count; i++)
             {
-                pitem = (TAgitDecoItem)AgitDecoMonList[i];
+                pitem = AgitDecoMonList[i];
                 if (pitem != null)
                 {
                     if (MakeDecoItemToMap(pitem.MapName, pitem.Name, pitem.Looks, pitem.Dura, pitem.x, pitem.y) > 0)
@@ -689,7 +689,7 @@ namespace GameSvr
                             pmi.AniCount = ps.AniCount;
                             pmi.Reserved = 0;
                             pmi.Ownership = null;
-                            pmi.Droptime = GetTickCount;
+                            pmi.Droptime  =  HUtil32.GetTickCount();
                             pmi.Droper = null;
                         }
                         dropenvir = svMain.GrobalEnvir.GetEnvir(DropMapName);
@@ -728,7 +728,7 @@ namespace GameSvr
             {
                 for (i = 0; i < AgitDecoMonList.Count; i++)
                 {
-                    tempitem = (TAgitDecoItem)AgitDecoMonList[i];
+                    tempitem = AgitDecoMonList[i];
                     if (tempitem != null)
                     {
                         if ((tempitem.MapName == mapname) && (tempitem.x == x) && (tempitem.y == y))
@@ -784,7 +784,7 @@ namespace GameSvr
             {
                 for (i = 0; i < AgitDecoMonList.Count; i++)
                 {
-                    tempitem = (TAgitDecoItem)AgitDecoMonList[i];
+                    tempitem = AgitDecoMonList[i];
                     if (tempitem != null)
                     {
                         if ((tempitem.MapName == mapname) && (tempitem.x == x) && (tempitem.y == y))
@@ -870,7 +870,7 @@ namespace GameSvr
                 strlist = new ArrayList();
                 for (i = 0; i < AgitDecoMonList.Count; i++)
                 {
-                    strlist.Add(((TAgitDecoItem)AgitDecoMonList[i]).Name + "\09" + ((TAgitDecoItem)AgitDecoMonList[i]).Looks.ToString() + "\09" + ((TAgitDecoItem)AgitDecoMonList[i]).MapName + "\09" + ((TAgitDecoItem)AgitDecoMonList[i]).x.ToString() + "\09" + ((TAgitDecoItem)AgitDecoMonList[i]).y.ToString() + "\09" + ((TAgitDecoItem)AgitDecoMonList[i]).Maker + "\09" + ((TAgitDecoItem)AgitDecoMonList[i]).Dura.ToString());
+                    strlist.Add(AgitDecoMonList[i].Name + "\09" + AgitDecoMonList[i].Looks.ToString() + "\09" + AgitDecoMonList[i].MapName + "\09" + AgitDecoMonList[i].x.ToString() + "\09" + AgitDecoMonList[i].y.ToString() + "\09" + AgitDecoMonList[i].Maker + "\09" + AgitDecoMonList[i].Dura.ToString());
                 }
                 try
                 {
@@ -972,7 +972,7 @@ namespace GameSvr
             TAgitDecoItem pitem;
             for (i = 0; i < AgitDecoMonList.Count; i++)
             {
-                pitem = (TAgitDecoItem)AgitDecoMonList[i];
+                pitem = AgitDecoMonList[i];
                 if (pitem != null)
                 {
                     agitnum = GetGuildAgitNumFromMapName(pitem.MapName);
@@ -1192,7 +1192,7 @@ namespace GameSvr
                                                                 }
                                                                 if ((pmapitem.Ownership != null) || (pmapitem.Droper != null))
                                                                 {
-                                                                    if (GetTickCount - pmapitem.Droptime > ObjBase.ANTI_MUKJA_DELAY)
+                                                                    if (HUtil32.GetTickCount() - pmapitem.Droptime > ObjBase.ANTI_MUKJA_DELAY)
                                                                     {
                                                                         pmapitem.Ownership = null;
                                                                         pmapitem.Droper = null;

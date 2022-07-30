@@ -13,7 +13,7 @@ namespace GameSvr
             AddToMap();
             this.FVisible = false;
             MineCount = new System.Random(200).Next();
-            RefillTime = GettickCount;
+            RefillTime  =  HUtil32.GetTickCount();
             this.Active = false;
             MineFillCount = new System.Random(80).Next();
         }
@@ -21,7 +21,7 @@ namespace GameSvr
         public void Refill()
         {
             MineCount = MineFillCount;
-            RefillTime = GettickCount;
+            RefillTime  =  HUtil32.GetTickCount();
         }
 
         public override void AddToMap()

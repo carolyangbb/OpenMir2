@@ -18,9 +18,9 @@ namespace GameSvr
             int i;
             TCreature cret;
             ArrayList list;
-            if (GetTickCount - ticktime > 3000)
+            if (HUtil32.GetTickCount() - ticktime > 3000)
             {
-                ticktime = GetTickCount;
+                ticktime  =  HUtil32.GetTickCount();
                 list = new ArrayList();
                 if (this.PEnvir != null)
                 {

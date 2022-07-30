@@ -60,7 +60,7 @@ namespace GameSvr
             pu.Shandle = shandle;
             pu.UserGateIndex = (ushort)userremotegateindex;
             pu.GateIndex = gateindex;
-            pu.ReadyStartTime = GetTickCount;
+            pu.ReadyStartTime  =  HUtil32.GetTickCount();
             pu.Closed = false;
             try
             {
@@ -189,7 +189,7 @@ namespace GameSvr
             TUserOpenInfo pui;
             FDBRecord rcd;
             result = false;
-            if (!RunDB.Units.RunDB.LoadHumanCharacter(pu.UserId, pu.UserName, pu.UserAddress, pu.Certification, ref rcd))
+            if (!RunDB.LoadHumanCharacter(pu.UserId, pu.UserName, pu.UserAddress, pu.Certification, ref rcd))
             {
                 // 努扼捞攫飘俊 俊矾 皋技瘤甫 焊辰促.
                 svMain.fuOpenLock.Enter();
@@ -217,12 +217,12 @@ namespace GameSvr
             bool result;
             FDBRecord rcd;
             result = false;
-            if (RunDB.Units.RunDB.LoadHumanCharacter("1", pc.UserName, "1", 1, ref rcd))
+            if (RunDB.LoadHumanCharacter("1", pc.UserName, "1", 1, ref rcd))
             {
                 if ((rcd.Block.DBHuman.Gold + pc.ChangeGold > 0) && (rcd.Block.DBHuman.Gold + pc.ChangeGold < ObjBase.MAXGOLD))
                 {
                     rcd.Block.DBHuman.Gold = rcd.Block.DBHuman.Gold + pc.ChangeGold;
-                    if (RunDB.Units.RunDB.SaveHumanCharacter("1", pc.UserName, 1, rcd))
+                    if (RunDB.SaveHumanCharacter("1", pc.UserName, 1, rcd))
                     {
                         svMain.UserEngine.ChangeAndSaveOk(pc);
                         // 己傍沁澜阑 舅赴促.
@@ -247,7 +247,7 @@ namespace GameSvr
             long listtime;
             int listcount;
             long totaltime;
-            totaltime = GetTickCount;
+            totaltime  =  HUtil32.GetTickCount();
             loadlist = null;
             savelist = null;
             chglist = null;
@@ -301,15 +301,15 @@ namespace GameSvr
             if (savelist != null)
             {
                 // n := 0;
-                listtime = GetTickCount;
+                listtime  =  HUtil32.GetTickCount();
                 listcount = savelist.Count;
                 for (i = 0; i < savelist.Count; i++)
                 {
                     p = (TSaveRcd)savelist[i];
                     // 历厘 角菩 饶 0.5檬俊 茄锅究父 历厘 夸没
-                    if (GetTickCount - p.savetime > 500)
+                    if (HUtil32.GetTickCount() - p.savetime > 500)
                     {
-                        if (RunDB.Units.RunDB.SaveHumanCharacter(p.uid, p.uname, p.certify, p.rcd) || (p.savefail > 20))
+                        if (RunDB.SaveHumanCharacter(p.uid, p.uname, p.certify, p.rcd) || (p.savefail > 20))
                         {
                             if (p.savefail > 20)
                             {
@@ -348,7 +348,7 @@ namespace GameSvr
                         }
                         else
                         {
-                            p.savetime = GetTickCount;
+                            p.savetime  =  HUtil32.GetTickCount();
                             p.savefail++;
                         }
                     }
@@ -357,13 +357,13 @@ namespace GameSvr
             }
             if (loadlist != null)
             {
-                listtime = GetTickCount;
+                listtime  =  HUtil32.GetTickCount();
                 listcount = loadlist.Count;
                 for (i = 0; i < loadlist.Count; i++)
                 {
                     // load human here...
                     // <rundb>
-                    Units.FrnEngn.g_DbUse = true;
+                    FrnEngn.g_DbUse = true;
                     pu = (TReadyUserInfo)loadlist[i];
                     if (!OpenUserCharactor(pu))
                     {
@@ -379,12 +379,12 @@ namespace GameSvr
                     }
                     Dispose(loadlist[i]);
                 }
-                Units.FrnEngn.g_DbUse = false;
+                FrnEngn.g_DbUse = false;
                 loadlist.Free();
             }
             if (chglist != null)
             {
-                listtime = GetTickCount;
+                listtime  =  HUtil32.GetTickCount();
                 listcount = chglist.Count;
                 for (i = 0; i < chglist.Count; i++)
                 {
@@ -396,14 +396,14 @@ namespace GameSvr
             }
             if (datalist != null)
             {
-                listtime = GetTickCount;
+                listtime  =  HUtil32.GetTickCount();
                 listcount = datalist.Count;
                 for (i = 0; i < datalist.Count; i++)
                 {
                     svMain.fuLock.Enter();
                     try
                     {
-                        RunDB.Units.RunDB.SendNonBlockDatas(datalist[i]);
+                        RunDB.SendNonBlockDatas(datalist[i]);
                     }
                     finally
                     {
@@ -479,7 +479,13 @@ namespace GameSvr
             }
         }
 
-        public int GetTickCount => System.Environment.TickCount;
+        public void Dispose(object obj)
+        {
+            if (obj != null)
+            {
+                obj = null;
+            }
+        }
     }
 }
 

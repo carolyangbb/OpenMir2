@@ -68,7 +68,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir;
+            byte targdir=0;
             result = false;
             // 辟立秦 老阑锭俊绰 辟立 塞 傍拜阑
             // 盔芭府 老锭绰 盔芭府 付过傍拜阑 茄促.
@@ -81,7 +81,7 @@ namespace GameSvr
                     {
                         if (this.TargetInAttackRange(this.TargetCret, ref targdir))
                         {
-                            this.TargetFocusTime = GetTickCount;
+                            this.TargetFocusTime  =  HUtil32.GetTickCount();
                             this.Attack(this.TargetCret, targdir);
                             if (fSitDown == false)
                             {
@@ -128,7 +128,7 @@ namespace GameSvr
 
         public override void Run()
         {
-            if (GetTickCount >= LastHideTime)
+            if (HUtil32.GetTickCount() >= LastHideTime)
             {
                 if (fHide)
                 {
@@ -157,9 +157,9 @@ namespace GameSvr
                 }
                 if (!this.RunDone && this.IsMoveAble())
                 {
-                    if ((GetTickCount - this.SearchEnemyTime > 8000) || ((GetTickCount - this.SearchEnemyTime > 1000) && (this.TargetCret == null)))
+                    if ((HUtil32.GetTickCount() - this.SearchEnemyTime > 8000) || ((HUtil32.GetTickCount() - this.SearchEnemyTime > 1000) && (this.TargetCret == null)))
                     {
-                        this.SearchEnemyTime = GetTickCount;
+                        this.SearchEnemyTime  =  HUtil32.GetTickCount();
                         this.MonsterNormalAttack();
                     }
                 }

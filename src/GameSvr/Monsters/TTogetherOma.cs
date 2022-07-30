@@ -15,7 +15,7 @@ namespace GameSvr
         public TTogetherOma() : base()
         {
             RecentAttackTime = (int)GetTickCount;
-            TargetTime = GetTickCount;
+            TargetTime  =  HUtil32.GetTickCount();
             OldTargetCret = null;
             SameRaceCount = 0;
         }
@@ -30,7 +30,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir;
+            byte targdir=0;
             result = false;
             if (GetCurrentTime < ((long)new System.Random(3000).Next() + 4000 + TargetTime))
             {
@@ -47,7 +47,7 @@ namespace GameSvr
                     if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                     {
                         this.HitTime = GetCurrentTime;
-                        this.TargetFocusTime = GetTickCount;
+                        this.TargetFocusTime  =  HUtil32.GetTickCount();
                         RecentAttackTime = (int)GetTickCount;
                         Attack(this.TargetCret, targdir);
                         this.BreakHolySeize();
@@ -101,7 +101,6 @@ namespace GameSvr
                 }
             }
             rlist.Free();
-            // 30付府肺 力茄
             SameRaceCount = _MIN(30, SameRaceCount);
             DCFact = SameRaceCount * 3;
             TAbility _wvar1 = this.WAbil;
@@ -109,14 +108,11 @@ namespace GameSvr
             CriticalFact = SameRaceCount;
             if (new System.Random(100).Next() < 1 + CriticalFact)
             {
-                // 规绢仿 公矫...
                 pwr = pwr + Lobyte(target.WAbil.AC) + new System.Random(HiByte(target.WAbil.AC) - Lobyte(target.WAbil.AC) + 1).Next();
-                // inherited
                 this.HitHitEx2(target, Grobal2.RM_LIGHTING, pwr, 0, true);
             }
             else
             {
-                // inherited
                 this.HitHit2(target, pwr, 0, true);
             }
         }

@@ -35,7 +35,7 @@ namespace GameSvr
             RecalcAbilitys();
             ResetElfMon();
             this.WalkTime = this.WalkTime + 800;
-            changefacetime = GetTickCount;
+            changefacetime  =  HUtil32.GetTickCount();
         }
 
         public override void Run()
@@ -50,7 +50,7 @@ namespace GameSvr
             }
             if (this.Death)
             {
-                if (GetTickCount - this.DeathTime > 2 * 1000)
+                if (HUtil32.GetTickCount() - this.DeathTime > 2 * 1000)
                 {
                     this.MakeGhost(2);
                 }
@@ -71,7 +71,7 @@ namespace GameSvr
                 }
                 if (bochangeface)
                 {
-                    if (GetTickCount - changefacetime > 60 * 1000)
+                    if (HUtil32.GetTickCount() - changefacetime > 60 * 1000)
                     {
                         cret = this.MakeClone(svMain.__ShinSu, this);
                         if (cret != null)
@@ -89,7 +89,7 @@ namespace GameSvr
                 }
                 else
                 {
-                    changefacetime = GetTickCount;
+                    changefacetime  =  HUtil32.GetTickCount();
                 }
             }
             base.Run();

@@ -18,14 +18,14 @@ namespace GameSvr
         public long readycount;
     } 
 
-    public struct TQuestRequire
+    public class TQuestRequire
     {
         public int RandomCount;
         public ushort CheckIndex;
         public byte CheckValue;
     }
 
-    public struct TQuestActionInfo
+    public class TQuestActionInfo
     {
         public int ActIdent;
         public string ActParam;
@@ -44,7 +44,7 @@ namespace GameSvr
         public int ActParamVal7;
     }
 
-    public struct TQuestConditionInfo
+    public class TQuestConditionInfo
     {
         public int IfIdent;
         public string IfParam;
@@ -131,7 +131,7 @@ namespace GameSvr
             CanBuyDecoItem = false;
             CanDoingEtc = false;
             BoSoundPlaying = false;
-            SoundStartTime = GetTickCount;
+            SoundStartTime  =  HUtil32.GetTickCount();
             MemorialCount = 0;
         }
 
@@ -291,11 +291,9 @@ namespace GameSvr
             }
         }
 
-        // procedure ArrangeSayStrings;
         public void NpcSay(TCreature target, string str)
         {
-            // Á¡Â÷ ¾È ¾²ÀÓ... ÇÏµåÄÚµù ÇÏÁö ¾Ê´Â °ÍÀÌ ÁÁÀ½
-            str = ReplaceChar(str, "\\", (char)0xa);
+            str = HUtil32.ReplaceChar(str, '\\', (char)0xa);
             target.SendMsg(this, Grobal2.RM_MERCHANTSAY, 0, 0, 0, 0, this.UserName + "/" + str);
         }
 
@@ -367,7 +365,7 @@ namespace GameSvr
                 {
                     source = "ÕýÔÚ¹¥³ÇÖÐ£¡\\ \\<·µ»Ø/@main>";
                 }
-                source = ReplaceChar(source, "\\", (char)0xa);
+                source = HUtil32.ReplaceChar(source, '\\', (char)0xa);
             }
             if (tag == "$LISTOFWAR")
             {
@@ -381,7 +379,7 @@ namespace GameSvr
                 {
                     source = "ÎÒÃÇÎ´È·¶¨Ê±¼ä...\\ \\<·µ»Ø/@main>";
                 }
-                source = ReplaceChar(source, "\\", (char)0xa);
+                source = HUtil32.ReplaceChar(source, '\\', (char)0xa);
             }
             if (tag == "$USERNAME")
             {
@@ -3282,9 +3280,9 @@ namespace GameSvr
                     case Grobal2.QA_SOUNDALL:
                         // ½Ã°£ÀÌ Áö³ª¸é ÇÃ·¡±× Reset
                         // 25ÃÊ
-                        if (GetTickCount - SoundStartTime > 25 * 1000)
+                        if (HUtil32.GetTickCount() - SoundStartTime > 25 * 1000)
                         {
-                            SoundStartTime = GetTickCount;
+                            SoundStartTime  =  HUtil32.GetTickCount();
                             BoSoundPlaying = false;
                         }
                         if (!BoSoundPlaying)
@@ -3373,7 +3371,7 @@ namespace GameSvr
                         }
                         break;
                     case Grobal2.QA_RECALLMAPGROUP:
-                        n = (int)((GetTickCount - who.CGHIstart) / 1000);
+                        n = (int)((HUtil32.GetTickCount() - who.CGHIstart) / 1000);
                         who.CGHIstart = who.CGHIstart + ((long)n * 1000);
                         if (who.CGHIUseTime > n)
                         {
@@ -3394,7 +3392,7 @@ namespace GameSvr
                                     // ÁöÁ¤ÇÑ ¸Ê¿¡ ÀÖ´Â »ç¶÷¸¸ ¼ÒÈ¯
                                     ((TUserHuman)who).CmdRecallMan(who.GroupMembers[k], pqa.ActParam);
                                 }
-                                who.CGHIstart = GetTickCount;
+                                who.CGHIstart  =  HUtil32.GetTickCount();
                                 who.CGHIUseTime = 10;
                                 // 10ÃÊ °£°Ý
                             }
@@ -3514,8 +3512,6 @@ namespace GameSvr
                         }
                         break;
                     case Grobal2.QA_RECALLMOB:
-                        // ¸÷ÀÌ¸§
-                        // ¸¶¸®¼ö
                         ((TUserHuman)who).CmdCallMakeSlaveMonster(pqa.ActParam, pqa.ActTag, 3, 0);
                         break;
                     case Grobal2.QA_SETLOVERFLAG:
@@ -3525,10 +3521,8 @@ namespace GameSvr
                             if (hum != null)
                             {
                                 param = HUtil32.Str_ToInt(pqa.ActParam, 0);
-                                // if param > 100 then begin
                                 tag = HUtil32.Str_ToInt(pqa.ActTag, 0);
                                 hum.SetQuestMark(param, tag);
-                                // end;
                             }
                         }
                         break;
@@ -3640,7 +3634,7 @@ namespace GameSvr
             {
                 ((TUserHuman)who).CurQuestNpc = null;
                 ((TUserHuman)who).CurQuest = null;
-                FillChar(((TUserHuman)who).QuestParams, sizeof(int) * 10, '\0');
+                //FillChar(((TUserHuman)who).QuestParams, sizeof(int) * 10, '\0');
             }
             if (title.ToLower().CompareTo("@main".ToLower()) == 0)
             {
@@ -3705,42 +3699,37 @@ namespace GameSvr
                             {
                                 continue;
                             }
-                            // 2003-09-08 nil °Ë»ç
                             bosaynow = false;
-                            if (NpcSayTitle_CheckSayingCondition(psayproc.ConditionList))
+                            if (NpcSayTitle_CheckSayingCondition(who, psayproc.ConditionList))
                             {
-                                // Á¶°Ç ÂüÀÎ °æ¿ì, ´ëÈ­
                                 str = str + psayproc.Saying;
-                                // Á¶°Ç ÂüÀÎ °æ¿ì, ¾×¼Ç
-                                if (!NpcSayTitle_DoActionList(psayproc.ActionList))
+                                if (!NpcSayTitle_DoActionList(who, psayproc.ActionList))
                                 {
                                     break;
                                 }
                                 if (bosaynow)
                                 {
-                                    NpcSayTitle_NpcSayProc(str, true);
+                                    NpcSayTitle_NpcSayProc(who, str, true);
                                     ((TUserHuman)who).CurSayProc = psayproc;
                                 }
                             }
                             else
                             {
-                                // Á¶°Ç °ÅÁþÀÎ °æ¿ì, ´ëÈ­
                                 str = str + psayproc.ElseSaying;
-                                // Á¶°Ç °ÅÁþÀÎ °æ¿ì, ¾×¼Ç
-                                if (!NpcSayTitle_DoActionList(psayproc.ElseActionList))
+                                if (!NpcSayTitle_DoActionList(who, psayproc.ElseActionList))
                                 {
                                     break;
                                 }
                                 if (bosaynow)
                                 {
-                                    NpcSayTitle_NpcSayProc(str, true);
+                                    NpcSayTitle_NpcSayProc(who, str, true);
                                     ((TUserHuman)who).CurSayProc = psayproc;
                                 }
                             }
                         }
                         if (str != "")
                         {
-                            NpcSayTitle_NpcSayProc(str, false);
+                            NpcSayTitle_NpcSayProc(who, str, false);
                             ((TUserHuman)who).CurSayProc = psayproc;
                         }
                         break;
@@ -3867,8 +3856,8 @@ namespace GameSvr
             GoodsList = new List<IList<TUserItem>>();
             PriceList = new ArrayList();
             UpgradingList = new List<TUpgradeInfo>();
-            checkrefilltime = GetTickCount;
-            checkverifytime = GetTickCount;
+            checkrefilltime  =  HUtil32.GetTickCount();
+            checkverifytime  =  HUtil32.GetTickCount();
             fSaveToFileCount = 0;
             CreateIndex = 0;
         }
@@ -4277,10 +4266,10 @@ namespace GameSvr
                 {
                     step = 1;
                     pp = (TMarketProduct)ProductList[i];
-                    if (GetTickCount - pp.ZenTime > ((long)pp.ZenHour) * 60 * 1000)
+                    if (HUtil32.GetTickCount() - pp.ZenTime > ((long)pp.ZenHour) * 60 * 1000)
                     {
                         step = 3;
-                        pp.ZenTime = GetTickCount;
+                        pp.ZenTime  =  HUtil32.GetTickCount();
                         gindex = svMain.UserEngine.GetStdItemIndex(pp.GoodsName);
                         // ÀÌ¸§À¸·Î ¾ÆÀÌÅÛ ÀÎµ¦½º¸¦ ¾ò¾î¿È
                         if (gindex >= 0)
@@ -4353,7 +4342,7 @@ namespace GameSvr
                             pp = (TMarketProduct)ProductList[k];
                             gindex = svMain.UserEngine.GetStdItemIndex(pp.GoodsName);
                             // ÀÌ¸§À¸·Î ¾ÆÀÌÅÛ ÀÎµ¦½º¸¦ ¾ò¾î¿È
-                            if (((TUserItem)l[0]).Index == gindex)
+                            if (l[0].Index == gindex)
                             {
                                 step = 12;
                                 flag = true;
@@ -4692,7 +4681,7 @@ namespace GameSvr
                         // hum.SendMsg (hum, RM_SUBABILITY, 0, 0, 0, 0, '');
                         UserSelectUpgradeWeapon_PrepareWeaponUpgrade(hum.ItemList, ref pup.updc, ref pup.upsc, ref pup.upmc, ref pup.durapoint);
                         pup.readydate = DateTime.Now;
-                        pup.readycount = GetTickCount;
+                        pup.readycount  =  HUtil32.GetTickCount();
                         UpgradingList.Add(pup);
                         SaveUpgradeItemList();
                         flag = true;
@@ -4726,7 +4715,7 @@ namespace GameSvr
                     if (hum.UserName == UpgradingList[i].UserName)
                     {
                         state = 1;
-                        if ((GetTickCount - UpgradingList[i].readycount > 60 * 60 * 1000) || (hum.UserDegree >= Grobal2.UD_ADMIN))
+                        if ((HUtil32.GetTickCount() - UpgradingList[i].readycount > 60 * 60 * 1000) || (hum.UserDegree >= Grobal2.UD_ADMIN))
                         {
                             pup = UpgradingList[i];
                             UpgradingList.RemoveAt(i);
@@ -4949,7 +4938,7 @@ namespace GameSvr
             string str;
             // if specialrepair > 0 then begin
             str = "ÄãÕâ¼Ò»ï£¡ÄãÌ«ÐÒÔËÁË...ÎÒÕýºÃÓÐËùÐè²ÄÁÏ¿É×öÌØÊâÐÞ²¹¡£\\" + "µ«¼Û¸ñÂï...ÊÇÍ¨³£µÄÈý±¶¡£\\ \\ " + " <·µ»Ø/@main> ";
-            str = ReplaceChar(str, "\\", (char)0xa);
+            str = HUtil32.ReplaceChar(str, '\\', (char)0xa);
             this.NpcSay(who, str);
             who.SendMsg(this, Grobal2.RM_SENDUSERSPECIALREPAIR, 0, this.ActorId, 0, 0, "");
             // end else begin
@@ -5883,7 +5872,7 @@ namespace GameSvr
             {
                 // Æ¯¼ö¼ö¸® ¸øÇÔ.
                 str = "¶Ô²»Æð£¬ÎÒÃÇ¸ÕÓÃÍêÁËÌØÊâÐÞ²¹µÄ²ÄÁÏ...\\ " + " \\ \\<·µ»Ø/@main> ";
-                str = ReplaceChar(str, "\\", (char)0xa);
+                str = HUtil32.ReplaceChar(str, '\\', (char)0xa);
                 this.NpcSay(whocret, str);
                 whocret.SendMsg(this, Grobal2.RM_USERREPAIRITEM_FAIL, 0, 0, 0, 0, "");
                 return result;
@@ -5973,7 +5962,7 @@ namespace GameSvr
                         puitem.Dura = puitem.DuraMax;
                         whocret.SendMsg(this, Grobal2.RM_USERREPAIRITEM_OK, 0, whocret.Gold, puitem.Dura, puitem.DuraMax, "");
                         str = "¿Ïº®ÇÏ°Ô ¼ö¸®µÇ¾ú³×...\\ÇëºÃºÃÊ¹ÓÃËü¡£\\ \\<·µ»Ø/@main> ";
-                        str = ReplaceChar(str, "\\", (char)0xa);
+                        str = HUtil32.ReplaceChar(str, '\\', (char)0xa);
                         this.NpcSay(whocret, str);
                         repair_type = 2;
                     }
@@ -7253,7 +7242,7 @@ namespace GameSvr
             {
                 // --------------------------------
                 // Merchant ºÎÇÏ ºÐ»ê ÄÚµå(sonmg 2005/02/01)
-                dwCurrentTick = GetTickCount;
+                dwCurrentTick  =  HUtil32.GetTickCount();
                 dwDelayTick = CreateIndex * 500;
                 if (dwCurrentTick < dwDelayTick)
                 {
@@ -7561,7 +7550,7 @@ namespace GameSvr
         //Constructor  Create()
         public TTrainer() : base()
         {
-            strucktime = GetTickCount;
+            strucktime  =  HUtil32.GetTickCount();
             damagesum = 0;
             struckcount = 0;
         }
@@ -7573,7 +7562,7 @@ namespace GameSvr
                     if ((((int)msg.sender) == Grobal2.RM_STRUCK) && (msg.wParam != 0))
                     {
                         damagesum = damagesum + msg.wParam;
-                        strucktime = GetTickCount;
+                        strucktime  =  HUtil32.GetTickCount();
                         struckcount++;
                         this.Say("ÆÆ»µÁ¦Îª" + msg.wParam.ToString() + "£¬Æ½¾ùÖµÎª" + (damagesum / struckcount).ToString() + "¡£");
                     }
@@ -7583,7 +7572,7 @@ namespace GameSvr
                     // begin
                     // if (msg.Sender = self) and (msg.lParam3 <> 0) then begin
                     // damagesum := damagesum + msg.wParam;
-                    // strucktime := GetTickCount;
+                    // strucktime : =  HUtil32.GetTickCount();
                     // Inc (struckcount);
                     // {$IFDEF KOREA} Say ('ÆÄ±«·ÂÀº ' + IntToStr(msg.wParam) + ', Æò±ÕÀº ' + IntToStr(damagesum div struckcount));
                     // {$ELSE}        Say ('Destructive power is ' + IntToStr(msg.wParam) + ', Average  is ' + IntToStr(damagesum div struckcount));
@@ -7594,7 +7583,7 @@ namespace GameSvr
                     if (msg.lParam1 != 0)
                     {
                         damagesum = damagesum + msg.lParam1;
-                        strucktime = GetTickCount;
+                        strucktime  =  HUtil32.GetTickCount();
                         struckcount++;
                         this.Say("×ÜÆÆ»µÁ¦Îª" + msg.lParam1.ToString() + "£¬Æ½¾ùÆÆ»µÁ¦Îª" + (damagesum / struckcount).ToString() + "¡£");
                     }
@@ -7606,7 +7595,7 @@ namespace GameSvr
         {
             if (struckcount > 0)
             {
-                if (GetTickCount - strucktime > 3 * 1000)
+                if (HUtil32.GetTickCount() - strucktime > 3 * 1000)
                 {
                     this.Say("×ÜÆÆ»µÁ¦Îª" + damagesum.ToString() + "£¬Æ½¾ùÆÆ»µÁ¦Îª" + (damagesum / struckcount).ToString() + "¡£");
                     struckcount = 0;
@@ -7725,7 +7714,7 @@ namespace GameSvr
             if (svMain.UserCastle.TotalGold >= ObjNpc.CASTLEGUARDEMPLOYFEE)
             {
                 gnum = HUtil32.Str_ToInt(numstr, 0) - 1;
-                if (gnum >= 0 && gnum <= Castle.Units.Castle.MAXGUARD - 1)
+                if (gnum >= 0 && gnum <= Castle.Castle.MAXGUARD - 1)
                 {
                     if (svMain.UserCastle.Guards[gnum].UnitObj == null)
                     {
@@ -7776,7 +7765,7 @@ namespace GameSvr
             if (svMain.UserCastle.TotalGold >= ObjNpc.CASTLEARCHEREMPLOYFEE)
             {
                 gnum = HUtil32.Str_ToInt(numstr, 0) - 1;
-                if (gnum >= 0 && gnum <= Units.Castle.MAXARCHER - 1)
+                if (gnum >= 0 && gnum <= Castle.MAXARCHER - 1)
                 {
                     if (svMain.UserCastle.Archers[gnum].UnitObj == null)
                     {
@@ -7972,7 +7961,7 @@ namespace GameSvr
             this.ViewRange = 7;
             this.RunNextTick = 250;
             this.SearchRate = 2500 + ((long)new System.Random(1500).Next());
-            this.SearchTime = GetTickCount;
+            this.SearchTime  =  HUtil32.GetTickCount();
             DigupRange = 4;
             DigdownRange = 4;
             this.HideMode = true;
@@ -8058,7 +8047,7 @@ namespace GameSvr
                         if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                         {
                             // »ó¼Ó¹ÞÀº run ¿¡¼­ HitTime Àç¼³Á¤ÇÔ.
-                            // HitTime := GetTickCount; //¾Æ·¡ AttackTarget¿¡¼­ ÇÔ.
+                            // HitTime : =  HUtil32.GetTickCount(); //¾Æ·¡ AttackTarget¿¡¼­ ÇÔ.
                             nearcret = this.GetNearMonster();
                         }
                         boidle = false;
@@ -8120,33 +8109,33 @@ namespace GameSvr
             result = -1;
             if (str.Length == 2)
             {
-                if (Char.ToUpper(str[1]) == "P")
+                if (Char.ToUpper(str[0]) == 'P')
                 {
-                    n = HUtil32.Str_ToInt(str[2], -1);
+                    n = HUtil32.Str_ToInt(str[1], -1);
                     if (n >= 0 && n <= 9)
                     {
                         result = n;
                     }
                 }
-                if (Char.ToUpper(str[1]) == "G")
+                if (Char.ToUpper(str[0]) == 'G')
                 {
-                    n = HUtil32.Str_ToInt(str[2], -1);
+                    n = HUtil32.Str_ToInt(str[1], -1);
                     if (n >= 0 && n <= 9)
                     {
                         result = 100 + n;
                     }
                 }
-                if (Char.ToUpper(str[1]) == "D")
+                if (Char.ToUpper(str[0]) == 'D')
                 {
-                    n = HUtil32.Str_ToInt(str[2], -1);
+                    n = HUtil32.Str_ToInt(str[1], -1);
                     if (n >= 0 && n <= 9)
                     {
                         result = 200 + n;
                     }
                 }
-                if (Char.ToUpper(str[1]) == "M")
+                if (Char.ToUpper(str[0]) == 'M')
                 {
-                    n = HUtil32.Str_ToInt(str[2], -1);
+                    n = HUtil32.Str_ToInt(str[1], -1);
                     if (n >= 0 && n <= 9)
                     {
                         result = 300 + n;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using SystemModule;
 using SystemModule.Common;
@@ -52,7 +53,7 @@ namespace GameSvr
         public ArrayList StdItemList = null;
         public ArrayList MonDefList = null;
         public ArrayList MonList = null;
-        public ArrayList DefMagicList = null;
+        public IList<TDefMagic> DefMagicList = null;
         public ArrayList AdminList = null;
         public StringList ChatLogList = null;
         public ArrayList MerchantList = null;
@@ -95,14 +96,14 @@ namespace GameSvr
             MissionList = new ArrayList();
             WaitServerList = new ArrayList();
             HolySeizeList = new ArrayList();
-            timer10min = GetTickCount;
-            timer10sec = GetTickCount;
-            timer1min = GetTickCount;
-            opendoorcheck = GetTickCount;
-            missiontime = GetTickCount;
-            onezentime = GetTickCount;
-            hum200time = GetTickCount;
-            usermgrcheck = GetTickCount;
+            timer10min = HUtil32.GetTickCount();
+            timer10sec = HUtil32.GetTickCount();
+            timer1min = HUtil32.GetTickCount();
+            opendoorcheck = HUtil32.GetTickCount();
+            missiontime = HUtil32.GetTickCount();
+            onezentime = HUtil32.GetTickCount();
+            hum200time = HUtil32.GetTickCount();
+            usermgrcheck = HUtil32.GetTickCount();
             GenCur = 0;
             MonCur = 0;
             MonSubCur = 0;
@@ -116,7 +117,7 @@ namespace GameSvr
             gaDecoItemCount = 0;
             BoUniqueItemEvent = false;
             UniqueItemEventInterval = 30 * 60 * 1000;
-            eventitemtime = GetTickCount;
+            eventitemtime = HUtil32.GetTickCount();
             FUserCS = new object();
         }
 
@@ -304,7 +305,7 @@ namespace GameSvr
             {
                 if (((TStdItem)StdItemList[i]).Name.ToLower().CompareTo(itmname.ToLower()) == 0)
                 {
-                    FillChar(uitem, sizeof(TUserItem), '\0');
+                    //FillChar(uitem, sizeof(TUserItem), '\0');
                     uitem.Index = (ushort)(i + 1);
                     // Index=0은 빈것으로 인식
                     uitem.MakeIndex = svMain.GetItemServerIndex();
@@ -392,7 +393,7 @@ namespace GameSvr
             int enx;
             int eny;
             TCreature cret;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             bool inrange;
             stx = x - 12;
             enx = x + 12;
@@ -447,7 +448,7 @@ namespace GameSvr
                 {
                     // 이미 열려 있거나, 잠겨있지않으면.
                     pd.PCore.DoorOpenState = true;
-                    pd.PCore.OpenTime = GetTickCount;
+                    pd.PCore.OpenTime = HUtil32.GetTickCount();
                     SendRefMsgEx(envir, dx, dy, Grobal2.RM_OPENDOOR_OK, 0, dx, dy, 0, "");
                     result = true;
                 }
@@ -487,7 +488,7 @@ namespace GameSvr
                         if (e.DoorList[i].PCore.DoorOpenState)
                         {
                             pd = e.DoorList[i];
-                            if (GetTickCount - pd.PCore.OpenTime > 5000)
+                            if (HUtil32.GetTickCount() - pd.PCore.OpenTime > 5000)
                             {
                                 CloseDoor(e, pd);
                             }
@@ -831,9 +832,9 @@ namespace GameSvr
         public bool GetUniqueEvnetItemName(ref string iname, ref int numb)
         {
             bool result = false;
-            if ((GetTickCount - eventitemtime > UniqueItemEventInterval) && (svMain.EventItemList.Count > 0))
+            if ((HUtil32.GetTickCount() - eventitemtime > UniqueItemEventInterval) && (svMain.EventItemList.Count > 0))
             {
-                eventitemtime = GetTickCount;
+                eventitemtime = HUtil32.GetTickCount();
                 int n = new System.Random(svMain.EventItemList.Count).Next();
                 iname = (string)svMain.EventItemList[n];
                 numb = (int)svMain.EventItemList.Values[n];
@@ -1384,7 +1385,7 @@ namespace GameSvr
                         {
                             if (cret.CX < cret.PEnvir.MapWidth - edge - 1)
                             {
-                               cret.CX += (short)stepx;
+                                cret.CX += (short)stepx;
                             }
                             else
                             {
@@ -1457,7 +1458,7 @@ namespace GameSvr
             TCreature cret;
             string str;
             result = true;
-            start = GetTickCount;
+            start = HUtil32.GetTickCount();
             try
             {
                 n = zcount;
@@ -1508,10 +1509,9 @@ namespace GameSvr
                                     }
                                 }
                             }
-                            if (GetTickCount - start > svMain.ZenLimitTime)
+                            if (HUtil32.GetTickCount() - start > svMain.ZenLimitTime)
                             {
                                 result = false;
-                                // 젠양이 많음, 다음에 다시함
                                 break;
                             }
                         }
@@ -1523,7 +1523,6 @@ namespace GameSvr
                             zzx = pz.X - pz.Area + new System.Random(pz.Area * 2 + 1).Next();
                             zzy = pz.Y - pz.Area + new System.Random(pz.Area * 2 + 1).Next();
                             cret = AddCreature(pz.MapName, (short)zzx, (short)zzy, pz.MonRace, pz.MonName);
-                            // 2003/06/20
                             if (cret != null)
                             {
                                 pz.Mons.Add(cret);
@@ -1545,12 +1544,9 @@ namespace GameSvr
                                         switch (pz.ZenShoutType)
                                         {
                                             case 1:
-                                                // 서버 전체 외치기
                                                 SysMsgAll(str);
                                                 break;
                                             case 2:
-                                                // 그냥 외치기
-                                                // wide
                                                 CryCry(Grobal2.RM_CRY, cret.PEnvir, cret.CX, cret.CY, 50, str);
                                                 break;
                                         }
@@ -1559,8 +1555,6 @@ namespace GameSvr
                             }
                             else
                             {
-                                // cret = nil이면...
-                                // 왕몹젠 스킵 모니터링(sonmg)
                                 if (pz.MonRace == Grobal2.RC_SKELETONKING)
                                 {
                                     svMain.MainOutMessage("RegenMon Nil : 해골반왕-NIL");
@@ -1582,10 +1576,9 @@ namespace GameSvr
                                     svMain.MainOutMessage(pz.MapName + " " + zzx.ToString() + "," + zzy.ToString() + " " + pz.MonRace.ToString() + " " + pz.MonName);
                                 }
                             }
-                            if (GetTickCount - start > svMain.ZenLimitTime)
+                            if (HUtil32.GetTickCount() - start > svMain.ZenLimitTime)
                             {
                                 result = false;
-                                // 젠양이 많음, 다음에 다시함
                                 break;
                             }
                         }
@@ -1601,29 +1594,22 @@ namespace GameSvr
 
         public int GetMonCount(TZenInfo pz)
         {
-            int result;
-            int i;
-            int n;
-            n = 0;
-            for (i = 0; i < pz.Mons.Count; i++)
+            int n = 0;
+            for (var i = 0; i < pz.Mons.Count; i++)
             {
                 if (!((TCreature)pz.Mons[i]).Death && !((TCreature)pz.Mons[i]).BoGhost)
                 {
                     n++;
                 }
             }
-            result = n;
-            return result;
+            return n;
         }
 
         public int GetGenCount(string mapname)
         {
-            int result;
-            int i;
-            int count;
             TZenInfo pz;
-            count = 0;
-            for (i = 0; i < MonList.Count; i++)
+            int count = 0;
+            for (var i = 0; i < MonList.Count; i++)
             {
                 pz = (TZenInfo)MonList[i];
                 if (pz != null)
@@ -1634,34 +1620,24 @@ namespace GameSvr
                     }
                 }
             }
-            result = count;
-            return result;
+            return count;
         }
 
-        // 맵에 몇마리가 젠되었는지
-        // list가 nil이면 갯수만 리턴
         public int GetMapMons(TEnvirnoment penvir, ArrayList list)
         {
-            int result;
-            int i;
-            int k;
-            int count;
-            TZenInfo pz;
-            TCreature cret;
-            count = 0;
-            result = 0;
+            int count = 0;
             if (penvir == null)
             {
-                return result;
+                return 0;
             }
-            for (i = 0; i < MonList.Count; i++)
+            for (var i = 0; i < MonList.Count; i++)
             {
-                pz = (TZenInfo)MonList[i];
+                TZenInfo pz = (TZenInfo)MonList[i];
                 if (pz != null)
                 {
-                    for (k = 0; k < pz.Mons.Count; k++)
+                    for (var k = 0; k < pz.Mons.Count; k++)
                     {
-                        cret = (TCreature)pz.Mons[k];
+                        TCreature cret = (TCreature)pz.Mons[k];
                         if (!cret.BoGhost && !cret.Death && (cret.PEnvir == penvir))
                         {
                             if (list != null)
@@ -1673,11 +1649,9 @@ namespace GameSvr
                     }
                 }
             }
-            result = count;
-            return result;
+            return count;
         }
 
-        // list가 nil이면 갯수만 리턴
         public int GetMapMonsNoRecallMob(TEnvirnoment penvir, ArrayList list)
         {
             int result;
@@ -1715,18 +1689,14 @@ namespace GameSvr
             return result;
         }
 
-        // DefMagic
-        // ---------------------------------------------------------
         public TDefMagic GetDefMagic(string magname)
         {
-            TDefMagic result;
-            int i;
-            result = null;
-            for (i = 0; i < DefMagicList.Count; i++)
+            TDefMagic result = null;
+            for (var i = 0; i < DefMagicList.Count; i++)
             {
-                if (((TDefMagic)DefMagicList[i]).MagicName.ToLower().CompareTo(magname.ToLower()) == 0)
+                if (DefMagicList[i].MagicName.ToLower().CompareTo(magname.ToLower()) == 0)
                 {
-                    result = (TDefMagic)DefMagicList[i];
+                    result = DefMagicList[i];
                     break;
                 }
             }
@@ -1740,9 +1710,9 @@ namespace GameSvr
             result = null;
             for (i = 0; i < DefMagicList.Count; i++)
             {
-                if (((TDefMagic)DefMagicList[i]).MagicId == Id)
+                if (DefMagicList[i].MagicId == Id)
                 {
-                    result = (TDefMagic)DefMagicList[i];
+                    result = DefMagicList[i];
                     break;
                 }
             }
@@ -1768,7 +1738,7 @@ namespace GameSvr
         // 싱크맞워야함
         public void ClosePlayer(TUserHuman hum)
         {
-            hum.GhostTime = GetTickCount;
+            hum.GhostTime = HUtil32.GetTickCount();
             ClosePlayers.Add(hum);
         }
 
@@ -2033,7 +2003,7 @@ namespace GameSvr
         public bool AddServerWaitUser(TServerShiftUserInfo psui)
         {
             bool result;
-            psui.waittime = GetTickCount;
+            psui.waittime = HUtil32.GetTickCount();
             WaitServerList.Add(psui);
             result = true;
             return result;
@@ -2044,7 +2014,7 @@ namespace GameSvr
             int i;
             for (i = WaitServerList.Count - 1; i >= 0; i--)
             {
-                if (GetTickCount - ((TServerShiftUserInfo)WaitServerList[i]).waittime > 30 * 1000)
+                if (HUtil32.GetTickCount() - ((TServerShiftUserInfo)WaitServerList[i]).waittime > 30 * 1000)
                 {
                     Dispose((TServerShiftUserInfo)WaitServerList[i]);
                     WaitServerList.RemoveAt(i);
@@ -2074,7 +2044,7 @@ namespace GameSvr
                         }
                     }
                     // 결계에 잡인 몹이 없거나, 3분이 경과한 경우, (결계의 제한 시간은 3분이다)
-                    if ((phs.seizelist.Count <= 0) || (GetTickCount - phs.OpenTime > phs.SeizeTime) || (GetTickCount - phs.OpenTime > 3 * 60 * 1000))
+                    if ((phs.seizelist.Count <= 0) || (HUtil32.GetTickCount() - phs.OpenTime > phs.SeizeTime) || (HUtil32.GetTickCount() - phs.OpenTime > 3 * 60 * 1000))
                     {
                         phs.seizelist.Free();
                         for (k = 0; k <= 7; k++)
@@ -2111,9 +2081,9 @@ namespace GameSvr
         {
             int i;
             TCreature cret;
-            FillChar(sui, sizeof(TServerShiftUserInfo), '\0');
+            //FillChar(sui, sizeof(TServerShiftUserInfo), '\0');
             sui.UserName = hum.UserName;
-            RunDB.Units.RunDB.FDBMakeHumRcd(hum, sui.rcd);
+            RunDB.FDBMakeHumRcd(hum, sui.rcd);
             sui.Certification = hum.Certification;
             if (hum.GroupOwner != null)
             {
@@ -2242,7 +2212,7 @@ namespace GameSvr
             int fhandle;
             int checksum;
             long shifttime;
-            shifttime = GetTickCount;
+            shifttime = HUtil32.GetTickCount();
             result = "";
             flname = "$_" + svMain.ServerIndex.ToString() + "_$_" + svMain.ShareFileNameNum.ToString() + ".shr";
             svMain.ShareFileNameNum++;
@@ -2368,7 +2338,7 @@ namespace GameSvr
             int i;
             string name;
             string apmode;
-            apmode = GetValidStr3(uname, name, new string[] { ":" });
+            apmode = HUtil32.GetValidStr3(uname, ref name, new string[] { ":" });
             for (i = OtherUserNameList.Count - 1; i >= 0; i--)
             {
                 if (OtherUserNameList[i].ToLower().CompareTo(name.ToLower()) == 0)
@@ -2390,7 +2360,7 @@ namespace GameSvr
             int i;
             string name;
             string apmode;
-            apmode = GetValidStr3(uname, name, new string[] { ":" });
+            apmode = HUtil32.GetValidStr3(uname, ref name, new string[] { ":" });
             for (i = 0; i < OtherUserNameList.Count; i++)
             {
                 if ((OtherUserNameList[i].ToLower().CompareTo(name.ToLower()) == 0) && (((int)OtherUserNameList.Values[i]) == snum))
@@ -2490,7 +2460,7 @@ namespace GameSvr
                 if (pshift == null)
                 {
                     // 서버 이동이 아님
-                    RunDB.Units.RunDB.FDBLoadHuman(pui.rcd, ref hum);
+                    RunDB.FDBLoadHuman(pui.rcd, ref hum);
                     hum.RaceServer = Grobal2.RC_USERHUMAN;
                     if (hum.HomeMap == "")
                     {
@@ -2670,7 +2640,7 @@ namespace GameSvr
                 }
                 else
                 {
-                    RunDB.Units.RunDB.FDBLoadHuman(pshift.rcd, ref hum);
+                    RunDB.FDBLoadHuman(pshift.rcd, ref hum);
                     hum.MapName = pshift.rcd.Block.DBHuman.MapName;
                     hum.CX = pshift.rcd.Block.DBHuman.CX;
                     hum.CY = pshift.rcd.Block.DBHuman.CY;
@@ -2747,12 +2717,12 @@ namespace GameSvr
             int bugcount;
             bool lack;
             bugcount = 0;
-            start = GetTickCount;
-            if (GetTickCount - hum200time > 200)
+            start = HUtil32.GetTickCount();
+            if (HUtil32.GetTickCount() - hum200time > 200)
             {
                 try
                 {
-                    hum200time = GetTickCount;
+                    hum200time = HUtil32.GetTickCount();
                     newlist = null;
                     cuglist = null;
                     cuhlist = null;
@@ -2862,7 +2832,7 @@ namespace GameSvr
                 for (i = 0; i < ClosePlayers.Count; i++)
                 {
                     hum = (TUserHuman)ClosePlayers[i];
-                    if (GetTickCount - hum.GhostTime > 5 * 60 * 1000)
+                    if (HUtil32.GetTickCount() - hum.GhostTime > 5 * 60 * 1000)
                     {
                         try
                         {
@@ -2888,7 +2858,7 @@ namespace GameSvr
                                     hum.BoChangeServer = false;
                                     hum.BoChangeServerOK = false;
                                     hum.BoChangeServerNeedDelay = true;
-                                    hum.ChangeServerDelayTime = GetTickCount;
+                                    hum.ChangeServerDelayTime = HUtil32.GetTickCount();
                                 }
                                 else
                                 {
@@ -2898,7 +2868,7 @@ namespace GameSvr
                         }
                         if (hum.BoChangeServerNeedDelay)
                         {
-                            if (hum.BoChangeServerOK || (GetTickCount - hum.ChangeServerDelayTime > 10 * 1000))
+                            if (hum.BoChangeServerOK || (HUtil32.GetTickCount() - hum.ChangeServerDelayTime > 10 * 1000))
                             {
                                 hum.ClearAllSlaves();
                                 // 부하들을 모두 없앤다.
@@ -2955,15 +2925,15 @@ namespace GameSvr
                                     }
                                     else
                                     {
-                                        if (GetTickCount - hum.SearchTime > hum.SearchRate)
+                                        if (HUtil32.GetTickCount() - hum.SearchTime > hum.SearchRate)
                                         {
-                                            hum.SearchTime = GetTickCount;
+                                            hum.SearchTime = HUtil32.GetTickCount();
                                             hum.SearchViewRange();
                                             hum.ThinkEtc();
                                         }
-                                        if (GetTickCount - hum.LineNoticeTime > 5 * 60 * 1000)
+                                        if (HUtil32.GetTickCount() - hum.LineNoticeTime > 5 * 60 * 1000)
                                         {
-                                            hum.LineNoticeTime = GetTickCount;
+                                            hum.LineNoticeTime = HUtil32.GetTickCount();
                                             if (hum.LineNoticeNumber < svMain.LineNoticeList.Count)
                                             {
                                                 // LineNoticeList와 Hum이 같은 스래드 이기 때문에 상관 없다
@@ -2978,7 +2948,7 @@ namespace GameSvr
                                         }
                                         hum.Operate();
                                         // 저장간격 10분에서 15분 변경 ->30분 변경
-                                        if ((!svMain.FrontEngine.HasServerHeavyLoad()) && (GetTickCount > (30 * 60 * 1000 + hum.LastSaveTime)))
+                                        if ((!svMain.FrontEngine.HasServerHeavyLoad()) && (HUtil32.GetTickCount() > (30 * 60 * 1000 + hum.LastSaveTime)))
                                         {
                                             // 음수가  나올수 있으므로 변경
                                             hum.LastSaveTime = GetTickCount + ((long)new System.Random(10 * 60 * 1000).Next());
@@ -3039,7 +3009,7 @@ namespace GameSvr
                         }
                     }
                     i++;
-                    if (GetTickCount - start > svMain.HumLimitTime)
+                    if (HUtil32.GetTickCount() - start > svMain.HumLimitTime)
                     {
                         // 렉 발생, 다음으로 미룬다.
                         lack = true;
@@ -3064,13 +3034,13 @@ namespace GameSvr
                 svMain.humrotatecount = HumRotCount;
                 k = GetTickCount - svMain.humrotatetime;
                 svMain.curhumrotatetime = (int)k;
-                svMain.humrotatetime = GetTickCount;
+                svMain.humrotatetime = HUtil32.GetTickCount();
                 if (svMain.maxhumrotatetime < k)
                 {
                     svMain.maxhumrotatetime = (int)k;
                 }
             }
-            svMain.curhumtime = (int)(GetTickCount - start);
+            svMain.curhumtime = (int)(HUtil32.GetTickCount() - start);
             if (svMain.maxhumtime < svMain.curhumtime)
             {
                 svMain.maxhumtime = svMain.curhumtime;
@@ -3117,7 +3087,7 @@ namespace GameSvr
             TZenInfo pz;
             bool lack;
             bool goodzen;
-            start = GetTickCount;
+            start = HUtil32.GetTickCount();
             pz = null;
             try
             {
@@ -3125,9 +3095,9 @@ namespace GameSvr
                 tcount = GetCurrentTime;
                 // GetTickCount;
                 pz = null;
-                if (GetTickCount - onezentime > 200)
+                if (HUtil32.GetTickCount() - onezentime > 200)
                 {
-                    onezentime = GetTickCount;
+                    onezentime = HUtil32.GetTickCount();
                     if (GenCur < MonList.Count)
                     {
                         pz = (TZenInfo)MonList[GenCur];
@@ -3145,7 +3115,7 @@ namespace GameSvr
                         if ((pz.MonName != "") && (!svMain.BoVentureServer))
                         {
                             // 모험서버에서는 잰이 안된다.
-                            if ((pz.StartTime == 0) || (GetTickCount - pz.StartTime > ProcessMonsters_GetZenTime(pz.MonZenTime)))
+                            if ((pz.StartTime == 0) || (HUtil32.GetTickCount() - pz.StartTime > ProcessMonsters_GetZenTime(pz.MonZenTime)))
                             {
                                 zcount = GetMonCount(pz);
                                 goodzen = true;
@@ -3157,18 +3127,18 @@ namespace GameSvr
                                 {
                                     if (pz.MonZenTime == 180)
                                     {
-                                        if (GetTickCount >= 60 * 60 * 1000)
+                                        if (HUtil32.GetTickCount() >= 60 * 60 * 1000)
                                         {
                                             pz.StartTime = GetTickCount - (60 * 60 * 1000) + ((long)new System.Random(120 * 60 * 1000).Next());
                                         }
                                         else
                                         {
-                                            pz.StartTime = GetTickCount;
+                                            pz.StartTime = HUtil32.GetTickCount();
                                         }
                                     }
                                     else
                                     {
-                                        pz.StartTime = GetTickCount;
+                                        pz.StartTime = HUtil32.GetTickCount();
                                     }
                                 }
                             }
@@ -3201,9 +3171,9 @@ namespace GameSvr
                             if (tcount - cret.RunTime > cret.RunNextTick)
                             {
                                 cret.RunTime = tcount;
-                                if (GetTickCount > (cret.SearchRate + cret.SearchTime))
+                                if (HUtil32.GetTickCount() > (cret.SearchRate + cret.SearchTime))
                                 {
-                                    cret.SearchTime = GetTickCount;
+                                    cret.SearchTime = HUtil32.GetTickCount();
                                     // 2003/03/18
                                     if ((cret.RefObjCount > 0) || cret.HideMode)
                                     {
@@ -3232,7 +3202,7 @@ namespace GameSvr
                         else
                         {
                             // 5분이 지나면 free 시킨다.
-                            if (GetTickCount > (5 * 60 * 1000 + cret.GhostTime))
+                            if (HUtil32.GetTickCount() > (5 * 60 * 1000 + cret.GhostTime))
                             {
                                 pz.Mons.RemoveAt(k);
                                 cret.Free();
@@ -3241,7 +3211,7 @@ namespace GameSvr
                             }
                         }
                         k++;
-                        if ((cret != null) && (GetTickCount - start > svMain.MonLimitTime))
+                        if ((cret != null) && (HUtil32.GetTickCount() - start > svMain.MonLimitTime))
                         {
                             // 렉 발생, 몬스트 움직임은 우선순위가 낮음
                             svMain.LatestMonStr = cret.UserName + "/" + i.ToString() + "/" + k.ToString();
@@ -3282,7 +3252,7 @@ namespace GameSvr
                     svMain.MainOutMessage("[UsrEngn] ProcessMonsters");
                 }
             }
-            svMain.curmontime = (int)(GetTickCount - start);
+            svMain.curmontime = (int)(HUtil32.GetTickCount() - start);
             if (svMain.maxmontime < svMain.curmontime)
             {
                 svMain.maxmontime = svMain.curmontime;
@@ -3301,9 +3271,9 @@ namespace GameSvr
                 {
                     if (tcount - cret.RunTime > cret.RunNextTick)
                     {
-                        if (GetTickCount - cret.SearchTime > cret.SearchRate)
+                        if (HUtil32.GetTickCount() - cret.SearchTime > cret.SearchRate)
                         {
-                            cret.SearchTime = GetTickCount;
+                            cret.SearchTime = HUtil32.GetTickCount();
                             cret.SearchViewRange();
                         }
                         if (tcount - cret.RunTime > cret.RunNextTick)
@@ -3327,7 +3297,7 @@ namespace GameSvr
             int tcount;
             TCreature cret;
             bool lack;
-            start = GetTickCount;
+            start = HUtil32.GetTickCount();
             lack = false;
             try
             {
@@ -3339,9 +3309,9 @@ namespace GameSvr
                     {
                         if (tcount - cret.RunTime > cret.RunNextTick)
                         {
-                            if (GetTickCount - cret.SearchTime > cret.SearchRate)
+                            if (HUtil32.GetTickCount() - cret.SearchTime > cret.SearchRate)
                             {
-                                cret.SearchTime = GetTickCount;
+                                cret.SearchTime = HUtil32.GetTickCount();
                                 cret.SearchViewRange();
                             }
                             if (tcount - cret.RunTime > cret.RunNextTick)
@@ -3351,7 +3321,7 @@ namespace GameSvr
                             }
                         }
                     }
-                    if (GetTickCount - start > svMain.NpcLimitTime)
+                    if (HUtil32.GetTickCount() - start > svMain.NpcLimitTime)
                     {
                         // 시작 초과 다음에 처리
                         MerCur = i;
@@ -3377,7 +3347,7 @@ namespace GameSvr
             long start;
             TCreature cret;
             bool lack;
-            start = GetTickCount;
+            start = HUtil32.GetTickCount();
             lack = false;
             try
             {
@@ -3389,9 +3359,9 @@ namespace GameSvr
                     {
                         if (tcount - cret.RunTime > cret.RunNextTick)
                         {
-                            if (GetTickCount - cret.SearchTime > cret.SearchRate)
+                            if (HUtil32.GetTickCount() - cret.SearchTime > cret.SearchRate)
                             {
-                                cret.SearchTime = GetTickCount;
+                                cret.SearchTime = HUtil32.GetTickCount();
                                 cret.SearchViewRange();
                             }
                             if (tcount - cret.RunTime > cret.RunNextTick)
@@ -3401,7 +3371,7 @@ namespace GameSvr
                             }
                         }
                     }
-                    if (GetTickCount - start > svMain.NpcLimitTime)
+                    if (HUtil32.GetTickCount() - start > svMain.NpcLimitTime)
                     {
                         // 시작 초과 다음에 처리
                         NpcCur = i;
@@ -3535,7 +3505,7 @@ namespace GameSvr
         public void ExecuteRun()
         {
             int i;
-            runonetime = GetTickCount;
+            runonetime = HUtil32.GetTickCount();
             try
             {
                 ProcessUserHumans();
@@ -3543,24 +3513,24 @@ namespace GameSvr
                 ProcessMerchants();
                 ProcessNpcs();
                 ProcessDefaultNpcs();
-                if (GetTickCount - missiontime > 1000)
+                if (HUtil32.GetTickCount() - missiontime > 1000)
                 {
-                    missiontime = GetTickCount;
+                    missiontime = HUtil32.GetTickCount();
                     ProcessMissions();
                     CheckServerWaitTimeOut();
                     CheckHolySeizeValid();
                 }
                 // if
-                if (GetTickCount - opendoorcheck > 500)
+                if (HUtil32.GetTickCount() - opendoorcheck > 500)
                 {
-                    opendoorcheck = GetTickCount;
+                    opendoorcheck = HUtil32.GetTickCount();
                     CheckOpenDoors();
                 }
                 // if
-                if (GetTickCount - timer10min > 10 * 60 * 1000)
+                if (HUtil32.GetTickCount() - timer10min > 10 * 60 * 1000)
                 {
                     // 10분에 한 번
-                    timer10min = GetTickCount;
+                    timer10min = HUtil32.GetTickCount();
                     svMain.NoticeMan.RefreshNoticeList();
                     svMain.MainOutMessage(DateTime.Now.ToString() + " User = " + GetUserCount().ToString());
                     svMain.UserCastle.SaveAll();
@@ -3582,16 +3552,16 @@ namespace GameSvr
 #endif
                 }
                 // if
-                if (GetTickCount - timer10sec > 10 * 1000)
+                if (HUtil32.GetTickCount() - timer10sec > 10 * 1000)
                 {
-                    timer10sec = GetTickCount;
+                    timer10sec = HUtil32.GetTickCount();
                     IdSrvClient.FrmIDSoc.SendUserCount(GetRealUserCount());
                     svMain.GuildMan.CheckGuildWarTimeOut();
                     svMain.UserCastle.Run();
-                    if (GetTickCount - timer1min > 60 * 1000)
+                    if (HUtil32.GetTickCount() - timer1min > 60 * 1000)
                     {
                         // 1분에 한 번
-                        timer1min = GetTickCount;
+                        timer1min = HUtil32.GetTickCount();
                         gaCount++;
                         if (gaCount >= 10)
                         {
@@ -3619,7 +3589,7 @@ namespace GameSvr
             {
                 svMain.MainOutMessage("[UsrEngn] Raise Exception..");
             }
-            svMain.curusrcount = (int)(GetTickCount - runonetime);
+            svMain.curusrcount = (int)(HUtil32.GetTickCount() - runonetime);
             if (svMain.maxusrtime < svMain.curusrcount)
             {
                 svMain.maxusrtime = svMain.curusrcount;
@@ -3646,7 +3616,7 @@ namespace GameSvr
 
         public void ProcessUserMessage(TUserHuman hum, TDefaultMessage pmsg, string pbody)
         {
-            string body= string.Empty;
+            string body = string.Empty;
             try
             {
                 if (pmsg == null)
@@ -3677,10 +3647,10 @@ namespace GameSvr
                     case Grobal2.CM_TWINHIT:
                     case Grobal2.CM_SITDOWN:
                         // 2003/03/15 신규무공
-                        hum.SendMsg(hum, pmsg.Ident, pmsg.Tag, LoWord(pmsg.Recog), HiWord(pmsg.Recog), 0, "");
+                        hum.SendMsg(hum, pmsg.Ident, pmsg.Tag, HUtil32.LoWord(pmsg.Recog), HUtil32.HiWord(pmsg.Recog), 0, "");
                         break;
                     case Grobal2.CM_SPELL:
-                        hum.SendMsg(hum, pmsg.Ident, pmsg.Tag, LoWord(pmsg.Recog), HiWord(pmsg.Recog), HUtil32.MakeLong(pmsg.Param, pmsg.Series), "");
+                        hum.SendMsg(hum, pmsg.Ident, pmsg.Tag, HUtil32.LoWord(pmsg.Recog), HUtil32.HiWord(pmsg.Recog), HUtil32.MakeLong(pmsg.Param, pmsg.Series), "");
                         break;
                     case Grobal2.CM_QUERYUSERNAME:
                         // x
@@ -3892,7 +3862,7 @@ namespace GameSvr
                             pmi.Count = Amount;
                             pmi.Looks = GetGoldLooks(Amount);
                             pmi.Ownership = null;
-                            pmi.Droptime = GetTickCount;
+                            pmi.Droptime = HUtil32.GetTickCount();
                             pmi.Droper = null;
                         }
                         else
@@ -3922,7 +3892,7 @@ namespace GameSvr
                             pmi.Reserved = 0;
                             pmi.Count = 1;
                             pmi.Ownership = null;
-                            pmi.Droptime = GetTickCount;
+                            pmi.Droptime = HUtil32.GetTickCount();
                             pmi.Droper = null;
                         }
                         dropenvir = svMain.GrobalEnvir.GetEnvir(DropMapName);
@@ -3981,6 +3951,12 @@ namespace GameSvr
 
         public int GetTickCount => System.Environment.TickCount;
 
+        public void Dispose(object obj)
+        {
+            if (obj != null)
+            {
+                obj = null;
+            }
+        }
     }
 }
-

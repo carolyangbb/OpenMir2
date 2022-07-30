@@ -55,43 +55,41 @@ namespace GameSvr
             {
                 result = -2;
             }
-            for (i = 0; i < Query.RecordCount; i++)
-            {
-                idx = Query.FieldByName("Idx").AsInteger;
-                item.Name = Query.FieldByName("NAME").AsString;
-                item.StdMode = Query.FieldByName("StdMode").AsInteger;
-                item.Shape = Query.FieldByName("Shape").AsInteger;
-                item.Weight = Query.FieldByName("Weight").AsInteger;
-                item.AniCount = Query.FieldByName("AniCount").AsInteger;
-                item.SpecialPwr = Query.FieldByName("Source").AsInteger;
-                item.ItemDesc = Query.FieldByName("Reserved").AsInteger;
-                item.Looks = Query.FieldByName("Looks").AsInteger;
-                item.DuraMax = Query.FieldByName("DuraMax").AsInteger;
-                item.AC = HUtil32.MakeWord(Query.FieldByName("Ac").AsInteger, Query.FieldByName("Ac2").AsInteger);
-                item.MAC = HUtil32.MakeWord(Query.FieldByName("Mac").AsInteger, Query.FieldByName("MAc2").AsInteger);
-                item.DC = HUtil32.MakeWord(Query.FieldByName("Dc").AsInteger, Query.FieldByName("Dc2").AsInteger);
-                item.MC = HUtil32.MakeWord(Query.FieldByName("Mc").AsInteger, Query.FieldByName("Mc2").AsInteger);
-                item.SC = HUtil32.MakeWord(Query.FieldByName("Sc").AsInteger, Query.FieldByName("Sc2").AsInteger);
-                item.Need = Query.FieldByName("Need").AsInteger;
-                item.NeedLevel = Query.FieldByName("NeedLevel").AsInteger;
-                item.Price = Query.FieldByName("Price").AsInteger;
-                if (idx == svMain.UserEngine.StdItemList.Count)
-                {
-                    // 酒捞袍狼 DB Index客 府胶飘狼 牢郸胶啊 老摹秦具茄促.
-                    pitem = new TStdItem();
-                    pitem = item;
-                    // 捞抚捞 绝绰 酒捞袍篮 荤扼柳 酒捞袍烙...
-                    svMain.UserEngine.StdItemList.Add(pitem);
-                    result = 1;
-                }
-                else
-                {
-                    result = -100;
-                    break;
-                }
-                //this.Next;
-            }
-            this.Close();
+            //for (i = 0; i < Query.RecordCount; i++)
+            //{
+            //    idx = Query.FieldByName("Idx").AsInteger;
+            //    item.Name = Query.FieldByName("NAME").AsString;
+            //    item.StdMode = Query.FieldByName("StdMode").AsInteger;
+            //    item.Shape = Query.FieldByName("Shape").AsInteger;
+            //    item.Weight = Query.FieldByName("Weight").AsInteger;
+            //    item.AniCount = Query.FieldByName("AniCount").AsInteger;
+            //    item.SpecialPwr = Query.FieldByName("Source").AsInteger;
+            //    item.ItemDesc = Query.FieldByName("Reserved").AsInteger;
+            //    item.Looks = Query.FieldByName("Looks").AsInteger;
+            //    item.DuraMax = Query.FieldByName("DuraMax").AsInteger;
+            //    item.AC = HUtil32.MakeWord(Query.FieldByName("Ac").AsInteger, Query.FieldByName("Ac2").AsInteger);
+            //    item.MAC = HUtil32.MakeWord(Query.FieldByName("Mac").AsInteger, Query.FieldByName("MAc2").AsInteger);
+            //    item.DC = HUtil32.MakeWord(Query.FieldByName("Dc").AsInteger, Query.FieldByName("Dc2").AsInteger);
+            //    item.MC = HUtil32.MakeWord(Query.FieldByName("Mc").AsInteger, Query.FieldByName("Mc2").AsInteger);
+            //    item.SC = HUtil32.MakeWord(Query.FieldByName("Sc").AsInteger, Query.FieldByName("Sc2").AsInteger);
+            //    item.Need = Query.FieldByName("Need").AsInteger;
+            //    item.NeedLevel = Query.FieldByName("NeedLevel").AsInteger;
+            //    item.Price = Query.FieldByName("Price").AsInteger;
+            //    if (idx == svMain.UserEngine.StdItemList.Count)
+            //    {
+            //        pitem = new TStdItem();
+            //        pitem = item;
+            //        svMain.UserEngine.StdItemList.Add(pitem);
+            //        result = 1;
+            //    }
+            //    else
+            //    {
+            //        result = -100;
+            //        break;
+            //    }
+            //    //this.Next;
+            //}
+            //this.Close();
             return result;
         }
 
@@ -212,52 +210,52 @@ namespace GameSvr
             {
                 result = -2;
             }
-            for (i = 0; i < Query.RecordCount; i++)
-            {
-                pm = new TMonsterInfo();
-                pm.Name = Query.FieldByName("NAME").AsString;
-                pm.Race = Query.FieldByName("Race").AsInteger;
-                pm.RaceImg = Query.FieldByName("RaceImg").AsInteger;
-                pm.Appr = Query.FieldByName("Appr").AsInteger;
-                pm.Level = Query.FieldByName("Lvl").AsInteger;
-                pm.LifeAttrib = Query.FieldByName("Undead").AsInteger;
-                pm.CoolEye = Query.FieldByName("CoolEye").AsInteger;
-                pm.Exp = Query.FieldByName("Exp").AsInteger;
-                pm.HP = Query.FieldByName("HP").AsInteger;
-                pm.MP = Query.FieldByName("MP").AsInteger;
-                pm.AC = Query.FieldByName("AC").AsInteger;
-                pm.MAC = Query.FieldByName("MAC").AsInteger;
-                pm.DC = Query.FieldByName("DC").AsInteger;
-                pm.MaxDC = Query.FieldByName("DCMAX").AsInteger;
-                pm.MC = Query.FieldByName("MC").AsInteger;
-                pm.SC = Query.FieldByName("SC").AsInteger;
-                pm.Speed = Query.FieldByName("SPEED").AsInteger;
-                pm.Hit = Query.FieldByName("HIT").AsInteger;
-                pm.WalkSpeed = Query._MAX(200, Query.FieldByName("WALK_SPD").AsInteger);
-                pm.WalkStep = Query._MAX(1, Query.FieldByName("WalkStep").AsInteger);
-                pm.WalkWait = Query.FieldByName("WalkWait").AsInteger;
-                pm.AttackSpeed = Query.FieldByName("ATTACK_SPD").AsInteger;
-                if (pm.WalkSpeed < 200)
-                {
-                    pm.WalkSpeed = 200;
-                }
-                if (pm.AttackSpeed < 200)
-                {
-                    pm.AttackSpeed = 200;
-                }
-                // newly added by sonmg.
-                pm.Tame = Query.FieldByName("TAME").AsInteger;
-                pm.AntiPush = Query.FieldByName("ANTIPUSH").AsInteger;
-                pm.AntiUndead = Query.FieldByName("ANTIUNDEAD").AsInteger;
-                pm.SizeRate = Query.FieldByName("SIZERATE").AsInteger;
-                pm.AntiStop = Query.FieldByName("ANTISTOP").AsInteger;
-                pm.ItemList = null;
-                LoadMonItems(pm.Name, ref pm.ItemList);
-                svMain.UserEngine.MonDefList.Add(pm);
-                result = 1;
-                //this.Next;
-            }
-            this.Close();
+            //for (i = 0; i < Query.RecordCount; i++)
+            //{
+            //    pm = new TMonsterInfo();
+            //    pm.Name = Query.FieldByName("NAME").AsString;
+            //    pm.Race = Query.FieldByName("Race").AsInteger;
+            //    pm.RaceImg = Query.FieldByName("RaceImg").AsInteger;
+            //    pm.Appr = Query.FieldByName("Appr").AsInteger;
+            //    pm.Level = Query.FieldByName("Lvl").AsInteger;
+            //    pm.LifeAttrib = Query.FieldByName("Undead").AsInteger;
+            //    pm.CoolEye = Query.FieldByName("CoolEye").AsInteger;
+            //    pm.Exp = Query.FieldByName("Exp").AsInteger;
+            //    pm.HP = Query.FieldByName("HP").AsInteger;
+            //    pm.MP = Query.FieldByName("MP").AsInteger;
+            //    pm.AC = Query.FieldByName("AC").AsInteger;
+            //    pm.MAC = Query.FieldByName("MAC").AsInteger;
+            //    pm.DC = Query.FieldByName("DC").AsInteger;
+            //    pm.MaxDC = Query.FieldByName("DCMAX").AsInteger;
+            //    pm.MC = Query.FieldByName("MC").AsInteger;
+            //    pm.SC = Query.FieldByName("SC").AsInteger;
+            //    pm.Speed = Query.FieldByName("SPEED").AsInteger;
+            //    pm.Hit = Query.FieldByName("HIT").AsInteger;
+            //    pm.WalkSpeed = Query._MAX(200, Query.FieldByName("WALK_SPD").AsInteger);
+            //    pm.WalkStep = Query._MAX(1, Query.FieldByName("WalkStep").AsInteger);
+            //    pm.WalkWait = Query.FieldByName("WalkWait").AsInteger;
+            //    pm.AttackSpeed = Query.FieldByName("ATTACK_SPD").AsInteger;
+            //    if (pm.WalkSpeed < 200)
+            //    {
+            //        pm.WalkSpeed = 200;
+            //    }
+            //    if (pm.AttackSpeed < 200)
+            //    {
+            //        pm.AttackSpeed = 200;
+            //    }
+            //    // newly added by sonmg.
+            //    pm.Tame = Query.FieldByName("TAME").AsInteger;
+            //    pm.AntiPush = Query.FieldByName("ANTIPUSH").AsInteger;
+            //    pm.AntiUndead = Query.FieldByName("ANTIUNDEAD").AsInteger;
+            //    pm.SizeRate = Query.FieldByName("SIZERATE").AsInteger;
+            //    pm.AntiStop = Query.FieldByName("ANTISTOP").AsInteger;
+            //    pm.ItemList = null;
+            //    LoadMonItems(pm.Name, ref pm.ItemList);
+            //    svMain.UserEngine.MonDefList.Add(pm);
+            //    result = 1;
+            //    //this.Next;
+            //}
+            //this.Close();
             return result;
         }
 
@@ -293,38 +291,36 @@ namespace GameSvr
             {
                 result = -2;
             }
-            for (i = 0; i < Query.RecordCount; i++)
-            {
-                pm = new TDefMagic();
-                pm.MagicId = Query.FieldByName("MagId").AsInteger;
-                pm.MagicName = Query.FieldByName("MagName").AsString;
-                pm.EffectType = Query.FieldByName("EffectType").AsInteger;
-                pm.Effect = Query.FieldByName("Effect").AsInteger;
-                pm.Spell = Query.FieldByName("Spell").AsInteger;
-                pm.MinPower = Query.FieldByName("Power").AsInteger;
-                pm.MaxPower = Query.FieldByName("MaxPower").AsInteger;
-                pm.Job = Query.FieldByName("Job").AsInteger;
-                pm.NeedLevel[0] = Query.FieldByName("NeedL1").AsInteger;
-                pm.NeedLevel[1] = Query.FieldByName("NeedL2").AsInteger;
-                pm.NeedLevel[2] = Query.FieldByName("NeedL3").AsInteger;
-                pm.NeedLevel[3] = Query.FieldByName("NeedL3").AsInteger;
-                pm.MaxTrain[0] = Query.FieldByName("L1Train").AsInteger;
-                pm.MaxTrain[1] = Query.FieldByName("L2Train").AsInteger;
-                pm.MaxTrain[2] = Query.FieldByName("L3Train").AsInteger;
-                pm.MaxTrain[3] = pm.MaxTrain[2];
-                // FieldByName('L2Train').AsInteger;
-                pm.MaxTrainLevel = 3;
-                // /FieldByName('TrainLevel').AsInteger;
-                pm.DelayTime = Query.FieldByName("Delay").AsInteger * 10;
-                pm.DefSpell = Query.FieldByName("DefSpell").AsInteger;
-                pm.DefMinPower = Query.FieldByName("DefPower").AsInteger;
-                pm.DefMaxPower = Query.FieldByName("DefMaxPower").AsInteger;
-                pm.Desc = Query.FieldByName("Descr").AsString;
-                svMain.UserEngine.DefMagicList.Add(pm);
-                result = 1;
-                //this.Next;
-            }
-            this.Close();
+            //for (i = 0; i < Query.RecordCount; i++)
+            //{
+            //    pm = new TDefMagic();
+            //    pm.MagicId = Query.FieldByName("MagId").AsInteger;
+            //    pm.MagicName = Query.FieldByName("MagName").AsString;
+            //    pm.EffectType = Query.FieldByName("EffectType").AsInteger;
+            //    pm.Effect = Query.FieldByName("Effect").AsInteger;
+            //    pm.Spell = Query.FieldByName("Spell").AsInteger;
+            //    pm.MinPower = Query.FieldByName("Power").AsInteger;
+            //    pm.MaxPower = Query.FieldByName("MaxPower").AsInteger;
+            //    pm.Job = Query.FieldByName("Job").AsInteger;
+            //    pm.NeedLevel[0] = Query.FieldByName("NeedL1").AsInteger;
+            //    pm.NeedLevel[1] = Query.FieldByName("NeedL2").AsInteger;
+            //    pm.NeedLevel[2] = Query.FieldByName("NeedL3").AsInteger;
+            //    pm.NeedLevel[3] = Query.FieldByName("NeedL3").AsInteger;
+            //    pm.MaxTrain[0] = Query.FieldByName("L1Train").AsInteger;
+            //    pm.MaxTrain[1] = Query.FieldByName("L2Train").AsInteger;
+            //    pm.MaxTrain[2] = Query.FieldByName("L3Train").AsInteger;
+            //    pm.MaxTrain[3] = pm.MaxTrain[2];
+            //    pm.MaxTrainLevel = 3;
+            //    pm.DelayTime = Query.FieldByName("Delay").AsInteger * 10;
+            //    pm.DefSpell = Query.FieldByName("DefSpell").AsInteger;
+            //    pm.DefMinPower = Query.FieldByName("DefPower").AsInteger;
+            //    pm.DefMaxPower = Query.FieldByName("DefMaxPower").AsInteger;
+            //    pm.Desc = Query.FieldByName("Descr").AsString;
+            //    svMain.UserEngine.DefMagicList.Add(pm);
+            //    result = 1;
+            //    //this.Next;
+            //}
+            //this.Close();
             return result;
         }
 
@@ -3192,7 +3188,7 @@ namespace GameSvr
                                 psayproc.Saying = psayproc.Saying + ReplaceNewLine(str);
                                 if (!svMain.TAIWANVERSION)
                                 {
-                                    psayproc.Saying = ReplaceChar(psayproc.Saying, "\\", (char)0xa);
+                                    psayproc.Saying = HUtil32.ReplaceChar(psayproc.Saying, '\\', (char)0xa);
                                 }
                                 ((TMerchant)npc).ActivateNpcUtilitys(psayproc.Saying);
                             }
@@ -3267,7 +3263,7 @@ namespace GameSvr
                                 pp.GoodsName = itmname;
                                 pp.Count = _MIN(5000, HUtil32.Str_ToInt(scount, 1));
                                 pp.ZenHour = HUtil32.Str_ToInt(shour, 1);
-                                pp.ZenTime = GetTickCount - ((long)pp.ZenHour) * 60 * 60 * 1000;
+                                pp.ZenTime = HUtil32.GetTickCount()- ((long)pp.ZenHour) * 60 * 60 * 1000;
                                 ((TMerchant)npc).ProductList.Add(pp);
                             }
                         }

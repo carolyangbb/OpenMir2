@@ -15,13 +15,13 @@ namespace GameSvr
         {
             TargetX = -1;
             this.FindPathRate = 1000 + new System.Random(4).Next() * 500;
-            this.FindpathTime = GetTickCount;
+            this.FindpathTime  =  HUtil32.GetTickCount();
             this.RaceServer = Grobal2.RC_ANIMAL;
             this.HitTime = GetCurrentTime - new System.Random(3000).Next();
             this.WalkTime = GetCurrentTime - new System.Random(3000).Next();
-            this.SearchEnemyTime = GetTickCount;
+            this.SearchEnemyTime  =  HUtil32.GetTickCount();
             BoRunAwayMode = false;
-            RunAwayStart = GetTickCount;
+            RunAwayStart  =  HUtil32.GetTickCount();
             RunAwayTime = 0;
         }
 
@@ -62,8 +62,8 @@ namespace GameSvr
 
         public virtual void Struck(TCreature hiter)
         {
-            byte targdir;
-            this.StruckTime = GetTickCount;
+            byte targdir=0;
+            this.StruckTime  =  HUtil32.GetTickCount();
             if (hiter != null)
             {
                 if ((this.TargetCret == null) || (!this.TargetInAttackRange(this.TargetCret, ref targdir)) || (new System.Random(6).Next() == 0))

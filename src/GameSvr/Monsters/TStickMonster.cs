@@ -15,7 +15,7 @@ namespace GameSvr
             this.ViewRange = 7;
             this.RunNextTick = 250;
             this.SearchRate = 2500 + ((long)new System.Random(1500).Next());
-            this.SearchTime = GetTickCount;
+            this.SearchTime  =  HUtil32.GetTickCount();
             this.RaceServer = Grobal2.RC_KILLINGHERB;
             DigupRange = 4;
             DigdownRange = 4;
@@ -32,7 +32,7 @@ namespace GameSvr
         protected virtual bool AttackTarget()
         {
             bool result;
-            byte targdir;
+            byte targdir=0;
             result = false;
             if (this.TargetCret != null)
             {
@@ -41,7 +41,7 @@ namespace GameSvr
                     if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                     {
                         this.HitTime = GetCurrentTime;
-                        this.TargetFocusTime = GetTickCount;
+                        this.TargetFocusTime  =  HUtil32.GetTickCount();
                         this.Attack(this.TargetCret, targdir);
                     }
                     result = true;
@@ -130,7 +130,7 @@ namespace GameSvr
                         if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                         {
                             // 惑加罐篮 run 俊辑 HitTime 犁汲沥窃.
-                            // /HitTime := GetTickCount; //酒贰 AttackTarget俊辑 窃.
+                            // /HitTime : =  HUtil32.GetTickCount(); //酒贰 AttackTarget俊辑 窃.
                             this.MonsterNormalAttack();
                         }
                         boidle = false;

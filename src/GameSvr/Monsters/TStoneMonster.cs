@@ -56,7 +56,7 @@ namespace GameSvr
                                             BoRecalc = true;
                                             cret.ExtraAbil[Grobal2.EABIL_DCUP] = 15;
                                             cret.ExtraAbilFlag[Grobal2.EABIL_DCUP] = 0;
-                                            cret.ExtraAbilTimes[Grobal2.EABIL_DCUP] = (int)(GetTickCount + 15100);
+                                            cret.ExtraAbilTimes[Grobal2.EABIL_DCUP] = HUtil32.GetTickCount() + 15100;
                                         }
                                     }
                                     else
@@ -65,13 +65,13 @@ namespace GameSvr
                                         {
                                             BoRecalc = true;
                                             cret.StatusArr[Grobal2.STATE_DEFENCEUP] = 8;
-                                            cret.StatusTimes[Grobal2.STATE_DEFENCEUP] = GetTickCount;
+                                            cret.StatusTimes[Grobal2.STATE_DEFENCEUP]  =  HUtil32.GetTickCount();
                                         }
                                         if (cret.StatusArr[Grobal2.STATE_MAGDEFENCEUP] == 0)
                                         {
                                             BoRecalc = true;
                                             cret.StatusArr[Grobal2.STATE_MAGDEFENCEUP] = 8;
-                                            cret.StatusTimes[Grobal2.STATE_MAGDEFENCEUP] = GetTickCount;
+                                            cret.StatusTimes[Grobal2.STATE_MAGDEFENCEUP]  =  HUtil32.GetTickCount();
                                         }
                                     }
                                     if (BoRecalc)

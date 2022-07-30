@@ -12,10 +12,10 @@ namespace GameSvr
             svMain.FrmMain = new TFrmMain();
             //LocalDB.FrmDB = new TFrmDB();
             //IdSrvClient.FrmIDSoc = new TFrmIDSoc();
-            //FSrvValue.Units.FSrvValue.FrmServerValue = new TFrmServerValue();
+            //FSrvValue.FSrvValue.FrmServerValue = new TFrmServerValue();
             //InterServerMsg.FrmSrvMsg = new TFrmSrvMsg();
             //InterMsgClient.FrmMsgClient = new TFrmMsgClient();
-            //FGameSet.Units.FGameSet.FrmGameConfig = new TFrmGameConfig();
+            //FGameSet.FGameSet.FrmGameConfig = new TFrmGameConfig();
             Application.Run();
         }
     }

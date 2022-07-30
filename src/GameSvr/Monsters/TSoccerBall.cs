@@ -1,4 +1,6 @@
-﻿namespace GameSvr
+﻿using System.Windows.Forms;
+
+namespace GameSvr
 {
     public class TSoccerBall : TAnimal
     {
@@ -14,8 +16,8 @@
 
         public override void Struck(TCreature hiter)
         {
-            int nx=0;
-            int ny=0;
+            short nx =0;
+            short ny =0;
             if (hiter != null)
             {
                 this.Dir = hiter.Dir;
@@ -29,8 +31,8 @@
 
         public override void Run()
         {
-            int nx=0;
-            int ny=0;
+            short nx =0;
+            short ny =0;
             bool bohigh;
             bohigh = false;
             if (GoPower > 0)
@@ -67,8 +69,8 @@
                                 break;
                         }
                         M2Share.GetNextPosition(this.PEnvir, this.CX, this.CY, this.Dir, GoPower, ref nx, ref ny);
-                        this.TargetX = (short)nx;
-                        this.TargetY = (short)ny;
+                        this.TargetX = nx;
+                        this.TargetY = ny;
                     }
                 }
             }

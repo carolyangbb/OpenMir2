@@ -18,14 +18,14 @@ namespace GameSvr
         public const int GUILDAGITEXTENDFEE = 1000000;
     }
 
-    public struct TGuildRank
+    public class TGuildRank
     {
         public int Rank;
         public string RankName;
         public ArrayList MemList;
     }
 
-    public struct TGuildWarInfo
+    public class TGuildWarInfo
     {
         public TGuild WarGuild;
         public long WarStartTime;

@@ -4,12 +4,11 @@ namespace GameSvr
 {
     public class TMagCowMonster : TATMonster
     {
-        // TMagCowMonster   付过筋绰 快搁蓖
-        //Constructor  Create()
         public TMagCowMonster() : base()
         {
             this.SearchRate = 1500 + ((long)new System.Random(1500).Next());
         }
+
         public void MagicAttack(byte dir)
         {
             int dam;
@@ -27,23 +26,12 @@ namespace GameSvr
             {
                 if (this.IsProperTarget(cret))
                 {
-                    // .RaceServer = RC_USERHUMAN then begin //荤恩父 傍拜窃
-                    // 嘎绰瘤 搬沥 (付过 雀乔肺 搬沥)
                     if (cret.AntiMagic <= new System.Random(50).Next())
                     {
-                        // 付过规绢仿俊 瓤苞 乐澜.
-                        // armor := (Lobyte(cret.WAbil.MAC) + Random(ShortInt(HiByte(cret.WAbil.MAC)-Lobyte(cret.WAbil.MAC)) + 1));
-                        // dam := dam - armor;
-                        // if dam <= 0 then
-                        // if dam > -10 then dam := 1;
                         dam = cret.GetMagStruckDamage(this, dam);
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            // wparam
-                            // lparam1
-                            // lparam2
-                            // hiter
                             cret.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 300);
                         }
                     }
@@ -54,7 +42,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir;
+            byte targdir=0;
             result = false;
             if (this.TargetCret != null)
             {
@@ -63,7 +51,7 @@ namespace GameSvr
                     if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                     {
                         this.HitTime = GetCurrentTime;
-                        this.TargetFocusTime = GetTickCount;
+                        this.TargetFocusTime  =  HUtil32.GetTickCount();
                         MagicAttack(targdir);
                         this.BreakHolySeize();
                     }

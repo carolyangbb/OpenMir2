@@ -18,7 +18,7 @@ namespace GameSvr
             /*this.Active = false;
             MsgClient.Address = svMain.MsgServerAddress;
             MsgClient.Port = svMain.MsgServerPort;
-            start = GetTickCount;*/
+            start  =  HUtil32.GetTickCount();*/
         }
 
         public void MsgClientConnect(Object Sender, Socket Socket)
@@ -56,7 +56,7 @@ namespace GameSvr
             string head= string.Empty;
             string body= string.Empty;
             string snumstr= string.Empty;
-            int ident;
+            int ident=0;
             int snum;
             if (SocData.IndexOf(")") <= 0)
             {
@@ -204,9 +204,9 @@ namespace GameSvr
             {
                 /*if (!MsgClient.Socket.Connected)
                 {
-                    if (GetTickCount - start > 20 * 1000)
+                    if (HUtil32.GetTickCount() - start > 20 * 1000)
                     {
-                        start = GetTickCount;
+                        start  =  HUtil32.GetTickCount();
                         MsgClient.Active = true;
                     }
                 }*/
