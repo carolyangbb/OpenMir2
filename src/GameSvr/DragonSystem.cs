@@ -382,11 +382,7 @@ namespace GameSvr
                 pwr = 20 * (new System.Random(3).Next() + 1);
                 dam = user_.GetMagStruckDamage(null, pwr);
                 user_.StruckDamage(dam, null);
-                // wparam
-                // lparam1
-                // lparam2
-                // hiter
-                user_.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, user_.WAbil.HP, user_.WAbil.MaxHP, (long)null, "", 200);
+                user_.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, user_.WAbil.HP, user_.WAbil.MaxHP, (long)null, "", 200);
             }
         }
 

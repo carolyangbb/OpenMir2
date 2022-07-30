@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using SystemModule;
+using SystemModule.Common;
 
 namespace GameSvr
 {
@@ -10,9 +11,9 @@ namespace GameSvr
     {
         public string GuildName = String.Empty;
         public ArrayList NoticeList = null;
-        public ArrayList KillGuilds = null;
+        public IList<TGuildWarInfo> KillGuilds = null;
         public IList<TGuild> AllyGuilds = null;
-        public ArrayList MemberList = null;
+        public IList<TGuildRank> MemberList = null;
         public int MatchPoint = 0;
         public bool BoStartGuildFight = false;
         public ArrayList FightMemberList = null;
@@ -24,9 +25,9 @@ namespace GameSvr
         {
             GuildName = gname;
             NoticeList = new ArrayList();
-            KillGuilds = new ArrayList();
+            KillGuilds = new List<TGuildWarInfo>();
             AllyGuilds = new List<TGuild>();
-            MemberList = new ArrayList();
+            MemberList = new List<TGuildRank>();
             FightMemberList = new ArrayList();
             guildsavetime = 0;
             dosave = false;
@@ -48,13 +49,12 @@ namespace GameSvr
 
         private void FreeMemberList()
         {
-            int i;
             TGuildRank pgrank;
             if (MemberList != null)
             {
-                for (i = 0; i < MemberList.Count; i++)
+                for (var i = 0; i < MemberList.Count; i++)
                 {
-                    pgrank = MemberList[i] as TGuildRank;
+                    pgrank = MemberList[i];
                     if (pgrank.MemList != null)
                     {
                         pgrank.MemList.Free();
@@ -75,12 +75,11 @@ namespace GameSvr
         public bool LoadGuildFile(string flname)
         {
             bool result;
-            int i;
-            ArrayList strlist;
-            string str;
+            StringList strlist;
+            string str = string.Empty;
             string data = string.Empty;
-            string rtstr;
-            string rankname;
+            string rtstr = string.Empty;
+            string rankname = string.Empty;
             int step;
             int rank;
             TGuildRank pgrank;
@@ -92,27 +91,27 @@ namespace GameSvr
             {
                 FreeMemberList();
                 NoticeList.Clear();
-                for (i = 0; i < KillGuilds.Count; i++)
+                for (var i = 0; i < KillGuilds.Count; i++)
                 {
-                    Dispose(KillGuilds.Values[i] as TGuildWarInfo);
+                    Dispose(KillGuilds[i]);
                 }
                 KillGuilds.Clear();
                 AllyGuilds.Clear();
                 step = 0;
                 rank = 0;
                 rankname = "";
-                strlist = new ArrayList();
+                strlist = new StringList();
                 strlist.LoadFromFile(svMain.GuildDir + flname);
-                for (i = 0; i < strlist.Count; i++)
+                for (var i = 0; i < strlist.Count; i++)
                 {
                     str = (string)strlist[i];
                     if (str != "")
                     {
-                        if (str[1] == ";")
+                        if (str[0] == ';')
                         {
                             continue;
                         }
-                        if (str[1] != "+")
+                        if (str[0] != '+')
                         {
                             if (str == "门派公告")
                             {
@@ -130,7 +129,7 @@ namespace GameSvr
                             {
                                 step = 4;
                             }
-                            if (str[1] == "#")
+                            if (str[0] == '#')
                             {
                                 str = str.Substring(2 - 1, str.Length - 1);
                                 str = HUtil32.GetValidStr3(str, ref data, new string[] { ",", " " });
@@ -160,7 +159,7 @@ namespace GameSvr
                                             {
                                                 pgw.WarStartTime  =  HUtil32.GetTickCount();
                                                 pgw.WarRemain = HUtil32.Str_ToInt(rtstr.Trim(), 0);
-                                                KillGuilds.Add(pgw.WarGuild.GuildName, pgw as Object);
+                                                KillGuilds.Add(pgw);
                                             }
                                             else
                                             {
@@ -182,7 +181,7 @@ namespace GameSvr
                                             aguild = svMain.GuildMan.GetGuild(data);
                                             if (aguild != null)
                                             {
-                                                AllyGuilds.Add(data, aguild);
+                                                AllyGuilds.Add(aguild);
                                             }
                                         }
                                         else
@@ -199,7 +198,7 @@ namespace GameSvr
                                             pgrank = new TGuildRank();
                                             pgrank.Rank = rank;
                                             pgrank.RankName = rankname;
-                                            pgrank.MemList = new ArrayList();
+                                            pgrank.MemList = new List<TCreature>();
                                             MemberList.Add(pgrank);
                                         }
                                         while (str != "")
@@ -228,24 +227,18 @@ namespace GameSvr
 
         public void BackupGuild(string flname)
         {
-            int i;
-            int k;
-            int remain;
-            ArrayList strlist;
-            TGuildRank pgr;
-            TGuildWarInfo pgw;
-            strlist = new ArrayList();
+            StringList strlist = new StringList();
             strlist.Add("门派公告");
-            for (i = 0; i < NoticeList.Count; i++)
+            for (var i = 0; i < NoticeList.Count; i++)
             {
                 strlist.Add("+" + NoticeList[i]);
             }
             strlist.Add(" ");
             strlist.Add("敌对门派");
-            for (i = 0; i < KillGuilds.Count; i++)
+            for (var i = 0; i < KillGuilds.Count; i++)
             {
-                pgw = KillGuilds.Values[i] as TGuildWarInfo;
-                remain = pgw.WarRemain - (HUtil32.GetTickCount() - pgw.WarStartTime);
+                TGuildWarInfo pgw = KillGuilds[i];
+                int remain = (int)(pgw.WarRemain - (HUtil32.GetTickCount() - pgw.WarStartTime));
                 if (remain > 0)
                 {
                     strlist.Add("+" + KillGuilds[i] + " " + remain.ToString());
@@ -253,17 +246,17 @@ namespace GameSvr
             }
             strlist.Add(" ");
             strlist.Add("结盟门派");
-            for (i = 0; i < AllyGuilds.Count; i++)
+            for (var i = 0; i < AllyGuilds.Count; i++)
             {
                 strlist.Add("+" + AllyGuilds[i]);
             }
             strlist.Add(" ");
             strlist.Add("门派成员");
-            for (i = 0; i < MemberList.Count; i++)
+            for (var i = 0; i < MemberList.Count; i++)
             {
-                pgr = MemberList[i] as TGuildRank;
+                TGuildRank pgr = MemberList[i];
                 strlist.Add("#" + pgr.Rank.ToString() + " " + pgr.RankName);
-                for (k = 0; k < pgr.MemList.Count; k++)
+                for (var k = 0; k < pgr.MemList.Count; k++)
                 {
                     strlist.Add("+" + pgr.MemList[k]);
                 }
@@ -302,10 +295,8 @@ namespace GameSvr
         {
             if (dosave)
             {
-                // 咯扁辑 矫埃登搁 历厘窃.
                 if (HUtil32.GetTickCount() - guildsavetime > 30 * 1000)
                 {
-                    // 函版等瘤 30檬
                     dosave = false;
                     SaveGuild();
                 }
@@ -314,18 +305,14 @@ namespace GameSvr
 
         public bool IsMember(string who)
         {
-            bool result;
-            int i;
-            int k;
-            TGuildRank pgrank;
-            result = false;
+            bool result = false;
             CheckSave();
             if (MemberList != null)
             {
-                for (i = 0; i < MemberList.Count; i++)
+                for (var i = 0; i < MemberList.Count; i++)
                 {
-                    pgrank = MemberList[i] as TGuildRank;
-                    for (k = 0; k < pgrank.MemList.Count; k++)
+                    TGuildRank pgrank = MemberList[i];
+                    for (var k = 0; k < pgrank.MemList.Count; k++)
                     {
                         if (pgrank.MemList[k] == who)
                         {
@@ -340,21 +327,18 @@ namespace GameSvr
 
         public string MemberLogin(Object who, ref int grank)
         {
-            string result;
-            int i;
-            int k;
             TGuildRank pgrank;
-            result = "";
+            string result = "";
             if (MemberList != null)
             {
-                for (i = 0; i < MemberList.Count; i++)
+                for (var i = 0; i < MemberList.Count; i++)
                 {
-                    pgrank = MemberList[i] as TGuildRank;
-                    for (k = 0; k < pgrank.MemList.Count; k++)
+                    pgrank = MemberList[i];
+                    for (var k = 0; k < pgrank.MemList.Count; k++)
                     {
                         if (pgrank.MemList[k] == ((TCreature)who).UserName)
                         {
-                            pgrank.MemList.Values[k] = who;
+                            pgrank.MemList[k] = who;
                             grank = pgrank.Rank;
                             result = pgrank.RankName;
                             ((TUserHuman)who).UserNameChanged();
@@ -375,9 +359,9 @@ namespace GameSvr
             {
                 if (MemberList.Count > 0)
                 {
-                    if ((MemberList[0] as TGuildRank).MemList.Count > 0)
+                    if (MemberList[0].MemList.Count > 0)
                     {
-                        result = (MemberList[0] as TGuildRank).MemList[0];
+                        result = MemberList[0].MemList[0];
                     }
                 }
             }
@@ -393,9 +377,9 @@ namespace GameSvr
             {
                 if (MemberList.Count > 0)
                 {
-                    if ((MemberList[0] as TGuildRank).MemList.Count >= 2)
+                    if (MemberList[0].MemList.Count >= 2)
                     {
-                        result = (MemberList[0] as TGuildRank).MemList[1];
+                        result = MemberList[0].MemList[1];
                     }
                 }
             }
@@ -414,7 +398,7 @@ namespace GameSvr
                     pgrank = new TGuildRank();
                     pgrank.Rank = 1;
                     pgrank.RankName = "门派门主";
-                    pgrank.MemList = new ArrayList();
+                    pgrank.MemList = new List<TCreature>();
                     pgrank.MemList.Add(who);
                     MemberList.Add(pgrank);
                     SaveGuild();
@@ -424,25 +408,20 @@ namespace GameSvr
             return result;
         }
 
-        // 贸澜俊 巩颇 积己瞪锭父 荤侩
         public bool DelGuildMaster(string who)
         {
-            bool result;
             TGuildRank pgrank;
-            result = false;
-            // 巩林 去磊 巢疽阑 版快, 巩林 呕硼搁 巩颇 柄咙..
+            bool result = false;
             if (MemberList != null)
             {
                 if (MemberList.Count == 1)
                 {
-                    // 葛电 流氓阑 促 力芭茄 惑怕
-                    pgrank = MemberList[0] as TGuildRank;
+                    pgrank = MemberList[0];
                     if (pgrank.MemList.Count == 1)
                     {
                         if (pgrank.MemList[0] == who)
                         {
                             BreakGuild();
-                            // 巩颇 柄咙... 葛电巩盔 漏覆
                             result = true;
                         }
                     }
@@ -451,26 +430,24 @@ namespace GameSvr
             return result;
         }
 
-        // 付瘤阜 巩林唱啊搁 巩颇 柄咙
         public void BreakGuild()
         {
-            // 巩颇 荤扼咙, //辨靛俊 肺弊牢茄 荤恩甸阑 巩颇俊辑 猾促.
             int i;
             int k;
             TGuildRank pgrank;
             TUserHuman hum;
             if (svMain.ServerIndex == 0)
             {
-                BackupGuild(svMain.GuildDir + GuildName + "." + GetCurrentTime.ToString() + ".bak");
+                BackupGuild(svMain.GuildDir + GuildName + "." + HUtil32.GetCurrentTime + ".bak");
             }
             if (MemberList != null)
             {
                 for (i = 0; i < MemberList.Count; i++)
                 {
-                    pgrank = MemberList[i] as TGuildRank;
+                    pgrank = MemberList[i];
                     for (k = 0; k < pgrank.MemList.Count; k++)
                     {
-                        hum = (TUserHuman)pgrank.MemList.Values[k];
+                        hum = (TUserHuman)pgrank.MemList[k];
                         if (hum != null)
                         {
                             hum.MyGuild = null;
@@ -489,7 +466,7 @@ namespace GameSvr
             {
                 for (i = 0; i < KillGuilds.Count; i++)
                 {
-                    Dispose(KillGuilds.Values[i] as TGuildWarInfo);
+                    Dispose(KillGuilds[i]);
                 }
                 KillGuilds.Clear();
             }
@@ -500,7 +477,6 @@ namespace GameSvr
             SaveGuild();
         }
 
-        // 碍力肺 巩颇啊 绝绢咙. (林狼)
         public bool AddMember(Object who)
         {
             bool result;
@@ -513,7 +489,7 @@ namespace GameSvr
             {
                 for (i = 0; i < MemberList.Count; i++)
                 {
-                    pgrank = MemberList[i] as TGuildRank;
+                    pgrank = MemberList[i];
                     if (pgrank.Rank == Guild.DEFRANK)
                     {
                         drank = pgrank;
@@ -525,7 +501,7 @@ namespace GameSvr
                     drank = new TGuildRank();
                     drank.Rank = Guild.DEFRANK;
                     drank.RankName = "门派成员";
-                    drank.MemList = new ArrayList();
+                    drank.MemList = new List<TCreature>();
                     MemberList.Add(drank);
                 }
                 drank.MemList.Add(((TCreature)who).UserName, who);
@@ -548,7 +524,7 @@ namespace GameSvr
             {
                 for (i = 0; i < MemberList.Count; i++)
                 {
-                    pgrank = MemberList[i] as TGuildRank;
+                    pgrank = MemberList[i];
                     for (k = 0; k < pgrank.MemList.Count; k++)
                     {
                         if (pgrank.MemList[k] == who)
@@ -587,25 +563,25 @@ namespace GameSvr
             {
                 for (i = 0; i < MemberList.Count; i++)
                 {
-                    pgrank = MemberList[i] as TGuildRank;
+                    pgrank = MemberList[i];
                     for (k = 0; k < pgrank.MemList.Count; k++)
                     {
-                        if (pgrank.MemList.Values[k] == who)
+                        if (pgrank.MemList[k] == who)
                         {
                             if (((TCreature)who).MyGuild != null)
                             {
-                                if ((((TCreature)who).MyGuild as TGuild).KillGuilds != null)
+                                if (((TCreature)who).MyGuild.KillGuilds != null)
                                 {
                                     for (j = 0; j < KillGuilds.Count; j++)
                                     {
-                                        if ((KillGuilds.Values[j] as TGuildWarInfo).WarGuild != null)
+                                        if (KillGuilds[j].WarGuild != null)
                                         {
-                                            (KillGuilds.Values[j] as TGuildWarInfo).WarGuild.CheckSave();
+                                            KillGuilds[j].WarGuild.CheckSave();
                                         }
                                     }
                                 }
                             }
-                            pgrank.MemList.Values[k] = null;
+                            pgrank.MemList[k] = null;
                             return;
                         }
                     }
@@ -623,12 +599,12 @@ namespace GameSvr
             {
                 for (i = 0; i < MemberList.Count; i++)
                 {
-                    prank = MemberList[i] as TGuildRank;
+                    prank = MemberList[i];
                     for (k = 0; k < prank.MemList.Count; k++)
                     {
-                        if (prank.MemList.Values[k] != null)
+                        if (prank.MemList[k] != null)
                         {
-                            hum = (TUserHuman)prank.MemList.Values[k];
+                            hum = (TUserHuman)prank.MemList[k];
                             hum.UserNameChanged();
                         }
                     }
@@ -646,12 +622,12 @@ namespace GameSvr
             {
                 for (i = 0; i < MemberList.Count; i++)
                 {
-                    prank = MemberList[i] as TGuildRank;
+                    prank = MemberList[i];
                     for (k = 0; k < prank.MemList.Count; k++)
                     {
-                        if (prank.MemList.Values[k] != null)
+                        if (prank.MemList[k] != null)
                         {
-                            hum = (TUserHuman)prank.MemList.Values[k];
+                            hum = (TUserHuman)prank.MemList[k];
                             if (hum != null)
                             {
                                 if (HUtil32.CompareLStr(str, "***", 3))
@@ -672,13 +648,12 @@ namespace GameSvr
             }
         }
 
-        public void UpdateGuildRankStr_FreeMembs(ref ArrayList memb)
+        public void UpdateGuildRankStr_FreeMembs(ref IList<TGuildRank> memb)
         {
-            int i;
-            for (i = 0; i < memb.Count; i++)
+            for (var i = 0; i < memb.Count; i++)
             {
-                (memb[i] as TGuildRank).MemList.Free();
-                Dispose(memb[i] as TGuildRank);
+                memb[i].MemList.Free();
+                Dispose(memb[i]);
             }
             memb.Free();
         }
@@ -686,7 +661,7 @@ namespace GameSvr
         public int UpdateGuildRankStr(string rankstr)
         {
             int result;
-            ArrayList nmembs;
+            IList<TGuildRank> nmembs;
             TGuildRank pgr;
             TGuildRank pgr2;
             int i;
@@ -702,8 +677,7 @@ namespace GameSvr
             bool flag;
             TUserHuman hum;
             result = -1;
-            // 颇教 -> pgr狼 府胶飘肺 父电促.
-            nmembs = new ArrayList();
+            nmembs = new List<TGuildRank>();
             pgr = null;
             while (true)
             {
@@ -715,7 +689,7 @@ namespace GameSvr
                 data = data.Trim();
                 if (data != "")
                 {
-                    if (data[1] == "#")
+                    if (data[0] == '#')
                     {
                         data = data.Substring(2 - 1, data.Length - 1);
                         data = HUtil32.GetValidStr3(data, ref s1, new string[] { " ", "<" });
@@ -727,13 +701,12 @@ namespace GameSvr
                         pgr = new TGuildRank();
                         pgr.Rank = HUtil32.Str_ToInt(s1, 99);
                         pgr.RankName = s2.Trim();
-                        // 流氓捞 厚绢乐绰 版快甫 阜绰促.(sonmg 2004/08/16)
                         if (pgr.RankName == "")
                         {
                             result = -7;
                             return result;
                         }
-                        pgr.MemList = new ArrayList();
+                        pgr.MemList = new List<TCreature>();
                     }
                     else
                     {
@@ -759,7 +732,6 @@ namespace GameSvr
             {
                 nmembs.Add(pgr);
             }
-            // 捞傈 沥焊客 沥犬捞 鞍栏搁 歹 捞惑 贸府 救窃.
             if (MemberList != null)
             {
                 if (MemberList.Count == nmembs.Count)
@@ -767,7 +739,7 @@ namespace GameSvr
                     flag = true;
                     for (i = 0; i < MemberList.Count; i++)
                     {
-                        pgr = MemberList[i] as TGuildRank;
+                        pgr = MemberList[i];
                         pgr2 = nmembs[i] as TGuildRank;
                         if ((pgr.Rank == pgr2.Rank) && (pgr.RankName == pgr2.RankName) && (pgr.MemList.Count == pgr2.MemList.Count))
                         {
@@ -776,7 +748,6 @@ namespace GameSvr
                                 if (pgr.MemList[k] != pgr2.MemList[k])
                                 {
                                     flag = false;
-                                    // 促抚
                                     break;
                                 }
                             }
@@ -784,22 +755,18 @@ namespace GameSvr
                         else
                         {
                             flag = false;
-                            // 促抚
                             break;
                         }
                     }
                     if (flag)
                     {
                         result = -1;
-                        // 捞傈苞 沥犬洒 度 鞍澜.
                         UpdateGuildRankStr_FreeMembs(ref nmembs);
                         return result;
                     }
                 }
             }
-            // 巩林啊 狐廉乐栏搁救凳.
             result = -2;
-            // 巩林啊 狐廉 乐澜.
             if (nmembs.Count > 0)
             {
                 if ((nmembs[0] as TGuildRank).Rank == 1)
@@ -807,17 +774,13 @@ namespace GameSvr
                     if ((nmembs[0] as TGuildRank).RankName != "")
                     {
                         result = 0;
-                        // 沥惑
                     }
                     else
                     {
                         result = -3;
                     }
-                    // 巩林狼 疙莫捞 绝澜.
                 }
             }
-            // 货肺 巩林啊 函版登绰 版快, 货肺 函版等 荤恩捞 立加窍绊 乐绢具 茄促.
-            // 巩林狼 荐绰 2疙阑 檬苞 给窃
             if (result == 0)
             {
                 pgr = nmembs[0] as TGuildRank;
@@ -836,23 +799,19 @@ namespace GameSvr
                     {
                         result = -5;
                     }
-                    // 利绢档 茄疙狼 巩林啊 立加窍绊 乐绢具 茄促.
                 }
                 else
                 {
                     result = -4;
                 }
-                // 巩林 2疙 檬苞 给窃
             }
-            // 葛电 巩盔捞 眠啊,昏力 登绢 乐瘤 臼酒具 茄促.
             if (result == 0)
             {
                 oldcount = 0;
                 newcount = 0;
-                // 货肺函版等 府胶飘客 捞傈府胶飘客 厚背窃
                 for (i = 0; i < MemberList.Count; i++)
                 {
-                    pgr = MemberList[i] as TGuildRank;
+                    pgr = MemberList[i];
                     flag = true;
                     for (j = 0; j < pgr.MemList.Count; j++)
                     {
@@ -878,7 +837,6 @@ namespace GameSvr
                         if (!flag)
                         {
                             result = -6;
-                            // 巩盔府胶飘啊 老摹窍瘤 臼澜.
                             break;
                         }
                     }
@@ -887,7 +845,6 @@ namespace GameSvr
                         break;
                     }
                 }
-                // 促矫茄锅 芭操肺 厚背茄促.
                 for (i = 0; i < nmembs.Count; i++)
                 {
                     pgr = nmembs[i] as TGuildRank;
@@ -899,7 +856,7 @@ namespace GameSvr
                         newcount++;
                         for (k = 0; k < MemberList.Count; k++)
                         {
-                            pgr2 = MemberList[k] as TGuildRank;
+                            pgr2 = MemberList[k];
                             for (m = 0; m < pgr2.MemList.Count; m++)
                             {
                                 if (mname == pgr2.MemList[m])
@@ -916,7 +873,6 @@ namespace GameSvr
                         if (!flag)
                         {
                             result = -6;
-                            // 巩盔府胶飘啊 老摹窍瘤 臼澜.
                             break;
                         }
                     }
@@ -930,11 +886,9 @@ namespace GameSvr
                     if (oldcount != newcount)
                     {
                         result = -6;
-                        // 巩盔府胶飘啊 老摹窍瘤 臼澜 .
                     }
                 }
             }
-            // 流氓捞 吝汗登瘤 臼疽绰瘤 八荤.
             if (result == 0)
             {
                 for (i = 0; i < nmembs.Count; i++)
@@ -945,7 +899,6 @@ namespace GameSvr
                         if ((m == (nmembs[k] as TGuildRank).Rank) || (m <= 0) || (m > 99))
                         {
                             result = -7;
-                            // 流氓 吝汗
                             break;
                         }
                     }
@@ -955,21 +908,19 @@ namespace GameSvr
                     }
                 }
             }
-            // 函版 -> 立加窍绊 乐绰 葛电 巩盔俊霸 流氓苞 流氓疙阑 朝妨霖促.
             if (result == 0)
             {
                 UpdateGuildRankStr_FreeMembs(ref MemberList);
-                // 肯傈洒 Free矫糯
                 MemberList = nmembs;
                 for (i = 0; i < MemberList.Count; i++)
                 {
-                    pgr = MemberList[i] as TGuildRank;
+                    pgr = MemberList[i];
                     for (k = 0; k < pgr.MemList.Count; k++)
                     {
                         hum = svMain.UserEngine.GetUserHuman((string)pgr.MemList[k]);
                         if (hum != null)
                         {
-                            pgr.MemList.Values[k] = hum;
+                            pgr.MemList[k] = hum;
                             hum.GuildRankChanged(pgr.Rank, pgr.RankName);
                         }
                     }
@@ -991,7 +942,7 @@ namespace GameSvr
             result = false;
             for (i = 0; i < KillGuilds.Count; i++)
             {
-                if ((KillGuilds.Values[i] as TGuildWarInfo).WarGuild == aguild)
+                if (KillGuilds[i].WarGuild == aguild)
                 {
                     result = true;
                     break;
@@ -1016,22 +967,19 @@ namespace GameSvr
                     pgw = null;
                     for (i = 0; i < KillGuilds.Count; i++)
                     {
-                        if ((KillGuilds.Values[i] as TGuildWarInfo).WarGuild == aguild)
+                        if (KillGuilds[i].WarGuild == aguild)
                         {
-                            pgw = KillGuilds.Values[i] as TGuildWarInfo;
+                            pgw = KillGuilds[i];
                             if (pgw != null)
                             {
-                                // 12矫埃 力茄
                                 if (pgw.WarRemain < 12 * timeunit)
                                 {
-                                    // 巩颇傈 楷厘 荐沥(sonmg 2005/08/05)
                                     pgw.WarRemain = pgw.WarStartTime + pgw.WarRemain - currenttime + 3 * timeunit;
                                     pgw.WarStartTime = currenttime;
                                     GuildMsg("***" + aguild.GuildName + "门派战争将持续三个小时。");
                                     svMain.UserEngine.SendInterMsg(Grobal2.ISM_GUILDMSG, svMain.ServerIndex, GuildName + "/" + "***" + aguild.GuildName + "苞(客)狼 巩颇傈捞 3矫埃 楷厘登菌嚼聪促.(巢篮 矫埃 : 距 " + (pgw.WarRemain / timeunit).ToString() + "矫埃)");
                                     svMain.UserEngine.SendInterMsg(Grobal2.ISM_GUILDWAR, svMain.ServerIndex, GuildName + "/" + aguild.GuildName + "/" + pgw.WarStartTime.ToString() + "/" + pgw.WarRemain.ToString());
                                     backresult = 2;
-                                    // 楷厘
                                     break;
                                 }
                             }
@@ -1043,12 +991,11 @@ namespace GameSvr
                         pgw.WarGuild = aguild;
                         pgw.WarStartTime = currenttime;
                         pgw.WarRemain = 3 * timeunit;
-                        KillGuilds.Add(aguild.GuildName, pgw as Object);
+                        KillGuilds.Add(aguild.GuildName, pgw);
                         GuildMsg("***" + aguild.GuildName + "门派战争开始(三个小时)。");
                         svMain.UserEngine.SendInterMsg(Grobal2.ISM_GUILDMSG, svMain.ServerIndex, GuildName + "/" + "***" + aguild.GuildName + "苞(客) 巩颇傈捞 矫累登菌嚼聪促.(3矫埃)");
                         svMain.UserEngine.SendInterMsg(Grobal2.ISM_GUILDWAR, svMain.ServerIndex, GuildName + "/" + aguild.GuildName + "/" + pgw.WarStartTime.ToString() + "/" + pgw.WarRemain.ToString());
                         backresult = 1;
-                        // 矫累
                     }
                     result = pgw;
                 }
@@ -1063,21 +1010,16 @@ namespace GameSvr
             GuildMsg("***" + aguild.GuildName + "门派战争结束。");
         }
 
-        // 惑措规 巩颇客 巩颇接阑 扒促.
-        // 3矫埃悼救 蜡瓤, 酒公锭唱 且 荐 乐促.
         public bool IsAllyGuild(TGuild aguild)
         {
-            bool result;
-            int i;
-            // 悼竿巩颇牢瘤...
-            result = false;
+            bool result = false;
             if (aguild == null)
             {
                 return result;
             }
-            for (i = 0; i < AllyGuilds.Count; i++)
+            for (var i = 0; i < AllyGuilds.Count; i++)
             {
-                if (AllyGuilds.Values[i] == aguild)
+                if (AllyGuilds[i] == aguild)
                 {
                     result = true;
                     return result;
@@ -1086,23 +1028,18 @@ namespace GameSvr
             return result;
         }
 
-        // 傍己巩颇狼 悼竿巩颇牢瘤 犬牢 货肺 眠啊 (sonmg 2005/11/29)
         public bool IsRushAllyGuild(TGuild aguild)
         {
-            bool result;
-            int i;
-            int j;
-            // 傍己巩颇狼 悼竿巩颇牢瘤...
-            result = false;
+            bool result = false;
             if (aguild == null)
             {
                 return result;
             }
-            for (i = 0; i < AllyGuilds.Count; i++)
+            for (var i = 0; i < AllyGuilds.Count; i++)
             {
-                if (AllyGuilds.Values[i] == aguild)
+                if (AllyGuilds[i] == aguild)
                 {
-                    for (j = 0; j < svMain.UserCastle.RushGuildList.Count; j++)
+                    for (var j = 0; j < svMain.UserCastle.RushGuildList.Count; j++)
                     {
                         if (svMain.UserCastle.RushGuildList[j] == aguild)
                         {
@@ -1119,34 +1056,26 @@ namespace GameSvr
 
         public bool MakeAllyGuild(TGuild aguild)
         {
-            bool result;
-            int i;
-            result = false;
-            for (i = 0; i < AllyGuilds.Count; i++)
+            bool result = false;
+            for (var i = 0; i < AllyGuilds.Count; i++)
             {
-                if (AllyGuilds.Values[i] == aguild)
+                if (AllyGuilds[i] == aguild)
                 {
-                    // 吝汗八荤
                     return result;
                 }
             }
-            AllyGuilds.Add(aguild.GuildName, aguild);
+            AllyGuilds.Add(aguild);
             SaveGuild();
             return result;
         }
 
-        // 惑措规 巩颇客 悼竿阑 搬己茄促.
-        // 巩林尝府 辑肺 付林焊哥 且 荐 乐促.
         public bool CanAlly(TGuild aguild)
         {
-            bool result;
-            int i;
-            result = false;
-            for (i = 0; i < KillGuilds.Count; i++)
+            bool result = false;
+            for (var i = 0; i < KillGuilds.Count; i++)
             {
-                if ((KillGuilds.Values[i] as TGuildWarInfo).WarGuild == aguild)
+                if (KillGuilds[i].WarGuild == aguild)
                 {
-                    // 傈里吝捞搁 悼竿阑 给茄促.
                     return result;
                 }
             }
@@ -1156,15 +1085,12 @@ namespace GameSvr
 
         public bool BreakAlly(TGuild aguild)
         {
-            bool result;
-            int i;
-            result = false;
-            for (i = 0; i < AllyGuilds.Count; i++)
+            bool result = false;
+            for (var i = 0; i < AllyGuilds.Count; i++)
             {
-                if ((AllyGuilds.Values[i] as TGuild) == aguild)
+                if (AllyGuilds[i] == aguild)
                 {
-                    // 悼竿吝捞搁
-                    AllyGuilds.Remove(i);
+                    AllyGuilds.RemoveAt(i);
                     result = true;
                     break;
                 }
@@ -1173,7 +1099,6 @@ namespace GameSvr
             return result;
         }
 
-        // 巩颇 措访 包访 窃荐
         public void TeamFightStart()
         {
             MatchPoint = 0;
@@ -1193,19 +1118,15 @@ namespace GameSvr
 
         public void TeamFightWhoWinPoint(string whostr, int point)
         {
-            int i;
-            int n;
             if (BoStartGuildFight)
             {
-                // 巩颇傈 吝俊父 痢荐啊 棵扼埃促.
                 MatchPoint = MatchPoint + point;
-                for (i = 0; i < FightMemberList.Count; i++)
+                for (var i = 0; i < FightMemberList.Count; i++)
                 {
                     if (FightMemberList[i] == whostr)
                     {
-                        n = (int)FightMemberList.Values[i];
-                        // Loword: dead count, Hiword: win point
-                        FightMemberList.Values[i] = HUtil32.MakeLong(Loword(n), Hiword(n) + point) as Object;
+                        var n = (int)FightMemberList[i];
+                        FightMemberList[i] = HUtil32.MakeLong(HUtil32.LoWord(n), HUtil32.HiWord(n) + point) as Object;
                     }
                 }
             }
@@ -1213,18 +1134,14 @@ namespace GameSvr
 
         public void TeamFightWhoDead(string whostr)
         {
-            int i;
-            int n;
             if (BoStartGuildFight)
             {
-                // 巩颇傈 吝俊父 扁废等促.
-                for (i = 0; i < FightMemberList.Count; i++)
+                for (var i = 0; i < FightMemberList.Count; i++)
                 {
                     if (FightMemberList[i] == whostr)
                     {
-                        n = (int)FightMemberList.Values[i];
-                        // Loword: dead count, Hiword: win point
-                        FightMemberList.Values[i] = HUtil32.MakeLong(Loword(n) + 1, Hiword(n)) as Object;
+                        var n = (int)FightMemberList[i];
+                        FightMemberList[i] = HUtil32.MakeLong(HUtil32.LoWord(n) + 1, HUtil32.HiWord(n)) as Object;
                     }
                 }
             }
@@ -1232,15 +1149,12 @@ namespace GameSvr
 
         public int GetTotalMemberCount()
         {
-            int result;
-            int i;
-            result = 0;
-            // 巩林甫 器窃茄 葛电 巩颇盔狼 荐甫 舅妨淋.
+            int result = 0;
             if (MemberList != null)
             {
-                for (i = 0; i < MemberList.Count; i++)
+                for (var i = 0; i < MemberList.Count; i++)
                 {
-                    result = result + (MemberList[i] as TGuildRank).MemList.Count;
+                    result = result + MemberList[i].MemList.Count;
                 }
             }
             return result;

@@ -104,11 +104,11 @@ namespace GameSvr
             SameRaceCount = _MIN(30, SameRaceCount);
             DCFact = SameRaceCount * 3;
             TAbility _wvar1 = this.WAbil;
-            pwr = this.GetAttackPower(_wvar1._MIN(255, _wvar1.Lobyte(_wvar1.DC) + DCFact), (short)_wvar1._MIN(255, HiByte(_wvar1.DC) + DCFact) - _wvar1._MIN(255, _wvar1.Lobyte(_wvar1.DC) + DCFact));
+            pwr = this.GetAttackPower(HUtil32._MIN(255, HUtil32.LoByte(_wvar1.DC) + DCFact), (short)HUtil32._MIN(255, HiByte(_wvar1.DC) + DCFact) - HUtil32._MIN(255, HUtil32.LoByte(_wvar1.DC) + DCFact));
             CriticalFact = SameRaceCount;
             if (new System.Random(100).Next() < 1 + CriticalFact)
             {
-                pwr = pwr + Lobyte(target.WAbil.AC) + new System.Random(HiByte(target.WAbil.AC) - Lobyte(target.WAbil.AC) + 1).Next();
+                pwr = pwr + LoByte(target.WAbil.AC) + new System.Random(HiByte(target.WAbil.AC) - LoByte(target.WAbil.AC) + 1).Next();
                 this.HitHitEx2(target, Grobal2.RM_LIGHTING, pwr, 0, true);
             }
             else

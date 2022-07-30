@@ -51,7 +51,7 @@ namespace GameSvr
             TCreature cret;
             this.Dir = M2Share.GetNextDirection(this.CX, this.CY, target.CX, target.CY);
             TAbility _wvar1 = this.WAbil;
-            pwr = this.GetAttackPower(_wvar1.Lobyte(_wvar1.DC), (short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC));
+            pwr = this.GetAttackPower(HUtil32.LoByte(_wvar1.DC), HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC));
             ixf = _MAX(0, this.CX - 2);
             ixt = _MIN(this.PEnvir.MapWidth - 1, this.CX + 2);
             iyf = _MAX(0, this.CY - 2);
@@ -75,7 +75,7 @@ namespace GameSvr
                                 // lparam1
                                 // lparam2
                                 // hiter
-                                cret.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 200);
+                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 200);
                                 if (new System.Random(10).Next() == 0)
                                 {
                                     cret.MakePoison(Grobal2.POISON_STONE, 5, 0);
@@ -200,7 +200,7 @@ namespace GameSvr
                     {
                         dam = cret.WAbil.HP / 4;
                         cret.DamageHealth(dam, 0);
-                        cret.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
+                        cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                     }
                 }
             }

@@ -335,30 +335,30 @@ namespace GameSvr
             this.HitSpeed = this.AddAbil.HitSpeed;
             this.WAbil.MaxHP = (ushort)(this.Abil.MaxHP + this.AddAbil.HP);
             this.WAbil.MaxMP = (ushort)(this.Abil.MaxMP + this.AddAbil.MP);
-            this.WAbil.AC = MakeWord(Lobyte(this.AddAbil.AC) + Lobyte(this.Abil.AC), HiByte(this.AddAbil.AC) + HiByte(this.Abil.AC));
-            this.WAbil.MAC = MakeWord(Lobyte(this.AddAbil.MAC) + Lobyte(this.Abil.MAC), HiByte(this.AddAbil.MAC) + HiByte(this.Abil.MAC));
-            this.WAbil.DC = MakeWord(Lobyte(this.AddAbil.DC) + Lobyte(this.Abil.DC), HiByte(this.AddAbil.DC) + HiByte(this.Abil.DC));
-            this.WAbil.MC = MakeWord(Lobyte(this.AddAbil.MC) + Lobyte(this.Abil.MC), HiByte(this.AddAbil.MC) + HiByte(this.Abil.MC));
-            this.WAbil.SC = MakeWord(Lobyte(this.AddAbil.SC) + Lobyte(this.Abil.SC), HiByte(this.AddAbil.SC) + HiByte(this.Abil.SC));
+            this.WAbil.AC = MakeWord(LoByte(this.AddAbil.AC) + LoByte(this.Abil.AC), HiByte(this.AddAbil.AC) + HiByte(this.Abil.AC));
+            this.WAbil.MAC = MakeWord(LoByte(this.AddAbil.MAC) + LoByte(this.Abil.MAC), HiByte(this.AddAbil.MAC) + HiByte(this.Abil.MAC));
+            this.WAbil.DC = MakeWord(LoByte(this.AddAbil.DC) + LoByte(this.Abil.DC), HiByte(this.AddAbil.DC) + HiByte(this.Abil.DC));
+            this.WAbil.MC = MakeWord(LoByte(this.AddAbil.MC) + LoByte(this.Abil.MC), HiByte(this.AddAbil.MC) + HiByte(this.Abil.MC));
+            this.WAbil.SC = MakeWord(LoByte(this.AddAbil.SC) + LoByte(this.Abil.SC), HiByte(this.AddAbil.SC) + HiByte(this.Abil.SC));
             if (this.StatusArr[Grobal2.STATE_DEFENCEUP] > 0)
             {
-                this.WAbil.AC = MakeWord(Lobyte(this.WAbil.AC), _MIN(255, HiByte(this.WAbil.AC) + (this.Abil.Level / 7) + this.StatusValue[Grobal2.STATE_DEFENCEUP]));
+                this.WAbil.AC = MakeWord(LoByte(this.WAbil.AC), _MIN(255, HiByte(this.WAbil.AC) + (this.Abil.Level / 7) + this.StatusValue[Grobal2.STATE_DEFENCEUP]));
             }
             if (this.StatusArr[Grobal2.STATE_MAGDEFENCEUP] > 0)
             {
-                this.WAbil.MAC = MakeWord(Lobyte(this.WAbil.MAC), _MIN(255, HiByte(this.WAbil.MAC) + (this.Abil.Level / 7) + this.StatusValue[Grobal2.STATE_MAGDEFENCEUP]));
+                this.WAbil.MAC = MakeWord(LoByte(this.WAbil.MAC), _MIN(255, HiByte(this.WAbil.MAC) + (this.Abil.Level / 7) + this.StatusValue[Grobal2.STATE_MAGDEFENCEUP]));
             }
             if (this.ExtraAbil[Grobal2.EABIL_DCUP] > 0)
             {
-                this.WAbil.DC = MakeWord(Lobyte(this.WAbil.DC), HiByte(this.WAbil.DC) + this.ExtraAbil[Grobal2.EABIL_DCUP]);
+                this.WAbil.DC = MakeWord(LoByte(this.WAbil.DC), HiByte(this.WAbil.DC) + this.ExtraAbil[Grobal2.EABIL_DCUP]);
             }
             if (this.ExtraAbil[Grobal2.EABIL_MCUP] > 0)
             {
-                this.WAbil.MC = MakeWord(Lobyte(this.WAbil.MC), HiByte(this.WAbil.MC) + this.ExtraAbil[Grobal2.EABIL_MCUP]);
+                this.WAbil.MC = MakeWord(LoByte(this.WAbil.MC), HiByte(this.WAbil.MC) + this.ExtraAbil[Grobal2.EABIL_MCUP]);
             }
             if (this.ExtraAbil[Grobal2.EABIL_SCUP] > 0)
             {
-                this.WAbil.SC = MakeWord(Lobyte(this.WAbil.SC), HiByte(this.WAbil.SC) + this.ExtraAbil[Grobal2.EABIL_SCUP]);
+                this.WAbil.SC = MakeWord(LoByte(this.WAbil.SC), HiByte(this.WAbil.SC) + this.ExtraAbil[Grobal2.EABIL_SCUP]);
             }
             if (this.ExtraAbil[Grobal2.EABIL_HITSPEEDUP] > 0)
             {

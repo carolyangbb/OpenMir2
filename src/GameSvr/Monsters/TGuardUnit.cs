@@ -55,14 +55,14 @@ namespace GameSvr
                 {
                     if (target.Master == null)
                     {
-                        if (((((TUserCastle)this.Castle).OwnerGuild == target.MyGuild) || ((TUserCastle)this.Castle).OwnerGuild.IsAllyGuild((TGuild)target.MyGuild)) && (this.LastHiter != target))
+                        if (((((TUserCastle)this.Castle).OwnerGuild == target.MyGuild) || ((TUserCastle)this.Castle).OwnerGuild.IsAllyGuild(target.MyGuild)) && (this.LastHiter != target))
                         {
                             result = false;
                         }
                     }
                     else
                     {
-                        if (((((TUserCastle)this.Castle).OwnerGuild == target.Master.MyGuild) || ((TUserCastle)this.Castle).OwnerGuild.IsAllyGuild((TGuild)target.Master.MyGuild)) && (this.LastHiter != target.Master) && (this.LastHiter != target))
+                        if (((((TUserCastle)this.Castle).OwnerGuild == target.Master.MyGuild) || ((TUserCastle)this.Castle).OwnerGuild.IsAllyGuild(target.Master.MyGuild)) && (this.LastHiter != target.Master) && (this.LastHiter != target))
                         {
                             result = false;
                         }

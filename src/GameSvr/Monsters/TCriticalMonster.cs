@@ -16,7 +16,7 @@ namespace GameSvr
         {
             int pwr;
             TAbility _wvar1 = this.WAbil;
-            pwr = this.GetAttackPower(_wvar1.Lobyte(_wvar1.DC), (short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC));
+            pwr = this.GetAttackPower(HUtil32.LoByte(_wvar1.DC), HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC));
             criticalpoint++;
             if ((criticalpoint > 5) || (new System.Random(10).Next() == 0))
             {

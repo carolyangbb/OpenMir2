@@ -112,7 +112,7 @@ namespace GameSvr
                     break;
             }
             TAbility _wvar1 = this.WAbil;
-            pwr = new System.Random(HiByte(this.WAbil.DC)).Next() + _wvar1.Lobyte(this.WAbil.DC) + new System.Random(_wvar1.Lobyte(this.WAbil.MC)).Next();
+            pwr = new System.Random(HiByte(this.WAbil.DC)).Next() + HUtil32.LoByte(this.WAbil.DC) + new System.Random(HUtil32.LoByte(this.WAbil.MC)).Next();
             pwr = pwr * (new System.Random(2).Next() + 1);
             if (targ.LifeAttrib == Grobal2.LA_UNDEAD)
             {
@@ -145,7 +145,7 @@ namespace GameSvr
                                 // lparam1
                                 // lparam2
                                 // hiter
-                                cret.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - cret.CX), Math.Abs(this.CY - cret.CY)) * 70);
+                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - cret.CX), Math.Abs(this.CY - cret.CY)) * 70);
                             }
                         }
                     }
@@ -181,7 +181,7 @@ namespace GameSvr
             }
             this.SendRefMsg(Grobal2.RM_LIGHTING, this.Dir, this.CX, this.CY, this.ActorId, "");
             TAbility _wvar1 = this.WAbil;
-            pwr = new System.Random(HiByte(this.WAbil.DC)).Next() + _wvar1.Lobyte(this.WAbil.DC) + new System.Random(_wvar1.Lobyte(this.WAbil.MC)).Next();
+            pwr = new System.Random(HiByte(this.WAbil.DC)).Next() + HUtil32.LoByte(this.WAbil.DC) + new System.Random(HUtil32.LoByte(this.WAbil.MC)).Next();
             pwr = pwr * (new System.Random(5).Next() + 1);
             ixf = _MAX(0, Targ.CX - 10);
             ixt = _MIN(this.PEnvir.MapWidth - 1, Targ.CX + 10);
@@ -210,7 +210,7 @@ namespace GameSvr
                                 // lparam1
                                 // lparam2
                                 // hiter
-                                cret.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 600);
+                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 600);
                             }
                         }
                     }

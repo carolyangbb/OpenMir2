@@ -21,19 +21,19 @@ namespace GameSvr
             this.ViewRange = 16;
             this.RunNextTick = 250;
             this.SearchRate = 1500 + ((long)new System.Random(1500).Next());
-            this.SearchTime  =  HUtil32.GetTickCount();
+            this.SearchTime = HUtil32.GetTickCount();
             this.HideMode = false;
             this.StickMode = true;
             this.BoDontMove = true;
             this.BodyState = 1;
             OrgNextHitTime = this.NextHitTime;
-            sectick  =  HUtil32.GetTickCount();
+            sectick = HUtil32.GetTickCount();
         }
         public override void Run()
         {
             if (HUtil32.GetTickCount() - sectick > 3000)
             {
-                sectick  =  HUtil32.GetTickCount();
+                sectick = HUtil32.GetTickCount();
                 if ((!this.Death) && (!this.BoGhost))
                 {
                     if (this.WAbil.HP >= this.WAbil.MaxHP * 4 / 5)
@@ -45,9 +45,9 @@ namespace GameSvr
                             svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " State(" + (this.BodyState).ToString() + ") : " + this.TargetCret.UserName);
                             // test
 #endif
-                            this.WAbil.DC = MakeWord(_MIN(255, Lobyte(this.Abil.DC)), _MIN(255, HiByte(this.Abil.DC)));
-                            this.WAbil.AC = MakeWord(_MIN(255, Lobyte(this.Abil.AC)), _MIN(255, HiByte(this.Abil.AC)));
-                            this.WAbil.MAC = MakeWord(_MIN(255, Lobyte(this.Abil.MAC)), _MIN(255, HiByte(this.Abil.MAC)));
+                            this.WAbil.DC = MakeWord(_MIN(255, LoByte(this.Abil.DC)), _MIN(255, HiByte(this.Abil.DC)));
+                            this.WAbil.AC = MakeWord(_MIN(255, LoByte(this.Abil.AC)), _MIN(255, HiByte(this.Abil.AC)));
+                            this.WAbil.MAC = MakeWord(_MIN(255, LoByte(this.Abil.MAC)), _MIN(255, HiByte(this.Abil.MAC)));
                             this.SendRefMsg(Grobal2.RM_FOXSTATE, this.Dir, this.CX, this.CY, this.BodyState, this.UserName);
                             // NextHitTime := OrgNextHitTime;
                         }
@@ -61,9 +61,9 @@ namespace GameSvr
                             svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " State(" + (this.BodyState).ToString() + ") : " + this.TargetCret.UserName);
                             // test
 #endif
-                            this.WAbil.DC = MakeWord(_MIN(255, Lobyte(this.Abil.DC)), _MIN(255, HiByte(this.Abil.DC) + HiByte(this.Abil.DC) / 10));
-                            this.WAbil.AC = MakeWord(_MIN(255, Lobyte(this.Abil.AC)), _MIN(255, HiByte(this.Abil.AC) + HiByte(this.Abil.AC) * 2 / 10));
-                            this.WAbil.MAC = MakeWord(_MIN(255, Lobyte(this.Abil.MAC)), _MIN(255, HiByte(this.Abil.MAC) + HiByte(this.Abil.MAC) * 2 / 10));
+                            this.WAbil.DC = MakeWord(_MIN(255, LoByte(this.Abil.DC)), _MIN(255, HiByte(this.Abil.DC) + HiByte(this.Abil.DC) / 10));
+                            this.WAbil.AC = MakeWord(_MIN(255, LoByte(this.Abil.AC)), _MIN(255, HiByte(this.Abil.AC) + HiByte(this.Abil.AC) * 2 / 10));
+                            this.WAbil.MAC = MakeWord(_MIN(255, LoByte(this.Abil.MAC)), _MIN(255, HiByte(this.Abil.MAC) + HiByte(this.Abil.MAC) * 2 / 10));
                             this.SendRefMsg(Grobal2.RM_FOXSTATE, this.Dir, this.CX, this.CY, this.BodyState, this.UserName);
                             // NextHitTime := OrgNextHitTime;
                         }
@@ -77,9 +77,9 @@ namespace GameSvr
                             svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " State(" + (this.BodyState).ToString() + ") : " + this.TargetCret.UserName);
                             // test
 #endif
-                            this.WAbil.DC = MakeWord(_MIN(255, Lobyte(this.Abil.DC)), _MIN(255, HiByte(this.Abil.DC) + HiByte(this.Abil.DC) * 2 / 10));
-                            this.WAbil.AC = MakeWord(_MIN(255, Lobyte(this.Abil.AC)), _MIN(255, HiByte(this.Abil.AC) + HiByte(this.Abil.AC) * 4 / 10));
-                            this.WAbil.MAC = MakeWord(_MIN(255, Lobyte(this.Abil.MAC)), _MIN(255, HiByte(this.Abil.MAC) + HiByte(this.Abil.MAC) * 4 / 10));
+                            this.WAbil.DC = MakeWord(_MIN(255, LoByte(this.Abil.DC)), _MIN(255, HiByte(this.Abil.DC) + HiByte(this.Abil.DC) * 2 / 10));
+                            this.WAbil.AC = MakeWord(_MIN(255, LoByte(this.Abil.AC)), _MIN(255, HiByte(this.Abil.AC) + HiByte(this.Abil.AC) * 4 / 10));
+                            this.WAbil.MAC = MakeWord(_MIN(255, LoByte(this.Abil.MAC)), _MIN(255, HiByte(this.Abil.MAC) + HiByte(this.Abil.MAC) * 4 / 10));
                             this.SendRefMsg(Grobal2.RM_FOXSTATE, this.Dir, this.CX, this.CY, this.BodyState, this.UserName);
                             // NextHitTime := OrgNextHitTime * 9 div 10;
                         }
@@ -93,9 +93,9 @@ namespace GameSvr
                             svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " State(" + (this.BodyState).ToString() + ") : " + this.TargetCret.UserName);
                             // test
 #endif
-                            this.WAbil.DC = MakeWord(_MIN(255, Lobyte(this.Abil.DC)), _MIN(255, HiByte(this.Abil.DC) + HiByte(this.Abil.DC) * 3 / 10));
-                            this.WAbil.AC = MakeWord(_MIN(255, Lobyte(this.Abil.AC)), _MIN(255, HiByte(this.Abil.AC) + HiByte(this.Abil.AC) * 6 / 10));
-                            this.WAbil.MAC = MakeWord(_MIN(255, Lobyte(this.Abil.MAC)), _MIN(255, HiByte(this.Abil.MAC) + HiByte(this.Abil.MAC) * 4 / 10));
+                            this.WAbil.DC = MakeWord(_MIN(255, LoByte(this.Abil.DC)), _MIN(255, HiByte(this.Abil.DC) + HiByte(this.Abil.DC) * 3 / 10));
+                            this.WAbil.AC = MakeWord(_MIN(255, LoByte(this.Abil.AC)), _MIN(255, HiByte(this.Abil.AC) + HiByte(this.Abil.AC) * 6 / 10));
+                            this.WAbil.MAC = MakeWord(_MIN(255, LoByte(this.Abil.MAC)), _MIN(255, HiByte(this.Abil.MAC) + HiByte(this.Abil.MAC) * 4 / 10));
                             this.SendRefMsg(Grobal2.RM_FOXSTATE, this.Dir, this.CX, this.CY, this.BodyState, this.UserName);
                             // NextHitTime := OrgNextHitTime * 8 div 10;
                         }
@@ -109,9 +109,9 @@ namespace GameSvr
                             svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " State(" + (this.BodyState).ToString() + ") : " + this.TargetCret.UserName);
                             // test
 #endif
-                            this.WAbil.DC = MakeWord(_MIN(255, Lobyte(this.Abil.DC)), _MIN(255, HiByte(this.Abil.DC) + HiByte(this.Abil.DC) * 4 / 10));
-                            this.WAbil.AC = MakeWord(_MIN(255, Lobyte(this.Abil.AC)), _MIN(255, HiByte(this.Abil.AC) + HiByte(this.Abil.AC) * 8 / 10));
-                            this.WAbil.MAC = MakeWord(_MIN(255, Lobyte(this.Abil.MAC)), _MIN(255, HiByte(this.Abil.MAC) + HiByte(this.Abil.MAC) * 4 / 10));
+                            this.WAbil.DC = MakeWord(_MIN(255, LoByte(this.Abil.DC)), _MIN(255, HiByte(this.Abil.DC) + HiByte(this.Abil.DC) * 4 / 10));
+                            this.WAbil.AC = MakeWord(_MIN(255, LoByte(this.Abil.AC)), _MIN(255, HiByte(this.Abil.AC) + HiByte(this.Abil.AC) * 8 / 10));
+                            this.WAbil.MAC = MakeWord(_MIN(255, LoByte(this.Abil.MAC)), _MIN(255, HiByte(this.Abil.MAC) + HiByte(this.Abil.MAC) * 4 / 10));
                             this.SendRefMsg(Grobal2.RM_FOXSTATE, this.Dir, this.CX, this.CY, this.BodyState, this.UserName);
                             // NextHitTime := OrgNextHitTime * 7 div 10;
                         }
@@ -126,8 +126,8 @@ namespace GameSvr
         {
             bool result;
             int i;
-            int nx=0;
-            int ny=0;
+            int nx = 0;
+            int ny = 0;
             TCreature cret;
             ArrayList rlist;
             result = false;
@@ -279,17 +279,15 @@ namespace GameSvr
             return result;
         }
 
-        // 5x5 盔芭府 裹困 傍拜
         public void RangeAttack(TCreature targ)
         {
-            // 馆靛矫 target <> nil
             int i;
             int pwr;
             int dam;
-           short sx=0;
-           short sy=0;
-           short tx=0;
-            short ty =0;
+            short sx = 0;
+            short sy = 0;
+            short tx = 0;
+            short ty = 0;
             ArrayList list;
             TCreature cret;
             if (targ == null)
@@ -302,8 +300,8 @@ namespace GameSvr
             {
                 M2Share.GetNextPosition(this.PEnvir, this.CX, this.CY, this.Dir, 9, ref tx, ref ty);
                 TAbility _wvar1 = this.WAbil;
-                pwr = _wvar1._MAX(0, _wvar1.Lobyte(_wvar1.DC) + _wvar1._MIN(255, new System.Random((short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC) + 1).Next()));
-                pwr = pwr + new System.Random(_wvar1.Lobyte(_wvar1.MC)).Next();
+                pwr = HUtil32._MAX(0, HUtil32.LoByte(_wvar1.DC) + HUtil32._MIN(255, new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next()));
+                pwr = pwr + new System.Random(HUtil32.LoByte(_wvar1.MC)).Next();
                 pwr = pwr * 2;
                 list = new ArrayList();
                 this.PEnvir.GetCreatureInRange(targ.CX, targ.CY, 2, true, list);
@@ -316,11 +314,7 @@ namespace GameSvr
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            // wparam
-                            // lparam1
-                            // lparam2
-                            // hiter
-                            cret.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
+                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                         }
                     }
                 }
@@ -328,34 +322,25 @@ namespace GameSvr
             }
         }
 
-        // 檬鞘混 傍拜
         public void RangeAttack2(TCreature targ)
         {
-            // 馆靛矫 target <> nil
-            int i;
-            int pwr;
-            int dam;
-            TCreature cret;
             int sec;
             int skilllevel;
             if (targ == null)
             {
                 return;
             }
-            // 檬鞘混 Effect
             this.SendRefMsg(Grobal2.RM_LIGHTING_2, this.Dir, this.CX, this.CY, this.ActorId, "");
             TAbility _wvar1 = this.WAbil;
-            pwr = this.GetAttackPower(_wvar1.Lobyte(_wvar1.DC), _wvar1._MIN(255, (short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC)));
+            int pwr = this.GetAttackPower(HUtil32.LoByte(_wvar1.DC), HUtil32._MIN(255, HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC)));
             pwr = pwr * 2;
-            // 矫具郴 葛电 某腐/家券各 吝刀
-            for (i = 0; i < this.VisibleActors.Count; i++)
+            for (var i = 0; i < this.VisibleActors.Count; i++)
             {
-                cret = (TCreature)this.VisibleActors[i].cret;
+                TCreature cret = (TCreature)this.VisibleActors[i].cret;
                 if ((!cret.Death) && this.IsProperTarget(cret))
                 {
                     if ((cret.RaceServer == Grobal2.RC_USERHUMAN) || (cret.Master != null))
                     {
-                        // 历林贱 肚绰 付厚啊 等促.
                         if (new System.Random(10).Next() < 2)
                         {
                             if (new System.Random(2 + cret.AntiPoison).Next() == 0)
@@ -373,7 +358,7 @@ namespace GameSvr
                                 this.MagMakeCurseArea(targ.CX, targ.CY, 2, sec, pwr, skilllevel, false);
                             }
                         }
-                        dam = cret.GetMagStruckDamage(this, pwr);
+                        int dam = cret.GetMagStruckDamage(this, pwr);
                         if (dam > 0)
                         {
                             cret.SendDelayMsg(this, Grobal2.RM_MAGSTRUCK, 0, dam, 0, 0, "", 1500);
@@ -388,40 +373,32 @@ namespace GameSvr
             }
         }
 
-        // 吝缴 裹困 傍拜
         public override void Attack(TCreature target, byte dir)
         {
-            int i;
-            int dam;
-            int wide;
-            ArrayList rlist;
-            TCreature cret;
-            int pwr;
             if (target == null)
             {
                 return;
             }
-            wide = 3;
+            int wide = 3;
             this.Dir = M2Share.GetNextDirection(this.CX, this.CY, target.CX, target.CY);
             this.SendRefMsg(Grobal2.RM_LIGHTING, this.Dir, this.CX, this.CY, target.ActorId, "");
             TAbility _wvar1 = this.WAbil;
-            pwr = this.GetAttackPower(_wvar1.Lobyte(_wvar1.DC), _wvar1._MIN(255, (short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC)));
-            pwr = pwr + new System.Random(_wvar1.Lobyte(_wvar1.MC)).Next();
+            int pwr = this.GetAttackPower(HUtil32.LoByte(_wvar1.DC), HUtil32._MIN(255, HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC)));
+            pwr = pwr + new System.Random(HUtil32.LoByte(_wvar1.MC)).Next();
             pwr = pwr * 2;
             if (pwr <= 0)
             {
                 return;
             }
-            rlist = new ArrayList();
+            ArrayList rlist = new ArrayList();
             this.GetMapCreatures(this.PEnvir, this.CX, this.CY, wide, rlist);
-            for (i = 0; i < rlist.Count; i++)
+            for (var i = 0; i < rlist.Count; i++)
             {
-                cret = (TCreature)rlist[i];
+                TCreature cret = (TCreature)rlist[i];
                 if (this.IsProperTarget(cret))
                 {
                     this.SelectTarget(cret);
-                    // 3锅 楷加 鸥拜
-                    dam = cret.GetMagStruckDamage(this, pwr);
+                    int dam = cret.GetMagStruckDamage(this, pwr);
                     if (dam > 0)
                     {
                         cret.SendDelayMsg(this, Grobal2.RM_MAGSTRUCK, 0, dam, 0, 0, "", 300);
@@ -443,20 +420,15 @@ namespace GameSvr
 
         public override void Die()
         {
-            int k;
-            ArrayList list;
-            list = new ArrayList();
+            ArrayList list = new ArrayList();
             svMain.UserEngine.GetMapMons(this.PEnvir, list);
-            for (k = 0; k < list.Count; k++)
+            for (var k = 0; k < list.Count; k++)
             {
                 ((TCreature)list[k]).NeverDie = false;
-                // TCreature(list[k]).BoNoItem := TRUE;
                 ((TCreature)list[k]).WAbil.HP = 0;
-                // 葛滴 磷牢促.
             }
             list.Free();
             base.Die();
         }
-
     }
 }

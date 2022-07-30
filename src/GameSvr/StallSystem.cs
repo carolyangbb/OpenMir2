@@ -2,7 +2,7 @@ using SystemModule;
 
 namespace GameSvr
 {
-    public struct TClientStall
+    public class TClientStall
     {
         public int MakeIndex;
         public int Price;

@@ -26,7 +26,7 @@ namespace GameSvr
             int pwr;
             this.Dir = dir;
             TAbility _wvar1 = this.WAbil;
-            pwr = this.GetAttackPower(_wvar1.Lobyte(_wvar1.DC), (short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC));
+            pwr = this.GetAttackPower(HUtil32.LoByte(_wvar1.DC), HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC));
             if (pwr <= 0)
             {
                 return;
@@ -39,7 +39,7 @@ namespace GameSvr
                 // lparam1
                 // lparam2
                 // hiter
-                target.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, pwr, target.WAbil.HP, target.WAbil.MaxHP, this.ActorId, "", 500);
+                target.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, pwr, target.WAbil.HP, target.WAbil.MaxHP, this.ActorId, "", 500);
             }
         }
 
@@ -82,7 +82,7 @@ namespace GameSvr
             {
                 M2Share.GetNextPosition(this.PEnvir, this.CX, this.CY, this.Dir, 9, ref tx, ref ty);
                 TAbility _wvar1 = this.WAbil;
-                pwr = _wvar1._MAX(0, _wvar1.Lobyte(_wvar1.DC) + new System.Random((short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC) + 1).Next());
+                pwr = HUtil32._MAX(0, HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next());
                 list = new ArrayList();
                 this.PEnvir.GetAllCreature(targ.CX, targ.CY, true, list);
                 for (i = 0; i < list.Count; i++)
@@ -94,7 +94,7 @@ namespace GameSvr
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            cret.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
+                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                         }
                     }
                 }

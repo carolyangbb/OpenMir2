@@ -24,7 +24,7 @@ namespace GameSvr
             this.Dir = M2Share.GetNextDirection(this.CX, this.CY, targ.CX, targ.CY);
             this.SendRefMsg(Grobal2.RM_LIGHTING, this.Dir, this.CX, this.CY, targ.ActorId, "");
             TAbility _wvar1 = this.WAbil;
-            pwr = _wvar1._MAX(0, _wvar1.Lobyte(_wvar1.DC) + new System.Random((short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC) + 1).Next());
+            pwr = HUtil32._MAX(0, HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next());
             list = new ArrayList();
             this.GetMapCreatures(this.PEnvir, targ.CX, targ.CY, 1, list);
             for (i = 0; i < list.Count; i++)
@@ -46,7 +46,7 @@ namespace GameSvr
                             // lparam1
                             // lparam2
                             // hiter
-                            cret.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
+                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                         }
                     }
                 }

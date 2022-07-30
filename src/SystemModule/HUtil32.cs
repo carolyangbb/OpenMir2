@@ -84,6 +84,9 @@ namespace SystemModule
             return Environment.TickCount;
         }
 
+        public static long GetCurrentTime => Environment.TickCount;
+
+
         public static int MakeLong(int lowPart, int highPart)
         {
             return lowPart | (short)highPart << 16;

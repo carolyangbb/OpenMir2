@@ -2,7 +2,7 @@ using System;
 
 namespace GameSvr
 {
-    public class Castle
+    public class CastleDef
     {
         public const string CASTLEFILENAME = "Sabuk.txt";
         public const string CASTLEATTACERS = "AttackSabukWall.txt";

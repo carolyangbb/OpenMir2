@@ -92,7 +92,7 @@ namespace GameSvr
             string str;
             str = "[" + Msg.Msg.Ident.ToString() + "]" + "[" + Msg.Msg.Param.ToString() + "]" + "[" + Msg.Msg.Tag.ToString() + "]" + "[" + Msg.Msg.Series.ToString() + "]<" + Msg.body + ">";
             Msg.Msg.Ident = Grobal2.SM_SYSMESSAGE;
-            Msg.Msg.Param = MakeWord(219, 255);
+            Msg.Msg.Param = HUtil32.MakeWord(219, 255);
             Msg.Msg.Tag = 0;
             Msg.Msg.Series = 1;
             Msg.body = EDcode.EncodeString(str);

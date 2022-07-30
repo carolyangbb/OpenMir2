@@ -124,7 +124,7 @@ namespace GameSvr
         public int SlaveExp = 0;
         public byte SlaveExpLevel = 0;
         public byte SlaveMakeLevel = 0;
-        public ArrayList SlaveList = null;
+        public IList<TCreature> SlaveList = null;
         public bool BoSlaveRelax = false;
         public byte HumAttackMode = 0;
         public byte DefNameColor = 0;
@@ -134,171 +134,104 @@ namespace GameSvr
         public bool BoCrimeforCastle = false;
         public long CrimeforCastleTime = 0;
         public bool NeverDie = false;
-        // 例措 磷瘤 臼澜.. NPC
         public bool HoldPlace = false;
-        // 磊府甫 痢蜡窍绊 乐绰瘤 咯何
         public bool BoFearFire = false;
-        // 阂阑 公辑况窍绰 加己, 阂捞 嘿绢 乐栏搁 傈柳阑 救茄促.
         public bool BoAnimal = false;
-        // 悼拱..(戒搁 绊扁啊 唱坷绰 辆幅?)
         public bool BoNoItem = false;
-        // true(磷绢档 酒捞袍捞 救冻绢咙)
         public bool HideMode = false;
-        // 积己寸矫 见绢乐绰 葛靛
         public bool StickMode = false;
-        // 框流老 荐 绝绰 各
         public bool RushMode = false;
-        // 付过俊 嘎酒档 框流牢促.
         public bool NoAttackMode = false;
-        // 傍拜寸秦档 措览阑 救窃(傍拜 橇肺弊伐捞 绝澜)
         public bool NoMaster = false;
-        // 部角 荐 绝澜
         public bool BoSkeleton = false;
-        // 焕父 巢疽瘤 咯何
         public int MeatQuality = 0;
-        // 绊扁狼 龙
         public int BodyLeathery = 0;
-        // 龙变 沥档
         public bool BoHolySeize = false;
-        // 付过俊 吧妨辑 捞悼阑 给窃. (阁胶磐俊霸父 利侩)
         public long HolySeizeStart = 0;
         public long HolySeizeTime = 0;
-        // 瘤加矫埃(檬)
         public bool BoCrazyMode = false;
-        // 固模惑怕
         public bool BoGoodCrazyMode = false;
-        // 蚌霸固模惑怕(蜡历绰 傍拜窍瘤 臼澜. 2004/07/13 sonmg)
         public long CrazyModeStart = 0;
-        // 矫累矫埃
         public long CrazyModeTime = 0;
-        // 瘤加矫埃
         public bool BoOpenHealth = false;
-        // 沤扁颇楷栏肺 眉仿捞 傍俺凳
         public long OpenHealthStart = 0;
         public long OpenHealthTime = 0;
         public bool BoDuplication = false;
-        // 促弗 某腐苞 般媚柳 惑怕
         public long DupStartTime = 0;
-        // 般媚柳 矫累 矫埃
         public TEnvirnoment PEnvir = null;
         public bool BoGhost = false;
         public long GhostTime = 0;
         public bool Death = false;
         public long DeathTime = 0;
         public byte DeathState = 0;
-        // 0 扁夯,  1: 焕父 巢澜.
         public long StruckTime = 0;
         public bool WantRefMsg = false;
         public bool ErrorOnInit = false;
         public bool SpaceMoved = false;
         public bool BoDealing = false;
-        // 芭贰吝牢瘤 咯何
         public bool BoDealEnding = false;
-        // 背券 辆丰吝牢瘤 咯何(捞 锭绰 秒家瞪 荐 绝澜)
         public long DealItemChangeTime = 0;
-        // 付瘤阜栏肺 背券前阑 函版茄 矫埃, 芭贰傈 1檬捞傈俊 拱前 函版捞 乐菌栏搁 芭贰 秒家
         public TCreature DealCret = null;
-        // 芭贰吝牢 惑措规, nil八荤秦具窃.
-        public Object MyGuild = null;
-        // 巩颇....
+        public TGuild MyGuild = null;
         public int GuildRank = 0;
-        // 巩颇郴俊辑狼 辑凯 1:巩林
         public string GuildRankName = String.Empty;
-        // 巩颇救俊辑狼 郴 流氓捞抚
         public string LatestNpcCmd = String.Empty;
-        // 付瘤阜栏肺 NPC客 措拳茄 目盖靛
         public int AttackSkillCount = 0;
-        // 傍拜 墨款靛...(抗档八过俊 荤侩)
         public int AttackSkillPointCount = 0;
-        // 傍拜 墨款靛 吝俊辑 抗档八捞 唱哎 锅掳
-        // HasTargetedCount: integer;  //郴甫 傍拜格钎肺 嘛篮 仇狼 荐, 10盒付促 府悸
-        // StoneTargetFocusCount: integer;  //
         public bool BoHasMission = false;
-        // 捞亥飘侩, 固记捞 乐绰瘤
         public int Mission_X = 0;
         public int Mission_Y = 0;
         public bool BoHumHideMode = false;
-        // 阁胶磐绰 救焊捞绰 葛靛
         public bool BoStoneMode = false;
-        // 籍惑栏肺 被绢 乐绰 葛靛(傍拜救凳,焊捞扁绰窃)
         public bool BoViewFixedHide = false;
-        // 篮脚阑 航
         public bool BoNextTimeFreeCurseItem = false;
-        // 促澜 茄锅 冻捞瘤瘤臼绰 酒捞袍阑 都绢 尘荐 乐促.
         public bool BoFixedHideMode = false;
-        // 茄磊府俊辑父 篮脚 啊瓷 葛靛 (篮脚贱阑 荤侩沁阑锭, 捞悼窍搁 钱覆)
         public bool BoSysopMode = false;
-        // 款康磊 葛靛
         public bool BoSuperviserMode = false;
-        // 皑矫磊 葛靛
         public bool BoEcho = false;
         public bool BoTaiwanEventUser = false;
-        // 措父侥,  捞亥飘 酒捞袍阑 爱绊 乐绰 荤恩
         public string TaiwanEventItemName = String.Empty;
         public bool BoAbilSpaceMove = false;
         public bool BoAbilMakeStone = false;
-        // 付厚狼馆瘤
         public bool BoAbilRevival = false;
-        // 犁积狼馆瘤
         public long LatestRevivalTime = 0;
         public bool BoAddMagicFireball = false;
-        // 拳堪狼馆瘤, 拳堪厘阑 荤侩且 荐 乐促.
         public bool BoAddMagicHealing = false;
-        // 雀汗狼馆瘤, 雀汗贱阑 荤侩且 荐 乐促.
         public bool BoAbilAngerEnergy = false;
-        // 盒畴狼馆瘤
         public bool BoMagicShield = false;
-        // 焊龋狼馆瘤
         public bool BoAbilSuperStrength = false;
-        // 肯仿狼馆瘤
         public bool BoFastTraining = false;
-        // 荐访狼馆瘤
         public bool BoAbilSearch = false;
         public bool BoAbilSeeHealGauge = false;
-        // 沤扁颇楷 1窜拌 捞惑阑 荐访茄 档荤
         public bool BoAbilMagBubbleDefence = false;
         public byte MagBubbleDefenceLevel = 0;
         public long SearchRate = 0;
         public long SearchTime = 0;
         public int RunTime = 0;
-        // longword;
         public int RunNextTick = 0;
-        // longword;   //促澜 平矫埃
         public int HealthTick = 0;
         public int SpellTick = 0;
         public TCreature TargetCret = null;
         public long TargetFocusTime = 0;
         public TCreature LastHiter = null;
-        // 付瘤阜俊 傍拜茄荤恩
         public int LastHiterRace = 0;
-        // 付瘤阜俊 傍拜茄荤恩 辆练(2004/07/16)
         public TCreature SlaveHiter = null;
-        // 芭蠢府绰 浇饭捞宏甫 傍拜茄逞
         public long LastHitTime = 0;
         public TCreature ExpHiter = null;
-        // 版氰摹甫 冈绰 荤恩
         public long ExpHitTime = 0;
         public long LatestSpaceMoveTime = 0;
         public long LatestSpaceScrollTime = 0;
         public long LatestSearchWhoTime = 0;
         public long MapMoveTime = 0;
-        // 甘 捞悼阑 茄饶 3檬埃 傍拜阑 救寸窍霸 窍扁 困秦
         public bool BoIllegalAttack = false;
         public long IllegalAttackTime = 0;
         public ushort ManaToHealthPoint = 0;
-        // 捞 器牢飘 父怒 付仿阑 眉仿栏肺 官厕, (-)捞搁 眉仿捞 付仿栏肺
         public int SuckupEnemyHealthRate = 0;
-        // 捞 % 父怒 惑措狼 眉仿阑 哗狙酒 咳
         public double SuckupEnemyHealth = 0;
-        // 惑措狼 眉仿阑 哗狙酒 咳
-        // 2003/03/04
         public int RefObjCount = 0;
-        // 捞 Object阑 矫具郴俊 滴绊 乐绰 Object狼 箭磊, 0 捞惑老锭 AI 累悼
         public long poisontime = 0;
         public long time4hour = 0;
-        // 4矫埃俊 茄锅究
         public long time10min = 0;
-        // 10盒俊 茄锅究
         public long time500ms = 0;
         public long time60sec = 0;
         public long time30sec = 0;
@@ -307,14 +240,12 @@ namespace GameSvr
         public long ticksec = 0;
         public bool FAlreadyDisapper = false;
         public long MasterFeature = 0;
-        // 林牢狼 葛嚼
         public bool ForceMoveToMaster = false;
         public bool BoDontMove = false;
         public bool BoDisapear = false;
         public bool DontBagItemDrop = false;
         public bool DontBagGoldDrop = false;
         public bool DontUseItemDrop = false;
-        // newly added by sonmg.
         public int Tame = 0;
         public int AntiPush = 0;
         public int AntiUndead = 0;
@@ -322,30 +253,23 @@ namespace GameSvr
         public int AntiStop = 0;
         public int PushedCount = 0;
         public bool BoLoseTargetMoment = false;
-        // 泪矫 格钎甫 酪澜(sonmg)
         public bool BoHighLevelEffect = false;
-        // 50饭骇 瓤苞 钎矫/见辫(sonmg)
         public bool BoGuildAgitDealTry = false;
-        // 巩颇厘盔 芭贰矫档牢瘤 酒囱瘤(sonmg)
         public int MeltArea = 0;
         public bool bStealth = false;
         public int BodyState = 0;
-        // 个狼 惑怕
         public bool LoverPlusAbility = false;
         public string m_sMasterName;
         public bool m_boMaster = false;
         public int m_nMasterCount = 0;
         public int m_nMasterRanking = 0;
         private readonly ArrayList MsgList = null;
-        // synchronize
         private readonly IList<TCreature> MsgTargetList = null;
-        // 郴啊 青悼阑 焊郴林绰 按眉甸
         private readonly IList<TVisibleItemInfo> VisibleItems = null;
         private readonly IList<TEvent> VisibleEvents = null;
         private long WatchTime = 0;
         private bool FBoInFreePKArea = false;
-        // 瘤陛 乐绰 镑捞 橇府 乔纳捞 粮捞促.
-        private readonly ArrayList PKHiterList = null;
+        private readonly IList<TPkHiterInfo> PKHiterList = null;
         protected int FindPathRate = 0;
         protected long FindpathTime = 0;
         protected long HitTime = 0;
@@ -393,7 +317,7 @@ namespace GameSvr
             GhostTime = 0;
             Death = false;
             DeathTime = 0;
-            WatchTime  =  HUtil32.GetTickCount();
+            WatchTime = HUtil32.GetTickCount();
             Dir = Grobal2.DR_DOWN;
             RaceServer = Grobal2.RC_ANIMAL;
             RaceImage = 0;
@@ -413,7 +337,7 @@ namespace GameSvr
             HitDouble = 0;
             BodyLuck = 0;
             CGHIUseTime = 0;
-            CGHIstart  =  HUtil32.GetTickCount();
+            CGHIstart = HUtil32.GetTickCount();
             BoCGHIEnable = false;
             BoOldVersionUser_Italy = false;
             BoReadyAdminPassword = false;
@@ -423,11 +347,9 @@ namespace GameSvr
             BoFearFire = false;
             BoAbilSeeHealGauge = false;
             BoAllowPowerHit = false;
-            // true: 促澜俊 茄锅 HitPowerPlus啊 啊瓷窃
             BoAllowLongHit = false;
             BoAllowWideHit = false;
             BoAllowFireHit = false;
-            // 2003/03/15 脚痹公傍
             BoAllowCrossHit = false;
             BoAllowTwinHit = 0;
             BoAllowStoneHit = false;
@@ -435,7 +357,6 @@ namespace GameSvr
             SpeedPoint = ObjBase.DEFSPEED;
             HitSpeed = 0;
             LifeAttrib = Grobal2.LA_CREATURE;
-            // 老馆 积疙乐绰 阁胶磐
             AntiPoison = 0;
             PoisonRecover = 0;
             HealthRecover = 0;
@@ -448,7 +369,7 @@ namespace GameSvr
             PerHealth = 5;
             PerHealing = 5;
             PerSpell = 5;
-            IncHealthSpellTime  =  HUtil32.GetTickCount();
+            IncHealthSpellTime = HUtil32.GetTickCount();
             RedPoisonLevel = 0;
             PoisonLevel = 0;
             PlusPoisonFactor = 0;
@@ -475,18 +396,15 @@ namespace GameSvr
             BoCrimeforCastle = false;
             NeverDie = false;
             BoSkeleton = false;
-            // 磷绢辑 焕父 巢疽绰瘤 咯何
             RushMode = false;
             BoHolySeize = false;
             BoCrazyMode = false;
             BoGoodCrazyMode = false;
             BoOpenHealth = false;
             BoDuplication = false;
-            // 悼拱牢版快 棱酒辑 绊扁啊 唱柯促.
             BoAnimal = false;
             BoNoItem = false;
             BodyLeathery = 50;
-            // 扁夯蔼
             HideMode = false;
             StickMode = false;
             NoAttackMode = false;
@@ -498,24 +416,21 @@ namespace GameSvr
             //FillChar(AddAbil, sizeof(TAddAbility), 0);
             MsgList = new ArrayList();
             MsgTargetList = new List<TCreature>();
-            PKHiterList = new ArrayList();
-            VisibleActors = new ArrayList();
-            VisibleItems = new ArrayList();
-            VisibleEvents = new ArrayList();
+            PKHiterList = new List<TPkHiterInfo>();
+            VisibleActors = new List<TVisibleActor>();
+            VisibleItems = new List<TVisibleItemInfo>();
+            VisibleEvents = new List<TEvent>();
             ItemList = new List<TUserItem>();
             DealList = new List<TUserItem>();
             DealGold = 0;
             MagicList = new ArrayList();
             SaveItems = new ArrayList();
-            // 2003/03/15 酒捞袍 牢亥配府 犬厘
             //FillChar(UseItems, sizeof(TUserItem) * 13, '\0');
-            // 9->13
             PSwordSkill = null;
             PPowerHitSkill = null;
             PLongHitSkill = null;
             PWideHitSkill = null;
             PFireHitSkill = null;
-            // 2003/03/15 脚痹公傍
             PCrossHitSkill = null;
             PTwinHitSkill = null;
             PStoneHitSkill = null;
@@ -525,8 +440,7 @@ namespace GameSvr
             SlaveExp = 0;
             SlaveExpLevel = 0;
             BoSlaveRelax = false;
-            // 扁夯 惑怕, 焊捞搁 傍拜 葛靛
-            GroupMembers = new ArrayList();
+            GroupMembers = new List<TCreature>();
             BoHearWhisper = true;
             BoHearCry = true;
             BoHearGuildMsg = true;
@@ -534,10 +448,9 @@ namespace GameSvr
             BoEnableRecall = false;
             BoEnableAgitRecall = false;
             DailyQuestNumber = 0;
-            // /汲沥 救登菌澜    //*dq
             DailyQuestGetDate = 0;
             WhisperBlockList = new ArrayList();
-            SlaveList = new ArrayList();
+            SlaveList = new List<TCreature>();
             //FillChar(QuestStates, sizeof(QuestStates), '\0');
             //FillChar(QuestIndexOpenStates, sizeof(QuestIndexOpenStates), '\0');
             //FillChar(QuestIndexFinStates, sizeof(QuestIndexFinStates), '\0');
@@ -576,27 +489,26 @@ namespace GameSvr
             RunTime = (int)(GetCurrentTime + new System.Random(1500).Next());
             RunNextTick = 250;
             SearchRate = 2000 + ((long)new System.Random(2000).Next());
-            SearchTime  =  HUtil32.GetTickCount();
-            time4hour  =  HUtil32.GetTickCount();
-            time10min  =  HUtil32.GetTickCount();
-            time500ms  =  HUtil32.GetTickCount();
-            poisontime  =  HUtil32.GetTickCount();
-            time60sec  =  HUtil32.GetTickCount();
-            time30sec  =  HUtil32.GetTickCount();
-            time10sec  =  HUtil32.GetTickCount();
-            time5sec  =  HUtil32.GetTickCount();
-            ticksec  =  HUtil32.GetTickCount();
+            SearchTime = HUtil32.GetTickCount();
+            time4hour = HUtil32.GetTickCount();
+            time10min = HUtil32.GetTickCount();
+            time500ms = HUtil32.GetTickCount();
+            poisontime = HUtil32.GetTickCount();
+            time60sec = HUtil32.GetTickCount();
+            time30sec = HUtil32.GetTickCount();
+            time10sec = HUtil32.GetTickCount();
+            time5sec = HUtil32.GetTickCount();
+            ticksec = HUtil32.GetTickCount();
             LatestCryTime = 0;
-            // GetTickCount;
             LatestSpaceMoveTime = 0;
             LatestSpaceScrollTime = 0;
             LatestSearchWhoTime = 0;
-            MapMoveTime  =  HUtil32.GetTickCount();
+            MapMoveTime = HUtil32.GetTickCount();
             SlaveLifeTime = 0;
             NextWalkTime = 1400;
             NextHitTime = 3000;
             WalkCurStep = 0;
-            WalkWaitCurTime  =  HUtil32.GetTickCount();
+            WalkWaitCurTime = HUtil32.GetTickCount();
             BoWalkWaitMode = false;
             HealthTick = 0;
             SpellTick = 0;
@@ -605,7 +517,6 @@ namespace GameSvr
             LastHiterRace = -1;
             SlaveHiter = null;
             ExpHiter = null;
-            // 2003/03/04
             RefObjCount = 0;
             FAlreadyDisapper = false;
             ForceMoveToMaster = false;
@@ -619,10 +530,8 @@ namespace GameSvr
             BodyState = 0;
             LoverPlusAbility = false;
             BoLoseTargetMoment = false;
-            // sonmg
             PushedCount = 0;
             BoHighLevelEffect = true;
-            // 50饭骇 瓤苞 钎矫/见辫(sonmg)
             BoGuildAgitDealTry = false;
             MeltArea = 2;
             m_sMasterName = "";
@@ -733,7 +642,7 @@ namespace GameSvr
                 switch (Job)
                 {
                     case 0:
-                        citem.S.DC = MakeWord(Lobyte(citem.S.DC), _MIN(255, HiByte(citem.S.DC) + 4));
+                        citem.S.DC = MakeWord(LoByte(citem.S.DC), _MIN(255, HiByte(citem.S.DC) + 4));
                         citem.S.MC = 0;
                         citem.S.SC = 0;
                         break;
@@ -751,15 +660,15 @@ namespace GameSvr
                 switch (Job)
                 {
                     case 0:
-                        citem.S.DC = MakeWord(Lobyte(citem.S.DC) + 1, _MIN(255, HiByte(citem.S.DC) + 2));
+                        citem.S.DC = MakeWord(LoByte(citem.S.DC) + 1, _MIN(255, HiByte(citem.S.DC) + 2));
                         citem.S.MC = 0;
                         citem.S.SC = 0;
-                        citem.S.AC = MakeWord(Lobyte(citem.S.AC), _MIN(255, HiByte(citem.S.AC) + 1));
+                        citem.S.AC = MakeWord(LoByte(citem.S.AC), _MIN(255, HiByte(citem.S.AC) + 1));
                         break;
                     case 1:
                         citem.S.DC = 0;
                         citem.S.SC = 0;
-                        citem.S.AC = MakeWord(Lobyte(citem.S.AC), _MIN(255, HiByte(citem.S.AC) + 1));
+                        citem.S.AC = MakeWord(LoByte(citem.S.AC), _MIN(255, HiByte(citem.S.AC) + 1));
                         break;
                     case 2:
                         citem.S.MC = 0;
@@ -825,26 +734,26 @@ namespace GameSvr
                 switch (Job)
                 {
                     case 0:
-                        citem.S.DC = MakeWord(Lobyte(citem.S.DC) + 1, _MIN(255, HiByte(citem.S.DC) + 28));
+                        citem.S.DC = MakeWord(LoByte(citem.S.DC) + 1, _MIN(255, HiByte(citem.S.DC) + 28));
                         citem.S.MC = 0;
                         citem.S.SC = 0;
-                        citem.S.AC = MakeWord(Lobyte(citem.S.AC) - 2, HiByte(citem.S.AC));
+                        citem.S.AC = MakeWord(LoByte(citem.S.AC) - 2, HiByte(citem.S.AC));
                         break;
                     case 1:
                         citem.S.SC = 0;
                         if (HiByte(citem.S.MAC) > 12)
                         {
-                            citem.S.MAC = MakeWord(Lobyte(citem.S.MAC), HiByte(citem.S.MAC) - 12);
+                            citem.S.MAC = MakeWord(LoByte(citem.S.MAC), HiByte(citem.S.MAC) - 12);
                         }
                         else
                         {
-                            citem.S.MAC = MakeWord(Lobyte(citem.S.MAC), 0);
+                            citem.S.MAC = MakeWord(LoByte(citem.S.MAC), 0);
                         }
                         break;
                     case 2:
-                        citem.S.DC = MakeWord(Lobyte(citem.S.DC) + 2, _MIN(255, HiByte(citem.S.DC) + 10));
+                        citem.S.DC = MakeWord(LoByte(citem.S.DC) + 2, _MIN(255, HiByte(citem.S.DC) + 10));
                         citem.S.MC = 0;
-                        citem.S.AC = MakeWord(Lobyte(citem.S.AC) - 2, HiByte(citem.S.AC));
+                        citem.S.AC = MakeWord(LoByte(citem.S.AC) - 2, HiByte(citem.S.AC));
                         break;
                 }
             }
@@ -856,7 +765,7 @@ namespace GameSvr
                     {
                         case 0:
                             // 傈荤
-                            citem.S.DC = MakeWord(Lobyte(citem.S.DC), _MIN(255, HiByte(citem.S.DC) + 2));
+                            citem.S.DC = MakeWord(LoByte(citem.S.DC), _MIN(255, HiByte(citem.S.DC) + 2));
                             // 窍靛内爹
                             citem.S.MC = 0;
                             citem.S.SC = 0;
@@ -864,7 +773,7 @@ namespace GameSvr
                         case 1:
                             // 贱荤
                             citem.S.DC = 0;
-                            citem.S.MC = MakeWord(Lobyte(citem.S.MC), _MIN(255, HiByte(citem.S.MC) + 2));
+                            citem.S.MC = MakeWord(LoByte(citem.S.MC), _MIN(255, HiByte(citem.S.MC) + 2));
                             // 窍靛内爹
                             citem.S.SC = 0;
                             break;
@@ -872,7 +781,7 @@ namespace GameSvr
                             // 档荤
                             citem.S.DC = 0;
                             citem.S.MC = 0;
-                            citem.S.SC = MakeWord(Lobyte(citem.S.SC), _MIN(255, HiByte(citem.S.SC) + 2));
+                            citem.S.SC = MakeWord(LoByte(citem.S.SC), _MIN(255, HiByte(citem.S.SC) + 2));
                             break;
                             // 窍靛内爹
                     }
@@ -883,19 +792,19 @@ namespace GameSvr
                     switch (Job)
                     {
                         case 0:
-                            citem.S.DC = MakeWord(Lobyte(citem.S.DC), _MIN(255, HiByte(citem.S.DC)));
+                            citem.S.DC = MakeWord(LoByte(citem.S.DC), _MIN(255, HiByte(citem.S.DC)));
                             citem.S.MC = 0;
                             citem.S.SC = 0;
                             break;
                         case 1:
                             citem.S.DC = 0;
-                            citem.S.MC = MakeWord(Lobyte(citem.S.MC), _MIN(255, HiByte(citem.S.MC)));
+                            citem.S.MC = MakeWord(LoByte(citem.S.MC), _MIN(255, HiByte(citem.S.MC)));
                             citem.S.SC = 0;
                             break;
                         case 2:
                             citem.S.DC = 0;
                             citem.S.MC = 0;
-                            citem.S.SC = MakeWord(Lobyte(citem.S.SC), _MIN(255, HiByte(citem.S.SC)));
+                            citem.S.SC = MakeWord(LoByte(citem.S.SC), _MIN(255, HiByte(citem.S.SC)));
                             break;
                     }
                 }
@@ -906,11 +815,11 @@ namespace GameSvr
                     {
                         case 0:
                             // 傈荤
-                            citem.S.DC = MakeWord(Lobyte(citem.S.DC), _MIN(255, HiByte(citem.S.DC) + 2));
+                            citem.S.DC = MakeWord(LoByte(citem.S.DC), _MIN(255, HiByte(citem.S.DC) + 2));
                             // 窍靛内爹
                             citem.S.MC = 0;
                             citem.S.SC = 0;
-                            citem.S.AC = MakeWord(Lobyte(citem.S.AC) + 2, _MIN(255, HiByte(citem.S.AC) + 4));
+                            citem.S.AC = MakeWord(LoByte(citem.S.AC) + 2, _MIN(255, HiByte(citem.S.AC) + 4));
                             // 窍靛内爹
                             // citem.S.MAC := 0;
                             citem.S.MpAdd = citem.S.MpAdd + 30;
@@ -918,14 +827,14 @@ namespace GameSvr
                         case 1:
                             citem.S.DC = 0;
                             citem.S.SC = 0;
-                            citem.S.MAC = MakeWord(Lobyte(citem.S.MAC) + 1, _MIN(255, HiByte(citem.S.MAC) + 2));
+                            citem.S.MAC = MakeWord(LoByte(citem.S.MAC) + 1, _MIN(255, HiByte(citem.S.MAC) + 2));
                             citem.S.HpAdd = citem.S.HpAdd + 30;
                             break;
                         case 2:
-                            citem.S.DC = MakeWord(Lobyte(citem.S.DC) + 1, _MIN(255, HiByte(citem.S.DC)));
+                            citem.S.DC = MakeWord(LoByte(citem.S.DC) + 1, _MIN(255, HiByte(citem.S.DC)));
                             citem.S.MC = 0;
-                            citem.S.AC = MakeWord(Lobyte(citem.S.AC) + 1, _MIN(255, HiByte(citem.S.AC)));
-                            citem.S.MAC = MakeWord(Lobyte(citem.S.MAC) + 1, _MIN(255, HiByte(citem.S.MAC)));
+                            citem.S.AC = MakeWord(LoByte(citem.S.AC) + 1, _MIN(255, HiByte(citem.S.AC)));
+                            citem.S.MAC = MakeWord(LoByte(citem.S.MAC) + 1, _MIN(255, HiByte(citem.S.MAC)));
                             citem.S.HpAdd = citem.S.HpAdd + 20;
                             citem.S.MpAdd = citem.S.MpAdd + 10;
                             break;
@@ -1114,7 +1023,7 @@ namespace GameSvr
                 {
                     return result;
                 }
-                TGuildAgit myguildagit = svMain.GuildAgitMan.GetGuildAgit(((TGuild)MyGuild).GuildName);
+                TGuildAgit myguildagit = svMain.GuildAgitMan.GetGuildAgit(MyGuild.GuildName);
                 if (myguildagit == null)
                 {
                     return result;
@@ -1339,9 +1248,14 @@ namespace GameSvr
             }
         }
 
+        public void SendDelayMsg(int sender, ushort Ident, ushort wparam, long lParam1, long lParam2, long lParam3, string str, int delay)
+        {
+            var sener = svMain.ObjectMgr.Get(sender);
+            SendDelayMsg(sener, Ident, wparam, lParam1, lParam2, lParam3, str, delay);
+        }
+
         public void SendDelayMsg(TCreature sender, ushort Ident, ushort wparam, long lParam1, long lParam2, long lParam3, string str, int delay)
         {
-            // ms
             TMessageInfoPtr pmsg;
             string ansistr;
             try
@@ -1899,17 +1813,14 @@ namespace GameSvr
 
         public void UpdateVisibleItems(ushort xx, ushort yy, TMapItem pmi)
         {
-            int i;
             TVisibleItemInfo pvitem;
-            bool flag;
-            flag = false;
-            for (i = 0; i < VisibleItems.Count; i++)
+            bool flag = false;
+            for (var i = 0; i < VisibleItems.Count; i++)
             {
                 pvitem = VisibleItems[i];
-                if (pvitem.Id == (long)pmi)
+                if (pvitem.Id == pmi.ItemId)
                 {
                     pvitem.check = 1;
-                    // update mark
                     flag = true;
                     break;
                 }
@@ -1920,7 +1831,7 @@ namespace GameSvr
                 pvitem.check = 2;
                 pvitem.x = xx;
                 pvitem.y = yy;
-                pvitem.Id = (long)pmi;
+                pvitem.Id = pmi.ItemId;
                 pvitem.Name = pmi.Name;
                 pvitem.looks = pmi.Looks;
                 VisibleItems.Add(pvitem);
@@ -2959,7 +2870,7 @@ namespace GameSvr
             {
                 for (i = 0; i < GroupOwner.GroupMembers.Count; i++)
                 {
-                    (GroupOwner.GroupMembers.Values[i] as TCreature).SendMsg(this, Grobal2.RM_GROUPMESSAGE, 0, 0, 0, 0, "-" + str);
+                    GroupOwner.GroupMembers[i].SendMsg(this, Grobal2.RM_GROUPMESSAGE, 0, 0, 0, 0, "-" + str);
                 }
             }
         }
@@ -3570,7 +3481,7 @@ namespace GameSvr
                                     // 弊缝阑 窍绊 乐栏搁 弊缝盔俊霸 度 鞍捞 利侩等促.
                                     for (i = 0; i < ExpHiter.GroupOwner.GroupMembers.Count; i++)
                                     {
-                                        cret = ExpHiter.GroupOwner.GroupMembers.Values[i] as TCreature;
+                                        cret = ExpHiter.GroupOwner.GroupMembers[i];
                                         if (!cret.Death && (ExpHiter.PEnvir == cret.PEnvir) && (Math.Abs(ExpHiter.CX - cret.CX) <= 12) && (Math.Abs(ExpHiter.CY - cret.CY) <= 12))
                                         {
                                             if (cret == ExpHiter)
@@ -3614,22 +3525,17 @@ namespace GameSvr
                                 if (!svMain.BoVentureServer)
                                 {
                                     ExpHiter.Master.GainExp(exp);
-                                    // 家券荐甫 何府绰 荤恩捞 冈绰促.
                                 }
                                 else
                                 {
-                                    // 葛氰辑滚俊辑绰 痢荐啊 棵扼埃促.
                                 }
-                                // -------何窍各捞 磷看阑 版快俊档 甘涅胶飘 荐青--------(sonmg 2005/03/10)
-                                // 甘涅胶飘啊 乐绰瘤
                                 if (PEnvir.HasMapQuest())
                                 {
                                     if (ExpHiter.Master.GroupOwner != null)
                                     {
-                                        // 弊缝阑 窍绊 乐栏搁 弊缝盔俊霸 度 鞍捞 利侩等促.
                                         for (i = 0; i < ExpHiter.Master.GroupOwner.GroupMembers.Count; i++)
                                         {
-                                            cret = ExpHiter.Master.GroupOwner.GroupMembers.Values[i] as TCreature;
+                                            cret = ExpHiter.Master.GroupOwner.GroupMembers[i];
                                             if (!cret.Death && (ExpHiter.Master.PEnvir == cret.PEnvir) && (Math.Abs(ExpHiter.Master.CX - cret.CX) <= 12) && (Math.Abs(ExpHiter.Master.CY - cret.CY) <= 12))
                                             {
                                                 if (cret == ExpHiter.Master)
@@ -3640,7 +3546,6 @@ namespace GameSvr
                                                 {
                                                     bogroupcall = true;
                                                 }
-                                                // 磷篮 阁胶磐 捞抚
                                                 questnpc = (TMerchant)PEnvir.GetMapQuest(cret, this.UserName, "", bogroupcall);
                                                 if (questnpc != null)
                                                 {
@@ -3651,7 +3556,6 @@ namespace GameSvr
                                     }
                                     else
                                     {
-                                        // 弊缝阑 救窍绊 乐栏搁 夯牢 父
                                         questnpc = (TMerchant)PEnvir.GetMapQuest(ExpHiter.Master, UserName, "", false);
                                         if (questnpc != null)
                                         {
@@ -3659,13 +3563,11 @@ namespace GameSvr
                                         }
                                     }
                                 }
-                                // ----------------------------------
                             }
                         }
                     }
                     else if (LastHiter.RaceServer == Grobal2.RC_USERHUMAN)
                     {
-                        // 弥措 眉仿 父怒, 惑措狼 饭骇俊 厚肥秦辑 版氰摹甫 掘绰促.
                         exp = LastHiter.CalcGetExp(this.Abil.Level, this.FightExp);
                         if (!svMain.BoVentureServer)
                         {
@@ -3676,8 +3578,6 @@ namespace GameSvr
                         }
                     }
                 }
-                // 困俊辑 酒阀何盒栏肺 捞悼(sonmg 2005/12/22)
-                // Master := nil;
             }
             catch
             {
@@ -3688,10 +3588,8 @@ namespace GameSvr
                 boBadKill = false;
                 if ((!svMain.BoVentureServer) && (!PEnvir.FightZone) && (!PEnvir.Fight2Zone) && (!PEnvir.Fight3Zone) && (!PEnvir.Fight4Zone))
                 {
-                    // PK陛瘤 备开牢 版快(荤恩捞 磷阑 锭)
                     if ((RaceServer == Grobal2.RC_USERHUMAN) && (LastHiter != null) && (PKLevel() < 2))
                     {
-                        // 磷篮磊啊 荤恩, 锭赴磊 乐澜, 磷篮磊啊 PK酒丛
                         if (LastHiter.RaceServer == Grobal2.RC_USERHUMAN)
                         {
                             boBadKill = true;
@@ -3699,14 +3597,12 @@ namespace GameSvr
                             {
                                 boBadKill = false;
                             }
-                            // 措父 捞亥飘 牢版快 磷咯登 凳
                         }
                         if (LastHiter.Master != null)
                         {
                             if (LastHiter.Master.RaceServer == Grobal2.RC_USERHUMAN)
                             {
                                 LastHiter = LastHiter.Master;
-                                // 林牢捞 锭赴 巴栏肺 埃林
                                 boBadKill = true;
                             }
                         }
@@ -3714,21 +3610,14 @@ namespace GameSvr
                 }
                 if (boBadKill && (LastHiter != null))
                 {
-                    // 荤恩捞 磷篮 版快, 葛氰辑滚俊辑绰 秦寸救凳
-                    // 荤恩捞 急樊茄 荤恩阑 磷烙.
-                    // 巩颇傈栏肺 磷澜
                     guildwarkill = false;
                     if ((MyGuild != null) && (LastHiter.MyGuild != null))
                     {
-                        // 笛促 巩颇俊 啊涝等 惑怕俊辑
                         if (GetGuildRelation(this, LastHiter) == 2)
                         {
-                            // 巩傈(巩颇傈)吝烙
                             guildwarkill = true;
                         }
-                        // 巩颇傈栏肺 磷澜, 弧盎捞 救凳
                     }
-                    // 傍己傈栏肺 磷澜
                     if (svMain.UserCastle.BoCastleUnderAttack)
                     {
                         if (BoInFreePKArea || svMain.UserCastle.IsCastleWarArea(PEnvir, CX, CY))
@@ -3738,14 +3627,11 @@ namespace GameSvr
                     }
                     if (!guildwarkill)
                     {
-                        // 巩颇傈栏肺 磷澜
                         if (!LastHiter.IsGoodKilling(this))
                         {
                             LastHiter.IncPKPoint(100);
                             LastHiter.SysMsg(UserName + "你犯了谋杀罪", 0);
                             SysMsg("[你现在被" + LastHiter.UserName + "杀害了]", 0);
-                            // ///////////////////////////////////////////////////////
-                            // 楷牢俊霸 烹焊
                             if ((this as TUserHuman).fLover != null)
                             {
                                 lovername = (this as TUserHuman).fLover.GetLoverName;
@@ -3765,23 +3651,16 @@ namespace GameSvr
                                     }
                                 }
                             }
-                            // ///////////////////////////////////////////////////////
-                            // 混牢茄 荤恩 青款 皑家
                             LastHiter.AddBodyLuck(-500);
                             if (PKLevel() < 1)
                             {
-                                // 磷篮 荤恩捞 馒茄 荤恩
                                 if (new System.Random(5).Next() == 0)
                                 {
-                                    // 混牢阑 窍搁 公扁啊 历林甫 罐绰促.
                                     if (LastHiter.MakeWeaponUnlock())
                                     {
                                         ps = svMain.UserEngine.GetStdItem(LastHiter.UseItems[Grobal2.U_WEAPON].Index);
-                                        // 公扁
                                         if (ps != null)
                                         {
-                                            // 肺弊 巢辫
-                                            // 历林_(混牢栏肺牢茄)
                                             svMain.AddUserLog("43\09" + LastHiter.MapName + "\09" + LastHiter.CX.ToString() + "\09" + LastHiter.CY.ToString() + "\09" + LastHiter.UserName + "\09" + ps.Name + "\09" + LastHiter.UseItems[Grobal2.U_WEAPON].MakeIndex.ToString() + "\09" + "1\09" + "-1");
                                         }
                                     }
@@ -3802,13 +3681,8 @@ namespace GameSvr
             }
             try
             {
-                // (not PEnvir.Fight2Zone) and
-                // (not PEnvir.Fight4Zone) and
                 if ((!PEnvir.FightZone) && (!PEnvir.Fight3Zone) && !BoAnimal && (!PEnvir.LawFull))
                 {
-                    // 悼拱捞搁 戒绢具 绊扁啊 唱柯促.
-                    // 荐龋籍 柄瘤绰 巩力 荐沥(sonmg 2004/06/11)
-                    // 荤恩苞 阁胶磐 备喊(2004/06/22)
                     if (RaceServer != Grobal2.RC_USERHUMAN)
                     {
                         ehiter = ExpHiter;
@@ -3833,45 +3707,34 @@ namespace GameSvr
                     }
                     if (RaceServer != Grobal2.RC_USERHUMAN)
                     {
-                        // (各牢 版快)
                         DropUseItems(ehiter, false);
                         if ((Master == null) && !BoNoItem)
                         {
                             ScatterBagItems(ehiter);
                         }
-                        // 林牢乐绰 各篮 拱扒阑 汝府瘤 臼澜
                         if ((RaceServer >= Grobal2.RC_ANIMAL) && (Master == null) && !BoNoItem)
                         {
                             ScatterGolds(ehiter);
                         }
-                        // 荤恩篮 捣阑 汝府瘤 臼绰促.
                     }
                     else
                     {
-                        // (荤恩牢 版快)
-                        // 措访荤成磐俊辑绰 冻备瘤 臼绰促. 酒捞袍阑 冻备瘤 臼绰 甘牢 版快档 付蛮啊瘤(sonmg 2005/03/14)
                         if ((!PEnvir.Fight2Zone) && (!PEnvir.NoDropItem))
                         {
                             if (!(PEnvir.Fight4Zone && (ehiter != null) && (ehiter.RaceServer == Grobal2.RC_USERHUMAN)))
                             {
-                                // 荤恩茄抛 磷篮 版快 馒侩 酒捞袍阑 汝府瘤 臼绰促.
                                 if (ehiter != null)
                                 {
-                                    // 2003/06/20 捞亥飘各俊 狼秦 磷篮 版快 汝府瘤 臼绰促.
                                     if ((ehiter.RaceServer != Grobal2.RC_USERHUMAN) && (!ehiter.BoHasMission))
                                     {
-                                        // 各俊 狼秦 磷篮 版快
                                         DropUseItems(null, true);
                                     }
                                 }
                                 else
                                 {
-                                    // 扁鸥狼 版快
                                     DropUseItems(null, false);
                                 }
-                                // 函版等 惑怕甫 舅妨淋(sonmg)
                                 FeatureChanged();
-                                // 2003/06/20 捞亥飘各俊 狼秦 磷篮 版快 汝府瘤 臼绰促.
                                 if ((ehiter != null) && ehiter.BoHasMission)
                                 {
                                 }
@@ -3879,52 +3742,25 @@ namespace GameSvr
                                 {
                                     ScatterBagItems(null);
                                 }
-                                // 磷篮 版快 青款摹 皑家
-                                // 2003/02/11 弥措贰闺 函版
                                 AddBodyLuck(-Abil.Level * 5);
-                                // 50 - (50
                             }
                         }
                     }
                 }
-                // 
-                // //------------------------------------------------------------
-                // //措访 荤成磐绰 阁胶磐啊 酒捞袍阑 冻焙促.(sonmg 2004/12/23)
-                // if (PEnvir.Fight2Zone or PEnvir.Fight4Zone) and (not BoAnimal) then begin
-                // if (RaceServer <> RC_USERHUMAN) then begin
-                // ehiter := ExpHiter;
-                // if ExpHiter <> nil then
-                // if ExpHiter.Master <> nil then
-                // ehiter := ExpHiter.Master;
-                // 
-                // //各捞 磷阑 锭
-                // DropUseItems (ehiter, false);
-                // if (Master = nil) and (not BoNoItem) then
-                // ScatterBagItems (ehiter);  //林牢乐绰 各篮 拱扒阑 汝府瘤 臼澜
-                // if (RaceServer >= RC_ANIMAL) and (Master = nil) and (not BoNoItem) then
-                // ScatterGolds (ehiter);  //荤恩篮 捣阑 汝府瘤 臼绰促.
-                // end;
-                // end;
-                // //------------------------------------------------------------
-                // 巩颇 措傈 吝
                 if (PEnvir.Fight3Zone)
                 {
-                    // 3锅 磷绢档 登绰 措访牢 版快
                     FightZoneDieCount++;
                     if (MyGuild != null)
                     {
-                        ((TGuild)MyGuild).TeamFightWhoDead(UserName);
+                        MyGuild.TeamFightWhoDead(UserName);
                     }
-                    // 痢荐 拌魂
                     if (LastHiter != null)
                     {
                         if ((LastHiter.MyGuild != null) && (MyGuild != null))
                         {
-                            ((TGuild)LastHiter.MyGuild).TeamFightWhoWinPoint(LastHiter.UserName, 100);
-                            // matchpoint 刘啊, 俺牢己利 扁废
-                            str = ((TGuild)LastHiter.MyGuild).GuildName + ":" + ((TGuild)LastHiter.MyGuild).MatchPoint.ToString() + "  " + ((TGuild)MyGuild).GuildName + ":" + ((TGuild)MyGuild).MatchPoint.ToString();
+                            LastHiter.MyGuild.TeamFightWhoWinPoint(LastHiter.UserName, 100);
+                            str = LastHiter.MyGuild.GuildName + ":" + LastHiter.MyGuild.MatchPoint.ToString() + "  " + MyGuild.GuildName + ":" + MyGuild.MatchPoint.ToString();
                             svMain.UserEngine.CryCry(Grobal2.RM_CRY, PEnvir, CX, CY, 10000, "- " + str);
-                            // 泅甘 傈眉俊霸 舅赴促.
                         }
                     }
                 }
@@ -3960,8 +3796,6 @@ namespace GameSvr
                     {
                         str = "######";
                     }
-                    // -------------------------
-                    // 措访厘 辆幅 备盒
                     strFZNumber = "";
                     if (PEnvir.FightZone)
                     {
@@ -3983,8 +3817,6 @@ namespace GameSvr
                     {
                         strFZNumber = "F";
                     }
-                    // -------------------------
-                    // 沥寸规困 备盒
                     if (LastHiter != null)
                     {
                         if (LastHiter.IsGoodKilling(this))
@@ -3996,15 +3828,11 @@ namespace GameSvr
                             strFZNumber = strFZNumber + "-R";
                         }
                     }
-                    // 磷澜_ +
-                    // 'FZ-' + BoolToChar(PEnvir.FightZone) + '_F3-' + BoolToChar(PEnvir.Fight3Zone) + '_F2-' + BoolToChar(PEnvir.Fight2Zone) + ''#9 +
                     svMain.AddUserLog("19\09" + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + "FZ-" + strFZNumber + "\09" + "0\09" + "1\09" + str);
                 }
                 else
                 {
-                    // (阁胶磐啊 磷阑 锭)
                     KingMobLogFlag = false;
-                    // 饭骇 60捞惑篮 肺弊 巢辫.
                     if (Abil.Level >= 60)
                     {
                         KingMobLogFlag = true;
@@ -4026,13 +3854,10 @@ namespace GameSvr
                         {
                             str = "######";
                         }
-                        // 阁胶磐 空磷澜 肺弊 巢辫(sonmg. 2004/05/14)
-                        // 空磷澜_ +
                         svMain.AddUserLog("42\09" + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + "FZ-M" + "\09" + "0\09" + "0\09" + str);
                     }
                 }
                 SendRefMsg(Grobal2.RM_DEATH, Dir, CX, CY, 1, "");
-                // 困俊辑 酒阀何盒栏肺 捞悼(sonmg 2005/12/22)
                 Master = null;
             }
             catch
@@ -4053,16 +3878,13 @@ namespace GameSvr
             SendRefMsg(Grobal2.RM_CHANGELIGHT, 0, 0, 0, 0, "");
         }
 
-        // 促矫 混酒唱促.
         public void SetLastHiter(TCreature hiter)
         {
             LastHiter = hiter;
-            // 付瘤阜 锭赴逞 辆练 扁撅(2004/07/16)
             if (LastHiter != null)
             {
                 if (LastHiter.Master != null)
                 {
-                    // 林牢捞 乐阑 版快绰 林牢狼 辆练阑 扁撅茄促(2004/11/30)
                     LastHiterRace = LastHiter.Master.RaceServer;
                 }
                 else
@@ -4116,8 +3938,7 @@ namespace GameSvr
 
         public void ClearPkHiterList()
         {
-            int i;
-            for (i = 0; i < PKHiterList.Count; i++)
+            for (var i = 0; i < PKHiterList.Count; i++)
             {
                 Dispose(PKHiterList[i] as TPkHiterInfo);
             }
@@ -4635,7 +4456,7 @@ namespace GameSvr
                             if (!BoInFreePKArea)
                             {
                                 // not UserCastle.BoCastleUnderAttack then begin
-                                if (svMain.UserCastle.IsOurCastle((TGuild)MyGuild))
+                                if (svMain.UserCastle.IsOurCastle(MyGuild))
                                 {
                                     // 快府巩颇啊 荤合己阑 痢飞
                                     UserSpaceMove(svMain.UserCastle.CastleMap, svMain.UserCastle.GetCastleStartX().ToString(), svMain.UserCastle.GetCastleStartY().ToString());
@@ -4669,7 +4490,7 @@ namespace GameSvr
                             if (hum.MyGuild != null)
                             {
                                 // 巩颇狼 厘盔 锅龋客 泅犁 乐绰 甘狼 厘盔锅龋啊 老摹窍搁 厘盔栏肺 捞悼.
-                                guildagit = svMain.GuildAgitMan.GetGuildAgit(((TGuild)hum.MyGuild).GuildName);
+                                guildagit = svMain.GuildAgitMan.GetGuildAgit(hum.MyGuild.GuildName);
                                 if (guildagit != null)
                                 {
                                     if (guildagit.GuildAgitNumber > -1)
@@ -4755,7 +4576,7 @@ namespace GameSvr
                 if (pstd != null)
                 {
                     // 罚待摹啊 努荐废 青款捞 嘿扁 塞甸促.
-                    difficulty = Math.Abs(HiByte(pstd.DC) - Lobyte(pstd.DC)) / 5;
+                    difficulty = Math.Abs(HiByte(pstd.DC) - LoByte(pstd.DC)) / 5;
                     // 2003/06/13 肺弊 眠啊
                 }
                 else
@@ -5126,7 +4947,7 @@ namespace GameSvr
 
         public int GetHitStruckDamage(TCreature hiter, int damage)
         {
-            int armor = Lobyte(WAbil.AC) + new System.Random(HiByte(WAbil.AC) - Lobyte(WAbil.AC) + 1).Next();
+            int armor = LoByte(WAbil.AC) + new System.Random(HiByte(WAbil.AC) - LoByte(WAbil.AC) + 1).Next();
             damage = _MAX(0, damage - armor);
             if ((LifeAttrib == Grobal2.LA_UNDEAD) && (hiter != null))
             {
@@ -5148,8 +4969,8 @@ namespace GameSvr
             int result;
             // 郴 付亲仿阑 皑救窍咯 单固瘤 拌魂
             int armor;
-            // armor := Lobyte(WAbil.MAC) + Random(ShortInt(HiByte(WAbil.MAC)-Lobyte(WAbil.MAC)) + 1);
-            armor = Lobyte(WAbil.MAC) + new System.Random(HiByte(WAbil.MAC) - Lobyte(WAbil.MAC) + 1).Next();
+            // armor := LoByte(WAbil.MAC) + Random(ShortInt(HiByte(WAbil.MAC)-LoByte(WAbil.MAC)) + 1);
+            armor = LoByte(WAbil.MAC) + new System.Random(HiByte(WAbil.MAC) - LoByte(WAbil.MAC) + 1).Next();
             damage = _MAX(0, damage - armor);
             if ((LifeAttrib == Grobal2.LA_UNDEAD) && (hiter != null))
             {
@@ -5412,7 +5233,7 @@ namespace GameSvr
                     n = 0;
                     for (i = 0; i < GroupOwner.GroupMembers.Count; i++)
                     {
-                        cret = GroupOwner.GroupMembers.Values[i] as TCreature;
+                        cret = GroupOwner.GroupMembers[i];
                         if (!cret.Death && (PEnvir == cret.PEnvir) && (Math.Abs(CX - cret.CX) <= 12) && (Math.Abs(CY - cret.CY) <= 12))
                         {
                             sumlv = sumlv + cret.Abil.Level;
@@ -5428,7 +5249,7 @@ namespace GameSvr
                         }
                         for (i = 0; i < GroupOwner.GroupMembers.Count; i++)
                         {
-                            cret = GroupOwner.GroupMembers.Values[i] as TCreature;
+                            cret = GroupOwner.GroupMembers[i];
                             if (!cret.Death && (PEnvir == cret.PEnvir) && (Math.Abs(CX - cret.CX) <= 12) && (Math.Abs(CY - cret.CY) <= 12))
                             {
                                 iexp = HUtil32.MathRound(dexp / sumlv * cret.Abil.Level);
@@ -5511,8 +5332,8 @@ namespace GameSvr
             // 归榜
             if ((RaceServer == Grobal2.RC_WHITESKELETON) || (RaceServer == Grobal2.RC_ELFMON) || (RaceServer == Grobal2.RC_ELFWARRIORMON))
             {
-                WAbil.DC = MakeWord(Lobyte(WAbil.DC), HiByte(Abil.DC));
-                WAbil.DC = MakeWord(Lobyte(WAbil.DC), HUtil32.MathRound(HiByte(WAbil.DC) + (3 * (0.3 + SlaveExpLevel * 0.1) * SlaveExpLevel)));
+                WAbil.DC = MakeWord(LoByte(WAbil.DC), HiByte(Abil.DC));
+                WAbil.DC = MakeWord(LoByte(WAbil.DC), HUtil32.MathRound(HiByte(WAbil.DC) + (3 * (0.3 + SlaveExpLevel * 0.1) * SlaveExpLevel)));
                 chp = chp + HUtil32.MathRound(Abil.MaxHP * (0.3 + SlaveExpLevel * 0.1)) * SlaveExpLevel;
                 chp = Abil.MaxHP + chp;
                 if (SlaveExpLevel > 0)
@@ -5526,7 +5347,7 @@ namespace GameSvr
                     WAbil.MaxHP = Abil.MaxHP;
                 }
                 // 2003/03/15 脚痹公傍 眠啊
-                WAbil.DC = MakeWord(Lobyte(WAbil.DC), HiByte(WAbil.DC) + ExtraAbil[Grobal2.EABIL_DCUP]);
+                WAbil.DC = MakeWord(LoByte(WAbil.DC), HiByte(WAbil.DC) + ExtraAbil[Grobal2.EABIL_DCUP]);
             }
             else
             {
@@ -5535,8 +5356,8 @@ namespace GameSvr
                 {
                     // 贱荤啊 部脚芭绰 Master 啊 nil 捞 酒丛
                     chp = Abil.MaxHP;
-                    WAbil.DC = MakeWord(Lobyte(WAbil.DC), HiByte(Abil.DC));
-                    WAbil.DC = MakeWord(Lobyte(WAbil.DC), HUtil32.MathRound(HiByte(WAbil.DC) + (2 * SlaveExpLevel)));
+                    WAbil.DC = MakeWord(LoByte(WAbil.DC), HiByte(Abil.DC));
+                    WAbil.DC = MakeWord(LoByte(WAbil.DC), HUtil32.MathRound(HiByte(WAbil.DC) + (2 * SlaveExpLevel)));
                     chp = chp + HUtil32.MathRound(Abil.MaxHP * 0.15) * SlaveExpLevel;
                     WAbil.MaxHP = (ushort)_MIN(HUtil32.MathRound(Abil.MaxHP + 60 * SlaveExpLevel), chp);
                     WAbil.MAC = 0;
@@ -5748,7 +5569,7 @@ namespace GameSvr
                     for (i = 0; i < svMain.StartPoints.Count; i++)
                     {
                         map = svMain.StartPoints[i];
-                        sx = Loword((int)svMain.StartPoints.Values[i]);
+                        sx = HUtil32.Loword((int)svMain.StartPoints.Values[i]);
                         sy = Hiword((int)svMain.StartPoints.Values[i]);
                         if ((map == PEnvir.MapName) && (Math.Abs(CX - sx) <= 60) && (Math.Abs(CY - sy) <= 60))
                         {
@@ -5860,7 +5681,7 @@ namespace GameSvr
                         CheckAllyGuild = false;
                         if ((svMain.UserCastle.OwnerGuild != null) && (MyGuild != null))
                         {
-                            CheckAllyGuild = svMain.UserCastle.OwnerGuild.IsAllyGuild((TGuild)MyGuild);
+                            CheckAllyGuild = svMain.UserCastle.OwnerGuild.IsAllyGuild(MyGuild);
                         }
                         else
                         {
@@ -5868,16 +5689,16 @@ namespace GameSvr
                         }
                         // 2003/06/12 荐己 巩颇 挥父 酒聪扼 荐己巩颇 楷钦 巩颇牢版快档 秦寸登档废 荐沥
                         // if UserCastle.IsOurCastle (TGuild(MyGuild)) then begin
-                        if (svMain.UserCastle.IsOurCastle((TGuild)MyGuild) || CheckAllyGuild)
+                        if (svMain.UserCastle.IsOurCastle(MyGuild) || CheckAllyGuild)
                         {
                             // 己阑 瘤虐绰 涝厘
-                            if ((MyGuild == cret.MyGuild) || ((TGuild)MyGuild).IsAllyGuild((TGuild)cret.MyGuild))
+                            if ((MyGuild == cret.MyGuild) || MyGuild.IsAllyGuild(cret.MyGuild))
                             {
                                 // 快府巩颇,悼竿巩颇
                                 // 仟弗拌凯 (快府祈)
                                 result = 180;
                             }
-                            else if (svMain.UserCastle.IsRushCastleGuild((TGuild)cret.MyGuild))
+                            else if (svMain.UserCastle.IsRushCastleGuild(cret.MyGuild))
                             {
                                 result = 69;
                             }
@@ -5886,10 +5707,10 @@ namespace GameSvr
                         else
                         {
                             // 己阑 傍拜窍绰 涝厘(傍己 肚绰 傍己悼竿)
-                            if (svMain.UserCastle.IsRushCastleGuild((TGuild)MyGuild))
+                            if (svMain.UserCastle.IsRushCastleGuild(MyGuild))
                             {
                                 // 快府 巩颇啊 傍拜窍绊 乐澜
-                                if ((MyGuild == cret.MyGuild) || ((TGuild)MyGuild).IsAllyGuild((TGuild)cret.MyGuild))
+                                if ((MyGuild == cret.MyGuild) || MyGuild.IsAllyGuild(cret.MyGuild))
                                 {
                                     // 快府 巩颇盔 烙, 悼竿 巩颇盔
                                     // 仟弗拌凯 (快府祈)
@@ -5973,20 +5794,20 @@ namespace GameSvr
                 }
                 else
                 {
-                    if (((TGuild)onecret.MyGuild).KillGuilds.Count > 0)
+                    if (onecret.MyGuild.KillGuilds.Count > 0)
                     {
                         BoGuildWarArea = true;
-                        if (((TGuild)onecret.MyGuild).IsHostileGuild((TGuild)twocret.MyGuild) && ((TGuild)twocret.MyGuild).IsHostileGuild((TGuild)onecret.MyGuild))
+                        if (onecret.MyGuild.IsHostileGuild(twocret.MyGuild) && twocret.MyGuild.IsHostileGuild(onecret.MyGuild))
                         {
                             result = 2;
                             // 69;  //林炔祸拌凯, 利
                         }
-                        if (((TGuild)onecret.MyGuild) == ((TGuild)twocret.MyGuild))
+                        if (onecret.MyGuild == twocret.MyGuild)
                         {
                             result = 1;
                             // 180; //仟弗拌凯 (快府祈)
                         }
-                        if (((TGuild)onecret.MyGuild).IsAllyGuild((TGuild)twocret.MyGuild) && ((TGuild)twocret.MyGuild).IsAllyGuild((TGuild)onecret.MyGuild))
+                        if (onecret.MyGuild.IsAllyGuild(twocret.MyGuild) && twocret.MyGuild.IsAllyGuild(onecret.MyGuild))
                         {
                             result = 3;
                         }
@@ -6020,7 +5841,7 @@ namespace GameSvr
             {
                 // 促弗 巩林捞搁 FALSE.
                 // 巩林狼 厘盔 锅龋客 泅犁 乐绰 甘狼 厘盔锅龋啊 老摹 秦具窃.
-                guildagit = svMain.GuildAgitMan.GetGuildAgit(((TGuild)MyGuild).GuildName);
+                guildagit = svMain.GuildAgitMan.GetGuildAgit(MyGuild.GuildName);
                 if (guildagit != null)
                 {
                     if ((guildagit.GuildAgitNumber > -1) && (guildagit.GuildAgitNumber == PEnvir.GuildAgit))
@@ -6346,11 +6167,11 @@ namespace GameSvr
             }
             Abil.MaxHP = Abil.MaxHP + BonusAbil.HP;
             Abil.MaxMP = Abil.MaxMP + BonusAbil.MP;
-                                                                        Abil.DC = MakeWord(Lobyte(Abil.DC) + Lobyte(BonusAbil.DC), HiByte(Abil.DC) + HiByte(BonusAbil.DC));
-                                                                        Abil.SC = MakeWord(Lobyte(Abil.SC) + Lobyte(BonusAbil.SC), HiByte(Abil.SC) + HiByte(BonusAbil.SC));
-                                                                        Abil.MC = MakeWord(Lobyte(Abil.MC) + Lobyte(BonusAbil.MC), HiByte(Abil.MC) + HiByte(BonusAbil.MC));
-                                                                        Abil.AC = MakeWord(Lobyte(Abil.AC) + Lobyte(BonusAbil.AC), HiByte(Abil.AC) + HiByte(BonusAbil.AC));
-                                                                        Abil.MAC = MakeWord(Lobyte(Abil.MAC) + Lobyte(BonusAbil.MAC), HiByte(Abil.MAC) + HiByte(BonusAbil.MAC));
+                                                                        Abil.DC = MakeWord(LoByte(Abil.DC) + LoByte(BonusAbil.DC), HiByte(Abil.DC) + HiByte(BonusAbil.DC));
+                                                                        Abil.SC = MakeWord(LoByte(Abil.SC) + LoByte(BonusAbil.SC), HiByte(Abil.SC) + HiByte(BonusAbil.SC));
+                                                                        Abil.MC = MakeWord(LoByte(Abil.MC) + LoByte(BonusAbil.MC), HiByte(Abil.MC) + HiByte(BonusAbil.MC));
+                                                                        Abil.AC = MakeWord(LoByte(Abil.AC) + LoByte(BonusAbil.AC), HiByte(Abil.AC) + HiByte(BonusAbil.AC));
+                                                                        Abil.MAC = MakeWord(LoByte(Abil.MAC) + LoByte(BonusAbil.MAC), HiByte(Abil.MAC) + HiByte(BonusAbil.MAC));
             if (Abil.HP > Abil.MaxHP)
             {
                 Abil.HP = Abil.MaxHP;
@@ -7376,7 +7197,7 @@ namespace GameSvr
                 if (hpp_necklace && hpp_bracelet && hpp_ring)
                 {
                     AddAbil.HP = (byte)(AddAbil.HP + (WAbil.MaxHP * 30 / 100));
-                    AddAbil.AC = AddAbil.AC + MAKEWORD(2, 2);
+                    AddAbil.AC = AddAbil.AC + HUtil32.MakeWord(2, 2);
                 }
                 if (cho_weapon && cho_necklace && cho_ring && cho_helmet && cho_bracelet)
                 {
@@ -7472,8 +7293,8 @@ namespace GameSvr
                 }
                 if (dragonset_ring_left && dragonset_ring_right && dragonset_bracelet_left && dragonset_bracelet_right && dragonset_necklace && dragonset_dress && dragonset_helmet && dragonset_weapon && dragonset_boots && dragonset_belt)
                 {
-                    AddAbil.AC = MakeWord(Lobyte(AddAbil.AC) + 1, _MIN(255, HiByte(AddAbil.AC) + 4));
-                    AddAbil.MAC = MakeWord(Lobyte(AddAbil.MAC) + 1, _MIN(255, HiByte(AddAbil.MAC) + 4));
+                    AddAbil.AC = MakeWord(LoByte(AddAbil.AC) + 1, _MIN(255, HiByte(AddAbil.AC) + 4));
+                    AddAbil.MAC = MakeWord(LoByte(AddAbil.MAC) + 1, _MIN(255, HiByte(AddAbil.MAC) + 4));
                     AddAbil.Luck = (byte)_MIN(255, AddAbil.Luck + 2);
                     AddAbil.HitSpeed = (byte)(AddAbil.HitSpeed + 2);
                     AddAbil.AntiMagic = (byte)(AddAbil.AntiMagic + 6);
@@ -7484,9 +7305,9 @@ namespace GameSvr
                     WAbil.MaxHP = (byte)(WAbil.MaxHP + 70);
                     WAbil.MaxMP = (byte)(WAbil.MaxMP + 80);
                     AddAbil.SPEED = (byte)(AddAbil.SPEED + 1);
-                    AddAbil.DC = MakeWord(Lobyte(AddAbil.DC) + 1, _MIN(255, HiByte(AddAbil.DC) + 4));
-                    AddAbil.MC = MakeWord(Lobyte(AddAbil.MC) + 1, _MIN(255, HiByte(AddAbil.MC) + 3));
-                    AddAbil.SC = MakeWord(Lobyte(AddAbil.SC) + 1, _MIN(255, HiByte(AddAbil.SC) + 3));
+                    AddAbil.DC = MakeWord(LoByte(AddAbil.DC) + 1, _MIN(255, HiByte(AddAbil.DC) + 4));
+                    AddAbil.MC = MakeWord(LoByte(AddAbil.MC) + 1, _MIN(255, HiByte(AddAbil.MC) + 3));
+                    AddAbil.SC = MakeWord(LoByte(AddAbil.SC) + 1, _MIN(255, HiByte(AddAbil.SC) + 3));
                 }
                 else
                 {
@@ -7495,64 +7316,64 @@ namespace GameSvr
                         WAbil.MaxHandWeight = (byte)_MIN(255, WAbil.MaxHandWeight + 34);
                         WAbil.MaxWeight = (byte)(WAbil.MaxWeight + 50);
                         AddAbil.SPEED = (byte)(AddAbil.SPEED + 1);
-                        AddAbil.DC = MakeWord(Lobyte(AddAbil.DC) + 1, _MIN(255, HiByte(AddAbil.DC) + 4));
-                        AddAbil.MC = MakeWord(Lobyte(AddAbil.MC) + 1, _MIN(255, HiByte(AddAbil.MC) + 3));
-                        AddAbil.SC = MakeWord(Lobyte(AddAbil.SC) + 1, _MIN(255, HiByte(AddAbil.SC) + 3));
+                        AddAbil.DC = MakeWord(LoByte(AddAbil.DC) + 1, _MIN(255, HiByte(AddAbil.DC) + 4));
+                        AddAbil.MC = MakeWord(LoByte(AddAbil.MC) + 1, _MIN(255, HiByte(AddAbil.MC) + 3));
+                        AddAbil.SC = MakeWord(LoByte(AddAbil.SC) + 1, _MIN(255, HiByte(AddAbil.SC) + 3));
                     }
                     else if (dragonset_dress && dragonset_boots && dragonset_belt)
                     {
                         WAbil.MaxHandWeight = (byte)_MIN(255, WAbil.MaxHandWeight + 17);
                         WAbil.MaxWeight = (byte)(WAbil.MaxWeight + 30);
-                        AddAbil.DC = MakeWord(Lobyte(AddAbil.DC), _MIN(255, HiByte(AddAbil.DC) + 1));
-                        AddAbil.MC = MakeWord(Lobyte(AddAbil.MC), _MIN(255, HiByte(AddAbil.MC) + 1));
-                        AddAbil.SC = MakeWord(Lobyte(AddAbil.SC), _MIN(255, HiByte(AddAbil.SC) + 1));
+                        AddAbil.DC = MakeWord(LoByte(AddAbil.DC), _MIN(255, HiByte(AddAbil.DC) + 1));
+                        AddAbil.MC = MakeWord(LoByte(AddAbil.MC), _MIN(255, HiByte(AddAbil.MC) + 1));
+                        AddAbil.SC = MakeWord(LoByte(AddAbil.SC), _MIN(255, HiByte(AddAbil.SC) + 1));
                     }
                     else if (dragonset_dress && dragonset_helmet && dragonset_weapon)
                     {
-                        AddAbil.DC = MakeWord(Lobyte(AddAbil.DC), _MIN(255, HiByte(AddAbil.DC) + 2));
-                        AddAbil.MC = MakeWord(Lobyte(AddAbil.MC), _MIN(255, HiByte(AddAbil.MC) + 1));
-                        AddAbil.SC = MakeWord(Lobyte(AddAbil.SC), _MIN(255, HiByte(AddAbil.SC) + 1));
+                        AddAbil.DC = MakeWord(LoByte(AddAbil.DC), _MIN(255, HiByte(AddAbil.DC) + 2));
+                        AddAbil.MC = MakeWord(LoByte(AddAbil.MC), _MIN(255, HiByte(AddAbil.MC) + 1));
+                        AddAbil.SC = MakeWord(LoByte(AddAbil.SC), _MIN(255, HiByte(AddAbil.SC) + 1));
                         AddAbil.SPEED = (byte)(AddAbil.SPEED + 1);
                     }
                     if (dragonset_ring_left && dragonset_ring_right && dragonset_bracelet_left && dragonset_bracelet_right && dragonset_necklace)
                     {
                         WAbil.MaxWearWeight = (byte)_MIN(255, WAbil.MaxWearWeight + 27);
                         WAbil.MaxWeight = (byte)(WAbil.MaxWeight + 50);
-                        AddAbil.AC = MakeWord(Lobyte(AddAbil.AC) + 1, _MIN(255, HiByte(AddAbil.AC) + 3));
-                        AddAbil.MAC = MakeWord(Lobyte(AddAbil.MAC) + 1, _MIN(255, HiByte(AddAbil.MAC) + 3));
+                        AddAbil.AC = MakeWord(LoByte(AddAbil.AC) + 1, _MIN(255, HiByte(AddAbil.AC) + 3));
+                        AddAbil.MAC = MakeWord(LoByte(AddAbil.MAC) + 1, _MIN(255, HiByte(AddAbil.MAC) + 3));
                     }
                     else if ((dragonset_ring_left || dragonset_ring_right) && dragonset_bracelet_left && dragonset_bracelet_right && dragonset_necklace)
                     {
                         WAbil.MaxWearWeight = (byte)_MIN(255, WAbil.MaxWearWeight + 17);
                         WAbil.MaxWeight = (byte)(WAbil.MaxWeight + 30);
-                        AddAbil.AC = MakeWord(Lobyte(AddAbil.AC) + 1, _MIN(255, HiByte(AddAbil.AC) + 1));
-                        AddAbil.MAC = MakeWord(Lobyte(AddAbil.MAC) + 1, _MIN(255, HiByte(AddAbil.MAC) + 1));
+                        AddAbil.AC = MakeWord(LoByte(AddAbil.AC) + 1, _MIN(255, HiByte(AddAbil.AC) + 1));
+                        AddAbil.MAC = MakeWord(LoByte(AddAbil.MAC) + 1, _MIN(255, HiByte(AddAbil.MAC) + 1));
                     }
                     else if (dragonset_ring_left && dragonset_ring_right && (dragonset_bracelet_left || dragonset_bracelet_right) && dragonset_necklace)
                     {
                         WAbil.MaxWearWeight = (byte)_MIN(255, WAbil.MaxWearWeight + 17);
                         WAbil.MaxWeight = (byte)(WAbil.MaxWeight + 30);
-                        AddAbil.AC = MakeWord(Lobyte(AddAbil.AC), _MIN(255, HiByte(AddAbil.AC) + 2));
-                        AddAbil.MAC = MakeWord(Lobyte(AddAbil.MAC), _MIN(255, HiByte(AddAbil.MAC) + 2));
+                        AddAbil.AC = MakeWord(LoByte(AddAbil.AC), _MIN(255, HiByte(AddAbil.AC) + 2));
+                        AddAbil.MAC = MakeWord(LoByte(AddAbil.MAC), _MIN(255, HiByte(AddAbil.MAC) + 2));
                     }
                     else if ((dragonset_ring_left || dragonset_ring_right) && (dragonset_bracelet_left || dragonset_bracelet_right) && dragonset_necklace)
                     {
                         WAbil.MaxWearWeight = (byte)_MIN(255, WAbil.MaxWearWeight + 17);
                         WAbil.MaxWeight = (byte)(WAbil.MaxWeight + 30);
-                        AddAbil.AC = MakeWord(Lobyte(AddAbil.AC), _MIN(255, HiByte(AddAbil.AC) + 1));
-                        AddAbil.MAC = MakeWord(Lobyte(AddAbil.MAC), _MIN(255, HiByte(AddAbil.MAC) + 1));
+                        AddAbil.AC = MakeWord(LoByte(AddAbil.AC), _MIN(255, HiByte(AddAbil.AC) + 1));
+                        AddAbil.MAC = MakeWord(LoByte(AddAbil.MAC), _MIN(255, HiByte(AddAbil.MAC) + 1));
                     }
                     else
                     {
                         if (dragonset_bracelet_left && dragonset_bracelet_right)
                         {
-                            AddAbil.AC = MakeWord(Lobyte(AddAbil.AC) + 1, _MIN(255, HiByte(AddAbil.AC)));
-                            AddAbil.MAC = MakeWord(Lobyte(AddAbil.MAC) + 1, _MIN(255, HiByte(AddAbil.MAC)));
+                            AddAbil.AC = MakeWord(LoByte(AddAbil.AC) + 1, _MIN(255, HiByte(AddAbil.AC)));
+                            AddAbil.MAC = MakeWord(LoByte(AddAbil.MAC) + 1, _MIN(255, HiByte(AddAbil.MAC)));
                         }
                         if (dragonset_ring_left && dragonset_ring_right)
                         {
-                            AddAbil.AC = MakeWord(Lobyte(AddAbil.AC), _MIN(255, HiByte(AddAbil.AC) + 1));
-                            AddAbil.MAC = MakeWord(Lobyte(AddAbil.MAC), _MIN(255, HiByte(AddAbil.MAC) + 1));
+                            AddAbil.AC = MakeWord(LoByte(AddAbil.AC), _MIN(255, HiByte(AddAbil.AC) + 1));
+                            AddAbil.MAC = MakeWord(LoByte(AddAbil.MAC), _MIN(255, HiByte(AddAbil.MAC) + 1));
                         }
                     }
                 }
@@ -7638,30 +7459,30 @@ namespace GameSvr
             HitSpeed = AddAbil.HitSpeed;
             WAbil.MaxHP = (ushort)(Abil.MaxHP + AddAbil.HP);
             WAbil.MaxMP = (ushort)(Abil.MaxMP + AddAbil.MP);
-            WAbil.AC = MakeWord(_MIN(255, Lobyte(AddAbil.AC) + Lobyte(Abil.AC)), _MIN(255, HiByte(AddAbil.AC) + HiByte(Abil.AC)));
-            WAbil.MAC = MakeWord(_MIN(255, Lobyte(AddAbil.MAC) + Lobyte(Abil.MAC)), _MIN(255, HiByte(AddAbil.MAC) + HiByte(Abil.MAC)));
-            WAbil.DC = MakeWord(_MIN(255, Lobyte(AddAbil.DC) + Lobyte(Abil.DC)), _MIN(255, HiByte(AddAbil.DC) + HiByte(Abil.DC)));
-            WAbil.MC = MakeWord(_MIN(255, Lobyte(AddAbil.MC) + Lobyte(Abil.MC)), _MIN(255, HiByte(AddAbil.MC) + HiByte(Abil.MC)));
-            WAbil.SC = MakeWord(_MIN(255, Lobyte(AddAbil.SC) + Lobyte(Abil.SC)), _MIN(255, HiByte(AddAbil.SC) + HiByte(Abil.SC)));
+            WAbil.AC = MakeWord(_MIN(255, LoByte(AddAbil.AC) + LoByte(Abil.AC)), _MIN(255, HiByte(AddAbil.AC) + HiByte(Abil.AC)));
+            WAbil.MAC = MakeWord(_MIN(255, LoByte(AddAbil.MAC) + LoByte(Abil.MAC)), _MIN(255, HiByte(AddAbil.MAC) + HiByte(Abil.MAC)));
+            WAbil.DC = MakeWord(_MIN(255, LoByte(AddAbil.DC) + LoByte(Abil.DC)), _MIN(255, HiByte(AddAbil.DC) + HiByte(Abil.DC)));
+            WAbil.MC = MakeWord(_MIN(255, LoByte(AddAbil.MC) + LoByte(Abil.MC)), _MIN(255, HiByte(AddAbil.MC) + HiByte(Abil.MC)));
+            WAbil.SC = MakeWord(_MIN(255, LoByte(AddAbil.SC) + LoByte(Abil.SC)), _MIN(255, HiByte(AddAbil.SC) + HiByte(Abil.SC)));
             if (StatusArr[Grobal2.STATE_DEFENCEUP] > 0)
             {
-                WAbil.AC = MakeWord(Lobyte(WAbil.AC), _MIN(255, HiByte(WAbil.AC) + (Abil.Level / 7) + StatusValue[Grobal2.STATE_DEFENCEUP]));
+                WAbil.AC = MakeWord(LoByte(WAbil.AC), _MIN(255, HiByte(WAbil.AC) + (Abil.Level / 7) + StatusValue[Grobal2.STATE_DEFENCEUP]));
             }
             if (StatusArr[Grobal2.STATE_MAGDEFENCEUP] > 0)
             {
-                WAbil.MAC = MakeWord(Lobyte(WAbil.MAC), _MIN(255, HiByte(WAbil.MAC) + (Abil.Level / 7) + StatusValue[Grobal2.STATE_MAGDEFENCEUP]));
+                WAbil.MAC = MakeWord(LoByte(WAbil.MAC), _MIN(255, HiByte(WAbil.MAC) + (Abil.Level / 7) + StatusValue[Grobal2.STATE_MAGDEFENCEUP]));
             }
             if (ExtraAbil[Grobal2.EABIL_DCUP] > 0)
             {
-                WAbil.DC = MakeWord(Lobyte(WAbil.DC), HiByte(WAbil.DC) + ExtraAbil[Grobal2.EABIL_DCUP]);
+                WAbil.DC = MakeWord(LoByte(WAbil.DC), HiByte(WAbil.DC) + ExtraAbil[Grobal2.EABIL_DCUP]);
             }
             if (ExtraAbil[Grobal2.EABIL_MCUP] > 0)
             {
-                WAbil.MC = MakeWord(Lobyte(WAbil.MC), HiByte(WAbil.MC) + ExtraAbil[Grobal2.EABIL_MCUP]);
+                WAbil.MC = MakeWord(LoByte(WAbil.MC), HiByte(WAbil.MC) + ExtraAbil[Grobal2.EABIL_MCUP]);
             }
             if (ExtraAbil[Grobal2.EABIL_SCUP] > 0)
             {
-                WAbil.SC = MakeWord(Lobyte(WAbil.SC), HiByte(WAbil.SC) + ExtraAbil[Grobal2.EABIL_SCUP]);
+                WAbil.SC = MakeWord(LoByte(WAbil.SC), HiByte(WAbil.SC) + ExtraAbil[Grobal2.EABIL_SCUP]);
             }
             if (ExtraAbil[Grobal2.EABIL_HITSPEEDUP] > 0)
             {
@@ -7677,9 +7498,9 @@ namespace GameSvr
             }
             if (ExtraAbil[Grobal2.EABIL_PWRRATE] > 0)
             {
-                WAbil.DC = MakeWord(Lobyte(WAbil.DC) * ExtraAbil[Grobal2.EABIL_PWRRATE] / 100, HiByte(WAbil.DC) * ExtraAbil[Grobal2.EABIL_PWRRATE] / 100);
-                WAbil.MC = MakeWord(Lobyte(WAbil.MC) * ExtraAbil[Grobal2.EABIL_PWRRATE] / 100, HiByte(WAbil.MC) * ExtraAbil[Grobal2.EABIL_PWRRATE] / 100);
-                WAbil.SC = MakeWord(Lobyte(WAbil.SC) * ExtraAbil[Grobal2.EABIL_PWRRATE] / 100, HiByte(WAbil.SC) * ExtraAbil[Grobal2.EABIL_PWRRATE] / 100);
+                WAbil.DC = MakeWord(LoByte(WAbil.DC) * ExtraAbil[Grobal2.EABIL_PWRRATE] / 100, HiByte(WAbil.DC) * ExtraAbil[Grobal2.EABIL_PWRRATE] / 100);
+                WAbil.MC = MakeWord(LoByte(WAbil.MC) * ExtraAbil[Grobal2.EABIL_PWRRATE] / 100, HiByte(WAbil.MC) * ExtraAbil[Grobal2.EABIL_PWRRATE] / 100);
+                WAbil.SC = MakeWord(LoByte(WAbil.SC) * ExtraAbil[Grobal2.EABIL_PWRRATE] / 100, HiByte(WAbil.SC) * ExtraAbil[Grobal2.EABIL_PWRRATE] / 100);
             }
             if (BoAddMagicFireball)
             {
@@ -7782,8 +7603,8 @@ namespace GameSvr
             result = false;
             if ((cret != null) && (cret.GroupMembers.Count == 2))
             {
-                hum1 = cret.GroupMembers.Values[0] as TCreature;
-                hum2 = cret.GroupMembers.Values[1] as TCreature;
+                hum1 = cret.GroupMembers[0];
+                hum2 = cret.GroupMembers[1];
                 if ((hum1 != null) && (hum2 != null) && (hum1.RaceServer == Grobal2.RC_USERHUMAN) && (hum2.RaceServer == Grobal2.RC_USERHUMAN))
                 {
                     if (hum1.Sex != hum2.Sex)
@@ -7810,8 +7631,8 @@ namespace GameSvr
                     case 6:
                         aabil.HIT = (byte)(aabil.HIT + HiByte(std.AC));
                         aabil.HitSpeed = (byte)(aabil.HitSpeed + svMain.ItemMan.RealAttackSpeed(HiByte(std.MAC)));
-                        aabil.Luck = (byte)(aabil.Luck + Lobyte(std.AC));
-                        aabil.UnLuck = (byte)(aabil.UnLuck + Lobyte(std.MAC));
+                        aabil.Luck = (byte)(aabil.Luck + LoByte(std.AC));
+                        aabil.UnLuck = (byte)(aabil.UnLuck + LoByte(std.MAC));
                         aabil.Slowdown = (byte)(aabil.Slowdown + std.Slowdown);
                         aabil.Poison = (byte)(aabil.Poison + std.Tox);
                         if (std.SpecialPwr >= 1 && std.SpecialPwr <= 10)
@@ -7821,8 +7642,8 @@ namespace GameSvr
                         break;
                     case 10:
                     case 11:
-                        aabil.AC = MakeWord(Lobyte(aabil.AC) + Lobyte(std.AC), HiByte(aabil.AC) + HiByte(std.AC));
-                        aabil.MAC = MakeWord(Lobyte(aabil.MAC) + Lobyte(std.MAC), HiByte(aabil.MAC) + HiByte(std.MAC));
+                        aabil.AC = MakeWord(LoByte(aabil.AC) + LoByte(std.AC), HiByte(aabil.AC) + HiByte(std.AC));
+                        aabil.MAC = MakeWord(LoByte(aabil.MAC) + LoByte(std.MAC), HiByte(aabil.MAC) + HiByte(std.MAC));
                         aabil.SPEED = (ushort)(aabil.SPEED + std.Agility);
                         aabil.AntiMagic = (ushort)(aabil.AntiMagic + std.MgAvoid);
                         aabil.AntiPoison = (ushort)(aabil.AntiPoison + std.ToxAvoid);
@@ -7900,15 +7721,15 @@ namespace GameSvr
                         }
                         break;
                     case 15:
-                        aabil.AC = MakeWord(Lobyte(aabil.AC) + Lobyte(std.AC), HiByte(aabil.AC) + HiByte(std.AC));
-                        aabil.MAC = MakeWord(Lobyte(aabil.MAC) + Lobyte(std.MAC), HiByte(aabil.MAC) + HiByte(std.MAC));
+                        aabil.AC = MakeWord(LoByte(aabil.AC) + LoByte(std.AC), HiByte(aabil.AC) + HiByte(std.AC));
+                        aabil.MAC = MakeWord(LoByte(aabil.MAC) + LoByte(std.MAC), HiByte(aabil.MAC) + HiByte(std.MAC));
                         aabil.HIT = (ushort)(aabil.HIT + std.Accurate);
                         aabil.AntiMagic = (ushort)(aabil.AntiMagic + std.MgAvoid);
                         aabil.AntiPoison = (ushort)(aabil.AntiPoison + std.ToxAvoid);
                         break;
                     case 19:
                         aabil.AntiMagic = (ushort)(aabil.AntiMagic + HiByte(std.AC));
-                        aabil.UnLuck = (byte)(aabil.UnLuck + Lobyte(std.MAC));
+                        aabil.UnLuck = (byte)(aabil.UnLuck + LoByte(std.MAC));
                         aabil.Luck = (byte)(aabil.Luck + HiByte(std.MAC));
                         aabil.HitSpeed = (ushort)(aabil.HitSpeed + std.AtkSpd);
                         aabil.HIT = (ushort)(aabil.HIT + std.Accurate);
@@ -7926,8 +7747,8 @@ namespace GameSvr
                     case 21:
                         aabil.HealthRecover = (ushort)(aabil.HealthRecover + HiByte(std.AC));
                         aabil.SpellRecover = (ushort)(aabil.SpellRecover + HiByte(std.MAC));
-                        aabil.HitSpeed = (ushort)(aabil.HitSpeed + Lobyte(std.AC));
-                        aabil.HitSpeed = (ushort)(aabil.HitSpeed - Lobyte(std.MAC));
+                        aabil.HitSpeed = (ushort)(aabil.HitSpeed + LoByte(std.AC));
+                        aabil.HitSpeed = (ushort)(aabil.HitSpeed - LoByte(std.MAC));
                         aabil.HitSpeed = (ushort)(aabil.HitSpeed + std.AtkSpd);
                         aabil.HIT = (ushort)(aabil.HIT + std.Accurate);
                         aabil.AntiMagic = (ushort)(aabil.AntiMagic + std.MgAvoid);
@@ -7935,8 +7756,8 @@ namespace GameSvr
                         aabil.Poison = (byte)(aabil.Poison + std.Tox);
                         break;
                     case 22:
-                        aabil.AC = MakeWord(Lobyte(aabil.AC) + Lobyte(std.AC), HiByte(aabil.AC) + HiByte(std.AC));
-                        aabil.MAC = MakeWord(Lobyte(aabil.MAC) + Lobyte(std.MAC), HiByte(aabil.MAC) + HiByte(std.MAC));
+                        aabil.AC = MakeWord(LoByte(aabil.AC) + LoByte(std.AC), HiByte(aabil.AC) + HiByte(std.AC));
+                        aabil.MAC = MakeWord(LoByte(aabil.MAC) + LoByte(std.MAC), HiByte(aabil.MAC) + HiByte(std.MAC));
                         aabil.HitSpeed = (ushort)(aabil.HitSpeed + std.AtkSpd);
                         aabil.Slowdown = (byte)(aabil.Slowdown + std.Slowdown);
                         aabil.Poison = (byte)(aabil.Poison + std.Tox);
@@ -7946,8 +7767,8 @@ namespace GameSvr
                     case 23:
                         aabil.AntiPoison = (ushort)(aabil.AntiPoison + HiByte(std.AC));
                         aabil.PoisonRecover = (ushort)(aabil.PoisonRecover + HiByte(std.MAC));
-                        aabil.HitSpeed = (ushort)(aabil.HitSpeed + Lobyte(std.AC));
-                        aabil.HitSpeed = (ushort)(aabil.HitSpeed - Lobyte(std.MAC));
+                        aabil.HitSpeed = (ushort)(aabil.HitSpeed + LoByte(std.AC));
+                        aabil.HitSpeed = (ushort)(aabil.HitSpeed - LoByte(std.MAC));
                         aabil.HitSpeed = (ushort)(aabil.HitSpeed + std.AtkSpd);
                         aabil.Slowdown = (byte)(aabil.Slowdown + std.Slowdown);
                         aabil.Poison = (byte)(aabil.Poison + std.Tox);
@@ -7965,8 +7786,8 @@ namespace GameSvr
                                 aabil.SPEED = (ushort)(aabil.SPEED + HiByte(std.MAC));
                                 break;
                             case 26:
-                                aabil.AC = MakeWord(Lobyte(aabil.AC) + Lobyte(std.AC), HiByte(aabil.AC) + HiByte(std.AC));
-                                aabil.MAC = MakeWord(Lobyte(aabil.MAC) + Lobyte(std.MAC), HiByte(aabil.MAC) + HiByte(std.MAC));
+                                aabil.AC = MakeWord(LoByte(aabil.AC) + LoByte(std.AC), HiByte(aabil.AC) + HiByte(std.AC));
+                                aabil.MAC = MakeWord(LoByte(aabil.MAC) + LoByte(std.MAC), HiByte(aabil.MAC) + HiByte(std.MAC));
                                 aabil.HIT = (ushort)(aabil.HIT + std.Accurate);
                                 aabil.SPEED = (ushort)(aabil.SPEED + std.Agility);
                                 aabil.MP = (ushort)(aabil.MP + std.MpAdd);
@@ -7974,13 +7795,13 @@ namespace GameSvr
                         }
                         break;
                     case 52:
-                        aabil.AC = MakeWord(Lobyte(aabil.AC) + Lobyte(std.AC), HiByte(aabil.AC) + HiByte(std.AC));
-                        aabil.MAC = MakeWord(Lobyte(aabil.MAC) + Lobyte(std.MAC), HiByte(aabil.MAC) + HiByte(std.MAC));
+                        aabil.AC = MakeWord(LoByte(aabil.AC) + LoByte(std.AC), HiByte(aabil.AC) + HiByte(std.AC));
+                        aabil.MAC = MakeWord(LoByte(aabil.MAC) + LoByte(std.MAC), HiByte(aabil.MAC) + HiByte(std.MAC));
                         aabil.SPEED = (ushort)(aabil.SPEED + std.Agility);
                         break;
                     case 54:
-                        aabil.AC = MakeWord(Lobyte(aabil.AC) + Lobyte(std.AC), HiByte(aabil.AC) + HiByte(std.AC));
-                        aabil.MAC = MakeWord(Lobyte(aabil.MAC) + Lobyte(std.MAC), HiByte(aabil.MAC) + HiByte(std.MAC));
+                        aabil.AC = MakeWord(LoByte(aabil.AC) + LoByte(std.AC), HiByte(aabil.AC) + HiByte(std.AC));
+                        aabil.MAC = MakeWord(LoByte(aabil.MAC) + LoByte(std.MAC), HiByte(aabil.MAC) + HiByte(std.MAC));
                         aabil.HIT = (ushort)(aabil.HIT + std.Accurate);
                         aabil.SPEED = (ushort)(aabil.SPEED + std.Agility);
                         aabil.AntiPoison = (ushort)(aabil.AntiPoison + std.ToxAvoid);
@@ -7990,13 +7811,13 @@ namespace GameSvr
                         aabil.MP = (ushort)(aabil.MP + std.MpAdd);
                         break;
                     default:
-                        aabil.AC = MakeWord(Lobyte(aabil.AC) + Lobyte(std.AC), HiByte(aabil.AC) + HiByte(std.AC));
-                        aabil.MAC = MakeWord(Lobyte(aabil.MAC) + Lobyte(std.MAC), HiByte(aabil.MAC) + HiByte(std.MAC));
+                        aabil.AC = MakeWord(LoByte(aabil.AC) + LoByte(std.AC), HiByte(aabil.AC) + HiByte(std.AC));
+                        aabil.MAC = MakeWord(LoByte(aabil.MAC) + LoByte(std.MAC), HiByte(aabil.MAC) + HiByte(std.MAC));
                         break;
                 }
-                aabil.DC = MakeWord(Lobyte(aabil.DC) + Lobyte(std.DC), _MIN(255, HiByte(aabil.DC) + HiByte(std.DC)));
-                aabil.MC = MakeWord(Lobyte(aabil.MC) + Lobyte(std.MC), _MIN(255, HiByte(aabil.MC) + HiByte(std.MC)));
-                aabil.SC = MakeWord(Lobyte(aabil.SC) + Lobyte(std.SC), _MIN(255, HiByte(aabil.SC) + HiByte(std.SC)));
+                aabil.DC = MakeWord(LoByte(aabil.DC) + LoByte(std.DC), _MIN(255, HiByte(aabil.DC) + HiByte(std.DC)));
+                aabil.MC = MakeWord(LoByte(aabil.MC) + LoByte(std.MC), _MIN(255, HiByte(aabil.MC) + HiByte(std.MC)));
+                aabil.SC = MakeWord(LoByte(aabil.SC) + LoByte(std.SC), _MIN(255, HiByte(aabil.SC) + HiByte(std.SC)));
             }
         }
 
@@ -8011,7 +7832,7 @@ namespace GameSvr
                     switch (Job)
                     {
                         case 0:
-                            std.DC = MakeWord(Lobyte(std.DC), _MIN(255, HiByte(std.DC) + 4));
+                            std.DC = MakeWord(LoByte(std.DC), _MIN(255, HiByte(std.DC) + 4));
                             std.MC = 0;
                             std.SC = 0;
                             break;
@@ -8030,11 +7851,11 @@ namespace GameSvr
                     {
                         case 0:
                             // 傈荤
-                            std.DC = MakeWord(Lobyte(std.DC) + 1, _MIN(255, HiByte(std.DC) + 2));
+                            std.DC = MakeWord(LoByte(std.DC) + 1, _MIN(255, HiByte(std.DC) + 2));
                             // 窍靛内爹
                             std.MC = 0;
                             std.SC = 0;
-                            std.AC = MakeWord(Lobyte(std.AC), _MIN(255, HiByte(std.AC) + 1));
+                            std.AC = MakeWord(LoByte(std.AC), _MIN(255, HiByte(std.AC) + 1));
                             break;
                         case 1:
                             // 窍靛内爹
@@ -8042,7 +7863,7 @@ namespace GameSvr
                             std.DC = 0;
                             // std.MC := 0;
                             std.SC = 0;
-                            std.AC = MakeWord(Lobyte(std.AC), _MIN(255, HiByte(std.AC) + 1));
+                            std.AC = MakeWord(LoByte(std.AC), _MIN(255, HiByte(std.AC) + 1));
                             break;
                         case 2:
                             // 窍靛内爹
@@ -8143,26 +7964,26 @@ namespace GameSvr
                     switch (Job)
                     {
                         case 0:
-                            std.DC = MakeWord(Lobyte(std.DC) + 1, _MIN(255, HiByte(std.DC) + 28));
+                            std.DC = MakeWord(LoByte(std.DC) + 1, _MIN(255, HiByte(std.DC) + 28));
                             std.MC = 0;
                             std.SC = 0;
-                            std.AC = MakeWord(Lobyte(std.AC) - 2, HiByte(std.AC));
+                            std.AC = MakeWord(LoByte(std.AC) - 2, HiByte(std.AC));
                             break;
                         case 1:
                             std.SC = 0;
                             if (HiByte(std.MAC) > 12)
                             {
-                                std.MAC = MakeWord(Lobyte(std.MAC), HiByte(std.MAC) - 12);
+                                std.MAC = MakeWord(LoByte(std.MAC), HiByte(std.MAC) - 12);
                             }
                             else
                             {
-                                std.MAC = MakeWord(Lobyte(std.MAC), 0);
+                                std.MAC = MakeWord(LoByte(std.MAC), 0);
                             }
                             break;
                         case 2:
-                            std.DC = MakeWord(Lobyte(std.DC) + 2, _MIN(255, HiByte(std.DC) + 10));
+                            std.DC = MakeWord(LoByte(std.DC) + 2, _MIN(255, HiByte(std.DC) + 10));
                             std.MC = 0;
-                            std.AC = MakeWord(Lobyte(std.AC) - 2, HiByte(std.AC));
+                            std.AC = MakeWord(LoByte(std.AC) - 2, HiByte(std.AC));
                             break;
                     }
                 }
@@ -8173,19 +7994,19 @@ namespace GameSvr
                         switch (Job)
                         {
                             case 0:
-                                std.DC = MakeWord(Lobyte(std.DC), _MIN(255, HiByte(std.DC) + 2));
+                                std.DC = MakeWord(LoByte(std.DC), _MIN(255, HiByte(std.DC) + 2));
                                 std.MC = 0;
                                 std.SC = 0;
                                 break;
                             case 1:
                                 std.DC = 0;
-                                std.MC = MakeWord(Lobyte(std.MC), _MIN(255, HiByte(std.MC) + 2));
+                                std.MC = MakeWord(LoByte(std.MC), _MIN(255, HiByte(std.MC) + 2));
                                 std.SC = 0;
                                 break;
                             case 2:
                                 std.DC = 0;
                                 std.MC = 0;
-                                std.SC = MakeWord(Lobyte(std.SC), _MIN(255, HiByte(std.SC) + 2));
+                                std.SC = MakeWord(LoByte(std.SC), _MIN(255, HiByte(std.SC) + 2));
                                 break;
                         }
                     }
@@ -8194,19 +8015,19 @@ namespace GameSvr
                         switch (Job)
                         {
                             case 0:
-                                std.DC = MakeWord(Lobyte(std.DC), _MIN(255, HiByte(std.DC)));
+                                std.DC = MakeWord(LoByte(std.DC), _MIN(255, HiByte(std.DC)));
                                 std.MC = 0;
                                 std.SC = 0;
                                 break;
                             case 1:
                                 std.DC = 0;
-                                std.MC = MakeWord(Lobyte(std.MC), _MIN(255, HiByte(std.MC)));
+                                std.MC = MakeWord(LoByte(std.MC), _MIN(255, HiByte(std.MC)));
                                 std.SC = 0;
                                 break;
                             case 2:
                                 std.DC = 0;
                                 std.MC = 0;
-                                std.SC = MakeWord(Lobyte(std.SC), _MIN(255, HiByte(std.SC)));
+                                std.SC = MakeWord(LoByte(std.SC), _MIN(255, HiByte(std.SC)));
                                 break;
                         }
                     }
@@ -8218,23 +8039,23 @@ namespace GameSvr
                         switch (Job)
                         {
                             case 0:
-                                std.DC = MakeWord(Lobyte(std.DC), _MIN(255, HiByte(std.DC) + 2));
+                                std.DC = MakeWord(LoByte(std.DC), _MIN(255, HiByte(std.DC) + 2));
                                 std.MC = 0;
                                 std.SC = 0;
-                                std.AC = MakeWord(Lobyte(std.AC) + 2, _MIN(255, HiByte(std.AC) + 4));
+                                std.AC = MakeWord(LoByte(std.AC) + 2, _MIN(255, HiByte(std.AC) + 4));
                                 std.MpAdd = std.MpAdd + 30;
                                 break;
                             case 1:
                                 std.DC = 0;
                                 std.SC = 0;
-                                std.MAC = MakeWord(Lobyte(std.MAC) + 1, _MIN(255, HiByte(std.MAC) + 2));
+                                std.MAC = MakeWord(LoByte(std.MAC) + 1, _MIN(255, HiByte(std.MAC) + 2));
                                 std.HpAdd = std.HpAdd + 30;
                                 break;
                             case 2:
-                                std.DC = MakeWord(Lobyte(std.DC) + 1, _MIN(255, HiByte(std.DC)));
+                                std.DC = MakeWord(LoByte(std.DC) + 1, _MIN(255, HiByte(std.DC)));
                                 std.MC = 0;
-                                std.AC = MakeWord(Lobyte(std.AC) + 1, _MIN(255, HiByte(std.AC)));
-                                std.MAC = MakeWord(Lobyte(std.MAC) + 1, _MIN(255, HiByte(std.MAC)));
+                                std.AC = MakeWord(LoByte(std.AC) + 1, _MIN(255, HiByte(std.AC)));
+                                std.MAC = MakeWord(LoByte(std.MAC) + 1, _MIN(255, HiByte(std.MAC)));
                                 std.HpAdd = std.HpAdd + 20;
                                 std.MpAdd = std.MpAdd + 10;
                                 break;
@@ -8403,11 +8224,11 @@ namespace GameSvr
             result = Abil;
             result.HP = (ushort)(AddAbil.HP + Abil.HP);
             result.MP = (ushort)(AddAbil.MP + Abil.MP);
-            result.AC = MakeWord(_MIN(255, Lobyte(AddAbil.AC) + Lobyte(Abil.AC)), _MIN(255, HiByte(AddAbil.AC) + HiByte(Abil.AC)));
-            result.MAC = MakeWord(_MIN(255, Lobyte(AddAbil.MAC) + Lobyte(Abil.MAC)), _MIN(255, HiByte(AddAbil.MAC) + HiByte(Abil.MAC)));
-            result.DC = MakeWord(_MIN(255, Lobyte(AddAbil.DC) + Lobyte(Abil.DC)), _MIN(255, HiByte(AddAbil.DC) + HiByte(Abil.DC)));
-            result.MC = MakeWord(_MIN(255, Lobyte(AddAbil.MC) + Lobyte(Abil.MC)), _MIN(255, HiByte(AddAbil.MC) + HiByte(Abil.MC)));
-            result.SC = MakeWord(_MIN(255, Lobyte(AddAbil.SC) + Lobyte(Abil.SC)), _MIN(255, HiByte(AddAbil.SC) + HiByte(Abil.SC)));
+            result.AC = MakeWord(_MIN(255, LoByte(AddAbil.AC) + LoByte(Abil.AC)), _MIN(255, HiByte(AddAbil.AC) + HiByte(Abil.AC)));
+            result.MAC = MakeWord(_MIN(255, LoByte(AddAbil.MAC) + LoByte(Abil.MAC)), _MIN(255, HiByte(AddAbil.MAC) + HiByte(Abil.MAC)));
+            result.DC = MakeWord(_MIN(255, LoByte(AddAbil.DC) + LoByte(Abil.DC)), _MIN(255, HiByte(AddAbil.DC) + HiByte(Abil.DC)));
+            result.MC = MakeWord(_MIN(255, LoByte(AddAbil.MC) + LoByte(Abil.MC)), _MIN(255, HiByte(AddAbil.MC) + HiByte(Abil.MC)));
+            result.SC = MakeWord(_MIN(255, LoByte(AddAbil.SC) + LoByte(Abil.SC)), _MIN(255, HiByte(AddAbil.SC) + HiByte(Abil.SC)));
             return result;
         }
 
@@ -8525,17 +8346,17 @@ namespace GameSvr
                 }
                 if (MyGuild != null)
                 {
-                    if (svMain.UserCastle.IsOurCastle((TGuild)MyGuild))
+                    if (svMain.UserCastle.IsOurCastle(MyGuild))
                     {
                         // 快府巩颇啊 荤合己阑 痢飞
                         // 努扼捞攫飘俊辑绰 馆措肺 捞抚捞 盖 唱吝俊 结柳促.
-                        result = result + "\\" + ((TGuild)MyGuild).GuildName + "(" + svMain.UserCastle.CastleName + ")";
+                        result = result + "\\" + MyGuild.GuildName + "(" + svMain.UserCastle.CastleName + ")";
                     }
                     else
                     {
                         // if UserCastle.BoCastleUnderAttack then
                         // if (BoInFreePKArea) or (UserCastle.IsCastleWarArea (PEnvir, CX, CY)) then
-                        result = result + "\\" + ((TGuild)MyGuild).GuildName;
+                        result = result + "\\" + MyGuild.GuildName;
                     }
                 }
                 if ((this as TUserHuman).fLover.GetLoverName != "")
@@ -8950,31 +8771,6 @@ namespace GameSvr
         public bool _Attack(short hitmode, TCreature targ)
         {
             bool result;
-            // 
-            // var
-            // ndir: byte;
-            // rx, ry, xx, yy: integer;
-            // target: TCreature;
-            // procedure __DAttack;
-            // begin
-            // if GetNextPosition (PEnvir, rx, ry, ndir, 1, xx, yy) then begin
-            // target := TCreature (PEnvir.GetCreature (xx, yy, TRUE));
-            // if (damage > 0) and (target <> nil) then
-            // Result := DirectAttack (target, damage);
-            // end;
-            // end;
-            // begin
-            // Result := FALSE;
-            // ndir := Dir; GetNextPosition (PEnvir, CX, CY, ndir, 1, rx, ry);
-            // //沥搁 菊
-            // __DAttack;
-            // //坷弗率
-            // ndir := GetTurnDir (Dir, 2);
-            // __DAttack;
-            // //哭率
-            // ndir := GetTurnDir (Dir, 6);
-            // __DAttack;
-            // end;
             int dam;
             int seconddam;
             int weapondamage;
@@ -8987,14 +8783,12 @@ namespace GameSvr
             try
             {
                 addplus = false;
-                // 钱矾胶 颇况啊 冈躯蠢瘤 咯何
                 weapondamage = 0;
                 dam = 0;
                 seconddam = 0;
                 if (targ != null)
                 {
-                    dam = GetAttackPower(WAbil.Lobyte(WAbil.DC), (short)HiByte(WAbil.DC) - WAbil.Lobyte(WAbil.DC));
-                    // 八过栏肺 氢惑等 颇况
+                    dam = GetAttackPower(HUtil32.LoByte(WAbil.DC), HiByte(WAbil.DC) - HUtil32.LoByte(WAbil.DC));
                     if ((hitmode == Grobal2.HM_POWERHIT) && BoAllowPowerHit)
                     {
                         BoAllowPowerHit = false;
@@ -9005,19 +8799,8 @@ namespace GameSvr
                     {
                         BoAllowFireHit = false;
                         dam = dam + HUtil32.MathRound(dam / 100 * HitDouble * 10);
-                        // GetAttackPower (Lobyte(DC), ShortInt(HiByte(DC)-Lobyte(DC)));
                         addplus = true;
                     }
-                    // 2003/03/15 堡浅曼...犁八配
-                    // 
-                    // if (hitmode = HM_CROSSHIT) then begin
-                    // BoAllowPowerHit := FALSE;
-                    // dam := dam + HitPowerPlus;
-                    // addplus := TRUE;
-                    // end;
-                    // 咯扁促 持绢杭鳖? 敌拳 / 吝刀 sonmg(2003/11/07)
-                    // ...敌拳魄沥...
-                    // 乞拳傍拜矫 敌拳/吝刀 吧府绰 滚弊 荐沥(sonmg 2004/01/13)
                     if (IsProperTarget(targ))
                     {
                         if ((targ.Abil.Level < 60) && (targ.StatusArr[Grobal2.POISON_SLOW] == 0) && (AddAbil.Slowdown > 0) && (new System.Random(20).Next() <= AddAbil.Slowdown) && (new System.Random(50).Next() > targ.AntiMagic))
@@ -9071,7 +8854,7 @@ namespace GameSvr
                 }
                 else
                 {
-                    dam = GetAttackPower(WAbil.Lobyte(WAbil.DC), (short)HiByte(WAbil.DC) - WAbil.Lobyte(WAbil.DC));
+                    dam = GetAttackPower(HUtil32.LoByte(WAbil.DC), HiByte(WAbil.DC) - HUtil32.LoByte(WAbil.DC));
                     // 八过栏肺 氢惑等 颇况
                     if ((hitmode == Grobal2.HM_POWERHIT) && BoAllowPowerHit)
                     {
@@ -9233,29 +9016,20 @@ namespace GameSvr
                 {
                     dam = targ.GetHitStruckDamage(this, dam);
                     weapondamage = new System.Random(5).Next() + 2 - AddAbil.WeaponStrong;
-                    // 窜窜茄 公扁绰 郴备啊 肋 救窜促.
                 }
                 if ((dam > 0) || (hitmode == Grobal2.HM_STONEHIT))
                 {
                     if (hitmode != Grobal2.HM_STONEHIT)
                     {
                         targ.StruckDamage(dam, this);
-                        // wparam
-                        // lparam1
-                        // lparam2
-                        // hiter
                         targ.SendDelayMsg(Grobal2.RM_STRUCK as TCreature, Grobal2.RM_REFMESSAGE, dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 200);
-                        // 锭府绰磊啊 付厚狼馆瘤甫 尝绊 乐澜
                         if (BoAbilMakeStone)
                         {
                             if (new System.Random(5 + targ.AntiPoison).Next() == 0)
                             {
-                                // 矫埃
                                 targ.MakePoison(Grobal2.POISON_STONE, 5, 0);
                             }
-                            // 付厚
                         }
-                        // 锭府绰磊啊 剐拳 技飘甫 尝绊 乐澜 (眉仿 软荐)
                         if (SuckupEnemyHealthRate > 0)
                         {
                             SuckupEnemyHealth = SuckupEnemyHealth + (dam / 100 * SuckupEnemyHealthRate);
@@ -9267,7 +9041,6 @@ namespace GameSvr
                             }
                         }
                     }
-                    // 八贱 氢惑
                     if ((PSwordSkill != null) && (targ.RaceServer >= Grobal2.RC_ANIMAL))
                     {
                         if (PSwordSkill.Level < 3)
@@ -9650,10 +9423,6 @@ namespace GameSvr
                     if (dam > 0)
                     {
                         cret.StruckDamage(dam, this);
-                        // wparam
-                        // lparam1
-                        // lparam2
-                        // hiter
                         cret.SendDelayMsg(Grobal2.RM_STRUCK as TCreature, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 200);
                     }
                 }
@@ -9694,8 +9463,8 @@ namespace GameSvr
                 {
                     if (PEnvir.MoveToMovingObject(CX, CY, this, nx, ny, false) > 0)
                     {
-                        CX = (short)nx;
-                        CY = (short)ny;
+                        CX = nx;
+                        CY = ny;
                         SendRefMsg(Grobal2.RM_PUSH, (ushort)M2Share.GetBack(ndir), CX, CY, 0, "");
                         result++;
                         if (RaceServer >= Grobal2.RC_ANIMAL)
@@ -9954,8 +9723,8 @@ namespace GameSvr
                     M2Share.GetFrontPosition(this, ref nx, ref ny);
                     if (PEnvir.MoveToMovingObject(CX, CY, this, nx, ny, false) > 0)
                     {
-                        CX = (short)nx;
-                        CY = (short)ny;
+                        CX = nx;
+                        CY = ny;
                         SendRefMsg(Grobal2.RM_RUSH, (ushort)ndir, CX, CY, 0, "");
                         mydamagelevel -= 1;
                     }
@@ -10166,29 +9935,22 @@ namespace GameSvr
 
         public bool CretInNearXY(TCreature tagcret, int xx, int yy)
         {
-            bool result;
-            long i;
-            long j;
-            long k;
             TMapInfo pm = null;
-            bool inrange;
-            TCreature cret;
-            result = false;
-            for (i = xx - 1; i <= xx + 1; i++)
+            bool result = false;
+            for (var i = xx - 1; i <= xx + 1; i++)
             {
-                for (j = yy - 1; j <= yy + 1; j++)
+                for (var j = yy - 1; j <= yy + 1; j++)
                 {
-                    inrange = PEnvir.GetMapXY((int)i, (int)j, ref pm);
+                    bool inrange = PEnvir.GetMapXY(i, j, ref pm);
                     if (inrange)
                     {
                         if (pm.OBJList != null)
                         {
-                            for (k = 0; k < pm.OBJList.Count; k++)
+                            for (var k = 0; k < pm.OBJList.Count; k++)
                             {
-                                // creature
                                 if (((TAThing)pm.OBJList[k]).Shape == Grobal2.OS_MOVINGOBJECT)
                                 {
-                                    cret = ((TAThing)pm.OBJList[k]).AObject as TCreature;
+                                    TCreature cret = ((TAThing)pm.OBJList[k]).AObject as TCreature;
                                     if (cret != null)
                                     {
                                         if ((!cret.BoGhost) && (cret == tagcret))
@@ -10262,10 +10024,10 @@ namespace GameSvr
             int i;
             for (i = 0; i < SlaveList.Count; i++)
             {
-                if (!(SlaveList[i] as TCreature).Death)
+                if (!SlaveList[i].Death)
                 {
-                    (SlaveList[i] as TCreature).BoDisapear = true;
-                    (SlaveList[i] as TCreature).MakeGhost(4);
+                    SlaveList[i].BoDisapear = true;
+                    SlaveList[i].MakeGhost(4);
                     // 何窍甸阑 肯傈洒 绝矩促. 林肺 辑滚捞悼窍绰 版快 荤侩
                 }
             }
@@ -10276,9 +10038,9 @@ namespace GameSvr
             int i;
             for (i = 0; i < SlaveList.Count; i++)
             {
-                if (!(SlaveList[i] as TCreature).Death)
+                if (!SlaveList[i].Death)
                 {
-                    (SlaveList[i] as TCreature).WAbil.HP = 0;
+                    SlaveList[i].WAbil.HP = 0;
                     // Die
                 }
             }
@@ -10293,7 +10055,7 @@ namespace GameSvr
             result = false;
             for (i = 0; i < SlaveList.Count; i++)
             {
-                cret = SlaveList[i] as TCreature;
+                cret = SlaveList[i];
                 if (!cret.Death)
                 {
                     if (cret.TargetCret != null)
@@ -10317,7 +10079,7 @@ namespace GameSvr
             {
                 for (var i = 0; i < SlaveList.Count; i++)
                 {
-                    TempCret = SlaveList[i] as TCreature;
+                    TempCret = SlaveList[i];
                     if ((TempCret != null) && (!TempCret.Death) && (!TempCret.BoDisapear) && (!TempCret.BoGhost) && (TempCret.UserName.ToLower().CompareTo(MonName_.ToLower()) == 0))
                     {
                         result = TempCret;
@@ -10349,7 +10111,7 @@ namespace GameSvr
                 {
                     for (i = 0; i < SlaveList.Count; i++)
                     {
-                        if ((SlaveList[i] as TCreature).Abil.Level >= 50)
+                        if (SlaveList[i].Abil.Level >= 50)
                         {
                             KingSlaveCount++;
                         }
@@ -10375,7 +10137,7 @@ namespace GameSvr
                     // 券康茄龋绰 促弗逞捞 部寂廉 乐栏搁... 部角荐 绝促.
                     if (SlaveList.Count == 1)
                     {
-                        if ((SlaveList[0] as TCreature).RaceServer == Grobal2.RC_GHOST_TIGER)
+                        if (SlaveList[0].RaceServer == Grobal2.RC_GHOST_TIGER)
                         {
                             result = false;
                             return result;
@@ -10400,7 +10162,7 @@ namespace GameSvr
             {
                 for (var i = 0; i < GroupOwner.GroupMembers.Count; i++)
                 {
-                    if (GroupOwner.GroupMembers.Values[i] == cret)
+                    if (GroupOwner.GroupMembers[i] == cret)
                     {
                         result = true;
                         break;
@@ -10431,7 +10193,7 @@ namespace GameSvr
             {
                 for (var i = 0; i < GroupMembers.Count; i++)
                 {
-                    cret = GroupMembers.Values[i] as TCreature;
+                    cret = GroupMembers[i];
                     if (cret == who)
                     {
                         who.LeaveGroup();
@@ -10453,7 +10215,7 @@ namespace GameSvr
             {
                 for (var i = GroupMembers.Count - 1; i >= 0; i--)
                 {
-                    hum = GroupMembers.Values[i] as TUserHuman;
+                    hum = GroupMembers[i] as TUserHuman;
                     if ((hum != null) && (hum.RaceServer == Grobal2.RC_USERHUMAN))
                     {
                         hum.SendMsg(this, Grobal2.RM_GROUPCANCEL, 0, 0, 0, 0, "");
@@ -11684,7 +11446,7 @@ namespace GameSvr
                                         {
                                             if (MyGuild != null)
                                             {
-                                                if (((TGuild)MyGuild).GuildName != gname)
+                                                if (MyGuild.GuildName != gname)
                                                 {
                                                     hum.SysMsg("你只能在你的门派庄园上使用。", 0);
                                                     break;
@@ -11862,26 +11624,16 @@ namespace GameSvr
             return result;
         }
 
-        // //////////////////////////////////////////////////////////////////////////////
-        // 墨款飘 酒捞袍 俺荐 眠啊
-        // 汲疙 : 啊规芒俊辑 秦寸 酒捞袍阑 茫酒辑 墨款飘甫 钦魂.
-        // 绝阑 版快唱 弥措 俺荐甫 逞绰 版快绰 FALSE甫 府畔.
-        // 鞍篮 酒捞袍捞 咯返 乐促搁 俺荐啊 啊厘 累篮 酒捞袍俊 钦魂窍档废 荐沥.(2004/1/7)
-        public bool UserCounterItemAdd(int StdMode, int Looks, int Cnt, string iName, bool bEnforce, int ExceptMakeIndex)
+        public bool UserCounterItemAdd(int StdMode, int Looks, int Cnt, string iName, bool bEnforce, int ExceptMakeIndex = 0)
         {
-            bool result;
-            int i;
             TUserItem pu;
             TStdItem ps;
             int idxMinimum;
-            // 啊厘 累篮 俺荐狼 酒捞袍 牢郸胶.
             short countMinimum;
-            // 啊厘 累篮 俺荐
-            result = false;
-            // 蔼 檬扁拳.
+            bool result = false;
             idxMinimum = -1;
             countMinimum = 0;
-            for (i = 0; i < ItemList.Count; i++)
+            for (var i = 0; i < ItemList.Count; i++)
             {
                 ps = svMain.UserEngine.GetStdItem(ItemList[i].Index);
                 if (ps == null)
@@ -11892,26 +11644,15 @@ namespace GameSvr
                 {
                     continue;
                 }
-                // 墨款飘 酒捞袍捞搁辑 鞍篮 辆幅狼 酒捞袍捞搁.
                 if ((ps.StdMode == StdMode) && (ps.Looks == Looks) && (ps.OverlapItem >= 1))
                 {
-                    // 捞抚捞 鞍栏搁
                     if (ps.Name.ToLower().CompareTo(iName.ToLower()) == 0)
                     {
                         pu = ItemList[i];
-                        // // 公霸 力茄 绝沮.
-                        // if ps.OverlapItem = 1 then begin
-                        // if ((WAbil.Weight + (cnt div 10)) > WAbil.MaxWeight) then exit;
-                        // end else begin
-                        // if (WAbil.Weight + (ps.Weight * cnt) > WAbil.MaxWeight) then exit;
-                        // end;
-                        // 瘤沥茄 makeindex狼 酒捞袍篮 力寇.
                         if ((ExceptMakeIndex != -1) && (pu.MakeIndex == ExceptMakeIndex))
                         {
                             continue;
                         }
-                        // 酒捞袍狼 俺荐甫 弥家蔼俊 措涝.
-                        // 贸澜俊绰 弊成 措涝. 捞饶俊绰 蔼阑 厚背秦辑 累篮 蔼阑 措涝.
                         if (idxMinimum == -1)
                         {
                             countMinimum = (short)pu.Dura;
@@ -11928,37 +11669,27 @@ namespace GameSvr
                     }
                 }
             }
-            // 酒捞袍捞 绝栏搁 exit
             if (idxMinimum < 0)
             {
                 return result;
             }
-            // 俺荐啊 啊厘 累篮 酒捞袍.
             ps = svMain.UserEngine.GetStdItem(ItemList[idxMinimum].Index);
             if (ps == null)
             {
                 return result;
             }
             pu = ItemList[idxMinimum];
-            // MAX_OVERLAPITEM逞栏搁 FALSE 府畔.
-            // 碍力 可记捞 乐栏搁 弥措 俺荐 力茄阑 公矫窍绊 公炼扒 钦魂.
             if ((bEnforce == false) && (pu.Dura + Cnt > Grobal2.MAX_OVERLAPITEM))
             {
                 return result;
             }
-            // MAX_OVERFLOW 逞栏搁 exit.
             if (pu.Dura + Cnt > ObjBase.MAX_OVERFLOW)
             {
                 return result;
             }
-            // Dura甫 Count肺 荤侩.
-            // 俺荐甫 钦魂俊辑 措涝.
             pu.Dura = (ushort)_MIN(ObjBase.MAX_OVERFLOW, pu.Dura + Cnt);
-            // 钦魂 搬苞甫 努扼捞攫飘俊 烹焊.
             if (RaceServer == Grobal2.RC_USERHUMAN)
             {
-                // 荐樊
-                // 刘啊
                 SendMsg(this, Grobal2.RM_COUNTERITEMCHANGE, 0, pu.MakeIndex, pu.Dura, 1, ps.Name);
             }
             result = true;
@@ -11968,16 +11699,14 @@ namespace GameSvr
         // 芭贰 格废 -> 墨款飘 酒捞袍 俺荐 眠啊
         public int UserCounterDealItemAdd(int StdMode, int Looks, int Cnt, string iName)
         {
-            int result;
             const int FAIL = 0;
             const int SUCCESS = 1;
             const int OVERFLOW = 2;
             const int OVERCOUNT = 3;
-            int i;
             TUserItem pu;
             TStdItem ps;
-            result = FAIL;
-            for (i = 0; i < DealList.Count; i++)
+            int result = FAIL;
+            for (var i = 0; i < DealList.Count; i++)
             {
                 ps = svMain.UserEngine.GetStdItem(DealList[i].Index);
                 if (ps == null)
@@ -11993,29 +11722,19 @@ namespace GameSvr
                     if (ps.Name.ToLower().CompareTo(iName.ToLower()) == 0)
                     {
                         pu = DealList[i];
-                        // // 公霸 力茄 绝沮.
-                        // if ps.OverlapItem = 1 then begin
-                        // if ((WAbil.Weight + (cnt div 10)) > WAbil.MaxWeight) then exit;
-                        // end else begin
-                        // if (WAbil.Weight + (ps.Weight * cnt) > WAbil.MaxWeight) then exit;
-                        // end;
-                        // 芭贰且 锭绰 弥措 俺荐啊 逞绢档 烹钦茄促.
                         if (pu.Dura + Cnt > Grobal2.MAX_OVERLAPITEM)
                         {
                             result = OVERCOUNT;
                             return result;
                         }
-                        // MAX_OVERFLOW 逞绰 版快.
                         if (pu.Dura + Cnt > ObjBase.MAX_OVERFLOW)
                         {
                             result = OVERFLOW;
                             return result;
                         }
-                        // Dura甫 Count肺 荤侩.
                         pu.Dura = (ushort)_MIN(ObjBase.MAX_OVERFLOW, pu.Dura + Cnt);
                         if (RaceServer == Grobal2.RC_USERHUMAN)
                         {
-                            // 荐樊
                             SendMsg(this, Grobal2.RM_COUNTERITEMCHANGE, 0, pu.MakeIndex, pu.Dura, 0, ps.Name);
                         }
                         result = SUCCESS;
@@ -12050,7 +11769,7 @@ namespace GameSvr
             {
                 for (i = 0; i < GroupOwner.GroupMembers.Count; i++)
                 {
-                    cret = GroupOwner.GroupMembers.Values[i] as TCreature;
+                    cret = GroupOwner.GroupMembers[i];
                     if (cret == ownership)
                     {
                         result = true;
@@ -12346,25 +12065,25 @@ namespace GameSvr
                     {
                         case ObjBase.INSTANTABILUP_DRUG:
                             boneedrecalc = false;
-                            if (Lobyte(std.DC) > 0)
+                            if (LoByte(std.DC) > 0)
                             {
-                                ExtraAbil[Grobal2.EABIL_DCUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_DCUP], Lobyte(std.DC));
+                                ExtraAbil[Grobal2.EABIL_DCUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_DCUP], LoByte(std.DC));
                                 ExtraAbilFlag[Grobal2.EABIL_DCUP] = 0;
                                 ExtraAbilTimes[Grobal2.EABIL_DCUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_DCUP], HUtil32.GetTickCount() + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000);
                                 SysMsg("攻击力瞬间提高" + (HiByte(std.DC) + HiByte(std.MAC) / 60).ToString() + "分" + (HiByte(std.MAC) % 60).ToString() + "秒。", 1);
                                 boneedrecalc = true;
                             }
-                            if (Lobyte(std.MC) > 0)
+                            if (LoByte(std.MC) > 0)
                             {
-                                ExtraAbil[Grobal2.EABIL_MCUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_MCUP], Lobyte(std.MC));
+                                ExtraAbil[Grobal2.EABIL_MCUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_MCUP], LoByte(std.MC));
                                 ExtraAbilFlag[Grobal2.EABIL_MCUP] = 0;
                                 ExtraAbilTimes[Grobal2.EABIL_MCUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_MCUP], HUtil32.GetTickCount() + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000);
                                 SysMsg("魔法力瞬间提高" + (HiByte(std.DC) + HiByte(std.MAC) / 60).ToString() + "分" + (HiByte(std.MAC) % 60).ToString() + "sec.", 1);
                                 boneedrecalc = true;
                             }
-                            if (Lobyte(std.SC) > 0)
+                            if (LoByte(std.SC) > 0)
                             {
-                                ExtraAbil[Grobal2.EABIL_SCUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_SCUP], Lobyte(std.SC));
+                                ExtraAbil[Grobal2.EABIL_SCUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_SCUP], LoByte(std.SC));
                                 ExtraAbilFlag[Grobal2.EABIL_SCUP] = 0;
                                 ExtraAbilTimes[Grobal2.EABIL_SCUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_SCUP], HUtil32.GetTickCount() + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000);
                                 SysMsg("精神力瞬间提高" + (HiByte(std.DC) + HiByte(std.MAC) / 60).ToString() + "分" + (HiByte(std.MAC) % 60).ToString() + "秒。", 1);
@@ -12378,17 +12097,17 @@ namespace GameSvr
                                 SysMsg("敏捷度瞬间提高" + (HiByte(std.DC) + HiByte(std.MAC) / 60).ToString() + "分" + (HiByte(std.MAC) % 60).ToString() + "秒。", 1);
                                 boneedrecalc = true;
                             }
-                            if (Lobyte(std.AC) > 0)
+                            if (LoByte(std.AC) > 0)
                             {
-                                ExtraAbil[Grobal2.EABIL_HPUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_HPUP], Lobyte(std.AC));
+                                ExtraAbil[Grobal2.EABIL_HPUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_HPUP], LoByte(std.AC));
                                 ExtraAbilFlag[Grobal2.EABIL_HPUP] = 0;
                                 ExtraAbilTimes[Grobal2.EABIL_HPUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_HPUP], HUtil32.GetTickCount() + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000);
                                 SysMsg("体力值瞬间提高" + (HiByte(std.DC) + HiByte(std.MAC) / 60).ToString() + "分" + (HiByte(std.MAC) % 60).ToString() + "秒。", 1);
                                 boneedrecalc = true;
                             }
-                            if (Lobyte(std.MAC) > 0)
+                            if (LoByte(std.MAC) > 0)
                             {
-                                ExtraAbil[Grobal2.EABIL_MPUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_MPUP], Lobyte(std.MAC));
+                                ExtraAbil[Grobal2.EABIL_MPUP] = (byte)_MAX(ExtraAbil[Grobal2.EABIL_MPUP], LoByte(std.MAC));
                                 ExtraAbilFlag[Grobal2.EABIL_MPUP] = 0;
                                 ExtraAbilTimes[Grobal2.EABIL_MPUP] = _MAX(ExtraAbilTimes[Grobal2.EABIL_MPUP], HUtil32.GetTickCount() + HiByte(std.DC) * 60 * 1000 + HiByte(std.MAC) * 1000);
                                 SysMsg("魔法值瞬间提高" + (HiByte(std.DC) + HiByte(std.MAC) / 60).ToString() + "分" + (HiByte(std.MAC) % 60).ToString() + "秒。", 1);
@@ -12402,29 +12121,29 @@ namespace GameSvr
                             result = true;
                             break;
                         case ObjBase.INSTANT_EXP_DRUG:
-                            if (Lobyte(std.MAC) > 0)
+                            if (LoByte(std.MAC) > 0)
                             {
-                                if (new System.Random(100).Next() < Lobyte(std.DC))
+                                if (new System.Random(100).Next() < LoByte(std.DC))
                                 {
                                     // 2-1.
-                                    WinExp(Lobyte(std.MAC) * 2 * 100);
+                                    WinExp(LoByte(std.MAC) * 2 * 100);
                                 }
                                 else
                                 {
                                     // 2.
-                                    if (Lobyte(std.MAC) >= Lobyte(std.AC))
+                                    if (LoByte(std.MAC) >= LoByte(std.AC))
                                     {
-                                        WinExp((new System.Random(Lobyte(std.MAC) - Lobyte(std.AC)).Next() + Lobyte(std.AC)) * 100);
+                                        WinExp((new System.Random(LoByte(std.MAC) - LoByte(std.AC)).Next() + LoByte(std.AC)) * 100);
                                     }
                                     else
                                     {
-                                        WinExp((new System.Random(Lobyte(std.AC) - Lobyte(std.MAC)).Next() + Lobyte(std.MAC)) * 100);
+                                        WinExp((new System.Random(LoByte(std.AC) - LoByte(std.MAC)).Next() + LoByte(std.MAC)) * 100);
                                     }
                                 }
                             }
                             else
                             {
-                                WinExp(Lobyte(std.AC) * 100);
+                                WinExp(LoByte(std.AC) * 100);
                             }
                             result = true;
                             break;
@@ -12840,11 +12559,11 @@ namespace GameSvr
                                             {
                                                 if (!BoMag)
                                                 {
-                                                    cret.MagDefenceUp(sec, (Lobyte(WAbil.SC) / 9) + new System.Random(HiByte(WAbil.SC) / 9).Next());
+                                                    cret.MagDefenceUp(sec, (LoByte(WAbil.SC) / 9) + new System.Random(HiByte(WAbil.SC) / 9).Next());
                                                 }
                                                 else
                                                 {
-                                                    cret.MagMagDefenceUp(sec, (Lobyte(WAbil.SC) / 9) + new System.Random(HiByte(WAbil.SC) / 9).Next());
+                                                    cret.MagMagDefenceUp(sec, (LoByte(WAbil.SC) / 9) + new System.Random(HiByte(WAbil.SC) / 9).Next());
                                                 }
                                                 tcount++;
                                             }
@@ -12996,7 +12715,7 @@ namespace GameSvr
             {
                 for (i = 0; i < SlaveList.Count; i++)
                 {
-                    cret = SlaveList[i] as TCreature;
+                    cret = SlaveList[i];
                     if (cret != null)
                     {
                         cret.ExtraAbil[Grobal2.EABIL_DCUP] = (byte)_MIN(255, _MAX(cret.ExtraAbil[Grobal2.EABIL_DCUP], UpDC));
@@ -13144,10 +12863,10 @@ namespace GameSvr
                     break;
                 case Grobal2.RM_DELAYMAGIC:
                     magpwr = msg.wParam;
-                    magx = Loword(msg.lParam1);
-                    magy = Hiword(msg.lParam1);
+                    magx = HUtil32.Loword(msg.lParam1);
+                    magy = HUtil32.Hiword(msg.lParam1);
                     range = msg.lParam2;
-                    target = msg.lParam3 as TCreature;
+                    target = svMain.ObjectMgr.Get(msg.lParam3);
                     if (target != null)
                     {
                         if ((target.RaceServer == Grobal2.RC_FIREDRAGON) || (target.RaceServer == Grobal2.RC_DRAGONBODY))
@@ -13332,7 +13051,7 @@ namespace GameSvr
 
         public virtual void Run()
         {
-            TMessageInfo msg;
+            TMessageInfo msg = null;
             int i;
             int n;
             int hp;
@@ -13352,7 +13071,6 @@ namespace GameSvr
             identbackup = 0;
             try
             {
-                // extract message to behavior and so ..
                 while (GetMsg(ref msg))
                 {
                     identbackup = msg.Ident;
@@ -13369,12 +13087,10 @@ namespace GameSvr
                 if (NeverDie)
                 {
                     WAbil.HP = WAbil.MaxHP;
-                    // 例措肺 磷瘤 臼澜.  NPC
                     WAbil.MP = WAbil.MaxMP;
                 }
                 test = 2;
                 n = (int)((HUtil32.GetTickCount() - ticksec) / 20);
-                // 檬寸 50
                 ticksec  =  HUtil32.GetTickCount();
                 HealthTick += n;
                 SpellTick += n;
@@ -13386,8 +13102,6 @@ namespace GameSvr
                         if (HealthTick >= ObjBase.HEALTHFILLTICK)
                         {
                             plus = WAbil.MaxHP / 75 + 1;
-                            // plus := WAbil.MaxHP div 15 + 1;
-                            // HealthRecover 利侩(sonmg 2004/02/20)
                             plus = plus + (plus * HealthRecover / 10);
                             if (WAbil.HP + plus < WAbil.MaxHP)
                             {
@@ -13397,7 +13111,6 @@ namespace GameSvr
                             {
                                 WAbil.HP = WAbil.MaxHP;
                             }
-                            // UpdateMsg (self, RM_HEALTHSPELLCHANGED, 0, 0, 0, 0, '');
                             HealthSpellChanged();
                         }
                     }
@@ -13407,7 +13120,6 @@ namespace GameSvr
                         if (SpellTick >= ObjBase.SPELLFILLTICK)
                         {
                             plus = WAbil.MaxMP / 18 + 1;
-                            // SpellRecover 利侩(sonmg 2004/02/20)
                             plus = plus + (plus * SpellRecover / 10);
                             if (WAbil.MP + plus < WAbil.MaxMP)
                             {
@@ -13417,7 +13129,6 @@ namespace GameSvr
                             {
                                 WAbil.MP = WAbil.MaxMP;
                             }
-                            // UpdateMsg (self, RM_HEALTHSPELLCHANGED, 0, 0, 0, 0, '');
                             HealthSpellChanged();
                         }
                     }
@@ -13426,11 +13137,9 @@ namespace GameSvr
                     {
                         if (BoAbilRevival)
                         {
-                            // 犁积 瓷仿捞 乐促.
                             if (HUtil32.GetTickCount() - LatestRevivalTime > 60 * 1000)
                             {
                                 LatestRevivalTime  =  HUtil32.GetTickCount();
-                                // 馆瘤甫 粹霸 茄促.
                                 ItemDamageRevivalRing();
                                 WAbil.HP = WAbil.MaxHP;
                                 HealthSpellChanged();
@@ -13471,7 +13180,6 @@ namespace GameSvr
                     inchstime = 600 - _MIN(400, Abil.Level * 10);
                     if ((HUtil32.GetTickCount() - IncHealthSpellTime >= inchstime) && !Death)
                     {
-                        // 眉距,付距阑 冈栏搁 玫玫洒 蛮促.
                         n = _MIN(200, (int)(HUtil32.GetTickCount() - IncHealthSpellTime - inchstime));
                         IncHealthSpellTime = GetTickCount + n;
                         if ((IncHealth > 0) || (IncSpell > 0) || (PerHealing > 0))
@@ -13544,7 +13252,6 @@ namespace GameSvr
                     {
                         WAbil.HP = (ushort)(WAbil.HP - 1);
                         HealthTick = HealthTick + ObjBase.HEALTHFILLTICK;
-                        // UpdateMsg (self, RM_HEALTHSPELLCHANGED, 0, 0, 0, 0, '');
                         HealthSpellChanged();
                     }
                 }
@@ -13568,14 +13275,12 @@ namespace GameSvr
                 {
                     if (RaceServer != Grobal2.RC_USERHUMAN)
                     {
-                        // 阁胶磐绰 30檬埃 瘤加...
                         DuringIllegalTime = 30 * 1000;
                     }
                     else
                     {
                         DuringIllegalTime = 60 * 1000;
                     }
-                    // 荤恩捞搁 1盒埃 瘤加...
                     if (HUtil32.GetTickCount() - LastHitTime > DuringIllegalTime)
                     {
                         LastHiter = null;
@@ -13588,7 +13293,6 @@ namespace GameSvr
                 test = 2;
                 if (ExpHiter != null)
                 {
-                    // sonmg(2004/07/02)
                     if ((HUtil32.GetTickCount() - ExpHitTime > 6 * 1000) || ExpHiter.Death || ExpHiter.BoGoodCrazyMode || ExpHiter.BoGhost)
                     {
                         ExpHiter = null;
@@ -13611,17 +13315,13 @@ namespace GameSvr
                     if ((Master.Death && (HUtil32.GetTickCount() > 1000 + Master.DeathTime)) || (Master.BoGhost && (HUtil32.GetTickCount() > waittime + Master.GhostTime)))
                     {
                         WAbil.HP = 0;
-                        // Die;
-                        // Master := nil;
                     }
                 }
                 for (i = SlaveList.Count - 1; i >= 0; i--)
                 {
-                    // nil 八荤 眠啊  2003-09-18  PDS
                     try
                     {
-                        // 俊矾唱搁 弊成 绝俊滚覆
-                        bcheckDeath = (SlaveList[i] as TCreature).Death;
+                        bcheckDeath = SlaveList[i].Death;
                     }
                     catch
                     {
@@ -13629,7 +13329,7 @@ namespace GameSvr
                         svMain.MainOutMessage("MEMORY CHECK ERROR! TCreature.Run 2:6");
                         continue;
                     }
-                    if ((SlaveList[i] == null) || (SlaveList[i] as TCreature).Death || (SlaveList[i] as TCreature).BoGhost || ((SlaveList[i] as TCreature).Master != this))
+                    if ((SlaveList[i] == null) || SlaveList[i].Death || SlaveList[i].BoGhost || (SlaveList[i].Master != this))
                     {
                         SlaveList.RemoveAt(i);
                     }
@@ -13761,7 +13461,7 @@ namespace GameSvr
                     {
                         for (i = GroupMembers.Count - 1; i >= 0; i--)
                         {
-                            cret = GroupOwner.GroupMembers.Values[i] as TCreature;
+                            cret = GroupOwner.GroupMembers[i];
                             if (cret.Death || cret.BoGhost)
                             {
                                 GroupMembers.Remove(i);
@@ -14201,14 +13901,14 @@ namespace GameSvr
                             {
                                 if (MyGuild != null)
                                 {
-                                    if (((TGuild)MyGuild).IsMember(target.UserName))
+                                    if (MyGuild.IsMember(target.UserName))
                                     {
                                         result = false;
                                     }
                                     if (BoGuildWarArea && (target.MyGuild != null))
                                     {
                                         // 巩颇傈,傍己傈 瘤开俊 乐澜
-                                        if (((TGuild)MyGuild).IsAllyGuild((TGuild)target.MyGuild))
+                                        if (MyGuild.IsAllyGuild(target.MyGuild))
                                         {
                                             result = false;
                                         }
@@ -14355,14 +14055,14 @@ namespace GameSvr
                         }
                         if (MyGuild != null)
                         {
-                            if (((TGuild)MyGuild).IsMember(cret.UserName))
+                            if (MyGuild.IsMember(cret.UserName))
                             {
                                 result = true;
                             }
                             if (BoGuildWarArea && (cret.MyGuild != null))
                             {
                                 // 巩颇傈,傍己傈 瘤开俊 乐澜
-                                if (((TGuild)MyGuild).IsAllyGuild((TGuild)cret.MyGuild))
+                                if (MyGuild.IsAllyGuild(cret.MyGuild))
                                 {
                                     result = true;
                                 }
@@ -17542,7 +17242,7 @@ namespace GameSvr
         public long GetCurrentTime => Environment.TickCount;
 
 
-        public byte Lobyte(ushort val)
+        public byte LoByte(ushort val)
         {
             return HUtil32.LoByte(val);
         }

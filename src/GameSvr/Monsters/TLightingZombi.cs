@@ -23,7 +23,7 @@ namespace GameSvr
             {
                 M2Share.GetNextPosition(this.PEnvir, this.CX, this.CY, dir, 9, ref tx, ref ty);
                 TAbility _wvar1 = this.WAbil;
-                pwr = _wvar1._MAX(0, _wvar1.Lobyte(_wvar1.DC) + new System.Random((short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC) + 1).Next());
+                pwr = HUtil32._MAX(0, HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next());
                 this.MagPassThroughMagic(sx, sy, tx, ty, dir, pwr, true);
             }
             this.BreakHolySeize();

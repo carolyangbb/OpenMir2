@@ -75,7 +75,7 @@ namespace GameSvr
         {
             int pwr;
             TAbility _wvar1 = this.WAbil;
-            pwr = this.GetAttackPower(_wvar1.Lobyte(_wvar1.DC), (short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC));
+            pwr = this.GetAttackPower(HUtil32.LoByte(_wvar1.DC), HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC));
             // inherited
             this.HitHit2(target, 0, pwr, true);
         }

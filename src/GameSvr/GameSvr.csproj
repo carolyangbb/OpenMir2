@@ -156,6 +156,7 @@
     <Compile Include="Monsters\TWallStructure.cs" />
     <Compile Include="Monsters\TWhiteSkeleton.cs" />
     <Compile Include="Monsters\TZilKinZombi.cs" />
+    <Compile Include="ObjectManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StallSystem.cs">
       <SubType>Code</SubType>
@@ -258,6 +259,7 @@
     <Compile Include="TagSystem.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TRelationShipMgr.cs" />
     <Compile Include="UserMgr.cs">
       <SubType>Code</SubType>
     </Compile>

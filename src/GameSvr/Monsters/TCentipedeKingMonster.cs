@@ -48,10 +48,9 @@ namespace GameSvr
                 if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                 {
                     this.HitTime = GetCurrentTime;
-                    // inherited HitHit (nil, HM_CROSSHIT, Dir);
                     this.HitMotion(Grobal2.RM_HIT, this.Dir, this.CX, this.CY);
                     TAbility _wvar1 = this.WAbil;
-                    pwr = _wvar1._MAX(0, _wvar1.Lobyte(_wvar1.DC) + new System.Random((short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC) + 1).Next());
+                    pwr = HUtil32._MAX(0, HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next());
                     for (i = 0; i < this.VisibleActors.Count; i++)
                     {
                         cret = (TCreature)this.VisibleActors[i].cret;
@@ -61,17 +60,14 @@ namespace GameSvr
                             {
                                 this.TargetFocusTime  =  HUtil32.GetTickCount();
                                 this.SendDelayMsg(this, Grobal2.RM_DELAYMAGIC, pwr, HUtil32.MakeLong(cret.CX, cret.CY), 2, (int)cret, "", 600);
-                                // cret.SendDelayMsg (self, RM_MAGSTRUCK, 0, acpwr, 0, 0, '', 600);
                                 if (new System.Random(4).Next() == 0)
                                 {
                                     if (new System.Random(3).Next() != 0)
                                     {
-                                        // 眉仿捞 皑家
                                         cret.MakePoison(Grobal2.POISON_DECHEALTH, 60, 3);
                                     }
                                     else
                                     {
-                                        // 矫埃,檬
                                         cret.MakePoison(Grobal2.POISON_STONE, 5, 0);
                                     }
                                 }

@@ -586,7 +586,7 @@ namespace GameSvr
                 if (dam > 0)
                 {
                     target.StruckDamage(dam, user);
-                    target.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, target.WAbil.HP, target.WAbil.MaxHP, user.ActorId, "", 200);
+                    target.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, target.WAbil.HP, target.WAbil.MaxHP, user.ActorId, "", 200);
                 }
             }
         }
@@ -1105,7 +1105,6 @@ namespace GameSvr
             {
                 if (target.Death)
                 {
-                    // 鸥百捞 磷篮版快.....
                     target = null;
                 }
             }
@@ -1117,15 +1116,13 @@ namespace GameSvr
             {
                 case 1:
                 case 5:
-                    // 拳堪厘
-                    // 陛碍拳堪厘
                     if (user.MagCanHitTarget(user.CX, user.CY, target))
                     {
                         if (user.IsProperTarget(target))
                         {
                             if ((target.AntiMagic <= new System.Random(50).Next()) && (Math.Abs(target.CX - xx) <= 1) && (Math.Abs(target.CY - yy) <= 1))
                             {
-                                pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.MC), (short)HUtil32.HiByte(user.WAbil.MC) - user.HUtil32.LoByte(user.WAbil.MC) + 1);
+                                pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + HUtil32.LoByte(user.WAbil.MC), HUtil32.HiByte(user.WAbil.MC) - HUtil32.LoByte(user.WAbil.MC) + 1);
                                 user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (ushort)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 600);
                                 if (target.RaceServer >= Grobal2.RC_ANIMAL)
                                 {
@@ -1159,7 +1156,7 @@ namespace GameSvr
                     if (M2Share.GetNextPosition(user.PEnvir, user.CX, user.CY, ndir, 1, ref sx, ref sy))
                     {
                         M2Share.GetNextPosition(user.PEnvir, user.CX, user.CY, ndir, 5, ref xx, ref yy);
-                        pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.MC), (short)HUtil32.HiByte(user.WAbil.MC) - user.HUtil32.LoByte(user.WAbil.MC) + 1);
+                        pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + HUtil32.LoByte(user.WAbil.MC), HUtil32.HiByte(user.WAbil.MC) - HUtil32.LoByte(user.WAbil.MC) + 1);
                         if (user.MagPassThroughMagic(sx, sy, xx, yy, ndir, pwr, false) > 0)
                         {
                             train = true;
@@ -1171,7 +1168,7 @@ namespace GameSvr
                     if (M2Share.GetNextPosition(user.PEnvir, user.CX, user.CY, ndir, 1, ref sx, ref sy))
                     {
                         M2Share.GetNextPosition(user.PEnvir, user.CX, user.CY, ndir, 8, ref xx, ref yy);
-                        pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.MC), (short)HUtil32.HiByte(user.WAbil.MC) - user.HUtil32.LoByte(user.WAbil.MC) + 1);
+                        pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + HUtil32.LoByte(user.WAbil.MC), HUtil32.HiByte(user.WAbil.MC) - HUtil32.LoByte(user.WAbil.MC) + 1);
                         if (user.MagPassThroughMagic(sx, sy, xx, yy, ndir, pwr, true) > 0)
                         {
                             train = true;
@@ -1184,7 +1181,7 @@ namespace GameSvr
                     {
                         if (target.AntiMagic <= new System.Random(50).Next())
                         {
-                            pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.MC), (short)HUtil32.HiByte(user.WAbil.MC) - user.HUtil32.LoByte(user.WAbil.MC) + 1);
+                            pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + HUtil32.LoByte(user.WAbil.MC), HUtil32.HiByte(user.WAbil.MC) - HUtil32.LoByte(user.WAbil.MC) + 1);
                             if (pum.pDef.MagicId == 11)
                             {
                                 if (target.LifeAttrib == Grobal2.LA_UNDEAD)
@@ -1237,7 +1234,7 @@ namespace GameSvr
                     break;
                 case 21:
                     // 酒傍青过
-                    user.SendRefMsg(Grobal2.RM_MAGICFIRE, 0, MakeWord(pum.pDef.EffectType, pum.pDef.Effect), HUtil32.MakeLong(xx, yy), target.ActorId, "");
+                    user.SendRefMsg(Grobal2.RM_MAGICFIRE, 0, HUtil32.MakeWord(pum.pDef.EffectType, pum.pDef.Effect), HUtil32.MakeLong(xx, yy), target.ActorId, "");
                     needfire = false;
                     if (MagLightingSpaceMove(user, pum.Level))
                     {
@@ -1261,7 +1258,7 @@ namespace GameSvr
                 case 45:
                     // 拳锋扁堪
                     // Random(0.8+(0.5*(Lv_S+1)))*Mcmax)+(1.2*Lv_S)*Mc
-                    pwr = (new System.Random(8 + (5 * (pum.Level + 1))).Next() * HUtil32.HiByte(user.WAbil.MC) + 12 * pum.Level * user.HUtil32.LoByte(user.WAbil.MC)) / 10;
+                    pwr = (new System.Random(8 + (5 * (pum.Level + 1))).Next() * HUtil32.HiByte(user.WAbil.MC) + 12 * pum.Level * HUtil32.LoByte(user.WAbil.MC)) / 10;
                     if (MagDragonFire(user, pwr, pum.Level))
                     {
                         train = true;
@@ -1298,7 +1295,7 @@ namespace GameSvr
                     }
                     if (user.IsProperFriend(target))
                     {
-                        pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.SC) * 2, ((short)HUtil32.HiByte(user.WAbil.SC) - user.HUtil32.LoByte(user.WAbil.SC)) * 2 + 1);
+                        pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + HUtil32.LoByte(user.WAbil.SC) * 2, (HUtil32.HiByte(user.WAbil.SC) - HUtil32.LoByte(user.WAbil.SC)) * 2 + 1);
                         if (target.WAbil.HP < target.WAbil.MaxHP)
                         {
                             target.SendDelayMsg(user, Grobal2.RM_MAGHEALING, 0, pwr, 0, 0, "", 800);
@@ -1312,7 +1309,7 @@ namespace GameSvr
                     break;
                 case 29:
                     // 措雀汗贱
-                    pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.SC) * 2, ((short)HUtil32.HiByte(user.WAbil.SC) - user.HUtil32.LoByte(user.WAbil.SC)) * 2 + 1);
+                    pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + HUtil32.LoByte(user.WAbil.SC) * 2, (HUtil32.HiByte(user.WAbil.SC) - HUtil32.LoByte(user.WAbil.SC)) * 2 + 1);
                     if (MagBigHealing(user, pwr, xx, yy))
                     {
                         train = true;
@@ -1573,7 +1570,7 @@ namespace GameSvr
                                         if ((target.AntiMagic <= new System.Random(50).Next()) && (Math.Abs(target.CX - xx) <= 1) && (Math.Abs(target.CY - yy) <= 1))
                                         {
                                             // 颇况
-                                            pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.SC), (short)HUtil32.HiByte(user.WAbil.SC) - user.HUtil32.LoByte(user.WAbil.SC) + 1);
+                                            pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + HUtil32.LoByte(user.WAbil.SC), HUtil32.HiByte(user.WAbil.SC) - HUtil32.LoByte(user.WAbil.SC) + 1);
                                             // 鸥百 嘎澜, 饶俊 瓤苞唱鸥巢
                                             // target.SendDelayMsg (user, RM_MAGSTRUCK, 0, pwr, 0, 0, '', 1200 + HUtil32._MAX(Abs(CX-xx),Abs(CY-yy)) * 50 );
                                             // user.SelectTarget (target);
@@ -1854,7 +1851,7 @@ namespace GameSvr
                             {
                                 // 搬葫厘 傍侥 荐沥(sonmg 2004/10/20)
                                 // Dur := (Round (0.4+pum.Level*0.2) * (HUtil32.LoByte(WAbil.MC) + HUtil32.HiByte(WAbil.MC)));
-                                Dur = HUtil32.MathRound(0.4 + pum.Level * 0.2) * (user.HUtil32.LoByte(user.WAbil.MC) + new System.Random(HUtil32.HiByte(user.WAbil.MC)).Next() + (HUtil32.HiByte(user.WAbil.MC) / 2));
+                                Dur = HUtil32.MathRound(0.4 + pum.Level * 0.2) * (HUtil32.LoByte(user.WAbil.MC) + new System.Random(HUtil32.HiByte(user.WAbil.MC)).Next() + (HUtil32.HiByte(user.WAbil.MC) / 2));
                                 pwr = pum.pDef.MinPower + Dur;
                                 user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (ushort)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 600);
                                 // 惑怕捞惑...敌拳魄沥
@@ -1952,7 +1949,7 @@ namespace GameSvr
                     {
                         if (target.AntiMagic <= new System.Random(50).Next())
                         {
-                            pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + user.HUtil32.LoByte(user.WAbil.MC), (short)HUtil32.HiByte(user.WAbil.MC) - user.HUtil32.LoByte(user.WAbil.MC) + 1);
+                            pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + HUtil32.LoByte(user.WAbil.MC), HUtil32.HiByte(user.WAbil.MC) - HUtil32.LoByte(user.WAbil.MC) + 1);
                             if ((target.LifeAttrib != Grobal2.LA_UNDEAD) && (target.RaceServer != Grobal2.RC_USERHUMAN))
                             {
                                 pwr = HUtil32.MathRound(pwr * 1.2);
@@ -1984,7 +1981,7 @@ namespace GameSvr
             {
                 if (needfire)
                 {
-                    user.SendRefMsg(Grobal2.RM_MAGICFIRE, 0, MakeWord(pum.pDef.EffectType, pum.pDef.Effect), HUtil32.MakeLong(xx, yy), target.ActorId, "");
+                    user.SendRefMsg(Grobal2.RM_MAGICFIRE, 0, HUtil32.MakeWord(pum.pDef.EffectType, pum.pDef.Effect), HUtil32.MakeLong(xx, yy), target.ActorId, "");
                 }
                 if ((pum.Level < 3) && train)
                 {

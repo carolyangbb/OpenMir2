@@ -34,10 +34,10 @@ namespace GameSvr
                 // 档尝啊 朝酒哎荐 乐绰瘤.
                 this.Dir = M2Share.GetNextDirection(this.CX, this.CY, targ.CX, targ.CY);
                 TAbility _wvar1 = this.WAbil;
-                dam = _wvar1.Lobyte(_wvar1.DC) + new System.Random((short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC) + 1).Next();
+                dam = HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next();
                 if (dam > 0)
                 {
-                    // armor := (Lobyte(targ.WAbil.AC) + Random(ShortInt(HiByte(targ.WAbil.AC)-Lobyte(targ.WAbil.AC)) + 1));
+                    // armor := (LoByte(targ.WAbil.AC) + Random(ShortInt(HiByte(targ.WAbil.AC)-LoByte(targ.WAbil.AC)) + 1));
                     // dam := dam - armor;
                     // if dam <= 0 then
                     // if dam > -10 then dam := 1;
@@ -50,7 +50,7 @@ namespace GameSvr
                     // lparam1
                     // lparam2
                     // hiter
-                    targ.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - targ.CX), Math.Abs(this.CY - targ.CY)) * 50);
+                    targ.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - targ.CX), Math.Abs(this.CY - targ.CY)) * 50);
                 }
                 this.SendRefMsg(Grobal2.RM_FLYAXE, this.Dir, this.CX, this.CY, targ.ActorId, "");
             }

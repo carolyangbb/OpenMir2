@@ -5,7 +5,6 @@ namespace GameSvr
     public class TCowKingMonster : TATMonster
     {
         private long JumpTime = 0;
-        // 鉴埃捞悼阑 茄促.
         private bool CrazyReadyMode = false;
         private bool CrazyKingMode = false;
         private int CrazyCount = 0;
@@ -13,25 +12,21 @@ namespace GameSvr
         private long crazytime = 0;
         private int oldhittime = 0;
         private int oldwalktime = 0;
-        // ---------------------------------------------------------------------------
-        // TCowKingMonster    快搁蓖空
-        //Constructor  Create()
+
         public TCowKingMonster() : base()
         {
             this.SearchRate = 500 + ((long)new System.Random(1500).Next());
             JumpTime  =  HUtil32.GetTickCount();
             this.RushMode = true;
-            // 付过俊 嘎酒档 倒柳茄促.
             CrazyCount = 0;
             CrazyReadyMode = false;
             CrazyKingMode = false;
         }
+
         public override void Attack(TCreature target, byte dir)
         {
-            int pwr;
             TAbility _wvar1 = this.WAbil;
-            pwr = this.GetAttackPower(_wvar1.Lobyte(_wvar1.DC), (short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC));
-            // inherited
+            int pwr = this.GetAttackPower(HUtil32.LoByte(_wvar1.DC), HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC));
             this.HitHit2(target, pwr / 2, pwr / 2, true);
         }
 

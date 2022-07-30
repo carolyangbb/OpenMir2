@@ -155,6 +155,20 @@ namespace SystemModule
             }
         }
 
+        public static void DecodeBuffer<T>(string src, ref T buf)
+        {
+            try
+            {
+                //EnterCriticalSection(CSEncode);
+                Decode6BitBuf(src, EncBuf, BUFFERSIZE);
+                //Move(EncBuf, buf, bufsize);
+            }
+            finally
+            {
+                // LeaveCriticalSection(CSEncode);
+            }
+        }
+
         public static string EncodeMessage(TDefaultMessage smsg)
         {
             string result;

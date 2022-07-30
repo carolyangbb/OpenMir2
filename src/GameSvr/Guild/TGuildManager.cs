@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.IO;
+using SystemModule;
 
 namespace GameSvr
 {
@@ -192,7 +193,6 @@ namespace GameSvr
                 }
             }
         }
-
-    } // end TGuildManager
+    }
 }
 

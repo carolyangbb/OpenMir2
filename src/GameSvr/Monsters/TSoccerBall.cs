@@ -24,8 +24,8 @@ namespace GameSvr
                 GoPower = GoPower + 4 + new System.Random(4).Next();
                 GoPower = _MIN(20, GoPower);
                 M2Share.GetNextPosition(this.PEnvir, this.CX, this.CY, this.Dir, GoPower, ref nx, ref ny);
-                this.TargetX = (short)nx;
-                this.TargetY = (short)ny;
+                this.TargetX = nx;
+                this.TargetY = ny;
             }
         }
 

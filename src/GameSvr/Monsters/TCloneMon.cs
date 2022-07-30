@@ -54,8 +54,8 @@ namespace GameSvr
             {
                 this.WAbil.MaxHP = this.Master.WAbil.MaxHP;
                 this.WAbil.HP = this.Master.WAbil.HP;
-                this.WAbil.AC = MakeWord(Lobyte(this.Master.Abil.AC) * 2 / 3, HiByte(this.Master.Abil.AC) * 2 / 3);
-                this.WAbil.MAC = MakeWord(Lobyte(this.Master.Abil.MAC) * 2 / 3, HiByte(this.Master.Abil.MAC) * 2 / 3);
+                this.WAbil.AC = MakeWord(LoByte(this.Master.Abil.AC) * 2 / 3, HiByte(this.Master.Abil.AC) * 2 / 3);
+                this.WAbil.MAC = MakeWord(LoByte(this.Master.Abil.MAC) * 2 / 3, HiByte(this.Master.Abil.MAC) * 2 / 3);
             }
         }
 
@@ -88,7 +88,7 @@ namespace GameSvr
             {
                 if (targ.AntiMagic <= new System.Random(50).Next())
                 {
-                    pwr = this.GetAttackPower(RangeAttackTo_GetPower1(RangeAttackTo_CalcMagicPow(), 0) + Lobyte(this.WAbil.MC), HiByte(this.WAbil.MC) - Lobyte(this.WAbil.MC) + 1);
+                    pwr = this.GetAttackPower(RangeAttackTo_GetPower1(RangeAttackTo_CalcMagicPow(), 0) + LoByte(this.WAbil.MC), HiByte(this.WAbil.MC) - LoByte(this.WAbil.MC) + 1);
                     if (targ.LifeAttrib == Grobal2.LA_UNDEAD)
                     {
                         pwr = HUtil32.MathRound(pwr * 1.5);

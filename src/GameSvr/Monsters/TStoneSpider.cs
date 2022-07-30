@@ -27,7 +27,7 @@ namespace GameSvr
             this.Dir = M2Share.GetNextDirection(this.CX, this.CY, targ.CX, targ.CY);
             this.SendRefMsg(Grobal2.RM_LIGHTING, this.Dir, this.CX, this.CY, targ.ActorId, "");
             TAbility _wvar1 = this.WAbil;
-            pwr = _wvar1._MAX(0, _wvar1.Lobyte(_wvar1.DC) + new System.Random((short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC) + 1).Next());
+            pwr = HUtil32._MAX(0, HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next());
             ndir = this.Dir;
             M2Share.GetNextPosition(this.PEnvir, this.CX, this.CY, ndir, 1, ref sx, ref sy);
             M2Share.GetNextPosition(this.PEnvir, this.CX, this.CY, ndir, 8, ref tx, ref ty);

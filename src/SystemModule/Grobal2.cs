@@ -495,13 +495,13 @@ namespace SystemModule
         public int CurTrain;
     } // end TUserMagic
 
-    public struct TClientMagic
+    public class TClientMagic : ClientPacket
     {
         public Char Key;
         public byte Level;
         public int CurTrain;
         public TDefMagic Def;
-    } // end TClientMagic
+    }
 
     // 2003/04/15 模备, 率瘤
     public struct TFriend
@@ -537,6 +537,7 @@ namespace SystemModule
 
     public class TMapItem
     {
+        public int ItemId;
         public TUserItem UserItem;
         public string Name;
         public ushort Looks;
@@ -756,24 +757,17 @@ namespace SystemModule
         public ArrayList SList;
     } // end TQDDinfo
 
-    // 困殴魄概侩 酒捞袍 --------------------------------------------------------
-    public class TMarketItem
+    public class TMarketItem : ClientPacket
     {
         public TClientItem Item;
-        // 函版等 瓷仿摹绰 咯扁俊 利侩凳.
         public int UpgCount;
-        // 眠啊肺 诀弊饭捞靛 等 俺荐
         public int Index;
-        // 魄概锅龋
         public int SellPrice;
-        // 魄概 啊拜
         public string SellWho;
-        // 魄概磊
         public string Selldate;
-        // 魄概朝楼(0312311210 = 2003-12-31 12:10 )
         // 1 = 魄概吝 , 2 = 魄概肯丰
         public ushort SellState;
-    } // end TMarketItem
+    }
 
     // 困殴魄概 佬扁侩 ----------------------------------------------------------
     public class TMarketLoad

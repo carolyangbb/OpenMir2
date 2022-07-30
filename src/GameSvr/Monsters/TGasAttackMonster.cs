@@ -18,7 +18,7 @@ namespace GameSvr
             result = null;
             this.Dir = dir;
             TAbility _wvar1 = this.WAbil;
-            dam = _wvar1.Lobyte(_wvar1.DC) + new System.Random((short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC) + 1).Next();
+            dam = HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next();
             if (dam <= 0)
             {
                 return result;
@@ -35,7 +35,7 @@ namespace GameSvr
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            cret.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 300);
+                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 300);
                             if (this.RaceServer == Grobal2.RC_TOXICGHOST)
                             {
                                 if (new System.Random(20 + cret.AntiPoison).Next() == 0)

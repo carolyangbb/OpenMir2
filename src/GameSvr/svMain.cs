@@ -53,7 +53,7 @@ namespace GameSvr
             DBSQL.g_DBSQL = new TDBSql();
             SqlEngn.SqlEngine = new TSQLEngine();
             svMain.DecoItemList = new ArrayList();
-            svMain.MakeItemList = new ArrayList();
+            svMain.MakeItemList = new List<string>();
             svMain.MakeItemIndexList = new ArrayList();
             svMain.StartPoints = new List<TSafePoint>();
             svMain.SafePoints = new List<TSafePoint>();
@@ -1221,6 +1221,7 @@ namespace GameSvr
     {
         public static TFrmMain FrmMain = null;
         public static TRunSocket RunSocket = null;
+        public static ObjectManager ObjectMgr;
         public static TFrontEngine FrontEngine = null;
         public static TUserEngine UserEngine = null;
         public static TUserMgrEngine UserMgrEngine = null;
@@ -1230,13 +1231,9 @@ namespace GameSvr
         public static TNoticeManager NoticeMan = null;
         public static TGuildManager GuildMan = null;
         public static TGuildAgitManager GuildAgitMan = null;
-        // 巩颇厘盔(sonmg)
         public static TGuildAgitBoardManager GuildAgitBoardMan = null;
-        // 厘盔霸矫魄(sonmg)
         public static int GuildAgitStartNumber = 0;
-        // 巩颇厘盔 矫累锅龋(MapInfo俊辑 佬绢咳).
         public static int GuildAgitMaxNumber = 0;
-        // 巩颇厘盔 弥措俺荐(MapInfo俊辑 佬绢咳).
         public static TEventManager EventMan = null;
         public static TUserCastle UserCastle = null;
         public static bool boUserCastleInitialized = false;

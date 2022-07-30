@@ -23,7 +23,7 @@ namespace GameSvr
                 this.HitTime = GetCurrentTime;
                 this.HitMotion(Grobal2.RM_HIT, this.Dir, this.CX, this.CY);
                 TAbility _wvar1 = this.WAbil;
-                pwr = _wvar1._MAX(0, _wvar1.Lobyte(_wvar1.DC) + new System.Random((short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC) + 1).Next());
+                pwr = HUtil32._MAX(0, HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next());
                 for (i = 0; i < this.VisibleActors.Count; i++)
                 {
                     cret = (TCreature)this.VisibleActors[i].cret;

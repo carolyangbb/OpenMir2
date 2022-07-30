@@ -27,7 +27,7 @@ namespace GameSvr
             TCreature cret;
             this.Dir = dir;
             TAbility _wvar1 = this.WAbil;
-            dam = _wvar1.Lobyte(_wvar1.DC) + new System.Random((short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC) + 1).Next();
+            dam = HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next();
             if (dam <= 0)
             {
                 return;
@@ -51,7 +51,7 @@ namespace GameSvr
                                 if (new System.Random(cret.SpeedPoint).Next() < this.AccuracyPoint)
                                 {
                                     // 魔芭固 魔篮 付过规绢仿俊 瓤苞 乐澜.
-                                    // armor := (Lobyte(cret.WAbil.MAC) + Random(ShortInt(HiByte(cret.WAbil.MAC)-Lobyte(cret.WAbil.MAC)) + 1));
+                                    // armor := (LoByte(cret.WAbil.MAC) + Random(ShortInt(HiByte(cret.WAbil.MAC)-LoByte(cret.WAbil.MAC)) + 1));
                                     // dam := dam - armor;
                                     // if dam <= 0 then
                                     // if dam > -10 then dam := 1;
@@ -63,7 +63,7 @@ namespace GameSvr
                                         // lparam1
                                         // lparam2
                                         // hiter
-                                        cret.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 300);
+                                        cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 300);
                                         if (BoUsePoison)
                                         {
                                             // 眉仿捞 皑家窍绰 刀俊 吝刀 等促.

@@ -70,27 +70,22 @@ namespace GameSvr
         public int MonCurRunCount = 0;
         public bool BoUniqueItemEvent = false;
         public int UniqueItemEventInterval = 0;
-        // 2003/03/18 테스트 서버 인원 제한
         public int FreeUserCount = 0;
-        // TUserEngine
-        //Constructor  Create()
+
         public TUserEngine() : base()
         {
             RunUserList = new ArrayList();
             OtherUserNameList = new ArrayList();
             ClosePlayers = new ArrayList();
             SaveChangeOkList = new ArrayList();
-            // 2003/06/20 이벤트몹 젠 메세지 리스트
             GenMsgList = new ArrayList();
             MonList = new ArrayList();
             MonDefList = new ArrayList();
             ReadyList = new ArrayList();
-            // 동기화  필요
             StdItemList = new ArrayList();
-            // Index가 TUserItem에서 리퍼런스 하므로 순서가 변경되어서는 안된다.
             DefMagicList = new ArrayList();
             AdminList = new ArrayList();
-            ChatLogList = new ArrayList();
+            ChatLogList = new StringList();
             MerchantList = new ArrayList();
             NpcList = new ArrayList();
             MissionList = new ArrayList();
@@ -2108,7 +2103,7 @@ namespace GameSvr
             }
             for (i = 0; i < hum.SlaveList.Count; i++)
             {
-                cret = (TCreature)hum.SlaveList[i];
+                cret = hum.SlaveList[i];
                 if (i <= 4)
                 {
                     sui.Slaves[i].SlaveName = cret.UserName;

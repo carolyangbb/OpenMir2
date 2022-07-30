@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using SystemModule;
 
 namespace GameSvr
@@ -759,17 +760,17 @@ namespace GameSvr
             return result;
         }
 
-        public static ArrayList GetMakeItemCondition(string itemname, ref int iPrice)
+        public static List<string> GetMakeItemCondition(string itemname, ref int iPrice)
         {
             string sMakeItemName = string.Empty;
             string sMakeItemPrice = string.Empty;
-            ArrayList result = null;
+            List<string> result = null;
             for (var i = 0; i < svMain.MakeItemList.Count; i++)
             {
                 sMakeItemPrice = HUtil32.GetValidStr3(svMain.MakeItemList[i], ref sMakeItemName, new string[] { ":" });
                 if (sMakeItemName == itemname)
                 {
-                    result = svMain.MakeItemList.Values[i] as ArrayList;
+                    result = svMain.MakeItemList[i];
                     iPrice = HUtil32.Str_ToInt(sMakeItemPrice, 0);
                     break;
                 }

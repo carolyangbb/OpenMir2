@@ -10,7 +10,6 @@ namespace GameSvr
         private TDefaultMessage Def = null;
         private readonly ArrayList SendBuffers = null;
         private string LatestSayStr = String.Empty;
-        // 档硅 陛瘤
         private int BombSayCount = 0;
         private long BombSayTime = 0;
         private bool BoShutUpMouse = false;
@@ -23,13 +22,10 @@ namespace GameSvr
         private long NpcClickTime = 0;
         private readonly long FirstClientTime = 0;
         private readonly long FirstServerTime = 0;
-        // 困殴惑痢包访 单捞磐.
         private readonly TMarketItemManager FUserMarket = null;
         private TCreature FMarketNpc = null;
         private bool BoFlagUserMarket = false;
-        // 困殴 扁瓷阑 茄波锅俊 咯矾 锅 夸没 且 荐 绝档废 Flag汲沥(sonmg 2005/01/31)
         private bool FlagReadyToSellCheck = false;
-        // 困殴 啊瓷茄瘤 眉农沁阑 锭 Flag汲沥(sonmg 2005/08/10)
         public readonly TStallMgr StallMgr = null;
         private long m_dwBuyShopItemTick = 0;
         private readonly byte[] m_btGetShopItem;
@@ -74,7 +70,6 @@ namespace GameSvr
         public long LatestHitTime = 0;
         public long LatestWalkTime = 0;
         public long LatestDropTime = 0;
-        // 付瘤阜栏肺 酒捞袍 肚绰 陛傈阑 冻焙 矫埃.(辑滚 发 酒捞袍 汗荤 包访 sonmg)
         public int HitTimeOverCount = 0;
         public int HitTimeOverSum = 0;
         public int SpellTimeOverCount = 0;
@@ -82,17 +77,13 @@ namespace GameSvr
         public int WalkTimeOverSum = 0;
         public int SpeedHackTimerOverCount = 0;
         public bool MustRandomMove = false;
-        // 犁立且锭 甘俊辑 酒公镑俊辑唱 冻绢瘤霸..
         public object CurQuest = null;
-        // PTQuestRecord;
         public TCreature CurQuestNpc = null;
         public object CurSayProc = null;
         public int[] QuestParams;
         public int[] DiceParams;
         public bool BoTimeRecall = false;
-        // 矫埃捞 登搁 盔困摹肺 倒酒坷咳
         public bool BoTimeRecallGroup = false;
-        // 矫埃捞 登搁 弊缝 傈眉啊 盔困摹肺 倒酒咳
         public long TimeRecallEnd = 0;
         public string TimeRecallMap = String.Empty;
         public int TimeRecallX = 0;
@@ -101,9 +92,7 @@ namespace GameSvr
         public int CrackWanrningLevel = 0;
         public long LastSaveTime = 0;
         public int Bright = 0;
-        // 甘狼 灌扁,
         public bool FirstTimeConnection = false;
-        // 某腐磐甫 贸澜 父甸绢辑 立加窃,
         public bool BoSendNotice = false;
         public bool LoginSign = false;
         public bool BoServerShifted = false;
@@ -131,13 +120,8 @@ namespace GameSvr
             UserRequestClose = false;
             UserSocketClosed = false;
             ReadyRun = false;
-            // 肺爹,檬扁拳,.. 肯丰登搁 ReadyRun篮 TRUE啊 等促.
             PriviousCheckCode = 0;
             CrackWanrningLevel = 0;
-            // 菩哦 duplication鞍篮 厘抄阑 摹绰瘤 咯何..
-            // 2003-08-08 :PDS
-            // 荤恩捞 隔副锭 措厚 历厘矫埃阑 5盒埃拜栏肺 罚待 炼沥茄促.
-            // 贸澜立加茄 荤恩篮 15盒鳖瘤 历厘鸥烙捞 疵绢朝荐 乐促. 弊饶俊绰 10盒俊 茄锅究 历厘
             LastSaveTime = GetTickCount + new System.Random(5 * 60 * 1000).Next();
             this.WantRefMsg = true;
             BoSaveOk = false;
@@ -178,9 +162,7 @@ namespace GameSvr
             WalkTimeOverSum = 0;
             SpeedHackTimerOverCount = 0;
             SendBuffers = new ArrayList();
-            // 2003/06/12 浇饭捞宏 菩摹
             PrevServerSlaves = new ArrayList();
-            // 辑滚 捞悼窍搁辑 颗败促聪绰 何窍
             LatestSayStr = "";
             BombSayCount = 0;
             BombSayTime  =  HUtil32.GetTickCount();
@@ -568,7 +550,7 @@ namespace GameSvr
                 this.SendMsg(this, Grobal2.RM_ATTACKMODE, 0, 0, 0, 0, "");
                 if (SecondsCard > 0)
                 {
-                    this.SysMsg(Format("[账户信息]当前账户充值时间剩余%d秒", new int[] { SecondsCard }), 3);
+                    this.SysMsg(string.Format("[账户信息]当前账户充值时间剩余%d秒", new int[] { SecondsCard }), 3);
                 }
                 else
                 {
@@ -633,23 +615,23 @@ namespace GameSvr
             if (this.MyGuild != null)
             {
                 // 辨靛俊 啊涝登绢 乐绰 版快
-                this.GuildRankName = ((TGuild)this.MyGuild).MemberLogin(this, ref this.GuildRank);
+                this.GuildRankName = MyGuild.MemberLogin(this, ref this.GuildRank);
                 // SendMsg (self, RM_CHANGEGUILDNAME, 0, 0, 0, 0, '');
-                for (i = 0; i < ((TGuild)this.MyGuild).KillGuilds.Count; i++)
+                for (i = 0; i < MyGuild.KillGuilds.Count; i++)
                 {
-                    this.SysMsg(((TGuild)this.MyGuild).KillGuilds[i] + " is on guild war with your guild.", 1);
+                    this.SysMsg(MyGuild.KillGuilds[i] + " is on guild war with your guild.", 1);
                 }
                 // 辑滚 捞悼捞 酒囱 货肺 立加沁阑 锭父 利侩.
                 if (!BoServerShifted)
                 {
                     // 巩林/巩颇盔捞 立加沁阑 锭 厘盔捞 楷眉登绢 乐促搁 瘤抄扁埃/巢篮扁埃阑 舅妨淋.
-                    if (svMain.GuildAgitMan.IsDelayed(((TGuild)this.MyGuild).GuildName))
+                    if (svMain.GuildAgitMan.IsDelayed(MyGuild.GuildName))
                     {
                         CmdGuildAgitRemainTime();
                     }
                     // 立加沁阑 锭 巩颇皋矫瘤(sonmg 2005/08/05)
-                    ((TGuild)this.MyGuild).GuildMsg("(!)" + this.UserName + " has connected.", this.UserName);
-                    svMain.UserEngine.SendInterMsg(Grobal2.ISM_GUILDMSG, svMain.ServerIndex, ((TGuild)this.MyGuild).GuildName + "/" + "(!)" + this.UserName + " has connected.");
+                    MyGuild.GuildMsg("(!)" + this.UserName + " has connected.", this.UserName);
+                    svMain.UserEngine.SendInterMsg(Grobal2.ISM_GUILDMSG, svMain.ServerIndex, MyGuild.GuildName + "/" + "(!)" + this.UserName + " has connected.");
                 }
             }
             if (!BoServerShifted)
@@ -732,7 +714,7 @@ namespace GameSvr
             }
             if (this.MyGuild != null)
             {
-                ((TGuild)this.MyGuild).MemberLogout(this);
+                MyGuild.MemberLogout(this);
             }
             WriteConLog();
             base.Finalize();
@@ -1568,7 +1550,7 @@ namespace GameSvr
             return result;
         }
 
-        private bool SpellXY(int magid, int targetx, int targety, int targcret)
+        private bool SpellXY(int magid, short targetx, short targety, int targcret)
         {
             bool result;
             int ndir;
@@ -1579,7 +1561,6 @@ namespace GameSvr
             // MainOutMessage ('Delay ' + InttoStr(HUtil32.GetTickCount() - LatestSpellTime) + ' ' + IntToStr(LatestSpellDelay));
             if ((this.StatusArr[Grobal2.POISON_STONE] != 0) || (this.StatusArr[Grobal2.POISON_STUN] != 0) || StallMgr.OnSale || (this.StatusArr[Grobal2.POISON_ICE] != 0))
             {
-                // 付厚等 惑怕牢 版快
                 return result;
             }
             if (HUtil32.GetTickCount() - LatestSpellTime > LatestSpellDelay)
@@ -2848,21 +2829,21 @@ namespace GameSvr
                 {
                     flag = false;
                     // 磊脚狼 巩颇客绰 巩颇傈阑 且 荐 绝澜(sonmg 2005/08/17)
-                    if (guild == ((TGuild)this.MyGuild))
+                    if (guild == MyGuild)
                     {
                         this.SysMsg("失败，这是你自己的门派。", 0);
                         return result;
                     }
                     currenttime  =  HUtil32.GetTickCount();
                     // 巩颇埃 矫埃 烹老
-                    pgw = ((TGuild)this.MyGuild).DeclareGuildWar(guild, currenttime, ref BackResult);
+                    pgw = MyGuild.DeclareGuildWar(guild, currenttime, ref BackResult);
                     if (BackResult == 0)
                     {
                         return result;
                     }
                     if (pgw != null)
                     {
-                        if (guild.DeclareGuildWar((TGuild)this.MyGuild, currenttime, ref BackResult) == null)
+                        if (guild.DeclareGuildWar(MyGuild, currenttime, ref BackResult) == null)
                         {
                             pgw.WarStartTime = 0;
                             // 鸥烙酒眶
@@ -2893,7 +2874,7 @@ namespace GameSvr
                     if (flag)
                     {
                         // 己傍
-                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, ((TGuild)this.MyGuild).GuildName);
+                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, MyGuild.GuildName);
                         svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, gname);
                         result = true;
                     }
@@ -2937,7 +2918,7 @@ namespace GameSvr
                 if (hum.MyGuild != null)
                 {
                     // 辨靛俊 啊涝登绢 乐绰 版快
-                    hum.GuildRankName = ((TGuild)hum.MyGuild).MemberLogin(this, ref hum.GuildRank);
+                    hum.GuildRankName = hum.MyGuild.MemberLogin(this, ref hum.GuildRank);
                     // SendMsg (self, RM_CHANGEGUILDNAME, 0, 0, 0, 0, '');
                 }
             }
@@ -3171,7 +3152,7 @@ namespace GameSvr
         {
             string result;
             // 2003/03/04 眠啊何盒
-            result = cret.UserName + " Map" + cret.MapName + " X" + cret.CX.ToString() + " Y" + cret.CY.ToString() + " Lv" + cret.Abil.Level.ToString() + " Exp" + cret.Abil.Exp.ToString() + " HP" + cret.WAbil.HP.ToString() + "/" + cret.WAbil.MaxHP.ToString() + " MP" + cret.WAbil.MP.ToString() + "/" + cret.WAbil.MaxMP.ToString() + " DC" + Lobyte(cret.WAbil.DC).ToString() + "-" + HiByte(cret.WAbil.DC).ToString() + " MC" + Lobyte(cret.WAbil.MC).ToString() + "-" + HiByte(cret.WAbil.MC).ToString() + " SC" + Lobyte(cret.WAbil.SC).ToString() + "-" + HiByte(cret.WAbil.SC).ToString() + " AC" + Lobyte(cret.WAbil.AC).ToString() + "-" + HiByte(cret.WAbil.AC).ToString() + " MAC" + Lobyte(cret.WAbil.MAC).ToString() + "-" + HiByte(cret.WAbil.MAC).ToString() + " Hit" + cret.AccuracyPoint.ToString() + " Spd" + cret.SpeedPoint.ToString() + " HitSpeed" + cret.HitSpeed.ToString() + " Holy" + cret.AddAbil.UndeadPower.ToString();
+            result = cret.UserName + " Map" + cret.MapName + " X" + cret.CX.ToString() + " Y" + cret.CY.ToString() + " Lv" + cret.Abil.Level.ToString() + " Exp" + cret.Abil.Exp.ToString() + " HP" + cret.WAbil.HP.ToString() + "/" + cret.WAbil.MaxHP.ToString() + " MP" + cret.WAbil.MP.ToString() + "/" + cret.WAbil.MaxMP.ToString() + " DC" + LoByte(cret.WAbil.DC).ToString() + "-" + HiByte(cret.WAbil.DC).ToString() + " MC" + LoByte(cret.WAbil.MC).ToString() + "-" + HiByte(cret.WAbil.MC).ToString() + " SC" + LoByte(cret.WAbil.SC).ToString() + "-" + HiByte(cret.WAbil.SC).ToString() + " AC" + LoByte(cret.WAbil.AC).ToString() + "-" + HiByte(cret.WAbil.AC).ToString() + " MAC" + LoByte(cret.WAbil.MAC).ToString() + "-" + HiByte(cret.WAbil.MAC).ToString() + " Hit" + cret.AccuracyPoint.ToString() + " Spd" + cret.SpeedPoint.ToString() + " HitSpeed" + cret.HitSpeed.ToString() + " Holy" + cret.AddAbil.UndeadPower.ToString();
             return result;
         }
 
@@ -3388,7 +3369,6 @@ namespace GameSvr
                 }
                 if (pass)
                 {
-                    // 促弗 辑滚俊 傈崔 咯何
                     svMain.UserEngine.SendInterMsg(Grobal2.ISM_CHATPROHIBITIONCANCEL, svMain.ServerIndex, whostr);
                 }
                 this.SysMsg(whostr + " " + "", 1);
@@ -3817,7 +3797,7 @@ namespace GameSvr
                     if (new ArrayList(new int[] { 5, 6 }).Contains(psSeedItem.StdMode))
                     {
                         // 公扁
-                        iSucceed = _MIN(UpProb[iSum].iBase, HUtil32.MathRound(UpProb[iSum].iValue[0] * Math.Abs((29 + this.BodyLuckLevel + (Lobyte(psSeedItem.AC) + puSeedItem.Desc[3] - Lobyte(psSeedItem.MAC) - puSeedItem.Desc[4]) / 2) / 30)));
+                        iSucceed = _MIN(UpProb[iSum].iBase, HUtil32.MathRound(UpProb[iSum].iValue[0] * Math.Abs((29 + this.BodyLuckLevel + (LoByte(psSeedItem.AC) + puSeedItem.Desc[3] - LoByte(psSeedItem.MAC) - puSeedItem.Desc[4]) / 2) / 30)));
                     }
                     else if (new ArrayList(new int[] { 10, 11 }).Contains(psSeedItem.StdMode))
                     {
@@ -3865,7 +3845,7 @@ namespace GameSvr
                 {
                     if (new ArrayList(new int[] { 5, 6 }).Contains(psSeedItem.StdMode))
                     {
-                        iSucceed = _MIN(UpProb[iSum].iBase, HUtil32.MathRound(UpProb[iSum].iValue[3] * Math.Abs((29 + this.BodyLuckLevel + (Lobyte(psSeedItem.AC) + puSeedItem.Desc[3] - Lobyte(psSeedItem.MAC) - puSeedItem.Desc[4]) / 2) / 30)));
+                        iSucceed = _MIN(UpProb[iSum].iBase, HUtil32.MathRound(UpProb[iSum].iValue[3] * Math.Abs((29 + this.BodyLuckLevel + (LoByte(psSeedItem.AC) + puSeedItem.Desc[3] - LoByte(psSeedItem.MAC) - puSeedItem.Desc[4]) / 2) / 30)));
                     }
                     else if (new ArrayList(new int[] { 10, 11 }).Contains(psSeedItem.StdMode))
                     {
@@ -3928,8 +3908,6 @@ namespace GameSvr
             return result;
         }
 
-        // /////////////////////////////////////////////////////////////
-        // added by sonmg...
         public void CmdUpgradeItem(string seedname, string jewelryname, int seedindex, int jewelryindex, int ExecCount)
         {
             int iResult;
@@ -3941,7 +3919,7 @@ namespace GameSvr
             TUserItem puJewelry;
             TStdItem psSeed;
             TStdItem psJewelry;
-            string strResult;
+            string strResult = string.Empty;
             string strEtc;
             int iSumOfOption;
             double fProbability;
@@ -4630,7 +4608,7 @@ namespace GameSvr
                             break;
                         case 108:
                             // 傍加
-                            iBaseValue = Lobyte(pstd.AC) - Lobyte(pstd.MAC) + pstd.AtkSpd;
+                            iBaseValue = LoByte(pstd.AC) - LoByte(pstd.MAC) + pstd.AtkSpd;
                             iUpgradeValue = pu.Desc[9];
                             result = iBaseValue + iUpgradeValue;
                             break;
@@ -4777,7 +4755,7 @@ namespace GameSvr
                             break;
                         case 108:
                             // 傍加
-                            iBaseValue = Lobyte(pstd.AC) - Lobyte(pstd.MAC) + pstd.AtkSpd;
+                            iBaseValue = LoByte(pstd.AC) - LoByte(pstd.MAC) + pstd.AtkSpd;
                             iUpgradeValue = pu.Desc[9];
                             result = iBaseValue + iUpgradeValue;
                             break;
@@ -5180,27 +5158,27 @@ namespace GameSvr
             if (this.IsGuildMaster())
             {
                 // 巩林捞搁
-                if (((TGuild)this.MyGuild).GetTotalMemberCount() <= ObjBase.MINAGITMEMBER)
+                if (MyGuild.GetTotalMemberCount() <= ObjBase.MINAGITMEMBER)
                 {
                     this.BoxMsg("门派不能少于" + ObjBase.MINAGITMEMBER.ToString() + "个成员。", 0);
                     return;
                 }
                 // 措咯窍妨绰 巩林啊 厘盔 备涝脚没阑 茄 惑怕牢瘤 八荤
-                if (svMain.GuildAgitMan.IsExistInForSaleGuild(((TGuild)this.MyGuild).GuildName))
+                if (svMain.GuildAgitMan.IsExistInForSaleGuild(MyGuild.GuildName))
                 {
                     this.BoxMsg("你已经要求购买了。", 0);
                     return;
                 }
                 if (this.Gold >= Guild.GUILDAGITREGFEE)
                 {
-                    agitnumber = svMain.GuildAgitMan.AddGuildAgit(((TGuild)this.MyGuild).GuildName, ((TGuild)this.MyGuild).GetGuildMaster(), ((TGuild)this.MyGuild).GetAnotherGuildMaster());
+                    agitnumber = svMain.GuildAgitMan.AddGuildAgit(MyGuild.GuildName, MyGuild.GetGuildMaster(), MyGuild.GetAnotherGuildMaster());
                     if (agitnumber > -1)
                     {
                         this.DecGold(Guild.GUILDAGITREGFEE);
                         this.GoldChanged();
                         // 肺弊巢辫
                         // 厘措咯_
-                        svMain.AddUserLog("37\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + ((TGuild)this.MyGuild).GuildName + "\09" + agitnumber.ToString() + "\09" + "1\09" + Guild.GUILDAGITREGFEE.ToString());
+                        svMain.AddUserLog("37\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + MyGuild.GuildName + "\09" + agitnumber.ToString() + "\09" + "1\09" + Guild.GUILDAGITREGFEE.ToString());
                         // 厘盔霸矫魄 府肺靛.
                         svMain.GuildAgitBoardMan.LoadAllGaBoardList("");
                         svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILDAGIT, svMain.ServerIndex, "");
@@ -5231,12 +5209,12 @@ namespace GameSvr
                 this.BoxMsg("您不能移动到门派庄园。", 0);
                 return;
             }
-            if (((TGuild)this.MyGuild).GuildName == "")
+            if (MyGuild.GuildName == "")
             {
                 this.BoxMsg("您不能移动到门派庄园。", 0);
                 return;
             }
-            guildagit = svMain.GuildAgitMan.GetGuildAgit(((TGuild)this.MyGuild).GuildName);
+            guildagit = svMain.GuildAgitMan.GetGuildAgit(MyGuild.GuildName);
             if (guildagit != null)
             {
                 MapName = svMain.GuildAgitMan.GuildAgitMapName[0] + guildagit.GuildAgitNumber.ToString();
@@ -5266,7 +5244,7 @@ namespace GameSvr
             if (this.IsMyGuildMaster())
             {
                 // 巩林捞搁
-                if (svMain.GuildAgitMan.DelGuildAgit(((TGuild)this.MyGuild).GuildName))
+                if (svMain.GuildAgitMan.DelGuildAgit(MyGuild.GuildName))
                 {
                     // 厘盔霸矫魄 府肺靛.
                     svMain.GuildAgitBoardMan.LoadAllGaBoardList("");
@@ -5294,17 +5272,14 @@ namespace GameSvr
             }
             if (this.IsMyGuildMaster())
             {
-                // 巩林捞搁
                 if (this.Gold >= Guild.GUILDAGITEXTENDFEE)
                 {
-                    agitnumber = svMain.GuildAgitMan.ExtendTime(count, ((TGuild)this.MyGuild).GuildName);
+                    agitnumber = svMain.GuildAgitMan.ExtendTime(count, MyGuild.GuildName);
                     if (agitnumber > -1)
                     {
                         this.DecGold(Guild.GUILDAGITEXTENDFEE);
                         this.GoldChanged();
-                        // 肺弊巢辫
-                        // 厘楷厘_
-                        svMain.AddUserLog("38\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + ((TGuild)this.MyGuild).GuildName + "\09" + agitnumber.ToString() + "\09" + "1\09" + Guild.GUILDAGITEXTENDFEE.ToString());
+                        svMain.AddUserLog("38\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + MyGuild.GuildName + "\09" + agitnumber.ToString() + "\09" + "1\09" + Guild.GUILDAGITEXTENDFEE.ToString());
                         svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILDAGIT, svMain.ServerIndex, "");
                         this.BoxMsg("领土租用期限已被延长。", 1);
                     }
@@ -5342,60 +5317,37 @@ namespace GameSvr
                 this.BoxMsg("您不能检查它。", 0);
                 return;
             }
-            if (((TGuild)this.MyGuild).GuildName == "")
+            if (MyGuild.GuildName == "")
             {
                 this.BoxMsg("您不能检查它。", 0);
                 return;
             }
-            RemainDateTime = svMain.GuildAgitMan.GetRemainDateTime(((TGuild)this.MyGuild).GuildName);
-            // 俊矾 皋矫瘤.
-            // {$IFNDEF UNDEF_DEBUG}   //sonmg
-            // if RemainDateTime < -GUILDAGIT_DAYUNIT then begin
-            // {$ELSE}
-            if (RemainDateTime < -(Guild.GUILDAGIT_DAYUNIT / 60 / 24))
-            {
-                // {$ENDIF}
-                // 皋矫瘤 免仿.
-                this.BoxMsg("不能使用。", 0);
-                return;
-            }
-            // 措咯 扁埃捞 瘤车阑 版快(楷眉) 皋矫瘤.
-            if (RemainDateTime <= 0)
-            {
-                // {$IFNDEF UNDEF_DEBUG}   //sonmg
-                // 巢篮 朝楼肺 函券.
-                // RemainDateTime := GUILDAGIT_DAYUNIT + RemainDateTime;
-                // // 瘤抄 朝楼狼 家荐痢 捞窍甫 滚覆
-                // RemainDateTime := Trunc( RemainDateTime );
-                // 皋矫瘤 免仿.
-                // BoxMsg( '庄园租用期限将到期。\ \你的门派庄园将于' + FloatToStr( RemainDateTime ) + '天后到期。', 0 );
-                // {$ELSE}
-                // 巢篮 朝楼肺 函券.
-                RemainDateTime = (Guild.GUILDAGIT_DAYUNIT / 60 / 24) + RemainDateTime;
-                // 瘤抄 朝楼狼 家荐痢 捞窍甫 滚覆
-                RemainDateTime = Convert.ToInt64(RemainDateTime * 60 * 24);
-                // 皋矫瘤 免仿.
-                this.BoxMsg("庄园租用期限将到期。\\ \\你的门派庄园将于" + Convert.ToString(RemainDateTime) + "分钟后到期。", 0);
-                // {$ENDIF}
-            }
-            else
-            {
-                // 朝楼 盒秦.
-                Year = (short)RemainDateTime.Year;
-                Month = (short)RemainDateTime.Month;
-                Day = (short)RemainDateTime.Day;
-                Hour = (short)RemainDateTime.Hour;
-                Min = (short)RemainDateTime.Minute;
-                Sec = (short)RemainDateTime.Second;
-                MSec = (short)RemainDateTime.Millisecond;
-                // 1899斥 12岿 31老 扁霖.
-                BaseDate = new DateTime(1899, 12, 31);
-                // 巢篮 老荐 拌魂.
-                DiffDate = RemainDateTime - BaseDate + 1;
-                RemainDay = (int)Convert.ToInt64(DiffDate);
-                // 皋矫瘤 免仿.
-                this.BoxMsg("门派庄园租用时间于 < " + RemainDay.ToString() + "天" + Hour.ToString() + "小时" + Min.ToString() + "分 > " + "后到期。", 1);
-            }
+            RemainDateTime = svMain.GuildAgitMan.GetRemainDateTime(MyGuild.GuildName);
+            //if (RemainDateTime < -(Guild.GUILDAGIT_DAYUNIT / 60 / 24))
+            //{
+            //    this.BoxMsg("不能使用。", 0);
+            //    return;
+            //}
+            //if (RemainDateTime <= 0)
+            //{
+            //    RemainDateTime = (Guild.GUILDAGIT_DAYUNIT / 60 / 24) + RemainDateTime;
+            //    RemainDateTime = Convert.ToInt64(RemainDateTime * 60 * 24);
+            //    this.BoxMsg("庄园租用期限将到期。\\ \\你的门派庄园将于" + Convert.ToString(RemainDateTime) + "分钟后到期。", 0);
+            //}
+            //else
+            //{
+            //    Year = (short)RemainDateTime.Year;
+            //    Month = (short)RemainDateTime.Month;
+            //    Day = (short)RemainDateTime.Day;
+            //    Hour = (short)RemainDateTime.Hour;
+            //    Min = (short)RemainDateTime.Minute;
+            //    Sec = (short)RemainDateTime.Second;
+            //    MSec = (short)RemainDateTime.Millisecond;
+            //    BaseDate = new DateTime(1899, 12, 31);
+            //    DiffDate = RemainDateTime - BaseDate + 1;
+            //    RemainDay = (int)Convert.ToInt64(DiffDate);
+            //    this.BoxMsg("门派庄园租用时间于 < " + RemainDay.ToString() + "天" + Hour.ToString() + "小时" + Min.ToString() + "分 > " + "后到期。", 1);
+            //}
         }
 
         public void CmdGuildAgitRecall(string man, bool WholeRecall)
@@ -5406,8 +5358,6 @@ namespace GameSvr
             TGuildRank pgrank;
             if (this.IsMyGuildMaster())
             {
-                // 巩林捞搁
-                // 傈眉家券.
                 if (WholeRecall)
                 {
                     n = (int)((HUtil32.GetTickCount() - this.CGHIstart) / 1000);
@@ -5424,18 +5374,17 @@ namespace GameSvr
                     {
                         if (this.MyGuild != null)
                         {
-                            if (((TGuild)this.MyGuild).MemberList != null)
+                            if (MyGuild.MemberList != null)
                             {
-                                for (i = 0; i < ((TGuild)this.MyGuild).MemberList.Count; i++)
+                                for (i = 0; i < MyGuild.MemberList.Count; i++)
                                 {
-                                    pgrank = (TGuildRank)((TGuild)this.MyGuild).MemberList[i];
+                                    pgrank = MyGuild.MemberList[i];
                                     for (k = 0; k < pgrank.MemList.Count; k++)
                                     {
-                                        if (pgrank.MemList.Values[k] == this)
+                                        if (pgrank.MemList[k] == this)
                                         {
                                             continue;
                                         }
-                                        // 磊扁 磊脚篮 逞绢皑.
                                         GuildMasterRecallMan((string)pgrank.MemList[k], false);
                                     }
                                     this.CGHIstart  =  HUtil32.GetTickCount();
@@ -5448,7 +5397,6 @@ namespace GameSvr
                     {
                         this.SysMsg("你需要在" + this.CGHIUseTime.ToString() + "秒后才能使用门派成员召回功能。", 0);
                     }
-                    // 俺牢家券.
                 }
                 else
                 {
@@ -5461,7 +5409,6 @@ namespace GameSvr
             }
         }
 
-        // 檬措鼻 捞悼.
         public void CmdGuildAgitFreeMove(int AgitNum)
         {
             string MapName;
@@ -5479,16 +5426,12 @@ namespace GameSvr
                 if (svMain.GrobalEnvir.GetEnvir(MapName) != null)
                 {
                     this.SendRefMsg(Grobal2.RM_SPACEMOVE_HIDE, 0, 0, 0, 0, "");
-                    // RandomSpaceMove (MapName, 0); //公累困 傍埃捞悼
-                    // SpaceMove (MapName, GuildAgitMan.EntranceX, GuildAgitMan.EntranceY, 0); //傍埃捞悼
                     this.UserSpaceMove(MapName, svMain.GuildAgitMan.EntranceX.ToString(), svMain.GuildAgitMan.EntranceY.ToString());
-                    // 傍埃捞悼
                     this.SysMsg("你已进入门派庄园。", 1);
                 }
             }
         }
 
-        // 巩颇厘盔 魄概包访
         public void CmdGuildAgitSale(string StrForSaleGold)
         {
             TGuildAgit guildagit;
@@ -5500,7 +5443,6 @@ namespace GameSvr
             }
             if (this.IsMyGuildMaster())
             {
-                // 巩林捞搁
                 if (StrForSaleGold.Length > 10)
                 {
                     this.SysMsg("你没有输入出售金额或输入金额没有超出限制。", 0);
@@ -5512,8 +5454,7 @@ namespace GameSvr
                     this.SysMsg("你没有输入出售金额或输入金额没有超出限制。", 0);
                     return;
                 }
-                // 磊扁 磊脚狼 巩颇 厘盔阑 茫绰促.
-                guildagit = svMain.GuildAgitMan.GetGuildAgit(((TGuild)this.MyGuild).GuildName);
+                guildagit = svMain.GuildAgitMan.GetGuildAgit(MyGuild.GuildName);
                 if (guildagit != null)
                 {
                     if (guildagit.GetCurrentDelayStatus() <= 0)
@@ -5521,23 +5462,15 @@ namespace GameSvr
                         this.BoxMsg("庄园租用期限将到期，因此您不能出售门派庄园。", 0);
                         return;
                     }
-                    // 魄概吝捞 酒聪搁
                     if (!guildagit.IsForSale())
                     {
-                        // 芭贰啊 己荤登瘤 臼疽栏搁
                         if (!guildagit.IsSoldOut())
                         {
-                            // 敲贰弊 眉农
                             guildagit.ForSaleFlag = 1;
-                            // 魄概 陛咀 殿废
                             guildagit.ForSaleMoney = salegold;
-                            // 肺弊巢辫
-                            // 厘魄概_
-                            svMain.AddUserLog("39\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + ((TGuild)this.MyGuild).GuildName + "\09" + guildagit.GuildAgitNumber.ToString() + "\09" + "1\09" + guildagit.ForSaleMoney.ToString());
-                            // 巩颇 厘盔 府胶飘 历厘.
+                            svMain.AddUserLog("39\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + MyGuild.GuildName + "\09" + guildagit.GuildAgitNumber.ToString() + "\09" + "1\09" + guildagit.ForSaleMoney.ToString());
                             svMain.GuildAgitMan.SaveGuildAgitList(false);
                             svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILDAGIT, svMain.ServerIndex, "");
-                            // 皋矫瘤 免仿.
                             this.BoxMsg(M2Share.GetGoldStr(salegold) + "金币的价格登记出售门派庄园。", 1);
                         }
                         else
@@ -5571,23 +5504,15 @@ namespace GameSvr
             }
             if (this.IsMyGuildMaster())
             {
-                // 巩林捞搁
-                // 磊扁 磊脚狼 巩颇 厘盔阑 茫绰促.
-                guildagit = svMain.GuildAgitMan.GetGuildAgit(((TGuild)this.MyGuild).GuildName);
+                guildagit = svMain.GuildAgitMan.GetGuildAgit(MyGuild.GuildName);
                 if (guildagit != null)
                 {
-                    // 芭贰啊 己荤等 饶俊绰 魄概秒家甫 且 荐 绝促.
                     if (!guildagit.IsSoldOut())
                     {
-                        // 魄概吝捞搁
                         if (guildagit.IsForSale())
                         {
-                            // 魄概秒家茄促.
                             guildagit.ResetForSaleFields();
-                            // 肺弊巢辫
-                            // 厘秒家_(厘盔魄概秒家)
-                            svMain.AddUserLog("40\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + ((TGuild)this.MyGuild).GuildName + "\09" + guildagit.GuildAgitNumber.ToString() + "\09" + "1\09" + "0");
-                            // 巩颇 厘盔 府胶飘 历厘.
+                            svMain.AddUserLog("40\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + MyGuild.GuildName + "\09" + guildagit.GuildAgitNumber.ToString() + "\09" + "1\09" + "0");
                             svMain.GuildAgitMan.SaveGuildAgitList(false);
                             svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILDAGIT, svMain.ServerIndex, "");
                             this.BoxMsg("您取消了门派庄园的销售。", 1);
@@ -5622,26 +5547,19 @@ namespace GameSvr
             int startline;
             int endline;
             string data = string.Empty;
-            // 厘盔狼 傈眉 府胶飘甫 焊郴 淋.
             salelist = null;
             data = "";
             count = 0;
-            // 厘盔 魄概 格废阑 掘绢柯促.
             svMain.GuildAgitMan.GetGuildAgitSaleList(ref salelist);
-            // 厘盔 格废捞 绝阑 锭
             if (salelist == null)
             {
                 this.BoxMsg("这是没有登记的门派庄园。", 0);
                 return;
             }
-            // 其捞瘤啊 沥惑捞搁
             if (page > 0)
             {
-                // 矫累临
                 startline = ONEPAGELINE * (page - 1);
-                // 付瘤阜临 : 格废狼 扼牢 荐啊 茄 其捞瘤狼 弥措 扼牢焊促 农瘤 臼霸
                 endline = _MIN(salelist.Count, ONEPAGELINE * page);
-                // 矫累临何磐 付瘤阜临鳖瘤 焊晨
                 for (i = startline; i < endline; i++)
                 {
                     data = data + salelist[i] + "/";
@@ -5649,11 +5567,9 @@ namespace GameSvr
                 }
                 if (count > 0)
                 {
-                    // 府胶飘甫 焊晨
                     this.SendMsg(this, Grobal2.RM_GUILDAGITLIST, 0, page, count, 0, data);
                 }
             }
-            // 格废阑 皋葛府俊辑 秦力矫挪促.
             salelist.Free();
         }
 
@@ -5667,56 +5583,42 @@ namespace GameSvr
             this.SendMsg(this, Grobal2.RM_GUILDAGITDEALTRY, 0, this.ActorId, 0, 0, "");
         }
 
-        // 巩颇厘盔 磊扁 磊脚 眠规(sonmg)
         public void CmdGuildAgitExpulsionMyself()
         {
             TGuildAgit guildagit;
-            // 厘盔 郴俊 乐绰 荤恩父 眠规.
             if ((this.PEnvir.GetGuildAgitRealMapName() == svMain.GuildAgitMan.GuildAgitMapName[0]) || (this.PEnvir.GetGuildAgitRealMapName() == svMain.GuildAgitMan.GuildAgitMapName[1]) || (this.PEnvir.GetGuildAgitRealMapName() == svMain.GuildAgitMan.GuildAgitMapName[2]) || (this.PEnvir.GetGuildAgitRealMapName() == svMain.GuildAgitMan.GuildAgitMapName[3]))
             {
-                // 巩颇啊 绝阑 版快
-                if ((this.MyGuild == null) || (((TGuild)this.MyGuild).GuildName == ""))
+                if ((this.MyGuild == null) || (MyGuild.GuildName == ""))
                 {
-                    // 磊扁 磊脚阑 碍力 眠规
                     this.SendRefMsg(Grobal2.RM_SPACEMOVE_HIDE, 0, 0, 0, 0, "");
-                    // UserSpaceMove (GuildAgitMan.ReturnMapName, IntToStr(GuildAgitMan.ReturnX), IntToStr(GuildAgitMan.ReturnY));
                     this.UserSpaceMove(this.HomeMap, this.HomeX.ToString(), this.HomeY.ToString());
                     return;
                 }
-                guildagit = svMain.GuildAgitMan.GetGuildAgit(((TGuild)this.MyGuild).GuildName);
-                // 厘盔捞 绝阑 版快
+                guildagit = svMain.GuildAgitMan.GetGuildAgit(MyGuild.GuildName);
                 if (guildagit == null)
                 {
                     if (HUtil32.CompareLStr(this.PEnvir.MapName, svMain.GuildAgitMan.GuildAgitMapName[0], 3) || HUtil32.CompareLStr(this.PEnvir.MapName, svMain.GuildAgitMan.GuildAgitMapName[1], 3) || HUtil32.CompareLStr(this.PEnvir.MapName, svMain.GuildAgitMan.GuildAgitMapName[2], 3) || HUtil32.CompareLStr(this.PEnvir.MapName, svMain.GuildAgitMan.GuildAgitMapName[3], 3))
                     {
-                        // 磊扁 磊脚阑 碍力 眠规
                         this.SendRefMsg(Grobal2.RM_SPACEMOVE_HIDE, 0, 0, 0, 0, "");
-                        // UserSpaceMove (GuildAgitMan.ReturnMapName, IntToStr(GuildAgitMan.ReturnX), IntToStr(GuildAgitMan.ReturnY));
                         this.UserSpaceMove(this.HomeMap, this.HomeX.ToString(), this.HomeY.ToString());
                     }
                 }
                 else
                 {
-                    // 厘盔捞 乐阑 版快(sonmg 2005/02/23)
-                    // 巢狼 厘盔捞芭唱 措咯 扁埃捞 父丰登菌栏搁 眠规
                     if ((guildagit.GuildAgitNumber != this.PEnvir.GuildAgit) || guildagit.IsExpired())
                     {
-                        // 磊扁 磊脚阑 碍力 眠规
                         this.SendRefMsg(Grobal2.RM_SPACEMOVE_HIDE, 0, 0, 0, 0, "");
-                        // UserSpaceMove (GuildAgitMan.ReturnMapName, IntToStr(GuildAgitMan.ReturnX), IntToStr(GuildAgitMan.ReturnY));
                         this.UserSpaceMove(this.HomeMap, this.HomeX.ToString(), this.HomeY.ToString());
                     }
                 }
             }
         }
 
-        // 厘盔 扁何陛
         public void CmdGuildAgitDonate(string goldstr)
         {
             int GoldDonate;
-            string gname;
             TGuildAgit guildagit;
-            gname = this.GetGuildNameHereAgit();
+            string gname = this.GetGuildNameHereAgit();
             if (gname == "")
             {
                 this.BoxMsg("不能支付。", 0);
@@ -6083,17 +5985,15 @@ namespace GameSvr
             }
         }
 
-        // ----------------------------------------------------------
-        // Magic
         public void SendAddMagic(TUserMagic pum)
         {
-            TClientMagic cmag;
+            TClientMagic cmag = new TClientMagic();
             cmag.Key = pum.Key;
             cmag.Level = pum.Level;
             cmag.CurTrain = pum.CurTrain;
             cmag.Def = pum.pDef;
             Def = Grobal2.MakeDefaultMsg(Grobal2.SM_ADDMAGIC, 0, 0, 0, 1);
-            SendSocket(Def, EDcode.EncodeBuffer(cmag, sizeof(TClientMagic)));
+            SendSocket(Def, EDcode.EncodeBuffer(cmag));
         }
 
         public void SendDelMagic(TUserMagic pum)
@@ -6104,36 +6004,31 @@ namespace GameSvr
 
         public void SendMyMagics()
         {
-            int i;
-            int mdelay;
-            string data = string.Empty;
             TUserMagic pum;
             TClientMagic cmag;
-            data = "";
-            mdelay = 0;
-            for (i = 0; i < this.MagicList.Count; i++)
+            string data = "";
+            int mdelay = 0;
+            for (var i = 0; i < this.MagicList.Count; i++)
             {
                 pum = (TUserMagic)this.MagicList[i];
+                cmag = new TClientMagic();
                 cmag.Key = pum.Key;
                 cmag.Level = pum.Level;
                 cmag.CurTrain = pum.CurTrain;
                 cmag.Def = pum.pDef;
                 mdelay = mdelay + pum.pDef.DelayTime;
-                data = data + EDcode.EncodeBuffer(cmag, sizeof(TClientMagic)) + "/";
+                data = data + EDcode.EncodeBuffer(cmag) + "/";
             }
             Def = Grobal2.MakeDefaultMsg(Grobal2.SM_SENDMYMAGIC, mdelay ^ 0x773F1A34 ^ 0x4BBC2255, 0, 0, this.MagicList.Count);
             SendSocket(Def, data);
         }
 
-        // ----------------------------------------------------------
         public void LoverWhisper(string whostr, string saystr)
         {
-            TUserHuman hum;
-            int svidx=0;
-            hum = svMain.UserEngine.GetUserHuman(whostr);
+            int svidx =0;
+            TUserHuman hum = svMain.UserEngine.GetUserHuman(whostr);
             if (hum != null)
             {
-                // 胶炮胶 葛靛老版快俊绰 绝绰巴贸烦 加捞磊
                 if (hum.bStealth)
                 {
                     this.SysMsg("无法被找到。" + whostr, 0);
@@ -6149,14 +6044,12 @@ namespace GameSvr
                     this.SysMsg(whostr + "拒绝密语。", 0);
                     return;
                 }
-                // hum.SendMsg (self, RM_LM_WHISPER, 0, 0, 0, 0, '⒔' + UserName + '=> ' + saystr);
                 hum.SendMsg(this, Grobal2.RM_LM_WHISPER, 0, 0, 0, 0, ":)" + this.UserName + "=> " + saystr);
             }
             else
             {
                 if (svMain.UserEngine.FindOtherServerUser(whostr, ref svidx))
                 {
-                    // UserEngine.SendInterMsg (ISM_LM_WHISPER, svidx, whostr + '/' + '⒔' + UserName + '=> ' + saystr);
                     svMain.UserEngine.SendInterMsg(Grobal2.ISM_LM_WHISPER, svidx, whostr + "/" + ":)" + this.UserName + "=> " + saystr);
                 }
                 else
@@ -6166,15 +6059,12 @@ namespace GameSvr
             }
         }
 
-        // **
         public void Whisper(string whostr, string saystr)
         {
-            TUserHuman hum;
-            int svidx=0;
-            hum = svMain.UserEngine.GetUserHuman(whostr);
+            int svidx =0;
+            TUserHuman hum = svMain.UserEngine.GetUserHuman(whostr);
             if (hum != null)
             {
-                // 胶炮胶 葛靛老版快俊绰 绝绰巴贸烦 加捞磊
                 if (hum.bStealth)
                 {
                     this.SysMsg(whostr + "无法被找到。", 0);
@@ -6190,7 +6080,6 @@ namespace GameSvr
                     this.SysMsg(whostr + "拒接密语。", 0);
                     return;
                 }
-                // 款康磊 肚绰 皑矫磊 葛靛捞搁 喊档 贸府...
                 if (this.BoSuperviserMode || this.BoSysopMode)
                 {
                     hum.SendMsg(this, Grobal2.RM_GMWHISPER, 0, 0, 0, 0, this.UserName + "=> " + saystr);
@@ -6204,7 +6093,6 @@ namespace GameSvr
             {
                 if (svMain.UserEngine.FindOtherServerUser(whostr, ref svidx))
                 {
-                    // 款康磊 肚绰 皑矫磊 葛靛捞搁 喊档 贸府...
                     if (this.BoSuperviserMode || this.BoSysopMode)
                     {
                         svMain.UserEngine.SendInterMsg(Grobal2.ISM_GMWHISPER, svidx, whostr + "/" + this.UserName + "=> " + saystr);
@@ -6286,9 +6174,9 @@ namespace GameSvr
             if ((this.MyGuild != null) && (this.GuildRank > 1))
             {
                 // 巩林绰 救凳
-                if (((TGuild)this.MyGuild).IsMember(this.UserName))
+                if (MyGuild.IsMember(this.UserName))
                 {
-                    if (((TGuild)this.MyGuild).DelMember(this.UserName))
+                    if (MyGuild.DelMember(this.UserName))
                     {
                         // //////////////////////////////////
                         // 巩颇傈 吝俊绰 巩颇呕硼且 荐 绝澜.(sonmg)
@@ -6306,7 +6194,7 @@ namespace GameSvr
                             }
                         }
                         // //////////////////////////////////
-                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, ((TGuild)this.MyGuild).GuildName);
+                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, MyGuild.GuildName);
                         this.MyGuild = null;
                         GuildRankChanged(0, "");
                         this.SysMsg("退出。", 1);
@@ -6526,8 +6414,8 @@ namespace GameSvr
                 {
                     if (this.IsGuildMaster())
                     {
-                        ((TGuild)this.MyGuild).AllowAllyGuild = !((TGuild)this.MyGuild).AllowAllyGuild;
-                        if (((TGuild)this.MyGuild).AllowAllyGuild)
+                        MyGuild.AllowAllyGuild = !MyGuild.AllowAllyGuild;
+                        if (MyGuild.AllowAllyGuild)
                         {
                             this.SysMsg("[允许结盟]", 1);
                         }
@@ -6805,7 +6693,7 @@ namespace GameSvr
                                     for (i = 1; i < this.GroupMembers.Count; i++)
                                     {
                                         // 磊脚 哗绊
-                                        if ((this.GroupOwner.GroupMembers.Values[i] as TUserHuman).BoEnableRecall)
+                                        if ((this.GroupOwner.GroupMembers[i] as TUserHuman).BoEnableRecall)
                                         {
                                             CmdRecallMan(this.GroupMembers[i], "");
                                         }
@@ -7870,7 +7758,7 @@ namespace GameSvr
                 }
                 if (!boshutup)
                 {
-                    if (saystr[1] == "/")
+                    if (saystr[0] == '/')
                     {
                         str = saystr.Substring(2 - 1, saystr.Length - 1);
                         if (this.UserDegree >= Grobal2.UD_SYSOP)
@@ -7908,8 +7796,8 @@ namespace GameSvr
                                 if (this.MyGuild != null)
                                 {
                                     str = saystr.Substring(3 - 1, saystr.Length - 2);
-                                    ((TGuild)this.MyGuild).GuildMsg(this.UserName + ":" + str);
-                                    svMain.UserEngine.SendInterMsg(Grobal2.ISM_GUILDMSG, svMain.ServerIndex, ((TGuild)this.MyGuild).GuildName + "/" + this.UserName + ":" + str);
+                                    MyGuild.GuildMsg(this.UserName + ":" + str);
+                                    svMain.UserEngine.SendInterMsg(Grobal2.ISM_GUILDMSG, svMain.ServerIndex, MyGuild.GuildName + "/" + this.UserName + ":" + str);
                                 }
                                 return;
                             }
@@ -7987,7 +7875,7 @@ namespace GameSvr
         // ----------------------------------------------
         public void SendLogon()
         {
-            TMessageBodyWL wl;
+            TMessageBodyWL wl = new TMessageBodyWL();
             Def = Grobal2.MakeDefaultMsg(Grobal2.SM_LOGON, this.ActorId, this.CX, this.CY, MakeWord(this.Dir, this.Light));
             wl.lParam1 = this.Feature();
             wl.lParam2 = this.CharStatus;
@@ -8198,10 +8086,10 @@ namespace GameSvr
                     // 巩颇傈栏肺 瘤开俊 蝶扼辑 捞抚捞 祸彬捞 函版瞪 版快啊 乐澜
                     if (this.MyGuild != null)
                     {
-                        if (((TGuild)this.MyGuild).GuildName != "")
+                        if (MyGuild.GuildName != "")
                         {
                             // 2004/04/28(sonmg)
-                            if (((TGuild)this.MyGuild).KillGuilds.Count > 0)
+                            if (MyGuild.KillGuilds.Count > 0)
                             {
                                 // 巩颇傈 吝烙
                                 flag = this.InGuildWarSafeZone();
@@ -8224,15 +8112,15 @@ namespace GameSvr
                             if ((this.MyGuild != null) && !svMain.UserCastle.IsCastleMember(this))
                             {
                                 // 己阑 傍拜窍绰 巩颇啊 痢飞茄 版快
-                                if (svMain.UserCastle.IsRushCastleGuild((TGuild)this.MyGuild))
+                                if (svMain.UserCastle.IsRushCastleGuild(MyGuild))
                                 {
                                     // 傍己傈阑 脚没茄 巩颇盔捞 郴己 救俊 乐澜
-                                    if (svMain.UserCastle.CheckCastleWarWinCondition((TGuild)this.MyGuild))
+                                    if (svMain.UserCastle.CheckCastleWarWinCondition(MyGuild))
                                     {
                                         // 郴己 痢飞 己傍
-                                        svMain.UserCastle.ChangeCastleOwner((TGuild)this.MyGuild);
+                                        svMain.UserCastle.ChangeCastleOwner(MyGuild);
                                         // 促弗 辑滚俊 舅覆
-                                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_CHANGECASTLEOWNER, svMain.ServerIndex, ((TGuild)this.MyGuild).GuildName);
+                                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_CHANGECASTLEOWNER, svMain.ServerIndex, MyGuild.GuildName);
                                         // 傍己傈篮 辆丰凳, 铰府巩 捞寇俊 葛电 荤恩篮 促弗 镑栏肺 朝扼皑
                                         if (svMain.UserCastle.GetRushGuildCount() <= 1)
                                         {
@@ -8259,7 +8147,7 @@ namespace GameSvr
                     {
                         for (i = 0; i < this.GroupOwner.GroupMembers.Count; i++)
                         {
-                            Cret = this.GroupOwner.GroupMembers.Values[i] as TCreature;
+                            Cret = this.GroupOwner.GroupMembers[i];
                             // if (cret <> self) and (cret.MapName = MapName) then
                             if (Cret.MapName == this.MapName)
                             {
@@ -8272,7 +8160,7 @@ namespace GameSvr
                     {
                         for (i = 0; i < this.SlaveList.Count; i++)
                         {
-                            Cret = this.SlaveList[i] as TCreature;
+                            Cret = this.SlaveList[i];
                             if ((Cret != null) && (Cret.MapName == this.MapName))
                             {
                                 this.SendMsg(Cret, Grobal2.RM_GROUPPOS, Cret.Dir, Cret.CX, Cret.CY, Cret.RaceServer, "");
@@ -8428,28 +8316,19 @@ namespace GameSvr
                         case Grobal2.CM_THROW:
                             if (!this.Death)
                             {
-                                // if HitXY (Ident, lparam1{X}, lparam2{Y}, wParam{DIR}) then begin  //wParam = 规氢
                                 SendSocket(null, "+GOOD/" + GetTickCount.ToString());
-                                // Inc (ClientMsgCount);
-                                // end else
-                                // SendSocket (nil, '+FAIL/' + IntToStr(HUtil32.GetTickCount()));
                             }
                             break;
                         case Grobal2.CM_SPELL:
                             if (!this.Death)
                             {
-                                // magid
-                                // targetx
-                                // targety
-                                // target cret
-                                if (SpellXY(msg.wParam, msg.lParam1, msg.lParam2, msg.lParam3))
+                                if (SpellXY(msg.wParam, (short)msg.lParam1, (short)msg.lParam2, msg.lParam3))
                                 {
                                     SendSocket(null, "+GOOD/" + GetTickCount.ToString());
                                     ClientMsgCount++;
                                 }
                                 else
                                 {
-                                    // 龋去籍 滚弊肺 牢秦 昏力(sonmg 2005/10/06) 抛胶飘 夸噶(何累侩)
                                     SendSocket(null, "+FAIL/" + GetTickCount.ToString());
                                 }
                             }
@@ -8461,9 +8340,6 @@ namespace GameSvr
                         case Grobal2.CM_SITDOWN:
                             if (!this.Death)
                             {
-                                // x
-                                // y
-                                // dir
                                 SitdownXY(msg.lParam1, msg.lParam2, msg.wParam);
                                 SendSocket(null, "+GOOD/" + GetTickCount.ToString());
                             }
@@ -8489,7 +8365,6 @@ namespace GameSvr
                             }
                             break;
                         case Grobal2.CM_DROPCOUNTITEM:
-                            // 墨款飘 酒捞袍
                             if (msg.lParam2 > 0)
                             {
                                 if (this.UserDropCountItem(msg.description, msg.lParam1, msg.lParam2))
@@ -8545,7 +8420,6 @@ namespace GameSvr
                             }
                             break;
                         case Grobal2.CM_CLICKNPC:
-                            // NPC,惑牢阑 努腐窃.
                             ServerGetClickNpc(msg.lParam1);
                             break;
                         case Grobal2.CM_MERCHANTDLGSELECT:
@@ -8634,7 +8508,6 @@ namespace GameSvr
                             break;
                         case Grobal2.RM_GUILDAGITDEALTRY:
                         case Grobal2.CM_DEALTRY:
-                            // 厘盔芭贰矫档(sonmg)
                             ServerGetDealTry(msg.description.Trim());
                             break;
                         case Grobal2.CM_DEALADDITEM:
@@ -8924,7 +8797,7 @@ namespace GameSvr
                             {
                                 svMain.MainOutMessage("[Caution!] Over size of BYTE in TUserHuman.Operate(RM_LOGON)");
                             }
-                            Def = Grobal2.MakeDefaultMsg(Grobal2.SM_NEWMAP, this.ActorId, this.CX, this.CY, MakeWord(Lobyte((ushort)n), Lobyte((ushort)this.PEnvir.AutoAttack)));
+                            Def = Grobal2.MakeDefaultMsg(Grobal2.SM_NEWMAP, this.ActorId, this.CX, this.CY, MakeWord(LoByte((ushort)n), LoByte((ushort)this.PEnvir.AutoAttack)));
                             SendSocket(Def, EDcode.EncodeString(this.PEnvir.GetGuildAgitRealMapName()));
                             SendLogon();
                             GetQueryUserName(this, this.CX, this.CY);
@@ -8994,7 +8867,7 @@ namespace GameSvr
                             {
                                 svMain.MainOutMessage("[Caution!] Over size of BYTE in TUserHuman.Operate(RM_CHANGEMAP)");
                             }
-                            SendDefMessage(Grobal2.SM_CHANGEMAP, this.ActorId, this.CX, this.CY, MakeWord(Lobyte((ushort)n), Lobyte((ushort)this.PEnvir.AutoAttack)), msg.description);
+                            SendDefMessage(Grobal2.SM_CHANGEMAP, this.ActorId, this.CX, this.CY, MakeWord(LoByte((ushort)n), LoByte((ushort)this.PEnvir.AutoAttack)), msg.description);
                             // 瘤开 惑怕 钎矫
                             SendAreaState();
                             SendDefMessage(Grobal2.SM_MAPDESCRIPTION, 0, 0, 0, 0, this.PEnvir.MapTitle);
@@ -9325,7 +9198,7 @@ namespace GameSvr
                                     {
                                         HumStruckTime  =  HUtil32.GetTickCount();
                                     }
-                                    if (svMain.UserCastle.IsOurCastle((TGuild)this.MyGuild))
+                                    if (svMain.UserCastle.IsOurCastle(MyGuild))
                                     {
                                         if (msg.lParam3 != 0)
                                         {
@@ -9338,17 +9211,16 @@ namespace GameSvr
                                     this.PerHealth -= 1;
                                     this.PerSpell -= 1;
                                 }
+                                wl = new TMessageBodyWL();
                                 if (msg.sender != null)
                                 {
                                     Def = Grobal2.MakeDefaultMsg(Grobal2.SM_STRUCK, (int)msg.sender, (msg.sender as TCreature).WAbil.HP, (msg.sender as TCreature).WAbil.MaxHP, msg.wParam);
                                     wl.lParam1 = (msg.sender as TCreature).GetRelFeature(this);
                                     wl.lParam2 = (msg.sender as TCreature).CharStatus;
                                     wl.lTag1 = msg.lParam3;
-                                    // 锭赴仇
                                 }
                                 if (msg.Ident == Grobal2.RM_STRUCK_MAG)
                                 {
-                                    // 付过栏肺 嘎绰 荤款靛 瓤苞
                                     wl.lTag2 = 1;
                                 }
                                 else
@@ -9363,16 +9235,10 @@ namespace GameSvr
                             {
                                 if (msg.lParam3 == 1)
                                 {
-                                    // x
-                                    // y
-                                    // Dir
                                     Def = Grobal2.MakeDefaultMsg(Grobal2.SM_NOWDEATH, (int)msg.sender, msg.lParam1, msg.lParam2, msg.wParam);
                                 }
                                 else
                                 {
-                                    // x
-                                    // y
-                                    // Dir
                                     Def = Grobal2.MakeDefaultMsg(Grobal2.SM_DEATH, (int)msg.sender, msg.lParam1, msg.lParam2, msg.wParam);
                                 }
                                 cdesc.Feature = (msg.sender as TCreature).GetRelFeature(this);
@@ -9381,26 +9247,18 @@ namespace GameSvr
                             }
                             break;
                         case Grobal2.RM_SKELETON:
-                            // x
-                            // y
-                            // Dir
                             Def = Grobal2.MakeDefaultMsg(Grobal2.SM_SKELETON, (int)msg.sender, msg.lParam1, msg.lParam2, msg.wParam);
                             cdesc.Feature = (msg.sender as TCreature).GetRelFeature(this);
                             cdesc.Status = (msg.sender as TCreature).CharStatus;
                             SendSocket(Def, EDcode.EncodeBuffer(cdesc));
                             break;
                         case Grobal2.RM_ALIVE:
-                            // x
-                            // y
-                            // Dir
                             Def = Grobal2.MakeDefaultMsg(Grobal2.SM_ALIVE, (int)msg.sender, msg.lParam1, msg.lParam2, msg.wParam);
                             cdesc.Feature = (msg.sender as TCreature).GetRelFeature(this);
                             cdesc.Status = (msg.sender as TCreature).CharStatus;
                             SendSocket(Def, EDcode.EncodeBuffer(cdesc));
                             break;
                         case Grobal2.RM_CHANGEFACE:
-                            // msg.lparam1 函脚傈
-                            // msg.lparam2 函脚饶
                             if ((msg.lParam1 != 0) && (msg.lParam2 != 0))
                             {
                                 Def = Grobal2.MakeDefaultMsg(Grobal2.SM_CHANGEFACE, msg.lParam1, HUtil32.LoWord(msg.lParam2), HUtil32.HiWord(msg.lParam2), 0);
@@ -9411,32 +9269,21 @@ namespace GameSvr
                             break;
                         case Grobal2.RM_RECONNECT:
                             SoftClosed = true;
-                            // 犁立阑 困秦辑 立加辆丰窃.
                             SendDefMessage(Grobal2.SM_RECONNECT, 0, 0, 0, 0, msg.description);
                             break;
                         case Grobal2.RM_SPACEMOVE_SHOW:
                         case Grobal2.RM_SPACEMOVE_SHOW_NO:
                         case Grobal2.RM_SPACEMOVE_SHOW2:
-                            // msg.wParam : 规氢
                             if (msg.Ident == Grobal2.RM_SPACEMOVE_SHOW)
                             {
-                                // x
-                                // y
-                                // dir
                                 Def = Grobal2.MakeDefaultMsg(Grobal2.SM_SPACEMOVE_SHOW, (int)msg.sender, msg.lParam1, msg.lParam2, MakeWord(msg.wParam, (msg.sender as TCreature).Light));
                             }
                             else if (msg.Ident == Grobal2.RM_SPACEMOVE_SHOW2)
                             {
-                                // x
-                                // y
-                                // dir
                                 Def = Grobal2.MakeDefaultMsg(Grobal2.SM_SPACEMOVE_SHOW2, (int)msg.sender, msg.lParam1, msg.lParam2, MakeWord(msg.wParam, (msg.sender as TCreature).Light));
                             }
                             else
                             {
-                                // x
-                                // y
-                                // dir
                                 Def = Grobal2.MakeDefaultMsg(Grobal2.SM_SPACEMOVE_SHOW_NO, (int)msg.sender, msg.lParam1, msg.lParam2, MakeWord(msg.wParam, (msg.sender as TCreature).Light));
                             }
                             cdesc.Feature = (msg.sender as TCreature).GetRelFeature(this);
@@ -9447,7 +9294,6 @@ namespace GameSvr
                             {
                                 str = str + EDcode.EncodeString(msg.description + "/" + n.ToString());
                             }
-                            // 某腐 捞抚 + 捞抚祸彬
                             SendSocket(Def, str);
                             break;
                         case Grobal2.RM_SPACEMOVE_HIDE:
@@ -9467,12 +9313,11 @@ namespace GameSvr
                             SendSocket(Def, "");
                             break;
                         case Grobal2.RM_DIGUP:
-                            // dir
                             Def = Grobal2.MakeDefaultMsg(Grobal2.SM_DIGUP, (int)msg.sender, msg.lParam1, msg.lParam2, MakeWord(msg.wParam, (msg.sender as TCreature).Light));
+                            wl = new TMessageBodyWL();
                             wl.lParam1 = (msg.sender as TCreature).GetRelFeature(this);
                             wl.lParam2 = (msg.sender as TCreature).CharStatus;
                             wl.lTag1 = msg.lParam3;
-                            // 捞亥飘
                             wl.lTag1 = 0;
                             str = EDcode.EncodeBuffer(wl);
                             SendSocket(Def, str);
@@ -9483,7 +9328,6 @@ namespace GameSvr
                             break;
                         case Grobal2.RM_SHOWEVENT:
                             smsg.Ident = HUtil32.HiWord(msg.lParam2);
-                            // EventParam
                             smsg.msg = 0;
                             Def = Grobal2.MakeDefaultMsg(Grobal2.SM_SHOWEVENT, msg.lParam1, msg.wParam, HUtil32.LoWord(msg.lParam2), msg.lParam3);
                             str = EDcode.EncodeBuffer(smsg);
@@ -9499,15 +9343,15 @@ namespace GameSvr
                                 mbw.Param2 = (msg.lParam3 as TCreature).CY;
                                 mbw.Tag1 = HUtil32.LoWord(msg.lParam3);
                                 mbw.Tag2 = HUtil32.HiWord(msg.lParam3);
-                                // Dir
                                 Def = Grobal2.MakeDefaultMsg(Grobal2.SM_FLYAXE, (int)msg.sender, msg.lParam1, msg.lParam2, msg.wParam);
-                                str = EDcode.EncodeBuffer(mbw, sizeof(TMessageBodyW));
+                                str = EDcode.EncodeBuffer(mbw);
                                 SendSocket(Def, str);
                             }
                             break;
                         case Grobal2.RM_LIGHTING:
                             if (msg.lParam3 != 0)
                             {
+                                wl = new TMessageBodyWL();
                                 wl.lParam1 = (msg.lParam3 as TCreature).CX;
                                 wl.lParam2 = (msg.lParam3 as TCreature).CY;
                             }
@@ -9526,7 +9370,6 @@ namespace GameSvr
                             }
                             wl.lTag1 = msg.lParam3;
                             wl.lTag2 = msg.wParam;
-                            // 付过 锅龋
                             Def = Grobal2.MakeDefaultMsg(Grobal2.SM_LIGHTING_1, (int)msg.sender, msg.lParam1, msg.lParam2, (msg.sender as TCreature).Dir);
                             str = EDcode.EncodeBuffer(wl);
                             SendSocket(Def, str);
@@ -9539,7 +9382,6 @@ namespace GameSvr
                             }
                             wl.lTag1 = msg.lParam3;
                             wl.lTag2 = msg.wParam;
-                            // 付过 锅龋
                             Def = Grobal2.MakeDefaultMsg(Grobal2.SM_LIGHTING_2, (int)msg.sender, msg.lParam1, msg.lParam2, (msg.sender as TCreature).Dir);
                             str = EDcode.EncodeBuffer(wl);
                             SendSocket(Def, str);
@@ -9552,7 +9394,6 @@ namespace GameSvr
                             }
                             wl.lTag1 = msg.lParam3;
                             wl.lTag2 = msg.wParam;
-                            // 付过 锅龋
                             Def = Grobal2.MakeDefaultMsg(Grobal2.SM_DRAGON_FIRE1, (int)msg.sender, msg.lParam1, msg.lParam2, (msg.sender as TCreature).Dir);
                             str = EDcode.EncodeBuffer(wl);
                             SendSocket(Def, str);
@@ -9565,7 +9406,6 @@ namespace GameSvr
                             }
                             wl.lTag1 = msg.lParam3;
                             wl.lTag2 = msg.wParam;
-                            // 付过 锅龋
                             Def = Grobal2.MakeDefaultMsg(Grobal2.SM_DRAGON_FIRE2, (int)msg.sender, msg.lParam1, msg.lParam2, (msg.sender as TCreature).Dir);
                             str = EDcode.EncodeBuffer(wl);
                             SendSocket(Def, str);
@@ -9578,23 +9418,14 @@ namespace GameSvr
                             }
                             wl.lTag1 = msg.lParam3;
                             wl.lTag2 = msg.wParam;
-                            // 付过 锅龋
                             Def = Grobal2.MakeDefaultMsg(Grobal2.SM_DRAGON_FIRE3, (int)msg.sender, msg.lParam1, msg.lParam2, (msg.sender as TCreature).Dir);
                             str = EDcode.EncodeBuffer(wl);
                             SendSocket(Def, str);
                             break;
                         case Grobal2.RM_NORMALEFFECT:
-                            // recog
-                            // xx
-                            // yy
-                            // 瓤苞 辆幅
                             SendDefMessage(Grobal2.SM_NORMALEFFECT, (int)msg.sender, msg.lParam1, msg.lParam2, msg.lParam3, "");
                             break;
                         case Grobal2.RM_LOOPNORMALEFFECT:
-                            // recog
-                            // 矫埃(檬)
-                            // 荤侩救窃.
-                            // 瓤苞 辆幅
                             SendDefMessage(Grobal2.SM_LOOPNORMALEFFECT, (int)msg.sender, msg.lParam1, msg.lParam2, msg.lParam3, "");
                             break;
                         case Grobal2.RM_OPENHEALTH:
@@ -9662,7 +9493,6 @@ namespace GameSvr
                                     Def = Grobal2.MakeDefaultMsg(Grobal2.SM_WHISPER, (int)msg.sender, MakeWord(249, 255), 0, 1);
                                     break;
                                 case Grobal2.RM_LM_WHISPER:
-                                    // 70
                                     Def = Grobal2.MakeDefaultMsg(Grobal2.SM_WHISPER, (int)msg.sender, MakeWord(253, 255), 0, 1);
                                     break;
                                 case Grobal2.RM_SYSMESSAGE:
@@ -9681,7 +9511,6 @@ namespace GameSvr
                                     Def = Grobal2.MakeDefaultMsg(Grobal2.SM_SYSMESSAGE, (int)msg.sender, MakeWord(255, 253), 0, 1);
                                     break;
                                 case Grobal2.RM_SYSMSG_GREEN:
-                                    // 楷牢绵窍皋矫瘤
                                     Def = Grobal2.MakeDefaultMsg(Grobal2.SM_SYSMESSAGE, (int)msg.sender, MakeWord(255, 220), 0, 1);
                                     break;
                                 case Grobal2.RM_SYSMSG_REMARK:
@@ -9691,7 +9520,6 @@ namespace GameSvr
                                     Def = Grobal2.MakeDefaultMsg(Grobal2.SM_SYSMESSAGE, (int)msg.sender, MakeWord(196, 255), 0, 1);
                                     break;
                                 case Grobal2.RM_GUILDMESSAGE:
-                                    // RM_GUILDMESSAGE: Def := MakeDefaultMsg (SM_GUILDMESSAGE, integer(msg.sender), MakeWord(212, 255), 0, 1);
                                     Def = Grobal2.MakeDefaultMsg(Grobal2.SM_GUILDMESSAGE, (int)msg.sender, MakeWord(211, 255), 0, 1);
                                     break;
                                 case Grobal2.RM_MERCHANTSAY:
@@ -9705,87 +9533,58 @@ namespace GameSvr
                             SendDefMessage(Grobal2.SM_MERCHANTDLGCLOSE, msg.lParam1, msg.lParam2, 0, 0, "");
                             break;
                         case Grobal2.RM_SENDGOODSLIST:
-                            // merchant id
-                            // count
                             SendDefMessage(Grobal2.SM_SENDGOODSLIST, msg.lParam1, msg.lParam2, 0, 0, msg.description);
                             break;
                         case Grobal2.RM_SENDUSERSELL:
-                            // merchant id
-                            // count
                             SendDefMessage(Grobal2.SM_SENDUSERSELL, msg.lParam1, msg.lParam2, 0, 0, "");
                             break;
                         case Grobal2.RM_SENDUSERREPAIR:
                         case Grobal2.RM_SENDUSERSPECIALREPAIR:
-                            // merchant id
-                            // count
                             SendDefMessage(Grobal2.SM_SENDUSERREPAIR, msg.lParam1, msg.lParam2, 0, 0, "");
                             break;
                         case Grobal2.RM_SENDUSERSTORAGEITEM:
-                            // merchant id
-                            // count
                             SendDefMessage(Grobal2.SM_SENDUSERSTORAGEITEM, msg.lParam1, msg.lParam2, 0, 0, "");
                             break;
                         case Grobal2.RM_SENDUSERSTORAGEITEMLIST:
                             ServerSendStorageItemList(msg.lParam1);
                             break;
                         case Grobal2.RM_SENDUSERMAKEDRUGITEMLIST:
-                            // merchant id
-                            // count
                             SendDefMessage(Grobal2.SM_SENDUSERMAKEDRUGITEMLIST, msg.lParam1, msg.lParam2, 0, 0, msg.description);
                             break;
                         case Grobal2.RM_SENDBUYPRICE:
-                            // buy price
                             SendDefMessage(Grobal2.SM_SENDBUYPRICE, msg.lParam1, 0, 0, 0, "");
                             break;
                         case Grobal2.RM_USERSELLITEM_OK:
-                            // chg gold
                             SendDefMessage(Grobal2.SM_USERSELLITEM_OK, msg.lParam1, 0, 0, 0, "");
                             break;
                         case Grobal2.RM_USERSELLITEM_FAIL:
                             SendDefMessage(Grobal2.SM_USERSELLITEM_FAIL, msg.lParam1, 0, 0, 0, "");
                             break;
                         case Grobal2.RM_USERSELLCOUNTITEM_OK:
-                            // 墨款飘酒捞袍
-                            // gadget : 墨款飘酒捞袍
-                            // chg gold
                             SendDefMessage(Grobal2.SM_USERSELLCOUNTITEM_OK, msg.lParam1, msg.lParam2, msg.lParam3, 0, "");
                             break;
                         case Grobal2.RM_USERSELLCOUNTITEM_FAIL:
-                            // gadget : 墨款飘酒捞袍
                             SendDefMessage(Grobal2.SM_USERSELLCOUNTITEM_FAIL, msg.lParam1, 0, 0, 0, "");
                             break;
                         case Grobal2.RM_SENDUSERMAKEITEMLIST:
-                            // 酒捞袍 力炼
-                            // merchant id
-                            // count
                             SendDefMessage(Grobal2.SM_SENDUSERMAKEITEMLIST, msg.lParam1, msg.lParam2, 0, 0, msg.description);
                             break;
                         case Grobal2.RM_BUYITEM_SUCCESS:
-                            // chg gold
                             SendDefMessage(Grobal2.SM_BUYITEM_SUCCESS, msg.lParam1, HUtil32.LoWord(msg.lParam2), HUtil32.HiWord(msg.lParam2), 0, "");
                             break;
                         case Grobal2.RM_BUYITEM_FAIL:
-                            // error code
                             SendDefMessage(Grobal2.SM_BUYITEM_FAIL, msg.lParam1, 0, 0, 0, "");
                             break;
                         case Grobal2.RM_MAKEDRUG_SUCCESS:
-                            // chg gold
                             SendDefMessage(Grobal2.SM_MAKEDRUG_SUCCESS, msg.lParam1, 0, 0, 0, "");
                             break;
                         case Grobal2.RM_MAKEDRUG_FAIL:
-                            // chg gold
                             SendDefMessage(Grobal2.SM_MAKEDRUG_FAIL, msg.lParam1, 0, 0, 0, "");
                             break;
                         case Grobal2.RM_SENDDETAILGOODSLIST:
-                            // merchant id
-                            // count
-                            // menuindex
                             SendDefMessage(Grobal2.SM_SENDDETAILGOODSLIST, msg.lParam1, msg.lParam2, msg.lParam3, 0, msg.description);
                             break;
                         case Grobal2.RM_USERREPAIRITEM_OK:
-                            // cost
-                            // dura
-                            // maxdura
                             SendDefMessage(Grobal2.SM_USERREPAIRITEM_OK, msg.lParam1, msg.lParam2, msg.lParam3, 0, "");
                             break;
                         case Grobal2.RM_USERREPAIRITEM_FAIL:
@@ -10042,7 +9841,7 @@ namespace GameSvr
 
         public void RunNotice()
         {
-            TMessageInfo msg;
+            TMessageInfo msg = null;
             if (EmergencyClose || UserRequestClose || UserSocketClosed)
             {
                 if (UserRequestClose)
@@ -10054,7 +9853,6 @@ namespace GameSvr
             }
             try
             {
-                // 肺弊牢 傈俊 傍瘤荤亲阑 焊辰促.
                 if (!BoSendNotice)
                 {
                     SendLoginNotice();
@@ -11046,9 +10844,9 @@ namespace GameSvr
         private void PresendItem(TMessageInfo pmsg)
         {
             TUserHuman PlayObject;
-            string s;
-            string sWho;
-            string sItemName;
+            string s = string.Empty;
+            string sWho = string.Empty;
+            string sItemName = string.Empty;
             int nRetCode;
             TStdItem pStdItem;
             TUserItem pUserItem;
@@ -11087,7 +10885,7 @@ namespace GameSvr
                                                 {
                                                     this.GameGold -= pShopItem.wPrice;
                                                     this.GameGoldChanged();
-                                                    PlayObject.SysMsg(Format("%s向你赠送了%s，请注意查收", new string[] { this.UserName, sItemName }), 4);
+                                                    PlayObject.SysMsg(string.Format("%s向你赠送了%s，请注意查收", new string[] { this.UserName, sItemName }), 4);
                                                     nRetCode = 1;
                                                 }
                                                 else
@@ -11106,7 +10904,7 @@ namespace GameSvr
                                                         this.GameGold -= pShopItem.wPrice;
                                                         // PlayObject.SendAddItem(pUserItem^);
                                                         this.GameGoldChanged();
-                                                        PlayObject.SysMsg(Format("%s向你赠送了%s，请注意查收", new string[] { this.UserName, sItemName }), 4);
+                                                        PlayObject.SysMsg(string.Format("%s向你赠送了%s，请注意查收", new string[] { this.UserName, sItemName }), 4);
                                                         nRetCode = 1;
                                                     }
                                                     else
@@ -11163,8 +10961,8 @@ namespace GameSvr
                 // PlayObject := UserEngine.GetPlayObject(sWho);
                 // if PlayObject <> nil then begin
                 // if not PlayObject.m_boAllowDeal then begin
-                // PlayObject.SysMsg(Format('%s向你赠送%s未成功,你必须先允许交易才能接受赠送', [m_sCharName, sItemName]), c_Blue, t_Hint);
-                // SysMsg(Format('%s 当前不允许交易,对方必须允许交易后你才能再进行赠送', [PlayObject.m_sCharName]), c_Red, t_Hint);
+                // PlayObject.SysMsg(string.Format('%s向你赠送%s未成功,你必须先允许交易才能接受赠送', [m_sCharName, sItemName]), c_Blue, t_Hint);
+                // SysMsg(string.Format('%s 当前不允许交易,对方必须允许交易后你才能再进行赠送', [PlayObject.m_sCharName]), c_Red, t_Hint);
                 // Exit;
                 // end;
                 // if sItemName <> '' then begin
@@ -11188,7 +10986,7 @@ namespace GameSvr
                 // '9999' + #9 +
                 // '1' + #9 +
                 // '商铺赠送给:' + PlayObject.m_sCharName + '-' + IntToStr(pShopItem^.wPrice) + '金币');
-                // PlayObject.SysMsg(Format('%s向你赠送了%s，请注意查收', [m_sCharName, sItemName]), c_Purple, t_Hint);
+                // PlayObject.SysMsg(string.Format('%s向你赠送了%s，请注意查收', [m_sCharName, sItemName]), c_Purple, t_Hint);
                 // nRetCode := 1;
                 // end else begin
                 // goto lab2;
@@ -11211,7 +11009,7 @@ namespace GameSvr
                 // IntToStr(pUserItem.MakeIndex) + #9 +
                 // '1' + #9 +
                 // '商铺赠送给:' + PlayObject.m_sCharName + '-' + IntToStr(pShopItem^.wPrice) + '金币');
-                // PlayObject.SysMsg(Format('%s向你赠送了%s，请注意查收', [m_sCharName, sItemName]), c_Purple, t_Hint);
+                // PlayObject.SysMsg(string.Format('%s向你赠送了%s，请注意查收', [m_sCharName, sItemName]), c_Purple, t_Hint);
                 // if g_Config.nShopItemBind = 1 then
                 // BindItemCharName(pUserItem^.wIndex, pUserItem^.MakeIndex, PlayObject.m_sCharName)
                 // else if g_Config.nShopItemBind = 2 then
@@ -12034,8 +11832,8 @@ namespace GameSvr
                                 who.WeightChanged();
                                 who.LastSaveTime = 0;
                                 // 0720
-                                who.SysMsg(Format("%s花费%d%s购买了你的%s", new object[] { this.UserName, nPrice, ObjBase.g_DealGoldType[nPriceType], pstd.Name }), 2);
-                                this.SysMsg(Format("你花费%d%s购买了%s的%s", new object[] { nPrice, ObjBase.g_DealGoldType[nPriceType], who.UserName, pstd.Name }), 2);
+                                who.SysMsg(string.Format("%s花费%d%s购买了你的%s", new object[] { this.UserName, nPrice, ObjBase.g_DealGoldType[nPriceType], pstd.Name }), 2);
+                                this.SysMsg(string.Format("你花费%d%s购买了%s的%s", new object[] { nPrice, ObjBase.g_DealGoldType[nPriceType], who.UserName, pstd.Name }), 2);
                                 for (ii = who.StallMgr.mBlock.Items.GetLowerBound(0); ii <= who.StallMgr.mBlock.Items.GetUpperBound(0); ii++)
                                 {
                                     if (who.StallMgr.mBlock.Items[ii].MakeIndex == MakeIndex)
@@ -12163,12 +11961,12 @@ namespace GameSvr
             data = "";
             for (i = 0; i < this.GroupMembers.Count; i++)
             {
-                cret = this.GroupMembers.Values[i] as TCreature;
+                cret = this.GroupMembers[i];
                 data = data + cret.UserName + "/";
             }
             for (i = 0; i < this.GroupMembers.Count; i++)
             {
-                hum = this.GroupMembers.Values[i] as TUserHuman;
+                hum = this.GroupMembers[i] as TUserHuman;
                 if (hum.RaceServer == Grobal2.RC_USERHUMAN)
                 {
                     hum.SendDefMessage(Grobal2.SM_GROUPMEMBERS, 0, 0, 0, 0, data);
@@ -12374,13 +12172,13 @@ namespace GameSvr
             {
                 // 滚弊菩摹
                 // PDS -- Nil Check
-                if (this.GroupMembers.Values[i] == null)
+                if (this.GroupMembers[i] == null)
                 {
                     svMain.MainOutMessage("ERROR: GROUP MEMBER IS NIL");
                 }
                 else
                 {
-                    if ((this.GroupMembers.Values[i] as TCreature).UserName.ToLower().CompareTo(who.UserName.ToLower()) == 0)
+                    if (this.GroupMembers[i].UserName.ToLower().CompareTo(who.UserName.ToLower()) == 0)
                     {
                         SendDefMessage(Grobal2.SM_GROUPADDMEM_FAIL, -3, 0, 0, 0, "");
                         return;
@@ -12447,13 +12245,13 @@ namespace GameSvr
             }
             for (i = 0; i < who.GroupMembers.Count; i++)
             {
-                if (who.GroupMembers.Values[i] == null)
+                if (who.GroupMembers[i] == null)
                 {
                     svMain.MainOutMessage("ERROR: GROUP MEMBER IS NIL");
                 }
                 else
                 {
-                    if ((who.GroupMembers.Values[i] as TCreature).UserName.ToLower().CompareTo(this.UserName.ToLower()) == 0)
+                    if (who.GroupMembers[i].UserName.ToLower().CompareTo(this.UserName.ToLower()) == 0)
                     {
                         who.SendDefMessage(Grobal2.SM_GROUPADDMEM_FAIL, -3, 0, 0, 0, "");
                         this.GroupRequester = "";
@@ -13175,7 +12973,7 @@ namespace GameSvr
                             {
                                 // 肺弊巢辫
                                 // 厘芭贰_
-                                svMain.AddUserLog("41\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + ((TGuild)this.MyGuild).GuildName + "\09" + agitnumber.ToString() + "\09" + "1\09" + this.DealCret.UserName);
+                                svMain.AddUserLog("41\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + MyGuild.GuildName + "\09" + agitnumber.ToString() + "\09" + "1\09" + this.DealCret.UserName);
                                 // TGuild(DealCret.MyGuild).GuildName);
                                 svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILDAGIT, svMain.ServerIndex, "");
                                 this.BoGuildAgitDealTry = false;
@@ -13298,7 +13096,7 @@ namespace GameSvr
         {
             if (this.MyGuild != null)
             {
-                SendDefMessage(Grobal2.SM_CHANGEGUILDNAME, 0, 0, 0, 0, ((TGuild)this.MyGuild).GuildName + "/" + this.GuildRankName);
+                SendDefMessage(Grobal2.SM_CHANGEGUILDNAME, 0, 0, 0, 0, MyGuild.GuildName + "/" + this.GuildRankName);
             }
             else
             {
@@ -13320,7 +13118,6 @@ namespace GameSvr
                 if (this.CretInNearXY(who, xx, yy))
                 {
                     backupWho = who;
-                    // 盒脚
                     if ((who.RaceServer == Grobal2.RC_CLONE) && (who.Master != null))
                     {
                         if (who.Master.RaceServer == Grobal2.RC_USERHUMAN)
@@ -13333,23 +13130,19 @@ namespace GameSvr
                             return;
                         }
                     }
-                    //FillChar(ustate, sizeof(TUserStateInfo), '\0');
+                    ustate = new TUserStateInfo();
                     ustate.Feature = backupWho.GetRelFeature(this);
                     ustate.UserName = backupWho.UserName;
                     ustate.NameColor = this.GetThisCharColor(backupWho);
                     if (backupWho.MyGuild != null)
                     {
-                        ustate.GuildName = ((TGuild)backupWho.MyGuild).GuildName;
+                        ustate.GuildName = backupWho.MyGuild.GuildName;
                     }
                     ustate.GuildRankName = backupWho.GuildRankName;
                     ustate.bExistLover = (bool)(backupWho as TUserHuman).fLover.GetLoverCount;
-                    // 楷牢 惑怕
                     ustate.LoverName = (backupWho as TUserHuman).fLover.GetLoverName;
-                    // 楷牢 捞抚
-                    // 2003/03/15 酒捞袍 牢亥配府 犬厘
                     for (i = 0; i <= 12; i++)
                     {
-                        // 8->12
                         if (backupWho.UseItems[i].Index > 0)
                         {
                             ps = svMain.UserEngine.GetStdItem(backupWho.UseItems[i].Index);
@@ -13361,7 +13154,6 @@ namespace GameSvr
                                 citem.MakeIndex = backupWho.UseItems[i].MakeIndex;
                                 citem.Dura = backupWho.UseItems[i].Dura;
                                 citem.DuraMax = backupWho.UseItems[i].DuraMax;
-                                // citem.UpgradeOpt := opt;
                                 // FillChar(citem.Desc, sizeof(citem.Desc), '\0');
                                 //Move(backupWho.UseItems[i].Desc, citem.Desc, sizeof(backupWho.UseItems[i].Desc));
                                 // 玫狼公豪
@@ -13376,7 +13168,7 @@ namespace GameSvr
                         }
                     }
                     Def = Grobal2.MakeDefaultMsg(Grobal2.SM_SENDUSERSTATE, 0, 0, 0, 1);
-                    SendSocket(Def, EDcode.EncodeBuffer(ustate, sizeof(TUserStateInfo)));
+                    SendSocket(Def, EDcode.EncodeBuffer(ustate));
                 }
             }
             catch
@@ -13391,56 +13183,50 @@ namespace GameSvr
             string data = string.Empty;
             if (this.MyGuild != null)
             {
-                data = ((TGuild)this.MyGuild).GuildName + '\r';
+                data = MyGuild.GuildName + '\r';
                 data = data + " \r";
-                // 巩颇标富 颇老 捞抚
                 if (this.GuildRank == 1)
                 {
-                    // 巩林
                     data = data + "1\r";
                 }
                 else
                 {
                     data = data + "0\r";
                 }
-                // 老馆
-                // NoticeList
                 data = data + "<Notice>\r";
-                if (((TGuild)this.MyGuild).NoticeList != null)
+                if (MyGuild.NoticeList != null)
                 {
-                    for (i = 0; i < ((TGuild)this.MyGuild).NoticeList.Count; i++)
+                    for (i = 0; i < MyGuild.NoticeList.Count; i++)
                     {
                         if (data.Length > 5000)
                         {
                             break;
                         }
-                        data = data + ((TGuild)this.MyGuild).NoticeList[i] + '\r';
+                        data = data + MyGuild.NoticeList[i] + '\r';
                     }
                 }
-                // KillGuilds
                 data = data + "<KillGuilds>\r";
-                if (((TGuild)this.MyGuild).KillGuilds != null)
+                if (MyGuild.KillGuilds != null)
                 {
-                    for (i = 0; i < ((TGuild)this.MyGuild).KillGuilds.Count; i++)
+                    for (i = 0; i < MyGuild.KillGuilds.Count; i++)
                     {
                         if (data.Length > 5000)
                         {
                             break;
                         }
-                        data = data + ((TGuild)this.MyGuild).KillGuilds[i] + '\r';
+                        data = data + MyGuild.KillGuilds[i] + '\r';
                     }
                 }
-                // AllyGuilds
                 data = data + "<AllyGuilds>\r";
-                if (((TGuild)this.MyGuild).AllyGuilds != null)
+                if (MyGuild.AllyGuilds != null)
                 {
-                    for (i = 0; i < ((TGuild)this.MyGuild).AllyGuilds.Count; i++)
+                    for (i = 0; i < MyGuild.AllyGuilds.Count; i++)
                     {
                         if (data.Length > 5000)
                         {
                             break;
                         }
-                        data = data + ((TGuild)this.MyGuild).AllyGuilds[i] + '\r';
+                        data = data + MyGuild.AllyGuilds[i] + '\r';
                     }
                 }
                 Def = Grobal2.MakeDefaultMsg(Grobal2.SM_OPENGUILDDLG, 0, 0, 0, 1);
@@ -13466,11 +13252,11 @@ namespace GameSvr
             if (this.MyGuild != null)
             {
                 data = "";
-                if (((TGuild)this.MyGuild).MemberList != null)
+                if (MyGuild.MemberList != null)
                 {
-                    for (i = 0; i < ((TGuild)this.MyGuild).MemberList.Count; i++)
+                    for (i = 0; i < MyGuild.MemberList.Count; i++)
                     {
-                        pgrank = (TGuildRank)((TGuild)this.MyGuild).MemberList[i];
+                        pgrank = MyGuild.MemberList[i];
                         data = data + "#" + pgrank.Rank.ToString() + "/*" + pgrank.RankName + "/";
                         for (k = 0; k < pgrank.MemList.Count; k++)
                         {
@@ -13503,17 +13289,17 @@ namespace GameSvr
                     {
                         if (hum.AllowEnterGuild)
                         {
-                            if (!((TGuild)this.MyGuild).IsMember(who))
+                            if (!MyGuild.IsMember(who))
                             {
                                 // 啊涝巩颇 绝阑 锭
                                 // 牢盔 力茄
-                                if ((hum.MyGuild == null) && (((TGuild)this.MyGuild).MemberList.Count < ObjBase.MAXGUILDMEMBER))
+                                if ((hum.MyGuild == null) && (MyGuild.MemberList.Count < ObjBase.MAXGUILDMEMBER))
                                 {
-                                    ((TGuild)this.MyGuild).AddMember(hum);
-                                    svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, ((TGuild)this.MyGuild).GuildName);
+                                    MyGuild.AddMember(hum);
+                                    svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, MyGuild.GuildName);
                                     // 货 甘滚甫 巩颇俊 啊涝矫糯
                                     hum.MyGuild = this.MyGuild;
-                                    hum.GuildRankName = ((TGuild)this.MyGuild).MemberLogin(hum, ref hum.GuildRank);
+                                    hum.GuildRankName = MyGuild.MemberLogin(hum, ref hum.GuildRank);
                                     // hum.SendMsg (self, RM_CHANGEGUILDNAME, 0, 0, 0, 0, '');
                                     this.ChangeNameColor();
                                     // 捞抚祸 诀单捞飘(sonmg 2004/12/29)
@@ -13569,11 +13355,11 @@ namespace GameSvr
             if (this.IsGuildMaster())
             {
                 // 巩林父 啊瓷
-                if (((TGuild)this.MyGuild).IsMember(who))
+                if (MyGuild.IsMember(who))
                 {
                     if (this.UserName != who)
                     {
-                        if (((TGuild)this.MyGuild).DelMember(who))
+                        if (MyGuild.DelMember(who))
                         {
                             hum = svMain.UserEngine.GetUserHuman(who);
                             if (hum != null)
@@ -13582,7 +13368,7 @@ namespace GameSvr
                                 hum.GuildRankChanged(0, "");
                                 hum.UserNameChanged();
                             }
-                            svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, ((TGuild)this.MyGuild).GuildName);
+                            svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, MyGuild.GuildName);
                             error = 0;
                         }
                         else
@@ -13596,8 +13382,8 @@ namespace GameSvr
                         error = 3;
                         // 巩林 夯牢篮 呕硼 救凳.
                         // 巩林夯牢捞 呕硼窍妨搁 巩盔捞 酒公档 绝绰惑怕俊辑 磊脚阑 哗搁凳, 巩颇档 柄咙
-                        gname = ((TGuild)this.MyGuild).GuildName;
-                        if (((TGuild)this.MyGuild).DelGuildMaster(who))
+                        gname = MyGuild.GuildName;
+                        if (MyGuild.DelGuildMaster(who))
                         {
                             // 厘盔 馆券 饶 巩颇昏力.
                             // GuildAgitMan.DelGuildAgit( gname );
@@ -13641,7 +13427,7 @@ namespace GameSvr
                 return;
             }
             // 巩颇狼 巩林父 函版 啊瓷
-            ((TGuild)this.MyGuild).NoticeList.Clear();
+            MyGuild.NoticeList.Clear();
             while (true)
             {
                 if (body == "")
@@ -13649,10 +13435,10 @@ namespace GameSvr
                     break;
                 }
                 body  =  HUtil32.GetValidStr3(body, ref data, new char[] { '\r' });
-                ((TGuild)this.MyGuild).NoticeList.Add(data);
+                MyGuild.NoticeList.Add(data);
             }
-            ((TGuild)this.MyGuild).SaveGuild();
-            svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, ((TGuild)this.MyGuild).GuildName);
+            MyGuild.SaveGuild();
+            svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, MyGuild.GuildName);
             ServerGetOpenGuildDlg();
         }
 
@@ -13668,10 +13454,10 @@ namespace GameSvr
                 return;
             }
             // 巩颇狼 巩林父 函版 啊瓷
-            error = ((TGuild)this.MyGuild).UpdateGuildRankStr(body);
+            error = MyGuild.UpdateGuildRankStr(body);
             if (error == 0)
             {
-                svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, ((TGuild)this.MyGuild).GuildName);
+                svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, MyGuild.GuildName);
                 ServerGetGuildMemberList();
             }
             else if (error <= -2)
@@ -13696,20 +13482,20 @@ namespace GameSvr
                 {
                     if (hum.GetFrontCret() == this)
                     {
-                        if (((TGuild)hum.MyGuild).AllowAllyGuild)
+                        if (hum.MyGuild.AllowAllyGuild)
                         {
                             if (this.IsGuildMaster() && hum.IsGuildMaster())
                             {
-                                if (((TGuild)this.MyGuild).CanAlly((TGuild)hum.MyGuild) && ((TGuild)hum.MyGuild).CanAlly((TGuild)this.MyGuild))
+                                if (MyGuild.CanAlly(hum.MyGuild) && hum.MyGuild.CanAlly(MyGuild))
                                 {
-                                    ((TGuild)this.MyGuild).MakeAllyGuild((TGuild)hum.MyGuild);
-                                    ((TGuild)hum.MyGuild).MakeAllyGuild((TGuild)this.MyGuild);
-                                    ((TGuild)this.MyGuild).GuildMsg(((TGuild)hum.MyGuild).GuildName + "门派已经和您的门派结盟完成。");
-                                    ((TGuild)hum.MyGuild).GuildMsg(((TGuild)this.MyGuild).GuildName + "门派已经和您的门派结盟完成。");
-                                    ((TGuild)this.MyGuild).MemberNameChanged();
-                                    ((TGuild)hum.MyGuild).MemberNameChanged();
-                                    svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, ((TGuild)this.MyGuild).GuildName);
-                                    svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, ((TGuild)hum.MyGuild).GuildName);
+                                    MyGuild.MakeAllyGuild(hum.MyGuild);
+                                    hum.MyGuild.MakeAllyGuild(MyGuild);
+                                    MyGuild.GuildMsg(hum.MyGuild.GuildName + "门派已经和您的门派结盟完成。");
+                                    hum.MyGuild.GuildMsg(MyGuild.GuildName + "门派已经和您的门派结盟完成。");
+                                    MyGuild.MemberNameChanged();
+                                    hum.MyGuild.MemberNameChanged();
+                                    svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, MyGuild.GuildName);
+                                    svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, hum.MyGuild.GuildName);
                                     error = 0;
                                 }
                                 else
@@ -13749,16 +13535,16 @@ namespace GameSvr
                 aguild = svMain.GuildMan.GetGuild(gname);
                 if (aguild != null)
                 {
-                    if (((TGuild)this.MyGuild).IsAllyGuild(aguild))
+                    if (MyGuild.IsAllyGuild(aguild))
                     {
-                        ((TGuild)this.MyGuild).BreakAlly(aguild);
-                        aguild.BreakAlly((TGuild)this.MyGuild);
-                        ((TGuild)this.MyGuild).GuildMsg(aguild.GuildName + "门派已经和您的门派解除结盟完成。");
-                        aguild.GuildMsg(((TGuild)this.MyGuild).GuildName + "门派解除了与您的门派的结盟。");
-                        ((TGuild)this.MyGuild).MemberNameChanged();
+                        MyGuild.BreakAlly(aguild);
+                        aguild.BreakAlly(MyGuild);
+                        MyGuild.GuildMsg(aguild.GuildName + "门派已经和您的门派解除结盟完成。");
+                        aguild.GuildMsg(MyGuild.GuildName + "门派解除了与您的门派的结盟。");
+                        MyGuild.MemberNameChanged();
                         aguild.MemberNameChanged();
                         // 促弗 辑滚俊 利侩
-                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, ((TGuild)this.MyGuild).GuildName);
+                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, MyGuild.GuildName);
                         svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILD, svMain.ServerIndex, aguild.GuildName);
                         error = 0;
                     }
@@ -13791,7 +13577,7 @@ namespace GameSvr
             int i;
             int lo;
             int hi;
-            lo = Lobyte((ushort)abil);
+            lo = LoByte((ushort)abil);
             hi = HiByte((ushort)abil);
             for (i = 1; i <= point; i++)
             {
@@ -14048,47 +13834,34 @@ namespace GameSvr
                             }
                             else
                             {
-                                // 惑措规捞 泅犁 促弗 览翠 惑怕捞促.
                                 SendDefMessage(Grobal2.SM_LM_RESULT, 0, ReqType, Grobal2.RsError_DontJoin, 0, Target.UserName);
                             }
                         }
-                        // if not Target.fLover.GetEnableJoin
                     }
                     break;
                 case Grobal2.RsReq_AloowJoin:
-                    // if not Self.fLover.GetEnableJoinReq
-                    // 曼啊甫 倾遏窃
                     if (Target.fLover.ReqSequence == Grobal2.RsReq_WaitAnser)
                     {
-                        // 鸥百阑 殿废茄促.
                         Date = "";
                         this.fLover.ReqSequence = Grobal2.RsReq_None;
                         this.fLover.Add(this.UserName, Target.UserName, ReqType, Target.WAbil.Level, Target.Sex, Date, "");
                         msgstr = this.fLover.GetListmsg(ReqType, ListCount);
                         SendDefMessage(Grobal2.SM_LM_LIST, 0, ListCount, 0, 0, msgstr);
                         SendDefMessage(Grobal2.SM_LM_RESULT, 0, ReqType, Grobal2.RsError_SuccessJoin, 0, Target.UserName);
-                        // 磊脚阑 鸥百俊 殿废茄促.
                         Target.fLover.ReqSequence = Grobal2.RsReq_None;
                         Target.fLover.Add(Target.UserName, this.UserName, ReqType, this.WAbil.Level, this.Sex, Date, "");
                         msgstr = Target.fLover.GetListmsg(ReqType, ListCount);
                         Target.SendDefMessage(Grobal2.SM_LM_LIST, 0, ListCount, 0, 0, msgstr);
                         Target.SendDefMessage(Grobal2.SM_LM_RESULT, 0, ReqType, Grobal2.RsError_SuccessJoined, 0, this.UserName);
-                        // DB 俊 历厘茄促. 茄疙父 历厘窍搁 唱赣瘤荤恩篮 舅酒辑 历厘等促.
                         this.SendMsg(this, Grobal2.RM_LM_DBADD, 0, 0, 0, 0, Target.UserName + ":" + ReqType.ToString() + ":" + Date + "/");
-                        // 林函俊 寇摹扁
                         str = "恭喜！\"" + this.UserName + "\"与\"" + Target.UserName + "\"成为情侣。";
-                        // UserEngine.CryCry (RM_SYSMSG_PINK, PEnvir, CX, CY, 300, '⒔' + str);
                         svMain.UserEngine.CryCry(Grobal2.RM_SYSMSG_PINK, this.PEnvir, this.CX, this.CY, 300, ":)" + str);
-                        // 肺弊巢辫
-                        // 楷牢_
-                        // 肝澜:0
                         svMain.AddUserLog("47\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + "0\09" + "0\09" + "0\09" + Target.UserName);
                         this.UserNameChanged();
                         Target.UserNameChanged();
                     }
                     else
                     {
-                        // 惑措规捞 泅犁 促弗 览翠 惑怕捞促. 蝶扼辑 秒家矫挪促.
                         this.fLover.ReqSequence = Grobal2.RsReq_None;
                         SendDefMessage(Grobal2.SM_LM_RESULT, 0, ReqType, Grobal2.RsError_CancelJoin, 0, Target.UserName);
                         Target.fLover.ReqSequence = Grobal2.RsReq_None;
@@ -14096,14 +13869,12 @@ namespace GameSvr
                     }
                     break;
                 case Grobal2.RsReq_DenyJoin:
-                    // 曼啊甫 芭例窃
                     this.fLover.ReqSequence = Grobal2.RsReq_None;
                     SendDefMessage(Grobal2.SM_LM_RESULT, 0, ReqType, Grobal2.RsError_CancelJoin, 0, Target.UserName);
                     Target.fLover.ReqSequence = Grobal2.RsReq_None;
                     Target.SendDefMessage(Grobal2.SM_LM_RESULT, 0, ReqType, Grobal2.RsError_DenyJoin, 0, this.UserName);
                     break;
                 case Grobal2.RsReq_Cancel:
-                    // 秒家
                     this.fLover.ReqSequence = Grobal2.RsReq_None;
                     SendDefMessage(Grobal2.SM_LM_RESULT, 0, ReqType, Grobal2.RsError_CancelJoin, 0, Target.UserName);
                     Target.fLover.ReqSequence = Grobal2.RsReq_None;
@@ -14112,47 +13883,37 @@ namespace GameSvr
             }
         }
 
-        // 楷牢 荤力 昏力
         private void ServerGetRelationDelete(int ReqType, string OtherName)
         {
             int svidx=0;
             TUserHuman hum;
             TCreature cert;
             string strPayment;
-            // 楷牢 包拌老 版快...
             if (ReqType == Grobal2.RsState_Lover)
             {
-                // 菊俊 乐绰 惑措甫 掘绰促.
                 cert = this.GetFrontCret();
-                // 鸥百捞 绝芭唱 , 付林焊绊 乐瘤 臼芭唱 , 牢埃捞 酒聪搁 唱埃促.
                 if ((cert == null) || (cert.GetFrontCret() != this) || (cert.RaceServer != Grobal2.RC_USERHUMAN))
                 {
                     this.BoxMsg("要打破情侣关系，你必须面对对方。", 0);
                     return;
                 }
-                // human 栏肺 鸥涝 官厕
                 hum = cert as TUserHuman;
                 if (hum == null)
                 {
                     return;
                 }
-                // 惑措规捞 唱狼 楷牢牢瘤 眉农
                 if (!((hum.fLover.GetLoverName == this.UserName) && (fLover.GetLoverName == hum.UserName)))
                 {
                     this.BoxMsg("这不是你的情侣。", 0);
                     return;
                 }
-                // 困磊丰 尘 捣捞 乐绰瘤 犬牢
                 if (this.Gold < ObjBase.COMPENSATORY_PAYMENT)
                 {
                     strPayment = (ObjBase.COMPENSATORY_PAYMENT / 10000).ToString();
                     this.BoxMsg("要打破情侣关系，你需要" + strPayment + "0,000金币。", 0);
                     return;
                 }
-                // -------------------
-                // 楷牢 秦力 犬牢
                 hum.SendDefMessage(Grobal2.SM_LM_DELETE_REQ, 0, 0, 0, 0, this.UserName);
-                // ///////////////////
                 return;
                 // -------------------
             }
@@ -14183,30 +13944,24 @@ namespace GameSvr
             TUserHuman hum;
             TCreature cert;
             string strPayment;
-            // 楷牢 包拌老 版快...
             if (ReqType == Grobal2.RsState_Lover)
             {
-                // 菊俊 乐绰 惑措甫 掘绰促.
                 cert = this.GetFrontCret();
-                // 鸥百捞 绝芭唱 , 付林焊绊 乐瘤 臼芭唱 , 牢埃捞 酒聪搁 唱埃促.
                 if ((cert == null) || (cert.GetFrontCret() != this) || (cert.RaceServer != Grobal2.RC_USERHUMAN))
                 {
                     this.BoxMsg("要打破情侣关系，你必须面对对方。", 0);
                     return;
                 }
-                // human 栏肺 鸥涝 官厕
                 hum = cert as TUserHuman;
                 if (hum == null)
                 {
                     return;
                 }
-                // 惑措规捞 唱狼 楷牢牢瘤 眉农
                 if (!((hum.fLover.GetLoverName == this.UserName) && (fLover.GetLoverName == hum.UserName)))
                 {
                     this.BoxMsg("这不是你的情侣。", 0);
                     return;
                 }
-                // 困磊丰 尘 捣捞 乐绰瘤 犬牢
                 if (this.Gold < ObjBase.COMPENSATORY_PAYMENT)
                 {
                     strPayment = (ObjBase.COMPENSATORY_PAYMENT / 10000).ToString();
@@ -14273,23 +14028,17 @@ namespace GameSvr
             {
                 return;
             }
-            // 背力 芭何 皋矫瘤
             hum.SysMsg(this.UserName + "拒绝解除情侣关系。", 3);
         }
 
-        // 辑滚捞悼栏肺 RM_MAKE_SLAVE啊 抗距登绢 乐绰瘤 咯何
-        // RelationShip
-        // 惑措规捞 磊脚阑 包拌秦力 矫淖阑 版快
         public bool RelationShipDeleteOther(int ReqType, string OtherName)
         {
-            bool result;
-            result = false;
+            bool result = false;
             if (fLover.Find(OtherName))
             {
                 fLover.Delete(OtherName);
                 SendDefMessage(Grobal2.SM_LM_DELETE, 0, ReqType, 0, 0, OtherName);
                 SendDefMessage(Grobal2.SM_LM_RESULT, 0, ReqType, Grobal2.RsError_SuccessDelete, 0, OtherName);
-                // DB俊辑 昏力茄促.
                 this.SendMsg(this, Grobal2.RM_LM_DBDELETE, 0, 0, 0, 0, OtherName + "/");
                 result = true;
             }
@@ -14343,15 +14092,12 @@ namespace GameSvr
         // 包拌矫胶袍殿俊辑 甘沥焊甫 舅酒柯促.
         private string GetCharMapInfo(string charname)
         {
-            string result;
-            TUserHuman userinfo;
-            result = "";
-            userinfo = null;
+            string result = "";
             if (charname == "")
             {
                 return result;
             }
-            userinfo = svMain.UserEngine.GetUserHuman(charname);
+            TUserHuman userinfo = svMain.UserEngine.GetUserHuman(charname);
             if ((userinfo != null) && (userinfo.PEnvir != null))
             {
                 result = userinfo.PEnvir.MapTitle;
@@ -14359,7 +14105,6 @@ namespace GameSvr
             return result;
         }
 
-        // 包拌矫胶袍俊辑 府胶飘甫 DB 俊辑 掘绢吭阑版快
         private void ServerGetRelationDBGetList(string body)
         {
             int count;
@@ -14948,12 +14693,12 @@ namespace GameSvr
             {
                 return;
             }
-            if (((TGuild)this.MyGuild).GuildName == "")
+            if (MyGuild.GuildName == "")
             {
                 return;
             }
             // 巩颇疙 汗荤.
-            gname = ((TGuild)this.MyGuild).GuildName;
+            gname = MyGuild.GuildName;
             gnameHere = this.GetGuildNameHereAgit();
             // 泅犁 厘盔狼 巩颇啊 酒聪搁...
             if (gname != gnameHere)
@@ -14980,7 +14725,7 @@ namespace GameSvr
         {
             int GuildAgitNum;
             TGuildAgit guildagit;
-            string strTemp;
+            string strTemp = string.Empty;
             int OrgNum;
             GuildAgitNum = 0;
             if (nKind == SqlEngn.KIND_NOTICE)
@@ -14995,7 +14740,7 @@ namespace GameSvr
             {
                 return;
             }
-            if (((TGuild)this.MyGuild).GuildName == "")
+            if (MyGuild.GuildName == "")
             {
                 return;
             }
@@ -15004,19 +14749,19 @@ namespace GameSvr
             {
                 return;
             }
-            guildagit = svMain.GuildAgitMan.GetGuildAgit(((TGuild)this.MyGuild).GuildName);
+            guildagit = svMain.GuildAgitMan.GetGuildAgit(MyGuild.GuildName);
             if (guildagit != null)
             {
                 GuildAgitNum = guildagit.GuildAgitNumber;
             }
             // 郴侩 菊俊 蜡历捞抚 眠啊.
-            if (svMain.GuildAgitBoardMan.AddArticle(((TGuild)this.MyGuild).GuildName, nKind, GuildAgitNum, this.UserName, body))
+            if (svMain.GuildAgitBoardMan.AddArticle(MyGuild.GuildName, nKind, GuildAgitNum, this.UserName, body))
             {
                 if (nKind == SqlEngn.KIND_NOTICE)
                 {
                     // 努扼捞攫飘肺 霸矫魄 郴侩 盎脚.
                     // 泅犁其捞瘤
-                    CmdReloadGaBoardList(((TGuild)this.MyGuild).GuildName, nCurPage);
+                    CmdReloadGaBoardList(MyGuild.GuildName, nCurPage);
                 }
                 else
                 {
@@ -15028,14 +14773,14 @@ namespace GameSvr
                     {
                         // 努扼捞攫飘肺 霸矫魄 郴侩 盎脚.
                         // 霉其捞瘤
-                        CmdReloadGaBoardList(((TGuild)this.MyGuild).GuildName, 1);
+                        CmdReloadGaBoardList(MyGuild.GuildName, 1);
                     }
                     else
                     {
                         // 酒聪搁 泅犁其捞瘤...
                         // 努扼捞攫飘肺 霸矫魄 郴侩 盎脚.
                         // 泅犁其捞瘤
-                        CmdReloadGaBoardList(((TGuild)this.MyGuild).GuildName, nCurPage);
+                        CmdReloadGaBoardList(MyGuild.GuildName, nCurPage);
                     }
                 }
             }
@@ -15051,7 +14796,7 @@ namespace GameSvr
             {
                 return;
             }
-            if (((TGuild)this.MyGuild).GuildName == "")
+            if (MyGuild.GuildName == "")
             {
                 return;
             }
@@ -15060,17 +14805,17 @@ namespace GameSvr
             {
                 return;
             }
-            guildagit = svMain.GuildAgitMan.GetGuildAgit(((TGuild)this.MyGuild).GuildName);
+            guildagit = svMain.GuildAgitMan.GetGuildAgit(MyGuild.GuildName);
             if (guildagit != null)
             {
                 GuildAgitNum = guildagit.GuildAgitNumber;
             }
             // 郴侩 菊俊 蜡历捞抚 眠啊.
-            if (svMain.GuildAgitBoardMan.DelArticle(((TGuild)this.MyGuild).GuildName, this.UserName, body))
+            if (svMain.GuildAgitBoardMan.DelArticle(MyGuild.GuildName, this.UserName, body))
             {
                 // 努扼捞攫飘肺 霸矫魄 郴侩 盎脚.
                 // 泅犁其捞瘤
-                CmdReloadGaBoardList(((TGuild)this.MyGuild).GuildName, nCurPage);
+                CmdReloadGaBoardList(MyGuild.GuildName, nCurPage);
             }
         }
 
@@ -15084,7 +14829,7 @@ namespace GameSvr
             {
                 return;
             }
-            if (((TGuild)this.MyGuild).GuildName == "")
+            if (MyGuild.GuildName == "")
             {
                 return;
             }
@@ -15093,17 +14838,17 @@ namespace GameSvr
             {
                 return;
             }
-            guildagit = svMain.GuildAgitMan.GetGuildAgit(((TGuild)this.MyGuild).GuildName);
+            guildagit = svMain.GuildAgitMan.GetGuildAgit(MyGuild.GuildName);
             if (guildagit != null)
             {
                 GuildAgitNum = guildagit.GuildAgitNumber;
             }
             // 郴侩 菊俊 蜡历捞抚 眠啊.
-            if (svMain.GuildAgitBoardMan.EditArticle(((TGuild)this.MyGuild).GuildName, this.UserName, body))
+            if (svMain.GuildAgitBoardMan.EditArticle(MyGuild.GuildName, this.UserName, body))
             {
                 // 努扼捞攫飘肺 霸矫魄 郴侩 盎脚.
                 // 泅犁其捞瘤
-                CmdReloadGaBoardList(((TGuild)this.MyGuild).GuildName, nCurPage);
+                CmdReloadGaBoardList(MyGuild.GuildName, nCurPage);
             }
         }
 
@@ -15189,6 +14934,7 @@ namespace GameSvr
             //FillChar(StallMgr.mBlock, '\0');
             //DecodeBuffer(MsgBuff, ClientStallItems, sizeof(TClientStallItems));
             // * count ???
+            ClientStallItems = new TClientStallItems();
             StallInfo = new TStallInfo();
             if (nCount >= 1 && nCount <= 10)
             {
@@ -15327,7 +15073,7 @@ namespace GameSvr
             TStdItem StdItem;
             TStdItem StdItem24;
             TUserItem UserItem;
-            TClientStall StallItem;
+            TClientStall StallItem = null;
             TStallInfo StallInfo;
             if (!StallMgr.OnSale)
             {
@@ -15345,7 +15091,7 @@ namespace GameSvr
                     SendDefMessage(Grobal2.SM_UPDATESTALLITEM, -2, 0, 0, 0, "");
                     return;
                 }
-                DecodeBuffer(msg, StallItem);
+                EDcode.DecodeBuffer(msg, ref StallItem);
                 if (StallItem.MakeIndex == 0)
                 {
                     SendDefMessage(Grobal2.SM_UPDATESTALLITEM, -3, 0, 0, 0, "");
@@ -15354,7 +15100,6 @@ namespace GameSvr
                 // 同MakeIndex检测
                 for (i = 0; i <= 9; i++)
                 {
-                    // if m_StallMgr.mBlock.Items[i].makeindex = 0 then Continue;
                     if (StallItem.MakeIndex == StallMgr.mBlock.Items[i].MakeIndex)
                     {
                         SendDefMessage(Grobal2.SM_UPDATESTALLITEM, -13, 0, 0, 0, "");
@@ -15363,8 +15108,7 @@ namespace GameSvr
                 }
                 if (!new ArrayList(new int[] { 4, 5 }).Contains(StallItem.GoldType))
                 {
-                    SendDefMessage(Grobal2.SM_UPDATESTALLITEM, -4, 0, 0, 0, "");
-                    // 物品出售价格类型定义错误，终止摆摊
+                    SendDefMessage(Grobal2.SM_UPDATESTALLITEM, -4, 0, 0, 0, "");// 物品出售价格类型定义错误，终止摆摊
                     return;
                 }
                 boOK = false;
@@ -15410,16 +15154,6 @@ namespace GameSvr
                     SendDefMessage(Grobal2.SM_UPDATESTALLITEM, -8, 0, 0, 0, "");
                     return;
                 }
-                // if (PCardinal(@UserItem.btValue[22])^ > 0) and (PCardinal(@UserItem.btValue[22])^ <> m_dwIdCRC) then begin
-                // if g_Config.boBindNoSell then begin
-                // SendDefMessage(SM_UPDATESTALLITEM, -13, 0, 0, 0, StdItem.Name);
-                // Exit;
-                // end;
-                // end;
-                // if InLimitItemList(StdItem.Name, -1, t_dSell) then begin
-                // SendDefMessage(SM_UPDATESTALLITEM, -9, 0, 0, 0, StdItem.Name);
-                // Exit;
-                // end;
                 StdItem24 = StdItem;
                 opt = svMain.ItemMan.GetUpgradeStdItem(UserItem, ref StdItem24);
                 // ItemUnit.GetItemAddValue(UserItem, StdItem24);
@@ -15450,13 +15184,12 @@ namespace GameSvr
             }
             else
             {
-                // delete ...
                 if (!(StallMgr.mBlock.ItemCount >= 1 && StallMgr.mBlock.ItemCount <= 10))
                 {
                     SendDefMessage(Grobal2.SM_UPDATESTALLITEM, -10, 0, 0, 0, "");
                     return;
                 }
-                EDcode.DecodeBuffer(msg, StallItem);
+                EDcode.DecodeBuffer(msg, ref StallItem);
                 if (StallItem.MakeIndex == 0)
                 {
                     SendDefMessage(Grobal2.SM_UPDATESTALLITEM, -3, 0, 0, 0, "");
@@ -15498,33 +15231,11 @@ namespace GameSvr
                     Def = Grobal2.MakeDefaultMsg(Grobal2.SM_OPENSTALL, this.ActorId, this.CX, this.CY, this.Dir);
                     SendSocket(Def, EDcode.EncodeBuffer(StallInfo));
                     this.SendRefMsg(Grobal2.RM_STALLSTATUS, 0, this.CX, this.CY, this.Dir, "");
-                    // if (g_FunctionNPC <> nil) then begin
-                    // g_FunctionNPC.m_OprCount := 0;
-                    // g_FunctionNPC.GotoLable(Self, '@StoreClosed', False);
-                    // end;
                     if (svMain.DefaultNpc != null)
                     {
                         svMain.DefaultNpc.NpcSayTitle(this, "@StoreClosed");
                     }
                 }
-                // boOK := False;
-                // for ii := 0 to m_ItemList.Count - 1 do begin
-                // UserItem := m_ItemList[ii];
-                // if (UserItem.makeindex = StallItem.makeindex) then begin
-                // boOK := True;
-                // Break;
-                // end;
-                // end;
-                // if not boOK then begin
-                // SendDefMessage(SM_UPDATESTALLITEM, -5, 0, 0, 0, '');
-                // Exit;
-                // end;
-                // 
-                // StdItem := UserEngine.GetStdItem(UserItem.wIndex);
-                // if StdItem = nil then begin
-                // SendDefMessage(SM_UPDATESTALLITEM, -8, 0, 0, 0, '');
-                // Exit;
-                // end;
             }
         }
 
@@ -15573,9 +15284,9 @@ namespace GameSvr
             {
                 if (this.DealCret.IsGuildMaster())
                 {
-                    gname = ((TGuild)this.MyGuild).GuildName;
+                    gname = MyGuild.GuildName;
                     mastername = this.UserName;
-                    deal_gname = ((TGuild)this.DealCret.MyGuild).GuildName;
+                    deal_gname = DealCret.MyGuild.GuildName;
                     deal_mastername = this.DealCret.UserName;
                     guildagit = svMain.GuildAgitMan.GetGuildAgit(gname);
                     deal_guildagit = svMain.GuildAgitMan.GetGuildAgit(deal_gname);
@@ -15599,13 +15310,13 @@ namespace GameSvr
                             this.DealCret.BoxMsg("门派庄园不在销售状态中。", 0);
                             return result;
                         }
-                        if (svMain.GuildAgitMan.IsExistInForSaleGuild(((TGuild)this.DealCret.MyGuild).GuildName))
+                        if (svMain.GuildAgitMan.IsExistInForSaleGuild(DealCret.MyGuild.GuildName))
                         {
                             this.BoxMsg("对方已经提出购买请求。", 0);
                             this.DealCret.BoxMsg("已经提出购买请求。", 0);
                             return result;
                         }
-                        if (((TGuild)this.DealCret.MyGuild).GetTotalMemberCount() <= ObjBase.MINAGITMEMBER)
+                        if (DealCret.MyGuild.GetTotalMemberCount() <= ObjBase.MINAGITMEMBER)
                         {
                             this.BoxMsg("对方至少需要" + ObjBase.MINAGITMEMBER.ToString() + "个门派成员。", 0);
                             this.DealCret.BoxMsg("你至少需要" + ObjBase.MINAGITMEMBER.ToString() + "个门派成员。", 0);
@@ -15633,13 +15344,13 @@ namespace GameSvr
                                 this.DealCret.BoxMsg("门派庄园目前不在销售状态。", 0);
                                 return result;
                             }
-                            if (svMain.GuildAgitMan.IsExistInForSaleGuild(((TGuild)this.MyGuild).GuildName))
+                            if (svMain.GuildAgitMan.IsExistInForSaleGuild(MyGuild.GuildName))
                             {
                                 this.BoxMsg("已经提出购买请求。", 0);
                                 this.DealCret.BoxMsg("对方已经提出购买请求。", 0);
                                 return result;
                             }
-                            if (((TGuild)this.MyGuild).GetTotalMemberCount() <= ObjBase.MINAGITMEMBER)
+                            if (MyGuild.GetTotalMemberCount() <= ObjBase.MINAGITMEMBER)
                             {
                                 this.BoxMsg("你至少需要" + ObjBase.MINAGITMEMBER.ToString() + "个门派成员。", 0);
                                 this.DealCret.BoxMsg("对方至少需要" + ObjBase.MINAGITMEMBER.ToString() + "个门派成员。", 0);
@@ -16119,40 +15830,32 @@ namespace GameSvr
             BoFlagUserMarket = true;
         }
 
-        // 困殴魄概 --> 捣
         public void RequireGetPayUserMarket(TCreature MarketNpc, int SellIndex_)
         {
-            int rMoney;
+            int rMoney = 0;
             if (!IsEnableUseMarket())
             {
                 this.BoxMsg("寄售商人功能无法使用。", 0);
                 return;
             }
-            // 酒捞袍捞 郴搏啊 八荤
             if (!FUserMarket.IsMyItem(SellIndex_, this.UserName))
             {
-                // 酒捞袍狼 魄概磊啊 老摹窍瘤 臼澜.
                 this.SendMsg(this, Grobal2.RM_MARKET_RESULT, 0, 0, Grobal2.UMResult_CancelFail, 0, "");
                 this.BoxMsg("这个物品不属于当前玩家。", 1);
                 return;
             }
-            // 牢郸胶啊 粮犁窍绰瘤 八荤
             if (!FUserMarket.IsExistIndex(SellIndex_, ref rMoney))
             {
-                // 酒捞袍狼 魄概磊啊 老摹窍瘤 臼澜.
                 this.SendMsg(this, Grobal2.RM_MARKET_RESULT, 0, 0, Grobal2.UMResult_NoItem, 0, "");
                 this.BoxMsg("没有任何物品。", 1);
                 return;
             }
-            // 家蜡且荐 乐绰 弥措陛咀 八荤.
             if (this.Gold + rMoney > this.AvailableGold)
             {
                 this.SendMsg(this, Grobal2.RM_MARKET_RESULT, 0, 0, Grobal2.UMResult_OverMoney, 0, "");
                 this.BoxMsg("最大金额超过限制了。", 1);
                 return;
             }
-            // 陛咀 雀荐
-            // 困殴秒家
             if (!SqlEngn.SqlEngine.RequestGetPayUserMarket(this.UserName, GetMarketName(), this.UserName, SellIndex_))
             {
                 SendUserMarketCloseMsg();
@@ -16162,13 +15865,10 @@ namespace GameSvr
             BoFlagUserMarket = true;
         }
 
-        // 角力肺 酒捞袍 函版
-        // 角力肺 单捞磐啊 傈价 棺 函拳登绰 何盒 -----------------------------------------
         public void GetMarketData(TSearchSellItem pInfo)
         {
             TMarketItem pMarketInfo;
             TMarketLoad pDbInfo;
-            int i;
             TStdItem ps;
             TStdItem std;
             if (pInfo.IsOK != Grobal2.UMResult_Success)
@@ -16180,7 +15880,7 @@ namespace GameSvr
                 FUserMarket.Clear();
                 FUserMarket.UserMode = pInfo.UserMode;
                 FUserMarket.ItemType = pInfo.ItemType;
-                for (i = 0; i < pInfo.pList.Count; i++)
+                for (var i = 0; i < pInfo.pList.Count; i++)
                 {
                     pDbInfo = (TMarketLoad)pInfo.pList[i];
                     if (pDbInfo != null)
@@ -16209,7 +15909,6 @@ namespace GameSvr
             }
         }
 
-        // 困殴魄概 府胶飘 傈价
         public void SendUserMarketList(int NextPage)
         {
             TMarketItem marketitem;
@@ -16221,40 +15920,30 @@ namespace GameSvr
             int bFirstSend;
             int page;
             int maxpage;
-            // 单捞磐甫 葛酒辑...
             Buffer = "";
             cnt = 0;
             page = 0;
-            // page = 0 捞搁 贸澜 傈价窍绰巴栏肺 魄窜茄促.
             if (NextPage == 0)
             {
-                // 努扼捞攫飘俊霸 檬扁拳甫 夸备
                 bFirstSend = 1;
                 page = 1;
             }
             else
             {
-                // 努扼捞攫飘俊霸 檬扁拳 窍瘤 富扁甫 夸备
                 bFirstSend = 0;
             }
-            // 促澜其捞瘤 夸备
             if (NextPage == 1)
             {
                 page = FUserMarket.CurrPage + 1;
             }
-            // 其捞瘤 汲沥
             FUserMarket.CurrPage = page;
             maxpage = FUserMarket.PageCount();
-            // 矫累困摹 掘扁
             cnt_start = (page - 1) * MaketSystem.MAKET_ITEMCOUNT_PER_PAGE;
-            // 场 困摹 掘扁
             cnt_end = cnt_start + MaketSystem.MAKET_ITEMCOUNT_PER_PAGE - 1;
-            // 裹困八荤
             if (cnt_end >= FUserMarket.Count())
             {
                 cnt_end = FUserMarket.Count() - 1;
             }
-            // 单捞磐 父甸扁...
             for (i = cnt_start; i <= cnt_end; i++)
             {
                 marketitem = FUserMarket.GetItem(i);
@@ -16264,15 +15953,13 @@ namespace GameSvr
                     svMain.MainOutMessage("LIST :" + marketitem.SellWho + "," + marketitem.Item.S.Name);
 #endif
                     cnt++;
-                    Buffer = Buffer + EDcode.EncodeBuffer(marketitem as object, sizeof(TMarketItem)) + "/";
+                    Buffer = Buffer + EDcode.EncodeBuffer(marketitem ) + "/";
                 }
             }
             Buffer = cnt.ToString() + "/" + page.ToString() + "/" + maxpage.ToString() + "/" + Buffer;
-            // 单捞磐 傈价
             this.SendMsg(this, Grobal2.RM_MARKET_LIST, 0, FUserMarket.UserMode, FUserMarket.ItemType, bFirstSend, Buffer);
         }
 
-        // 酒捞袍 --> 困殴魄概
         public void SellUserMarket(TMarketLoad pSellItem)
         {
             int _makeindex;
@@ -16287,40 +15974,28 @@ namespace GameSvr
             _SellCount = pSellItem.SellCount;
             if (!FlagReadyToSellCheck)
             {
-                // 酒捞袍捞 绝澜 肋给登菌澜阑 DB俊 舅妨林磊
                 SqlEngn.SqlEngine.CheckToDB(this.UserName, pSellItem.MarketName, pSellItem.SellWho, _makeindex, 0, Grobal2.MARKET_CHECKTYPE_SELLFAIL);
-                // 困嘎_
                 svMain.AddUserLog("32\09" + this.MapName + "\09" + 0.ToString() + "\09" + 0.ToString() + "\09" + this.UserName + "\09" + pSellItem.ItemName + "\09" + _makeindex.ToString() + "\09" + "1\09" + "1");
                 return;
             }
-            // 酒捞袍 昏力窍磊.
             if (DeleteFromBagItem(_makeindex, _SellCount))
             {
                 countstr = "(" + _SellCount.ToString() + ")";
-                // 困殴陛咀 哗磊.
                 this.DecGold(MaketSystem.MARKET_CHARGE_MONEY);
                 this.GoldChanged();
-                // 肋 罐疽促绊 DB俊 舅妨霖促.
                 SqlEngn.SqlEngine.CheckToDB(this.UserName, pSellItem.MarketName, pSellItem.SellWho, _makeindex, 0, Grobal2.MARKET_CHECKTYPE_SELLOK);
-                // 酒捞袍阑 肋 困殴窍看澜
                 this.SendMsg(this, Grobal2.RM_MARKET_RESULT, 0, 0, Grobal2.UMResult_SellOK, 0, "");
-                // BoxMsg ('酒捞袍阑 困殴窍看嚼聪促.', 1);
-                // 困嘎_
                 svMain.AddUserLog("32\09" + this.MapName + "\09" + MaketSystem.MARKET_CHARGE_MONEY.ToString() + "\09" + this.Gold.ToString() + "\09" + this.UserName + "\09" + pSellItem.ItemName + "\09" + _makeindex.ToString() + "\09" + "1\09" + "0" + countstr);
-                // 俺荐肺弊(sonmg 2005/01/07)
             }
             else
             {
-                // 酒捞袍捞 绝澜 肋给登菌澜阑 DB俊 舅妨林磊
                 SqlEngn.SqlEngine.CheckToDB(this.UserName, pSellItem.MarketName, pSellItem.SellWho, _makeindex, 0, Grobal2.MARKET_CHECKTYPE_SELLFAIL);
-                // 困嘎_
                 svMain.AddUserLog("32\09" + this.MapName + "\09" + 0.ToString() + "\09" + 0.ToString() + "\09" + this.UserName + "\09" + pSellItem.ItemName + "\09" + _makeindex.ToString() + "\09" + "1\09" + "1");
             }
             BoFlagUserMarket = false;
             FlagReadyToSellCheck = false;
         }
 
-        // 困殴魄概 啊瓷茄瘤 八配
         public void ReadyToSellUserMarket(TMarketLoad pReadyItem)
         {
             if (pReadyItem.IsOK != Grobal2.UMResult_Success)
@@ -16329,19 +16004,15 @@ namespace GameSvr
             }
             if (pReadyItem.SellCount < MaketSystem.MARKET_MAX_SELL_COUNT)
             {
-                // 酒捞袍阑 困殴且荐 乐嚼聪促.
                 this.SendMsg(this, Grobal2.RM_MARKET_RESULT, 0, FMarketNpc.ActorId, Grobal2.UMResult_ReadyToSell, 0, "");
             }
             else
             {
-                // 酒捞袍阑 困殴且 荐 绝嚼聪促.
                 this.SendMsg(this, Grobal2.RM_MARKET_RESULT, 0, 0, Grobal2.UMResult_OverSellCount, 0, "");
-                // BoxMsg ('酒捞袍困殴 俺荐啊 檬苞窍咯 困殴且 荐 绝嚼聪促.', 1);
             }
             FlagReadyToSellCheck = true;
         }
 
-        // 困殴魄概 --> 酒捞袍 , 捣皑家
         public void BuyUserMarket(TMarketLoad pBuyItem)
         {
             TUserItem pu;
@@ -16355,12 +16026,10 @@ namespace GameSvr
                 this.BoxMsg("购买物品失败。", 1);
                 return;
             }
-            // 困殴 叼滚弊(sonmg 2005/01/31)
             if (this.Gold < pBuyItem.SellPrice)
             {
                 svMain.MainOutMessage("TUserHuman.BuyUserMarket : The Lack of Gold");
             }
-            // 酒捞袍阑 殿废窍备 唱辑
             if (AddToBagItem(pBuyItem.UserItem))
             {
                 ps = svMain.UserEngine.GetStdItem(pBuyItem.UserItem.Index);
@@ -16368,34 +16037,25 @@ namespace GameSvr
                 {
                     countstr = "(" + pBuyItem.UserItem.Dura.ToString() + ")";
                 }
-                // 捣阑 皑家矫虐绊 唱辑
                 this.DecGold(pBuyItem.SellPrice);
                 this.GoldChanged();
-                // 肋 罐疽促绊 DB 俊 舅妨霖促.
                 SqlEngn.SqlEngine.CheckToDB(this.UserName, pBuyItem.MarketName, this.UserName, 0, pBuyItem.Index, Grobal2.MARKET_CHECKTYPE_BUYOK);
-                // 酒捞袍阑 肋 备涝窍看澜.
                 this.SendMsg(this, Grobal2.RM_MARKET_RESULT, 0, 0, Grobal2.UMResult_BuyOK, 0, "");
-                // BoxMsg (pBuyItem.ItemName+ ' 酒捞袍阑 备涝窍看嚼聪促.', 1);
                 RequireLoadRefresh();
-                // 困备涝_(困茫)
                 svMain.AddUserLog("33\09" + this.MapName + "\09" + pBuyItem.SellPrice.ToString() + "\09" + this.Gold.ToString() + "\09" + this.UserName + "\09" + pBuyItem.ItemName + "\09" + pBuyItem.UserItem.MakeIndex.ToString() + "\09" + "1\09" + "0" + countstr);
-                // 俺荐肺弊(sonmg 2005/01/07)
             }
             else
             {
-                // 酒捞袍 历厘捞 角菩
                 if (pu != null)
                 {
                     dispose(pu);
                 }
                 SqlEngn.SqlEngine.CheckToDB(this.UserName, pBuyItem.MarketName, pBuyItem.SellWho, 0, pBuyItem.Index, Grobal2.MARKET_CHECKTYPE_BUYFAIL);
-                // 困备涝_(困茫)
                 svMain.AddUserLog("33\09" + this.MapName + "\09" + 0.ToString() + "\09" + 0.ToString() + "\09" + this.UserName + "\09" + pBuyItem.ItemName + "\09" + pBuyItem.UserItem.MakeIndex.ToString() + "\09" + "1\09" + "1");
             }
             BoFlagUserMarket = false;
         }
 
-        // 困殴魄概 --> 酒捞袍 , 捣鞍澜
         public void CancelUserMarket(TMarketLoad pCancelItem)
         {
             if (pCancelItem.IsOK != Grobal2.UMResult_Success)
@@ -16403,29 +16063,21 @@ namespace GameSvr
                 this.BoxMsg("取消该物品销售失败。", 1);
                 return;
             }
-            // 酒捞袍阑 殿废窍备 唱辑.
             if (AddToBagItem(pCancelItem.UserItem))
             {
-                // 捣狼 函拳绰 绝绊
-                // 肋 罐疽促绊 DB 俊 舅妨霖促.
                 SqlEngn.SqlEngine.CheckToDB(this.UserName, pCancelItem.MarketName, pCancelItem.SellWho, 0, pCancelItem.Index, Grobal2.MARKET_CHECKTYPE_CANCELOK);
                 RequireLoadRefresh();
-                // 酒捞袍阑 肋 秒家窍看澜.
                 this.SendMsg(this, Grobal2.RM_MARKET_RESULT, 0, 0, Grobal2.UMResult_CancelOK, 0, "");
-                // BoxMsg ('困殴茄 '+pCancelItem.ItemName+' 酒捞袍阑 秒家窍看嚼聪促.', 1);
-                // 困秒_
                 svMain.AddUserLog("34\09" + this.MapName + "\09" + 0.ToString() + "\09" + 0.ToString() + "\09" + this.UserName + "\09" + pCancelItem.ItemName + "\09" + pCancelItem.UserItem.MakeIndex.ToString() + "\09" + "1\09" + "0");
             }
             else
             {
                 SqlEngn.SqlEngine.CheckToDB(this.UserName, pCancelItem.MarketName, pCancelItem.SellWho, 0, pCancelItem.Index, Grobal2.MARKET_CHECKTYPE_CANCELFAIL);
-                // 困秒_
                 svMain.AddUserLog("34\09" + this.MapName + "\09" + 0.ToString() + "\09" + 0.ToString() + "\09" + this.UserName + "\09" + pCancelItem.ItemName + "\09" + pCancelItem.UserItem.MakeIndex.ToString() + "\09" + "1\09" + "1");
             }
             BoFlagUserMarket = false;
         }
 
-        // 困殴魄概 --> 捣
         public void GetPayUserMarket(TMarketLoad pGetpayItem)
         {
             int commision;
@@ -16437,48 +16089,39 @@ namespace GameSvr
             if (pGetpayItem.SellPrice >= 0)
             {
                 commision = pGetpayItem.SellPrice * MaketSystem.MARKET_COMMISION / 1000;
-                // 捣阑 歹窍绊 + 荐荐丰绰 都绊
                 this.IncGold(pGetpayItem.SellPrice);
                 this.DecGold(commision);
                 this.GoldChanged();
-                // 肋 罐疽促绊 DB 俊 舅妨霖促.
                 SqlEngn.SqlEngine.CheckToDB(this.UserName, pGetpayItem.MarketName, pGetpayItem.SellWho, 0, pGetpayItem.Index, Grobal2.MARKET_CHECKTYPE_GETPAYOK);
                 RequireLoadRefresh();
-                // 酒捞袍阑 肋 秒家窍看澜.
                 this.SendMsg(this, Grobal2.RM_MARKET_RESULT, 0, 0, Grobal2.UMResult_GetPayOK, 0, "");
                 this.BoxMsg(pGetpayItem.SellPrice.ToString() + "金币收到后将支付" + commision.ToString() + "金币作为寄售佣金。", 1);
-                // 困捣茫_ +
                 svMain.AddUserLog("35\09" + this.MapName + "\09" + (pGetpayItem.SellPrice - commision).ToString() + "\09" + this.Gold.ToString() + "\09" + this.UserName + "\09" + pGetpayItem.ItemName + "\09" + pGetpayItem.UserItem.MakeIndex.ToString() + "\09" + "1\09" + "0");
             }
             else
             {
-                // 肋 给 罐疽促绊 DB 俊 舅妨霖促.
                 SqlEngn.SqlEngine.CheckToDB(this.UserName, pGetpayItem.MarketName, pGetpayItem.SellWho, 0, pGetpayItem.Index, Grobal2.MARKET_CHECKTYPE_GETPAYFAIL);
-                // 困捣茫_ +
                 svMain.AddUserLog("35\09" + this.MapName + "\09" + 0.ToString() + "\09" + 0.ToString() + "\09" + this.UserName + "\09" + pGetpayItem.ItemName + "\09" + pGetpayItem.UserItem.MakeIndex.ToString() + "\09" + "1\09" + "1");
             }
             BoFlagUserMarket = false;
         }
 
-        // 厘盔霸矫魄--------------------------------------------------------------
-        // 厘盔霸矫魄 夸没
         public void CmdReloadGaBoardList(string gname, int nPage)
         {
             if (this.MyGuild == null)
             {
                 return;
             }
-            if (((TGuild)this.MyGuild).GuildName == "")
+            if (MyGuild.GuildName == "")
             {
                 return;
             }
-            if (((TGuild)this.MyGuild).GuildName == gname)
+            if (MyGuild.GuildName == gname)
             {
                 CmdGaBoardList(nPage);
             }
         }
 
-        // 厘盔霸矫魄
         public void CmdGaBoardList(int nPage)
         {
             const int ENDOFLINEFLAG = 100;
@@ -16492,15 +16135,12 @@ namespace GameSvr
             data = "";
             if (this.MyGuild != null)
             {
-                if (((TGuild)this.MyGuild).GuildName != "")
+                if (MyGuild.GuildName != "")
                 {
-                    // 巩颇疙 汗荤.
-                    gname = ((TGuild)this.MyGuild).GuildName;
+                    gname = MyGuild.GuildName;
                     gnameHere = this.GetGuildNameHereAgit();
-                    // 泅犁 厘盔狼 巩颇啊 酒聪搁...
                     if (gname != gnameHere)
                     {
-                        // 款康磊绰 葛电 霸矫魄阑 杭 荐 乐澜.
                         if (this.UserDegree >= Grobal2.UD_ADMIN)
                         {
                             gname = gnameHere;
@@ -16533,11 +16173,8 @@ namespace GameSvr
                                 {
                                     count = ENDOFLINEFLAG;
                                 }
-                                // 单捞磐 炼钦.
                                 data = gname + "/" + subjectlist[i];
-                                // 府胶飘甫 焊晨
                                 this.SendMsg(this, Grobal2.RM_GABOARD_LIST, 0, nPage, count, allpage, data);
-                                // SysMsg(data, 2);  //抛胶飘 霸矫魄
                             }
                         }
                     }
@@ -16554,7 +16191,6 @@ namespace GameSvr
             }
         }
 
-        // 厘盔操固扁--------------------------------------------------------------
         public void CmdBuyDecoItem(int nObjNum)
         {
             TUserItem pu;
@@ -16572,14 +16208,13 @@ namespace GameSvr
                 this.SysMsg("包囊已满。", 0);
                 return;
             }
-            // 磊脚狼 厘盔捞 酒聪搁 备涝且 荐 绝促.
             flag = false;
             gnamehere = this.GetGuildNameHereAgit();
             if (gnamehere != "")
             {
                 if (this.MyGuild != null)
                 {
-                    if (((TGuild)this.MyGuild).GuildName == gnamehere)
+                    if (MyGuild.GuildName == gnamehere)
                     {
                         flag = true;
                     }
@@ -16598,7 +16233,6 @@ namespace GameSvr
                 sellprice = HUtil32.Str_ToInt(pricestr, ObjBase.DEFAULT_DECOITEM_PRICE);
                 if (pstd != null)
                 {
-                    // 惑泅林赣聪(DecoItem)甫 备涝茄促.
                     if ((this.Gold >= sellprice) && (sellprice > 0))
                     {
                         if (this.GuildAgitDecoItemSet(pu, nObjNum))
@@ -16608,8 +16242,6 @@ namespace GameSvr
                                 this.DecGold(sellprice);
                                 this.GoldChanged();
                                 SendAddItem(pu);
-                                // 肺弊巢辫
-                                // 备涝_
                                 svMain.AddUserLog("9\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + svMain.UserEngine.GetStdItemName(pu.Index) + "\09" + pu.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
                             }
                             else
@@ -16640,7 +16272,6 @@ namespace GameSvr
             }
         }
 
-        // 厘盔操固扁 酒捞袍 格废 焊郴扁
         public void SendDecoItemList()
         {
             int i;
@@ -16651,7 +16282,6 @@ namespace GameSvr
             short num;
             short kind;
             int price;
-            // 府胶飘俊 郴侩捞 绝栏搁 焊郴瘤 臼澜.
             if (svMain.DecoItemList.Count <= 0)
             {
                 return;

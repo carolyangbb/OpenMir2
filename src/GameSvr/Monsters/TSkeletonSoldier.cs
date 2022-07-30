@@ -20,14 +20,14 @@ namespace GameSvr
             int pwr;
             this.Dir = dir;
             TAbility _wvar1 = this.WAbil;
-            dam = _wvar1.Lobyte(_wvar1.DC) + new System.Random((short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC) + 1).Next();
+            dam = HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next();
             if (dam <= 0)
             {
                 return;
             }
             this.SendRefMsg(Grobal2.RM_HIT, this.Dir, this.CX, this.CY, 0, "");
             TAbility _wvar2 = this.WAbil;
-            pwr = this.GetAttackPower(_wvar2.Lobyte(_wvar2.DC), (short)HiByte(_wvar2.DC) - _wvar2.Lobyte(_wvar2.DC));
+            pwr = this.GetAttackPower(HUtil32.LoByte(_wvar2.DC), (short)HiByte(_wvar2.DC) - HUtil32.LoByte(_wvar2.DC));
             for (i = 0; i <= 4; i++)
             {
                 for (k = 0; k <= 4; k++)
@@ -41,11 +41,8 @@ namespace GameSvr
                         {
                             if (this.IsProperTarget(cret))
                             {
-                                // cret.RaceServer = RC_USERHUMAN then begin
-                                // 嘎绰瘤 搬沥
                                 if (new System.Random(cret.SpeedPoint).Next() < this.AccuracyPoint)
                                 {
-                                    // inherited
                                     this.HitHit2(cret, 0, pwr, true);
                                 }
                             }

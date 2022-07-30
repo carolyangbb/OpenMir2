@@ -27,7 +27,7 @@ namespace GameSvr
         {
             this.NextHitTime = 3000 - (this.SlaveMakeLevel * 600);
             this.NextWalkTime = 1200 - (this.SlaveMakeLevel * 250);
-            // WAbil.DC := MakeWord(Lobyte(WAbil.DC), HiByte(WAbil.DC) + SlaveMakeLevel);
+            // WAbil.DC := MakeWord(LoByte(WAbil.DC), HiByte(WAbil.DC) + SlaveMakeLevel);
             // WAbil.MaxHP := WAbil.MaxHP + SlaveMakeLevel * 5;
             // WAbil.HP := WAbil.MaxHP;
             // AccuracyPoint := 11 + SlaveMakeLevel;

@@ -37,7 +37,7 @@ namespace GameSvr
             int pwr;
             this.Dir = dir;
             TAbility _wvar1 = this.WAbil;
-            pwr = this.GetAttackPower(_wvar1.Lobyte(_wvar1.DC), (short)HiByte(_wvar1.DC) - _wvar1.Lobyte(_wvar1.DC));
+            pwr = this.GetAttackPower(HUtil32.LoByte(_wvar1.DC), HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC));
             if (pwr <= 0)
             {
                 return;
@@ -78,7 +78,7 @@ namespace GameSvr
                                     // lparam1
                                     // lparam2
                                     // hiter
-                                    cret.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, pwr, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 500);
+                                    cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, pwr, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 500);
                                     // {inherited} HitHit2 (cret, pwr, 0, TRUE);
                                 }
                             }

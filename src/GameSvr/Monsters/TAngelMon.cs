@@ -99,7 +99,7 @@ namespace GameSvr
             {
                 this.Dir = M2Share.GetNextDirection(this.CX, this.CY, targ.CX, targ.CY);
                 this.SendRefMsg(Grobal2.RM_LIGHTING, this.Dir, this.CX, this.CY, targ.ActorId, "");
-                pwr = this.GetAttackPower(RangeAttackTo_GetPower1(RangeAttackTo_CalcMagicPower(), 0) + Lobyte(this.WAbil.MC), HiByte(this.WAbil.MC) - Lobyte(this.WAbil.MC) + 1);
+                pwr = this.GetAttackPower(RangeAttackTo_GetPower1(RangeAttackTo_CalcMagicPower(), 0) + LoByte(this.WAbil.MC), HiByte(this.WAbil.MC) - LoByte(this.WAbil.MC) + 1);
                 if (targ.LifeAttrib == Grobal2.LA_UNDEAD)
                 {
                     pwr = HUtil32.MathRound(pwr * 1.5);
@@ -108,7 +108,7 @@ namespace GameSvr
                 if (dam > 0)
                 {
                     targ.StruckDamage(dam, this);
-                    targ.SendDelayMsg((TCreature)Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 800);
+                    targ.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 800);
                 }
             }
         }

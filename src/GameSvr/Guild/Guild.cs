@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 
 namespace GameSvr
 {
@@ -22,7 +23,7 @@ namespace GameSvr
     {
         public int Rank;
         public string RankName;
-        public ArrayList MemList;
+        public IList<TCreature> MemList;
     }
 
     public class TGuildWarInfo

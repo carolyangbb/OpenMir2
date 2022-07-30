@@ -68,21 +68,21 @@ namespace GameSvr
         {
             int i;
             TDoorInfo pd;
-            LoadFromFile(Castle.CASTLEFILENAME);
+            LoadFromFile(CastleDef.CASTLEFILENAME);
             LoadAttackerList();
             if (svMain.ServerIndex != svMain.GrobalEnvir.GetServer(CastleMapName))
             {
                 return;
             }
-            CorePEnvir = svMain.GrobalEnvir.GetEnvir(Castle.CASTLECOREMAP);
+            CorePEnvir = svMain.GrobalEnvir.GetEnvir(CastleDef.CASTLECOREMAP);
             if (CorePEnvir == null)
             {
-                OutMainMessage(Castle.CASTLECOREMAP + " No map found. ( No inner wall map of wall conquest war )");
+                OutMainMessage(CastleDef.CASTLECOREMAP + " No map found. ( No inner wall map of wall conquest war )");
             }
-            BasementEnvir = svMain.GrobalEnvir.GetEnvir(Castle.CASTLEBASEMAP);
+            BasementEnvir = svMain.GrobalEnvir.GetEnvir(CastleDef.CASTLEBASEMAP);
             if (CorePEnvir == null)
             {
-                OutMainMessage(Castle.CASTLEBASEMAP + " - map not found !!");
+                OutMainMessage(CastleDef.CASTLEBASEMAP + " - map not found !!");
             }
             CastlePEnvir = svMain.GrobalEnvir.GetEnvir(CastleMapName);
             if (CastlePEnvir != null)
@@ -131,7 +131,7 @@ namespace GameSvr
                 {
                     OutMainMessage("[Error] UserCastle.Initialize RightWall.UnitObj = nil");
                 }
-                for (i = 0; i < Castle.MAXARCHER; i++)
+                for (i = 0; i < CastleDef.MAXARCHER; i++)
                 {
                     if (Archers[i].HP > 0)
                     {
@@ -150,7 +150,7 @@ namespace GameSvr
                         }
                     }
                 }
-                for (i = 0; i < Castle.MAXGUARD; i++)
+                for (i = 0; i < CastleDef.MAXGUARD; i++)
                 {
                     if (Guards[i].HP > 0)
                     {
@@ -177,7 +177,7 @@ namespace GameSvr
             for (i = 0; i < CastlePEnvir.DoorList.Count; i++)
             {
                 pd = CastlePEnvir.DoorList[i];
-                if ((Math.Abs(pd.DoorX - Castle.COREDOORX) <= 3) && (Math.Abs(pd.DoorY - Castle.COREDOORY) <= 3))
+                if ((Math.Abs(pd.DoorX - CastleDef.COREDOORX) <= 3) && (Math.Abs(pd.DoorY - CastleDef.COREDOORY) <= 3))
                 {
                     CoreCastlePDoorCore = pd.PCore;
                 }
@@ -191,12 +191,12 @@ namespace GameSvr
 
         public void SaveAll()
         {
-            SaveToFile(Castle.CASTLEFILENAME);
+            SaveToFile(CastleDef.CASTLEFILENAME);
         }
 
         private void SaveAttackerList()
         {
-            var flname = svMain.CastleDir + Castle.CASTLEATTACERS;
+            var flname = svMain.CastleDir + CastleDef.CASTLEATTACERS;
             StringList strlist = new StringList();
             for (var i = 0; i < AttackerList.Count; i++)
             {
@@ -220,7 +220,7 @@ namespace GameSvr
             TGuild aguild;
             string gname = string.Empty;
             string adate = string.Empty;
-            string flname = svMain.CastleDir + Castle.CASTLEATTACERS;
+            string flname = svMain.CastleDir + CastleDef.CASTLEATTACERS;
             if (!File.Exists(flname))
             {
                 return;
@@ -445,7 +445,7 @@ namespace GameSvr
                     }
                 }
             }
-            for (i = 0; i < Castle.MAXGUARD; i++)
+            for (i = 0; i < CastleDef.MAXGUARD; i++)
             {
                 if (Guards[i].UnitObj != null)
                 {
@@ -455,7 +455,7 @@ namespace GameSvr
                     }
                 }
             }
-            for (i = 0; i < Castle.MAXARCHER; i++)
+            for (i = 0; i < CastleDef.MAXARCHER; i++)
             {
                 if (Archers[i].UnitObj != null)
                 {
@@ -577,7 +577,7 @@ namespace GameSvr
 
         public bool CanEnteranceCoreCastle(int xx, int yy, TUserHuman hum)
         {
-            bool result = IsOurCastle((TGuild)hum.MyGuild);
+            bool result = IsOurCastle(hum.MyGuild);
             if (!result)
             {
                 if (LeftWall.UnitObj != null)
@@ -635,14 +635,14 @@ namespace GameSvr
             {
                 return result;
             }
-            if (IsOurCastle((TGuild)hum.MyGuild))
+            if (IsOurCastle(hum.MyGuild))
             {
                 result = true;
                 return result;
             }
-            for (i = 0; i < ((TGuild)hum.MyGuild).AllyGuilds.Count; i++)
+            for (i = 0; i < hum.MyGuild.AllyGuilds.Count; i++)
             {
-                if (IsOurCastle(((TGuild)hum.MyGuild).AllyGuilds[i]))
+                if (IsOurCastle(hum.MyGuild.AllyGuilds[i]))
                 {
                     result = true;
                     return result;
@@ -703,31 +703,31 @@ namespace GameSvr
             // 2003/07/15 荤合 技陛 惑氢 炼例 0.05 -> 0.10
             tax = HUtil32.MathRound(goodsprice * 0.1);
             // 技陛篮 5%肺 炼沥   0.05
-            if (TodayIncome + tax <= Castle.TODAYGOLD)
+            if (TodayIncome + tax <= CastleDef.TODAYGOLD)
             {
                 TodayIncome = TodayIncome + tax;
             }
             else
             {
-                if (TodayIncome >= Castle.TODAYGOLD)
+                if (TodayIncome >= CastleDef.TODAYGOLD)
                 {
                     tax = 0;
                 }
                 else
                 {
-                    tax = Castle.TODAYGOLD - TodayIncome;
-                    TodayIncome = Castle.TODAYGOLD;
+                    tax = CastleDef.TODAYGOLD - TodayIncome;
+                    TodayIncome = CastleDef.TODAYGOLD;
                 }
             }
             if (tax > 0)
             {
-                if ((long)TotalGold + tax <= Castle.CASTLEMAXGOLD)
+                if ((long)TotalGold + tax <= CastleDef.CASTLEMAXGOLD)
                 {
                     TotalGold = TotalGold + tax;
                 }
                 else
                 {
-                    TotalGold = Castle.CASTLEMAXGOLD;
+                    TotalGold = CastleDef.CASTLEMAXGOLD;
                 }
             }
             if (HUtil32.GetTickCount() - SaveCastleGoldTime > 10 * 60 * 1000)
@@ -789,7 +789,7 @@ namespace GameSvr
             {
                 if (howmuch <= hum.Gold)
                 {
-                    if ((long)howmuch + TotalGold <= Castle.CASTLEMAXGOLD)
+                    if ((long)howmuch + TotalGold <= CastleDef.CASTLEMAXGOLD)
                     {
                         hum.DecGold(howmuch);
                         TotalGold = TotalGold + howmuch;
@@ -1084,7 +1084,7 @@ namespace GameSvr
             OwnerGuild = guild;
             OwnerGuildName = guild.GuildName;
             LatestOwnerChangeDateTime = DateTime.Now;
-            SaveToFile(Castle.CASTLEFILENAME);
+            SaveToFile(CastleDef.CASTLEFILENAME);
             if (oldguild != null)
             {
                 oldguild.MemberNameChanged();
