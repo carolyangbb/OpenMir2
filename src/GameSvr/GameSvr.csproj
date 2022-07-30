@@ -2,8 +2,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>GameSvr</AssemblyName>
@@ -17,7 +15,6 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <OldToolsVersion>2.0</OldToolsVersion>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <ProjectGuid>{2502C2C4-69F2-4614-97F8-631B8FC5AB37}</ProjectGuid>
     <PublishUrl>publish\</PublishUrl>
@@ -35,6 +32,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -77,12 +75,14 @@
     <Compile Include="Actors\TAnimal.cs" />
     <Compile Include="Actors\TCreature.cs" />
     <Compile Include="Actors\TUserHuman.cs" />
+    <Compile Include="Castle\TUserCastle.cs" />
     <Compile Include="Events\TEvent.cs" />
     <Compile Include="Events\TFireBurnEvent.cs" />
     <Compile Include="Events\THolyCurtainEvent.cs" />
     <Compile Include="Events\TPileStones.cs" />
     <Compile Include="Events\TStoneMineEvent.cs" />
     <Compile Include="Guild\TGuild.cs" />
+    <Compile Include="Guild\TGuildAgit.cs" />
     <Compile Include="Guild\TGuildAgitBoardManager.cs" />
     <Compile Include="Guild\TGuildAgitManager.cs" />
     <Compile Include="Guild\TGuildManager.cs" />
@@ -160,7 +160,7 @@
     <Compile Include="StallSystem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Castle.cs">
+    <Compile Include="Castle\Castle.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CmdMgr.cs">
@@ -283,17 +283,6 @@
       <ProductName>Microsoft .NET Framework 4.8 %28x86 和 x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>

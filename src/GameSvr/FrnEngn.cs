@@ -22,12 +22,11 @@ namespace GameSvr
 
         public void UserSocketHasClosed(int gateindex, int uhandle)
         {
-            int i;
             TReadyUserInfo pu;
             try
             {
                 svMain.fuLock.Enter();
-                for (i = 0; i < ReadyUsers.Count; i++)
+                for (var i = 0; i < ReadyUsers.Count; i++)
                 {
                     pu = (TReadyUserInfo)ReadyUsers[i];
                     if ((pu.GateIndex == gateindex) && (pu.Shandle == uhandle))

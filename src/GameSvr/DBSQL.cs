@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Data;
 using System.Windows.Forms.VisualStyles;
 using SystemModule;
 using SystemModule.Common;
@@ -19,8 +20,8 @@ namespace GameSvr
                 FAutoConnectable = value;
             }
         }
-        private TADOConnection FADOConnection = null;
-        private TADOQuery FADOQuery = null;
+        private IDbConnection FADOConnection = null;
+        private IDataReader FADOQuery = null;
         private bool FAutoConnectable = false;
         private readonly StringList FConnFile = null;
         private string FConnInfo = String.Empty;
@@ -31,8 +32,8 @@ namespace GameSvr
  
         public TDBSql()
         {
-            FADOConnection = new TADOConnection(null);
-            FADOQuery = new TADOQuery(null);
+            //FADOConnection = new TADOConnection(null);
+            //FADOQuery = new TADOQuery(null);
             FConnFile = new StringList();
             FConnInfo = "";
             FLastConnTime = 0;
@@ -106,7 +107,7 @@ namespace GameSvr
             FADOConnection.Connected = false;
         }
 
-        private void LoadItemFromDB(TMarketLoad pItem, TADOQuery SqlDB)
+        private void LoadItemFromDB(TMarketLoad pItem, IDataReader SqlDB)
         {
             int k;
             string prefix;
@@ -114,7 +115,7 @@ namespace GameSvr
             {
                 svMain.MainOutMessage("[Exception] SqlDB = nil");
             }
-            pItem.Index = SqlDB.FieldByName("FLD_SELLINDEX").AsInteger;
+            /*pItem.Index = SqlDB.FieldByName("FLD_SELLINDEX").AsInteger;
             pItem.SellState = SqlDB.FieldByName("FLD_SELLOK").AsInteger;
             pItem.SellWho = SqlDB.FieldByName("FLD_SELLWHO").AsString.Trim();
             pItem.ItemName = SqlDB.FieldByName("FLD_ITEMNAME").AsString.Trim();
@@ -132,7 +133,7 @@ namespace GameSvr
             pItem.UserItem.ColorG = SqlDB.FieldByName("FLD_COLORG").AsInteger;
             pItem.UserItem.ColorB = SqlDB.FieldByName("FLD_COLORB").AsInteger;
             prefix = SqlDB.FieldByName("FLD_PREFIX").AsString.Trim();
-            StrPCopy(pItem.UserItem.Prefix, prefix);
+            StrPCopy(pItem.UserItem.Prefix, prefix);*/
         }
 
         public int LoadPageUserMarket(string marketname, string sellwho, string itemname, int itemtype, int itemset, ArrayList sellitemlist)
@@ -621,16 +622,16 @@ namespace GameSvr
             return result;
         }
 
-        private void LoadBoardListFromDB(TGaBoardArticleLoad pList, TADOQuery SqlDB)
+        private void LoadBoardListFromDB(TGaBoardArticleLoad pList, IDataReader SqlDB)
         {
             char[] content = new char[500 + 1];
-            pList.AgitNum = SqlDB.FieldByName("FLD_AGITNUM").AsInteger;
+            /*pList.AgitNum = SqlDB.FieldByName("FLD_AGITNUM").AsInteger;
             pList.GuildName = SqlDB.FieldByName("FLD_GUILDNAME").AsString.Trim();
             pList.OrgNum = SqlDB.FieldByName("FLD_ORGNUM").AsInteger;
             pList.SrcNum1 = SqlDB.FieldByName("FLD_SRCNUM1").AsInteger;
             pList.SrcNum2 = SqlDB.FieldByName("FLD_SRCNUM2").AsInteger;
             pList.SrcNum3 = SqlDB.FieldByName("FLD_SRCNUM3").AsInteger;
-            pList.UserName = SqlDB.FieldByName("FLD_USERNAME").AsString.Trim();
+            pList.UserName = SqlDB.FieldByName("FLD_USERNAME").AsString.Trim();*/
             //FillChar(pList.Content, sizeof(pList.Content), '\0');
             //StrPLCopy(pList.Content, SqlDB.FieldByName("FLD_CONTENT").AsString.Trim(), sizeof(pList.Content) - 1);
         }

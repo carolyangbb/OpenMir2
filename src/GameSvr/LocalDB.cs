@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Windows.Forms;
 using SystemModule;
@@ -10,7 +11,7 @@ namespace GameSvr
 {
     public class TFrmDB
     {
-        private TQuery Query = null;
+        private IDataReader Query = null;
 
         public TFrmDB()
         {

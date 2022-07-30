@@ -7,13 +7,13 @@ namespace GameSvr
 {
     public struct TCmdMsg
     {
-        public int CmdNum;
+        public ushort CmdNum;
         public int TagetSvrIdx;
         public int GateIdx;
         public int UserGateIdx;
         public int Userhandle;
         public TSendTarget SendTarget;
-        public TDefaultMessage msg;
+        public TDefaultMessage Msg;
         public string UserName;
         public string body;
         public TUserInfo pInfo;
@@ -23,6 +23,7 @@ namespace GameSvr
     {
         public ICommand() : base()
         {
+            
         }
 
         public virtual void OnCmdChange(ref TCmdMsg Msg)

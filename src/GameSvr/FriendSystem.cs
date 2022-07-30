@@ -93,7 +93,7 @@ namespace GameSvr
             TFriendInfo result = null;
             for (var i = 0; i < FItems.Count; i++)
             {
-                TFriendInfo Item = FItems[i];
+                var Item = FItems[i];
                 if (Item.FName == UserName_)
                 {
                     result = Item;
@@ -106,7 +106,7 @@ namespace GameSvr
         public bool Add(TUserInfo UserInfo, string Friend, int RegState, string Desc)
         {
             TFriendInfo Info;
-            bool result = false;
+            var result = false;
             if ((Friend != "") && (!IsFriend(Friend)))
             {
                 Info = new TFriendInfo();
@@ -133,11 +133,11 @@ namespace GameSvr
 
         public bool Delete(TUserInfo UserInfo, string Friend)
         {
-            bool result = false;
-            TFriendInfo Item = Find(Friend);
+            var result = false;
+            var Item = Find(Friend);
             if (Item != null)
             {
-                int i = FItems.IndexOf(Item);
+                var i = FItems.IndexOf(Item);
                 if (i >= 0)
                 {
                     FItems.RemoveAt(i);
@@ -150,8 +150,8 @@ namespace GameSvr
 
         public bool SetDesc(TUserInfo UserInfo, string Friend, string Desc)
         {
-            bool result = false;
-            TFriendInfo Item = Find(Friend);
+            var result = false;
+            var Item = Find(Friend);
             if (Item != null)
             {
                 Item.FDesc = Desc;
@@ -162,8 +162,8 @@ namespace GameSvr
 
         public bool IsFriend(string Name)
         {
-            bool result = false;
-            TFriendInfo Item = Find(Name);
+            var result = false;
+            var Item = Find(Name);
             if (Item != null)
             {
                 result = true;
@@ -175,7 +175,7 @@ namespace GameSvr
         {
             for (var i = 0; i < FItems.Count; i++)
             {
-                TFriendInfo Item = FItems[i];
+                var Item = FItems[i];
                 if (Item != null)
                 {
                     //Item.Free();
@@ -188,7 +188,7 @@ namespace GameSvr
         {
             string str;
             str = FriendName + "/" + Desc;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_INFO, RegState, ConnState, 0, str);
+            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_INFO, (ushort)RegState, (ushort)ConnState, 0, str);
         }
 
         public void OnMsgInfoToServer(TUserInfo UserInfo, string FriendName, int RegState, string Desc)
@@ -200,7 +200,7 @@ namespace GameSvr
 
         public void OnSendInfoToClient(TUserInfo UserInfo, string Friend)
         {
-            TFriendInfo Item = Find(Friend);
+            var Item = Find(Friend);
             if (Item != null)
             {
                 OnMsgInfoToClient(UserInfo, Item.Name, Grobal2.CONNSTATE_DISCONNECT, Item.RegState, Item.Desc);
@@ -211,7 +211,7 @@ namespace GameSvr
         {
             for (var i = 0; i < FItems.Count; i++)
             {
-                TFriendInfo Item = FItems[i];
+                var Item = FItems[i];
                 OnMsgInfoToClient(UserInfo, Item.Name, Grobal2.CONNSTATE_DISCONNECT, Item.RegState, Item.Desc);
             }
         }
@@ -262,53 +262,37 @@ namespace GameSvr
   
         public void OnCmdCMAdd(TCmdMsg Cmd)
         {
-            string friend;
-            string owner;
-            int regstate;
-            TUserInfo userinfo;
-            int forceflag;
-            // 패킷변환
-            owner = Cmd.UserName;
-            friend = Cmd.body;
-            regstate = Cmd.Msg.Param;
-            forceflag = Cmd.Msg.Tag;
+            TUserInfo userinfo = null;
+            var friend = Cmd.body;
+            var regstate = Cmd.Msg.Param;
+            var forceflag = Cmd.Msg.Tag;
 #if DEBUG
             this.ErrMsg("Cmd_CM_Add" + owner + "/" + friend + "/" + (regstate).ToString());
 #endif
             if (svMain.UserMgrEngine.InterGetUserInfo(friend, ref userinfo))
             {
-                // 추가가 잘되는지 테스트 ... 나중에 DB 명령어에 가반하여 바꿔야됨
                 if (Add(Cmd.pInfo, friend, regstate, ""))
                 {
-                    // 데이터 베이스로 명령어 전송
                     OnCmdDBAdd(Cmd.pInfo, friend, regstate, "");
                     OnMsgInfoToClient(Cmd.pInfo, friend, userinfo.ConnState, regstate, "");
                 }
             }
             else
             {
-                // 운영자에 의한 강제 입력일 경우
                 if (forceflag == 1)
                 {
                     if (Add(Cmd.pInfo, friend, regstate, ""))
                     {
-                        // 디비에는 저장하지 않고 클라이언트만 알려준다.
                         OnMsgInfoToClient(Cmd.pInfo, friend, Grobal2.CONNSTATE_DISCONNECT, regstate, "");
                     }
                 }
             }
         }
 
-        // ------------------------------------------------------------------------------
-        // CM_FRIEND_DELETEADD  : 친구삭제
-        // Params  : 삭제할 케릭명
-        // ------------------------------------------------------------------------------
         public void OnCmdCMDelete(TCmdMsg Cmd)
         {
-            string Owner;
-            string Friend;
-            Owner = Cmd.UserName;
-            Friend = Cmd.body;
+            var Owner = Cmd.UserName;
+            var Friend = Cmd.body;
 #if DEBUG
             this.ErrMsg("Cmd_CM_Delete" + Owner + "/" + Friend);
 #endif
@@ -323,15 +307,11 @@ namespace GameSvr
             }
         }
 
-        // ------------------------------------------------------------------------------
-        // CM_FRIEND_EDIT  : 친구정보수정
-        // Params  : 변경할 케릭명 , 변경정보
-        // ------------------------------------------------------------------------------
         public void OnCmdCMEdit(TCmdMsg Cmd)
         {
-            string Friend = string.Empty;
-            string Desc = string.Empty;
-            string Owner = Cmd.UserName;
+            var Friend = string.Empty;
+            var Desc = string.Empty;
+            var Owner = Cmd.UserName;
             Desc = HUtil32.GetValidStr3(Cmd.body, ref Friend, new string[] { "/" });
 #if DEBUG
             this.ErrMsg("Cmd_CM_SerDesc" + Friend + "/" + Desc);
@@ -343,7 +323,7 @@ namespace GameSvr
             }
         }
 
-        public void OnCmdSMInfo(TUserInfo UserInfo, string FriendName, short RegState, short Conn, string Desc)
+        public void OnCmdSMInfo(TUserInfo UserInfo, string FriendName, ushort RegState, ushort Conn, string Desc)
         {
             string str;
             str = Desc;
@@ -357,17 +337,17 @@ namespace GameSvr
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_DELETE, 0, 0, 0, str);
         }
 
-        public void OnCmdSMResult(TUserInfo UserInfo, short CmdNum, short Value)
+        public void OnCmdSMResult(TUserInfo UserInfo, ushort CmdNum, ushort Value)
         {
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_RESULT, CmdNum, Value, 0, "");
         }
 
         public void OnCmdISMInfo(TCmdMsg Cmd)
         {
-            string Friend = string.Empty;
-            string RegState = string.Empty;
-            string TempStr = HUtil32.GetValidStr3(Cmd.body, ref RegState, new string[] { ":" });
-            string Desc = HUtil32.GetValidStr3(TempStr, ref Friend, new string[] { ":" });
+            var Friend = string.Empty;
+            var RegState = string.Empty;
+            var TempStr = HUtil32.GetValidStr3(Cmd.body, ref RegState, new string[] { ":" });
+            var Desc = HUtil32.GetValidStr3(TempStr, ref Friend, new string[] { ":" });
             if (!Add(Cmd.pInfo, Friend, HUtil32.Str_ToInt(RegState, 0), Desc))
             {
                 this.ErrMsg("OnCmdISMInfo Dont Add Friend :" + Cmd.body);
@@ -391,19 +371,17 @@ namespace GameSvr
 
         public void OnCmdOSMInfo(string UserName, ushort SvrIndex, string FriendName, int RegState, int Conn, string Desc)
         {
-            string str;
-            str = RegState.ToString() + ":" + Conn.ToString() + ":" + FriendName;
+            string str = RegState.ToString() + ":" + Conn.ToString() + ":" + FriendName;
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_FRIEND_INFO, SvrIndex, 0, 0, str);
         }
 
         public void OnCmdOSMDelete(string UserName, ushort SvrIndex, string FriendName)
         {
-            string str;
-            str = FriendName;
+            string str = FriendName;
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_FRIEND_DELETE, SvrIndex, 0, 0, str);
         }
 
-        public void OnCmdOSMResult(string UserName, ushort SvrIndex, short CmdNum, short ResultValue)
+        public void OnCmdOSMResult(string UserName, ushort SvrIndex, ushort CmdNum, ushort ResultValue)
         {
             string str;
             str = CmdNum.ToString() + ":" + ResultValue.ToString();
@@ -415,37 +393,32 @@ namespace GameSvr
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_LIST, 0, 0, 0, "");
         }
 
-        public void OnCmdDBAdd(TUserInfo UserInfo, string Friend, short RegState, string Desc)
+        public void OnCmdDBAdd(TUserInfo UserInfo, string Friend, ushort RegState, string Desc)
         {
-            string str;
-            str = RegState.ToString() + ":" + Friend + ":" + Desc + "/";
+            string str = RegState.ToString() + ":" + Friend + ":" + Desc + "/";
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_ADD, RegState, 0, 0, str);
         }
 
         public void OnCmdDBDelete(TUserInfo UserInfo, string Friend)
         {
-            string str;
-            str = Friend + "/";
+            string str = Friend + "/";
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_DELETE, 0, 0, 0, str);
         }
 
         public void OnCmdDBEdit(TUserInfo UserInfo, string Friend, string Desc)
         {
-            string str;
-            str = Friend + ":" + Desc + "/";
+            string str = Friend + ":" + Desc + "/";
             svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_EDIT, 0, 0, 0, str);
         }
-
+        
         public void OnCmdDBRList(TCmdMsg Cmd)
         {
-            int ListCount;
-            string Friend = string.Empty;
-            string RegState = string.Empty;
-            string Desc = string.Empty;
-            string TempStr = string.Empty;
-            string BodyStr = string.Empty;
-            BodyStr = HUtil32.GetValidStr3(Cmd.body, ref TempStr, new string[] { "/" });
-            ListCount = HUtil32.Str_ToInt(TempStr, 0);
+            var Friend = string.Empty;
+            var RegState = string.Empty;
+            var Desc = string.Empty;
+            var TempStr = string.Empty;
+            var  BodyStr = HUtil32.GetValidStr3(Cmd.body, ref TempStr, new string[] { "/" });
+            var ListCount = HUtil32.Str_ToInt(TempStr, 0);
             for (var i = 0; i < ListCount; i++)
             {
                 BodyStr = HUtil32.GetValidStr3(BodyStr, ref TempStr, new string[] { "/" });
@@ -463,11 +436,11 @@ namespace GameSvr
             }
         }
 
-        public void OnCmdDBRResult(TCmdMsg Cmd)
+        private void OnCmdDBRResult(TCmdMsg Cmd)
         {
-            string ErrCode = string.Empty;
+            var ErrCode = string.Empty;
             this.ErrMsg("CmdDBRResult[Friend] :" + Cmd.body);
-            string CmdNum = HUtil32.GetValidStr3(Cmd.body, ref ErrCode, new string[] { "/" });
+            var CmdNum = HUtil32.GetValidStr3(Cmd.body, ref ErrCode, new string[] { "/" });
             switch (HUtil32.Str_ToInt(CmdNum, 0))
             {
                 case Grobal2.DB_FRIEND_LIST:

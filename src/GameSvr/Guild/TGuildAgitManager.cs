@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using SystemModule;
 
@@ -14,16 +15,15 @@ namespace GameSvr
         public int EntranceX = 0;
         public int EntranceY = 0;
         public string[] GuildAgitMapName;
-        public ArrayList GuildAgitList = null;
-        public ArrayList AgitDecoMonList = null;
+        public IList<TGuildAgit> GuildAgitList = null;
+        public IList<TAgitDecoItem> AgitDecoMonList = null;
         public int[] AgitDecoMonCount;
 
         public TGuildAgitManager() : base()
         {
-            int i;
             GuildAgitFileVersion = 0;
-            GuildAgitList = new ArrayList();
-            AgitDecoMonList = new ArrayList();
+            GuildAgitList = new List<TGuildAgit>();
+            AgitDecoMonList = new List<TAgitDecoItem>();
             GuildAgitMapName[0] = "GA0";
             GuildAgitMapName[1] = "GA1";
             GuildAgitMapName[2] = "GA2";
@@ -33,7 +33,7 @@ namespace GameSvr
             ReturnY = 276;
             EntranceX = 119;
             EntranceY = 122;
-            for (i = 1; i <= Guild.MAXGUILDAGITCOUNT; i++)
+            for (var i = 1; i <= Guild.MAXGUILDAGITCOUNT; i++)
             {
                 AgitDecoMonCount[i] = 0;
             }
@@ -76,11 +76,10 @@ namespace GameSvr
                 for (i = 0; i < strlist.Count; i++)
                 {
                     str = (string)strlist[i];
-                    // 颇老 滚傈 犬牢
                     if (i == 0)
                     {
                         str = str.Trim();
-                        if (str[1] == "[")
+                        if (str[0] == '[')
                         {
                             str = HUtil32.GetValidStr3(str, ref data, new string[] { "=", "[", " ", ",", "\09" });
                             if (data.ToUpper() == "VERSION")
@@ -95,7 +94,7 @@ namespace GameSvr
                     {
                         continue;
                     }
-                    if (str[1] == ";")
+                    if (str[0] == ';')
                     {
                         continue;
                     }
@@ -169,27 +168,21 @@ namespace GameSvr
             int i;
             if (svMain.ServerIndex == 0)
             {
-                // 付胶磐 辑滚父 历厘阑 茄促.
-                // 归诀
                 if (bBackup)
                 {
-                    FileCopy(svMain.GuildAgitFile, svMain.GuildAgitFile + ConvertDatetimeToFileName(DateTime.Now));
+                    //FileCopy(svMain.GuildAgitFile, svMain.GuildAgitFile + ConvertDatetimeToFileName(DateTime.Now));
                 }
                 strlist = new ArrayList();
-                // 颇老 滚傈 诀单捞飘
                 if (GuildAgitFileVersion <= 0)
                 {
                     GuildAgitFileVersion = 1;
                 }
-                // 厘盔 格废 颇老 滚傈 扁废
                 strlist.Add("[VERSION=" + GuildAgitFileVersion.ToString() + "]");
-                // 亲格 汲疙
                 strlist.Add(";Territory no.|Guild name|Guild master|Reg Date|Remain days|Territory gold|On sale|Sale gold|Sale remain days|Buy Guild name|Buy Guild master|Conclusion date");
                 if (GuildAgitFileVersion <= 0)
                 {
                     for (i = 0; i < GuildAgitList.Count; i++)
                     {
-                        // 备涝巩颇 沥焊
                         strlist.Add((GuildAgitList[i] as TGuildAgit).GuildAgitNumber.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).GuildName + "\09" + (GuildAgitList[i] as TGuildAgit).GuildMasterName + "\09" + (GuildAgitList[i] as TGuildAgit).RegistrationTime + "\09" + (GuildAgitList[i] as TGuildAgit).ContractPeriod.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleFlag.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleMoney.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleWait.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleGuildName + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleGuildMasterName + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleTime);
                     }
                 }
@@ -197,8 +190,6 @@ namespace GameSvr
                 {
                     for (i = 0; i < GuildAgitList.Count; i++)
                     {
-                        // 厘盔 扁何陛
-                        // 备涝巩颇 沥焊
                         strlist.Add((GuildAgitList[i] as TGuildAgit).GuildAgitNumber.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).GuildName + "\09" + (GuildAgitList[i] as TGuildAgit).GuildMasterName + "\09" + (GuildAgitList[i] as TGuildAgit).RegistrationTime + "\09" + (GuildAgitList[i] as TGuildAgit).ContractPeriod.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).GuildAgitTotalGold.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleFlag.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleMoney.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleWait.ToString() + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleGuildName + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleGuildMasterName + "\09" + (GuildAgitList[i] as TGuildAgit).ForSaleTime);
                     }
                 }
@@ -216,10 +207,8 @@ namespace GameSvr
 
         public TGuildAgit GetGuildAgit(string gname)
         {
-            TGuildAgit result;
-            int i;
-            result = null;
-            for (i = 0; i < GuildAgitList.Count; i++)
+            TGuildAgit result = null;
+            for (var i = 0; i < GuildAgitList.Count; i++)
             {
                 if ((GuildAgitList[i] as TGuildAgit).GuildName == gname)
                 {
@@ -328,20 +317,13 @@ namespace GameSvr
             SaveFlag = false;
             agitnumber = -1;
             guildagit = null;
-            // GuildAgitList俊辑 八荤窍咯
-            // 矫埃捞 7老 瘤抄 GuildAgit绰 昏力窍绊
-            // 弊俊 蝶弗 炼摹(厘盔 郴俊 乐绰 巩颇盔 眠规)甫 秒茄促.
             for (i = GuildAgitList.Count - 1; i >= 0; i--)
             {
                 guildagit = GuildAgitList[i] as TGuildAgit;
                 if (gaCount == 0)
                 {
-                    // 10盒俊 茄锅究
-                    // 秦寸 巩颇狼 巩林啊 官差菌绰瘤 八荤窍咯 弥脚拳 矫挪促.
                     guildagit.UpdateGuildMaster();
                 }
-                // 1盒俊 茄锅究
-                // 厘盔 扁何陛 - 楷眉啊 登搁 泅犁 扁何陛阑 八荤窍咯 磊悼 楷厘 矫挪促.
                 if (guildagit.GetCurrentDelayStatus() <= 0)
                 {
                     if (guildagit.GuildAgitTotalGold >= Guild.GUILDAGITEXTENDFEE)
@@ -350,33 +332,24 @@ namespace GameSvr
                         if (agitnumber > -1)
                         {
                             guildagit.GuildAgitTotalGold = guildagit.GuildAgitTotalGold - Guild.GUILDAGITEXTENDFEE;
-                            // 肺弊巢辫
-                            // 厘楷厘_
                             svMain.AddUserLog("38\09" + "GUILDAGIT" + "\09" + "0" + "\09" + "0" + "\09" + "AUTOEXTEND" + "\09" + guildagit.GuildName + "\09" + agitnumber.ToString() + "\09" + "1\09" + Guild.GUILDAGITEXTENDFEE.ToString());
                             SaveFlag = true;
                             svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILDAGIT, svMain.ServerIndex, "");
                         }
                     }
                 }
-                // 措咯扁埃捞 瘤抄 厘盔阑 昏力窍扁 傈俊 刚历 芭贰 己荤等 厘盔 吝俊辑
-                // 蜡抗扁埃捞 瘤抄 厘盔狼 林牢阑 背眉茄促.
                 if (guildagit.IsSoldOutExpired())
                 {
                     guildagit.ChangeGuildAgitMaster();
                     guildagit.ResetForSaleFields();
-                    // 厘盔 郴 巩颇盔 眠规
                     guildagit.ExpulsionMembers();
                     SaveFlag = true;
                     result = true;
                 }
-                // 措咯扁埃捞 瘤抄 厘盔阑 昏力茄促.
                 if (guildagit.IsExpired())
                 {
-                    // 厘盔 郴 巩颇盔 眠规
                     guildagit.ExpulsionMembers();
-                    // Guild绰 老何矾 皋葛府甫 秦力窍瘤 臼澜(why?)
                     guildagit.Free();
-                    // Free救茄 版快 皋葛府 穿利捞 积变促...
                     GuildAgitList.RemoveAt(i);
                     SaveFlag = true;
                     result = true;
@@ -389,7 +362,6 @@ namespace GameSvr
             return result;
         }
 
-        // 府畔蔼 : 厘盔锅龋 (-1 捞搁 Error)
         public int ExtendTime(int count, string gname)
         {
             int result;
@@ -400,18 +372,13 @@ namespace GameSvr
             bool BackupFlag;
             result = -1;
             BackupFlag = false;
-            // 茄 锅俊 楷厘且 荐 乐绰 count绰 100栏肺 力茄.
             if ((count < 1) || (count > 100))
             {
                 return result;
             }
-            // GuildAgit甫 掘绢柯促.
             guildagit = GetGuildAgit(gname);
             if (guildagit != null)
             {
-                // 犁殿废茄 矫痢(泅犁)捞 殿废老肺何磐 300老捞 瘤抄 版快俊绰
-                // 殿废老磊甫 扁粮殿废老+300老肺 盎脚窍绊
-                // 拌距扁埃阑 扁粮拌距扁埃-300老肺 盎脚茄促.
                 RegDateTime = guildagit.GetGuildAgitRegDateTime();
                 NowDateTime = DateTime.Now;
                 if (NowDateTime - RegDateTime > LIMIT_DAY)
@@ -430,13 +397,11 @@ namespace GameSvr
                 }
                 else
                 {
-                    // 措咯扁埃阑 365老肺 力茄.
                     if (guildagit.ContractPeriod + (count * Guild.GUILDAGIT_DAYUNIT) > 365)
                     {
                         return result;
                     }
                 }
-                // 措咯扁埃阑 count 父怒 楷厘茄促.
                 guildagit.ContractPeriod = guildagit.ContractPeriod + (count * Guild.GUILDAGIT_DAYUNIT);
                 SaveGuildAgitList(BackupFlag);
                 result = guildagit.GuildAgitNumber;
@@ -446,10 +411,8 @@ namespace GameSvr
 
         public DateTime GetRemainDateTime(string gname)
         {
-            DateTime result;
             TGuildAgit guildagit;
-            result = -100;
-            // GuildAgit甫 掘绢柯促.
+            DateTime result = -100;
             guildagit = GetGuildAgit(gname);
             if (guildagit != null)
             {
@@ -458,14 +421,10 @@ namespace GameSvr
             return result;
         }
 
-        // 厘盔 芭贰 己荤登菌阑 锭 巢酒 乐阑 措咯 扁埃阑 备茄促.
         public int GetTradingRemainDate(string gname)
         {
-            int result;
-            TGuildAgit guildagit;
-            result = -100;
-            // GuildAgit甫 掘绢柯促.
-            guildagit = GetGuildAgit(gname);
+            int result = -100;
+            TGuildAgit guildagit = GetGuildAgit(gname);
             if (guildagit != null)
             {
                 result = HUtil32.MathRound(guildagit.GetGuildAgitRemainDateTime().ToOADate());
@@ -475,11 +434,8 @@ namespace GameSvr
 
         public bool IsDelayed(string gname)
         {
-            bool result;
-            TGuildAgit guildagit;
-            result = false;
-            // GuildAgit甫 掘绢柯促.
-            guildagit = GetGuildAgit(gname);
+            bool result = false;
+            TGuildAgit guildagit = GetGuildAgit(gname);
             if (guildagit != null)
             {
                 if (guildagit.GetCurrentDelayStatus() == 0)
@@ -492,44 +448,27 @@ namespace GameSvr
 
         public string ConvertDatetimeToFileName(DateTime datetime)
         {
-            string result;
-            short Year;
-            short Month;
-            short Day;
-            short Hour;
-            short Min;
-            short Sec;
-            short MSec;
-            result = ".bak";
-            Year = (short)datetime.Year;
-            Month = (short)datetime.Month;
-            Day = (short)datetime.Day;
-            Hour = (short)datetime.Hour;
-            Min = (short)datetime.Minute;
-            Sec = (short)datetime.Second;
-            MSec = (short)datetime.Millisecond;
-            result = "." + Year.ToString() + "_" + Month.ToString() + "_" + Day.ToString() + "_" + Hour.ToString() + "_" + Min.ToString() + "_" + Sec.ToString() + ".txt";
-            return result;
+            short Year = (short)datetime.Year;
+            short Month = (short)datetime.Month;
+            short Day = (short)datetime.Day;
+            short Hour = (short)datetime.Hour;
+            short Min = (short)datetime.Minute;
+            short Sec = (short)datetime.Second;
+            short MSec = (short)datetime.Millisecond;
+            return ".bak." + Year.ToString() + "_" + Month.ToString() + "_" + Day.ToString() + "_" + Hour.ToString() + "_" + Min.ToString() + "_" + Sec.ToString() + ".txt";
         }
 
         public void GetGuildAgitSaleList(ref ArrayList salelist)
         {
-            TGuildAgit guildagit;
-            TGuild guild;
-            string AnotherGuildMaster;
-            int i;
             DateTime RemainDateTime;
             string RemainDay;
-            string strStatus;
-            string strtemp;
             salelist = null;
-            strStatus = "";
-            AnotherGuildMaster = "";
-            for (i = 0; i < GuildAgitList.Count; i++)
+            string strStatus = "";
+            string AnotherGuildMaster = "";
+            for (var i = 0; i < GuildAgitList.Count; i++)
             {
-                guildagit = GuildAgitList[i] as TGuildAgit;
+                TGuildAgit guildagit = GuildAgitList[i] as TGuildAgit;
                 strStatus = "Normal";
-                // 厘盔捞 魄概吝捞搁
                 if (guildagit.IsForSale())
                 {
                     strStatus = "On Sale";
@@ -549,40 +488,31 @@ namespace GameSvr
                 }
                 else
                 {
-                    // 瘤抄 朝楼甫 家荐痢 1磊府俊辑 例窜.(抗 : 10.5老)
                     RemainDateTime = Convert.ToInt64(RemainDateTime * 10);
                     RemainDateTime = RemainDateTime / 10;
-                    // 巢篮 朝楼肺 函券.
                     RemainDateTime = Guild.GUILDAGIT_DAYUNIT - RemainDateTime;
 #if !DEBUG
-                    // sonmg
                     RemainDay = Convert.ToString(RemainDateTime) + "Day(s)";
 #else
                     RemainDay = Convert.ToString(RemainDateTime) + "Min.";
 #endif
                 }
-                // 巩磊凯 炼钦.
-                strtemp = guildagit.GuildAgitNumber.ToString();
+                string strtemp = guildagit.GuildAgitNumber.ToString();
                 if (strtemp.Length == 1)
                 {
                     strtemp = "0" + strtemp;
                 }
-                // 肚促弗 巩林啊 乐绰瘤 八荤.
-                guild = svMain.GuildMan.GetGuild(guildagit.GuildName);
+                TGuild guild = svMain.GuildMan.GetGuild(guildagit.GuildName);
                 if (guild != null)
                 {
                     AnotherGuildMaster = guildagit.GuildMasterNameSecond;
-                    // 荐沥
-                    // AnotherGuildMaster := guild.GetAnotherGuildMaster;
                 }
                 if (AnotherGuildMaster == "")
                 {
                     AnotherGuildMaster = "---";
-                    // 肚 促弗 巩林 绝澜.
                 }
                 salelist.Add(strtemp + "/" + guildagit.GuildName + "/" + guildagit.GuildMasterName + "/" + AnotherGuildMaster + "/" + guildagit.ForSaleMoney.ToString() + "/" + strStatus);
             }
-            // 魄概 格废 家飘.
             if (salelist != null)
             {
                 salelist.Sort();
@@ -591,11 +521,9 @@ namespace GameSvr
 
         public bool IsGuildAgitExpired(string gname)
         {
-            bool result;
-            int i;
             TGuildAgit guildagit;
-            result = false;
-            for (i = 0; i < GuildAgitList.Count; i++)
+            bool result = false;
+            for (var i = 0; i < GuildAgitList.Count; i++)
             {
                 guildagit = GuildAgitList[i] as TGuildAgit;
                 if (guildagit != null)
@@ -615,24 +543,19 @@ namespace GameSvr
 
         public bool GuildAgitTradeOk(string gname, string new_gname, string new_mastername)
         {
-            bool result;
-            int i;
-            TGuildAgit guildagit;
-            result = false;
-            // 沥焊 坷幅.
+            bool result = false;
             if ((gname == "") || (new_gname == "") || (new_mastername == ""))
             {
                 return result;
             }
-            for (i = 0; i < GuildAgitList.Count; i++)
+            for (var i = 0; i < GuildAgitList.Count; i++)
             {
-                guildagit = GuildAgitList[i] as TGuildAgit;
+                TGuildAgit guildagit = GuildAgitList[i] as TGuildAgit;
                 if (guildagit != null)
                 {
                     if ((guildagit.GuildName == gname) && (guildagit.ForSaleFlag == 1))
                     {
                         guildagit.ForSaleFlag = 0;
-                        // guildagit.ForSaleMoney := guildagit.ForSaleMoney;   //弊措肺
                         guildagit.ForSaleWait = Guild.GUILDAGIT_SALEWAIT_DAYUNIT;
                         guildagit.ForSaleGuildName = new_gname;
                         guildagit.ForSaleGuildMasterName = new_mastername;
@@ -648,11 +571,9 @@ namespace GameSvr
 
         public bool IsExistInForSaleGuild(string gname)
         {
-            bool result;
-            int i;
             TGuildAgit guildagit;
-            result = false;
-            for (i = 0; i < GuildAgitList.Count; i++)
+            bool result = false;
+            for (var i = 0; i < GuildAgitList.Count; i++)
             {
                 guildagit = GuildAgitList[i] as TGuildAgit;
                 if (guildagit != null)
@@ -715,16 +636,12 @@ namespace GameSvr
             return result;
         }
 
-        // 厘盔操固扁
         public int MakeAgitDecoMon()
         {
-            int result;
-            int i;
             TAgitDecoItem pitem;
-            int count;
-            result = 0;
-            count = 0;
-            for (i = 0; i < AgitDecoMonList.Count; i++)
+            int result = 0;
+            int count = 0;
+            for (var i = 0; i < AgitDecoMonList.Count; i++)
             {
                 pitem = (TAgitDecoItem)AgitDecoMonList[i];
                 if (pitem != null)
@@ -739,18 +656,15 @@ namespace GameSvr
             return result;
         }
 
-        // 厘盔俊 酒捞袍阑 哩矫挪促.
         public int MakeDecoItemToMap(string DropMapName, string ItemName, int LookIndex, int Durability, int dx, int dy)
         {
-            int result;
             TStdItem ps;
             TUserItem newpu;
             TMapItem pmi;
             TMapItem pr;
             TEnvirnoment dropenvir;
             string pricestr = string.Empty;
-            result = 0;
-            // 府胶飘俊 郴侩捞 绝栏搁 俊矾.
+            int result = 0;
             if (svMain.DecoItemList.Count <= 0)
             {
                 return result;
@@ -763,15 +677,12 @@ namespace GameSvr
                     newpu = new TUserItem();
                     if (svMain.UserEngine.CopyToUserItemFromName(ps.Name, ref newpu))
                     {
-                        // 惑泅林赣聪 辆幅 悸泼
                         newpu.Dura = (ushort)LookIndex;
-                        // 惑泅林赣聪 郴备 悸泼
                         newpu.DuraMax = (ushort)Durability;
                         pmi = new TMapItem();
                         pmi.UserItem = newpu;
                         if ((ps.StdMode == ObjBase.STDMODE_OF_DECOITEM) && (ps.Shape == ObjBase.SHAPE_OF_DECOITEM))
                         {
-                            // 厘盔操固扁 - 惑泅林赣聪
                             pmi.Name = GetDecoItemName(LookIndex, ref pricestr) + "[" + HUtil32.MathRound(Durability / 1000).ToString() + "]" + "/" + "1";
                             pmi.Count = 1;
                             pmi.Looks = (ushort)LookIndex;
@@ -785,14 +696,11 @@ namespace GameSvr
                         pr = (TMapItem)dropenvir.AddToMap(dx, dy, Grobal2.OS_ITEMOBJECT, pmi);
                         if (pr == pmi)
                         {
-                            // 搬苞蔼捞 MakeIndex;
                             result = pmi.UserItem.MakeIndex;
-                            // 辑滚肺弊
                             svMain.MainOutMessage("[DecoItemGen] " + pmi.Name + "(" + dx.ToString() + "," + dy.ToString() + ")");
                         }
                         else
                         {
-                            // 角菩牢版快
                             Dispose(pmi);
                         }
                     }
@@ -800,7 +708,6 @@ namespace GameSvr
                     {
                         Dispose(newpu);
                     }
-                    // Memory Leak sonmg
                 }
             }
             catch
@@ -1045,7 +952,7 @@ namespace GameSvr
                 agitnum = guildagit.GuildAgitNumber;
                 if ((agitnum > 0) && (agitnum <= Guild.MAXGUILDAGITCOUNT))
                 {
-                    AgitDecoMonCount[agitnum] = _MAX(0, AgitDecoMonCount[agitnum] - 1);
+                    AgitDecoMonCount[agitnum] = HUtil32._MAX(0, AgitDecoMonCount[agitnum] - 1);
                 }
             }
         }
@@ -1054,7 +961,7 @@ namespace GameSvr
         {
             if ((agitnum > 0) && (agitnum <= Guild.MAXGUILDAGITCOUNT))
             {
-                AgitDecoMonCount[agitnum] = _MAX(0, AgitDecoMonCount[agitnum] - 1);
+                AgitDecoMonCount[agitnum] = HUtil32._MAX(0, AgitDecoMonCount[agitnum] - 1);
             }
         }
 
@@ -1139,15 +1046,12 @@ namespace GameSvr
 
         public int GetGuildAgitMapFloor(string mapname)
         {
-            int result;
-            result = -1;
+            int result = -1;
             if (mapname.Length < 3)
             {
                 return result;
             }
-            // 0: 付寸, 1,2,3摸
-            result = HUtil32.Str_ToInt(mapname[3], -1);
-            return result;
+            return HUtil32.Str_ToInt(mapname[3], -1);
         }
 
         public int GetGuildAgitNumFromMapName(string gmapname)
@@ -1335,6 +1239,11 @@ namespace GameSvr
             }
             result = true;
             return result;
+        }
+
+        public void Dispose(object obj)
+        { 
+            
         }
     } 
 }

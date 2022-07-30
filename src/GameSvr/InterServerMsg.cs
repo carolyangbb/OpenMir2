@@ -66,10 +66,10 @@ namespace GameSvr
             }
         }
 
-        public void MsgServerClientError(Object Sender, Socket Socket, TErrorEvent ErrorEvent, ref int ErrorCode)
+        public void MsgServerClientError(Object Sender, Socket Socket, ref int ErrorCode)
         {
             ErrorCode = 0;
-            Socket.Close;
+            Socket.Close();
         }
 
         public void MsgServerClientRead(Object Sender, Socket Socket)
@@ -85,7 +85,6 @@ namespace GameSvr
             }
         }
 
-        // -------------------------------------------------------------------
         public void SendSocket(Socket Socket, string str)
         {
             if (Socket.Connected)
@@ -121,7 +120,6 @@ namespace GameSvr
             }
         }
 
-        // -------------------------------------------------------------------
         private void DecodeSocStr(TServerMsgInfo ps)
         {
             string BufStr;
@@ -212,7 +210,6 @@ namespace GameSvr
                                 MsgGetMarketOpen(false);
                                 break;
                             case Grobal2.ISM_RELOADCHATLOG:
-                                // 2003/08/28 채팅로그
                                 MsgGetReloadChatLog();
                                 break;
                             case Grobal2.ISM_LM_DELETE:
@@ -226,22 +223,18 @@ namespace GameSvr
                             case Grobal2.ISM_FRIEND_RESULT:
                             case Grobal2.ISM_TAG_SEND:
                             case Grobal2.ISM_TAG_RESULT:
-                                // 친구 쪽지 관련 내부 서버 메세지
                                 MsgGetUserMgr(snum, body, ident);
                                 break;
                             case Grobal2.ISM_RELOADMAKEITEMLIST:
-                                // 제조 재료 목록 리로드(sonmg)
                                 MsgGetReloadMakeItemList();
                                 break;
                             case Grobal2.ISM_GUILDMEMBER_RECALL:
-                                // 문원소환.
                                 MsgGetGuildMemberRecall(snum, body);
                                 break;
                             case Grobal2.ISM_RELOADGUILDAGIT:
                                 MsgGetReloadGuildAgit(snum, body);
                                 break;
                             case Grobal2.ISM_LM_LOGIN:
-                                // 연인
                                 MsgGetLoverLogin(snum, body);
                                 break;
                             case Grobal2.ISM_LM_LOGOUT:
@@ -254,7 +247,6 @@ namespace GameSvr
                                 MsgGetLoverKilledMsg(snum, body);
                                 break;
                             case Grobal2.ISM_RECALL:
-                                // 소환
                                 MsgGetRecall(snum, body);
                                 break;
                             case Grobal2.ISM_REQUEST_RECALL:
@@ -278,8 +270,6 @@ namespace GameSvr
             }
         }
 
-        // 다른 서버로 서버 이동을 함.
-        // Decode(servernumber) + '/' + Decode(filename)(사용자 정보가 기록된 파일)
         public void MsgGetUserServerChange(int snum, string body)
         {
             string ufilename;
@@ -296,7 +286,6 @@ namespace GameSvr
             psui = null;
             if (svMain.ServerIndex == snum)
             {
-                // 내 서버의 메세지인지
                 try
                 {
                     fhandle = File.Open(svMain.ShareBaseDir + ufilename, (FileMode)FileAccess.Read | FileShare.ReadWrite);
@@ -358,7 +347,6 @@ namespace GameSvr
                 TUserHuman hum = svMain.UserEngine.GetUserHuman(uname);
                 if (hum != null)
                 {
-                    // 운영자 귓속말 차단
                     if (!hum.bStealth)
                     {
                         hum.WhisperRe(str, false);
@@ -397,7 +385,7 @@ namespace GameSvr
                 hum = svMain.UserEngine.GetUserHuman(uname);
                 if (hum != null)
                 {
-                    // 운영자 귓속말 차단
+                    //  楮�    憺疸      
                     if (!hum.bStealth)
                     {
                         hum.LoverWhisperRe(str);
@@ -443,7 +431,7 @@ namespace GameSvr
         {
             string gname;
             gname = EDcode.DecodeString(body);
-            // 장원 반환 후 문파삭제.
+            //       환       캥   .
             // GuildAgitMan.DelGuildAgit( gname );
             svMain.GuildMan.DelGuild(gname);
         }
@@ -455,7 +443,6 @@ namespace GameSvr
             gname = EDcode.DecodeString(body);
             if (snum == 0)
             {
-                // 0번 서버에서 보낸거....
                 g = svMain.GuildMan.GetGuild(gname);
                 if (g != null)
                 {
@@ -465,7 +452,6 @@ namespace GameSvr
             }
             else
             {
-                // 다른 서버에서 보냄
                 if (svMain.ServerIndex != snum)
                 {
                     g = svMain.GuildMan.GetGuild(gname);
@@ -612,15 +598,11 @@ namespace GameSvr
             svMain.UserMgrEngine.OnExternInterMsg(snum, Ident_, username, msgbody);
         }
 
-        // 제조 재료 목록 리로드(sonmg)
-        // 제조 재료 목록 리로드(sonmg)
         public void MsgGetReloadMakeItemList()
         {
             LocalDB.FrmDB.LoadMakeItemList();
         }
 
-        // 문원소환.
-        // 문원소환.
         public void MsgGetGuildMemberRecall(int snum, string body)
         {
             TUserHuman hum;
@@ -657,7 +639,6 @@ namespace GameSvr
             svMain.GuildAgitMan.LoadGuildAgitList();
         }
 
-        // 연인
         public void MsgGetLoverLogin(int snum, string body)
         {
             TUserHuman humlover;
@@ -674,7 +655,6 @@ namespace GameSvr
                 if (humlover != null)
                 {
                     humlover.SysMsg(uname + " has entered " + str + ".", 6);
-                    // 연인 로그인 메시지를 받으면 나의 위치 정보를 알려줌
                     if (svMain.UserEngine.FindOtherServerUser(uname, ref svidx))
                     {
                         svMain.UserEngine.SendInterMsg(Grobal2.ISM_LM_LOGIN_REPLY, svidx, lovername + "/" + uname + "/" + humlover.PEnvir.MapTitle);
@@ -738,8 +718,6 @@ namespace GameSvr
             }
         }
 
-        // 소환
-        // 소환
         public void MsgGetRecall(int snum, string body)
         {
             TUserHuman hum;
@@ -762,7 +740,6 @@ namespace GameSvr
                 {
                     hum.SendRefMsg(Grobal2.RM_SPACEMOVE_HIDE, 0, 0, 0, 0, "");
                     hum.SpaceMove(str, (short)dx, (short)dy, 0);
-                    // 공간이동
                 }
             }
         }
@@ -804,20 +781,17 @@ namespace GameSvr
             }
         }
 
-        // 위탁판매
         public void MsgGetMarketOpen(bool WantOpen)
         {
             SqlEngn.Units.SqlEngn.SqlEngine.Open(WantOpen);
         }
 
-        // -------------------------------------------------------------------
         public void Run()
         {
-            int i;
             TServerMsgInfo ps;
             try
             {
-                for (i = 0; i < InterServerMsg.MAXSERVER; i++)
+                for (var i = 0; i < InterServerMsg.MAXSERVER; i++)
                 {
                     if (ServerArr[i].Socket != null)
                     {
@@ -831,8 +805,7 @@ namespace GameSvr
                 svMain.MainOutMessage("EXCEPT TFrmSrvMsg.Run");
             }
         }
-
-    } // end TFrmSrvMsg
+    }
 
     public struct TServerShiftUserInfo
     {
@@ -841,32 +814,25 @@ namespace GameSvr
         public int Certification;
         public string GroupOwner;
         public string GroupMembers;
-        // 그룹원은 최대 9명
         public bool BoHearCry;
         public bool BoHearWhisper;
         public bool BoHearGuildMsg;
         public bool BoSysopMode;
         public bool BoSuperviserMode;
         public string[] WhisperBlockNames;
-        // 귓속말 차단 캐릭터
         public bool BoSlaveRelax;
-        // 부하몹의 휴식상태 (sonmg 2005/01/21)
         public TSlaveInfo[] Slaves;
         public long waittime;
-        // timeout은 30초
         public byte[] StatusValue;
-        // 상승 능력치 값 추가(sonmg 2005/06/03)
         public byte[] ExtraAbil;
-        // 상승 능력치 값
         public long[] ExtraAbilTimes;
-    } // end TServerShiftUserInfo
+    }
 
     public struct TServerMsgInfo
     {
         public Socket Socket;
         public string SocData;
-    } // end TServerMsgInfo
-
+    }
 }
 
 namespace GameSvr
@@ -875,7 +841,6 @@ namespace GameSvr
     {
         public static TFrmSrvMsg FrmSrvMsg = null;
         public const int MAXSERVER = 10;
-    } // end InterServerMsg
-
+    }
 }
 

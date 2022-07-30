@@ -25,7 +25,7 @@ namespace GameSvr
         {
             FileStream ini;
             string fname = ".\\!setup.txt";
-            IDSocket.Address = "";
+            //IDSocket.Address = "";
             //if (File.Exists(fname))
             //{
             //    ini = new FileStream(fname);
@@ -43,7 +43,7 @@ namespace GameSvr
             AdmissionList = new List<TAdmission>();
             ShareIPList = new ArrayList();
             LoadShareIPList();
-            LoginServerCheckTime = GetTickCount;
+            LoginServerCheckTime = HUtil32.GetTickCount();
         }
 
         public void FormDestroy(Object Sender)
@@ -75,10 +75,10 @@ namespace GameSvr
         {
         }
 
-        public void IDSocketError(Object Sender, Socket Socket, TErrorEvent ErrorEvent, ref int ErrorCode)
+        public void IDSocketError(Object Sender, Socket Socket, ref int ErrorCode)
         {
             ErrorCode = 0;
-            Socket.Close;
+            Socket.Close();
         }
 
         public void IDSocketRead(Object Sender, Socket Socket)
@@ -86,7 +86,7 @@ namespace GameSvr
             try
             {
                 svMain.csShare.Enter();
-                IDSocStr = IDSocStr + Socket.ReceiveText;
+                //IDSocStr = IDSocStr + Socket.ReceiveText;
             }
             finally
             {
@@ -96,19 +96,18 @@ namespace GameSvr
 
         public void Initialize()
         {
-            this.Active = false;
+            /*this.Active = false;
             IDSocket.Address = ServerAddress;
             IDSocket.Port = ServerPort;
-            this.Active = true;
+            this.Active = true;*/
         }
 
-        // 皋牢 胶贰靛俊辑父 荤侩秦具 窃.
         public void SendUserClose(string uid, int cert)
         {
-            if (IDSocket.Socket.Connected)
+            /*if (IDSocket.Socket.Connected)
             {
                 IDSocket.Socket.SendText("(" + Grobal2.ISM_USERCLOSED.ToString() + "/" + uid + "/" + cert.ToString() + ")");
-            }
+            }*/
         }
 
         public void SendGameTimeOfTimeCardUser(string uid, int gametime_min)
@@ -118,18 +117,18 @@ namespace GameSvr
 
         public void SendUserShiftToVentureServer(string svname, string uid, int cert)
         {
-            if (IDSocket.Socket.Connected)
+            /*if (IDSocket.Socket.Connected)
             {
                 IDSocket.Socket.SendText("(" + Grobal2.ISM_SHIFTVENTURESERVER.ToString() + "/" + svname + "/" + uid + "/" + cert.ToString() + ")");
-            }
+            }*/
         }
 
         public void SendUserCount(int ucount)
         {
-            if (IDSocket.Socket.Connected)
+            /*if (IDSocket.Socket.Connected)
             {
                 IDSocket.Socket.SendText("(" + Grobal2.ISM_USERCOUNT.ToString() + "/" + svMain.ServerName + "/" + svMain.ServerIndex.ToString() + "/" + ucount.ToString() + ")");
-            }
+            }*/
         }
 
         public void DecodeSocStr()
@@ -233,12 +232,12 @@ namespace GameSvr
 
         private void GetCancelAdmission(string body)
         {
-            string uid;
+            string uid=String.Empty;
             string certstr;
             int cert;
             try
             {
-                certstr = HUtil32.GetValidStr3(body, uid, new string[] { "/" });
+                certstr = HUtil32.GetValidStr3(body, ref uid, new string[] { "/" });
                 cert = HUtil32.Str_ToInt(certstr, 0);
                 DelAdmission(cert);
             }
@@ -282,7 +281,7 @@ namespace GameSvr
                     if ((AdmissionList[i] as TAdmission).Certification == certify)
                     {
                         kickid = (AdmissionList[i] as TAdmission).usrid;
-                        this.Dispose(AdmissionList[i] as TAdmission);
+                        //this.Dispose(AdmissionList[i] as TAdmission);
                         AdmissionList.RemoveAt(i);
                         break;
                     }
@@ -416,10 +415,10 @@ namespace GameSvr
         }
     }
 
-    public struct TAdmission
+    public class TAdmission
     {
-        public string[] usrid;
-        public string[] uaddr;
+        public string usrid;
+        public string uaddr;
         public int Certification;
         public int PayMode;
         public int AvailableMode;

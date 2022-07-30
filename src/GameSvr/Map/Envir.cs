@@ -8,7 +8,7 @@ namespace GameSvr
         public int Idx;
     } 
 
-    public struct TDoorCore
+    public class TDoorCore
     {
         public bool DoorOpenState;
         // true: open  false: closed

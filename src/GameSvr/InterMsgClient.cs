@@ -15,10 +15,10 @@ namespace GameSvr
 
         public void Initialize()
         {
-            this.Active = false;
+            /*this.Active = false;
             MsgClient.Address = svMain.MsgServerAddress;
             MsgClient.Port = svMain.MsgServerPort;
-            start = GetTickCount;
+            start = GetTickCount;*/
         }
 
         public void MsgClientConnect(Object Sender, Socket Socket)
@@ -30,32 +30,32 @@ namespace GameSvr
         {
         }
 
-        public void MsgClientError(Object Sender, Socket Socket, TErrorEvent ErrorEvent, ref int ErrorCode)
+        public void MsgClientError(Object Sender, Socket Socket, ref int ErrorCode)
         {
             ErrorCode = 0;
-            Socket.Close;
+            Socket.Close();
         }
 
         public void MsgClientRead(Object Sender, Socket Socket)
         {
-            SocData = SocData + Socket.ReceiveText;
+            //SocData = SocData + Socket.ReceiveText;
         }
 
         public void SendSocket(string str)
         {
-            if (MsgClient.Socket.Connected)
+            /*if (MsgClient.Socket.Connected)
             {
                 MsgClient.Socket.SendText("(" + str + ")");
-            }
+            }*/
         }
 
         private void DecodeSocStr()
         {
             string BufStr;
-            string str;
-            string head;
+            string str= string.Empty;
+            string head= string.Empty;
             string body= string.Empty;
-            string snumstr;
+            string snumstr= string.Empty;
             int ident;
             int snum;
             if (SocData.IndexOf(")") <= 0)
@@ -68,11 +68,11 @@ namespace GameSvr
                 SocData = "";
                 while (BufStr.IndexOf(")") > 0)
                 {
-                    BufStr = ArrestStringEx(BufStr, "(", ")", str);
+                    BufStr = HUtil32.ArrestStringEx(BufStr, "(", ")", ref str);
                     if (str != "")
                     {
-                        body = GetValidStr3(str, head, new string[] { "/" });
-                        body = GetValidStr3(body, snumstr, new string[] { "/" });
+                        body = HUtil32.GetValidStr3(str, ref head, new string[] { "/" });
+                        body =HUtil32. GetValidStr3(body, ref snumstr, new string[] { "/" });
                         ident = HUtil32.Str_ToInt(head, 0);
                         snum = HUtil32.Str_ToInt(EDcode.DecodeString(snumstr), -1);
                         switch (ident)
@@ -151,22 +151,18 @@ namespace GameSvr
                             case Grobal2.ISM_FRIEND_RESULT:
                             case Grobal2.ISM_TAG_SEND:
                             case Grobal2.ISM_TAG_RESULT:
-                                // 친구 쪽지 관련 내부 서버 메세지
                                 InterServerMsg.FrmSrvMsg.MsgGetUserMgr(snum, body, ident);
                                 break;
                             case Grobal2.ISM_RELOADMAKEITEMLIST:
-                                // 제조 재료 목록 리로드(sonmg)
                                 InterServerMsg.FrmSrvMsg.MsgGetReloadMakeItemList();
                                 break;
                             case Grobal2.ISM_GUILDMEMBER_RECALL:
-                                // 문원소환.
                                 InterServerMsg.FrmSrvMsg.MsgGetGuildMemberRecall(snum, body);
                                 break;
                             case Grobal2.ISM_RELOADGUILDAGIT:
                                 InterServerMsg.FrmSrvMsg.MsgGetReloadGuildAgit(snum, body);
                                 break;
                             case Grobal2.ISM_LM_LOGIN:
-                                // 연인
                                 InterServerMsg.FrmSrvMsg.MsgGetLoverLogin(snum, body);
                                 break;
                             case Grobal2.ISM_LM_LOGOUT:
@@ -179,7 +175,6 @@ namespace GameSvr
                                 InterServerMsg.FrmSrvMsg.MsgGetLoverKilledMsg(snum, body);
                                 break;
                             case Grobal2.ISM_RECALL:
-                                // 소환
                                 InterServerMsg.FrmSrvMsg.MsgGetRecall(snum, body);
                                 break;
                             case Grobal2.ISM_REQUEST_RECALL:
@@ -207,14 +202,14 @@ namespace GameSvr
         {
             try
             {
-                if (!MsgClient.Socket.Connected)
+                /*if (!MsgClient.Socket.Connected)
                 {
                     if (GetTickCount - start > 20 * 1000)
                     {
                         start = GetTickCount;
                         MsgClient.Active = true;
                     }
-                }
+                }*/
                 DecodeSocStr();
             }
             catch

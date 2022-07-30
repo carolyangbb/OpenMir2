@@ -550,8 +550,7 @@ namespace SystemModule
         public Object Droper;
     }
 
-    // 厘盔操固扁 酒捞袍(sonmg)
-    public struct TAgitDecoItem
+    public class TAgitDecoItem
     {
         public string Name;
         public ushort Looks;
@@ -560,7 +559,7 @@ namespace SystemModule
         public ushort y;
         public string Maker;
         public ushort Dura;
-    } // end TAgitDecoItem
+    }
 
     public class TVisibleItemInfo
     {
@@ -831,7 +830,6 @@ namespace SystemModule
         public ArrayList pList;
     } // end TSearchSellItem
 
-    // 困殴八荤侩....------------------------------------------------------------
     public struct TMarKetReqInfo
     {
         public string UserName;
@@ -841,27 +839,20 @@ namespace SystemModule
         public int ItemType;
         public int ItemSet;
         public int UserMode;
-    } // end TMarKetReqInfo
+    } 
 
-    // 厘盔霸矫魄 府胶飘 八祸侩....------------------------------------------------------------
-    public struct TSearchGaBoardList
+    public class TSearchGaBoardList
     {
         public int AgitNum;
-        // 固荤侩
         public string GuildName;
         public int OrgNum;
-        // 固荤侩
         public int SrcNum1;
-        // 固荤侩
         public int SrcNum2;
-        // 固荤侩
         public int SrcNum3;
-        // 固荤侩
         public int Kind;
         public string UserName;
-        // 固荤侩
         public ArrayList ArticleList;
-    } // end TSearchGaBoardList
+    } 
 
     public class TGaBoardArticleLoad
     {
@@ -873,7 +864,7 @@ namespace SystemModule
         public int SrcNum3;
         public int Kind;
         public string UserName;
-        public Char[] Content;
+        public string Content;
     }
 
     public struct TShopItem

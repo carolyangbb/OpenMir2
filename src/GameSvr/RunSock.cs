@@ -36,7 +36,7 @@ namespace GameSvr
         public int sendsoccount;
     }
 
-    public struct TUserInfo
+    public struct TGateUserInfo
     {
         public string UserId;
         public string UserName;
@@ -306,8 +306,8 @@ namespace GameSvr
             }
         }
 
-        // ruLock ¾È¿¡¼­ È£ÃâµÇ¾î¾ßÇÔ
-        // UserListÀÇ index¸¦ ¸®ÅÏÇÔ
+        // ruLock æ•‘ä¿Šè¾‘ é¾‹å…ç™»ç»¢å…·çªƒ
+        // UserListç‹¼ indexç”« åºœç•”çªƒ
         private int OpenNewUser(int shandle, int uindex, string addr, ArrayList ulist)
         {
             int result;
@@ -330,7 +330,7 @@ namespace GameSvr
                 if (ulist[i] == null)
                 {
                     ulist[i] = uinfo;
-                    // Áß°£¿¡ ºüÁø°÷¿¡ ³ÖÀ½
+                    // ååŸƒä¿Š ç‹æŸ³é•‘ä¿Š æŒæ¾œ
                     result = i;
                     return result;
                 }
@@ -366,7 +366,7 @@ namespace GameSvr
                         if ((GateArr[gateindex].UserList[i] as TUserInfo).UserHandle == uhandle)
                         {
                             puser = GateArr[gateindex].UserList[i] as TUserInfo;
-                            // Close Á¶°Ç ´Ù½Ã »ı°¢ÇØ¾ß ÇÔ.
+                            // Close ç‚¼æ‰’ ä¿ƒçŸ« ç§¯é˜¿ç§¦å…· çªƒ.
                             try
                             {
                                 if (puser.FEngine != null)
@@ -396,11 +396,11 @@ namespace GameSvr
                                 {
                                     if (((TCreature)puser.UCret).BoGhost)
                                     {
-                                        // »ç¿ëÀÚÁ¾·á°¡ ¾Æ´Ñ, ¼­¹öÀÇ °­Á¦Á¾·áÀÎ°æ¿ì
+                                        // è¤ä¾©ç£Šè¾†ä¸°å•Š é…’å›±, è¾‘æ»šç‹¼ ç¢åŠ›è¾†ä¸°ç‰¢ç‰ˆå¿«
                                         if (!((TUserHuman)puser.UCret).SoftClosed)
                                         {
-                                            // Ä³¸¯ÅÍ ¼±ÅÃÀ¸·Î ºüÁø°ÍÀÌ ¾Æ´Ï¸é
-                                            // ´Ù¸¥ ¼­¹ö¿¡ ¾Ë¸°´Ù.
+                                            // æŸè…ç£ æ€¥ç¶æ è‚º ç‹æŸ³å·´æ é…’èªæ
+                                            // ä¿ƒå¼— è¾‘æ»šä¿Š èˆ…èµ´ä¿ƒ.
                                             IdSrvClient.FrmIDSoc.SendUserClose(puser.UserId, puser.Certification);
                                         }
                                     }
@@ -412,7 +412,7 @@ namespace GameSvr
                             }
                             try
                             {
-                                // Á¦°Å.. Á¦°ÅÇÏÁö ¾Ê´Â´Ù.
+                                // åŠ›èŠ­.. åŠ›èŠ­çªç˜¤ è‡¼ç»°ä¿ƒ.
                                 // GateArr[gateindex].UserList.Delete (i);
                                 Dispose(puser);
                                 GateArr[gateindex].UserList[i] = null;
@@ -455,7 +455,7 @@ namespace GameSvr
             SendUserSocket(gindex, pbuf);
         }
 
-        // µ¿±âÈ­ ¸ÂÃç¾ßÇÔ
+        // æ‚¼æ‰æ‹³ å˜è‹—å…·çªƒ
         public void SendForcedClose(int gindex, int uhandle)
         {
             TDefaultMessage def;
@@ -510,7 +510,7 @@ namespace GameSvr
             }
         }
 
-        // ´Ù¸¥ ¼­¹ö¿¡¼­ ÀçÁ¢¼Ó µÇ¾úÀ» °æ¿ì, È¤Àº ´Ù¸¥ ¼­¹ö¿¡ ÀÌ»óÀÌ »ı±è..
+        // ä¿ƒå¼— è¾‘æ»šä¿Šè¾‘ çŠç«‹åŠ  ç™»èŒé˜‘ ç‰ˆå¿«, è¶£ç¯® ä¿ƒå¼— è¾‘æ»šä¿Š ææƒ‘æ ç§¯è¾«..
         public void CloseUserId(string uid, int cert)
         {
             int gi;
@@ -540,10 +540,10 @@ namespace GameSvr
                                 {
                                     ((TUserHuman)pu.UCret).EmergencyClose = true;
                                     ((TUserHuman)pu.UCret).UserSocketClosed = true;
-                                    // °­Á¦ Á¾·á ¸Ş¼¼Áö¸¦ Å¬¶óÀÌ¾ğÆ®¿¡ º¸³½´Ù.
+                                    // ç¢åŠ› è¾†ä¸° çš‹æŠ€ç˜¤ç”« åŠªæ‰¼ææ”«é£˜ä¿Š ç„Šè¾°ä¿ƒ.
                                     SendForcedClose(gi, pu.UserHandle);
                                 }
-                                // GateArr[gi].UserList.Delete (k); Á¦°ÅÇÏÁö ¾ÊÀ½
+                                // GateArr[gi].UserList.Delete (k); åŠ›èŠ­çªç˜¤ è‡¼æ¾œ
                                 Dispose(pu);
                                 GateArr[gi].UserList[k] = null;
                                 break;
@@ -693,7 +693,7 @@ namespace GameSvr
             return result;
         }
 
-        // ruLock ¾È¿¡¼­ È£ÃâµÇ´Â ÇÔ¼ö ÀÓ.
+        // ruLock æ•‘ä¿Šè¾‘ é¾‹å…ç™»ç»° çªƒè çƒ™.
         private void DoClientCertification(int gindex, TUserInfo puser, int shandle, string data)
         {
             string uid;
@@ -739,7 +739,7 @@ namespace GameSvr
                             }
                             else
                             {
-                                // ÀÎÁõ ½ÇÆĞ
+                                // ç‰¢åˆ˜ è§’è©
                                 bugstep = 2;
                                 puser.UserId = "* disable *";
                                 puser.Enabled = false;
@@ -794,7 +794,7 @@ namespace GameSvr
                         SendServerUserIndex(CGate.Socket, pheader.SNumber, pheader.UserGateIndex, uidx + 1);
                         break;
                     case Grobal2.GM_CLOSE:
-                        // 1Àº ±âº»°ª
+                        // 1ç¯® æ‰å¤¯è”¼
                         debug = 2;
                         puser = null;
                         // -------------------
@@ -805,7 +805,7 @@ namespace GameSvr
                             {
                                 if (puser.UserHandle == pheader.SNumber)
                                 {
-                                    // ²÷¾îÁú¶§ IP Address ºñ±³(sonmg)
+                                    // è°—ç»¢é¾™é”­ IP Address åšèƒŒ(sonmg)
                                     // if CompareText(puser.UserAddress, StrPas(pdata)) <> 0 then
                                     // MainOutMessage('[IP Address Not Match] ' + puser.UserId + ' ' + puser.UserName + ' ' + puser.UserAddress + '->' + StrPas(pdata));
                                 }
@@ -833,13 +833,13 @@ namespace GameSvr
                             uidx = pheader.UserListIndex - 1;
                             if (uidx < CGate.UserList.Count)
                             {
-                                // ¸®½ºÆ®°¡ Áß°£¿¡ ºüÁú ¼öµµ ÀÖÀ½..
+                                // åºœèƒ¶é£˜å•Š ååŸƒä¿Š ç‹é¾™ èæ¡£ ä¹æ¾œ..
                                 puser = CGate.UserList[uidx] as TUserInfo;
                                 if (puser != null)
                                 {
                                     if (puser.UserHandle != pheader.SNumber)
                                     {
-                                        // Àç È®ÀÎ
+                                        // çŠ çŠ¬ç‰¢
                                         puser = null;
                                     }
                                 }
@@ -950,12 +950,12 @@ namespace GameSvr
             {
                 if (len > 0)
                 {
-                    // ³²¾ÒÀ½
+                    // å·¢ç–½æ¾œ
                     GetMem(ptemp, len);
                     Move(pwork, ptemp, len);
                     FreeMem(CGate.ReceiveBuffer);
                     CGate.ReceiveBuffer = ptemp;
-                    // psrc ³ª¸ÓÁö¸¸ ÀÖÀ½
+                    // psrc å”±èµ£ç˜¤çˆ¶ ä¹æ¾œ
                     CGate.ReceiveLen = len;
                 }
                 else
@@ -993,21 +993,21 @@ namespace GameSvr
             {
                 if (GetTickCount - CGate.WaitTime > 2000)
                 {
-                    // Å¸ÀÓ ¾Æ¿ô
+                    // é¸¥çƒ™ é…’çœ¶
                     CGate.GateSyncMode = 0;
                     CGate.SendDataCount = 0;
                 }
                 // if CurGate.GateSyncMode >= 2 then begin
-                // CurGate.GateSyncMode := 2; //breakpoint ¶§¸Å
+                // CurGate.GateSyncMode := 2; //breakpoint é”­æ¦‚
                 return result;
                 // end;
             }
-            // ÆĞÅ¶ ÃÖÀûÈ­
+            // è©å“¦ å¼¥åˆ©æ‹³
             try
             {
                 curn = 0;
                 psend = (string)slist[curn];
-                // Ç×»ó slist.Count > 0 ÀÓ.
+                // äº²æƒ‘ slist.Count > 0 çƒ™.
                 while (true)
                 {
                     if (curn + 1 >= slist.Count)
@@ -1015,13 +1015,13 @@ namespace GameSvr
                         break;
                     }
                     pwork = (string)slist[curn + 1];
-                    // ¹Ù·ÎÀü ºí·°ÀÌ SENDBLOCK º¸´Ù ÀÛÀ¸¸é ÇÕÇÑ´Ù.
+                    // å®˜è‚ºå‚ˆ å–‰é’’æ SENDBLOCK ç„Šä¿ƒ ç´¯æ æ é’¦èŒ„ä¿ƒ.
                     Move(psend, len, 4);
                     Move(pwork, newlen, 4);
                     if (len + newlen < svMain.SENDBLOCK)
                     {
                         slist.RemoveAt(curn + 1);
-                        // ÀÛÀº ºí·°Àº ¸ğ¾Æ¼­ ÇÑ²¨¹ø¿¡ º¸³½´Ù.
+                        // ç´¯ç¯® å–‰é’’ç¯® è‘›é…’è¾‘ èŒ„æ³¢é”…ä¿Š ç„Šè¾°ä¿ƒ.
                         // ReallocMem (psend, 4 + len + newlen);
                         GetMem(pnew, 4 + len + newlen);
                         totlen = len + newlen;
@@ -1044,7 +1044,7 @@ namespace GameSvr
             {
                 svMain.MainOutMessage("Exception SendGateBuffers(1)..");
             }
-            // º¸³»±â
+            // ç„Šéƒ´æ‰
             try
             {
                 while (slist.Count > 0)
@@ -1060,7 +1060,7 @@ namespace GameSvr
                     {
                         if ((CGate.SendDataCount == 0) && (sendlen >= svMain.SENDCHECKBLOCK))
                         {
-                            // ³Ê¹« Å« µ¥ÀÌÅ¸´Â ¾È º¸³½´Ù.
+                            // å‘ˆå…¬ å¥´ å•æé¸¥ç»° æ•‘ ç„Šè¾°ä¿ƒ.
                             slist.RemoveAt(0);
                             try
                             {
@@ -1074,11 +1074,11 @@ namespace GameSvr
                         }
                         else
                         {
-                            // Ã¤Å© ½ÅÈ£¸¦ º¸³½´Ù.
+                            // ç›²å†œ è„šé¾‹ç”« ç„Šè¾°ä¿ƒ.
                             // CGate.SendCheckTimeCount := CGate.SendDataCount;
                             SendGateCheck(CGate.Socket, Grobal2.GM_RECEIVE_OK);
                             CGate.GateSyncMode = 1;
-                            // SENDAVAILABLEBLOCK±îÁö º¸³½ ¼ö ÀÖÀ½
+                            // SENDAVAILABLEBLOCKé³–ç˜¤ ç„Šè¾° è ä¹æ¾œ
                             CGate.WaitTime = GetTickCount;
                         }
                         break;
@@ -1158,7 +1158,7 @@ namespace GameSvr
             }
         }
 
-        // ´Ù¸¥¾²·¹µå¿¡¼­ ³Ö¾îÁÖ´Â°Í
+        // ä¿ƒå¼—é™é¥­é›ä¿Šè¾‘ æŒç»¢æ—ç»°å·´
         public void PatchSendData()
         {
             TRunCmdInfo pInfo;
@@ -1194,7 +1194,7 @@ namespace GameSvr
             }
         }
 
-        // µ¥ÀÌÅÍ ÆĞÄ¡
+        // å•æç£ è©æ‘¹
         public void Run()
         {
             int i;
@@ -1206,7 +1206,7 @@ namespace GameSvr
             {
                 try
                 {
-                    // Cmd ¿¡¼­ ¿Âµ¥ÀÌÅÍ ÆĞÄ¡
+                    // Cmd ä¿Šè¾‘ æŸ¯å•æç£ è©æ‘¹
                     PatchSendData();
                     // Gate Load Test
                     if (svMain.GATELOAD > 0)
@@ -1216,7 +1216,7 @@ namespace GameSvr
                             gateloadtesttime = GetTickCount;
                             for (i = 0; i < Units.RunSock.MAXGATE; i++)
                             {
-                                // º¸³¾²¨ Ã³¸®
+                                // ç„Šå°˜æ³¢ è´¸åºœ
                                 pgate = GateArr[i] as TRunGateInfo;
                                 if (pgate.SendBuffers != null)
                                 {
@@ -1230,19 +1230,19 @@ namespace GameSvr
                     }
                     for (i = 0; i < Units.RunSock.MAXGATE; i++)
                     {
-                        // º¸³¾²¨ Ã³¸®
+                        // ç„Šå°˜æ³¢ è´¸åºœ
                         pgate = GateArr[i] as TRunGateInfo;
                         if (pgate.SendBuffers != null)
                         {
                             // CurGateIndex := i;
                             // CurGate := pgate;
                             pgate.curbuffercount = pgate.SendBuffers.Count;
-                            // ÇöÀç º¸³¾ ¹öÆÛÀÇ ¼ö
+                            // æ³…çŠ ç„Šå°˜ æ»šæ¬ºç‹¼ è
                             if (!SendGateBuffers(i, pgate, pgate.SendBuffers))
                             {
-                                // ¸øº¸³½°ÍÀÌ ÀÖÀ½, ½Ã°£ÃÊ°ú
+                                // ç»™ç„Šè¾°å·´æ ä¹æ¾œ, çŸ«åŸƒæª¬è‹
                                 pgate.remainbuffercount = pgate.SendBuffers.Count;
-                                // º¸³»°í ³²Àº ¹öÆÛÀÇ ¼ö
+                                // ç„Šéƒ´ç»Š å·¢ç¯® æ»šæ¬ºç‹¼ è
                                 // RunGateIndex := CurGateIndex + 1;
                                 // full := TRUE;
                                 break;
@@ -1250,7 +1250,7 @@ namespace GameSvr
                             else
                             {
                                 pgate.remainbuffercount = pgate.SendBuffers.Count;
-                                // º¸³»°í ³²Àº ¹öÆÛÀÇ ¼ö
+                                // ç„Šéƒ´ç»Š å·¢ç¯® æ»šæ¬ºç‹¼ è
                             }
                         }
                     }

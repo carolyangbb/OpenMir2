@@ -2497,20 +2497,16 @@ namespace GameSvr
             AddBodyLuck(0);
         }
 
-        public void Finalize()
+        public virtual void Finalize()
         {
 
         }
 
         public int GetMasterRace()
         {
-            int result;
-            // 林牢捞 绢恫 辆练牢瘤 掘绰促.
-            result = -1;
-            // 林牢捞 绝澜
+            int result = -1;
             if (Master != null)
             {
-                // 林牢捞 乐栏搁 辆练 锅龋甫 府畔窃.
                 result = Master.RaceServer;
             }
             return result;
@@ -2523,7 +2519,6 @@ namespace GameSvr
 
         public void CharStatusChanged()
         {
-            // wparam
             SendRefMsg(Grobal2.RM_CHARSTATUSCHANGED, HitSpeed, CharStatus, 0, 0, "");
         }
 
@@ -2544,23 +2539,17 @@ namespace GameSvr
             {
                 SendRefMsg(Grobal2.RM_TURN, Dir, CX, CY, 0, "");
             }
-            // 饭骇俊 嘎霸 涝厘且 荐 乐绰 甘牢瘤 眉农 秦具 窃
-
             return result;
         }
 
         public bool Disappear(int num)
         {
             bool result;
-            int rtn;
-            // 辑滚埃 捞悼矫俊绰 刚历 荤扼瘤扁 锭巩俊.. 肚促矫 阂府瘤 臼霸 贸府茄促.
-            // 2003-09-25
             if (FAlreadyDisapper)
             {
-                result = true;
-                return result;
+                return true;
             }
-            rtn = PEnvir.DeleteFromMap(CX, CY, Grobal2.OS_MOVINGOBJECT, this);
+            int rtn = PEnvir.DeleteFromMap(CX, CY, Grobal2.OS_MOVINGOBJECT, this);
             if (rtn != 1)
             {
                 svMain.MainOutMessage("DeleteFromMapError[" + rtn.ToString() + "]" + PEnvir.MapName + "," + CX.ToString() + "," + CY.ToString() + ":" + num.ToString());
@@ -2593,8 +2582,6 @@ namespace GameSvr
             }
         }
 
-        // mode = 0  walk
-        // 1  run
         public bool Walk(int msg)
         {
             bool result;

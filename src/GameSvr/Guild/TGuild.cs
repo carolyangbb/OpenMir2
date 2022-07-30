@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using SystemModule;
 
@@ -10,7 +11,7 @@ namespace GameSvr
         public string GuildName = String.Empty;
         public ArrayList NoticeList = null;
         public ArrayList KillGuilds = null;
-        public ArrayList AllyGuilds = null;
+        public IList<TGuild> AllyGuilds = null;
         public ArrayList MemberList = null;
         public int MatchPoint = 0;
         public bool BoStartGuildFight = false;
@@ -24,7 +25,7 @@ namespace GameSvr
             GuildName = gname;
             NoticeList = new ArrayList();
             KillGuilds = new ArrayList();
-            AllyGuilds = new ArrayList();
+            AllyGuilds = new List<TGuild>();
             MemberList = new ArrayList();
             FightMemberList = new ArrayList();
             guildsavetime = 0;

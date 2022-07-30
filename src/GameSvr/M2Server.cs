@@ -16,7 +16,7 @@ namespace GameSvr
             //InterServerMsg.FrmSrvMsg = new TFrmSrvMsg();
             //InterMsgClient.FrmMsgClient = new TFrmMsgClient();
             //FGameSet.Units.FGameSet.FrmGameConfig = new TFrmGameConfig();
-            Application.Run(svMain.FrmMain);
+            Application.Run();
         }
     }
 }

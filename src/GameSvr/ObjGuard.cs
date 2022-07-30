@@ -18,9 +18,6 @@ namespace GameSvr
 
         public bool AttackTarget()
         {
-            short ox;
-            short oy;
-            byte olddir;
             bool result = false;
             if (this.TargetCret.PEnvir == this.PEnvir)
             {
@@ -28,9 +25,9 @@ namespace GameSvr
                 {
                     this.HitTime = GetCurrentTime;
                     this.TargetFocusTime = GetTickCount;
-                    ox = this.CX;
-                    oy = this.CY;
-                    olddir = this.Dir;
+                    short ox = this.CX;
+                    short oy = this.CY;
+                    byte olddir = this.Dir;
                     M2Share.GetBackPosition(this.TargetCret, ref this.CX, ref this.CY);
                     this.Dir = M2Share.GetNextDirection(this.CX, this.CY, this.TargetCret.CX, this.TargetCret.CY);
                     this.SendRefMsg(Grobal2.RM_HIT, this.Dir, this.CX, this.CY, 0, "");

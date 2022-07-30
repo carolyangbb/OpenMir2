@@ -4,15 +4,9 @@ using SystemModule;
 
 namespace GameSvr
 {
-    // ElHashList ,
-    // 弥措 率瘤 俺荐
-    // 其捞瘤寸 率瘤 俺荐
-    // 弥措 芭何磊 荐
-    // TTagInfo Class Decralations ---------------------------------------------
+
     public class TTagInfo : ICommand
     {
-        // procedure OnCmdChange( var Msg : TCmdMsg ) ; override;
-        // 郴何 糕滚 函荐俊 措茄 橇肺欺萍
         public string Sender
         {
             get
@@ -24,6 +18,7 @@ namespace GameSvr
                 FSender = value;
             }
         }
+        
         public string SendDate
         {
             get
@@ -35,6 +30,7 @@ namespace GameSvr
                 FSendDate = value;
             }
         }
+        
         public string Msg
         {
             get
@@ -46,6 +42,7 @@ namespace GameSvr
                 FMsg = value;
             }
         }
+        
         public int State
         {
             get
@@ -57,6 +54,7 @@ namespace GameSvr
                 FState = value;
             }
         }
+        
         public bool DBSaved
         {
             get
@@ -68,6 +66,7 @@ namespace GameSvr
                 FDBSaved = value;
             }
         }
+        
         public bool Client
         {
             get
@@ -79,22 +78,16 @@ namespace GameSvr
                 FClient = value;
             }
         }
+        
         private string FSender = String.Empty;
-        // 傈价磊
         private string FSendDate = String.Empty;
-        // 傈价朝楼
         private string FMsg = String.Empty;
-        // 傈价 郴侩
         private int FState = 0;
-        // ( 佬瘤臼澜(0) , 佬澜(1) , 昏力阂啊(2) , 昏力凳(3) );
         private bool FDBSaved = false;
-        // ( DB 历厘凳 , DB 历厘救凳 );
         private bool FClient = false;
-        // TTagInfo ====================================================================
-        //Constructor  Create()
+
         public TTagInfo() : base()
         {
-            // TO DO Initialize
             FSender = "";
             FSendDate = "";
             FMsg = "";
@@ -102,116 +95,65 @@ namespace GameSvr
             FDBSaved = false;
             FClient = false;
         }
-        //@ Destructor  Destroy()
-        ~TTagInfo()
-        {
-            // TO DO Free Mem
-            // base.Destroy();
-        }
-        // 努扼捞攫飘俊 傈价茄 率瘤 沥焊剧侥阑 掘澜
-        // ------------------------------------------------------------------------------
-        // 率瘤甫 努扼捞攫飘俊 傈价且锭 鞘夸茄 巩磊凯 父惦
-        // ------------------------------------------------------------------------------
+
         public string GetMsgList()
         {
-            string result;
-            // 惑怕:朝楼:傈价茄纳腐疙:"郴侩"
-            result = FState.ToString() + ":" + FSendDate + ":" + FSender + ":" + FMsg;
-            return result;
+            return  FState.ToString() + ":" + FSendDate + ":" + FSender + ":" + FMsg;
         }
 
-    } // end TTagInfo
+    }
 
-    // TTagMgr Class Decralations ----------------------------------------------
     public class TTagMgr : ICommand
     {
         private readonly ArrayList FItems = null;
-        // TElHashList;  // 率瘤甫 啊瘤绊 乐阑 秦浆府胶飘
         private readonly ArrayList FRejecter = null;
-        // TElHashList;  // 芭何磊 府胶飘
         private int FNotReadCount = 0;
-        // 佬瘤 臼篮 率瘤 俺荐
         private bool FIsTagListSendAble = false;
-        // 率瘤 府胶飘 霖厚啊 登菌绰瘤 八荤
         private bool FWantTagListFlag = false;
-        // 努扼捞攫飘啊 府胶飘甫 盔窃
         private int FWantTagListPage = 0;
-        // 努扼捞攫飘啊 盔窍绰 府胶飘 其捞瘤
         private bool FClientGetList = false;
-        // 努扼捞攫飘啊 率瘤 府胶飘甫 啊瘤绊 乐促
         private bool FIsRejectListSendAble = false;
-        // 芭何磊 府胶飘 霖厚啊 登菌绰瘤 八荤
         private bool FWantRejectListFlag = false;
-        // ------------------------------------------------------------------------------
-        // 疙飞绢 菩摹
-        // ------------------------------------------------------------------------------
-        // 
-        // procedure TTagInfo.OnCmdChange( var Msg : TCmdMsg ) ;
-        // begin
-        // // TODO : 鞘夸矫俊 疙飞绢甫 菩摹窃
-        // end;
-        // TTagMgr Class Decralations ==================================================
-        //Constructor  Create()
+
         public TTagMgr() : base()
         {
-            // TO DO Initialize
             FItems = new ArrayList();
-            // TElHashList.Create;
             FRejecter = new ArrayList();
-            // TElHashList.Create;
             FIsTagListSendAble = false;
             FWantTagListFlag = false;
             FWantTagListPage = -1;
             FClientGetList = false;
             FIsRejectListSendAble = false;
-            // 芭何磊 府胶飘 霖厚啊 登菌绰瘤 八荤
             FWantRejectListFlag = false;
-            // 努扼捞攫飘啊 芭何磊 府胶飘甫 盔窃
             FNotReadCount = 0;
         }
-        //@ Destructor  Destroy()
+        
         ~TTagMgr()
         {
-            // TO DO Free Mem
             RemoveAll();
             FItems.Free();
             FRejecter.Clear();
             FRejecter.Free();
-            // base.Destroy();
         }
-        // ------------------------------------------------------------------------------
-        // 矫胶袍阑 啊瓷窍霸 茄促.
-        // ------------------------------------------------------------------------------
+
         public void OnUserOpen()
         {
+            
         }
-
-        // ------------------------------------------------------------------------------
-        // 矫胶袍阑 阂啊瓷窍霸 茄促.
-        // ------------------------------------------------------------------------------
+        
         public void OnUserClose()
         {
+            
         }
 
-        // 率瘤 俺荐 掘扁
-        // ------------------------------------------------------------------------------
-        // 率瘤 俺荐 掘扁
-        // ------------------------------------------------------------------------------
         public int GetTagCount()
         {
-            int result;
-            result = FItems.Count;
-            return result;
+            return FItems.Count;
         }
-
-        // 率瘤甫 眠啊且 荐 乐绰瘤 八配
-        // ------------------------------------------------------------------------------
-        // 率瘤 眠啊 啊瓷茄啊 八配
-        // ------------------------------------------------------------------------------
+        
         public bool IsTagAddAble()
         {
-            bool result;
-            result = false;
+            var result = false;
             if (GetTagCount() < Units.TagSystem.MAX_TAG_COUNT)
             {
                 result = true;
@@ -230,14 +172,11 @@ namespace GameSvr
             return result;
         }
 
-        // 八祸
         public TTagInfo Find(string SendDate)
         {
-            TTagInfo result;
             TTagInfo Item;
-            int i;
-            result = null;
-            for (i = 0; i < FItems.Count; i++)
+            TTagInfo result = null;
+            for (var i = 0; i < FItems.Count; i++)
             {
                 Item = FItems[i] as TTagInfo;
                 if (Item.FSendDate == SendDate)
@@ -249,42 +188,26 @@ namespace GameSvr
             return result;
         }
 
-        // 眠啊
-        // ------------------------------------------------------------------------------
-        // 率瘤 眠啊
-        // ------------------------------------------------------------------------------
         public bool Add(TUserInfo UserInfo, string Sender, string SendDate, int State, string Msg)
         {
-            bool result;
-            TTagInfo Info;
-            result = false;
-            // 率瘤啊 眠啊啊瓷茄瘤 八配茄饶俊
+            var result = false;
             if (IsTagAddAble())
             {
-                // 率瘤甫 窍唱 父甸绊
-                Info = new TTagInfo();
-                // 按眉啊 肋 且寸登菌栏搁
+                var Info = new TTagInfo();
                 if (Info != null)
                 {
-                    // 郴何 郴侩阑 持绊
                     Info.Sender = Sender;
                     Info.SendDate = SendDate;
                     Info.FState = State;
                     Info.Msg = Msg;
-                    // 眠啊
                     FItems.Add(Info);
-                    // FItems.Add ( SendDate , Info );
-                    // 佬瘤臼篮 皋技瘤 俺荐 颇厩
                     if (Info.State == Grobal2.TAGSTATE_NOTREAD)
                     {
                         FNotReadCount++;
                     }
                     result = true;
                 }
-                // if ( Info <> nil )...
             }
-            // if IsTagAddable...
-
             return result;
         }
 

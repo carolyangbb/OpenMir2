@@ -107,15 +107,12 @@ namespace GameSvr
         public bool BoSendNotice = false;
         public bool LoginSign = false;
         public bool BoServerShifted = false;
-        // 辑滚 捞悼栏肺 犁立
         public bool BoAccountExpired = false;
         public long LineNoticeTime = 0;
         public int LineNoticeNumber = 0;
         public int NotReadTag = 0;
-        // 楷牢 荤力
-        public TRelationShipMgr fLover = null;
+        //public TRelationShipMgr fLover = null;
         public long FExpireTime = 0;
-        // TEST integer;
         public int FExpireCount = 0;
         public int SecondsCard = 0;
         public bool m_boStartMarry = false;

@@ -1,29 +1,12 @@
-using System;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
 using SystemModule;
+using SystemModule.Common;
 
 namespace GameSvr
 {
-    public struct TDefenseUnit
-    {
-        public int X;
-        public int Y;
-        public string UnitName;
-        public bool BoDoorOpen;
-        // TCastleDoor 牢 版快
-        public int HP;
-        public TCreature UnitObj;
-    } // end TDefenseUnit
-
-    public struct TAttackerInfo
-    {
-        public DateTime AttackDate;
-        public string GuildName;
-        public TGuild Guild;
-    } // end TAttackerInfo
-
     public class TUserCastle
     {
         public TEnvirnoment CastlePEnvir = null;
@@ -38,40 +21,25 @@ namespace GameSvr
         public int CastleStartX = 0;
         public int CastleStartY = 0;
         public DateTime LatestOwnerChangeDateTime;
-        // 付瘤阜栏肺 己狼 林牢捞 官诧 矫埃
         public DateTime LatestWarDateTime;
-        // 付瘤阜栏肺 傍己傈捞 矫累等 矫埃
         public bool BoCastleWarChecked = false;
         public bool BoCastleUnderAttack = false;
-        // 傍己傈 吝牢瘤
         public bool BoCastleWarTimeOut10min = false;
         public int BoCastleWarTimeOutRemainMinute = 0;
         public long CastleAttackStarted = 0;
         public long SaveCastleGoldTime = 0;
-        // 傍己傈狼 傍拜磊俊 包访
-        public ArrayList AttackerList = null;
-        // 傍拜巩颇 府胶飘
+        public IList<TAttackerInfo> AttackerList = null;
         public ArrayList RushGuildList = null;
-        // 傍己傈阑 窍绊 乐绰 巩颇
         public TDefenseUnit MainDoor = null;
-        // TCastleDoor;  //己巩
         public TDefenseUnit LeftWall = null;
-        // TWallStructure;
         public TDefenseUnit CenterWall = null;
-        // TWallStructure;
         public TDefenseUnit RightWall = null;
-        // TWallStructure;
         public TDefenseUnit[] Guards;
         public TDefenseUnit[] Archers;
         public DateTime IncomeToday;
-        // 坷疵 技陛阑 叭扁 矫累茄 老
         public int TotalGold = 0;
-        // 傈眉 技陛栏肺 叭腮 捣(己狼 磊陛), 1000父盔捞惑 笛 荐 绝促.
         public int TodayIncome = 0;
-        // 陛老 技陛栏肺 叭腮 捣, 10父盔阑 逞阑 荐 绝促.
-        // 荤合己狼 历厘篮 荤合己捞 乐绰 辑滚俊辑父 历厘等绊
-        // 促弗 辑滚俊辑绰 佬扁父 茄促.
-        //Constructor  Create()
+
         public TUserCastle()
         {
             OwnerGuild = null;
@@ -82,28 +50,26 @@ namespace GameSvr
             CastlePEnvir = null;
             CoreCastlePDoorCore = null;
             BoCastleWarChecked = false;
-            // 概老 20矫俊 眉农 咯何
             BoCastleUnderAttack = false;
             BoCastleWarTimeOut10min = false;
             BoCastleWarTimeOutRemainMinute = 0;
-            AttackerList = new ArrayList();
+            AttackerList = new List<TAttackerInfo>();
             RushGuildList = new ArrayList();
-            SaveCastleGoldTime = GetTickCount;
+            SaveCastleGoldTime = HUtil32.GetTickCount();
         }
-        //@ Destructor  Destroy()
+
         ~TUserCastle()
         {
             AttackerList.Free();
             RushGuildList.Free();
-            base.Destroy();
         }
+        
         public void Initialize()
         {
             int i;
             TDoorInfo pd;
             LoadFromFile(Castle.CASTLEFILENAME);
             LoadAttackerList();
-            // 傍己傈捞 利侩登绰 辑滚俊父 利侩, (荤合己狼 辑滚俊辑父)
             if (svMain.ServerIndex != svMain.GrobalEnvir.GetServer(CastleMapName))
             {
                 return;
@@ -111,14 +77,13 @@ namespace GameSvr
             CorePEnvir = svMain.GrobalEnvir.GetEnvir(Castle.CASTLECOREMAP);
             if (CorePEnvir == null)
             {
-                MessageBox.Show(Castle.CASTLECOREMAP + " No map found. ( No inner wall map of wall conquest war )");
+                OutMainMessage(Castle.CASTLECOREMAP + " No map found. ( No inner wall map of wall conquest war )");
             }
             BasementEnvir = svMain.GrobalEnvir.GetEnvir(Castle.CASTLEBASEMAP);
             if (CorePEnvir == null)
             {
-                MessageBox.Show(Castle.CASTLEBASEMAP + " - map not found !!");
+                OutMainMessage(Castle.CASTLEBASEMAP + " - map not found !!");
             }
-            // (*** 傍己傈捞 利侩登搁
             CastlePEnvir = svMain.GrobalEnvir.GetEnvir(CastleMapName);
             if (CastlePEnvir != null)
             {
@@ -134,7 +99,7 @@ namespace GameSvr
                 }
                 else
                 {
-                    MessageBox.Show("[Error] UserCastle.Initialize MainDoor.UnitObj = nil");
+                    OutMainMessage("[Error] UserCastle.Initialize MainDoor.UnitObj = nil");
                 }
                 LeftWall.UnitObj = svMain.UserEngine.AddCreatureSysop(CastleMapName, LeftWall.X, LeftWall.Y, LeftWall.UnitName);
                 if (LeftWall.UnitObj != null)
@@ -144,7 +109,7 @@ namespace GameSvr
                 }
                 else
                 {
-                    MessageBox.Show("[Error] UserCastle.Initialize LeftWall.UnitObj = nil");
+                    OutMainMessage("[Error] UserCastle.Initialize LeftWall.UnitObj = nil");
                 }
                 CenterWall.UnitObj = svMain.UserEngine.AddCreatureSysop(CastleMapName, CenterWall.X, CenterWall.Y, CenterWall.UnitName);
                 if (CenterWall.UnitObj != null)
@@ -154,7 +119,7 @@ namespace GameSvr
                 }
                 else
                 {
-                    MessageBox.Show("[Error] UserCastle.Initialize CenterWall.UnitObj = nil");
+                    OutMainMessage("[Error] UserCastle.Initialize CenterWall.UnitObj = nil");
                 }
                 RightWall.UnitObj = svMain.UserEngine.AddCreatureSysop(CastleMapName, RightWall.X, RightWall.Y, RightWall.UnitName);
                 if (RightWall.UnitObj != null)
@@ -164,7 +129,7 @@ namespace GameSvr
                 }
                 else
                 {
-                    MessageBox.Show("[Error] UserCastle.Initialize RightWall.UnitObj = nil");
+                    OutMainMessage("[Error] UserCastle.Initialize RightWall.UnitObj = nil");
                 }
                 for (i = 0; i < Castle.MAXARCHER; i++)
                 {
@@ -181,7 +146,7 @@ namespace GameSvr
                         }
                         else
                         {
-                            MessageBox.Show("[Error] UserCastle.Initialize Archer -> UnitObj = nil");
+                            OutMainMessage("[Error] UserCastle.Initialize Archer -> UnitObj = nil");
                         }
                     }
                 }
@@ -199,16 +164,15 @@ namespace GameSvr
                         }
                         else
                         {
-                            MessageBox.Show("[Error] UserCastle.Initialize Archer -> UnitObj = nil");
+                            OutMainMessage("[Error] UserCastle.Initialize Archer -> UnitObj = nil");
                         }
                     }
                 }
             }
             else
             {
-                MessageBox.Show("<Critical Error> UserCastle : [Defense]->CastleMap is invalid value");
+                OutMainMessage("<Critical Error> UserCastle : [Defense]->CastleMap is invalid value");
             }
-            // 荤合己狼 郴己巩
             TEnvirList _wvar1 = svMain.GrobalEnvir;
             for (i = 0; i < CastlePEnvir.DoorList.Count; i++)
             {
@@ -218,27 +182,23 @@ namespace GameSvr
                     CoreCastlePDoorCore = pd.PCore;
                 }
             }
-            // *)
-
         }
 
-        // 10檬俊 茄锅
+        public void OutMainMessage(string message)
+        {
+            Console.WriteLine(message);
+        }
+
         public void SaveAll()
         {
             SaveToFile(Castle.CASTLEFILENAME);
-            // 傍己傈 辑滚俊辑父 历厘凳
-
         }
 
-        // AttackerList
         private void SaveAttackerList()
         {
-            int i;
-            ArrayList strlist;
-            string flname;
-            flname = svMain.CastleDir + Castle.CASTLEATTACERS;
-            strlist = new ArrayList();
-            for (i = 0; i < AttackerList.Count; i++)
+            var flname = svMain.CastleDir + Castle.CASTLEATTACERS;
+            StringList strlist = new StringList();
+            for (var i = 0; i < AttackerList.Count; i++)
             {
                 strlist.Add((AttackerList[i] as TAttackerInfo).GuildName + "       \"" + (AttackerList[i] as TAttackerInfo).AttackDate.ToString() + "\"");
             }
@@ -253,38 +213,35 @@ namespace GameSvr
             strlist.Free();
         }
 
-        // AttackerList
         public void LoadAttackerList()
         {
-            int i;
-            ArrayList strlist;
+            StringList strlist;
             TAttackerInfo pattack;
             TGuild aguild;
-            string flname;
-            string gname;
-            string adate;
-            flname = svMain.CastleDir + Castle.CASTLEATTACERS;
+            string gname = string.Empty;
+            string adate = string.Empty;
+            string flname = svMain.CastleDir + Castle.CASTLEATTACERS;
             if (!File.Exists(flname))
             {
                 return;
             }
-            strlist = new ArrayList();
+            strlist = new StringList();
             try
             {
                 strlist.LoadFromFile(flname);
-                for (i = 0; i < AttackerList.Count; i++)
+                for (var i = 0; i < AttackerList.Count; i++)
                 {
                     Dispose(AttackerList[i] as TAttackerInfo);
                 }
                 AttackerList.Clear();
-                for (i = 0; i < strlist.Count; i++)
+                for (var i = 0; i < strlist.Count; i++)
                 {
-                    adate = GetValidStr3(strlist[i], gname, new string[] { " ", "\09" });
+                    adate = HUtil32.GetValidStr3(strlist[i], ref gname, new string[] { " ", "\09" });
                     aguild = svMain.GuildMan.GetGuild(gname);
                     if (aguild != null)
                     {
                         pattack = new TAttackerInfo();
-                        ArrestStringEx(adate, "\"", "\"", adate);
+                        HUtil32.ArrestStringEx(adate, "\"", "\"", ref adate);
                         try
                         {
                             pattack.AttackDate = Convert.ToDateTime(adate);
@@ -308,9 +265,7 @@ namespace GameSvr
 
         private void SaveToFile(string flname)
         {
-            int i;
-            FileStream ini;
-            // 荤合己捞 乐绰 辑滚俊辑父 历厘阑 茄促.
+          /*  FileStream ini;
             if (svMain.ServerIndex == svMain.GrobalEnvir.GetServer(CastleMapName))
             {
                 ini = new FileStream(svMain.CastleDir + flname);
@@ -323,7 +278,6 @@ namespace GameSvr
                     ini.WriteDateTime("setup", "IncomeToday", IncomeToday);
                     ini.WriteInteger("setup", "TotalGold", TotalGold);
                     ini.WriteInteger("setup", "TodayIncome", TodayIncome);
-                    // 己巩, 己寒...
                     if (MainDoor.UnitObj != null)
                     {
                         ini.WriteBool("defense", "MainDoorOpen", ((TCastleDoor)MainDoor.UnitObj).BoOpenState);
@@ -341,7 +295,7 @@ namespace GameSvr
                     {
                         ini.WriteInteger("defense", "RightWallHP", ((TCastleDoor)RightWall.UnitObj).WAbil.HP);
                     }
-                    for (i = 0; i < Castle.MAXARCHER; i++)
+                    for (var i = 0; i < Castle.MAXARCHER; i++)
                     {
                         ini.WriteInteger("defense", "Archer_" + (i + 1).ToString() + "_X", Archers[i].X);
                         ini.WriteInteger("defense", "Archer_" + (i + 1).ToString() + "_Y", Archers[i].Y);
@@ -354,7 +308,7 @@ namespace GameSvr
                             ini.WriteInteger("defense", "Archer_" + (i + 1).ToString() + "_HP", 0);
                         }
                     }
-                    for (i = 0; i < Castle.MAXGUARD; i++)
+                    for (var i = 0; i < Castle.MAXGUARD; i++)
                     {
                         ini.WriteInteger("defense", "Guard_" + (i + 1).ToString() + "_X", Guards[i].X);
                         ini.WriteInteger("defense", "Guard_" + (i + 1).ToString() + "_Y", Guards[i].Y);
@@ -369,12 +323,12 @@ namespace GameSvr
                     }
                     ini.Free();
                 }
-            }
+            }*/
         }
 
         private void LoadFromFile(string flname)
         {
-            int i;
+            /*int i;
             FileStream ini;
             ini = new FileStream(svMain.CastleDir + flname);
             if (ini != null)
@@ -426,14 +380,14 @@ namespace GameSvr
                 }
                 ini.Free();
             }
-            OwnerGuild = svMain.GuildMan.GetGuild(OwnerGuildName);
+            OwnerGuild = svMain.GuildMan.GetGuild(OwnerGuildName);*/
         }
 
         public void Run()
         {
             int i;
-            string str;
-            string strRemainMinutes;
+            string str = string.Empty;
+            string strRemainMinutes = string.Empty;
             long RemainMinutes;
             if (svMain.ServerIndex != svMain.GrobalEnvir.GetServer(CastleMapName))
             {
@@ -452,21 +406,16 @@ namespace GameSvr
                 IncomeToday = DateTime.Now;
                 BoCastleWarChecked = false;
             }
-            // 概老 坷饶 8矫付促 傍己傈 矫累阑 犬牢茄促.
             if (!BoCastleWarChecked && !BoCastleUnderAttack)
             {
                 var ahour = DateTime.Now.Hour;
                 var amin = DateTime.Now.Minute;
                 var asec = DateTime.Now.Second;
                 var amsec = DateTime.Now.Millisecond;
-                // if amin = 0 then begin  //概 矫 沥阿俊
                 if (ahour == 20)
                 {
-                    // 坷饶8矫
                     BoCastleWarChecked = true;
-                    // 茄锅父 八荤窃
                     RushGuildList.Clear();
-                    // 傍拜磊 府胶飘甫 八荤
                     for (i = AttackerList.Count - 1; i >= 0; i--)
                     {
                         ayear2 = (AttackerList[i] as TAttackerInfo).AttackDate.Year;
@@ -474,35 +423,28 @@ namespace GameSvr
                         aday2 = (AttackerList[i] as TAttackerInfo).AttackDate.Day;
                         if ((ayear == ayear2) && (amon == amon2) && (aday == aday2))
                         {
-                            // 傍己傈 矫累
                             BoCastleUnderAttack = true;
                             BoCastleWarTimeOut10min = false;
                             LatestWarDateTime = DateTime.Now;
-                            CastleAttackStarted = GetTickCount;
+                            CastleAttackStarted = HUtil32.GetTickCount();
                             RushGuildList.Add((AttackerList[i] as TAttackerInfo).Guild);
                             Dispose(AttackerList[i] as TAttackerInfo);
-                            // 皋葛府秦力
                             AttackerList.RemoveAt(i);
                         }
                     }
-                    // 傍己傈狼 矫累阑 舅赴促.
                     if (BoCastleUnderAttack)
                     {
                         RushGuildList.Add(OwnerGuild);
-                        // 规绢巩档 磊悼栏肺 傍拜巩栏肺 甸绢皑
                         StartCastleWar();
                         SaveAttackerList();
                         svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADCASTLEINFO, svMain.ServerIndex, "");
-                        // 傈辑滚狼 傈澜栏肺 傍瘤啊 唱埃促.
                         str = "[Sabuk wall conquest war started.]";
                         svMain.UserEngine.SysMsgAll(str);
                         svMain.UserEngine.SendInterMsg(Grobal2.ISM_SYSOPMSG, svMain.ServerIndex, str);
                         ActivateMainDoor(true);
-                        // 磊悼栏肺 己巩捞 摧塞
                     }
                 }
             }
-            // 磷篮 版厚绰 猾促.
             for (i = 0; i < Castle.MAXGUARD; i++)
             {
                 if (Guards[i].UnitObj != null)
@@ -523,7 +465,6 @@ namespace GameSvr
                     }
                 }
             }
-            // 傍己傈 吝牢 版快, 傍己傈 矫累饶 3矫埃捞 瘤唱搁 傍己傈捞 辆丰等促.
             if (BoCastleUnderAttack)
             {
                 LeftWall.UnitObj.BoStoneMode = false;
@@ -531,12 +472,10 @@ namespace GameSvr
                 RightWall.UnitObj.BoStoneMode = false;
                 if (!BoCastleWarTimeOut10min)
                 {
-                    if (GetTickCount - CastleAttackStarted > (3 * 60 * 60 * 1000 - (10 * 60 * 1000)))
+                    if (HUtil32.GetTickCount() - CastleAttackStarted > (3 * 60 * 60 * 1000 - (10 * 60 * 1000)))
                     {
-                        // 10盒傈
                         BoCastleWarTimeOut10min = true;
                         BoCastleWarTimeOutRemainMinute = 10;
-                        // 傈辑滚狼 傈澜栏肺 傍瘤啊 唱埃促.
                         str = "[离沙巴克攻城战结束还有十分钟]";
                         svMain.UserEngine.SysMsgAll(str);
                         svMain.UserEngine.SendInterMsg(Grobal2.ISM_SYSOPMSG, svMain.ServerIndex, str);
@@ -545,7 +484,7 @@ namespace GameSvr
                 else if (BoCastleWarTimeOutRemainMinute > 0)
                 {
                     strRemainMinutes = "";
-                    RemainMinutes = (3 * 60 * 60 * 1000) - (GetTickCount - CastleAttackStarted);
+                    RemainMinutes = (3 * 60 * 60 * 1000) - (HUtil32.GetTickCount() - CastleAttackStarted);
                     if ((RemainMinutes > 9 * 60 * 1000 - 5 * 1000) && (RemainMinutes < 9 * 60 * 1000 + 5 * 1000))
                     {
                         strRemainMinutes = "9";
@@ -603,16 +542,13 @@ namespace GameSvr
                     if (strRemainMinutes != "")
                     {
                         str = "[离沙巴克攻城战结还剩下" + strRemainMinutes + "分钟]";
-                        // debug code
                         svMain.MainOutMessage(str);
-                        // sonmg test
                         svMain.UserEngine.SysMsgAll(str);
                         svMain.UserEngine.SendInterMsg(Grobal2.ISM_SYSOPMSG, svMain.ServerIndex, str);
                     }
                 }
-                if (GetTickCount - CastleAttackStarted > 3 * 60 * 60 * 1000)
+                if (HUtil32.GetTickCount() - CastleAttackStarted > 3 * 60 * 60 * 1000)
                 {
-                    // 鸥烙酒眶等 版快, 傍己傈篮 场巢.
                     FinishCastleWar();
                 }
             }
@@ -626,9 +562,7 @@ namespace GameSvr
 
         public string GetCastleStartMap()
         {
-            string result;
-            result = CastleMapName;
-            return result;
+            return CastleMapName;
         }
 
         public short GetCastleStartX()
@@ -643,8 +577,7 @@ namespace GameSvr
 
         public bool CanEnteranceCoreCastle(int xx, int yy, TUserHuman hum)
         {
-            bool result;
-            result = IsOurCastle((TGuild)hum.MyGuild);
+            bool result = IsOurCastle((TGuild)hum.MyGuild);
             if (!result)
             {
                 if (LeftWall.UnitObj != null)
@@ -709,7 +642,7 @@ namespace GameSvr
             }
             for (i = 0; i < ((TGuild)hum.MyGuild).AllyGuilds.Count; i++)
             {
-                if (IsOurCastle((TGuild)((TGuild)hum.MyGuild).AllyGuilds.Values[i]))
+                if (IsOurCastle((TGuild)((TGuild)hum.MyGuild).AllyGuilds[i]))
                 {
                     result = true;
                     return result;
@@ -797,9 +730,9 @@ namespace GameSvr
                     TotalGold = Castle.CASTLEMAXGOLD;
                 }
             }
-            if (GetTickCount - SaveCastleGoldTime > 10 * 60 * 1000)
+            if (HUtil32.GetTickCount() - SaveCastleGoldTime > 10 * 60 * 1000)
             {
-                SaveCastleGoldTime = GetTickCount;
+                SaveCastleGoldTime = HUtil32.GetTickCount();
                 // 己捣逞_
                 // '陛傈'
                 svMain.AddUserLog("23\09" + "0\09" + "0\09" + "0\09" + "Autosaving\09" + Envir.NAME_OF_GOLD + "\09" + TotalGold.ToString() + "\09" + "0\09" + "0");
@@ -880,37 +813,30 @@ namespace GameSvr
             return result;
         }
 
-        // 巩林啊 己俊 捣阑 持澜
-        // 己巩阑 绊模促.
         public bool RepairCastleDoor()
         {
-            bool result;
-            result = false;
+            bool result = false;
             if ((MainDoor.UnitObj != null) && !BoCastleUnderAttack)
             {
                 if (MainDoor.UnitObj.WAbil.HP < MainDoor.UnitObj.WAbil.MaxHP)
                 {
                     if (!MainDoor.UnitObj.Death)
                     {
-                        // 付瘤阜阑 嘎篮 10盒捞 瘤唱搁 绊磨 荐 乐促.
-                        if (GetTickCount - ((TCastleDoor)MainDoor.UnitObj).StruckTime > 1 * 60 * 1000)
+                        if (HUtil32.GetTickCount() - ((TCastleDoor)MainDoor.UnitObj).StruckTime > 1 * 60 * 1000)
                         {
                             MainDoor.UnitObj.WAbil.HP = MainDoor.UnitObj.WAbil.MaxHP;
                             ((TCastleDoor)MainDoor.UnitObj).RepairStructure();
-                            // 货肺款 葛嚼阑 焊辰促.
                             result = true;
                         }
                     }
                     else
                     {
-                        // 肯颇等 版快俊绰 1矫埃 饶俊 绊磨 荐 乐澜
-                        if (GetTickCount - ((TCastleDoor)MainDoor.UnitObj).BrokenTime > 1 * 60 * 1000)
+                        if (HUtil32.GetTickCount() - ((TCastleDoor)MainDoor.UnitObj).BrokenTime > 1 * 60 * 1000)
                         {
                             MainDoor.UnitObj.WAbil.HP = MainDoor.UnitObj.WAbil.MaxHP;
                             MainDoor.UnitObj.Death = false;
                             ((TCastleDoor)MainDoor.UnitObj).BoOpenState = false;
                             ((TCastleDoor)MainDoor.UnitObj).RepairStructure();
-                            // 货肺款 葛嚼阑 焊辰促.
                             result = true;
                         }
                     }
@@ -919,12 +845,10 @@ namespace GameSvr
             return result;
         }
 
-        // 己寒阑 绊模促.
         public int RepairCoreCastleWall(int wallnum)
         {
-            int result;
             TWallStructure wall;
-            result = 0;
+            int result = 0;
             switch (wallnum)
             {
                 case 1:
@@ -938,7 +862,6 @@ namespace GameSvr
                     break;
                 default:
                     return result;
-                    break;
             }
             if ((wall != null) && !BoCastleUnderAttack)
             {
@@ -946,24 +869,20 @@ namespace GameSvr
                 {
                     if (!wall.Death)
                     {
-                        // 付瘤阜阑 嘎篮 10盒捞 瘤唱搁 绊磨 荐 乐促.
-                        if (GetTickCount - wall.StruckTime > 1 * 60 * 1000)
+                        if (HUtil32.GetTickCount() - wall.StruckTime > 1 * 60 * 1000)
                         {
                             wall.WAbil.HP = wall.WAbil.MaxHP;
                             wall.RepairStructure();
-                            // 货肺款 葛嚼阑 焊辰促.
                             result = 1;
                         }
                     }
                     else
                     {
-                        // 肯颇等 版快俊绰 1矫埃 饶俊 绊磨 荐 乐澜
-                        if (GetTickCount - wall.BrokenTime > 1 * 60 * 1000)
+                        if (HUtil32.GetTickCount() - wall.BrokenTime > 1 * 60 * 1000)
                         {
                             wall.WAbil.HP = wall.WAbil.MaxHP;
                             wall.Death = false;
                             wall.RepairStructure();
-                            // 货肺款 葛嚼阑 焊辰促.
                             result = 1;
                         }
                     }
@@ -972,14 +891,10 @@ namespace GameSvr
             return result;
         }
 
-        // 傍己傈 脚没 包访
-        // 傍己傈 傍拜磊俊 包访
         public bool IsAttackGuild(TGuild aguild)
         {
-            bool result;
-            int i;
-            result = false;
-            for (i = 0; i < AttackerList.Count; i++)
+            bool result = false;
+            for (var i = 0; i < AttackerList.Count; i++)
             {
                 if (aguild == (AttackerList[i] as TAttackerInfo).Guild)
                 {
@@ -990,18 +905,14 @@ namespace GameSvr
             return result;
         }
 
-        // 傍己傈阑 瘤陛 脚没且 荐 乐绰瘤 咯何..
         public bool ProposeCastleWar(TGuild aguild)
         {
-            bool result;
             TAttackerInfo pattack;
-            result = false;
+            bool result = false;
             if (!IsAttackGuild(aguild))
             {
-                // 吝汗脚没篮 救凳
                 pattack = new TAttackerInfo();
-                pattack.AttackDate = CalcDay(DateTime.Today, 1 + 3);
-                // 3老 饶
+                //pattack.AttackDate = CalcDay(DateTime.Today, 1 + 3);
                 pattack.GuildName = aguild.GuildName;
                 pattack.Guild = aguild;
                 AttackerList.Add(pattack);
@@ -1014,29 +925,22 @@ namespace GameSvr
 
         public string GetNextWarDateTimeStr()
         {
-            string result;
-            short ayear;
-            short amon;
-            short aday;
-            result = "";
+            string result = "";
             if (AttackerList.Count > 0)
             {
                 if (svMain.ENGLISHVERSION)
                 {
-                    // 寇惫绢 滚傈
                     result = (AttackerList[0] as TAttackerInfo).AttackDate.ToString();
                 }
                 else if (svMain.PHILIPPINEVERSION)
                 {
-                    // 鞘府巧 滚傈
                     result = (AttackerList[0] as TAttackerInfo).AttackDate.ToString();
                 }
                 else
                 {
-                    ayear = (AttackerList[0] as TAttackerInfo).AttackDate.Year;
-                    amon = (AttackerList[0] as TAttackerInfo).AttackDate.Month;
-                    aday = (AttackerList[0] as TAttackerInfo).AttackDate.Day;
-                    // 2003/04/01 滚弊 荐沥
+                    var ayear = (AttackerList[0] as TAttackerInfo).AttackDate.Year;
+                    var amon = (AttackerList[0] as TAttackerInfo).AttackDate.Month;
+                    var aday = (AttackerList[0] as TAttackerInfo).AttackDate.Day;
                     result = ayear.ToString() + "年" + amon.ToString() + "月" + aday.ToString() + "日";
                 }
             }
@@ -1045,26 +949,17 @@ namespace GameSvr
 
         public string GetListOfWars()
         {
-            string result;
-            int i;
-            int len;
-            short y;
-            short m;
-            short d;
-            short ayear;
-            short amon;
-            short aday;
-            string str;
-            result = "";
-            ayear = 0;
-            amon = 0;
-            aday = 0;
-            len = 0;
-            for (i = 0; i < AttackerList.Count; i++)
+            string str = string.Empty;
+            string result = "";
+            var ayear = 0;
+            var amon = 0;
+            var aday = 0;
+            int len = 0;
+            for (var i = 0; i < AttackerList.Count; i++)
             {
-                y = (AttackerList[i] as TAttackerInfo).AttackDate.Year;
-                m = (AttackerList[i] as TAttackerInfo).AttackDate.Month;
-                d = (AttackerList[i] as TAttackerInfo).AttackDate.Day;
+                var y = (AttackerList[i] as TAttackerInfo).AttackDate.Year;
+                var m = (AttackerList[i] as TAttackerInfo).AttackDate.Month;
+                var d = (AttackerList[i] as TAttackerInfo).AttackDate.Day;
                 if ((y != ayear) || (m != amon) || (d != aday))
                 {
                     ayear = y;
@@ -1076,12 +971,10 @@ namespace GameSvr
                     }
                     if (svMain.ENGLISHVERSION)
                     {
-                        // 寇惫绢 滚傈
                         result = result + (AttackerList[i] as TAttackerInfo).AttackDate.ToString() + "\\";
                     }
                     else if (svMain.PHILIPPINEVERSION)
                     {
-                        // 鞘府巧 滚傈
                         result = result + (AttackerList[i] as TAttackerInfo).AttackDate.ToString() + "\\";
                     }
                     else
@@ -1104,26 +997,19 @@ namespace GameSvr
 
         public void StartCastleWar()
         {
-            int i;
-            ArrayList ulist;
-            TUserHuman hum;
-            ulist = new ArrayList();
+            ArrayList ulist = new ArrayList();
             svMain.UserEngine.GetAreaUsers(CastlePEnvir, CastleStartX, CastleStartY, 100, ulist);
-            for (i = 0; i < ulist.Count; i++)
+            for (var i = 0; i < ulist.Count; i++)
             {
-                hum = (TUserHuman)ulist[i];
+                TUserHuman hum = (TUserHuman)ulist[i];
                 hum.UserNameChanged();
-                // ChangeNameColor;
             }
             ulist.Free();
         }
 
-        // 傍己傈 吝
-        // 傍己傈 吝俊 乐澜..
         public bool IsCastleWarArea(TEnvirnoment penvir, int x, int y)
         {
-            bool result;
-            result = false;
+            bool result = false;
             if (penvir == CastlePEnvir)
             {
                 if ((Math.Abs(CastleStartX - x) < 100) && (Math.Abs(CastleStartY - y) < 100))
@@ -1140,24 +1026,21 @@ namespace GameSvr
 
         public bool IsRushCastleGuild(TGuild aguild)
         {
-            bool result;
-            int i;
-            int j;
-            result = false;
+            bool result = false;
             if (aguild == null)
             {
                 return result;
             }
-            for (i = 0; i < RushGuildList.Count; i++)
+            for (var i = 0; i < RushGuildList.Count; i++)
             {
                 if (RushGuildList[i] == aguild)
                 {
                     result = true;
                     break;
                 }
-                for (j = 0; j < aguild.AllyGuilds.Count; j++)
+                for (var j = 0; j < aguild.AllyGuilds.Count; j++)
                 {
-                    if (RushGuildList[i] == aguild.AllyGuilds.Values[j])
+                    if (RushGuildList[i] == aguild.AllyGuilds[j])
                     {
                         result = true;
                         return result;
@@ -1169,32 +1052,23 @@ namespace GameSvr
 
         public int GetRushGuildCount()
         {
-            int result;
-            result = RushGuildList.Count;
-            return result;
+            return RushGuildList.Count;
         }
 
-        // 郴己俊辑 促弗 利阑 葛滴 郴卵篮 版快俊 铰府 炼扒捞 等促.
         public bool CheckCastleWarWinCondition(TGuild aguild)
         {
-            bool result;
-            int i;
-            ArrayList ulist;
-            bool flag;
-            result = false;
-            flag = false;
-            if (GetTickCount - CastleAttackStarted > 10 * 60 * 1000)
+            bool result = false;
+            bool flag = false;
+            if (HUtil32.GetTickCount() - CastleAttackStarted > 10 * 60 * 1000)
             {
-                // 傍己 矫累 10盒捞 瘤唱具 痢飞捞 啊瓷
-                ulist = new ArrayList();
+                ArrayList ulist = new ArrayList();
                 svMain.UserEngine.GetAreaUsers(CorePEnvir, 0, 0, 1000, ulist);
                 flag = true;
-                for (i = 0; i < ulist.Count; i++)
+                for (var i = 0; i < ulist.Count; i++)
                 {
                     if ((!((TCreature)ulist[i]).Death) && (((TCreature)ulist[i]).MyGuild != aguild))
                     {
                         flag = false;
-                        // 快府巩颇 捞寇狼 巩颇啊 尝绢 乐澜
                         break;
                     }
                 }
@@ -1206,9 +1080,7 @@ namespace GameSvr
 
         public void ChangeCastleOwner(TGuild guild)
         {
-            TGuild oldguild;
-            string str;
-            oldguild = OwnerGuild;
+            TGuild oldguild = OwnerGuild;
             OwnerGuild = guild;
             OwnerGuildName = guild.GuildName;
             LatestOwnerChangeDateTime = DateTime.Now;
@@ -1221,7 +1093,7 @@ namespace GameSvr
             {
                 OwnerGuild.MemberNameChanged();
             }
-            str = "(*)沙巴克已被\"" + OwnerGuildName + "\"占领！！";
+            string str = "(*)沙巴克已被\"" + OwnerGuildName + "\"占领！！";
             svMain.UserEngine.SysMsgAll(str);
             svMain.UserEngine.SendInterMsg(Grobal2.ISM_SYSOPMSG, svMain.ServerIndex, str);
             svMain.MainOutMessage("[沙巴克]" + OwnerGuildName + "占领");
@@ -1229,48 +1101,31 @@ namespace GameSvr
 
         public void FinishCastleWar()
         {
-            int i;
-            ArrayList ulist;
-            TUserHuman hum;
-            string str;
             BoCastleUnderAttack = false;
             RushGuildList.Clear();
-            ulist = new ArrayList();
+            ArrayList ulist = new ArrayList();
             svMain.UserEngine.GetAreaUsers(CastlePEnvir, CastleStartX, CastleStartY, 100, ulist);
-            for (i = 0; i < ulist.Count; i++)
+            for (var i = 0; i < ulist.Count; i++)
             {
-                hum = (TUserHuman)ulist[i];
+                TUserHuman hum = (TUserHuman)ulist[i];
                 hum.BoInFreePKArea = false;
-                // hum.SendAreaState;
-                // hum.UserNameChanged; //ChangeNameColor;
                 if (hum.MyGuild != OwnerGuild)
                 {
                     hum.RandomSpaceMove(hum.HomeMap, 0);
                 }
             }
             ulist.Free();
-            str = "[沙巴克攻城战已经结束]";
+            string str = "[沙巴克攻城战已经结束]";
             svMain.UserEngine.SysMsgAll(str);
             svMain.UserEngine.SendInterMsg(Grobal2.ISM_SYSOPMSG, svMain.ServerIndex, str);
         }
 
-    } // end TUserCastle
-
-}
-
-namespace GameSvr
-{
-    public class Castle
-    {
-        public const string CASTLEFILENAME = "Sabuk.txt";
-        public const string CASTLEATTACERS = "AttackSabukWall.txt";
-        public const int CASTLEMAXGOLD = 100000000;
-        public const int TODAYGOLD = 5000000;
-        public const string CASTLECOREMAP = "0150";
-        public const string CASTLEBASEMAP = "D701";
-        public const int COREDOORX = 631;
-        public const int COREDOORY = 274;
-        public const int MAXARCHER = 12;
-        public const int MAXGUARD = 4;
-    }
+        public void Dispose(object obj)
+        {
+            if (obj != null)
+            {
+                obj = null;
+            }
+        }
+    } 
 }
