@@ -13,81 +13,24 @@ namespace GameSvr
 
         public TFrmDB()
         {
-
+            M2Share.LocalDB = new TDataMgr();
         }
 
-#if LOADSQL
         public int LoadStdItems()
         {
-            int result;
-            result =  -1;
-            SQLSQLLocalDB.gItemMgr = new TItemMgr();
-            if ((SQLSQLLocalDB.gItemMgr.Load(svMain.UserEngine.StdItemList, SQLLocalDB.TLoadType.ltSQL, 0)))
+            int result = -1;
+            if (M2Share.LocalDB.Load(M2Share.UserEngine.StdItemList, TLoadType.ltSQL, 0))
             {
                 result = 1;
             }
             else
             {
-                result =  -100;
+                result = -100;
             }
-                        SQLSQLLocalDB.gItemMgr.Free();
+            M2Share.LocalDB.Free();
             return result;
         }
-
-#else
-        public int LoadStdItems()
-        {
-            int result;
-            result = -1;
-            //Query.SQL.Clear();
-            //Query.SQL.Add("select * from StdItems");
-            try
-            {
-                //Query.Open;
-            }
-            finally
-            {
-                result = -2;
-            }
-            //for (i = 0; i < Query.RecordCount; i++)
-            //{
-            //    idx = Query.FieldByName("Idx").AsInteger;
-            //    item.Name = Query.FieldByName("NAME").AsString;
-            //    item.StdMode = Query.FieldByName("StdMode").AsInteger;
-            //    item.Shape = Query.FieldByName("Shape").AsInteger;
-            //    item.Weight = Query.FieldByName("Weight").AsInteger;
-            //    item.AniCount = Query.FieldByName("AniCount").AsInteger;
-            //    item.SpecialPwr = Query.FieldByName("Source").AsInteger;
-            //    item.ItemDesc = Query.FieldByName("Reserved").AsInteger;
-            //    item.Looks = Query.FieldByName("Looks").AsInteger;
-            //    item.DuraMax = Query.FieldByName("DuraMax").AsInteger;
-            //    item.AC = HUtil32.MakeWord(Query.FieldByName("Ac").AsInteger, Query.FieldByName("Ac2").AsInteger);
-            //    item.MAC = HUtil32.MakeWord(Query.FieldByName("Mac").AsInteger, Query.FieldByName("MAc2").AsInteger);
-            //    item.DC = HUtil32.MakeWord(Query.FieldByName("Dc").AsInteger, Query.FieldByName("Dc2").AsInteger);
-            //    item.MC = HUtil32.MakeWord(Query.FieldByName("Mc").AsInteger, Query.FieldByName("Mc2").AsInteger);
-            //    item.SC = HUtil32.MakeWord(Query.FieldByName("Sc").AsInteger, Query.FieldByName("Sc2").AsInteger);
-            //    item.Need = Query.FieldByName("Need").AsInteger;
-            //    item.NeedLevel = Query.FieldByName("NeedLevel").AsInteger;
-            //    item.Price = Query.FieldByName("Price").AsInteger;
-            //    if (idx == svMain.UserEngine.StdItemList.Count)
-            //    {
-            //        pitem = new TStdItem();
-            //        pitem = item;
-            //        svMain.UserEngine.StdItemList.Add(pitem);
-            //        result = 1;
-            //    }
-            //    else
-            //    {
-            //        result = -100;
-            //        break;
-            //    }
-            //    //this.Next;
-            //}
-            //this.Close();
-            return result;
-        }
-
-#endif
+        
         public int LoadMonItems(string monname, ref ArrayList ilist)
         {
             int i;

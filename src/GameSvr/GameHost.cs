@@ -262,6 +262,7 @@ namespace GameSvr
             //svMain.serverruntime = HUtil32.GetTickCount();
             //StartTimer.Enabled = true;
             //Timer1.Enabled = true;
+            LocalDB.FrmDB = new TFrmDB();
             StartThread();
         }
 
@@ -358,7 +359,11 @@ namespace GameSvr
             if ((M2Share.ClientCheckSumValue1 == 0) && (M2Share.ClientCheckSumValue2 == 0) && (M2Share.ClientCheckSumValue3 == 0))
             {
                 OutMainMessage("Loading client version information failed. check !setup.txt -> [setup] -> clientfile1,..");
+#if DEBUG
+                result=true;
+#else
                 result = false;
+#endif
             }
             else
             {
@@ -456,7 +461,6 @@ namespace GameSvr
                 {
                     OutMainMessage("MonGen.txt loaded.");
                 }
-                // 2003/06/20 捞亥飘各 哩 皋技瘤 殿废
                 OutMainMessage("loading GenMsg.txt...");
                 error = LocalDB.FrmDB.LoadGenMsgLists();
                 if (error <= 0)

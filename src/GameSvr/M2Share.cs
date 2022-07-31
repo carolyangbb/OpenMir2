@@ -98,6 +98,7 @@ namespace GameSvr
         public static int GuildAgitMaxNumber = 0;
         public static TEventManager EventMan = null;
         public static TUserCastle UserCastle = null;
+        public static TDataMgr LocalDB = null;
         public static bool boUserCastleInitialized = false;
         public static TDragonSystem gFireDragon = null;
         public static ArrayList DecoItemList = null;

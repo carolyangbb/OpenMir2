@@ -41,7 +41,7 @@ namespace GameSvr
                         {
                             this.BodyState = 1;
 #if DEBUG
-                            svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " State(" + (this.BodyState).ToString() + ") : " + this.TargetCret.UserName);
+                            //svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " State(" + (this.BodyState).ToString() + ") : " + this.TargetCret.UserName);
                             // test
 #endif
                             this.WAbil.DC = MakeWord(_MIN(255, LoByte(this.Abil.DC)), _MIN(255, HiByte(this.Abil.DC)));
@@ -56,7 +56,7 @@ namespace GameSvr
                         {
                             this.BodyState = 2;
 #if DEBUG
-                            svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " State(" + (this.BodyState).ToString() + ") : " + this.TargetCret.UserName);
+                            //svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " State(" + (this.BodyState).ToString() + ") : " + this.TargetCret.UserName);
 #endif
                             this.WAbil.DC = MakeWord(_MIN(255, LoByte(this.Abil.DC)), _MIN(255, HiByte(this.Abil.DC) + HiByte(this.Abil.DC) / 10));
                             this.WAbil.AC = MakeWord(_MIN(255, LoByte(this.Abil.AC)), _MIN(255, HiByte(this.Abil.AC) + HiByte(this.Abil.AC) * 2 / 10));
@@ -70,7 +70,7 @@ namespace GameSvr
                         {
                             this.BodyState = 3;
 #if DEBUG
-                            svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " State(" + (this.BodyState).ToString() + ") : " + this.TargetCret.UserName);
+                            //svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " State(" + (this.BodyState).ToString() + ") : " + this.TargetCret.UserName);
 #endif
                             this.WAbil.DC = MakeWord(_MIN(255, LoByte(this.Abil.DC)), _MIN(255, HiByte(this.Abil.DC) + HiByte(this.Abil.DC) * 2 / 10));
                             this.WAbil.AC = MakeWord(_MIN(255, LoByte(this.Abil.AC)), _MIN(255, HiByte(this.Abil.AC) + HiByte(this.Abil.AC) * 4 / 10));
@@ -84,7 +84,7 @@ namespace GameSvr
                         {
                             this.BodyState = 4;
 #if DEBUG
-                            svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " State(" + (this.BodyState).ToString() + ") : " + this.TargetCret.UserName);
+                            //svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " State(" + (this.BodyState).ToString() + ") : " + this.TargetCret.UserName);
 #endif
                             this.WAbil.DC = MakeWord(_MIN(255, LoByte(this.Abil.DC)), _MIN(255, HiByte(this.Abil.DC) + HiByte(this.Abil.DC) * 3 / 10));
                             this.WAbil.AC = MakeWord(_MIN(255, LoByte(this.Abil.AC)), _MIN(255, HiByte(this.Abil.AC) + HiByte(this.Abil.AC) * 6 / 10));
@@ -98,7 +98,7 @@ namespace GameSvr
                         {
                             this.BodyState = 5;
 #if DEBUG
-                            svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " State(" + (this.BodyState).ToString() + ") : " + this.TargetCret.UserName);
+                            //svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " State(" + (this.BodyState).ToString() + ") : " + this.TargetCret.UserName);
 #endif
                             this.WAbil.DC = MakeWord(_MIN(255, LoByte(this.Abil.DC)), _MIN(255, HiByte(this.Abil.DC) + HiByte(this.Abil.DC) * 4 / 10));
                             this.WAbil.AC = MakeWord(_MIN(255, LoByte(this.Abil.AC)), _MIN(255, HiByte(this.Abil.AC) + HiByte(this.Abil.AC) * 8 / 10));
@@ -158,14 +158,14 @@ namespace GameSvr
                             }
                             rlist.Free();
 #if DEBUG
-                            svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " 家券 : " + this.TargetCret.UserName);
+                            //svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " 家券 : " + this.TargetCret.UserName);
 #endif
                             result = true;
                         }
                         else if (new System.Random(100).Next() < 40)
                         {
 #if DEBUG
-                            svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " 檬鞘混 : " + this.TargetCret.UserName);
+                            //svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " 檬鞘混 : " + this.TargetCret.UserName);
 #endif
                             RangeAttack2(this.TargetCret);
                             result = true;
@@ -173,8 +173,7 @@ namespace GameSvr
                         else if (new System.Random(10).Next() < 4)
                         {
 #if DEBUG
-                            svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " 吝缴傍拜 : " + this.TargetCret.UserName);
-                            // test
+                            //svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " 吝缴傍拜 : " + this.TargetCret.UserName);
 #endif
                             Attack(this.TargetCret, this.Dir);
                             result = true;
@@ -182,8 +181,7 @@ namespace GameSvr
                         else
                         {
 #if DEBUG
-                            svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " 盔芭府裹困 : " + this.TargetCret.UserName);
-                            // test
+                            //svMain.UserEngine.CryCry(Grobal2.RM_CRY, this.PEnvir, this.CX, this.CY, 10000, " 盔芭府裹困 : " + this.TargetCret.UserName);
 #endif
                             RangeAttack(this.TargetCret);
                             result = true;

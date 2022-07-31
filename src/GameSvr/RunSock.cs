@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using SystemModule;
 
@@ -59,7 +60,7 @@ namespace GameSvr
 
     public class TRunSocket
     {
-        private readonly ArrayList RunAddressList = null;
+        private readonly IList<string> RunAddressList = null;
         private readonly int MaxPubAddr = 0;
         private readonly TRAddr[] PubAddrTable;
         private readonly int DecGateIndex = 0;
@@ -70,7 +71,7 @@ namespace GameSvr
 
         public TRunSocket()
         {
-            RunAddressList = new ArrayList();
+            RunAddressList = new List<string>();
             GateArr = new TRunGateInfo[RunSock.MAXGATE];
             for (var i = 0; i < RunSock.MAXGATE; i++)
             {
@@ -124,13 +125,11 @@ namespace GameSvr
 
         public bool IsValidGateAddr(string addr)
         {
-            bool result;
-            int i;
+            bool result = false;
             try
             {
-                result = false;
                 M2Share.ruLock.Enter();
-                for (i = 0; i < RunAddressList.Count; i++)
+                for (var i = 0; i < RunAddressList.Count; i++)
                 {
                     if (RunAddressList[i] == addr)
                     {
@@ -233,8 +232,7 @@ namespace GameSvr
 
         public void CloseAllGate()
         {
-            int i;
-            for (i = 0; i < RunSock.MAXGATE; i++)
+            for (var i = 0; i < RunSock.MAXGATE; i++)
             {
                 if (GateArr[i].Socket != null)
                 {
@@ -245,19 +243,17 @@ namespace GameSvr
 
         public void CloseGate(Socket Socket)
         {
-            int i;
-            int j;
             ArrayList ulist;
             TGateUserInfo uinf;
             try
             {
                 M2Share.ruLock.Enter();
-                for (i = 0; i < RunSock.MAXGATE; i++)
+                for (var i = 0; i < RunSock.MAXGATE; i++)
                 {
                     if (GateArr[i].Socket == Socket)
                     {
                         ulist = GateArr[i].UserList;
-                        for (j = 0; j < ulist.Count; j++)
+                        for (var j = 0; j < ulist.Count; j++)
                         {
                             uinf = ulist[j] as TGateUserInfo;
                             if (uinf == null)
@@ -281,7 +277,7 @@ namespace GameSvr
                         }
                         GateArr[i].ReceiveBuffer = null;
                         GateArr[i].ReceiveLen = 0;
-                        for (j = 0; j < GateArr[i].SendBuffers.Count; j++)
+                        for (var j = 0; j < GateArr[i].SendBuffers.Count; j++)
                         {
                             //FreeMem(GateArr[i].SendBuffers[j]);
                         }
@@ -300,12 +296,9 @@ namespace GameSvr
             }
         }
 
-        // ruLock 救俊辑 龋免登绢具窃
-        // UserList狼 index甫 府畔窃
         private int OpenNewUser(int shandle, int uindex, string addr, ArrayList ulist)
         {
             int result;
-            int i;
             TGateUserInfo uinfo;
             uinfo = new TGateUserInfo();
             uinfo.UserId = "";
@@ -319,12 +312,11 @@ namespace GameSvr
             uinfo.UCret = null;
             uinfo.OpenTime = HUtil32.GetTickCount();
             uinfo.Enabled = false;
-            for (i = 0; i < ulist.Count; i++)
+            for (var i = 0; i < ulist.Count; i++)
             {
                 if (ulist[i] == null)
                 {
                     ulist[i] = uinfo;
-                    // 吝埃俊 狐柳镑俊 持澜
                     result = i;
                     return result;
                 }
@@ -336,7 +328,6 @@ namespace GameSvr
 
         public void CloseUser(int gateindex, int uhandle)
         {
-            int i;
             TGateUserInfo puser;
             if (!(gateindex >= 0 && gateindex <= RunSock.MAXGATE - 1))
             {
@@ -351,7 +342,7 @@ namespace GameSvr
                 M2Share.ruLock.Enter();
                 try
                 {
-                    for (i = 0; i < GateArr[gateindex].UserList.Count; i++)
+                    for (var i = 0; i < GateArr[gateindex].UserList.Count; i++)
                     {
                         if (GateArr[gateindex].UserList[i] == null)
                         {
@@ -360,7 +351,6 @@ namespace GameSvr
                         if ((GateArr[gateindex].UserList[i] as TGateUserInfo).UserHandle == uhandle)
                         {
                             puser = GateArr[gateindex].UserList[i] as TGateUserInfo;
-                            // Close 炼扒 促矫 积阿秦具 窃.
                             try
                             {
                                 if (puser.FEngine != null)
@@ -376,7 +366,6 @@ namespace GameSvr
                             {
                                 if (puser.UCret != null)
                                 {
-                                    // TUserHuman (puser.UCret).EmergencyClose := TRUE;
                                     ((TUserHuman)puser.UCret).UserSocketClosed = true;
                                 }
                             }
@@ -390,11 +379,8 @@ namespace GameSvr
                                 {
                                     if (((TCreature)puser.UCret).BoGhost)
                                     {
-                                        // 荤侩磊辆丰啊 酒囱, 辑滚狼 碍力辆丰牢版快
                                         if (!((TUserHuman)puser.UCret).SoftClosed)
                                         {
-                                            // 某腐磐 急琶栏肺 狐柳巴捞 酒聪搁
-                                            // 促弗 辑滚俊 舅赴促.
                                             IdSrvClient.FrmIDSoc.SendUserClose(puser.UserId, puser.Certification);
                                         }
                                     }
@@ -406,8 +392,6 @@ namespace GameSvr
                             }
                             try
                             {
-                                // 力芭.. 力芭窍瘤 臼绰促.
-                                // GateArr[gateindex].UserList.Delete (i);
                                 Dispose(puser);
                                 GateArr[gateindex].UserList[i] = null;
                             }
@@ -495,20 +479,17 @@ namespace GameSvr
             }
         }
 
-        // 促弗 辑滚俊辑 犁立加 登菌阑 版快, 趣篮 促弗 辑滚俊 捞惑捞 积辫..
         public void CloseUserId(string uid, int cert)
         {
-            int gi;
-            int k;
             TGateUserInfo pu;
-            for (gi = 0; gi < RunSock.MAXGATE; gi++)
+            for (var gi = 0; gi < RunSock.MAXGATE; gi++)
             {
                 if (GateArr[gi].Connected && (GateArr[gi].Socket != null) && (GateArr[gi].UserList != null))
                 {
                     try
                     {
                         M2Share.ruCloseLock.Enter();
-                        for (k = 0; k < GateArr[gi].UserList.Count; k++)
+                        for (var k = 0; k < GateArr[gi].UserList.Count; k++)
                         {
                             pu = GateArr[gi].UserList[k] as TGateUserInfo;
                             if (pu == null)
@@ -525,10 +506,8 @@ namespace GameSvr
                                 {
                                     ((TUserHuman)pu.UCret).EmergencyClose = true;
                                     ((TUserHuman)pu.UCret).UserSocketClosed = true;
-                                    // 碍力 辆丰 皋技瘤甫 努扼捞攫飘俊 焊辰促.
                                     SendForcedClose(gi, pu.UserHandle);
                                 }
-                                // GateArr[gi].UserList.Delete (k); 力芭窍瘤 臼澜
                                 Dispose(pu);
                                 GateArr[gi].UserList[k] = null;
                                 break;
@@ -546,8 +525,7 @@ namespace GameSvr
         // pbuf : [length(4)] + [data]
         public void SendUserSocket(int gindex, string pbuf)
         {
-            bool flag;
-            flag = false;
+            bool flag = false;
             if (pbuf == null)
             {
                 return;
@@ -586,7 +564,6 @@ namespace GameSvr
 
         public void UserLoadingOk(int gateindex, int shandle, object cret)
         {
-            int i;
             TGateUserInfo puser;
             if (gateindex >= 0 && gateindex <= RunSock.MAXGATE - 1)
             {
@@ -597,7 +574,7 @@ namespace GameSvr
                 try
                 {
                     M2Share.ruLock.Enter();
-                    for (i = 0; i < GateArr[gateindex].UserList.Count; i++)
+                    for (var i = 0; i < GateArr[gateindex].UserList.Count; i++)
                     {
                         puser = (TGateUserInfo)GateArr[gateindex].UserList[i];
                         if (puser == null)
@@ -622,7 +599,6 @@ namespace GameSvr
 
         public bool DoClientCertification_GetCertification(string body, ref string uid, ref string chrname, ref int certify, ref int clversion, ref int clientchecksum, ref bool startnew)
         {
-            bool result;
             string str = string.Empty;
             string scert = string.Empty;
             string sver = string.Empty;
@@ -633,7 +609,7 @@ namespace GameSvr
             long checkcert;
             long xor1;
             long xor2;
-            result = false;
+            bool result = false;
             try
             {
                 str = EDcode.DecodeString(body);
@@ -678,7 +654,6 @@ namespace GameSvr
             return result;
         }
 
-        // ruLock 救俊辑 龋免登绰 窃荐 烙.
         private void DoClientCertification(int gindex, TGateUserInfo puser, int shandle, string data)
         {
             string uid = string.Empty;
@@ -758,7 +733,6 @@ namespace GameSvr
 
         private void ExecGateMsg(int gindex, TRunGateInfo CGate, TMsgHeader pheader, string pdata, int len)
         {
-            int i;
             int uidx;
             TGateUserInfo puser;
             int debug = 0;
@@ -774,7 +748,7 @@ namespace GameSvr
                     case Grobal2.GM_CLOSE:
                         debug = 2;
                         puser = null;
-                        for (i = 0; i < CGate.UserList.Count; i++)
+                        for (var i = 0; i < CGate.UserList.Count; i++)
                         {
                             puser = CGate.UserList[i] as TGateUserInfo;
                             if (puser != null)
@@ -816,7 +790,7 @@ namespace GameSvr
                         }
                         if (puser == null)
                         {
-                            for (i = 0; i < CGate.UserList.Count; i++)
+                            for (var i = 0; i < CGate.UserList.Count; i++)
                             {
                                 if (CGate.UserList[i] == null)
                                 {
@@ -935,30 +909,26 @@ namespace GameSvr
 
         private bool SendGateBuffers(int gindex, TRunGateInfo CGate, ArrayList slist)
         {
-            bool result;
-            int curn;
             int sendlen = 0;
-            string psend;
-            long start;
-            result = true;
+            bool result = true;
             if (slist.Count == 0)
             {
                 return result;
             }
-            start = HUtil32.GetTickCount();
+            long start = HUtil32.GetTickCount();
             if (CGate.GateSyncMode > 0)
             {
                 if (HUtil32.GetTickCount() - CGate.WaitTime > 2000)
                 {
-                    // 鸥烙 酒眶
                     CGate.GateSyncMode = 0;
                     CGate.SendDataCount = 0;
                 }
                 return result;
             }
+            string psend;
             try
             {
-                curn = 0;
+                int curn = 0;
                 psend = (string)slist[curn];
                 while (true)
                 {
@@ -1133,11 +1103,8 @@ namespace GameSvr
 
         public void Run()
         {
-            int i;
-            int k;
-            long start;
             TRunGateInfo pgate;
-            start = HUtil32.GetTickCount();
+            long start = HUtil32.GetTickCount();
             if (M2Share.ServerReady)
             {
                 try
@@ -1148,12 +1115,12 @@ namespace GameSvr
                         if (HUtil32.GetTickCount() - gateloadtesttime >= 100)
                         {
                             gateloadtesttime = HUtil32.GetTickCount();
-                            for (i = 0; i < RunSock.MAXGATE; i++)
+                            for (var i = 0; i < RunSock.MAXGATE; i++)
                             {
                                 pgate = GateArr[i];
                                 if (pgate.SendBuffers != null)
                                 {
-                                    for (k = 0; k < M2Share.GATELOAD; k++)
+                                    for (var k = 0; k < M2Share.GATELOAD; k++)
                                     {
                                         SendGateLoadTest(i);
                                     }
@@ -1161,9 +1128,8 @@ namespace GameSvr
                             }
                         }
                     }
-                    for (i = 0; i < RunSock.MAXGATE; i++)
+                    for (var i = 0; i < RunSock.MAXGATE; i++)
                     {
-                        // 焊尘波 贸府
                         pgate = GateArr[i];
                         if (pgate.SendBuffers != null)
                         {
@@ -1179,7 +1145,7 @@ namespace GameSvr
                             }
                         }
                     }
-                    for (i = 0; i < RunSock.MAXGATE; i++)
+                    for (var i = 0; i < RunSock.MAXGATE; i++)
                     {
                         if (GateArr[i].Socket != null)
                         {
@@ -1229,7 +1195,6 @@ namespace GameSvr
         public const int SERVERBASEPORT = 5000;
         public const int MAXGATE = 20;
         public const string GATEADDRFILE = ".\\!runaddr.txt";
-        // ADDRTABLEFILE = '.\!addrtable.txt';
         public const int MAX_PUBADDR = 30;
-    } // end RunSock
+    }
 }

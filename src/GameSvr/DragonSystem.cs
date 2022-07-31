@@ -72,10 +72,12 @@ namespace GameSvr
         public TDragonSystem() : base()
         {
             bool RetSuccess = false;
+            FLevelInfo = new TDragonLevelInfo[DragonSystem.DRAGON_MAX_LEVEL];
             InitFirst();
             Initialize(FInitFileName, ref RetSuccess);
             if (RetSuccess == false)
             {
+                return;
             }
         }
 
@@ -86,11 +88,11 @@ namespace GameSvr
 
         private void InitFirst()
         {
-            int i;
             try
             {
-                for (i = 0; i < DragonSystem.DRAGON_MAX_LEVEL; i++)
+                for (var i = 0; i < DragonSystem.DRAGON_MAX_LEVEL; i++)
                 {
+                    FLevelInfo[i] = new TDragonLevelInfo();
                     FLevelInfo[i].Level = i + 1;
                     FLevelInfo[i].DropExp = (i + 1) * 10000;
                     FLevelInfo[i].DropItemList = new List<TDropItemInfo>();

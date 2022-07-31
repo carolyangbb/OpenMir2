@@ -14103,7 +14103,7 @@ namespace GameSvr
         {
             FUserMarket.Clear();
 #if DEBUG
-            svMain.MainOutMessage("MarketClear :" + this.UserName);
+            //svMain.MainOutMessage("MarketClear :" + this.UserName);
 #endif
         }
 
@@ -15362,7 +15362,7 @@ namespace GameSvr
                 if (marketitem != null)
                 {
 #if DEBUG
-                    svMain.MainOutMessage("LIST :" + marketitem.SellWho + "," + marketitem.Item.S.Name);
+                    //svMain.MainOutMessage("LIST :" + marketitem.SellWho + "," + marketitem.Item.S.Name);
 #endif
                     cnt++;
                     Buffer = Buffer + EDcode.EncodeBuffer(marketitem) + "/";

@@ -28,14 +28,11 @@ namespace GameSvr
         private long timer1min = 0;
         private long opendoorcheck = 0;
         private long missiontime = 0;
-        // 固记篮 1檬俊 茄锅 平捞 等促.
         private long onezentime = 0;
-        // 哩阑 炼陛究 茄促.
         private long runonetime = 0;
         private long hum200time = 0;
         private readonly long usermgrcheck = 0;
         private long eventitemtime = 0;
-        // 蜡聪农 酒捞袍 捞亥飘狼 函荐
         private int GenCur = 0;
         private int MonCur = 0;
         private int MonSubCur = 0;
@@ -46,7 +43,7 @@ namespace GameSvr
         private int gaCount = 0;
         private int gaDecoItemCount = 0;
         public ArrayList GenMsgList = null;
-        public ArrayList StdItemList = null;
+        public IList<TStdItem> StdItemList = null;
         public IList<TMonsterInfo> MonDefList = null;
         public ArrayList MonList = null;
         public IList<TDefMagic> DefMagicList = null;
@@ -75,7 +72,7 @@ namespace GameSvr
             MonList = new ArrayList();
             MonDefList = new List<TMonsterInfo>();
             ReadyList = new List<TUserHuman>();
-            StdItemList = new ArrayList();
+            StdItemList = new List<TStdItem>();
             DefMagicList = new List<TDefMagic>();
             AdminList = new ArrayList();
             ChatLogList = new StringList();
@@ -154,7 +151,7 @@ namespace GameSvr
             itemindex = itemindex - 1;
             if ((itemindex >= 0) && (itemindex <= StdItemList.Count - 1))
             {
-                result = ((TStdItem)StdItemList[itemindex]).Name;
+                result = StdItemList[itemindex].Name;
             }
             else
             {
@@ -172,7 +169,7 @@ namespace GameSvr
             }
             for (var i = 0; i < StdItemList.Count; i++)
             {
-                if (((TStdItem)StdItemList[i]).Name.ToLower().CompareTo(itmname.ToLower()) == 0)
+                if (StdItemList[i].Name.ToLower().CompareTo(itmname.ToLower()) == 0)
                 {
                     result = i + 1;
                     break;
@@ -181,14 +178,13 @@ namespace GameSvr
             return result;
         }
 
-        // 促弗 胶贰靛俊辑 荤侩 阂啊 !!
         public int GetStdItemWeight(int itemindex, int Cnt)
         {
             int result;
             itemindex = itemindex - 1;
             if ((itemindex >= 0) && (itemindex <= StdItemList.Count - 1))
             {
-                TStdItem psd = (TStdItem)StdItemList[itemindex];
+                TStdItem psd = StdItemList[itemindex];
                 if (psd.OverlapItem == 1)
                 {
                     result = psd.Weight + psd.Weight * (Cnt / 10);
@@ -215,7 +211,7 @@ namespace GameSvr
             TStdItem result;
             if ((index >= 0) && (index < StdItemList.Count))
             {
-                result = (TStdItem)StdItemList[index];
+                result = StdItemList[index];
                 if (result.Name == "")
                 {
                     result = null;
@@ -237,9 +233,9 @@ namespace GameSvr
             }
             for (var i = 0; i < StdItemList.Count; i++)
             {
-                if (((TStdItem)StdItemList[i]).Name.ToLower().CompareTo(itmname.ToLower()) == 0)
+                if (StdItemList[i].Name.ToLower().CompareTo(itmname.ToLower()) == 0)
                 {
-                    result = (TStdItem)StdItemList[i];
+                    result = StdItemList[i];
                     break;
                 }
             }
@@ -254,8 +250,8 @@ namespace GameSvr
             {
                 uitem.Index = (short)(itmindex + 1);
                 uitem.MakeIndex = M2Share.GetItemServerIndex();
-                uitem.Dura = ((TStdItem)StdItemList[itmindex]).DuraMax;
-                uitem.DuraMax = ((TStdItem)StdItemList[itmindex]).DuraMax;
+                uitem.Dura = StdItemList[itmindex].DuraMax;
+                uitem.DuraMax = StdItemList[itmindex].DuraMax;
                 result = true;
             }
             return result;
@@ -270,27 +266,27 @@ namespace GameSvr
             }
             for (var i = 0; i < StdItemList.Count; i++)
             {
-                if (((TStdItem)StdItemList[i]).Name.ToLower().CompareTo(itmname.ToLower()) == 0)
+                if (StdItemList[i].Name.ToLower().CompareTo(itmname.ToLower()) == 0)
                 {
                     uitem = new TUserItem();
                     uitem.Index = (short)(i + 1);
                     uitem.MakeIndex = M2Share.GetItemServerIndex();
-                    if (((TStdItem)StdItemList[i]).OverlapItem >= 1)
+                    if (StdItemList[i].OverlapItem >= 1)
                     {
-                        if (((TStdItem)StdItemList[i]).DuraMax == 0)
+                        if (StdItemList[i].DuraMax == 0)
                         {
                             uitem.Dura = 1;
                         }
                         else
                         {
-                            uitem.Dura = ((TStdItem)StdItemList[i]).DuraMax;
+                            uitem.Dura = StdItemList[i].DuraMax;
                         }
                     }
                     else
                     {
-                        uitem.Dura = ((TStdItem)StdItemList[i]).DuraMax;
+                        uitem.Dura = StdItemList[i].DuraMax;
                     }
-                    uitem.DuraMax = ((TStdItem)StdItemList[i]).DuraMax;
+                    uitem.DuraMax = StdItemList[i].DuraMax;
                     result = true;
                     break;
                 }
@@ -303,7 +299,7 @@ namespace GameSvr
             string result = "";
             for (var i = 0; i < StdItemList.Count; i++)
             {
-                TStdItem pstd = (TStdItem)StdItemList[i];
+                TStdItem pstd = StdItemList[i];
                 if (pstd != null)
                 {
                     if ((pstd.StdMode == stdmode) && (pstd.Shape == shape))
@@ -3374,7 +3370,7 @@ namespace GameSvr
 #if DEBUG
                     // sonmg
                     // 烙矫 10盒俊 茄锅...(sonmg)
-                    svMain.GuildAgitMan.DecreaseDecoMonDurability();
+                    //svMain.GuildAgitMan.DecreaseDecoMonDurability();
 #endif
                 }
                 // if

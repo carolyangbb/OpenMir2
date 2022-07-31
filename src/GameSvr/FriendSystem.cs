@@ -267,7 +267,7 @@ namespace GameSvr
             var regstate = Cmd.Msg.Param;
             var forceflag = Cmd.Msg.Tag;
 #if DEBUG
-            this.ErrMsg("Cmd_CM_Add" + owner + "/" + friend + "/" + (regstate).ToString());
+            //this.ErrMsg("Cmd_CM_Add" + owner + "/" + friend + "/" + (regstate).ToString());
 #endif
             if (M2Share.UserMgrEngine.InterGetUserInfo(friend, ref userinfo))
             {
