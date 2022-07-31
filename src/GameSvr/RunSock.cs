@@ -71,8 +71,10 @@ namespace GameSvr
         public TRunSocket()
         {
             RunAddressList = new ArrayList();
+            GateArr = new TRunGateInfo[RunSock.MAXGATE];
             for (var i = 0; i < RunSock.MAXGATE; i++)
             {
+                GateArr[i] = new TRunGateInfo();
                 GateArr[i].Connected = false;
                 GateArr[i].Socket = null;
                 GateArr[i].NeedCheck = false;

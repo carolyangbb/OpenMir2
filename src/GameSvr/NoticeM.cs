@@ -17,9 +17,10 @@ namespace GameSvr
 
         public TNoticeManager()
         {
-            int i;
-            for (i = 0; i < NoticeM.MAXNOTICE; i++)
+            Notices = new TNoticeList[NoticeM.MAXNOTICE];
+            for (var i = 0; i < NoticeM.MAXNOTICE; i++)
             {
+                Notices[i] = new TNoticeList();
                 Notices[i].Name = "";
                 Notices[i].List = null;
                 Notices[i].Valid = true;
@@ -28,8 +29,7 @@ namespace GameSvr
 
         ~TNoticeManager()
         {
-            int i;
-            for (i = 0; i < NoticeM.MAXNOTICE; i++)
+            for (var i = 0; i < NoticeM.MAXNOTICE; i++)
             {
                 if (Notices[i].List != null)
                 {

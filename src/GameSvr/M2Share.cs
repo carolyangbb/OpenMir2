@@ -566,7 +566,6 @@ namespace GameSvr
             }
         }
 
-        // 敲贰捞绢狼 青悼阑 扁废
         public static void AddConLog(string str)
         {
             try
@@ -580,7 +579,6 @@ namespace GameSvr
             }
         }
 
-        // 立加 扁废阑 肺弊肺 巢辫
         public static void AddChatLog(string str)
         {
             try
@@ -727,7 +725,6 @@ namespace GameSvr
                 case 0:
                     if (lv >= ADJ_LEVEL + 1)
                     {
-                        // Result := Round(5 + adjlowlv(lv) + lv * 0.7)
                         result = HUtil32.MathRound(20 + lv / 10 * 5);
                     }
                     else
@@ -738,7 +735,6 @@ namespace GameSvr
                 case 1:
                     if (lv >= ADJ_LEVEL + 1)
                     {
-                        // Result := Round(8 + adjlowlv(lv) + lv * 1.2)
                         result = HUtil32.MathRound(27 + lv / 10 * 8);
                     }
                     else
@@ -749,7 +745,6 @@ namespace GameSvr
                 case 2:
                     if (lv >= ADJ_LEVEL + 1)
                     {
-                        // Result := Round(8 + adjlowlv(lv) + lv * 1.4)
                         result = HUtil32.MathRound(28 + lv / 10 * 9);
                     }
                     else
@@ -763,10 +758,8 @@ namespace GameSvr
 
         public static int GetLevelBonusSum(int job, int lv)
         {
-            int result;
-            int i;
-            result = 0;
-            for (i = 2; i <= lv; i++)
+            int result = 0;
+            for (var i = 2; i <= lv; i++)
             {
                 result = result + GetBonusPoint(job, i);
             }
@@ -1010,12 +1003,11 @@ namespace GameSvr
             return result;
         }
 
-        public static byte GetNextDirection(int sx, int sy, int dx, int dy)
+        public static byte GetNextDirection(short sx, short sy, short dx, short dy)
         {
-            byte result;
-            int flagx;
-            int flagy;
-            result = Grobal2.DR_DOWN;
+            short flagx;
+            short flagy;
+            byte result = Grobal2.DR_DOWN;
             if (sx < dx)
             {
                 flagx = 1;
@@ -1202,8 +1194,7 @@ namespace GameSvr
 
         public static bool IsTakeOnAvailable(int useindex, TStdItem pstd)
         {
-            bool result;
-            result = false;
+            bool result = false;
             if (pstd == null)
             {
                 return result;
@@ -1213,7 +1204,6 @@ namespace GameSvr
                 case Grobal2.U_DRESS:
                     if (pstd.StdMode >= 10 && pstd.StdMode <= 11)
                     {
-                        // 巢磊 咯磊渴..
                         result = true;
                     }
                     break;
@@ -1226,7 +1216,6 @@ namespace GameSvr
                 case Grobal2.U_RIGHTHAND:
                     if (pstd.StdMode == 30)
                     {
-                        // 眯阂, 颇沸伐橇
                         result = true;
                     }
                     break;
@@ -1250,21 +1239,18 @@ namespace GameSvr
                     }
                     break;
                 case Grobal2.U_ARMRINGR:
-                    // 迫骂父..
                     if ((pstd.StdMode == 24) || (pstd.StdMode == 26))
                     {
                         result = true;
                     }
                     break;
                 case Grobal2.U_ARMRINGL:
-                    // 迫骂, 何利/刀啊风..
                     if ((pstd.StdMode == 24) || (pstd.StdMode == 25) || (pstd.StdMode == 26))
                     {
                         result = true;
                     }
                     break;
                 case Grobal2.U_BUJUK:
-                    // 2003/03/15 酒捞袍 牢亥配府 犬厘
                     if (pstd.StdMode == 25)
                     {
                         result = true;
@@ -1310,10 +1296,8 @@ namespace GameSvr
 
         public static bool IsUpgradeWeaponStuff(int uindex)
         {
+            TStdItem pstd = M2Share.UserEngine.GetStdItem(uindex);
             bool result;
-            TStdItem pstd;
-            pstd = M2Share.UserEngine.GetStdItem(uindex);
-            // ,52,53,54 sonmg
             if (new ArrayList(new int[] { 19, 20, 21, 22, 23, 24, 26 }).Contains(pstd.StdMode))
             {
                 result = true;
@@ -1345,9 +1329,7 @@ namespace GameSvr
 
         public static byte GetTurnDir(int dir, int rotatecount)
         {
-            byte result;
-            result = (byte)((dir + rotatecount) % 8);
-            return result;
+            return (byte)((dir + rotatecount) % 8);
         }
 
         public static bool IsCheapStuff(int stdmode)
@@ -1389,17 +1371,11 @@ namespace GameSvr
             return result;
         }
 
-        // 捣俊 霓付 嘿捞绰 窃荐.
         public static string GetStrGoldStr(string strgold)
         {
-            string result;
-            int i;
-            int n;
-            // str: string;
-            // str := IntToStr (gold);
-            n = 0;
-            result = "";
-            for (i = strgold.Length; i >= 1; i--)
+            int n = 0;
+            string result = "";
+            for (var i = strgold.Length; i >= 1; i--)
             {
                 if (n == 3)
                 {
@@ -1415,7 +1391,6 @@ namespace GameSvr
             return result;
         }
 
-        // 捣俊 霓付 嘿捞绰 窃荐.
         public static void LoadConfig()
         {
             //FileStream Conf;

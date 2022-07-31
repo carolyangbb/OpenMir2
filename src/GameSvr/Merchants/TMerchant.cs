@@ -42,38 +42,6 @@ namespace GameSvr
             CreateIndex = 0;
         }
 
-        ~TMerchant()
-        {
-            int i;
-            int k;
-            ArrayList list;
-            for (i = 0; i < ProductList.Count; i++)
-            {
-                Dispose((TMarketProduct)ProductList[i]);
-            }
-            ProductList.Free();
-            for (i = 0; i < GoodsList.Count; i++)
-            {
-                list = GoodsList[i] as ArrayList;
-                for (k = 0; k < list.Count; k++)
-                {
-                    Dispose((TUserItem)list[k]);
-                }
-                list.Free();
-            }
-            GoodsList.Free();
-            for (i = 0; i < PriceList.Count; i++)
-            {
-                Dispose((TPricesInfo)PriceList[i]);
-            }
-            PriceList.Free();
-            for (i = 0; i < UpgradingList.Count; i++)
-            {
-                Dispose(UpgradingList[i]);
-            }
-            UpgradingList.Free();
-        }
-
         public void ClearMerchantInfos()
         {
             for (var i = 0; i < ProductList.Count; i++)

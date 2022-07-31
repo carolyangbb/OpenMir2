@@ -817,11 +817,9 @@ namespace GameSvr
             this.SendMsg(this, Grobal2.RM_CHANGEGUILDNAME, 0, 0, 0, 0, "");
         }
 
-        // ----------------------------------------------
         private bool TurnXY(int x, int y, int dir)
         {
-            bool result;
-            result = false;
+            bool result = false;
             if ((x == this.CX) && (y == this.CY))
             {
                 this.Dir = (byte)dir;
@@ -833,7 +831,7 @@ namespace GameSvr
             return result;
         }
 
-        private bool WalkXY(int x, int y)
+        private bool WalkXY(short x, short y)
         {
             byte ndir;
             short oldx;
@@ -863,17 +861,14 @@ namespace GameSvr
                 allowdup = true;
                 if (this.WalkTo(ndir, allowdup))
                 {
-                    // 般媚瘤瘤 臼霸 窃.
                     if (this.SpaceMoved || (this.CX == x) && (this.CY == y))
                     {
                         result = true;
                     }
                     this.HealthTick -= 10;
-                    // 20
                 }
                 else
                 {
-                    // 叭扁 角菩
                     WalkTimeOverCount = 0;
                     WalkTimeOverSum = 0;
                 }
@@ -893,12 +888,11 @@ namespace GameSvr
             return result;
         }
 
-        private bool RunXY(int x, int y)
+        private bool RunXY(short x, short y)
         {
-            bool result;
             byte ndir;
             bool allowdup;
-            result = false;
+            bool result = false;
             if (HUtil32.GetTickCount() - LatestWalkTime < 600)
             {
                 WalkTimeOverCount++;
@@ -912,33 +906,25 @@ namespace GameSvr
                     WalkTimeOverSum -= 1;
                 }
             }
-            // dis := GetTickCount - LatestWalkTime;
-            // MainOutMessage (IntToStr(dis));
             LatestWalkTime = HUtil32.GetTickCount();
             if ((WalkTimeOverCount < 4) && (WalkTimeOverSum < 6))
             {
                 this.SpaceMoved = false;
                 ndir = M2Share.GetNextDirection(this.CX, this.CY, x, y);
                 allowdup = true;
-                // 乞惑矫俊绰 钝锭 般磨 荐 乐澜
                 if (M2Share.UserCastle.BoCastleUnderAttack)
                 {
-                    // 傍己傈 吝牢 版快
                     if (this.BoInFreePKArea)
                     {
-                        // 橇府乔纳捞粮(傈里磐)俊 乐澜, 傍己 瘤开俊 乐澜
                         allowdup = false;
                     }
-                    // 傍己傈 瘤开俊辑绰 般磨 荐 绝澜
                 }
                 if (this.RunTo(ndir, allowdup))
                 {
                     if (this.BoFixedHideMode)
                     {
-                        // 绊沥 篮脚贱..
                         if (this.BoHumHideMode)
                         {
-                            // 捞悼茄版快俊绰 篮脚贱捞 钱赴促.
                             this.StatusArr[Grobal2.STATE_TRANSPARENT] = 1;
                         }
                     }
@@ -947,7 +933,6 @@ namespace GameSvr
                         result = true;
                     }
                     this.HealthTick -= 60;
-                    // 150
                     this.SpellTick -= 10;
                     this.SpellTick = _MAX(0, this.SpellTick);
                     this.PerHealth -= 1;
@@ -8012,7 +7997,7 @@ namespace GameSvr
                             }
                             break;
                         case Grobal2.CM_WALK:
-                            if (this.Death || !WalkXY(msg.lParam1, msg.lParam2))
+                            if (this.Death || !WalkXY((short)msg.lParam1, (short)msg.lParam2))
                             {
                                 SendSocket(null, "+FAIL/" + GetTickCount.ToString());
                             }
@@ -8023,7 +8008,7 @@ namespace GameSvr
                             }
                             break;
                         case Grobal2.CM_RUN:
-                            if (this.Death || !RunXY(msg.lParam1, msg.lParam2))
+                            if (this.Death || !RunXY((short)msg.lParam1, (short)msg.lParam2))
                             {
                                 SendSocket(null, "+FAIL/" + GetTickCount.ToString());
                             }

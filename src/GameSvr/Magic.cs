@@ -386,16 +386,12 @@ namespace GameSvr
 
         public bool MagBigHealing(TCreature user, int pwr, int x, int y)
         {
-            bool result;
-            int i;
-            ArrayList rlist;
-            TCreature cret;
-            result = false;
-            rlist = new ArrayList();
+            var result = false;
+            var rlist = new ArrayList();
             user.GetMapCreatures(user.PEnvir, x, y, 1, rlist);
-            for (i = 0; i < rlist.Count; i++)
+            for (var i = 0; i < rlist.Count; i++)
             {
-                cret = (TCreature)rlist[i];
+                var cret = (TCreature)rlist[i];
                 if (user.IsProperFriend(cret))
                 {
                     if (cret.WAbil.HP < cret.WAbil.MaxHP)

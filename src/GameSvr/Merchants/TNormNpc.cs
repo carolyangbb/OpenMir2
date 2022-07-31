@@ -63,15 +63,6 @@ namespace GameSvr
             MemorialCount = 0;
         }
 
-        ~TNormNpc()
-        {
-            for (var i = 0; i < Sayings.Count; i++)
-            {
-                Dispose(Sayings[i] as TQuestRecord);
-            }
-            Sayings.Free();
-        }
-
         public override void RunMsg(TMessageInfo msg)
         {
             base.RunMsg(msg);

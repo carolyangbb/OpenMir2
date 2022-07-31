@@ -9,10 +9,8 @@ namespace GameSvr
 {
     public class GameHost
     {
-        public void FormCreate()
+        public GameHost()
         {
-            string fname;
-            System.IO.FileInfo fhandle;
             M2Share.gErrorCount = 0;
             M2Share.ServerIndex = 0;
             M2Share.RunSocket = new TRunSocket();
@@ -101,9 +99,12 @@ namespace GameSvr
             //asec = DateTime.Now.Second;
             //amsec = DateTime.Now.Millisecond;
             //svMain.ErrorLogFile = ".\\Log\\" + (ayear).ToString() + "-" + (amon).ToString() + "-" + svMain.IntTo_Str(aday) + "." + svMain.IntTo_Str(ahour) + "-" + svMain.IntTo_Str(amin) + ".log";
-            fhandle = new FileInfo(M2Share.ErrorLogFile);
-            StreamWriter _W_1 = fhandle.CreateText();
-            _W_1.Close();
+            if (!string.IsNullOrEmpty(M2Share.ErrorLogFile))
+            {
+                var fhandle = new FileInfo(M2Share.ErrorLogFile);
+                StreamWriter _W_1 = fhandle.CreateText();
+                _W_1.Close();
+            }
             M2Share.minruncount = 99999;
             M2Share.maxsoctime = 0;
             M2Share.maxusrtime = 0;
@@ -119,7 +120,7 @@ namespace GameSvr
             M2Share.SocLimitTime = 10;
             M2Share.DecLimitTime = 20;
             OutMainMessage("ready to load ini file..");
-            fname = ".\\!setup.txt";
+            var fname = ".\\!setup.txt";
             if (File.Exists(fname))
             {
                 //ini = new FileStream(fname);
@@ -220,7 +221,7 @@ namespace GameSvr
                 //    svMain.__WhiteSnake = ini.ReadString("Names", "WhiteSnake", "");
                 //    ini.Free();
                 //}
-                //OutMainMessage("!setup.txt loaded..");
+                OutMainMessage("!setup.txt loaded..");
             }
             else
             {
@@ -231,8 +232,6 @@ namespace GameSvr
                 OutMainMessage("Check your !setup.txt file. [Names] -> ClothsForMan ...");
             }
             M2Share.LoadConfig();
-            // 游戏设置读取
-            // 滚傈喊 酒捞袍 牢郸胶 瘤沥
             if (M2Share.KOREANVERSION)
             {
                 M2Share.INDEX_CHOCOLATE = 661;
@@ -240,21 +239,20 @@ namespace GameSvr
                 M2Share.INDEX_LOLLIPOP = 667;
                 M2Share.INDEX_MIRBOOTS = 642;
             }
-            else if (M2Share.ENGLISHVERSION)
+            if (M2Share.ENGLISHVERSION)
             {
                 M2Share.INDEX_CHOCOLATE = 1;
                 M2Share.INDEX_CANDY = 594;
                 M2Share.INDEX_LOLLIPOP = 595;
                 M2Share.INDEX_MIRBOOTS = 477;
             }
-            else if (M2Share.PHILIPPINEVERSION)
+            if (M2Share.PHILIPPINEVERSION)
             {
                 M2Share.INDEX_CHOCOLATE = 611;
                 M2Share.INDEX_CANDY = 556;
                 M2Share.INDEX_LOLLIPOP = 557;
                 M2Share.INDEX_MIRBOOTS = 1;
             }
-            //this.Text = svMain.ServerName + " " + (DateTime.Today).ToString() + " " + DateTime.Now.ToString() + " V" + (Grobal2.VERSION_NUMBER).ToString();
             //svMain.LoadMultiServerTables();
             //LogUDP.Host = svMain.LogServerAddress;
             //LogUDP.Port = svMain.LogServerPort;
@@ -264,6 +262,7 @@ namespace GameSvr
             //svMain.serverruntime = HUtil32.GetTickCount();
             //StartTimer.Enabled = true;
             //Timer1.Enabled = true;
+            StartThread();
         }
 
         private void OnProgramException(object Sender, Exception E)
@@ -369,11 +368,9 @@ namespace GameSvr
             return result;
         }
 
-        public void StartTimerTimer(object Sender, System.EventArgs _e1)
+        private void StartThread()
         {
-            int error;
             bool IsSuccess = false;
-            //StartTimer.Enabled = false;
             try
             {
                 if (!LoadClientFileCheckSum())
@@ -382,7 +379,7 @@ namespace GameSvr
                     return;
                 }
                 OutMainMessage("loading StdItem.DB...");
-                error = LocalDB.FrmDB.LoadStdItems();
+                var error = LocalDB.FrmDB.LoadStdItems();
                 if (error < 0)
                 {
                     OutMainMessage("StdItems.DB" + " : Failure was occurred while reading this file. code=" + error.ToString());
@@ -608,6 +605,7 @@ namespace GameSvr
                 M2Share.rcount = 0;
                 M2Share.humrotatetime = HUtil32.GetTickCount();
                 //RunTimer.Enabled = true;
+               // OutMainMessage(ServerName + " " + (DateTime.Today).ToString() + " " + DateTime.Now.ToString() + " V" + (Grobal2.VERSION_NUMBER).ToString());
             }
             catch
             {
@@ -625,7 +623,7 @@ namespace GameSvr
 
         }
 
-        public void Timer1Timer(object Sender, System.EventArgs _e1)
+        public void StartGame()
         {
             //            int i;
             //            int runsec;
@@ -857,7 +855,6 @@ namespace GameSvr
                 M2Share.GrobalEnvir.InitEnvirnoments();
                 OutMainMessage("GrobalEnvir loaded..");
                 MakeStoneMines();
-                // 堡籍阑 盲款促.
                 OutMainMessage("MakeStoneMines...");
                 error = LocalDB.FrmDB.LoadMerchants();
                 if (error < 0)
@@ -870,9 +867,6 @@ namespace GameSvr
                 {
                     OutMainMessage("merchant loaded...");
                 }
-                // ---------------------------------------------
-                // 厘盔操固扁 酒捞袍 府胶飘 肺靛(sonmg)
-                // LoadAgitDecoMon焊促 刚历 角青登绢具 窃.
                 error = LocalDB.FrmDB.LoadDecoItemList();
                 if (error < 0)
                 {
@@ -884,11 +878,8 @@ namespace GameSvr
                 {
                     OutMainMessage("DecoItemList loaded..");
                 }
-                // 0锅 辑滚俊辑父 佬绢甸烙.
                 if (M2Share.ServerIndex == 0)
                 {
-                    // 厘盔操固扁 坷宏璃飘 肺靛(sonmg)
-                    // LoadDecoItemList焊促 唱吝俊 角青登绢具 窃.
                     error = M2Share.GuildAgitMan.LoadAgitDecoMon();
                     if (error < 0)
                     {
@@ -898,17 +889,13 @@ namespace GameSvr
                     }
                     else
                     {
-                        // 厘盔俊 操固扁 坷宏璃飘甫 积己矫挪促.
                         TotalDecoMonCount = M2Share.GuildAgitMan.MakeAgitDecoMon();
-                        // 厘盔喊 操固扁 坷宏璃飘 俺荐甫 辆钦茄促.
                         M2Share.GuildAgitMan.ArrangeEachAgitDecoMonCount();
                         OutMainMessage("AgitDecoMon " + TotalDecoMonCount.ToString() + " loaded...");
                     }
                 }
-                // ---------------------------------------------
                 if (!M2Share.BoVentureServer)
                 {
-                    // 葛氰辑滚俊辑绰 版厚捍捞 绝促.
                     error = LocalDB.FrmDB.LoadGuards();
                     if (error < 0)
                     {

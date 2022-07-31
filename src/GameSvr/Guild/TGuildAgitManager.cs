@@ -25,6 +25,7 @@ namespace GameSvr
             GuildAgitFileVersion = 0;
             GuildAgitList = new List<TGuildAgit>();
             AgitDecoMonList = new List<TAgitDecoItem>();
+            GuildAgitMapName = new string[4];
             GuildAgitMapName[0] = "GA0";
             GuildAgitMapName[1] = "GA1";
             GuildAgitMapName[2] = "GA2";
@@ -34,7 +35,8 @@ namespace GameSvr
             ReturnY = 276;
             EntranceX = 119;
             EntranceY = 122;
-            for (var i = 1; i <= Guild.MAXGUILDAGITCOUNT; i++)
+            AgitDecoMonCount = new int[Guild.MAXGUILDAGITCOUNT];
+            for (var i = 0; i < Guild.MAXGUILDAGITCOUNT; i++)
             {
                 AgitDecoMonCount[i] = 0;
             }
@@ -42,8 +44,7 @@ namespace GameSvr
 
         public void ClearGuildAgitList()
         {
-            int i;
-            for (i = 0; i < GuildAgitList.Count; i++)
+            for (var i = 0; i < GuildAgitList.Count; i++)
             {
                 GuildAgitList[i].Free();
             }
