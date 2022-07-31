@@ -36,7 +36,7 @@ namespace GameSvr
                 if (this.childlist.Count < 20)
                 {
                     monname = followers[new System.Random(MAX_SKELFOLLOWERS).Next()];
-                    mon = svMain.UserEngine.AddCreatureSysop(this.MapName, nx, ny, monname);
+                    mon = M2Share.UserEngine.AddCreatureSysop(this.MapName, nx, ny, monname);
                     if (mon != null)
                     {
                         this.childlist.Add(mon);
@@ -75,7 +75,7 @@ namespace GameSvr
                 if (dam > 0)
                 {
                     targ.StruckDamage(dam, this);
-                    targ.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - targ.CX), Math.Abs(this.CY - targ.CY)) * 50);
+                    targ.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - targ.CX), Math.Abs(this.CY - targ.CY)) * 50);
                 }
                 this.SendRefMsg(Grobal2.RM_FLYAXE, this.Dir, this.CX, this.CY, targ.ActorId, "");
             }
@@ -83,7 +83,7 @@ namespace GameSvr
 
         protected override bool AttackTarget()
         {
-            byte targdir=0;
+            byte targdir = 0;
             bool result = false;
             if (this.TargetCret != null)
             {
@@ -94,7 +94,7 @@ namespace GameSvr
                     {
                         if (this.TargetInAttackRange(this.TargetCret, ref targdir))
                         {
-                            this.TargetFocusTime  =  HUtil32.GetTickCount();
+                            this.TargetFocusTime = HUtil32.GetTickCount();
                             Attack(this.TargetCret, targdir);
                             result = true;
                         }
@@ -103,7 +103,7 @@ namespace GameSvr
                             if (ChainShot < ChainShotCount - 1)
                             {
                                 ChainShot++;
-                                this.TargetFocusTime  =  HUtil32.GetTickCount();
+                                this.TargetFocusTime = HUtil32.GetTickCount();
                                 RangeAttack(this.TargetCret);
                             }
                             else

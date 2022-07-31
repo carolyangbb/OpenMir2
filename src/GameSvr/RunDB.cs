@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using SystemModule;
 
 namespace GameSvr
@@ -10,7 +9,7 @@ namespace GameSvr
         public static int LatestDBError = 0;
         public static bool g_DbUse = false;
 
-        public static void MakeDefMsg(ref TDefaultMessage DMsg, ushort msg, int llong, ushort aparam, ushort atag, ushort nseries)
+        public static void MakeDefMsg(ref TDefaultMessage DMsg, short msg, int llong, short aparam, short atag, short nseries)
         {
             DMsg.Ident = msg;
             DMsg.Recog = llong;
@@ -39,16 +38,16 @@ namespace GameSvr
             hum.Abil.Level = _wvar1.Abil_Level;
             hum.Abil.HP = _wvar1.Abil_HP;
             hum.Abil.MP = _wvar1.Abil_MP;
-            hum.Abil.Exp = (int)_wvar1.Abil_Exp;
+            hum.Abil.Exp = _wvar1.Abil_Exp;
             hum.WAbil.Level = _wvar1.Abil_Level;
             hum.WAbil.HP = _wvar1.Abil_HP;
             hum.WAbil.MP = _wvar1.Abil_MP;
-            hum.WAbil.Exp = (int)_wvar1.Abil_Exp;
-            Move(_wvar1.StatusArr, hum.StatusArr, sizeof(short) * Grobal2.STATUSARR_SIZE);
+            hum.WAbil.Exp = _wvar1.Abil_Exp;
+            //Move(_wvar1.StatusArr, hum.StatusArr, sizeof(short) * Grobal2.STATUSARR_SIZE);
             hum.HomeMap = _wvar1.HomeMap;
             hum.HomeX = _wvar1.HomeX;
             hum.HomeY = _wvar1.HomeY;
-            hum.PlayerKillingPoint = _wvar1.PkPoint;
+            hum.PlayerKillingPoint = _wvar1.PKPoint;
             if (_wvar1.AllowParty > 0)
             {
                 hum.AllowGroup = true;
@@ -71,8 +70,8 @@ namespace GameSvr
                         hum.CurBonusAbil = _wvar1.CurBonusAbil;
                         hum.BonusPoint = _wvar1.BonusPoint;
 #endif
-            hum.CGHIUseTime = (ushort)_wvar1.CGHIUseTime;
-            hum.BodyLuck = _wvar1.SolveDouble(_wvar1.BodyLuck);
+            hum.CGHIUseTime = _wvar1.CGHIUseTime;
+            //hum.BodyLuck = _wvar1.SolveDouble(_wvar1.BodyLuck);
             hum.BoEnableRecall = _wvar1.BoEnableGRecall;
             //Move(_wvar1.QuestOpenIndex, hum.QuestIndexOpenStates, Grobal2.MAXQUESTINDEXBYTE);
             //Move(_wvar1.QuestFinIndex, hum.QuestIndexFinStates, Grobal2.MAXQUESTINDEXBYTE);
@@ -118,7 +117,7 @@ namespace GameSvr
             {
                 if (_wvar3.Magics[i].MagicId > 0)
                 {
-                    pdefm = svMain.UserEngine.GetDefMagicFromId(_wvar3.Magics[i].MagicId);
+                    pdefm = M2Share.UserEngine.GetDefMagicFromId(_wvar3.Magics[i].MagicId);
                     if (pdefm != null)
                     {
                         pum = new TUserMagic();
@@ -166,8 +165,8 @@ namespace GameSvr
             _wvar1.Abil_Exp = hum.Abil.Exp;
             _wvar1.Abil_HP = hum.WAbil.HP;
             _wvar1.Abil_MP = hum.WAbil.MP;
-            Move(hum.StatusArr, _wvar1.StatusArr, sizeof(short) * Grobal2.STATUSARR_SIZE);
-            StrPCopy(_wvar1.HomeMap, hum.HomeMap);
+            //Move(hum.StatusArr, _wvar1.StatusArr, sizeof(short) * Grobal2.STATUSARR_SIZE);
+            //StrPCopy(_wvar1.HomeMap, hum.HomeMap);
             _wvar1.HomeX = hum.HomeX;
             _wvar1.HomeY = hum.HomeY;
             _wvar1.PKPoint = hum.PlayerKillingPoint;
@@ -183,9 +182,9 @@ namespace GameSvr
             _wvar1.AttackMode = hum.HumAttackMode;
             _wvar1.IncHealth = hum.IncHealth;
             _wvar1.IncSpell = hum.IncSpell;
-            _wvar1.IncHealing = hum.IncHealing;
+            _wvar1.IncHealing = (byte)hum.IncHealing;
             _wvar1.FightZoneDie = hum.FightZoneDieCount;
-            StrPCopy(_wvar1.UserId, hum.UserId);
+            //StrPCopy(_wvar1.UserId, hum.UserId);
             _wvar1.DBVersion = (byte)hum.DBVersion;
             _wvar1.BonusApply = hum.BonusApply;
 #if FOR_ABIL_POINT
@@ -193,8 +192,8 @@ namespace GameSvr
                         _wvar1.CurBonusAbil = hum.CurBonusAbil;
                         _wvar1.BonusPoint = hum.BonusPoint;
 #endif
-            _wvar1.CGHIUseTime = (short)hum.CGHIUseTime;
-            _wvar1.BodyLuck = _wvar1.PackDouble(hum.BodyLuck);
+            _wvar1.CGHIUseTime = hum.CGHIUseTime;
+            //_wvar1.BodyLuck = _wvar1.PackDouble(hum.BodyLuck);
             _wvar1.BoEnableGRecall = hum.BoEnableRecall;
             //Move(hum.QuestIndexOpenStates, _wvar1.QuestOpenIndex, Grobal2.MAXQUESTINDEXBYTE);
             //Move(hum.QuestIndexFinStates, _wvar1.QuestFinIndex, Grobal2.MAXQUESTINDEXBYTE);
@@ -204,14 +203,14 @@ namespace GameSvr
             _wvar1.HairColorR = hum.HairColorR;
             _wvar1.HairColorG = hum.HairColorG;
             _wvar1.HairColorB = hum.HairColorB;
-            if (hum.BoEnableAgitRecall == false)
-            {
-                _wvar1.HairColorR = _wvar1.HairColorR && ~0x01;
-            }
-            else
-            {
-                _wvar1.HairColorR = _wvar1.HairColorR || 0x01;
-            }
+            //if (hum.BoEnableAgitRecall == false)
+            //{
+            //    _wvar1.HairColorR = _wvar1.HairColorR && ~0x01;
+            //}
+            //else
+            //{
+            //    _wvar1.HairColorR = _wvar1.HairColorR || 0x01;
+            //}
             var _wvar2 = prcd.Block.DBBagItem;
             _wvar2.uDress = hum.UseItems[Grobal2.U_DRESS];
             _wvar2.uWeapon = hum.UseItems[Grobal2.U_WEAPON];
@@ -244,13 +243,13 @@ namespace GameSvr
                     break;
                 }
                 umi = new TUseMagicInfo();
-                umi.MagicId = (short)hum.MagicList[i].MagicId;
+                umi.MagicId = hum.MagicList[i].MagicId;
                 umi.Level = hum.MagicList[i].Level;
                 umi.Key = hum.MagicList[i].Key;
                 umi.Curtrain = hum.MagicList[i].CurTrain;
                 prcd.Block.DBUseMagic.Magics[i] = umi;
             }
-            object _wvar3 = prcd.Block.DBSaveItem;
+            var _wvar3 = prcd.Block.DBSaveItem;
             for (i = 0; i < hum.SaveItems.Count; i++)
             {
                 if (i < Grobal2.MAXSAVEITEM)
@@ -271,14 +270,14 @@ namespace GameSvr
                     result = true;
                 }
             }
-            svMain.MirUserLoadCount++;
+            M2Share.MirUserLoadCount++;
             return result;
         }
 
         public static bool SaveHumanCharacter(string uid, string usrname, int certify, FDBRecord rcd)
         {
             bool result = SaveHumanRcd(uid, usrname, certify, rcd);
-            svMain.MirUserSaveCount++;
+            M2Share.MirUserSaveCount++;
             return result;
         }
 
@@ -289,29 +288,24 @@ namespace GameSvr
 
         public static void SendRDBSocket(int certify, string data)
         {
-            string cc;
-            string str;
-            short len;
-            int cert;
-            string ansidata;
-            if (svMain.DBConnected())
+            if (M2Share.DBConnected())
             {
                 try
                 {
-                    svMain.csSocLock.Enter();
-                    svMain.RDBSocData = "";
+                    M2Share.csSocLock.Enter();
+                    M2Share.RDBSocData = "";
                 }
                 finally
                 {
-                    svMain.csSocLock.Leave();
+                    M2Share.csSocLock.Leave();
                 }
-                ansidata = data;
-                len = (short)(ansidata.Length + 6);
-                cert = HUtil32.MakeLong(certify ^ 0xaa, len);
-                cc = EDcode.EncodeBuffer(cert, sizeof(int));
-                str = "#" + certify.ToString() + "/" + ansidata + cc + "!";
-                svMain.ReadyDBReceive = true;
-                svMain.FrmMain.DBSocket.Socket.SendText(str);
+                //ansidata = data;
+                //len = (ansidata.Length + 6);
+                //cert = HUtil32.MakeLong(certify ^ 0xaa, len);
+                //cc = EDcode.EncodeBuffer(cert, sizeof(int));
+                //str = "#" + certify.ToString() + "/" + ansidata + cc + "!";
+                //svMain.ReadyDBReceive = true;
+                //svMain.FrmMain.DBSocket.Socket.SendText(str);
             }
         }
 
@@ -326,7 +320,7 @@ namespace GameSvr
             string str;
             string data = string.Empty;
             string certify = string.Empty;
-            string cc;
+            string cc = string.Empty;
             TDefaultMessage msg = new TDefaultMessage();
             string head;
             string body = string.Empty;
@@ -349,13 +343,13 @@ namespace GameSvr
                 waitcnt = 2;
                 try
                 {
-                    svMain.csSocLock.Enter();
-                    str = str + svMain.RDBSocData;
-                    svMain.RDBSocData = "";
+                    M2Share.csSocLock.Enter();
+                    str = str + M2Share.RDBSocData;
+                    M2Share.RDBSocData = "";
                 }
                 finally
                 {
-                    svMain.csSocLock.Leave();
+                    M2Share.csSocLock.Leave();
                 }
                 waitcnt = 3;
                 EndPosition = str.IndexOf("!");
@@ -380,9 +374,9 @@ namespace GameSvr
                                 w1 = (short)(HUtil32.Str_ToInt(certify, 0) ^ 0xaa);
                                 w2 = (short)len;
                                 v = HUtil32.MakeLong(w1, w2);
-                                cc = EDcode.EncodeBuffer(v, sizeof(int));
+                                //cc = EDcode.EncodeBuffer(v);
                                 waitcnt = 6;
-                                if (CompareBackLStr(data, cc, cc.Length))
+                                if (HUtil32.CompareBackLStr(data, cc, cc.Length))
                                 {
                                     if (len == Grobal2.DEFBLOCKSIZE)
                                     {
@@ -394,7 +388,7 @@ namespace GameSvr
                                         head = data.Substring(1 - 1, Grobal2.DEFBLOCKSIZE);
                                         body = data.Substring(Grobal2.DEFBLOCKSIZE + 1 - 1, data.Length - Grobal2.DEFBLOCKSIZE - 6);
                                     }
-                                    msg = DecodeMessage(head);
+                                    msg = EDcode.DecodeMessage(head);
                                     ident = msg.Ident;
                                     recog = msg.Recog;
                                     rmsg = body;
@@ -404,47 +398,47 @@ namespace GameSvr
                                 }
                                 else
                                 {
-                                    svMain.RunFailCount++;
+                                    M2Share.RunFailCount++;
                                 }
                             }
                             else
                             {
                                 waitcnt = 7;
-                                svMain.RunFailCount++;
+                                M2Share.RunFailCount++;
                             }
                         }
                     }
                     waitcnt = 8;
                 }
-                Thread.CurrentThread.Sleep(0);
+                //Thread.CurrentThread.Sleep(0);
             }
             if (!flag)
             {
-                svMain.MainOutMessage("[RunDB] DB Wait Error (" + waittime.ToString() + ")" + DateTime.Now.ToString() + ":" + waitcnt.ToString());
+                M2Share.MainOutMessage("[RunDB] DB Wait Error (" + waittime.ToString() + ")" + DateTime.Now.ToString() + ":" + waitcnt.ToString());
             }
-            if (HUtil32.GetTickCount() - start > svMain.CurrentDBloadingTime)
+            if (HUtil32.GetTickCount() - start > M2Share.CurrentDBloadingTime)
             {
-                svMain.CurrentDBloadingTime = HUtil32.GetTickCount() - start;
+                M2Share.CurrentDBloadingTime = HUtil32.GetTickCount() - start;
             }
-            svMain.ReadyDBReceive = false;
+            M2Share.ReadyDBReceive = false;
             return result;
         }
 
         public static bool LoadHumanRcd(string uid, string uname, string useraddr, int certify, ref FDBRecord rcd)
         {
             bool result;
-            int ident=0;
-            int recog=0;
+            int ident = 0;
+            int recog = 0;
             int cer;
             string body = string.Empty;
-            string str;
+            string str = string.Empty;
             string runame;
             TDefaultMessage Def = null;
             TLoadHuman lhuman = new TLoadHuman();
-            cer = svMain.GetCertifyNumber();
+            cer = M2Share.GetCertifyNumber();
             MakeDefMsg(ref Def, Grobal2.DB_LOADHUMANRCD, 0, 0, 0, 0);
             lhuman.CertifyCode = certify;
-            str = EDcode.EncodeMessage(Def) + EDcode.EncodeBuffer(lhuman);
+            //str = EDcode.EncodeMessage(Def) + EDcode.EncodeBuffer(lhuman);
             LatestDBSendMsg = Grobal2.DB_LOADHUMANRCD;
             SendRDBSocket(cer, str);
             if (RunDBWaitMsg(cer, ref ident, ref recog, ref body, 5000))
@@ -458,7 +452,7 @@ namespace GameSvr
                         runame = EDcode.DecodeString(str);
                         if (runame == uname)
                         {
-                            DecodeBuffer(body, rcd, sizeof(FDBRecord));
+                            // DecodeBuffer(body, rcd, sizeof(FDBRecord));
                             result = true;
                         }
                         else
@@ -485,15 +479,15 @@ namespace GameSvr
 
         public static bool SaveHumanRcd(string uid, string uname, int certify, FDBRecord rcd)
         {
-            int ident=0;
-            int recog=0;
+            int ident = 0;
+            int recog = 0;
             string body = string.Empty;
             TDefaultMessage Def = null;
-            int cer = svMain.GetCertifyNumber();
+            int cer = M2Share.GetCertifyNumber();
             bool result = false;
             LatestDBSendMsg = Grobal2.DB_SAVEHUMANRCD;
             MakeDefMsg(ref Def, Grobal2.DB_SAVEHUMANRCD, certify, 0, 0, 0);
-            SendRDBSocket(cer, EDcode.EncodeMessage(Def) + EDcode.EncodeString(uid) + "/" + EDcode.EncodeString(uname) + "/" + EDcode.EncodeBuffer(rcd, sizeof(FDBRecord)));
+            // SendRDBSocket(cer, EDcode.EncodeMessage(Def) + EDcode.EncodeString(uid) + "/" + EDcode.EncodeString(uname) + "/" + EDcode.EncodeBuffer(rcd, sizeof(FDBRecord)));
             if (RunDBWaitMsg(cer, ref ident, ref recog, ref body, 4999))
             {
                 if (ident == Grobal2.DBR_SAVEHUMANRCD)
@@ -509,14 +503,14 @@ namespace GameSvr
 
         public static void SendCloseUser(string uid, int certify)
         {
-            if (svMain.ServerClosing)
+            if (M2Share.ServerClosing)
             {
                 return;
             }
             string body = string.Empty;
-            int ident=0;
-            int recog=0;
-            int cer = svMain.GetCertifyNumber();
+            int ident = 0;
+            int recog = 0;
+            int cer = M2Share.GetCertifyNumber();
             string scert = certify.ToString();
             TDefaultMessage Def = null;
             MakeDefMsg(ref Def, Grobal2.DB_RUNCLOSEUSER, 0, 0, 0, 0);
@@ -528,11 +522,11 @@ namespace GameSvr
         public static void SendChangeServer(string uid, string chrname, int certify)
         {
             string body = string.Empty;
-            int ident=0;
-            int recog=0;
+            int ident = 0;
+            int recog = 0;
             int cer;
             TDefaultMessage Def = null;
-            cer = svMain.GetCertifyNumber();
+            cer = M2Share.GetCertifyNumber();
             MakeDefMsg(ref Def, Grobal2.DB_CHANGESERVER, certify, 0, 0, 0);
             LatestDBSendMsg = Grobal2.DB_CHANGESERVER;
             SendRDBSocket(cer, EDcode.EncodeMessage(Def) + EDcode.EncodeString(uid + "/" + chrname));

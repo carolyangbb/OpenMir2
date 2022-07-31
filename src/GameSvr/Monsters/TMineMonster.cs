@@ -16,21 +16,16 @@ namespace GameSvr
             this.ViewRange = 7;
             this.RunNextTick = 250;
             this.SearchRate = 2500 + ((long)new System.Random(1500).Next());
-            this.SearchTime  =  HUtil32.GetTickCount();
+            this.SearchTime = HUtil32.GetTickCount();
             this.RaceServer = Grobal2.RC_MINE;
             DigupRange = 4;
             DigdownRange = 4;
             this.HideMode = true;
             this.StickMode = true;
             this.BoAnimal = false;
-            // 戒搁 侥牢檬蕾, 侥牢檬凯概啊 唱咳.
+        }
 
-        }
-        //@ Destructor  Destroy()
-        ~TMineMonster()
-        {
-            base.Destroy();
-        }
+
         protected bool AttackTarget()
         {
             bool result;

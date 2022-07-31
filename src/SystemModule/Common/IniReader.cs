@@ -124,17 +124,14 @@ public class InIReader
         return result;
     }
 
-    public ushort ReadUInt16(string section, string key, ushort Default, bool writeWhenNull = true)
+    public short ReadUInt16(string section, string key, short Default, bool writeWhenNull = true)
     {
-        ushort result;
-
-        if (!ushort.TryParse(FindValue(section, key), out result))
+        short result;
+        if (!short.TryParse(FindValue(section, key), out result))
         {
             result = Default;
             if (writeWhenNull) Write(section, key, Default);
         }
-
-
         return result;
     }
 

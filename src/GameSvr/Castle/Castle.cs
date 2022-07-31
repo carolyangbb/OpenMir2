@@ -18,8 +18,8 @@ namespace GameSvr
 
     public class TDefenseUnit
     {
-        public int X;
-        public int Y;
+        public short X;
+        public short Y;
         public string UnitName = string.Empty;
         public bool BoDoorOpen;
         public int HP;

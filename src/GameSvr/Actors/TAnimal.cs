@@ -15,13 +15,13 @@ namespace GameSvr
         {
             TargetX = -1;
             this.FindPathRate = 1000 + new System.Random(4).Next() * 500;
-            this.FindpathTime  =  HUtil32.GetTickCount();
+            this.FindpathTime = HUtil32.GetTickCount();
             this.RaceServer = Grobal2.RC_ANIMAL;
             this.HitTime = GetCurrentTime - new System.Random(3000).Next();
             this.WalkTime = GetCurrentTime - new System.Random(3000).Next();
-            this.SearchEnemyTime  =  HUtil32.GetTickCount();
+            this.SearchEnemyTime = HUtil32.GetTickCount();
             BoRunAwayMode = false;
-            RunAwayStart  =  HUtil32.GetTickCount();
+            RunAwayStart = HUtil32.GetTickCount();
             RunAwayTime = 0;
         }
 
@@ -32,7 +32,7 @@ namespace GameSvr
                 case Grobal2.RM_STRUCK:
                     if ((msg.sender == this) && (msg.lParam3 > 0))
                     {
-                        var struck = svMain.ObjectMgr.Get(msg.lParam3);
+                        var struck = M2Share.ObjectMgr.Get(msg.lParam3);
                         this.SetLastHiter(struck);
                         Struck(struck);
                         this.BreakHolySeize();
@@ -63,8 +63,8 @@ namespace GameSvr
 
         public virtual void Struck(TCreature hiter)
         {
-            byte targdir=0;
-            this.StruckTime  =  HUtil32.GetTickCount();
+            byte targdir = 0;
+            this.StruckTime = HUtil32.GetTickCount();
             if (hiter != null)
             {
                 if ((this.TargetCret == null) || (!this.TargetInAttackRange(this.TargetCret, ref targdir)) || (new System.Random(6).Next() == 0))

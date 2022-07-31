@@ -141,14 +141,14 @@ namespace GameSvr
                                         target.BreakCrazyMode();
                                         if (target.Master != null)
                                         {
-                                            target.WAbil.HP = (ushort)(target.WAbil.HP / 10);
+                                            target.WAbil.HP = (short)(target.WAbil.HP / 10);
                                         }
                                         target.Master = user;
-                                        target.MasterRoyaltyTime = HUtil32.GetTickCount()+ ((long)20 + shocklevel * 20 + new System.Random(user.Abil.Level * 2).Next()) * 60 * 1000;
+                                        target.MasterRoyaltyTime = HUtil32.GetTickCount() + ((long)20 + shocklevel * 20 + new System.Random(user.Abil.Level * 2).Next()) * 60 * 1000;
                                         target.SlaveMakeLevel = (byte)shocklevel;
                                         if (target.SlaveLifeTime == 0)
                                         {
-                                            target.SlaveLifeTime  =  HUtil32.GetTickCount();
+                                            target.SlaveLifeTime = HUtil32.GetTickCount();
                                         }
                                         target.BreakHolySeize();
                                         if (target.NextWalkTime > 1500 - (shocklevel * 200))
@@ -219,7 +219,7 @@ namespace GameSvr
                 if (target.TargetCret == null)
                 {
                     ((TAnimal)target).BoRunAwayMode = true;
-                    ((TAnimal)target).RunAwayStart  =  HUtil32.GetTickCount();
+                    ((TAnimal)target).RunAwayStart = HUtil32.GetTickCount();
                     ((TAnimal)target).RunAwayTime = 10 * 1000;
                 }
                 user.SelectTarget(target);
@@ -294,10 +294,10 @@ namespace GameSvr
                         cret.MakeHolySeize(htime * 1000);
                         if (phs == null)
                         {
-                            phs = M2Share.THolySeizeInfo = new THolySeizeInfo();
+                            //phs = M2Share.THolySeizeInfo = new THolySeizeInfo();
                             //FillChar(phs, sizeof(THolySeizeInfo), '\0');
                             phs.seizelist = new ArrayList();
-                            phs.OpenTime  =  HUtil32.GetTickCount();
+                            phs.OpenTime = HUtil32.GetTickCount();
                             phs.SeizeTime = htime * 1000;
                         }
                         phs.seizelist.Add(cret);
@@ -313,30 +313,30 @@ namespace GameSvr
                 if ((result > 0) && (phs != null))
                 {
                     __event = new THolyCurtainEvent(user.PEnvir, x - 1, y - 2, Grobal2.ET_HOLYCURTAIN, htime * 1000);
-                    svMain.EventMan.AddEvent(__event);
+                    M2Share.EventMan.AddEvent(__event);
                     phs.earr[0] = __event;
                     __event = new THolyCurtainEvent(user.PEnvir, x + 1, y - 2, Grobal2.ET_HOLYCURTAIN, htime * 1000);
-                    svMain.EventMan.AddEvent(__event);
+                    M2Share.EventMan.AddEvent(__event);
                     phs.earr[1] = __event;
                     __event = new THolyCurtainEvent(user.PEnvir, x - 2, y - 1, Grobal2.ET_HOLYCURTAIN, htime * 1000);
-                    svMain.EventMan.AddEvent(__event);
+                    M2Share.EventMan.AddEvent(__event);
                     phs.earr[2] = __event;
                     __event = new THolyCurtainEvent(user.PEnvir, x + 2, y - 1, Grobal2.ET_HOLYCURTAIN, htime * 1000);
-                    svMain.EventMan.AddEvent(__event);
+                    M2Share.EventMan.AddEvent(__event);
                     phs.earr[3] = __event;
                     __event = new THolyCurtainEvent(user.PEnvir, x - 2, y + 1, Grobal2.ET_HOLYCURTAIN, htime * 1000);
-                    svMain.EventMan.AddEvent(__event);
+                    M2Share.EventMan.AddEvent(__event);
                     phs.earr[4] = __event;
                     __event = new THolyCurtainEvent(user.PEnvir, x + 2, y + 1, Grobal2.ET_HOLYCURTAIN, htime * 1000);
-                    svMain.EventMan.AddEvent(__event);
+                    M2Share.EventMan.AddEvent(__event);
                     phs.earr[5] = __event;
                     __event = new THolyCurtainEvent(user.PEnvir, x - 1, y + 2, Grobal2.ET_HOLYCURTAIN, htime * 1000);
-                    svMain.EventMan.AddEvent(__event);
+                    M2Share.EventMan.AddEvent(__event);
                     phs.earr[6] = __event;
                     __event = new THolyCurtainEvent(user.PEnvir, x + 1, y + 2, Grobal2.ET_HOLYCURTAIN, htime * 1000);
-                    svMain.EventMan.AddEvent(__event);
+                    M2Share.EventMan.AddEvent(__event);
                     phs.earr[7] = __event;
-                    svMain.UserEngine.HolySeizeList.Add(phs);
+                    M2Share.UserEngine.HolySeizeList.Add(phs);
                     // 搬拌眠啊
                 }
                 else
@@ -344,7 +344,7 @@ namespace GameSvr
                     if (phs != null)
                     {
                         phs.seizelist.Free();
-                        Dispose(phs);
+                        //Dispose(phs);
                     }
                 }
             }
@@ -358,27 +358,27 @@ namespace GameSvr
             if (user.PEnvir.GetEvent(x, y - 1) == null)
             {
                 __event = new TFireBurnEvent(user, x, y - 1, Grobal2.ET_FIRE, htime * 1000, dam);
-                svMain.EventMan.AddEvent(__event);
+                M2Share.EventMan.AddEvent(__event);
             }
             if (user.PEnvir.GetEvent(x - 1, y) == null)
             {
                 __event = new TFireBurnEvent(user, x - 1, y, Grobal2.ET_FIRE, htime * 1000, dam);
-                svMain.EventMan.AddEvent(__event);
+                M2Share.EventMan.AddEvent(__event);
             }
             if (user.PEnvir.GetEvent(x, y) == null)
             {
                 __event = new TFireBurnEvent(user, x, y, Grobal2.ET_FIRE, htime * 1000, dam);
-                svMain.EventMan.AddEvent(__event);
+                M2Share.EventMan.AddEvent(__event);
             }
             if (user.PEnvir.GetEvent(x + 1, y) == null)
             {
                 __event = new TFireBurnEvent(user, x + 1, y, Grobal2.ET_FIRE, htime * 1000, dam);
-                svMain.EventMan.AddEvent(__event);
+                M2Share.EventMan.AddEvent(__event);
             }
             if (user.PEnvir.GetEvent(x, y + 1) == null)
             {
                 __event = new TFireBurnEvent(user, x, y + 1, Grobal2.ET_FIRE, htime * 1000, dam);
-                svMain.EventMan.AddEvent(__event);
+                M2Share.EventMan.AddEvent(__event);
             }
             result = 1;
             return result;
@@ -586,7 +586,7 @@ namespace GameSvr
                 if (dam > 0)
                 {
                     target.StruckDamage(dam, user);
-                    target.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, target.WAbil.HP, target.WAbil.MaxHP, user.ActorId, "", 200);
+                    target.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, target.WAbil.HP, target.WAbil.MaxHP, user.ActorId, "", 200);
                 }
             }
         }
@@ -875,7 +875,7 @@ namespace GameSvr
                                         }
                                     }
                                     target.MakePoison(Grobal2.POISON_STONE, Dur, 1);
-                                    target.SendRefMsg(Grobal2.RM_LOOPNORMALEFFECT, (ushort)target.ActorId, 1500, 0, Grobal2.NE_MONCAPTURE, "");
+                                    target.SendRefMsg(Grobal2.RM_LOOPNORMALEFFECT, (short)target.ActorId, 1500, 0, Grobal2.NE_MONCAPTURE, "");
                                     result = true;
                                 }
                                 else
@@ -934,13 +934,13 @@ namespace GameSvr
                 if (target.RaceServer >= Grobal2.RC_ANIMAL)
                 {
                     levelgap = user.Abil.Level - target.Abil.Level;
-                    if ((20 - (pum.Level + 1) * 2) <= new System.Random(MagBlindEye_GetRPow((short)user.WAbil.SC) + (user.Abil.Level / 5) + (levelgap * 2)).Next())
+                    if ((20 - (pum.Level + 1) * 2) <= new System.Random(MagBlindEye_GetRPow(user.WAbil.SC) + (user.Abil.Level / 5) + (levelgap * 2)).Next())
                     {
                         if ((target.Abil.Level < user.Abil.Level + 1 + new System.Random(3).Next()) && (target.Abil.Level < 55))
                         {
                             if (target.BoGoodCrazyMode == false)
                             {
-                                pwr = MagBlindEye_GetPower13(pum, 10) + HUtil32.MathRound(MagBlindEye_GetRPow((short)user.WAbil.SC) / 3);
+                                pwr = MagBlindEye_GetPower13(pum, 10) + HUtil32.MathRound(MagBlindEye_GetRPow(user.WAbil.SC) / 3);
                                 pwr = pwr + new System.Random(20).Next();
                                 target.TargetCret = null;
                                 target.MakeGoodCrazyMode(pwr);
@@ -997,7 +997,7 @@ namespace GameSvr
             if (user.UseItems[Grobal2.U_BUJUK].Index > 0)
             {
                 // U_ARMRINGL->U_BUJUK
-                pstd = svMain.UserEngine.GetStdItem(user.UseItems[Grobal2.U_BUJUK].Index);
+                pstd = M2Share.UserEngine.GetStdItem(user.UseItems[Grobal2.U_BUJUK].Index);
                 if (pstd != null)
                 {
                     if ((pstd.StdMode == 25) && (pstd.Shape == 5))
@@ -1012,7 +1012,7 @@ namespace GameSvr
             }
             if ((user.UseItems[Grobal2.U_ARMRINGL].Index > 0) && (result == 0))
             {
-                pstd = svMain.UserEngine.GetStdItem(user.UseItems[Grobal2.U_ARMRINGL].Index);
+                pstd = M2Share.UserEngine.GetStdItem(user.UseItems[Grobal2.U_ARMRINGL].Index);
                 if (pstd != null)
                 {
                     if ((pstd.StdMode == 25) && (pstd.Shape == 5))
@@ -1054,7 +1054,7 @@ namespace GameSvr
             }
             if (user.UseItems[Grobal2.U_ARMRINGL].Index > 0)
             {
-                pstd = svMain.UserEngine.GetStdItem(user.UseItems[Grobal2.U_ARMRINGL].Index);
+                pstd = M2Share.UserEngine.GetStdItem(user.UseItems[Grobal2.U_ARMRINGL].Index);
                 if (pstd != null)
                 {
                     if (pstd.StdMode == 25)
@@ -1123,7 +1123,7 @@ namespace GameSvr
                             if ((target.AntiMagic <= new System.Random(50).Next()) && (Math.Abs(target.CX - xx) <= 1) && (Math.Abs(target.CY - yy) <= 1))
                             {
                                 pwr = user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + HUtil32.LoByte(user.WAbil.MC), HUtil32.HiByte(user.WAbil.MC) - HUtil32.LoByte(user.WAbil.MC) + 1);
-                                user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (ushort)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 600);
+                                user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (short)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 600);
                                 if (target.RaceServer >= Grobal2.RC_ANIMAL)
                                 {
                                     train = true;
@@ -1196,7 +1196,7 @@ namespace GameSvr
                                     pwr = HUtil32.MathRound(pwr * 1.2);
                                 }
                             }
-                            user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (ushort)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 600);
+                            user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (short)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 600);
                             if (target.RaceServer >= Grobal2.RC_ANIMAL)
                             {
                                 train = true;
@@ -1243,7 +1243,7 @@ namespace GameSvr
                     break;
                 case 22:
                     // 瘤堪贱
-                    if (MagMakeFireCross(user, user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + HUtil32.LoByte(user.WAbil.MC), HUtil32.HiByte(user.WAbil.MC) - HUtil32.LoByte(user.WAbil.MC) + 1), SpellNow_GetPower(pum, 10) + SpellNow_GetRPow((short)user.WAbil.MC) / 2, xx, yy) > 0)
+                    if (MagMakeFireCross(user, user.GetAttackPower(SpellNow_GetPower(pum, MPow(pum)) + HUtil32.LoByte(user.WAbil.MC), HUtil32.HiByte(user.WAbil.MC) - HUtil32.LoByte(user.WAbil.MC) + 1), SpellNow_GetPower(pum, 10) + SpellNow_GetRPow(user.WAbil.MC) / 2, xx, yy) > 0)
                     {
                         train = true;
                     }
@@ -1280,7 +1280,7 @@ namespace GameSvr
                     break;
                 case 31:
                     // 林贱狼阜
-                    if (user.MagBubbleDefenceUp(pum.Level, SpellNow_GetPower(pum, 15 + SpellNow_GetRPow((short)user.WAbil.MC))))
+                    if (user.MagBubbleDefenceUp(pum.Level, SpellNow_GetPower(pum, 15 + SpellNow_GetRPow(user.WAbil.MC))))
                     {
                         train = true;
                     }
@@ -1327,7 +1327,7 @@ namespace GameSvr
                         if (user.UseItems[Grobal2.U_BUJUK].Index > 0)
                         {
                             // U_ARMRINGL->U_BUJUK
-                            pstd = svMain.UserEngine.GetStdItem(user.UseItems[Grobal2.U_BUJUK].Index);
+                            pstd = M2Share.UserEngine.GetStdItem(user.UseItems[Grobal2.U_BUJUK].Index);
                             if (pstd != null)
                             {
                                 if ((pstd.StdMode == 25) && (pstd.Shape <= 2))
@@ -1335,7 +1335,7 @@ namespace GameSvr
                                     // 25:刀林赣聪
                                     if (user.UseItems[Grobal2.U_BUJUK].Dura >= 100)
                                     {
-                                        user.UseItems[Grobal2.U_BUJUK].Dura = (ushort)(user.UseItems[Grobal2.U_BUJUK].Dura - 100);
+                                        user.UseItems[Grobal2.U_BUJUK].Dura = (short)(user.UseItems[Grobal2.U_BUJUK].Dura - 100);
                                         // 郴备己 函版篮 舅覆
                                         user.SendMsg(user, Grobal2.RM_DURACHANGE, Grobal2.U_BUJUK, user.UseItems[Grobal2.U_BUJUK].Dura, user.UseItems[Grobal2.U_BUJUK].DuraMax, 0, "");
                                         bhasitem = 1;
@@ -1345,7 +1345,7 @@ namespace GameSvr
                         }
                         if ((user.UseItems[Grobal2.U_ARMRINGL].Index > 0) && (bhasitem == 0))
                         {
-                            pstd = svMain.UserEngine.GetStdItem(user.UseItems[Grobal2.U_ARMRINGL].Index);
+                            pstd = M2Share.UserEngine.GetStdItem(user.UseItems[Grobal2.U_ARMRINGL].Index);
                             if (pstd != null)
                             {
                                 if ((pstd.StdMode == 25) && (pstd.Shape <= 2))
@@ -1353,7 +1353,7 @@ namespace GameSvr
                                     // 25:刀林赣聪
                                     if (user.UseItems[Grobal2.U_ARMRINGL].Dura >= 100)
                                     {
-                                        user.UseItems[Grobal2.U_ARMRINGL].Dura = (ushort)(user.UseItems[Grobal2.U_ARMRINGL].Dura - 100);
+                                        user.UseItems[Grobal2.U_ARMRINGL].Dura = (short)(user.UseItems[Grobal2.U_ARMRINGL].Dura - 100);
                                         // 郴备己 函版篮 舅覆
                                         user.SendMsg(user, Grobal2.RM_DURACHANGE, Grobal2.U_ARMRINGL, user.UseItems[Grobal2.U_ARMRINGL].Dura, user.UseItems[Grobal2.U_ARMRINGL].DuraMax, 0, "");
                                         bhasitem = 2;
@@ -1373,7 +1373,7 @@ namespace GameSvr
                                         case 1:
                                             // 雀祸刀啊风: 吝刀
                                             // sec = 吝刀矫埃  60檬 + 舅颇
-                                            sec = SpellNow_GetPower13(pum, 30) + 2 * SpellNow_GetRPow((short)user.WAbil.SC);
+                                            sec = SpellNow_GetPower13(pum, 30) + 2 * SpellNow_GetRPow(user.WAbil.SC);
                                             // pwr := pum.Level;
                                             pwr = pum.Level + HUtil32._MAX(0, HUtil32._MIN(3, HUtil32._MAX(0, HUtil32.HiByte(user.WAbil.SC) - 30) * 15 / 100));
                                             // wparam
@@ -1387,7 +1387,7 @@ namespace GameSvr
                                                 target.StatusArr[Grobal2.POISON_DECHEALTH] = 0;
                                             }
                                             // sec = 吝刀矫埃 40檬 + 舅颇
-                                            sec = SpellNow_GetPower13(pum, 40) + 2 * SpellNow_GetRPow((short)user.WAbil.SC);
+                                            sec = SpellNow_GetPower13(pum, 40) + 2 * SpellNow_GetRPow(user.WAbil.SC);
                                             // (HUtil32.LoByte(user.WAbil.SC) + Random(ShortInt(HUtil32.HiByte(user.WAbil.SC)-HUtil32.LoByte(user.WAbil.SC)) + 1));
                                             // pwr := 2{pum.Level};
                                             pwr = HUtil32._MAX(2, HUtil32._MIN(5, HUtil32.HiByte(user.WAbil.SC) / 10));
@@ -1444,7 +1444,7 @@ namespace GameSvr
                         }
                         if ((user.UseItems[Grobal2.U_ARMRINGL].Index > 0) && (bhasitem == 2))
                         {
-                            pstd = svMain.UserEngine.GetStdItem(user.UseItems[Grobal2.U_ARMRINGL].Index);
+                            pstd = M2Share.UserEngine.GetStdItem(user.UseItems[Grobal2.U_ARMRINGL].Index);
                             if (pstd != null)
                             {
                                 if (pstd.StdMode == 25)
@@ -1500,7 +1500,7 @@ namespace GameSvr
                         {
                             case 41:
                                 // 玫赤家券(沥去家券-岿飞)老版快俊绰 5俺 家厚
-                                TempCret = user.GetExistSlave(svMain.__AngelMob);
+                                TempCret = user.GetExistSlave(M2Share.__AngelMob);
                                 if (TempCret != null)
                                 {
                                     TempCret.ForceMoveToMaster = true;
@@ -1509,7 +1509,7 @@ namespace GameSvr
                                 bujuckcount = 5;
                                 break;
                             case 17:
-                                TempCret = user.GetExistSlave(svMain.__WhiteSkeleton);
+                                TempCret = user.GetExistSlave(M2Share.__WhiteSkeleton);
                                 if (TempCret != null)
                                 {
                                     TempCret.ForceMoveToMaster = true;
@@ -1524,7 +1524,7 @@ namespace GameSvr
                     }
                     catch
                     {
-                        svMain.MainOutMessage("EXCEPTION BUJUCK CALC");
+                        M2Share.MainOutMessage("EXCEPTION BUJUCK CALC");
                     }
                     bhasitem = 0;
                     if (bujuckcount > 0)
@@ -1539,7 +1539,7 @@ namespace GameSvr
                             if (user.UseItems[Grobal2.U_BUJUK].Dura >= (bujuckcount * 100))
                             {
                                 // U_ARMRINGL->U_BUJUK
-                                user.UseItems[Grobal2.U_BUJUK].Dura = (ushort)(user.UseItems[Grobal2.U_BUJUK].Dura - (bujuckcount * 100));
+                                user.UseItems[Grobal2.U_BUJUK].Dura = (short)(user.UseItems[Grobal2.U_BUJUK].Dura - (bujuckcount * 100));
                             }
                             else
                             {
@@ -1551,7 +1551,7 @@ namespace GameSvr
                         {
                             if (user.UseItems[Grobal2.U_ARMRINGL].Dura >= (bujuckcount * 100))
                             {
-                                user.UseItems[Grobal2.U_ARMRINGL].Dura = (ushort)(user.UseItems[Grobal2.U_ARMRINGL].Dura - (bujuckcount * 100));
+                                user.UseItems[Grobal2.U_ARMRINGL].Dura = (short)(user.UseItems[Grobal2.U_ARMRINGL].Dura - (bujuckcount * 100));
                             }
                             else
                             {
@@ -1574,7 +1574,7 @@ namespace GameSvr
                                             // 鸥百 嘎澜, 饶俊 瓤苞唱鸥巢
                                             // target.SendDelayMsg (user, RM_MAGSTRUCK, 0, pwr, 0, 0, '', 1200 + HUtil32._MAX(Abs(CX-xx),Abs(CY-yy)) * 50 );
                                             // user.SelectTarget (target);
-                                            user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (ushort)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 1200);
+                                            user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (short)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 1200);
                                             if (target.RaceServer >= Grobal2.RC_ANIMAL)
                                             {
                                                 train = true;
@@ -1640,7 +1640,7 @@ namespace GameSvr
                                     // 檬
                                     if (target.MagDcUp(sec, pwr))
                                     {
-                                        target.SendRefMsg(Grobal2.RM_LOOPNORMALEFFECT, (ushort)target.ActorId, 0, 0, Grobal2.NE_BIGFORCE, "");
+                                        target.SendRefMsg(Grobal2.RM_LOOPNORMALEFFECT, (short)target.ActorId, 0, 0, Grobal2.NE_BIGFORCE, "");
                                         train = true;
                                     }
                                 }
@@ -1657,7 +1657,7 @@ namespace GameSvr
                             case 16:
                                 // 搬拌
                                 // HUtil32.LoByte(user.WAbil.SC),
-                                if (MagMakeHolyCurtain(user, SpellNow_GetPower13(pum, 40) + 3 * SpellNow_GetRPow((short)user.WAbil.SC), xx, yy) > 0)
+                                if (MagMakeHolyCurtain(user, SpellNow_GetPower13(pum, 40) + 3 * SpellNow_GetRPow(user.WAbil.SC), xx, yy) > 0)
                                 {
                                     train = true;
                                 }
@@ -1666,12 +1666,12 @@ namespace GameSvr
                                 // 归榜家券贱
                                 try
                                 {
-                                    TempCret = user.GetExistSlave(svMain.__WhiteSkeleton);
+                                    TempCret = user.GetExistSlave(M2Share.__WhiteSkeleton);
                                     if (TempCret == null)
                                     {
-                                        if ((user.GetExistSlave(svMain.__ShinSu) == null) && (user.GetExistSlave(svMain.__ShinSu1) == null))
+                                        if ((user.GetExistSlave(M2Share.__ShinSu) == null) && (user.GetExistSlave(M2Share.__ShinSu1) == null))
                                         {
-                                            if (user.MakeSlave(svMain.__WhiteSkeleton, pum.Level, 1, 10 * 24 * 60 * 60) != null)
+                                            if (user.MakeSlave(M2Share.__WhiteSkeleton, pum.Level, 1, 10 * 24 * 60 * 60) != null)
                                             {
                                                 train = true;
                                             }
@@ -1680,19 +1680,19 @@ namespace GameSvr
                                 }
                                 catch
                                 {
-                                    svMain.MainOutMessage("EXCEPT WHITE SKELETON");
+                                    M2Share.MainOutMessage("EXCEPT WHITE SKELETON");
                                 }
                                 break;
                             case 18:
                                 // 篮脚
-                                if (MagMakePrivateTransparent(user, SpellNow_GetPower13(pum, 30) + 3 * SpellNow_GetRPow((short)user.WAbil.SC)))
+                                if (MagMakePrivateTransparent(user, SpellNow_GetPower13(pum, 30) + 3 * SpellNow_GetRPow(user.WAbil.SC)))
                                 {
                                     train = true;
                                 }
                                 break;
                             case 19:
                                 // 措篮脚
-                                if (MagMakeGroupTransparent(user, xx, yy, SpellNow_GetPower13(pum, 30) + 3 * SpellNow_GetRPow((short)user.WAbil.SC)))
+                                if (MagMakeGroupTransparent(user, xx, yy, SpellNow_GetPower13(pum, 30) + 3 * SpellNow_GetRPow(user.WAbil.SC)))
                                 {
                                     train = true;
                                 }
@@ -1701,11 +1701,11 @@ namespace GameSvr
                                 // 玫赤家券贱(沥去家券贱)
                                 try
                                 {
-                                    TempCret = user.GetExistSlave(svMain.__AngelMob);
+                                    TempCret = user.GetExistSlave(M2Share.__AngelMob);
                                     if (TempCret == null)
                                     {
                                         // 玫赤(岿飞)啊 绝促.
-                                        if (user.MakeSlave(svMain.__AngelMob, pum.Level, 1, 10 * 24 * 60 * 60) != null)
+                                        if (user.MakeSlave(M2Share.__AngelMob, pum.Level, 1, 10 * 24 * 60 * 60) != null)
                                         {
                                             train = true;
                                         }
@@ -1713,7 +1713,7 @@ namespace GameSvr
                                 }
                                 catch
                                 {
-                                    svMain.MainOutMessage("EXCEPT ALGEL ");
+                                    M2Share.MainOutMessage("EXCEPT ALGEL ");
                                 }
                                 break;
                             case 49:
@@ -1733,10 +1733,10 @@ namespace GameSvr
                     nofire = true;
                     try
                     {
-                        TempCret = user.GetExistSlave(svMain.__ShinSu);
+                        TempCret = user.GetExistSlave(M2Share.__ShinSu);
                         if (TempCret == null)
                         {
-                            TempCret = user.GetExistSlave(svMain.__ShinSu1);
+                            TempCret = user.GetExistSlave(M2Share.__ShinSu1);
                         }
                         if (TempCret != null)
                         {
@@ -1752,7 +1752,7 @@ namespace GameSvr
                                 if (user.UseItems[Grobal2.U_BUJUK].Dura >= 500)
                                 {
                                     // U_ARMRINGL->U_BUJUK
-                                    user.UseItems[Grobal2.U_BUJUK].Dura = (ushort)(user.UseItems[Grobal2.U_BUJUK].Dura - 500);
+                                    user.UseItems[Grobal2.U_BUJUK].Dura = (short)(user.UseItems[Grobal2.U_BUJUK].Dura - 500);
                                 }
                                 else
                                 {
@@ -1765,7 +1765,7 @@ namespace GameSvr
                             {
                                 if (user.UseItems[Grobal2.U_ARMRINGL].Dura >= 500)
                                 {
-                                    user.UseItems[Grobal2.U_ARMRINGL].Dura = (ushort)(user.UseItems[Grobal2.U_ARMRINGL].Dura - 500);
+                                    user.UseItems[Grobal2.U_ARMRINGL].Dura = (short)(user.UseItems[Grobal2.U_ARMRINGL].Dura - 500);
                                 }
                                 else
                                 {
@@ -1777,9 +1777,9 @@ namespace GameSvr
                             {
                                 case 30:
                                     // 脚荐家券
-                                    if (user.GetExistSlave(svMain.__WhiteSkeleton) == null)
+                                    if (user.GetExistSlave(M2Share.__WhiteSkeleton) == null)
                                     {
-                                        if (user.MakeSlave(svMain.__ShinSu, pum.Level, 1, 10 * 24 * 60 * 60) != null)
+                                        if (user.MakeSlave(M2Share.__ShinSu, pum.Level, 1, 10 * 24 * 60 * 60) != null)
                                         {
                                             train = true;
                                         }
@@ -1793,25 +1793,25 @@ namespace GameSvr
                     }
                     catch
                     {
-                        svMain.MainOutMessage("EXCEPT SHINSU");
+                        M2Share.MainOutMessage("EXCEPT SHINSU");
                     }
                     break;
                 case 42:
                     // 盒脚家券
                     try
                     {
-                        TempCret = user.GetExistSlave(svMain.__CloneMob);
+                        TempCret = user.GetExistSlave(M2Share.__CloneMob);
                         if (TempCret != null)
                         {
                             // 盒脚茄逞捞 乐促.
                             TempCret.BoDisapear = true;
                             // MP 促矫 歹秦林磊
-                            user.WAbil.MP = (ushort)(user.WAbil.MP + spell);
+                            user.WAbil.MP = (short)(user.WAbil.MP + spell);
                         }
                         else
                         {
                             // 盒脚茄逞捞 绝促.
-                            TempCret = user.MakeSlave(svMain.__CloneMob, pum.Level, 5, 10 * 24 * 60 * 60);
+                            TempCret = user.MakeSlave(M2Share.__CloneMob, pum.Level, 5, 10 * 24 * 60 * 60);
                             if (TempCret != null)
                             {
                                 user.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, TempCret.CX, TempCret.CY, Grobal2.NE_CLONESHOW, "");
@@ -1821,7 +1821,7 @@ namespace GameSvr
                     }
                     catch
                     {
-                        svMain.MainOutMessage("EXCET CLONE");
+                        M2Share.MainOutMessage("EXCET CLONE");
                     }
                     break;
                 case 28:
@@ -1832,8 +1832,8 @@ namespace GameSvr
                         {
                             if (new System.Random(6).Next() <= 3 + pum.Level)
                             {
-                                target.OpenHealthStart  =  HUtil32.GetTickCount();
-                                target.OpenHealthTime = SpellNow_GetPower13(pum, 30 + SpellNow_GetRPow((short)user.WAbil.SC) * 2) * 1000;
+                                target.OpenHealthStart = HUtil32.GetTickCount();
+                                target.OpenHealthTime = SpellNow_GetPower13(pum, 30 + SpellNow_GetRPow(user.WAbil.SC) * 2) * 1000;
                                 target.SendDelayMsg(target, Grobal2.RM_DOOPENHEALTH, 0, 0, 0, 0, "", 1500);
                                 train = true;
                             }
@@ -1853,7 +1853,7 @@ namespace GameSvr
                                 // Dur := (Round (0.4+pum.Level*0.2) * (HUtil32.LoByte(WAbil.MC) + HUtil32.HiByte(WAbil.MC)));
                                 Dur = HUtil32.MathRound(0.4 + pum.Level * 0.2) * (HUtil32.LoByte(user.WAbil.MC) + new System.Random(HUtil32.HiByte(user.WAbil.MC)).Next() + (HUtil32.HiByte(user.WAbil.MC) / 2));
                                 pwr = pum.pDef.MinPower + Dur;
-                                user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (ushort)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 600);
+                                user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (short)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 600);
                                 // 惑怕捞惑...敌拳魄沥
                                 if ((target.Abil.Level < 60) && (target.StatusArr[Grobal2.POISON_SLOW] == 0) && (target.StatusArr[Grobal2.POISON_ICE] == 0) && (new System.Random(50).Next() > target.AntiMagic))
                                 {
@@ -1925,7 +1925,7 @@ namespace GameSvr
                     }
                     catch
                     {
-                        svMain.MainOutMessage("EXCEPTION STONEHIT");
+                        M2Share.MainOutMessage("EXCEPTION STONEHIT");
                     }
                     train = false;
                     break;
@@ -1954,7 +1954,7 @@ namespace GameSvr
                             {
                                 pwr = HUtil32.MathRound(pwr * 1.2);
                             }
-                            user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (ushort)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 0);
+                            user.SendDelayMsg(user, Grobal2.RM_DELAYMAGIC, (short)pwr, HUtil32.MakeLong(xx, yy), 2, target.ActorId, "", 0);
                             if (target.RaceServer >= Grobal2.RC_ANIMAL)
                             {
                                 user.IncHealth = (byte)((pwr * (pum.Level + 1) * 10 + new System.Random(20).Next()) / 100);
@@ -1964,7 +1964,7 @@ namespace GameSvr
                             {
                                 user.IncHealth = (byte)((pwr * (pum.Level + 1) * 10 + new System.Random(10).Next()) / 100 * HUtil32._MAX(0, 1 - target.AntiMagic / 25));
                             }
-                            user.SendDelayMsg(user, Grobal2.RM_LOOPNORMALEFFECT, (ushort)user.ActorId, 0, 0, Grobal2.NE_BLOODSUCK, "", 1000);
+                            user.SendDelayMsg(user, Grobal2.RM_LOOPNORMALEFFECT, (short)user.ActorId, 0, 0, Grobal2.NE_BLOODSUCK, "", 1000);
                         }
                         else
                         {

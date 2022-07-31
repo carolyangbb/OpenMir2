@@ -1,9 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Windows.Forms;
 using SystemModule;
 using SystemModule.Common;
 
@@ -11,7 +9,7 @@ namespace GameSvr
 {
     public class TFrmDB
     {
-        private IDataReader Query = null;
+        private readonly IDataReader Query = null;
 
         public TFrmDB()
         {
@@ -40,13 +38,9 @@ namespace GameSvr
         public int LoadStdItems()
         {
             int result;
-            int i;
-            int idx;
-            TStdItem item;
-            TStdItem pitem;
             result = -1;
-            Query.SQL.Clear();
-            Query.SQL.Add("select * from StdItems");
+            //Query.SQL.Clear();
+            //Query.SQL.Add("select * from StdItems");
             try
             {
                 //Query.Open;
@@ -106,7 +100,7 @@ namespace GameSvr
             StringList strlist;
             TMonItemInfo pmi;
             int result = 0;
-            string flname = svMain.EnvirDir + LocalDB.MONBAGDIR + monname + ".txt";
+            string flname = M2Share.EnvirDir + LocalDB.MONBAGDIR + monname + ".txt";
             if (!File.Exists(flname))
             {
                 return result;
@@ -196,12 +190,9 @@ namespace GameSvr
 #else
         public int LoadMonsters()
         {
-            int result;
-            int i;
-            TMonsterInfo pm;
-            result = 0;
-            Query.SQL.Clear();
-            Query.SQL.Add("select * from Monster");
+            int result = 0;
+            //Query.SQL.Clear();
+            //Query.SQL.Add("select * from Monster");
             try
             {
                 //Query.Open;
@@ -278,11 +269,9 @@ namespace GameSvr
         public int LoadMagic()
         {
             int result;
-            int i;
-            TDefMagic pm;
             result = 0;
-            Query.SQL.Clear();
-            Query.SQL.Add("select * from Magic");
+            // Query.SQL.Clear();
+            // Query.SQL.Add("select * from Magic");
             try
             {
                 //Query.Open;
@@ -333,7 +322,7 @@ namespace GameSvr
             StringList strlist;
             int ztime;
             int result = -1;
-            string flname = svMain.EnvirDir + LocalDB.ZENFILE;
+            string flname = M2Share.EnvirDir + LocalDB.ZENFILE;
             if (File.Exists(flname))
             {
                 strlist = new StringList();
@@ -388,11 +377,11 @@ namespace GameSvr
                     pz.ZenShoutMsg = HUtil32.Str_ToInt(data, 0);
                     if ((pz.MapName != "") && (pz.MonName != "") && (pz.MonZenTime != 0))
                     {
-                        if (svMain.GrobalEnvir.ServerGetEnvir(svMain.ServerIndex, pz.MapName) != null)
+                        if (M2Share.GrobalEnvir.ServerGetEnvir(M2Share.ServerIndex, pz.MapName) != null)
                         {
                             pz.StartTime = 0;
                             pz.Mons = new ArrayList();
-                            svMain.UserEngine.MonList.Add(pz);
+                            M2Share.UserEngine.MonList.Add(pz);
                         }
                     }
                 }
@@ -400,7 +389,7 @@ namespace GameSvr
                 pz.MapName = "";
                 pz.MonName = "";
                 pz.Mons = new ArrayList();
-                svMain.UserEngine.MonList.Add(pz);
+                M2Share.UserEngine.MonList.Add(pz);
                 strlist.Free();
                 result = 1;
             }
@@ -415,7 +404,7 @@ namespace GameSvr
             string flname;
             StringList strlist;
             result = -1;
-            flname = svMain.EnvirDir +LocalDB.ZENMSGFILE;
+            flname = M2Share.EnvirDir + LocalDB.ZENMSGFILE;
             if (File.Exists(flname))
             {
                 strlist = new StringList();
@@ -431,7 +420,7 @@ namespace GameSvr
                     {
                         continue;
                     }
-                    svMain.UserEngine.GenMsgList.Add(str);
+                    M2Share.UserEngine.GenMsgList.Add(str);
                 }
                 strlist.Free();
                 result = 1;
@@ -450,25 +439,23 @@ namespace GameSvr
             npc.UserName = mqfile;
             npc.NpcFace = 0;
             npc.Appearance = 0;
-            npc.DefineDirectory =LocalDB.MAPQUESTDIR;
+            npc.DefineDirectory = LocalDB.MAPQUESTDIR;
             npc.BoInvisible = true;
             npc.BoUseMapFileName = false;
-            svMain.UserEngine.NpcList.Add(npc);
+            M2Share.UserEngine.NpcList.Add(npc);
             result = npc;
             return result;
         }
 
-        // 
-        // 2003/01/14 Mine2 眠啊
         public int LoadMapFiles()
         {
             int result;
             int i;
             int needlevel;
-            int xx;
-            int yy;
-            int ex;
-            int ey;
+            short xx;
+            short yy;
+            short ex;
+            short ey;
             int svindex;
             int setnum;
             int setval;
@@ -511,17 +498,16 @@ namespace GameSvr
             int minemap;
             StringList strlist;
             TNormNpc npc;
-            string frmcap;
             TEnvirnoment TempEnvir;
             int j;
             int FirstGuildAgit;
             int LastGuildAgit;
             bool boGuildAgitGate;
-            frmcap = svMain.FrmMain.Text;
+            //frmcap = svMain.FrmMain.Text;
             FirstGuildAgit = -1;
             LastGuildAgit = -1;
             result = -1;
-            flname = svMain.EnvirDir +LocalDB.MAPDEFFILE;
+            flname = M2Share.EnvirDir + LocalDB.MAPDEFFILE;
             if (!File.Exists(flname))
             {
                 return result;
@@ -742,10 +728,9 @@ namespace GameSvr
                                         {
                                             LastGuildAgit = GuildAgit;
                                         }
-                                        svMain.GuildAgitStartNumber = FirstGuildAgit;
-                                        svMain.GuildAgitMaxNumber = LastGuildAgit;
+                                        M2Share.GuildAgitStartNumber = FirstGuildAgit;
+                                        M2Share.GuildAgitMaxNumber = LastGuildAgit;
                                     }
-                                    // sonmg 2004/10/12
                                     if (HUtil32.CompareLStr(data, "NOCHAT", 6))
                                     {
                                         nochat = true;
@@ -754,7 +739,6 @@ namespace GameSvr
                                     {
                                         nogroup = true;
                                     }
-                                    // sonmg 2005/03/14
                                     if (HUtil32.CompareLStr(data, "NOTHROWITEM", 11))
                                     {
                                         nothrowitem = true;
@@ -783,7 +767,7 @@ namespace GameSvr
                             }
                             if (GuildAgit > -1)
                             {
-                                TempEnvir = svMain.GrobalEnvir.AddEnvir(map + GuildAgit.ToString().ToUpper(), newmap, maptitle + GuildAgit.ToString(), svindex, needlevel, law, fight, fight2, fight3, fight4, dark, dawn, sunny, quiz, norecon, needhole, norecall, norandommove, NoEscapeMove, NoTeleportMove, nodrug, minemap, nopositionmove, backmap, npc, setnum, setval, autoattack, GuildAgit, nochat, nogroup, nothrowitem, nodropitem, stall, nodeal);
+                                TempEnvir = M2Share.GrobalEnvir.AddEnvir(map + GuildAgit.ToString().ToUpper(), newmap, maptitle + GuildAgit.ToString(), svindex, needlevel, law, fight, fight2, fight3, fight4, dark, dawn, sunny, quiz, norecon, needhole, norecall, norandommove, NoEscapeMove, NoTeleportMove, nodrug, minemap, nopositionmove, backmap, npc, setnum, setval, autoattack, GuildAgit, nochat, nogroup, nothrowitem, nodropitem, stall, nodeal);
                                 if (TempEnvir == null)
                                 {
                                     result = -10;
@@ -794,14 +778,14 @@ namespace GameSvr
                                     {
                                         case 1:
                                         case 2:
-                                            svMain.gFireDragon.SetAutoAttackMap(TempEnvir, TempEnvir.AutoAttack);
+                                            M2Share.gFireDragon.SetAutoAttackMap(TempEnvir, TempEnvir.AutoAttack);
                                             break;
                                     }
                                 }
                             }
                             else
                             {
-                                TempEnvir = svMain.GrobalEnvir.AddEnvir(map.ToUpper(), newmap, maptitle, svindex, needlevel, law, fight, fight2, fight3, fight4, dark, dawn, sunny, quiz, norecon, needhole, norecall, norandommove, NoEscapeMove, NoTeleportMove, nodrug, minemap, nopositionmove, backmap, npc, setnum, setval, autoattack, GuildAgit, nochat, nogroup, nothrowitem, nodropitem, stall, nodeal);
+                                TempEnvir = M2Share.GrobalEnvir.AddEnvir(map.ToUpper(), newmap, maptitle, svindex, needlevel, law, fight, fight2, fight3, fight4, dark, dawn, sunny, quiz, norecon, needhole, norecall, norandommove, NoEscapeMove, NoTeleportMove, nodrug, minemap, nopositionmove, backmap, npc, setnum, setval, autoattack, GuildAgit, nochat, nogroup, nothrowitem, nodropitem, stall, nodeal);
                                 if (TempEnvir == null)
                                 {
                                     result = -10;
@@ -812,25 +796,18 @@ namespace GameSvr
                                     {
                                         case 1:
                                         case 2:
-                                            // 肋 父甸绢脸澜
-                                            // 侩矫胶袍俊 磊悼傍拜汲沥阑 窃.
-                                            svMain.gFireDragon.SetAutoAttackMap(TempEnvir, TempEnvir.AutoAttack);
+                                            M2Share.gFireDragon.SetAutoAttackMap(TempEnvir, TempEnvir.AutoAttack);
                                             break;
                                     }
                                 }
                             }
                         }
-                        svMain.FrmMain.Text = "Map loading.. " + (i + 1).ToString() + "/" + strlist.Count.ToString();
-                        svMain.FrmMain.RefreshForm();
                     }
                 }
             }
-            svMain.FrmMain.Text = frmcap;
-            // 涝备甫 眠啊窃
             for (i = 0; i < strlist.Count; i++)
             {
                 boGuildAgitGate = false;
-                // 临付促 檬扁拳
                 str = strlist[i];
                 if (str != "")
                 {
@@ -839,7 +816,6 @@ namespace GameSvr
                         continue;
                     }
                     str = HUtil32.GetValidStr3(str, ref data, new string[] { " ", ",", "\09" });
-                    // 巩颇 厘盔 甘 霸捞飘捞搁 Flag甫 眉农窍绊 茄 窜绢 歹 佬绰促.
                     if (data.CompareTo("GUILDAGIT") == 0)
                     {
                         boGuildAgitGate = true;
@@ -847,30 +823,30 @@ namespace GameSvr
                     }
                     map = data;
                     str = HUtil32.GetValidStr3(str, ref data, new string[] { " ", ",", "\09" });
-                    xx = HUtil32.Str_ToInt(data, 0);
+                    xx = (short)HUtil32.Str_ToInt(data, 0);
                     str = HUtil32.GetValidStr3(str, ref data, new string[] { " ", ",", "\09" });
-                    yy = HUtil32.Str_ToInt(data, 0);
+                    yy = (short)HUtil32.Str_ToInt(data, 0);
                     str = HUtil32.GetValidStr3(str, ref data, new string[] { " ", ",", "-", ">", "\09" });
                     entermap = data;
                     str = HUtil32.GetValidStr3(str, ref data, new string[] { " ", ",", "\09" });
-                    ex = HUtil32.Str_ToInt(data, 0);
+                    ex = (short)HUtil32.Str_ToInt(data, 0);
                     str = HUtil32.GetValidStr3(str, ref data, new string[] { " ", ",", ";", "\09" });
-                    ey = HUtil32.Str_ToInt(data, 0);
+                    ey = (short)HUtil32.Str_ToInt(data, 0);
                     if (boGuildAgitGate)
                     {
                         for (j = FirstGuildAgit; j <= LastGuildAgit; j++)
                         {
-                            if (false == svMain.GrobalEnvir.AddGate(map + j.ToString().ToUpper(), xx, yy, entermap + j.ToString(), ex, ey))
+                            if (false == M2Share.GrobalEnvir.AddGate(map + j.ToString().ToUpper(), xx, yy, entermap + j.ToString(), ex, ey))
                             {
-                                svMain.MainOutMessage("NOT ADD GATE :[" + (i + 1).ToString() + "]" + strlist[i]);
+                                M2Share.MainOutMessage("NOT ADD GATE :[" + (i + 1).ToString() + "]" + strlist[i]);
                             }
                         }
                     }
                     else
                     {
-                        if (false == svMain.GrobalEnvir.AddGate(map.ToUpper(), xx, yy, entermap, ex, ey))
+                        if (false == M2Share.GrobalEnvir.AddGate(map.ToUpper(), xx, yy, entermap, ex, ey))
                         {
-                            svMain.MainOutMessage("NOT ADD GATE :[" + (i + 1).ToString() + "]" + strlist[i]);
+                            M2Share.MainOutMessage("NOT ADD GATE :[" + (i + 1).ToString() + "]" + strlist[i]);
                         }
                     }
                 }
@@ -882,8 +858,8 @@ namespace GameSvr
         public int LoadAdminFiles()
         {
             int result = 0;
-            string flname = svMain.EnvirDir + LocalDB.ADMINDEFFILE;
-            svMain.UserEngine.AdminList.Clear();
+            string flname = M2Share.EnvirDir + LocalDB.ADMINDEFFILE;
+            M2Share.UserEngine.AdminList.Clear();
             if (File.Exists(flname))
             {
                 StringList strlist = new StringList();
@@ -899,19 +875,19 @@ namespace GameSvr
                             if (str[0] == '*')
                             {
                                 str = HUtil32.GetValidStrCap(str, ref temp, new string[] { " ", "\09" });
-                                svMain.UserEngine.AdminList.Add(str.Trim(), Grobal2.UD_ADMIN as Object);
+                                // svMain.UserEngine.AdminList.Add(str.Trim(), Grobal2.UD_ADMIN as Object);
                             }
                             else
                             {
                                 if (str[0] == '1')
                                 {
                                     str = HUtil32.GetValidStrCap(str, ref temp, new string[] { " ", "\09" });
-                                    svMain.UserEngine.AdminList.Add(str.Trim(), Grobal2.UD_SYSOP as Object);
+                                    //  svMain.UserEngine.AdminList.Add(str.Trim(), Grobal2.UD_SYSOP as Object);
                                 }
                                 else if (str[0] == '2')
                                 {
                                     str = HUtil32.GetValidStrCap(str, ref temp, new string[] { " ", "\09" });
-                                    svMain.UserEngine.AdminList.Add(str.Trim(), Grobal2.UD_OBSERVER as Object);
+                                    //  svMain.UserEngine.AdminList.Add(str.Trim(), Grobal2.UD_OBSERVER as Object);
                                 }
                             }
                         }
@@ -925,8 +901,8 @@ namespace GameSvr
 
         public int LoadChatLogFiles()
         {
-            string flname = svMain.EnvirDir + LocalDB.CHATLOGFILE;
-            svMain.UserEngine.ChatLogList.Clear();
+            string flname = M2Share.EnvirDir + LocalDB.CHATLOGFILE;
+            M2Share.UserEngine.ChatLogList.Clear();
             if (File.Exists(flname))
             {
                 StringList strlist = new StringList();
@@ -939,7 +915,7 @@ namespace GameSvr
                         if (str[1] != ';')
                         {
                             str = strlist[i];
-                            svMain.UserEngine.ChatLogList.Add(str.Trim());
+                            M2Share.UserEngine.ChatLogList.Add(str.Trim());
                         }
                     }
                 }
@@ -950,8 +926,8 @@ namespace GameSvr
 
         public int SaveChatLogFiles()
         {
-            string flname = svMain.EnvirDir + LocalDB.CHATLOGFILE;
-            svMain.UserEngine.ChatLogList.SaveToFile(flname);
+            string flname = M2Share.EnvirDir + LocalDB.CHATLOGFILE;
+            M2Share.UserEngine.ChatLogList.SaveToFile(flname);
             return 1;
         }
 
@@ -970,7 +946,7 @@ namespace GameSvr
             string castlestr = string.Empty;
             StringList strlist;
             TMerchant merchant;
-            string flname = svMain.EnvirDir + LocalDB.MERCHANTFILE;
+            string flname = M2Share.EnvirDir + LocalDB.MERCHANTFILE;
             if (File.Exists(flname))
             {
                 strlist = new StringList();
@@ -1015,7 +991,7 @@ namespace GameSvr
                         {
                             merchant.BoCastleManage = true;
                         }
-                        svMain.UserEngine.MerchantList.Add(merchant);
+                        M2Share.UserEngine.MerchantList.Add(merchant);
                     }
                 }
                 strlist.Free();
@@ -1043,12 +1019,12 @@ namespace GameSvr
             StringList strlist;
             TMerchant merchant;
             bool newone;
-            string flname = svMain.EnvirDir + LocalDB.MERCHANTFILE;
+            string flname = M2Share.EnvirDir + LocalDB.MERCHANTFILE;
             if (File.Exists(flname))
             {
-                for (i = 0; i < svMain.UserEngine.MerchantList.Count; i++)
+                for (i = 0; i < M2Share.UserEngine.MerchantList.Count; i++)
                 {
-                    merchant = (TMerchant)svMain.UserEngine.MerchantList[i];
+                    merchant = (TMerchant)M2Share.UserEngine.MerchantList[i];
                     merchant.NpcFace = 255;
                 }
                 strlist = new StringList();
@@ -1085,9 +1061,9 @@ namespace GameSvr
                         yy = HUtil32.Str_ToInt(ystr, 0);
                         map = map.ToUpper();
                         newone = true;
-                        for (k = 0; k < svMain.UserEngine.MerchantList.Count; k++)
+                        for (k = 0; k < M2Share.UserEngine.MerchantList.Count; k++)
                         {
-                            merchant = (TMerchant)svMain.UserEngine.MerchantList[k];
+                            merchant = (TMerchant)M2Share.UserEngine.MerchantList[k];
                             if ((map == merchant.MapName) && (xx == merchant.CX) && (yy == merchant.CY))
                             {
                                 newone = false;
@@ -1106,7 +1082,7 @@ namespace GameSvr
                         {
                             merchant = new TMerchant();
                             merchant.MapName = map;
-                            merchant.PEnvir = svMain.GrobalEnvir.GetEnvir(merchant.MapName);
+                            merchant.PEnvir = M2Share.GrobalEnvir.GetEnvir(merchant.MapName);
                             if (merchant.PEnvir != null)
                             {
                                 merchant.MarketName = marketname;
@@ -1119,7 +1095,7 @@ namespace GameSvr
                                 {
                                     merchant.BoCastleManage = true;
                                 }
-                                svMain.UserEngine.MerchantList.Add(merchant);
+                                M2Share.UserEngine.MerchantList.Add(merchant);
                                 merchant.Initialize();
                             }
                             else
@@ -1129,13 +1105,13 @@ namespace GameSvr
                         }
                     }
                 }
-                for (i = svMain.UserEngine.MerchantList.Count - 1; i >= 0; i--)
+                for (i = M2Share.UserEngine.MerchantList.Count - 1; i >= 0; i--)
                 {
-                    merchant = (TMerchant)svMain.UserEngine.MerchantList[i];
+                    merchant = (TMerchant)M2Share.UserEngine.MerchantList[i];
                     if (merchant.NpcFace == 255)
                     {
                         merchant.BoGhost = true;
-                        svMain.UserEngine.MerchantList.RemoveAt(i);
+                        M2Share.UserEngine.MerchantList.RemoveAt(i);
                     }
                 }
                 strlist.Free();
@@ -1158,10 +1134,10 @@ namespace GameSvr
             string xstr = string.Empty;
             string ystr = string.Empty;
             string facestr = string.Empty;
-            string body= string.Empty;
+            string body = string.Empty;
             TNormNpc npc;
             result = -1;
-            flname = svMain.EnvirDir +LocalDB.NPCLISTFILE;
+            flname = M2Share.EnvirDir + LocalDB.NPCLISTFILE;
             if (File.Exists(flname))
             {
                 strlist = new StringList();
@@ -1185,11 +1161,11 @@ namespace GameSvr
                             HUtil32.ArrestStringEx(nname, "\"", "\"", ref nname);
                         }
                     }
-                    str = HUtil32.GetValidStr3(str,ref racestr, new string[] { " ", "\09" });
-                    str = HUtil32.GetValidStr3(str,ref map, new string[] { " ", "\09" });
-                    str = HUtil32.GetValidStr3(str,ref xstr, new string[] { " ", "\09" });
-                    str = HUtil32.GetValidStr3(str,ref ystr, new string[] { " ", "\09" });
-                    str = HUtil32.GetValidStr3(str,ref facestr, new string[] { " ", "\09" });
+                    str = HUtil32.GetValidStr3(str, ref racestr, new string[] { " ", "\09" });
+                    str = HUtil32.GetValidStr3(str, ref map, new string[] { " ", "\09" });
+                    str = HUtil32.GetValidStr3(str, ref xstr, new string[] { " ", "\09" });
+                    str = HUtil32.GetValidStr3(str, ref ystr, new string[] { " ", "\09" });
+                    str = HUtil32.GetValidStr3(str, ref facestr, new string[] { " ", "\09" });
                     str = HUtil32.GetValidStr3(str, ref body, new string[] { " ", "\09" });
                     if ((nname != "") && (map != "") && (body != ""))
                     {
@@ -1218,7 +1194,7 @@ namespace GameSvr
                             npc.UserName = nname;
                             npc.NpcFace = (byte)HUtil32.Str_ToInt(facestr, 0);
                             npc.Appearance = (ushort)HUtil32.Str_ToInt(body, 0);
-                            svMain.UserEngine.NpcList.Add(npc);
+                            M2Share.UserEngine.NpcList.Add(npc);
                         }
                     }
                 }
@@ -1248,12 +1224,12 @@ namespace GameSvr
             TNormNpc npc;
             bool newone;
             result = -1;
-            string flname = svMain.EnvirDir + LocalDB.NPCLISTFILE;
+            string flname = M2Share.EnvirDir + LocalDB.NPCLISTFILE;
             if (File.Exists(flname))
             {
-                for (i = 0; i < svMain.UserEngine.NpcList.Count; i++)
+                for (i = 0; i < M2Share.UserEngine.NpcList.Count; i++)
                 {
-                    npc = (TNormNpc)svMain.UserEngine.NpcList[i];
+                    npc = (TNormNpc)M2Share.UserEngine.NpcList[i];
                     npc.NpcFace = 255;
                 }
                 strlist = new StringList();
@@ -1277,21 +1253,21 @@ namespace GameSvr
                             HUtil32.ArrestStringEx(nname, "\"", "\"", ref nname);
                         }
                     }
-                    str = HUtil32.GetValidStr3(str,ref racestr, new string[] { " ", "\09" });
-                    str = HUtil32.GetValidStr3(str,ref map, new string[] { " ", "\09" });
-                    str = HUtil32.GetValidStr3(str,ref xstr, new string[] { " ", "\09" });
-                    str = HUtil32.GetValidStr3(str,ref ystr, new string[] { " ", "\09" });
-                    str = HUtil32.GetValidStr3(str,ref facestr, new string[] { " ", "\09" });
-                    str = HUtil32.GetValidStr3(str,ref body, new string[] { " ", "\09" });
+                    str = HUtil32.GetValidStr3(str, ref racestr, new string[] { " ", "\09" });
+                    str = HUtil32.GetValidStr3(str, ref map, new string[] { " ", "\09" });
+                    str = HUtil32.GetValidStr3(str, ref xstr, new string[] { " ", "\09" });
+                    str = HUtil32.GetValidStr3(str, ref ystr, new string[] { " ", "\09" });
+                    str = HUtil32.GetValidStr3(str, ref facestr, new string[] { " ", "\09" });
+                    str = HUtil32.GetValidStr3(str, ref body, new string[] { " ", "\09" });
                     if ((nname != "") && (map != "") && (body != ""))
                     {
                         xx = HUtil32.Str_ToInt(xstr, 0);
                         yy = HUtil32.Str_ToInt(ystr, 0);
                         map = map.ToUpper();
                         newone = true;
-                        for (k = 0; k < svMain.UserEngine.NpcList.Count; k++)
+                        for (k = 0; k < M2Share.UserEngine.NpcList.Count; k++)
                         {
-                            npc = (TNormNpc)svMain.UserEngine.NpcList[k];
+                            npc = (TNormNpc)M2Share.UserEngine.NpcList[k];
                             if ((map == npc.MapName) && (xx == npc.CX) && (yy == npc.CY))
                             {
                                 newone = false;
@@ -1323,7 +1299,7 @@ namespace GameSvr
                             if (npc != null)
                             {
                                 npc.MapName = map;
-                                npc.PEnvir = svMain.GrobalEnvir.GetEnvir(npc.MapName);
+                                npc.PEnvir = M2Share.GrobalEnvir.GetEnvir(npc.MapName);
                                 if (npc.PEnvir != null)
                                 {
                                     npc.CX = (short)xx;
@@ -1331,7 +1307,7 @@ namespace GameSvr
                                     npc.UserName = nname;
                                     npc.NpcFace = (byte)HUtil32.Str_ToInt(facestr, 0);
                                     npc.Appearance = (ushort)HUtil32.Str_ToInt(body, 0);
-                                    svMain.UserEngine.NpcList.Add(npc);
+                                    M2Share.UserEngine.NpcList.Add(npc);
                                     npc.Initialize();
                                 }
                                 else
@@ -1343,13 +1319,13 @@ namespace GameSvr
                     }
                 }
                 strlist.Free();
-                for (i = svMain.UserEngine.NpcList.Count - 1; i >= 0; i--)
+                for (i = M2Share.UserEngine.NpcList.Count - 1; i >= 0; i--)
                 {
-                    npc = (TNormNpc)svMain.UserEngine.NpcList[i];
+                    npc = (TNormNpc)M2Share.UserEngine.NpcList[i];
                     if (npc.NpcFace == 255)
                     {
                         npc.BoGhost = true;
-                        svMain.UserEngine.NpcList.RemoveAt(i);
+                        M2Share.UserEngine.NpcList.RemoveAt(i);
                     }
                 }
             }
@@ -1368,7 +1344,7 @@ namespace GameSvr
             string dirstr = string.Empty;
             TCreature cret;
             int result = -1;
-            string flname = svMain.EnvirDir + LocalDB.GUARDLISTFILE;
+            string flname = M2Share.EnvirDir + LocalDB.GUARDLISTFILE;
             if (File.Exists(flname))
             {
                 strlist = new StringList();
@@ -1392,13 +1368,13 @@ namespace GameSvr
                             HUtil32.ArrestStringEx(mname, "\"", "\"", ref mname);
                         }
                     }
-                    str = HUtil32.GetValidStr3(str,ref map, new string[] { " " });
-                    str = HUtil32.GetValidStr3(str,ref xstr, new string[] { " ", "," });
-                    str = HUtil32.GetValidStr3(str,ref ystr, new string[] { " ", ",", ":" });
-                    str = HUtil32.GetValidStr3(str,ref dirstr, new string[] { " ", ":" });
+                    str = HUtil32.GetValidStr3(str, ref map, new string[] { " " });
+                    str = HUtil32.GetValidStr3(str, ref xstr, new string[] { " ", "," });
+                    str = HUtil32.GetValidStr3(str, ref ystr, new string[] { " ", ",", ":" });
+                    str = HUtil32.GetValidStr3(str, ref dirstr, new string[] { " ", ":" });
                     if ((mname != "") && (map != "") && (dirstr != ""))
                     {
-                        cret = svMain.UserEngine.AddCreatureSysop(map, HUtil32.Str_ToInt(xstr, 0), HUtil32.Str_ToInt(ystr, 0), mname);
+                        cret = M2Share.UserEngine.AddCreatureSysop(map, (short)HUtil32.Str_ToInt(xstr, 0), (short)HUtil32.Str_ToInt(ystr, 0), mname);
                         if (cret != null)
                         {
                             cret.Dir = (byte)HUtil32.Str_ToInt(dirstr, 0);
@@ -1420,9 +1396,9 @@ namespace GameSvr
             string makeitemname = string.Empty;
             ArrayList slist;
             int result = -1;
-            svMain.MakeItemList.Clear();
-            svMain.MakeItemIndexList.Clear();
-            var flname = svMain.EnvirDir + LocalDB.MAKEITEMFILE;
+            M2Share.MakeItemList.Clear();
+            M2Share.MakeItemIndexList.Clear();
+            var flname = M2Share.EnvirDir + LocalDB.MAKEITEMFILE;
             if (File.Exists(flname))
             {
                 strlist = new StringList();
@@ -1441,14 +1417,14 @@ namespace GameSvr
                         {
                             if (slist != null)
                             {
-                                svMain.MakeItemList.Add(makeitemname, slist as Object);
+                                //  svMain.MakeItemList.Add(makeitemname, slist as Object);
                             }
                             slist = new ArrayList();
                             HUtil32.ArrestStringEx(str, "[", "]", ref makeitemname);
                         }
                         else if (str[0] == '-')
                         {
-                            svMain.MakeItemIndexList.Add(svMain.MakeItemList.Count.ToString(), null);
+                            //   svMain.MakeItemIndexList.Add(svMain.MakeItemList.Count.ToString(), null);
                         }
                         else
                         {
@@ -1457,17 +1433,17 @@ namespace GameSvr
                                 str = HUtil32.GetValidStr3(str, ref itemname, new string[] { " ", "\09" });
                                 if (itemname.Length > 20)
                                 {
-                                    svMain.MainOutMessage("MAKEITEMLIST NAME > 20" + itemname);
+                                    M2Share.MainOutMessage("MAKEITEMLIST NAME > 20" + itemname);
                                 }
                                 count = HUtil32.Str_ToInt(str.Trim(), 1);
-                                slist.Add(itemname, count as Object);
+                                // slist.Add(itemname, count as Object);
                             }
                         }
                     }
                 }
                 if (slist != null)
                 {
-                    svMain.MakeItemList.Add(makeitemname, slist as Object);
+                    // svMain.MakeItemList.Add(makeitemname, slist as Object);
                 }
                 strlist.Free();
                 result = 1;
@@ -1483,7 +1459,7 @@ namespace GameSvr
             string ystr = string.Empty;
             StringList strlist;
             int result = 0;
-            string flname = svMain.EnvirDir + LocalDB.STARTPOINTFILE;
+            string flname = M2Share.EnvirDir + LocalDB.STARTPOINTFILE;
             if (File.Exists(flname))
             {
                 strlist = new StringList();
@@ -1498,7 +1474,7 @@ namespace GameSvr
                         str = HUtil32.GetValidStr3(str, ref ystr, new string[] { " ", "\09" });
                         if ((smap != "") && (xstr != "") && (ystr != ""))
                         {
-                            svMain.StartPoints.Add(smap, HUtil32.MakeLong(HUtil32.Str_ToInt(xstr, 0), HUtil32.Str_ToInt(ystr, 0)) as Object);
+                            //svMain.StartPoints.Add(smap, HUtil32.MakeLong(HUtil32.Str_ToInt(xstr, 0), HUtil32.Str_ToInt(ystr, 0)) as Object);
                             result = 1;
                         }
                     }
@@ -1516,7 +1492,7 @@ namespace GameSvr
             string ystr = string.Empty;
             StringList strlist;
             int result = 0;
-            string flname = svMain.EnvirDir + LocalDB.SAFEPOINTFILE;
+            string flname = M2Share.EnvirDir + LocalDB.SAFEPOINTFILE;
             if (File.Exists(flname))
             {
                 strlist = new StringList();
@@ -1531,7 +1507,7 @@ namespace GameSvr
                         str = HUtil32.GetValidStr3(str, ref ystr, new string[] { " ", "\09" });
                         if ((smap != "") && (xstr != "") && (ystr != ""))
                         {
-                            svMain.SafePoints.Add(new TSafePoint()
+                            M2Share.SafePoints.Add(new TSafePoint()
                             {
                                 mapName = smap,
                                 nX = (short)HUtil32.Str_ToInt(xstr, 0),
@@ -1556,7 +1532,7 @@ namespace GameSvr
             string Price = string.Empty;
             StringList strlist;
             int result = -1;
-            var flname = svMain.EnvirDir + LocalDB.DECOITEMFILE;
+            var flname = M2Share.EnvirDir + LocalDB.DECOITEMFILE;
             if (File.Exists(flname))
             {
                 strlist = new StringList();
@@ -1580,7 +1556,7 @@ namespace GameSvr
                             {
                                 Price = ObjBase.DEFAULT_DECOITEM_PRICE.ToString();
                             }
-                            svMain.DecoItemList.Add(Name + "/" + Price, HUtil32.MakeLong(HUtil32.Str_ToInt(Num, 0), HUtil32.Str_ToInt(Kind, 0)) as Object);
+                            //svMain.DecoItemList.Add(Name + "/" + Price, HUtil32.MakeLong(HUtil32.Str_ToInt(Num, 0), HUtil32.Str_ToInt(Kind, 0)) as Object);
                             result = 1;
                         }
                     }
@@ -1598,7 +1574,7 @@ namespace GameSvr
             string idxstr = string.Empty;
             StringList strlist;
             int result = 0;
-            string flname = svMain.EnvirDir + LocalDB.MINIMAPFILE;
+            string flname = M2Share.EnvirDir + LocalDB.MINIMAPFILE;
             if (File.Exists(flname))
             {
                 strlist = new StringList();
@@ -1615,7 +1591,7 @@ namespace GameSvr
                             index = HUtil32.Str_ToInt(idxstr, 0);
                             if (index > 0)
                             {
-                                svMain.MiniMapList.Add(smap, index as Object);
+                                //svMain.MiniMapList.Add(smap, index as Object);
                             }
                         }
                     }
@@ -1633,7 +1609,7 @@ namespace GameSvr
             string itmname = string.Empty;
             StringList strlist;
             int result = 0;
-            string flname = svMain.EnvirDir + LocalDB.UNBINDFILE;
+            string flname = M2Share.EnvirDir + LocalDB.UNBINDFILE;
             if (File.Exists(flname))
             {
                 strlist = new StringList();
@@ -1657,7 +1633,7 @@ namespace GameSvr
                             shape = HUtil32.Str_ToInt(shapestr, 0);
                             if (shape > 0)
                             {
-                                svMain.UnbindItemList.Add(itmname, shape as Object);
+                                //svMain.UnbindItemList.Add(itmname, shape as Object);
                             }
                             else
                             {
@@ -1692,7 +1668,7 @@ namespace GameSvr
             TEnvirnoment envir;
             bool enablegroup;
             result = 1;
-            flname = svMain.EnvirDir +LocalDB.MAPQUESTFILE;
+            flname = M2Share.EnvirDir + LocalDB.MAPQUESTFILE;
             if (File.Exists(flname))
             {
                 strlist = new StringList();
@@ -1727,7 +1703,7 @@ namespace GameSvr
                             str = HUtil32.GetValidStr3(str, ref gflag, new string[] { " ", "\09" });
                             if ((mapstr != "") && (monname != "") && (qfile != ""))
                             {
-                                envir = svMain.GrobalEnvir.GetEnvir(mapstr);
+                                envir = M2Share.GrobalEnvir.GetEnvir(mapstr);
                                 if (envir != null)
                                 {
                                     HUtil32.ArrestStringEx(constr1, "[", "]", ref str1);
@@ -1769,23 +1745,23 @@ namespace GameSvr
         public int LoadDefaultNpc()
         {
             int result = 1;
-            if (!Directory.Exists(svMain.EnvirDir +LocalDB.MARKETDEFDIR))
+            if (!Directory.Exists(M2Share.EnvirDir + LocalDB.MARKETDEFDIR))
             {
-                Directory.CreateDirectory(svMain.EnvirDir +LocalDB.MARKETDEFDIR);
+                Directory.CreateDirectory(M2Share.EnvirDir + LocalDB.MARKETDEFDIR);
             }
-            if (File.Exists(svMain.EnvirDir +LocalDB.MARKETDEFDIR +LocalDB.DEFAULTNPCFILE + ".txt"))
+            if (File.Exists(M2Share.EnvirDir + LocalDB.MARKETDEFDIR + LocalDB.DEFAULTNPCFILE + ".txt"))
             {
                 TMerchant npc = new TMerchant();
                 npc.MapName = "0";
                 npc.CX = 0;
                 npc.CY = 0;
-                npc.UserName =LocalDB.DEFAULTNPCFILE;
+                npc.UserName = LocalDB.DEFAULTNPCFILE;
                 npc.NpcFace = 0;
                 npc.Appearance = 0;
-                npc.DefineDirectory =LocalDB.MARKETDEFDIR;
+                npc.DefineDirectory = LocalDB.MARKETDEFDIR;
                 npc.BoInvisible = true;
                 npc.BoUseMapFileName = false;
-                svMain.DefaultNpc = npc;
+                M2Share.DefaultNpc = npc;
             }
             else
             {
@@ -1815,17 +1791,17 @@ namespace GameSvr
         public int LoadQuestDiary()
         {
             string flname;
-            string title = String.Empty;
-            string str = String.Empty;
-            string numstr = String.Empty;
+            string title = string.Empty;
+            string str = string.Empty;
+            string numstr = string.Empty;
             StringList strlist;
             ArrayList diarylist;
             TQDDinfo pqdd;
             bool bobegin;
             int result = 1;
-            for (var n = 0; n < svMain.QuestDiaryList.Count; n++)
+            for (var n = 0; n < M2Share.QuestDiaryList.Count; n++)
             {
-                diarylist = svMain.QuestDiaryList[n] as ArrayList;
+                diarylist = M2Share.QuestDiaryList[n] as ArrayList;
                 for (var i = 0; i < diarylist.Count; i++)
                 {
                     pqdd = (TQDDinfo)diarylist[i];
@@ -1834,12 +1810,12 @@ namespace GameSvr
                 }
                 diarylist.Free();
             }
-            svMain.QuestDiaryList.Clear();
+            M2Share.QuestDiaryList.Clear();
             bobegin = false;
             for (var n = 1; n <= Grobal2.MAXQUESTINDEXBYTE * 8; n++)
             {
                 diarylist = null;
-                flname = svMain.EnvirDir +LocalDB.QUESTDIARYDIR + LoadQuestDiary_XXStr(n) + ".txt";
+                flname = M2Share.EnvirDir + LocalDB.QUESTDIARYDIR + LoadQuestDiary_XXStr(n) + ".txt";
                 if (File.Exists(flname))
                 {
                     title = "";
@@ -1898,11 +1874,11 @@ namespace GameSvr
                 }
                 if (diarylist != null)
                 {
-                    svMain.QuestDiaryList.Add(diarylist);
+                    M2Share.QuestDiaryList.Add(diarylist);
                 }
                 else
                 {
-                    svMain.QuestDiaryList.Add(null);
+                    M2Share.QuestDiaryList.Add(null);
                 }
             }
             return result;
@@ -1912,8 +1888,8 @@ namespace GameSvr
         {
             string str;
             int result = 0;
-            string flname = svMain.EnvirDir + LocalDB.DROPITEMFILE;
-            svMain.DropItemNoticeList.Clear();
+            string flname = M2Share.EnvirDir + LocalDB.DROPITEMFILE;
+            M2Share.DropItemNoticeList.Clear();
             if (File.Exists(flname))
             {
                 StringList strlist = new StringList();
@@ -1923,7 +1899,7 @@ namespace GameSvr
                     str = strlist[i].Trim();
                     if (str != "")
                     {
-                        svMain.DropItemNoticeList.Add(str);
+                        M2Share.DropItemNoticeList.Add(str);
                         result = 1;
                     }
                 }
@@ -1935,18 +1911,18 @@ namespace GameSvr
         public void LoadShopItemList_UnInitShopItemList()
         {
             int i;
-            svMain.ShopItemList.Enter();
+            M2Share.ShopItemList.Enter();
             try
             {
-                for (i = 0; i < svMain.ShopItemList.Count; i++)
+                for (i = 0; i < M2Share.ShopItemList.Count; i++)
                 {
-                    this.Dispose((TShopItem)svMain.ShopItemList.Items[i]);
+                    this.Dispose(M2Share.ShopItemList[i]);
                 }
-                svMain.ShopItemList.Clear();
+                M2Share.ShopItemList.Clear();
             }
             finally
             {
-                svMain.ShopItemList.Leave();
+                M2Share.ShopItemList.Leave();
             }
         }
 
@@ -1966,7 +1942,7 @@ namespace GameSvr
             string sItemDes = string.Empty;
             TStdItem pStdItem;
             TShopItem pShopItem;
-            sFileName = svMain.EnvirDir + LocalDB.SHOPITEMFILE;
+            sFileName = M2Share.EnvirDir + LocalDB.SHOPITEMFILE;
             if (!File.Exists(sFileName))
             {
                 LoadList = new StringList();
@@ -1979,7 +1955,7 @@ namespace GameSvr
             LoadShopItemList_UnInitShopItemList();
             LoadList = new StringList();
             LoadList.LoadFromFile(sFileName);
-            svMain.ShopItemList.Enter();
+            M2Share.ShopItemList.Enter();
             try
             {
                 for (i = 0; i < LoadList.Count; i++)
@@ -1997,7 +1973,7 @@ namespace GameSvr
                         nPrice = HUtil32.Str_ToInt(sItemPrice, 2000000000);
                         if ((sItemName != "") && (nPrice > 0) && (sItemDes != ""))
                         {
-                            pStdItem = svMain.UserEngine.GetStdItemFromName(sItemName);
+                            pStdItem = M2Share.UserEngine.GetStdItemFromName(sItemName);
                             if (pStdItem != null)
                             {
                                 pShopItem = new TShopItem();
@@ -2005,10 +1981,10 @@ namespace GameSvr
                                 pShopItem.sExplain = sItemDes;
                                 pShopItem.sItemName = sItemName;
                                 pShopItem.btClass = (byte)HUtil32.Str_ToInt(sItemClass, 5);
-                                pShopItem.wLooks = (ushort)HUtil32.Str_ToInt(s1, 0);
-                                pShopItem.wShape1 = (ushort)HUtil32.Str_ToInt(s2, 0);
-                                pShopItem.wShape2 = (ushort)HUtil32.Str_ToInt(s3, 0);
-                                svMain.ShopItemList.Add(pShopItem);
+                                pShopItem.wLooks = (short)HUtil32.Str_ToInt(s1, 0);
+                                pShopItem.wShape1 = (short)HUtil32.Str_ToInt(s2, 0);
+                                pShopItem.wShape2 = (short)HUtil32.Str_ToInt(s3, 0);
+                                M2Share.ShopItemList.Add(pShopItem);
                             }
                         }
                     }
@@ -2016,7 +1992,7 @@ namespace GameSvr
             }
             finally
             {
-                svMain.ShopItemList.Leave();
+                M2Share.ShopItemList.Leave();
             }
             LoadList.Free();
         }
@@ -2050,9 +2026,9 @@ namespace GameSvr
             pq = new TQuestRecord();
             pq.BoRequire = false;
             //FillChar(pq.QuestRequireArr, sizeof(TQuestRequire) * ObjNpc.MAXREQUIRE, '\0');
-            reqidx = 0;
+            // reqidx = 0;
             pq.SayingList = new ArrayList();
-            npc.Sayings.Add(pq);
+            // npc.Sayings.Add(pq);
             result = pq;
             return result;
         }
@@ -2831,14 +2807,14 @@ namespace GameSvr
                             str = HUtil32.ArrestStringEx(str, "[", "]", ref data);
                             flname2 = data.Trim();
                             str2 = str.Trim();
-                            if (LocalDB.CutAndAddFromFile(svMain.EnvirDir +LocalDB.QUESTDIARYDIR + flname2, str2, srclist))
+                            if (LocalDB.CutAndAddFromFile(M2Share.EnvirDir + LocalDB.QUESTDIARYDIR + flname2, str2, srclist))
                             {
                                 srclist[i] = "#ACT";
-                                srclist.Insert(i + 1, "goto " + str2);
+                                srclist.InsertText(i + 1, "goto " + str2);
                             }
                             else
                             {
-                                svMain.MainOutMessage("script error, load fail: " + flname2 + " - " + str2);
+                                M2Share.MainOutMessage("script error, load fail: " + flname2 + " - " + str2);
                             }
                             calls++;
                         }
@@ -2886,7 +2862,7 @@ namespace GameSvr
                         {
                             str2 = HUtil32.GetValidStr3(str, ref data, new string[] { " ", "\09" });
                             newflname = str2.Trim();
-                            newflname = svMain.EnvirDir +LocalDB.QUESTDEFINEDIR + newflname;
+                            newflname = M2Share.EnvirDir + LocalDB.QUESTDEFINEDIR + newflname;
                             if (File.Exists(newflname))
                             {
                                 nlist = new StringList();
@@ -2896,7 +2872,7 @@ namespace GameSvr
                             }
                             else
                             {
-                                svMain.MainOutMessage("script error, load fail: " + newflname);
+                                M2Share.MainOutMessage("script error, load fail: " + newflname);
                             }
                             srclist[i] = "";
                         }
@@ -2931,7 +2907,7 @@ namespace GameSvr
             TMarketProduct pp;
             int step;
             int questnumber;
-            string stepstr;
+            string stepstr = string.Empty;
             TSayingRecord psay;
             TSayingProcedure psayproc;
             TQuestRecord pquest;
@@ -2939,11 +2915,11 @@ namespace GameSvr
             TQuestActionInfo pqact;
             TDefineInfo pdef;
             bool bobegin;
-            result = -1;
+            int result = -1;
             step = 0;
             questnumber = 0;
             stdmode = 0;
-            flname = svMain.EnvirDir + basedir + marketname + ".txt";
+            flname = M2Share.EnvirDir + basedir + marketname + ".txt";
             if (File.Exists(flname))
             {
                 strlist = new StringList();
@@ -3092,7 +3068,7 @@ namespace GameSvr
                                 if (HUtil32.CompareLStr(str, "#IF", 3))
                                 {
                                     HUtil32.ArrestStringEx(str, "[", "]", ref idxstr);
-                                    pquest.QuestRequireArr[reqidx].CheckIndex = (ushort)HUtil32.Str_ToInt(idxstr, 0);
+                                    pquest.QuestRequireArr[reqidx].CheckIndex = (short)HUtil32.Str_ToInt(idxstr, 0);
                                     HUtil32.GetValidStr3(str2, ref valstr, new string[] { "=", " ", "\09" });
                                     n = HUtil32.Str_ToInt(valstr, 0);
                                     if (n != 0)
@@ -3124,8 +3100,8 @@ namespace GameSvr
                             if (str.ToLower().CompareTo("[Goods]".ToLower()) == 0)
                             {
                                 step = 20;
-                                ((TMerchant)npc).CreateIndex = svMain.CurrentMerchantIndex;
-                                svMain.CurrentMerchantIndex++;
+                                ((TMerchant)npc).CreateIndex = M2Share.CurrentMerchantIndex;
+                                M2Share.CurrentMerchantIndex++;
                                 continue;
                             }
                             HUtil32.ArrestStringEx(str, "[", "]", ref stepstr);
@@ -3185,8 +3161,8 @@ namespace GameSvr
                             }
                             if ((step == 10) && (psayproc != null))
                             {
-                                psayproc.Saying = psayproc.Saying + ReplaceNewLine(str);
-                                if (!svMain.TAIWANVERSION)
+                                // psayproc.Saying = psayproc.Saying + HUtil32.ReplaceNewLine(str);
+                                if (!M2Share.TAIWANVERSION)
                                 {
                                     psayproc.Saying = HUtil32.ReplaceChar(psayproc.Saying, '\\', (char)0xa);
                                 }
@@ -3202,7 +3178,7 @@ namespace GameSvr
                                 else
                                 {
                                     this.Dispose(pqcon);
-                                    svMain.MainOutMessage("script error: " + str + " line:" + i.ToString() + " : " + flname);
+                                    M2Share.MainOutMessage("script error: " + str + " line:" + i.ToString() + " : " + flname);
                                 }
                             }
                             if (step == 12)
@@ -3215,7 +3191,7 @@ namespace GameSvr
                                 else
                                 {
                                     this.Dispose(pqact);
-                                    svMain.MainOutMessage("script error: " + str + " line:" + i.ToString() + " : " + flname);
+                                    M2Share.MainOutMessage("script error: " + str + " line:" + i.ToString() + " : " + flname);
                                 }
                             }
                             if (step == 13)
@@ -3228,15 +3204,15 @@ namespace GameSvr
                                 else
                                 {
                                     this.Dispose(pqact);
-                                    svMain.MainOutMessage("script error: " + str + " line:" + i.ToString() + " : " + flname);
+                                    M2Share.MainOutMessage("script error: " + str + " line:" + i.ToString() + " : " + flname);
                                 }
                             }
                             if (step == 14)
                             {
-                                psayproc.ElseSaying = psayproc.ElseSaying + ReplaceNewLine(str);
-                                if (!svMain.TAIWANVERSION)
+                                // psayproc.ElseSaying = psayproc.ElseSaying + HUtil32.ReplaceNewLine(str);
+                                if (!M2Share.TAIWANVERSION)
                                 {
-                                    psayproc.ElseSaying = ReplaceChar(psayproc.ElseSaying, "\\", (char)0xa);
+                                    psayproc.ElseSaying = HUtil32.ReplaceChar(psayproc.ElseSaying, '\\', (char)0xa);
                                 }
                                 ((TMerchant)npc).ActivateNpcUtilitys(psayproc.ElseSaying);
                             }
@@ -3258,12 +3234,12 @@ namespace GameSvr
                                 }
                                 if (itmname.Length > 20)
                                 {
-                                    svMain.MainOutMessage("ITEM NAME > 20:" + itmname);
+                                    M2Share.MainOutMessage("ITEM NAME > 20:" + itmname);
                                 }
                                 pp.GoodsName = itmname;
-                                pp.Count = _MIN(5000, HUtil32.Str_ToInt(scount, 1));
+                                pp.Count = HUtil32._MIN(5000, HUtil32.Str_ToInt(scount, 1));
                                 pp.ZenHour = HUtil32.Str_ToInt(shour, 1);
-                                pp.ZenTime = HUtil32.GetTickCount()- ((long)pp.ZenHour) * 60 * 60 * 1000;
+                                pp.ZenTime = HUtil32.GetTickCount() - ((long)pp.ZenHour) * 60 * 60 * 1000;
                                 ((TMerchant)npc).ProductList.Add(pp);
                             }
                         }
@@ -3273,7 +3249,7 @@ namespace GameSvr
             }
             else
             {
-                svMain.MainOutMessage("File open failure : " + flname);
+                M2Share.MainOutMessage("File open failure : " + flname);
             }
             return 1;
         }
@@ -3282,7 +3258,7 @@ namespace GameSvr
         {
             if (basedir == "")
             {
-                basedir =LocalDB.NPCDEFDIR;
+                basedir = LocalDB.NPCDEFDIR;
             }
             return LoadMarketDef(npc, basedir, npcname, false);
         }
@@ -3290,15 +3266,9 @@ namespace GameSvr
         public int LoadMarketSavedGoods(TMerchant merchant, string marketname)
         {
             int result;
-            int i;
-            int rbyte;
             string flname;
-            TGoodsHeader header;
-            int fhandle;
-            TUserItem pu;
-            ArrayList list;
             result = -1;
-            flname =LocalDB.MARKETSAVEDDIR + marketname + ".sav";
+            flname = LocalDB.MARKETSAVEDDIR + marketname + ".sav";
             //fhandle = File.Open(flname, (FileMode)FileAccess.Read | FileShare.ReadWrite);
             //list = null;
             //if (fhandle > 0)
@@ -3358,14 +3328,9 @@ namespace GameSvr
         public int WriteMarketSavedGoods(TMerchant merchant, string marketname)
         {
             int result;
-            int i;
-            int k;
             string flname;
-            TGoodsHeader header;
-            int fhandle;
-            ArrayList list;
             result = -1;
-            flname =LocalDB.MARKETSAVEDDIR + marketname + ".sav";
+            flname = LocalDB.MARKETSAVEDDIR + marketname + ".sav";
             //if (File.Exists(flname))
             //{
             //    fhandle = File.Open(flname, (FileMode)FileAccess.Write | FileShare.ReadWrite);
@@ -3401,14 +3366,9 @@ namespace GameSvr
         public int LoadMarketPrices(TMerchant merchant, string marketname)
         {
             int result;
-            int fhandle;
-            int i;
-            int rbyte;
             string flname;
-            TPricesInfo ppi;
-            TGoodsHeader header;
             result = -1;
-            flname =LocalDB.MARKETPRICESDIR + marketname + ".prc";
+            flname = LocalDB.MARKETPRICESDIR + marketname + ".prc";
             //fhandle = File.Open(flname, (FileMode)FileAccess.Read | FileShare.ReadWrite);
             //if (fhandle > 0)
             //{
@@ -3439,12 +3399,9 @@ namespace GameSvr
         public int WriteMarketPrices(TMerchant merchant, string marketname)
         {
             int result;
-            int fhandle;
-            int i;
             string flname;
-            TGoodsHeader header;
             result = -1;
-            flname =LocalDB.MARKETPRICESDIR + marketname + ".prc";
+            flname = LocalDB.MARKETPRICESDIR + marketname + ".prc";
             //if (File.Exists(flname))
             //{
             //    fhandle = File.Open(flname, (FileMode)FileAccess.Write | FileShare.ReadWrite);
@@ -3471,15 +3428,9 @@ namespace GameSvr
         public int LoadMarketUpgradeInfos(string marketname, IList<TUpgradeInfo> upglist)
         {
             int result;
-            int fhandle;
-            int i;
-            int count;
-            int rbyte;
             string flname;
-            TUpgradeInfo pup;
-            TUpgradeInfo up;
             result = -1;
-            flname =LocalDB.MARKETUPGRADEDIR + marketname + ".upg";
+            flname = LocalDB.MARKETUPGRADEDIR + marketname + ".upg";
             //if (File.Exists(flname))
             //{
             //    fhandle = File.Open(flname, (FileMode)FileAccess.Read | FileShare.ReadWrite);
@@ -3511,12 +3462,9 @@ namespace GameSvr
         public int WriteMarketUpgradeInfos(string marketname, IList<TUpgradeInfo> upglist)
         {
             int result;
-            int fhandle;
-            int i;
-            int count;
             string flname;
             result = -1;
-            flname =LocalDB.MARKETUPGRADEDIR + marketname + ".upg";
+            flname = LocalDB.MARKETUPGRADEDIR + marketname + ".upg";
             //if (File.Exists(flname))
             //{
             //    fhandle = File.Open(flname, (FileMode)FileAccess.Write | FileShare.ReadWrite);
@@ -3542,12 +3490,7 @@ namespace GameSvr
         public int LoadMemorialCount(TNormNpc merchant, string marketname)
         {
             int result;
-            int rbyte;
-            string flname;
             char[] header = new char[19 + 1];
-            string content;
-            long headercount;
-            int fhandle;
             result = -1;
             //FillChar(header, sizeof(header), '\0');
             //flname =LocalDB.MARKETSAVEDDIR + marketname +LocalDB.MEMORIALCOUNT_EXT;
@@ -3578,10 +3521,7 @@ namespace GameSvr
         public int WriteMemorialCount(TNormNpc merchant, string marketname)
         {
             int result;
-            string flname;
             char[] header = new char[19 + 1];
-            int fhandle;
-            string str;
             result = -1;
             //FillChar(header, sizeof(header), '\0');
             //flname =LocalDB.MARKETSAVEDDIR + marketname +LocalDB.MEMORIALCOUNT_EXT;
@@ -3625,7 +3565,7 @@ namespace GameSvr
     {
         public int RecordCount;
         public int[] dummy;
-    } 
+    }
 
     public struct TDefineInfo
     {
@@ -3669,7 +3609,7 @@ namespace GameSvr
         public const string SHOPITEMFILE = "ShopItemList.txt";
         public const string MEMORIALCOUNT_EXT = ".cnt";
 
-        public static bool CutAndAddFromFile(string flname, string tagstr, ArrayList list)
+        public static bool CutAndAddFromFile(string flname, string tagstr, StringList list)
         {
             string str;
             bool result = false;
@@ -3715,5 +3655,5 @@ namespace GameSvr
             }
             return result;
         }
-    } 
+    }
 }

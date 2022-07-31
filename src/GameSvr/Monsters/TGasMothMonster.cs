@@ -34,7 +34,7 @@ namespace GameSvr
             {
                 if ((HUtil32.GetTickCount() - this.SearchEnemyTime > 8000) || ((HUtil32.GetTickCount() - this.SearchEnemyTime > 1000) && (this.TargetCret == null)))
                 {
-                    this.SearchEnemyTime  =  HUtil32.GetTickCount();
+                    this.SearchEnemyTime = HUtil32.GetTickCount();
                     this.MonsterDetecterAttack();
                 }
             }

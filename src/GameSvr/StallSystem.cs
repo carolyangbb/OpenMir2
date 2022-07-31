@@ -7,7 +7,7 @@ namespace GameSvr
         public int MakeIndex;
         public int Price;
         public byte GoldType;
-    } 
+    }
 
     public struct TClientStallItems
     {
@@ -25,13 +25,13 @@ namespace GameSvr
     public class TStallInfo : ClientPacket
     {
         public bool Open;
-        public ushort Looks;
+        public short Looks;
         public string Name;
     }
 
     public class TStallMgr
     {
-        public ushort StallType = 0;
+        public short StallType = 0;
         public bool OnSale = false;
         public TClientStallInfo mBlock = null;
         public bool DoShop = false;

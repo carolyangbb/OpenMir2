@@ -30,7 +30,7 @@ namespace GameSvr
                     targ.SetLastHiter(this);
                     targ.ExpHiter = null;
                     targ.StruckDamage(dam, this);
-                    targ.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - targ.CX), Math.Abs(this.CY - targ.CY)) * 50);
+                    targ.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - targ.CX), Math.Abs(this.CY - targ.CY)) * 50);
                 }
                 this.SendRefMsg(Grobal2.RM_FLYAXE, this.Dir, this.CX, this.CY, targ.ActorId, "");
             }
@@ -54,7 +54,7 @@ namespace GameSvr
             {
                 if (HUtil32.GetTickCount() - this.SearchEnemyTime > 5000)
                 {
-                    this.SearchEnemyTime  =  HUtil32.GetTickCount();
+                    this.SearchEnemyTime = HUtil32.GetTickCount();
                     for (var i = 0; i < this.VisibleActors.Count; i++)
                     {
                         TCreature cret = (TCreature)this.VisibleActors[i].cret;

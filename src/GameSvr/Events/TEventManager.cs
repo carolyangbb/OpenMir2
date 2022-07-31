@@ -53,7 +53,7 @@ namespace GameSvr
                     __event = EventList[i] as TEvent;
                     if (__event.Active && (HUtil32.GetTickCount() - __event.runstart > __event.runtick))
                     {
-                        __event.runstart  =  HUtil32.GetTickCount();
+                        __event.runstart = HUtil32.GetTickCount();
                         __event.Run();
                         if (__event.Closed)
                         {
@@ -73,7 +73,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("Except:TEventManager.Run[1]");
+                M2Share.MainOutMessage("Except:TEventManager.Run[1]");
             }
             try
             {
@@ -95,7 +95,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("Except:TEventManager.Run[2]");
+                M2Share.MainOutMessage("Except:TEventManager.Run[2]");
             }
         }
     }

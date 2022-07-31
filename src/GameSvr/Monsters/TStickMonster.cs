@@ -15,7 +15,7 @@ namespace GameSvr
             this.ViewRange = 7;
             this.RunNextTick = 250;
             this.SearchRate = 2500 + ((long)new System.Random(1500).Next());
-            this.SearchTime  =  HUtil32.GetTickCount();
+            this.SearchTime = HUtil32.GetTickCount();
             this.RaceServer = Grobal2.RC_KILLINGHERB;
             DigupRange = 4;
             DigdownRange = 4;
@@ -23,17 +23,11 @@ namespace GameSvr
             this.StickMode = true;
             this.BoAnimal = true;
         }
-        
-        ~TStickMonster()
-        {
-            base.Destroy();
-        }
-        
+
         protected virtual bool AttackTarget()
         {
-            bool result;
-            byte targdir=0;
-            result = false;
+            byte targdir = 0;
+            bool result = false;
             if (this.TargetCret != null)
             {
                 if (this.TargetInAttackRange(this.TargetCret, ref targdir))
@@ -41,7 +35,7 @@ namespace GameSvr
                     if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                     {
                         this.HitTime = GetCurrentTime;
-                        this.TargetFocusTime  =  HUtil32.GetTickCount();
+                        this.TargetFocusTime = HUtil32.GetTickCount();
                         this.Attack(this.TargetCret, targdir);
                     }
                     result = true;
@@ -56,7 +50,6 @@ namespace GameSvr
                     {
                         this.LoseTarget();
                     }
-                    // <!!林狼> TargetCret := nil肺 官柴
                 }
             }
             return result;
@@ -70,12 +63,10 @@ namespace GameSvr
 
         protected virtual void ComeDown()
         {
-            int i;
-            // Dir
             this.SendRefMsg(Grobal2.RM_DIGDOWN, 0, this.CX, this.CY, 0, "");
             try
             {
-                for (i = 0; i < this.VisibleActors.Count; i++)
+                for (var i = 0; i < this.VisibleActors.Count; i++)
                 {
                     Dispose(this.VisibleActors[i]);
                 }
@@ -83,16 +74,15 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] TStickMonster VisbleActors Dispose(..)");
+                M2Share.MainOutMessage("[Exception] TStickMonster VisbleActors Dispose(..)");
             }
             this.HideMode = true;
         }
 
         protected void CheckComeOut()
         {
-            int i;
             TCreature cret;
-            for (i = 0; i < this.VisibleActors.Count; i++)
+            for (var i = 0; i < this.VisibleActors.Count; i++)
             {
                 cret = (TCreature)this.VisibleActors[i].cret;
                 if ((!cret.Death) && this.IsProperTarget(cret) && (!cret.BoHumHideMode || this.BoViewFixedHide))
@@ -100,7 +90,6 @@ namespace GameSvr
                     if ((Math.Abs(this.CX - cret.CX) <= DigupRange) && (Math.Abs(this.CY - cret.CY) <= DigupRange))
                     {
                         ComeOut();
-                        // 观栏肺 唱坷促. 焊牢促.
                         break;
                     }
                 }
@@ -122,15 +111,12 @@ namespace GameSvr
                     this.WalkTime = GetCurrentTime;
                     if (this.HideMode)
                     {
-                        // 酒流 葛嚼阑 唱鸥郴瘤 臼疽澜.
                         CheckComeOut();
                     }
                     else
                     {
                         if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                         {
-                            // 惑加罐篮 run 俊辑 HitTime 犁汲沥窃.
-                            // /HitTime : =  HUtil32.GetTickCount(); //酒贰 AttackTarget俊辑 窃.
                             this.MonsterNormalAttack();
                         }
                         boidle = false;
@@ -147,7 +133,6 @@ namespace GameSvr
                         }
                         if (boidle)
                         {
-                            // 促矫 甸绢埃促.
                             ComeDown();
                         }
                         else if (AttackTarget())
@@ -160,42 +145,6 @@ namespace GameSvr
             }
             base.Run();
         }
-
-    } // end TStickMonster
-
-    // end TBeeQueen
-
-    // end TCentipedeKingMonster
-
-    // end TBigHeartMonster
-
-    // end TBamTreeMonster
-
-    // end TSpiderHouseMonster
-
-    // end TExplosionSpider
-
-    // 版厚, 己巩, 泵荐
-    // end TGuardUnit
-
-    // end TArcherGuard
-
-    // end TArcherMaster
-
-    // end TArcherPolice
-
-    // end TCastleDoor
-
-    // end TWallStructure
-
-    // end TSoccerBall
-
-    // end TMineMonster
-
-    // 龋去籍
-    // end TStickBlockMonster
-
-    // end TDoorState
-
+    }
 }
 

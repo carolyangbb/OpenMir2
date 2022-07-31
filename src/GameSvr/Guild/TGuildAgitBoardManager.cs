@@ -9,9 +9,9 @@ namespace GameSvr
 
         public TGuildAgitBoardManager()
         {
-            if (svMain.GuildAgitMaxNumber > Guild.MAXGUILDAGITCOUNT)
+            if (M2Share.GuildAgitMaxNumber > Guild.MAXGUILDAGITCOUNT)
             {
-                svMain.MainOutMessage("[Exception] TGuildAgitBoardManager : GuildAgitMaxNumber > MAXGUILDAGITCOUNT");
+                M2Share.MainOutMessage("[Exception] TGuildAgitBoardManager : GuildAgitMaxNumber > MAXGUILDAGITCOUNT");
                 return;
             }
             GaBoardList = new ArrayList();
@@ -23,7 +23,7 @@ namespace GameSvr
             {
                 return false;
             }
-            string gname = svMain.GuildAgitMan.GetGuildNameFromAgitNum(nAgitNum);
+            string gname = M2Share.GuildAgitMan.GetGuildNameFromAgitNum(nAgitNum);
             if (gname == "")
             {
                 return false;
@@ -36,7 +36,7 @@ namespace GameSvr
         {
             bool result = false;
             GaBoardList.Clear();
-            for (var i = svMain.GuildAgitStartNumber; i <= svMain.GuildAgitMaxNumber; i++)
+            for (var i = M2Share.GuildAgitStartNumber; i <= M2Share.GuildAgitMaxNumber; i++)
             {
                 LoadOneGaBoard(uname, i);
                 result = true;

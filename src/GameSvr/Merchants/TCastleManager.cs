@@ -16,15 +16,15 @@ namespace GameSvr
             base.CheckNpcSayCommand(hum, ref source, tag);
             if (tag == "$CASTLEGOLD")
             {
-                source = this.ChangeNpcSayTag(source, "<$CASTLEGOLD>", svMain.UserCastle.TotalGold.ToString());
+                source = this.ChangeNpcSayTag(source, "<$CASTLEGOLD>", M2Share.UserCastle.TotalGold.ToString());
             }
             if (tag == "$TODAYINCOME")
             {
-                source = this.ChangeNpcSayTag(source, "<$TODAYINCOME>", svMain.UserCastle.TodayIncome.ToString());
+                source = this.ChangeNpcSayTag(source, "<$TODAYINCOME>", M2Share.UserCastle.TodayIncome.ToString());
             }
             if (tag == "$CASTLEDOORSTATE")
             {
-                TCastleDoor _wvar1 = (TCastleDoor)svMain.UserCastle.MainDoor.UnitObj;
+                TCastleDoor _wvar1 = (TCastleDoor)M2Share.UserCastle.MainDoor.UnitObj;
                 if (_wvar1.Death)
                 {
                     str = "已经损坏了。";
@@ -62,11 +62,11 @@ namespace GameSvr
 
         private void RepaireCastlesMainDoor(TUserHuman hum)
         {
-            if (svMain.UserCastle.TotalGold >= ObjNpc.CASTLEMAINDOORREPAREGOLD)
+            if (M2Share.UserCastle.TotalGold >= ObjNpc.CASTLEMAINDOORREPAREGOLD)
             {
-                if (svMain.UserCastle.RepairCastleDoor())
+                if (M2Share.UserCastle.RepairCastleDoor())
                 {
-                    svMain.UserCastle.TotalGold = svMain.UserCastle.TotalGold - ObjNpc.CASTLEMAINDOORREPAREGOLD;
+                    M2Share.UserCastle.TotalGold = M2Share.UserCastle.TotalGold - ObjNpc.CASTLEMAINDOORREPAREGOLD;
                     hum.SysMsg("修理完成。", 1);
                 }
                 else
@@ -83,12 +83,12 @@ namespace GameSvr
         private void RepaireCoreCastleWall(int wall, TUserHuman hum)
         {
             int n;
-            if (svMain.UserCastle.TotalGold >= ObjNpc.CASTLECOREWALLREPAREGOLD)
+            if (M2Share.UserCastle.TotalGold >= ObjNpc.CASTLECOREWALLREPAREGOLD)
             {
-                n = svMain.UserCastle.RepairCoreCastleWall(wall);
+                n = M2Share.UserCastle.RepairCoreCastleWall(wall);
                 if (n == 1)
                 {
-                    svMain.UserCastle.TotalGold = svMain.UserCastle.TotalGold - ObjNpc.CASTLECOREWALLREPAREGOLD;
+                    M2Share.UserCastle.TotalGold = M2Share.UserCastle.TotalGold - ObjNpc.CASTLECOREWALLREPAREGOLD;
                     hum.SysMsg("修理完成。", 1);
                 }
                 else
@@ -105,20 +105,20 @@ namespace GameSvr
         private void HireCastleGuard(string numstr, TUserHuman hum)
         {
             int gnum;
-            if (svMain.UserCastle.TotalGold >= ObjNpc.CASTLEGUARDEMPLOYFEE)
+            if (M2Share.UserCastle.TotalGold >= ObjNpc.CASTLEGUARDEMPLOYFEE)
             {
                 gnum = HUtil32.Str_ToInt(numstr, 0) - 1;
                 if (gnum >= 0 && gnum <= CastleDef.MAXGUARD - 1)
                 {
-                    if (svMain.UserCastle.Guards[gnum].UnitObj == null)
+                    if (M2Share.UserCastle.Guards[gnum].UnitObj == null)
                     {
-                        if (!svMain.UserCastle.BoCastleUnderAttack)
+                        if (!M2Share.UserCastle.BoCastleUnderAttack)
                         {
-                            TDefenseUnit _wvar1 = svMain.UserCastle.Guards[gnum];
-                            _wvar1.UnitObj = svMain.UserEngine.AddCreatureSysop(svMain.UserCastle.CastleMapName, _wvar1.X, _wvar1.Y, _wvar1.UnitName);
+                            TDefenseUnit _wvar1 = M2Share.UserCastle.Guards[gnum];
+                            _wvar1.UnitObj = M2Share.UserEngine.AddCreatureSysop(M2Share.UserCastle.CastleMapName, _wvar1.X, _wvar1.Y, _wvar1.UnitName);
                             if (_wvar1.UnitObj != null)
                             {
-                                svMain.UserCastle.TotalGold = svMain.UserCastle.TotalGold - ObjNpc.CASTLEGUARDEMPLOYFEE;
+                                M2Share.UserCastle.TotalGold = M2Share.UserCastle.TotalGold - ObjNpc.CASTLEGUARDEMPLOYFEE;
                                 hum.SysMsg("雇用卫士。", 1);
                             }
                         }
@@ -129,7 +129,7 @@ namespace GameSvr
                     }
                     else
                     {
-                        if (!svMain.UserCastle.Guards[gnum].UnitObj.Death)
+                        if (!M2Share.UserCastle.Guards[gnum].UnitObj.Death)
                         {
                             hum.SysMsg("那里已经有卫士了。", 0);
                         }
@@ -153,21 +153,21 @@ namespace GameSvr
         private void HireCastleArcher(string numstr, TUserHuman hum)
         {
             int gnum;
-            if (svMain.UserCastle.TotalGold >= ObjNpc.CASTLEARCHEREMPLOYFEE)
+            if (M2Share.UserCastle.TotalGold >= ObjNpc.CASTLEARCHEREMPLOYFEE)
             {
                 gnum = HUtil32.Str_ToInt(numstr, 0) - 1;
                 if (gnum >= 0 && gnum <= CastleDef.MAXARCHER - 1)
                 {
-                    if (svMain.UserCastle.Archers[gnum].UnitObj == null)
+                    if (M2Share.UserCastle.Archers[gnum].UnitObj == null)
                     {
-                        if (!svMain.UserCastle.BoCastleUnderAttack)
+                        if (!M2Share.UserCastle.BoCastleUnderAttack)
                         {
-                            TDefenseUnit _wvar1 = svMain.UserCastle.Archers[gnum];
-                            _wvar1.UnitObj = svMain.UserEngine.AddCreatureSysop(svMain.UserCastle.CastleMapName, _wvar1.X, _wvar1.Y, _wvar1.UnitName);
+                            TDefenseUnit _wvar1 = M2Share.UserCastle.Archers[gnum];
+                            _wvar1.UnitObj = M2Share.UserEngine.AddCreatureSysop(M2Share.UserCastle.CastleMapName, _wvar1.X, _wvar1.Y, _wvar1.UnitName);
                             if (_wvar1.UnitObj != null)
                             {
-                                svMain.UserCastle.TotalGold = svMain.UserCastle.TotalGold - ObjNpc.CASTLEARCHEREMPLOYFEE;
-                                ((TGuardUnit)_wvar1.UnitObj).Castle = svMain.UserCastle;
+                                M2Share.UserCastle.TotalGold = M2Share.UserCastle.TotalGold - ObjNpc.CASTLEARCHEREMPLOYFEE;
+                                ((TGuardUnit)_wvar1.UnitObj).Castle = M2Share.UserCastle;
                                 ((TGuardUnit)_wvar1.UnitObj).OriginX = _wvar1.X;
                                 ((TGuardUnit)_wvar1.UnitObj).OriginY = _wvar1.Y;
                                 ((TGuardUnit)_wvar1.UnitObj).OriginDir = 3;
@@ -181,7 +181,7 @@ namespace GameSvr
                     }
                     else
                     {
-                        if (!svMain.UserCastle.Archers[gnum].UnitObj.Death)
+                        if (!M2Share.UserCastle.Archers[gnum].UnitObj.Death)
                         {
                             hum.SysMsg("那里已经有卫士了。", 0);
                         }
@@ -204,7 +204,7 @@ namespace GameSvr
 
         public override void UserCall(TCreature caller)
         {
-            if (svMain.UserCastle.IsOurCastle(caller.MyGuild))
+            if (M2Share.UserCastle.IsOurCastle(caller.MyGuild))
             {
                 base.UserCall(caller);
             }
@@ -213,8 +213,8 @@ namespace GameSvr
         public override void UserSelect(TCreature whocret, string selstr)
         {
             string body = string.Empty;
-            string sel = String.Empty;
-            string rmsg = String.Empty;
+            string sel = string.Empty;
+            string rmsg = string.Empty;
             try
             {
                 if (selstr != "")
@@ -227,14 +227,14 @@ namespace GameSvr
                         {
                             whocret.LatestNpcCmd = selstr;
                             this.NpcSayTitle(whocret, sel);
-                            if (svMain.UserCastle.IsOurCastle(whocret.MyGuild) && whocret.IsGuildMaster())
+                            if (M2Share.UserCastle.IsOurCastle(whocret.MyGuild) && whocret.IsGuildMaster())
                             {
                                 if (sel.ToLower().CompareTo("@@withdrawal".ToLower()) == 0)
                                 {
-                                    switch (svMain.UserCastle.GetBackCastleGold((TUserHuman)whocret, Math.Abs(HUtil32.Str_ToInt(body, 0))))
+                                    switch (M2Share.UserCastle.GetBackCastleGold((TUserHuman)whocret, Math.Abs(HUtil32.Str_ToInt(body, 0))))
                                     {
                                         case -1:
-                                            rmsg = svMain.UserCastle.OwnerGuildName + "只有以下门派的门主才能使用：";
+                                            rmsg = M2Share.UserCastle.OwnerGuildName + "只有以下门派的门主才能使用：";
                                             break;
                                         case -2:
                                             rmsg = "该城内没有这么多金币。";
@@ -251,10 +251,10 @@ namespace GameSvr
                                 }
                                 if (sel.ToLower().CompareTo("@@receipts".ToLower()) == 0)
                                 {
-                                    switch (svMain.UserCastle.TakeInCastleGold((TUserHuman)whocret, Math.Abs(HUtil32.Str_ToInt(body, 0))))
+                                    switch (M2Share.UserCastle.TakeInCastleGold((TUserHuman)whocret, Math.Abs(HUtil32.Str_ToInt(body, 0))))
                                     {
                                         case -1:
-                                            rmsg = svMain.UserCastle.OwnerGuildName + "只有以下门派的门主才能使用：";
+                                            rmsg = M2Share.UserCastle.OwnerGuildName + "只有以下门派的门主才能使用：";
                                             break;
                                         case -2:
                                             rmsg = "您没有那么多金币。";
@@ -271,12 +271,12 @@ namespace GameSvr
                                 }
                                 if (sel.ToLower().CompareTo("@openmaindoor".ToLower()) == 0)
                                 {
-                                    svMain.UserCastle.ActivateMainDoor(false);
+                                    M2Share.UserCastle.ActivateMainDoor(false);
                                     break;
                                 }
                                 if (sel.ToLower().CompareTo("@closemaindoor".ToLower()) == 0)
                                 {
-                                    svMain.UserCastle.ActivateMainDoor(true);
+                                    M2Share.UserCastle.ActivateMainDoor(true);
                                     break;
                                 }
                                 if (sel.ToLower().CompareTo("@repairdoornow".ToLower()) == 0)
@@ -330,7 +330,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] TMerchant.UserSelect... ");
+                M2Share.MainOutMessage("[Exception] TMerchant.UserSelect... ");
             }
         }
     }

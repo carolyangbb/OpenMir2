@@ -7,7 +7,7 @@ namespace GameSvr
 {
     public class TMerchant : TNormNpc
     {
-        public string MarketName = String.Empty;
+        public string MarketName = string.Empty;
         public byte MarketType = 0;
         public int PriceRate = 0;
         public bool NoSeal = false;
@@ -144,7 +144,7 @@ namespace GameSvr
                     return;
                 }
             }
-            TStdItem pstd = svMain.UserEngine.GetStdItem(index);
+            TStdItem pstd = M2Share.UserEngine.GetStdItem(index);
             if (pstd != null)
             {
                 NewPrice(index, HUtil32.MathRound(pstd.Price * 1.1));
@@ -171,7 +171,7 @@ namespace GameSvr
                     return;
                 }
             }
-            TStdItem pstd = svMain.UserEngine.GetStdItem(index);
+            TStdItem pstd = M2Share.UserEngine.GetStdItem(index);
             if (pstd != null)
             {
                 NewPrice(index, HUtil32.MathRound(pstd.Price * 1.1));
@@ -181,7 +181,7 @@ namespace GameSvr
         public void NewPrice(int index, decimal price)
         {
             TPricesInfo pi = new TPricesInfo();
-            pi.Index = (ushort)index;
+            pi.Index = (short)index;
             pi.SellPrice = (int)price;
             PriceList.Add(pi);
             LocalDB.FrmDB.WriteMarketPrices(this, MarketName + "-" + this.MapName);
@@ -201,7 +201,7 @@ namespace GameSvr
             }
             if (price < 0)
             {
-                TStdItem pstd = svMain.UserEngine.GetStdItem(index);
+                TStdItem pstd = M2Share.UserEngine.GetStdItem(index);
                 if ((pstd != null) && IsDealingItem(pstd.StdMode, pstd.Shape))
                 {
                     price = pstd.Price;
@@ -221,7 +221,7 @@ namespace GameSvr
             price = GetPrice(uitem.Index);
             if (price > 0)
             {
-                pstd = svMain.UserEngine.GetStdItem(uitem.Index);
+                pstd = M2Share.UserEngine.GetStdItem(uitem.Index);
                 if (pstd != null)
                 {
                     if ((pstd.OverlapItem < 1) && (pstd.StdMode > 4) && (pstd.DuraMax > 0) && (uitem.DuraMax > 0) && (pstd.StdMode != 8))
@@ -301,7 +301,7 @@ namespace GameSvr
             int prate;
             if (BoCastleManage)
             {
-                if (svMain.UserCastle.IsOurCastle(whocret.MyGuild))
+                if (M2Share.UserCastle.IsOurCastle(whocret.MyGuild))
                 {
                     prate = _MAX(60, HUtil32.MathRound(PriceRate * 0.8));
                     result = HUtil32.MathRound(price / 100 * prate);
@@ -329,8 +329,8 @@ namespace GameSvr
             int i;
             int _stdmode;
             int _shape;
-            string str1 = String.Empty;
-            string str2 = String.Empty;
+            string str1 = string.Empty;
+            string str2 = string.Empty;
             result = false;
             for (i = 0; i < DealGoods.Count; i++)
             {
@@ -367,9 +367,9 @@ namespace GameSvr
             for (var i = 0; i < fcount; i++)
             {
                 TUserItem pu = new TUserItem();
-                if (svMain.UserEngine.CopyToUserItemFromName(itemname, ref pu))
+                if (M2Share.UserEngine.CopyToUserItemFromName(itemname, ref pu))
                 {
-                    TStdItem ps = svMain.UserEngine.GetStdItem(pu.Index);
+                    TStdItem ps = M2Share.UserEngine.GetStdItem(pu.Index);
                     if (ps != null)
                     {
                         if (ps.OverlapItem >= 1)
@@ -437,7 +437,7 @@ namespace GameSvr
                     {
                         step = 3;
                         pp.ZenTime = HUtil32.GetTickCount();
-                        gindex = svMain.UserEngine.GetStdItemIndex(pp.GoodsName);
+                        gindex = M2Share.UserEngine.GetStdItemIndex(pp.GoodsName);
                         if (gindex >= 0)
                         {
                             step = 4;
@@ -495,7 +495,7 @@ namespace GameSvr
                         {
                             step = 11;
                             pp = (TMarketProduct)ProductList[k];
-                            gindex = svMain.UserEngine.GetStdItemIndex(pp.GoodsName);
+                            gindex = M2Share.UserEngine.GetStdItemIndex(pp.GoodsName);
                             if (l[0].Index == gindex)
                             {
                                 step = 12;
@@ -517,7 +517,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("Merchant RefillGoods Exception..Step=(" + step.ToString() + ")");
+                M2Share.MainOutMessage("Merchant RefillGoods Exception..Step=(" + step.ToString() + ")");
             }
         }
 
@@ -536,7 +536,7 @@ namespace GameSvr
             {
                 if (hum.UseItems[Grobal2.U_WEAPON].Index != 0)
                 {
-                    source = this.ChangeNpcSayTag(source, "<$USERWEAPON>", svMain.UserEngine.GetStdItemName(hum.UseItems[Grobal2.U_WEAPON].Index));
+                    source = this.ChangeNpcSayTag(source, "<$USERWEAPON>", M2Share.UserEngine.GetStdItemName(hum.UseItems[Grobal2.U_WEAPON].Index));
                 }
                 else
                 {
@@ -558,7 +558,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("Failure in saving upgradinglist - " + this.UserName);
+                M2Share.MainOutMessage("Failure in saving upgradinglist - " + this.UserName);
             }
         }
 
@@ -575,23 +575,21 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("Failure in loading upgradinglist - " + this.UserName);
+                M2Share.MainOutMessage("Failure in loading upgradinglist - " + this.UserName);
             }
         }
 
         private void VerifyUpgradeList()
         {
-            int i;
-            int old;
-            TUpgradeInfo pup;
-            double realdate;
-            old = 0;
-            for (i = UpgradingList.Count - 1; i >= 0; i--)
+            TUpgradeInfo pup = null;
+            double realdate = 0;
+            int old = 0;
+            for (var i = UpgradingList.Count - 1; i >= 0; i--)
             {
                 pup = UpgradingList[i];
                 if (pup != null)
                 {
-                    realdate = ((double)DateTime.Today) - ((double)pup.readydate);
+                    //realdate = ((double)DateTime.Today) - ((double)pup.readydate);
                     try
                     {
                         old = HUtil32.MathRound(realdate);
@@ -608,7 +606,7 @@ namespace GameSvr
                 }
                 else
                 {
-                    svMain.MainOutMessage("pup Is Nil... ");
+                    M2Share.MainOutMessage("pup Is Nil... ");
                 }
             }
         }
@@ -644,14 +642,14 @@ namespace GameSvr
             sumlist = new ArrayList();
             for (i = ilist.Count - 1; i >= 0; i--)
             {
-                if (svMain.UserEngine.GetStdItemName(ilist[i].Index) == svMain.__BlackStone)
+                if (M2Share.UserEngine.GetStdItemName(ilist[i].Index) == M2Share.__BlackStone)
                 {
                     sumlist.Add(HUtil32.MathRound(ilist[i].Dura / 1000));
                     if (dellist == null)
                     {
                         dellist = new ArrayList();
                     }
-                    dellist.Add(svMain.__BlackStone, ilist[i].MakeIndex as Object);
+                    //dellist.Add(svMain.__BlackStone, ilist[i].MakeIndex as Object);
                     Dispose(ilist[i]);
                     ilist.RemoveAt(i);
                 }
@@ -659,11 +657,11 @@ namespace GameSvr
                 {
                     if (M2Share.IsUpgradeWeaponStuff(ilist[i].Index))
                     {
-                        ps = svMain.UserEngine.GetStdItem(ilist[i].Index);
+                        ps = M2Share.UserEngine.GetStdItem(ilist[i].Index);
                         if (ps != null)
                         {
                             std = ps;
-                            svMain.ItemMan.GetUpgradeStdItem(ilist[i], ref std);
+                            M2Share.ItemMan.GetUpgradeStdItem(ilist[i], ref std);
                             d = 0;
                             s = 0;
                             m = 0;
@@ -723,8 +721,8 @@ namespace GameSvr
                             {
                                 dellist = new ArrayList();
                             }
-                            dellist.Add(ps.Name, ilist[i].MakeIndex as Object);
-                            svMain.AddUserLog("26\09" + hum.MapName + "\09" + hum.CX.ToString() + "\09" + hum.CY.ToString() + "\09" + hum.UserName + "\09" + svMain.UserEngine.GetStdItemName(ilist[i].Index) + "\09" + ilist[i].MakeIndex.ToString() + "\09" + "1\09" + this.ItemOptionToStr(ilist[i].Desc));
+                            //dellist.Add(ps.Name, ilist[i].MakeIndex as Object);
+                            //svMain.AddUserLog("26\09" + hum.MapName + "\09" + hum.CX.ToString() + "\09" + hum.CY.ToString() + "\09" + hum.UserName + "\09" + svMain.UserEngine.GetStdItemName(ilist[i].Index) + "\09" + ilist[i].MakeIndex.ToString() + "\09" + "1\09" + this.ItemOptionToStr(ilist[i].Desc));
                             Dispose(ilist[i]);
                             ilist.RemoveAt(i);
                         }
@@ -737,7 +735,7 @@ namespace GameSvr
                 {
                     if (((int)sumlist[k]) > ((int)sumlist[k - 1]))
                     {
-                       // sumlist.Exchange(k, k - 1);
+                        // sumlist.Exchange(k, k - 1);
                     }
                 }
             }
@@ -756,7 +754,7 @@ namespace GameSvr
             amc = (byte)(mctop + mctop / 5 + mcsec / 3);
             if (dellist != null)
             {
-              //  hum.SendMsg(hum, Grobal2.RM_DELITEMS, 0, (int)dellist, 0, 0, "");
+                //  hum.SendMsg(hum, Grobal2.RM_DELITEMS, 0, (int)dellist, 0, 0, "");
             }
             if (sumlist != null)
             {
@@ -784,7 +782,7 @@ namespace GameSvr
             {
                 // --------------------------------------
                 // 蜡聪农酒捞袍篮 力访 给该扁霸...
-                pstd = svMain.UserEngine.GetStdItem(hum.UseItems[Grobal2.U_WEAPON].Index);
+                pstd = M2Share.UserEngine.GetStdItem(hum.UseItems[Grobal2.U_WEAPON].Index);
                 if (pstd != null)
                 {
                     if (pstd.UniqueItem == 1)
@@ -797,14 +795,14 @@ namespace GameSvr
                 if (hum.Gold >= ObjNpc.UPGRADEWEAPONFEE)
                 {
                     // 捣捞 乐绰瘤
-                    if (hum.FindItemName(svMain.__BlackStone) != null)
+                    if (hum.FindItemName(M2Share.__BlackStone) != null)
                     {
                         // 孺枚阑 啊瘤绊 乐绰瘤
                         hum.DecGold(ObjNpc.UPGRADEWEAPONFEE);
                         if (BoCastleManage)
                         {
                             // 5%狼 技陛捞 叭腮促.
-                            svMain.UserCastle.PayTax(ObjNpc.UPGRADEWEAPONFEE);
+                            M2Share.UserCastle.PayTax(ObjNpc.UPGRADEWEAPONFEE);
                         }
                         hum.GoldChanged();
                         // 啊规俊 乐绰 酒捞袍阑 根顶 持绰促.
@@ -813,7 +811,7 @@ namespace GameSvr
                         pup.uitem = hum.UseItems[Grobal2.U_WEAPON];
                         // 肺弊巢辫
                         // 诀嘎_ +
-                        svMain.AddUserLog("25\09" + hum.MapName + "\09" + hum.CX.ToString() + "\09" + hum.CY.ToString() + "\09" + hum.UserName + "\09" + svMain.UserEngine.GetStdItemName(hum.UseItems[Grobal2.U_WEAPON].Index) + "\09" + hum.UseItems[Grobal2.U_WEAPON].MakeIndex.ToString() + "\09" + "1\09" + this.ItemOptionToStr(this.UseItems[Grobal2.U_WEAPON].Desc));
+                        M2Share.AddUserLog("25\09" + hum.MapName + "\09" + hum.CX.ToString() + "\09" + hum.CY.ToString() + "\09" + hum.UserName + "\09" + M2Share.UserEngine.GetStdItemName(hum.UseItems[Grobal2.U_WEAPON].Index) + "\09" + hum.UseItems[Grobal2.U_WEAPON].MakeIndex.ToString() + "\09" + "1\09" + this.ItemOptionToStr(this.UseItems[Grobal2.U_WEAPON].Desc));
                         hum.SendDelItem(hum.UseItems[Grobal2.U_WEAPON]);
                         // 努扼捞攫飘俊 绝绢柳芭 焊晨
                         hum.UseItems[Grobal2.U_WEAPON].Index = 0;
@@ -877,11 +875,11 @@ namespace GameSvr
                             // n := _MAX(3000, pup.uitem.DuraMax div 2);
                             if (pup.uitem.DuraMax > 3000)
                             {
-                                pup.uitem.DuraMax = (ushort)(pup.uitem.DuraMax - 3000);
+                                pup.uitem.DuraMax = (short)(pup.uitem.DuraMax - 3000);
                             }
                             else
                             {
-                                pup.uitem.DuraMax = (ushort)(pup.uitem.DuraMax / 2);
+                                pup.uitem.DuraMax = (short)(pup.uitem.DuraMax / 2);
                             }
                             if (pup.uitem.Dura > pup.uitem.DuraMax)
                             {
@@ -892,7 +890,7 @@ namespace GameSvr
                         case 9:
                             if (new System.Random(pup.durapoint).Next() < 6)
                             {
-                                pup.uitem.DuraMax = (ushort)_MAX(0, pup.uitem.DuraMax - 1000);
+                                pup.uitem.DuraMax = (short)_MAX(0, pup.uitem.DuraMax - 1000);
                             }
                             break;
                         // DURAMAX荐沥
@@ -903,15 +901,15 @@ namespace GameSvr
                             {
                                 // Modify the A .. B: 1 .. 4
                                 case 1:
-                                    pup.uitem.DuraMax = (ushort)(pup.uitem.DuraMax + 1000);
+                                    pup.uitem.DuraMax = (short)(pup.uitem.DuraMax + 1000);
                                     break;
                                 // Modify the A .. B: 5 .. 7
                                 case 5:
-                                    pup.uitem.DuraMax = (ushort)(pup.uitem.DuraMax + 2000);
+                                    pup.uitem.DuraMax = (short)(pup.uitem.DuraMax + 2000);
                                     break;
                                 // Modify the A .. B: 8 .. 255
                                 case 8:
-                                    pup.uitem.DuraMax = (ushort)(pup.uitem.DuraMax + 4000);
+                                    pup.uitem.DuraMax = (short)(pup.uitem.DuraMax + 4000);
                                     break;
                             }
                             break;
@@ -997,7 +995,7 @@ namespace GameSvr
                     Dispose(pup);
                     // 肺弊巢辫
                     // 诀茫_ +
-                    svMain.AddUserLog("24\09" + hum.MapName + "\09" + hum.CX.ToString() + "\09" + hum.CY.ToString() + "\09" + hum.UserName + "\09" + svMain.UserEngine.GetStdItemName(pu.Index) + "\09" + pu.MakeIndex.ToString() + "\09" + "1\09" + this.ItemOptionToStr(pu.Desc));
+                    M2Share.AddUserLog("24\09" + hum.MapName + "\09" + hum.CX.ToString() + "\09" + hum.CY.ToString() + "\09" + hum.UserName + "\09" + M2Share.UserEngine.GetStdItemName(pu.Index) + "\09" + pu.MakeIndex.ToString() + "\09" + "1\09" + this.ItemOptionToStr(pu.Desc));
                     hum.AddItem(pu);
                     hum.SendAddItem(pu);
                 }
@@ -1039,7 +1037,7 @@ namespace GameSvr
             {
                 goods = GoodsList[i];
                 pu = goods[0];
-                pstd = svMain.UserEngine.GetStdItem(pu.Index);
+                pstd = M2Share.UserEngine.GetStdItem(pu.Index);
                 if (pstd != null)
                 {
                     cg.Name = pstd.Name;
@@ -1119,22 +1117,22 @@ namespace GameSvr
             TUserItem pu;
             TStdItem pstd;
             ArrayList L;
-            string sMakeItemName = String.Empty;
+            string sMakeItemName = string.Empty;
             string sMakePrice;
             data = "";
             for (i = 0; i < GoodsList.Count; i++)
             {
                 L = (ArrayList)GoodsList[i];
                 pu = (TUserItem)L[0];
-                pstd = svMain.UserEngine.GetStdItem(pu.Index);
+                pstd = M2Share.UserEngine.GetStdItem(pu.Index);
                 if (pstd != null)
                 {
                     cg.Name = pstd.Name;
                     cg.Price = MAKEPRICE;
                     // GetSellPrice (GetPrice (pu.Index));//距父靛绰 厚侩
-                    for (j = 0; j < svMain.MakeItemList.Count; j++)
+                    for (j = 0; j < M2Share.MakeItemList.Count; j++)
                     {
-                        sMakePrice = HUtil32.GetValidStr3(svMain.MakeItemList[j], ref sMakeItemName, new string[] { ":" });
+                        sMakePrice = HUtil32.GetValidStr3(M2Share.MakeItemList[j], ref sMakeItemName, new string[] { ":" });
                         if (cg.Name == sMakeItemName)
                         {
                             cg.Price = HUtil32.Str_ToInt(sMakePrice, 0);
@@ -1165,29 +1163,29 @@ namespace GameSvr
             TUserItem pu;
             TStdItem pstd;
             ArrayList L;
-            string sMakeItemName = String.Empty;
+            string sMakeItemName = string.Empty;
             string sMakePrice;
             data = "";
             for (i = 0; i < GoodsList.Count; i++)
             {
                 // if i >= 12 then // MAKE FOOD
                 // break;
-                if (i >= HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[1], 0) - HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[0], 0))
+                if (i >= HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[1], 0) - HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[0], 0))
                 {
                     // MAKE FOOD
                     break;
                 }
                 L = (ArrayList)GoodsList[i];
                 pu = (TUserItem)L[0];
-                pstd = svMain.UserEngine.GetStdItem(pu.Index);
+                pstd = M2Share.UserEngine.GetStdItem(pu.Index);
                 if (pstd != null)
                 {
                     cg.Name = pstd.Name;
                     cg.Price = MAKEPRICE;
                     // GetSellPrice (GetPrice (pu.Index));//距父靛绰 厚侩
-                    for (j = 0; j < svMain.MakeItemList.Count; j++)
+                    for (j = 0; j < M2Share.MakeItemList.Count; j++)
                     {
-                        sMakePrice = HUtil32.GetValidStr3(svMain.MakeItemList[j], ref sMakeItemName, new string[] { ":" });
+                        sMakePrice = HUtil32.GetValidStr3(M2Share.MakeItemList[j], ref sMakeItemName, new string[] { ":" });
                         if (cg.Name == sMakeItemName)
                         {
                             cg.Price = HUtil32.Str_ToInt(sMakePrice, 0);
@@ -1219,29 +1217,29 @@ namespace GameSvr
             TUserItem pu;
             TStdItem pstd;
             ArrayList L;
-            string sMakeItemName = String.Empty;
+            string sMakeItemName = string.Empty;
             string sMakePrice;
             data = "";
-            for (i = HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[1], 0) - HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[0], 0); i < GoodsList.Count; i++)
+            for (i = HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[1], 0) - HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[0], 0); i < GoodsList.Count; i++)
             {
                 // if i >= 16 then // MAKE POTION
                 // break;
-                if (i >= HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[2], 0) - HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[0], 0))
+                if (i >= HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[2], 0) - HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[0], 0))
                 {
                     // MAKE FOOD
                     break;
                 }
                 L = (ArrayList)GoodsList[i];
                 pu = (TUserItem)L[0];
-                pstd = svMain.UserEngine.GetStdItem(pu.Index);
+                pstd = M2Share.UserEngine.GetStdItem(pu.Index);
                 if (pstd != null)
                 {
                     cg.Name = pstd.Name;
                     cg.Price = MAKEPRICE;
                     // GetSellPrice (GetPrice (pu.Index));//距父靛绰 厚侩
-                    for (j = 0; j < svMain.MakeItemList.Count; j++)
+                    for (j = 0; j < M2Share.MakeItemList.Count; j++)
                     {
-                        sMakePrice = HUtil32.GetValidStr3(svMain.MakeItemList[j], ref sMakeItemName, new string[] { ":" });
+                        sMakePrice = HUtil32.GetValidStr3(M2Share.MakeItemList[j], ref sMakeItemName, new string[] { ":" });
                         if (cg.Name == sMakeItemName)
                         {
                             cg.Price = HUtil32.Str_ToInt(sMakePrice, 0);
@@ -1273,29 +1271,29 @@ namespace GameSvr
             TUserItem pu;
             TStdItem pstd;
             ArrayList L;
-            string sMakeItemName = String.Empty;
+            string sMakeItemName = string.Empty;
             string sMakePrice;
             data = "";
-            for (i = HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[2], 0) - HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[0], 0); i < GoodsList.Count; i++)
+            for (i = HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[2], 0) - HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[0], 0); i < GoodsList.Count; i++)
             {
                 // if i >= 29 then // MAKE GEM
                 // break;
-                if (i >= HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[3], 0) - HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[0], 0))
+                if (i >= HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[3], 0) - HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[0], 0))
                 {
                     // MAKE FOOD
                     break;
                 }
                 L = (ArrayList)GoodsList[i];
                 pu = (TUserItem)L[0];
-                pstd = svMain.UserEngine.GetStdItem(pu.Index);
+                pstd = M2Share.UserEngine.GetStdItem(pu.Index);
                 if (pstd != null)
                 {
                     cg.Name = pstd.Name;
                     cg.Price = MAKEPRICE;
                     // GetSellPrice (GetPrice (pu.Index));//距父靛绰 厚侩
-                    for (j = 0; j < svMain.MakeItemList.Count; j++)
+                    for (j = 0; j < M2Share.MakeItemList.Count; j++)
                     {
-                        sMakePrice = HUtil32.GetValidStr3(svMain.MakeItemList[j], ref sMakeItemName, new string[] { ":" });
+                        sMakePrice = HUtil32.GetValidStr3(M2Share.MakeItemList[j], ref sMakeItemName, new string[] { ":" });
                         if (cg.Name == sMakeItemName)
                         {
                             cg.Price = HUtil32.Str_ToInt(sMakePrice, 0);
@@ -1326,25 +1324,25 @@ namespace GameSvr
             TUserItem pu;
             TStdItem pstd;
             ArrayList L;
-            string sMakeItemName = String.Empty;
+            string sMakeItemName = string.Empty;
             string sMakePrice;
             data = "";
-            for (i = HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[3], 0) - HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[0], 0); i < GoodsList.Count; i++)
+            for (i = HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[3], 0) - HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[0], 0); i < GoodsList.Count; i++)
             {
-                if (i >= HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[4], 0) - HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[0], 0))
+                if (i >= HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[4], 0) - HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[0], 0))
                 {
                     break;
                 }
                 L = (ArrayList)GoodsList[i];
                 pu = (TUserItem)L[0];
-                pstd = svMain.UserEngine.GetStdItem(pu.Index);
+                pstd = M2Share.UserEngine.GetStdItem(pu.Index);
                 if (pstd != null)
                 {
                     cg.Name = pstd.Name;
                     cg.Price = MAKEPRICE;
-                    for (j = 0; j < svMain.MakeItemList.Count; j++)
+                    for (j = 0; j < M2Share.MakeItemList.Count; j++)
                     {
-                        sMakePrice = HUtil32.GetValidStr3(svMain.MakeItemList[j], ref sMakeItemName, new string[] { ":" });
+                        sMakePrice = HUtil32.GetValidStr3(M2Share.MakeItemList[j], ref sMakeItemName, new string[] { ":" });
                         if (cg.Name == sMakeItemName)
                         {
                             cg.Price = HUtil32.Str_ToInt(sMakePrice, 0);
@@ -1373,27 +1371,27 @@ namespace GameSvr
             TUserItem pu;
             TStdItem pstd;
             ArrayList L;
-            string sMakeItemName = String.Empty;
+            string sMakeItemName = string.Empty;
             string sMakePrice;
             data = "";
-            for (i = HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[4], 0) - HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[0], 0); i < GoodsList.Count; i++)
+            for (i = HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[4], 0) - HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[0], 0); i < GoodsList.Count; i++)
             {
-                if (i >= HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[5], 0) - HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[0], 0))
+                if (i >= HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[5], 0) - HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[0], 0))
                 {
                     // MAKE STUFF
                     break;
                 }
                 L = (ArrayList)GoodsList[i];
                 pu = (TUserItem)L[0];
-                pstd = svMain.UserEngine.GetStdItem(pu.Index);
+                pstd = M2Share.UserEngine.GetStdItem(pu.Index);
                 if (pstd != null)
                 {
                     cg.Name = pstd.Name;
                     cg.Price = MAKEPRICE;
                     // GetSellPrice (GetPrice (pu.Index));//距父靛绰 厚侩
-                    for (j = 0; j < svMain.MakeItemList.Count; j++)
+                    for (j = 0; j < M2Share.MakeItemList.Count; j++)
                     {
-                        sMakePrice = HUtil32.GetValidStr3(svMain.MakeItemList[j], ref sMakeItemName, new string[] { ":" });
+                        sMakePrice = HUtil32.GetValidStr3(M2Share.MakeItemList[j], ref sMakeItemName, new string[] { ":" });
                         if (cg.Name == sMakeItemName)
                         {
                             cg.Price = HUtil32.Str_ToInt(sMakePrice, 0);
@@ -1425,22 +1423,22 @@ namespace GameSvr
             TUserItem pu;
             TStdItem pstd;
             ArrayList L;
-            string sMakeItemName = String.Empty;
+            string sMakeItemName = string.Empty;
             string sMakePrice;
             data = "";
-            for (i = HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[5], 0) - HUtil32.Str_ToInt((string)svMain.MakeItemIndexList[0], 0); i < GoodsList.Count; i++)
+            for (i = HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[5], 0) - HUtil32.Str_ToInt((string)M2Share.MakeItemIndexList[0], 0); i < GoodsList.Count; i++)
             {
                 L = (ArrayList)GoodsList[i];
                 pu = (TUserItem)L[0];
-                pstd = svMain.UserEngine.GetStdItem(pu.Index);
+                pstd = M2Share.UserEngine.GetStdItem(pu.Index);
                 if (pstd != null)
                 {
                     cg.Name = pstd.Name;
                     cg.Price = MAKEPRICE;
                     // GetSellPrice (GetPrice (pu.Index));//距父靛绰 厚侩
-                    for (j = 0; j < svMain.MakeItemList.Count; j++)
+                    for (j = 0; j < M2Share.MakeItemList.Count; j++)
                     {
-                        sMakePrice = HUtil32.GetValidStr3(svMain.MakeItemList[j], ref sMakeItemName, new string[] { ":" });
+                        sMakePrice = HUtil32.GetValidStr3(M2Share.MakeItemList[j], ref sMakeItemName, new string[] { ":" });
                         if (cg.Name == sMakeItemName)
                         {
                             cg.Price = HUtil32.Str_ToInt(sMakePrice, 0);
@@ -1465,12 +1463,12 @@ namespace GameSvr
         // /////////////////////////////////////////////////////////////
         public override void UserSelect(TCreature whocret, string selstr)
         {
-            string sel = String.Empty;
+            string sel = string.Empty;
             string body = string.Empty;
             try
             {
                 // 荤合己救俊 乐绰 惑痢篮 傍己傈 吝俊绰 拱扒阑 迫瘤 臼绰促.
-                if ((BoCastleManage && svMain.UserCastle.BoCastleUnderAttack) || whocret.Death)
+                if ((BoCastleManage && M2Share.UserCastle.BoCastleUnderAttack) || whocret.Death)
                 {
                 }
                 else
@@ -1781,7 +1779,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] TMerchant.UserSelect... ");
+                M2Share.MainOutMessage("[Exception] TMerchant.UserSelect... ");
             }
         }
 
@@ -1827,7 +1825,7 @@ namespace GameSvr
                 pu = new TUserItem();
                 // 2003/06/12 荤侩磊啊 迫篮 拱扒狼 郴备己篮 弥措郴备肺 荐沥窍咯
                 // 窖 啊拜俊 登混荐 绝档废 荐沥
-                pstd = svMain.UserEngine.GetStdItem(uitem.Index);
+                pstd = M2Share.UserEngine.GetStdItem(uitem.Index);
                 if (pstd != null)
                 {
                     // 棱惑牢狼榷阂,刀啊风狼 郴备甫 弥措肺 荐沥窍瘤 臼绰促(sonmg 2004/07/16)
@@ -1849,7 +1847,7 @@ namespace GameSvr
             bool result;
             TStdItem pstd;
             result = true;
-            pstd = svMain.UserEngine.GetStdItem(pu.Index);
+            pstd = M2Share.UserEngine.GetStdItem(pu.Index);
             if (pstd != null)
             {
                 if ((pstd.StdMode == 25) || (pstd.StdMode == 30))
@@ -1885,17 +1883,17 @@ namespace GameSvr
                     if (BoCastleManage)
                     {
                         // 5%狼 技陛捞 叭腮促.
-                        svMain.UserCastle.PayTax(buyprice);
+                        M2Share.UserCastle.PayTax(buyprice);
                     }
                     whocret.SendMsg(this, Grobal2.RM_USERSELLITEM_OK, 0, whocret.Gold, 0, 0, "");
                     // 惑前俊 眠啊
                     AddGoods(uitem);
                     // 肺弊巢辫
-                    pstd = svMain.UserEngine.GetStdItem(uitem.Index);
+                    pstd = M2Share.UserEngine.GetStdItem(uitem.Index);
                     if ((pstd != null) && (!M2Share.IsCheapStuff(pstd.StdMode)))
                     {
                         // 魄概_ +
-                        svMain.AddUserLog("10\09" + whocret.MapName + "\09" + whocret.CX.ToString() + "\09" + whocret.CY.ToString() + "\09" + whocret.UserName + "\09" + svMain.UserEngine.GetStdItemName(uitem.Index) + "\09" + uitem.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
+                        M2Share.AddUserLog("10\09" + whocret.MapName + "\09" + whocret.CX.ToString() + "\09" + whocret.CY.ToString() + "\09" + whocret.UserName + "\09" + M2Share.UserEngine.GetStdItemName(uitem.Index) + "\09" + uitem.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
                     }
                     result = true;
                 }
@@ -1922,7 +1920,7 @@ namespace GameSvr
             TStdItem pstd;
             result = false;
             buyprice = -1;
-            pstd = svMain.UserEngine.GetStdItem(uitem.Index);
+            pstd = M2Share.UserEngine.GetStdItem(uitem.Index);
             if (pstd != null)
             {
                 if (IsDealingItem(pstd.StdMode, pstd.Shape))
@@ -1941,14 +1939,14 @@ namespace GameSvr
                     if (BoCastleManage)
                     {
                         // 5%狼 技陛捞 叭腮促.
-                        svMain.UserCastle.PayTax(buyprice);
+                        M2Share.UserCastle.PayTax(buyprice);
                     }
                     whocret.SendMsg(this, Grobal2.RM_USERSELLCOUNTITEM_OK, 0, whocret.Gold, remain, sellcnt, "");
                     // 惑前俊 眠啊
                     // AddGoods (uitem);
                     // 肺弊巢辫
                     // 魄概_ +
-                    svMain.AddUserLog("10\09" + whocret.MapName + "\09" + whocret.CX.ToString() + "\09" + whocret.CY.ToString() + "\09" + whocret.UserName + "\09" + svMain.UserEngine.GetStdItemName(uitem.Index) + "\09" + uitem.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
+                    M2Share.AddUserLog("10\09" + whocret.MapName + "\09" + whocret.CX.ToString() + "\09" + whocret.CY.ToString() + "\09" + whocret.UserName + "\09" + M2Share.UserEngine.GetStdItemName(uitem.Index) + "\09" + uitem.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
                     result = true;
                 }
                 else
@@ -2019,7 +2017,7 @@ namespace GameSvr
                 whocret.SendMsg(this, Grobal2.RM_USERREPAIRITEM_FAIL, 0, 0, 0, 0, "");
                 return result;
             }
-            pstd = svMain.UserEngine.GetStdItem(puitem.Index);
+            pstd = M2Share.UserEngine.GetStdItem(puitem.Index);
             if (pstd == null)
             {
                 return result;
@@ -2031,14 +2029,14 @@ namespace GameSvr
                 price = price * 3;
                 if ((pstd.StdMode != 5) && (pstd.StdMode != 6))
                 {
-                    svMain.MainOutMessage("Special Repair(X): " + whocret.UserName + " - " + pstd.Name);
+                    M2Share.MainOutMessage("Special Repair(X): " + whocret.UserName + " - " + pstd.Name);
                     whocret.SendMsg(this, Grobal2.RM_USERREPAIRITEM_FAIL, 0, 0, 0, 0, "");
                     return result;
                     // gadget:公扁啊 酒聪搁 漂荐荐府 绝澜.
                 }
                 else
                 {
-                    svMain.MainOutMessage("Repair: " + whocret.UserName + "(" + whocret.MapName + ":" + whocret.CX.ToString() + "," + whocret.CY.ToString() + ")" + " - " + pstd.Name);
+                    M2Share.MainOutMessage("Repair: " + whocret.UserName + "(" + whocret.MapName + ":" + whocret.CX.ToString() + "," + whocret.CY.ToString() + ")" + " - " + pstd.Name);
                 }
             }
             if (this.CanTotalRepair && (whocret.LatestNpcCmd == "@t_repair"))
@@ -2062,10 +2060,10 @@ namespace GameSvr
                     case 52:
                     case 54:
                         // 例措荐府 捞亥飘 2003-06-26
-                        svMain.MainOutMessage("Perfect Repair: " + whocret.UserName + "(" + whocret.MapName + ":" + whocret.CX.ToString() + "," + whocret.CY.ToString() + ")" + " - " + pstd.Name);
+                        M2Share.MainOutMessage("Perfect Repair: " + whocret.UserName + "(" + whocret.MapName + ":" + whocret.CX.ToString() + "," + whocret.CY.ToString() + ")" + " - " + pstd.Name);
                         break;
                     default:
-                        svMain.MainOutMessage("Perfect Repair(X): " + whocret.UserName + " - " + pstd.Name);
+                        M2Share.MainOutMessage("Perfect Repair(X): " + whocret.UserName + " - " + pstd.Name);
                         whocret.SendMsg(this, Grobal2.RM_USERREPAIRITEM_FAIL, 0, 0, 0, 0, "");
                         return result;
                         break;
@@ -2093,7 +2091,7 @@ namespace GameSvr
                     if (BoCastleManage)
                     {
                         // 5%狼 技陛捞 叭腮促.
-                        svMain.UserCastle.PayTax(cost);
+                        M2Share.UserCastle.PayTax(cost);
                     }
                     if ((this.CanSpecialRepair && (whocret.LatestNpcCmd == "@s_repair")) || (this.CanTotalRepair && (whocret.LatestNpcCmd == "@t_repair")))
                     {
@@ -2111,7 +2109,7 @@ namespace GameSvr
                     else
                     {
                         // 老馆 荐府, 郴备己捞 腹捞 距秦咙
-                        puitem.DuraMax = (ushort)(puitem.DuraMax - _MAX(0, puitem.DuraMax - puitem.Dura) / 30);
+                        puitem.DuraMax = (short)(puitem.DuraMax - _MAX(0, puitem.DuraMax - puitem.Dura) / 30);
                         // DURAMAX荐沥
                         puitem.Dura = puitem.DuraMax;
                         whocret.SendMsg(this, Grobal2.RM_USERREPAIRITEM_OK, 0, whocret.Gold, puitem.Dura, puitem.DuraMax, "");
@@ -2121,7 +2119,7 @@ namespace GameSvr
                     result = true;
                     // 荐府 肺弊 巢辫
                     // 荐府_ +
-                    svMain.AddUserLog("36\09" + whocret.MapName + "\09" + cost.ToString() + "\09" + whocret.Gold.ToString() + "\09" + whocret.UserName + "\09" + puitem.DuraMax.ToString() + "\09" + puitem.MakeIndex.ToString() + "\09" + repair_type.ToString() + "\09" + "0");
+                    M2Share.AddUserLog("36\09" + whocret.MapName + "\09" + cost.ToString() + "\09" + whocret.Gold.ToString() + "\09" + whocret.UserName + "\09" + puitem.DuraMax.ToString() + "\09" + puitem.MakeIndex.ToString() + "\09" + repair_type.ToString() + "\09" + "0");
                 }
                 else
                 {
@@ -2165,7 +2163,7 @@ namespace GameSvr
                 // 拱扒阑 救颇绰 啊霸
                 list = (ArrayList)GoodsList[i];
                 pu = (TUserItem)list[0];
-                pstd = svMain.UserEngine.GetStdItem(pu.Index);
+                pstd = M2Share.UserEngine.GetStdItem(pu.Index);
                 if (pstd != null)
                 {
                     // 墨款飘酒捞袍
@@ -2195,7 +2193,7 @@ namespace GameSvr
                                     {
                                         if (pstd.OverlapItem >= 1)
                                         {
-                                            pu.Dura = (ushort)_MIN(1000, BuyCount);
+                                            pu.Dura = (short)_MIN(1000, BuyCount);
                                         }
                                         if (pstd.OverlapItem >= 1)
                                         {
@@ -2230,10 +2228,10 @@ namespace GameSvr
                                                 whocret.DecGold(sellprice);
                                                 if (BoCastleManage)
                                                 {
-                                                    svMain.UserCastle.PayTax(sellprice);
+                                                    M2Share.UserCastle.PayTax(sellprice);
                                                 }
                                                 whocret.SendAddItem(pu);
-                                                svMain.AddUserLog("9\09" + whocret.MapName + "\09" + whocret.CX.ToString() + "\09" + whocret.CY.ToString() + "\09" + whocret.UserName + "\09" + svMain.UserEngine.GetStdItemName(pu.Index) + "\09" + pu.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
+                                                M2Share.AddUserLog("9\09" + whocret.MapName + "\09" + whocret.CX.ToString() + "\09" + whocret.CY.ToString() + "\09" + whocret.UserName + "\09" + M2Share.UserEngine.GetStdItemName(pu.Index) + "\09" + pu.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
                                                 list.RemoveAt(k);
                                                 if (list.Count == 0)
                                                 {
@@ -2294,7 +2292,7 @@ namespace GameSvr
             {
                 list = (ArrayList)GoodsList[i];
                 pu = (TUserItem)list[0];
-                pstd = svMain.UserEngine.GetStdItem(pu.Index);
+                pstd = M2Share.UserEngine.GetStdItem(pu.Index);
                 if (pstd != null)
                 {
                     if (pstd.Name == itmname)
@@ -2308,11 +2306,11 @@ namespace GameSvr
                             pu = (TUserItem)list[k];
                             // citem.S := pstd^;
                             std = pstd;
-                            svMain.ItemMan.GetUpgradeStdItem(pu, ref std);
+                            M2Share.ItemMan.GetUpgradeStdItem(pu, ref std);
                             //Move(std, citem.S, sizeof(TStdItem));
                             //FillChar(citem.Desc, sizeof(citem.Desc), '\0');
                             citem.Dura = pu.Dura;
-                            citem.DuraMax = (ushort)GetSellPrice((TUserHuman)whocret, GetGoodsPrice(pu));
+                            citem.DuraMax = (short)GetSellPrice((TUserHuman)whocret, GetGoodsPrice(pu));
                             citem.MakeIndex = pu.MakeIndex;
                             //FillChar(citem.Desc, sizeof(citem.Desc), '\0');
                             //Move(pu.Desc, citem.Desc, sizeof(pu.Desc));
@@ -2334,14 +2332,7 @@ namespace GameSvr
         {
             int result;
             List<string> list;
-            int k;
-            int i;
-            int sourcecount;
-            string sourcename;
             int condition;
-            ArrayList dellist;
-            TUserItem pu;
-            TStdItem ps;
             condition = ObjNpc.COND_FAILURE;
             list = M2Share.GetMakeItemCondition(itemname, ref iPrice);
             if (hum.Gold < iPrice)
@@ -2349,94 +2340,94 @@ namespace GameSvr
                 result = ObjNpc.COND_NOMONEY;
                 return result;
             }
-            if (list != null)
-            {
-                condition = ObjNpc.COND_SUCCESS;
-                for (k = 0; k < list.Count; k++)
-                {
-                    sourcename = list[k];
-                    sourcecount = (int)list.Values[k];
-                    for (i = 0; i < hum.ItemList.Count; i++)
-                    {
-                        pu = hum.ItemList[i];
-                        if (sourcename == svMain.UserEngine.GetStdItemName(pu.Index))
-                        {
-                            ps = svMain.UserEngine.GetStdItem(pu.Index);
-                            if (ps != null)
-                            {
-                                if (ps.OverlapItem >= 1)
-                                {
-                                    sourcecount = sourcecount - _MIN(pu.Dura, sourcecount);
-                                }
-                                else
-                                {
-                                    sourcecount -= 1;
-                                }
-                            }
-                        }
-                    }
-                    if (sourcecount > 0)
-                    {
-                        condition = ObjNpc.COND_FAILURE;
-                        break;
-                    }
-                }
-                if (condition == ObjNpc.COND_SUCCESS)
-                {
-                    dellist = null;
-                    for (k = 0; k < list.Count; k++)
-                    {
-                        sourcename = list[k];
-                        sourcecount = (int)list.Values[k];
-                        for (i = hum.ItemList.Count - 1; i >= 0; i--)
-                        {
-                            pu = hum.ItemList[i];
-                            if (sourcecount > 0)
-                            {
-                                if (sourcename == svMain.UserEngine.GetStdItemName(pu.Index))
-                                {
-                                    ps = svMain.UserEngine.GetStdItem(pu.Index);
-                                    if (ps != null)
-                                    {
-                                        if (ps.OverlapItem >= 1)
-                                        {
-                                            if (pu.Dura < ((int)list.Values[k]))
-                                            {
-                                                pu.Dura = 0;
-                                            }
-                                            else
-                                            {
-                                                pu.Dura = pu.Dura - ((int)list.Values[k]);
-                                            }
-                                            if (pu.Dura > 0)
-                                            {
-                                                hum.SendMsg(this, Grobal2.RM_COUNTERITEMCHANGE, 0, pu.MakeIndex, pu.Dura, 0, ps.Name);
-                                                continue;
-                                            }
-                                        }
-                                        if (dellist == null)
-                                        {
-                                            dellist = new ArrayList();
-                                        }
-                                        dellist.Add(sourcename, hum.ItemList[i].MakeIndex as Object);
-                                        Dispose(hum.ItemList[i]);
-                                        hum.ItemList.RemoveAt(i);
-                                        sourcecount -= 1;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
-                    if (dellist != null)
-                    {
-                        hum.SendMsg(this, Grobal2.RM_DELITEMS, 0, (int)dellist, 0, 0, "");
-                    }
-                }
-            }
+            //if (list != null)
+            //{
+            //    condition = ObjNpc.COND_SUCCESS;
+            //    for (k = 0; k < list.Count; k++)
+            //    {
+            //        sourcename = list[k];
+            //        sourcecount = (int)list.Values[k];
+            //        for (i = 0; i < hum.ItemList.Count; i++)
+            //        {
+            //            pu = hum.ItemList[i];
+            //            if (sourcename == svMain.UserEngine.GetStdItemName(pu.Index))
+            //            {
+            //                ps = svMain.UserEngine.GetStdItem(pu.Index);
+            //                if (ps != null)
+            //                {
+            //                    if (ps.OverlapItem >= 1)
+            //                    {
+            //                        sourcecount = sourcecount - _MIN(pu.Dura, sourcecount);
+            //                    }
+            //                    else
+            //                    {
+            //                        sourcecount -= 1;
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        if (sourcecount > 0)
+            //        {
+            //            condition = ObjNpc.COND_FAILURE;
+            //            break;
+            //        }
+            //    }
+            //    if (condition == ObjNpc.COND_SUCCESS)
+            //    {
+            //        dellist = null;
+            //        for (k = 0; k < list.Count; k++)
+            //        {
+            //            sourcename = list[k];
+            //            sourcecount = (int)list.Values[k];
+            //            for (i = hum.ItemList.Count - 1; i >= 0; i--)
+            //            {
+            //                pu = hum.ItemList[i];
+            //                if (sourcecount > 0)
+            //                {
+            //                    if (sourcename == svMain.UserEngine.GetStdItemName(pu.Index))
+            //                    {
+            //                        ps = svMain.UserEngine.GetStdItem(pu.Index);
+            //                        if (ps != null)
+            //                        {
+            //                            if (ps.OverlapItem >= 1)
+            //                            {
+            //                                if (pu.Dura < ((int)list.Values[k]))
+            //                                {
+            //                                    pu.Dura = 0;
+            //                                }
+            //                                else
+            //                                {
+            //                                    pu.Dura = pu.Dura - ((int)list.Values[k]);
+            //                                }
+            //                                if (pu.Dura > 0)
+            //                                {
+            //                                    hum.SendMsg(this, Grobal2.RM_COUNTERITEMCHANGE, 0, pu.MakeIndex, pu.Dura, 0, ps.Name);
+            //                                    continue;
+            //                                }
+            //                            }
+            //                            if (dellist == null)
+            //                            {
+            //                                dellist = new ArrayList();
+            //                            }
+            //                            dellist.Add(sourcename, hum.ItemList[i].MakeIndex as Object);
+            //                            Dispose(hum.ItemList[i]);
+            //                            hum.ItemList.RemoveAt(i);
+            //                            sourcecount -= 1;
+            //                        }
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    break;
+            //                }
+            //            }
+            //        }
+            //        if (dellist != null)
+            //        {
+            //            hum.SendMsg(this, Grobal2.RM_DELITEMS, 0, (int)dellist, 0, 0, "");
+            //        }
+            //    }
+            //}
             result = condition;
             return result;
         }
@@ -2464,7 +2455,7 @@ namespace GameSvr
                 }
                 list = (ArrayList)GoodsList[i];
                 pu = (TUserItem)list[0];
-                pstd = svMain.UserEngine.GetStdItem(pu.Index);
+                pstd = M2Share.UserEngine.GetStdItem(pu.Index);
                 if (pstd != null)
                 {
                     if (pstd.Name == itmname)
@@ -2476,7 +2467,7 @@ namespace GameSvr
                             if (iCheckResult == ObjNpc.COND_SUCCESS)
                             {
                                 newpu = new TUserItem();
-                                svMain.UserEngine.CopyToUserItemFromName(itmname, ref newpu);
+                                M2Share.UserEngine.CopyToUserItemFromName(itmname, ref newpu);
                                 if (whocret.AddItem(newpu))
                                 {
                                     // whocret.Gold := whocret.Gold - iMakePrice;
@@ -2485,7 +2476,7 @@ namespace GameSvr
                                     // 父甸扁 己傍...
                                     // 肺弊巢辫
                                     // 力累_
-                                    svMain.AddUserLog("2\09" + whocret.MapName + "\09" + whocret.CX.ToString() + "\09" + whocret.CY.ToString() + "\09" + whocret.UserName + "\09" + svMain.UserEngine.GetStdItemName(newpu.Index) + "\09" + newpu.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
+                                    M2Share.AddUserLog("2\09" + whocret.MapName + "\09" + whocret.CX.ToString() + "\09" + whocret.CY.ToString() + "\09" + whocret.UserName + "\09" + M2Share.UserEngine.GetStdItemName(newpu.Index) + "\09" + newpu.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
                                     rcode = 0;
                                 }
                                 else
@@ -2528,7 +2519,7 @@ namespace GameSvr
             TUserItem pu;
             TUserItem newpu;
             TStdItem pstd;
-            string sMakeItemName = String.Empty;
+            string sMakeItemName = string.Empty;
             string[] sItemMakeIndex = new string[ObjNpc.MAX_SOURCECNT + 1];
             string[] sItemName = new string[ObjNpc.MAX_SOURCECNT + 1];
             string[] sItemCount = new string[ObjNpc.MAX_SOURCECNT + 1];
@@ -2565,7 +2556,7 @@ namespace GameSvr
                     }
                     list = (ArrayList)GoodsList[i];
                     pu = (TUserItem)list[0];
-                    pstd = svMain.UserEngine.GetStdItem(pu.Index);
+                    pstd = M2Share.UserEngine.GetStdItem(pu.Index);
                     if (pstd != null)
                     {
                         if (pstd.Name == sMakeItemName)
@@ -2579,7 +2570,7 @@ namespace GameSvr
                                     for (j = 0; j < iMakeCount; j++)
                                     {
                                         newpu = new TUserItem();
-                                        svMain.UserEngine.CopyToUserItemFromName(sMakeItemName, ref newpu);
+                                        M2Share.UserEngine.CopyToUserItemFromName(sMakeItemName, ref newpu);
                                         if (whocret.AddItem(newpu))
                                         {
                                             // whocret.Gold := whocret.Gold - iMakePrice;
@@ -2594,7 +2585,7 @@ namespace GameSvr
                                             // + ', ' + sItemName[5] + ', ' + sItemName[6] );
                                             // 肺弊巢辫
                                             // 力累_
-                                            svMain.AddUserLog("2\09" + whocret.MapName + "\09" + whocret.CX.ToString() + "\09" + whocret.CY.ToString() + "\09" + whocret.UserName + "\09" + svMain.UserEngine.GetStdItemName(newpu.Index) + "\09" + newpu.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
+                                            M2Share.AddUserLog("2\09" + whocret.MapName + "\09" + whocret.CX.ToString() + "\09" + whocret.CY.ToString() + "\09" + whocret.UserName + "\09" + M2Share.UserEngine.GetStdItemName(newpu.Index) + "\09" + newpu.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
                                             rcode = 0;
                                         }
                                         else
@@ -2612,7 +2603,7 @@ namespace GameSvr
                                     whocret.GoldChanged();
                                     // 肺弊巢辫
                                     // 力累_角菩
-                                    svMain.AddUserLog("2\09" + whocret.MapName + "\09" + whocret.CX.ToString() + "\09" + whocret.CY.ToString() + "\09" + whocret.UserName + "\09" + "FAIL\09" + "0\09" + "1\09" + this.UserName);
+                                    M2Share.AddUserLog("2\09" + whocret.MapName + "\09" + whocret.CX.ToString() + "\09" + whocret.CY.ToString() + "\09" + whocret.UserName + "\09" + "FAIL\09" + "0\09" + "1\09" + this.UserName);
                                     rcode = 5;
                                 }
                                 else if (iCheckResult == ObjNpc.COND_MINERALFAIL)
@@ -2646,7 +2637,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] TMerchant.UserManufactureItem");
+                M2Share.MainOutMessage("[Exception] TMerchant.UserManufactureItem");
             }
         }
 
@@ -2689,11 +2680,11 @@ namespace GameSvr
             int k;
             int i;
             int j;
-            int icnt;
-            int sourcecount;
-            int counteritmcount;
-            int itemp;
-            int sourcemindex;
+            int icnt = 0;
+            int sourcecount = 0;
+            int counteritmcount = 0;
+            int itemp = 0;
+            int sourcemindex = 0;
             string sourcename;
             int condition;
             ArrayList dellist;
@@ -2742,7 +2733,7 @@ namespace GameSvr
             {
                 if (list.Count > ObjNpc.MAX_SOURCECNT)
                 {
-                    svMain.MainOutMessage("[Caution!] list.Count Overflow in TMerchant.UserManufactureItem");
+                    M2Share.MainOutMessage("[Caution!] list.Count Overflow in TMerchant.UserManufactureItem");
                 }
                 condition = ObjNpc.COND_SUCCESS;
                 for (j = 0; j < list.Count; j++)
@@ -2768,9 +2759,9 @@ namespace GameSvr
                     for (i = 0; i < hum.ItemList.Count; i++)
                     {
                         pu = hum.ItemList[i];
-                        if (sItemName[k] == svMain.UserEngine.GetStdItemName(pu.Index))
+                        if (sItemName[k] == M2Share.UserEngine.GetStdItemName(pu.Index))
                         {
-                            ps = svMain.UserEngine.GetStdItem(pu.Index);
+                            ps = M2Share.UserEngine.GetStdItem(pu.Index);
                             if (ps != null)
                             {
                                 if (ps.OverlapItem >= 1)
@@ -2925,7 +2916,7 @@ namespace GameSvr
                                                 else
                                                 {
                                                     // 荐龋籍 捞抚捞 捞惑窍促搁 Error : 犬牢秦 毫具窃.
-                                                    svMain.MainOutMessage("[Caution!] TMerchant.UserManufactureItem iGuardStoneGrade = GSG_ERROR");
+                                                    M2Share.MainOutMessage("[Caution!] TMerchant.UserManufactureItem iGuardStoneGrade = GSG_ERROR");
                                                 }
                                             }
                                         }
@@ -2987,19 +2978,18 @@ namespace GameSvr
                     checkcount = list.Count;
                     for (k = 0; k < list.Count; k++)
                     {
-                        // 货肺款 List
                         sourcename = sNewName[k];
                         sourcecount = HUtil32.Str_ToInt(sNewCount[k], 0);
-                        if ((sourcename == list[k]) && (sourcecount >= ((int)list[k])))
-                        {
-                            iListDoubleCount[k] = sourcecount / ((int)list[k]);
-                            checkcount -= 1;
-                        }
-                        else if (((list[k].ToUpper() == strPendant) || (list[k].ToUpper() == strGuardStone) || (list[k].ToUpper() == strGuardStone15) || (list[k].ToUpper() == strGuardStoneXLHigher)) && (sourcecount >= ((int)list.Values[k])))
-                        {
-                            iListDoubleCount[k] = sourcecount / ((int)list[k]);
-                            checkcount -= 1;
-                        }
+                        //if ((sourcename == list[k]) && (sourcecount >= ((int)list[k])))
+                        //{
+                        //    iListDoubleCount[k] = sourcecount / ((int)list[k]);
+                        //    checkcount -= 1;
+                        //}
+                        //else if (((list[k].ToUpper() == strPendant) || (list[k].ToUpper() == strGuardStone) || (list[k].ToUpper() == strGuardStone15) || (list[k].ToUpper() == strGuardStoneXLHigher)) && (sourcecount >= ((int)list.Values[k])))
+                        //{
+                        //    iListDoubleCount[k] = sourcecount / ((int)list[k]);
+                        //    checkcount -= 1;
+                        //}
                     }
                     if (checkcount > 0)
                     {
@@ -3039,16 +3029,16 @@ namespace GameSvr
                         {
                             sourcemindex = HUtil32.Str_ToInt(sNewMIndex[k], 0);
                             sourcename = sNewName[k];
-                            sourcecount = (int)list.Values[k];
-                            counteritmcount = (int)list.Values[k];
+                            //sourcecount = (int)list.Values[k];
+                            //counteritmcount = (int)list.Values[k];
                             for (i = hum.ItemList.Count - 1; i >= 0; i--)
                             {
                                 pu = hum.ItemList[i];
                                 if (sourcecount > 0)
                                 {
-                                    if (sourcename == svMain.UserEngine.GetStdItemName(pu.Index))
+                                    if (sourcename == M2Share.UserEngine.GetStdItemName(pu.Index))
                                     {
-                                        ps = svMain.UserEngine.GetStdItem(pu.Index);
+                                        ps = M2Share.UserEngine.GetStdItem(pu.Index);
                                         if (ps != null)
                                         {
                                             if (ps.OverlapItem >= 1)
@@ -3062,7 +3052,7 @@ namespace GameSvr
                                                 {
                                                     itemp = counteritmcount;
                                                     counteritmcount = _MAX(0, itemp - pu.Dura);
-                                                    pu.Dura = (ushort)(pu.Dura - itemp);
+                                                    pu.Dura = (short)(pu.Dura - itemp);
                                                 }
                                                 if (pu.Dura > 0)
                                                 {
@@ -3093,9 +3083,9 @@ namespace GameSvr
                                             {
                                                 dellist = new ArrayList();
                                             }
-                                            delitemname = svMain.UserEngine.GetStdItemName(pu.Index);
-                                            dellist.Add(delitemname, hum.ItemList[i].MakeIndex as Object);
-                                            svMain.AddUserLog("44\09" + hum.MapName + "\09" + hum.CX.ToString() + "\09" + hum.CY.ToString() + "\09" + hum.UserName + "\09" + delitemname + "\09" + hum.ItemList[i].MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
+                                            delitemname = M2Share.UserEngine.GetStdItemName(pu.Index);
+                                            //dellist.Add(delitemname, hum.ItemList[i].MakeIndex as Object);
+                                            M2Share.AddUserLog("44\09" + hum.MapName + "\09" + hum.CX.ToString() + "\09" + hum.CY.ToString() + "\09" + hum.UserName + "\09" + delitemname + "\09" + hum.ItemList[i].MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
                                             Dispose(hum.ItemList[i]);
                                             hum.ItemList.RemoveAt(i);
                                             sourcecount -= 1;
@@ -3111,7 +3101,7 @@ namespace GameSvr
                     }
                     if (dellist != null)
                     {
-                        hum.SendMsg(this, Grobal2.RM_DELITEMS, 0, (int)dellist, 0, 0, "");
+                        //hum.SendMsg(this, Grobal2.RM_DELITEMS, 0, (int)dellist, 0, 0, "");
                     }
                     if (iRequiredGuardStoneGrade > 0)
                     {
@@ -3201,7 +3191,7 @@ namespace GameSvr
             }
             if (condition == ObjNpc.COND_SUCCESS)
             {
-                svMain.MainOutMessage("[Manufacture Success] " + hum.UserName + " " + itemname + "(" + iMakeCount.ToString() + ")" + " " + "=> Deleted Items:" + sNewName[0] + ", " + sNewName[1] + ", " + sNewName[2] + ", " + sNewName[3] + ", " + sNewName[4] + ", " + sNewName[5] + " " + "BodyLuck:" + Convert.ToString(hum.BodyLuck) + " - PKPoint:" + Convert.ToString(hum.PlayerKillingPoint) + " / 250 = " + Convert.ToString(fTemporary) + ", Prob.Manufacture Gem:" + iProbability.ToString());
+                M2Share.MainOutMessage("[Manufacture Success] " + hum.UserName + " " + itemname + "(" + iMakeCount.ToString() + ")" + " " + "=> Deleted Items:" + sNewName[0] + ", " + sNewName[1] + ", " + sNewName[2] + ", " + sNewName[3] + ", " + sNewName[4] + ", " + sNewName[5] + " " + "BodyLuck:" + Convert.ToString(hum.BodyLuck) + " - PKPoint:" + Convert.ToString(hum.PlayerKillingPoint) + " / 250 = " + Convert.ToString(fTemporary) + ", Prob.Manufacture Gem:" + iProbability.ToString());
             }
             result = condition;
             return result;
@@ -3213,7 +3203,7 @@ namespace GameSvr
             {
                 case Grobal2.USERMARKET_MODE_BUY:
                 case Grobal2.USERMARKET_MODE_INQUIRY:
-                    hum.RequireLoadUserMarket(svMain.ServerName + "_" + this.UserName, ItemType, UserMode, "", "");
+                    hum.RequireLoadUserMarket(M2Share.ServerName + "_" + this.UserName, ItemType, UserMode, "", "");
                     break;
                 case Grobal2.USERMARKET_MODE_SELL:
                     hum.SendUserMarketSellReady(this);
@@ -3262,7 +3252,7 @@ namespace GameSvr
                 {
                     this.SendRefMsg(Grobal2.RM_HIT, this.Dir, this.CX, this.CY, 0, "");
                 }
-                if (BoCastleManage && svMain.UserCastle.BoCastleUnderAttack)
+                if (BoCastleManage && M2Share.UserCastle.BoCastleUnderAttack)
                 {
                     flag = 5;
                     if (!this.HideMode)
@@ -3286,7 +3276,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] Merchant.Run (" + flag.ToString() + ") " + MarketName + "-" + this.MapName);
+                M2Share.MainOutMessage("[Exception] Merchant.Run (" + flag.ToString() + ") " + MarketName + "-" + this.MapName);
             }
             base.Run();
         }

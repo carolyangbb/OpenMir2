@@ -65,13 +65,13 @@ namespace GameSvr
                                         {
                                             BoRecalc = true;
                                             cret.StatusArr[Grobal2.STATE_DEFENCEUP] = 8;
-                                            cret.StatusTimes[Grobal2.STATE_DEFENCEUP]  =  HUtil32.GetTickCount();
+                                            cret.StatusTimes[Grobal2.STATE_DEFENCEUP] = HUtil32.GetTickCount();
                                         }
                                         if (cret.StatusArr[Grobal2.STATE_MAGDEFENCEUP] == 0)
                                         {
                                             BoRecalc = true;
                                             cret.StatusArr[Grobal2.STATE_MAGDEFENCEUP] = 8;
-                                            cret.StatusTimes[Grobal2.STATE_MAGDEFENCEUP]  =  HUtil32.GetTickCount();
+                                            cret.StatusTimes[Grobal2.STATE_MAGDEFENCEUP] = HUtil32.GetTickCount();
                                         }
                                     }
                                     if (BoRecalc)

@@ -8,8 +8,7 @@ namespace GameSvr
     {
         private bool bofirst = false;
         private readonly ArrayList ChildList = null;
-        // ==============================================================================
-        //Constructor  Create()
+
         public TDragon() : base()
         {
             bofirst = true;
@@ -20,7 +19,7 @@ namespace GameSvr
             this.BoDontMove = true;
             ChildList = new ArrayList();
         }
-        //@ Destructor  Destroy()
+
         ~TDragon()
         {
             TCreature mon;
@@ -35,8 +34,8 @@ namespace GameSvr
                 }
                 ChildList.Free();
             }
-            base.Destroy();
         }
+
         public override void RecalcAbilitys()
         {
             base.RecalcAbilitys();
@@ -46,25 +45,20 @@ namespace GameSvr
         protected void ResetLevel()
         {
             int[,] bodypos = { { 0, -5 }, { 1, -5 }, { -1, -4 }, { 0, -4 }, { 1, -4 }, { 2, -4 }, { -2, -3 }, { -1, -3 }, { 0, -3 }, { 1, -3 }, { 2, -3 }, { -3, -2 }, { -2, -2 }, { -1, -3 }, { 0, -2 }, { 1, -2 }, { 2, -2 }, { -3, -1 }, { -2, -1 }, { -1, -1 }, { 0, -1 }, { 1, -1 }, { 2, -1 }, { -3, 0 }, { -2, 0 }, { -1, 0 }, { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { -2, 1 }, { -1, 1 }, { 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { -1, 2 }, { 0, 2 }, { 1, 2 }, { 2, 2 }, { 0, 3 }, { 1, 3 } };
-            TCreature mon;
-            int i;
-            if (this.PEnvir != null)
-            {
-                for (i = 0; i <= 41; i++)
-                {
-                    if ((bodypos[i][0] != 0) || (bodypos[i][1] != 0))
-                    {
-                        // 颇玫付锋个捞 00
-                        mon = svMain.UserEngine.AddCreatureSysop(this.PEnvir.MapName, this.CX + bodypos[i][0], this.CY + bodypos[i][1], "00");
-                        if (mon != null)
-                        {
-                            ChildList.Add(mon);
-                        }
-                    }
-                    // if  i <> cx
-                }
-                // for i
-            }
+            //if (this.PEnvir != null)
+            //{
+            //    for (var i = 0; i <= 41; i++)
+            //    {
+            //        if ((bodypos[i][0] != 0) || (bodypos[i][1] != 0))
+            //        {
+            //            mon = svMain.UserEngine.AddCreatureSysop(this.PEnvir.MapName, this.CX + bodypos[i][0], this.CY + bodypos[i][1], "00");
+            //            if (mon != null)
+            //            {
+            //                ChildList.Add(mon);
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         // 馆靛矫 target <> nil
@@ -100,15 +94,15 @@ namespace GameSvr
                 case 1:
                 case 6:
                 case 7:
-                    this.SendRefMsg(Grobal2.RM_DRAGON_FIRE3, (ushort)TempDir, this.CX, this.CY, targ.ActorId, "");
+                    this.SendRefMsg(Grobal2.RM_DRAGON_FIRE3, (short)TempDir, this.CX, this.CY, targ.ActorId, "");
                     break;
                 case 5:
-                    this.SendRefMsg(Grobal2.RM_DRAGON_FIRE2, (ushort)TempDir, this.CX, this.CY, targ.ActorId, "");
+                    this.SendRefMsg(Grobal2.RM_DRAGON_FIRE2, (short)TempDir, this.CX, this.CY, targ.ActorId, "");
                     break;
                 case 2:
                 case 3:
                 case 4:
-                    this.SendRefMsg(Grobal2.RM_DRAGON_FIRE1, (ushort)TempDir, this.CX, this.CY, targ.ActorId, "");
+                    this.SendRefMsg(Grobal2.RM_DRAGON_FIRE1, (short)TempDir, this.CX, this.CY, targ.ActorId, "");
                     break;
             }
             TAbility _wvar1 = this.WAbil;
@@ -145,7 +139,7 @@ namespace GameSvr
                                 // lparam1
                                 // lparam2
                                 // hiter
-                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - cret.CX), Math.Abs(this.CY - cret.CY)) * 70);
+                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - cret.CX), Math.Abs(this.CY - cret.CY)) * 70);
                             }
                         }
                     }
@@ -210,7 +204,7 @@ namespace GameSvr
                                 // lparam1
                                 // lparam2
                                 // hiter
-                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 600);
+                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 600);
                             }
                         }
                     }

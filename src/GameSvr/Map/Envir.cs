@@ -6,7 +6,7 @@ namespace GameSvr
     {
         public string Map;
         public int Idx;
-    } 
+    }
 
     public class TDoorCore
     {
@@ -30,39 +30,39 @@ namespace GameSvr
         public string[] Ident;
         public int ColCount;
         public int RowCount;
-    } 
+    }
 
     public struct TMapHeader
     {
-        public ushort Width;
-        public ushort Height;
+        public short Width;
+        public short Height;
         public string[] Title;
         public DateTime UpdateDate;
         public char[] Reserved;
-    } 
+    }
 
     public struct TMapHeader_AntiHack
     {
         public string[] Title;
-        public ushort Width;
-        public ushort CheckKey;
-        public ushort Height;
+        public short Width;
+        public short CheckKey;
+        public short Height;
         public DateTime UpdateDate;
         public char[] Reserved;
-    } 
+    }
 
     public struct TMapFileInfo
     {
-        public ushort BkImg;
-        public ushort MidImg;
-        public ushort FrImg;
+        public short BkImg;
+        public short MidImg;
+        public short FrImg;
         public byte DoorIndex;
         public byte DoorOffset;
         public byte AniFrame;
         public byte AniTick;
         public byte Area;
         public byte light;
-    } 
+    }
 
     public struct TMapQuestInfo
     {
@@ -71,7 +71,7 @@ namespace GameSvr
         public string MonName;
         public string ItemName;
         public bool EnableGroup;
-        public Object QuestNpc;
+        public object QuestNpc;
     }
 }
 

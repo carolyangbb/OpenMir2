@@ -15,7 +15,7 @@ namespace GameSvr
             this.ViewRange = 9;
             this.RunNextTick = 250;
             this.SearchRate = 2500 + ((long)new System.Random(1500).Next());
-            this.SearchTime  =  HUtil32.GetTickCount();
+            this.SearchTime = HUtil32.GetTickCount();
             this.StickMode = true;
             childlist = new ArrayList();
         }
@@ -36,8 +36,8 @@ namespace GameSvr
             switch (msg.Ident)
             {
                 case Grobal2.RM_ZEN_BEE:
-                    monname = svMain.__Bee;
-                    mon = svMain.UserEngine.AddCreatureSysop(this.PEnvir.MapName, this.CX, this.CY, monname);
+                    monname = M2Share.__Bee;
+                    mon = M2Share.UserEngine.AddCreatureSysop(this.PEnvir.MapName, this.CX, this.CY, monname);
                     if (mon != null)
                     {
                         mon.SelectTarget(this.TargetCret);
@@ -59,7 +59,7 @@ namespace GameSvr
                     if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                     {
                         // 惑加罐篮 run 俊辑 HitTime 犁汲沥窃.
-                        this.HitTime  =  HUtil32.GetTickCount();
+                        this.HitTime = HUtil32.GetTickCount();
                         this.MonsterNormalAttack();
                         if (this.TargetCret != null)
                         {

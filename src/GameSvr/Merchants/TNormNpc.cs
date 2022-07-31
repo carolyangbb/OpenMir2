@@ -9,10 +9,10 @@ namespace GameSvr
     {
         public byte NpcFace = 0;
         public ArrayList Sayings = null;
-        public string DefineDirectory = String.Empty;
+        public string DefineDirectory = string.Empty;
         public bool BoInvisible = false;
         public bool BoUseMapFileName = false;
-        public string NpcBaseDir = String.Empty;
+        public string NpcBaseDir = string.Empty;
         public bool CanSell = false;
         public bool CanBuy = false;
         public bool CanStorage = false;
@@ -70,7 +70,6 @@ namespace GameSvr
                 Dispose(Sayings[i] as TQuestRecord);
             }
             Sayings.Free();
-            base.Destroy();
         }
 
         public override void RunMsg(TMessageInfo msg)
@@ -248,11 +247,11 @@ namespace GameSvr
         public virtual void CheckNpcSayCommand(TUserHuman hum, ref string source, string tag)
         {
             string data = string.Empty;
-            string str2 = String.Empty;
+            string str2 = string.Empty;
             int n;
             if (tag == "$OWNERGUILD")
             {
-                data = svMain.UserCastle.OwnerGuildName;
+                data = M2Share.UserCastle.OwnerGuildName;
                 if (data == "")
                 {
                     data = "GameManagerconsultation";
@@ -261,9 +260,9 @@ namespace GameSvr
             }
             if (tag == "$LORD")
             {
-                if (svMain.UserCastle.OwnerGuild != null)
+                if (M2Share.UserCastle.OwnerGuild != null)
                 {
-                    data = svMain.UserCastle.OwnerGuild.GetGuildMaster();
+                    data = M2Share.UserCastle.OwnerGuild.GetGuildMaster();
                 }
                 else
                 {
@@ -277,9 +276,9 @@ namespace GameSvr
             }
             if (tag == "$CASTLEWARDATE")
             {
-                if (!svMain.UserCastle.BoCastleUnderAttack)
+                if (!M2Share.UserCastle.BoCastleUnderAttack)
                 {
-                    data = svMain.UserCastle.GetNextWarDateTimeStr();
+                    data = M2Share.UserCastle.GetNextWarDateTimeStr();
                     if (data != "")
                     {
                         source = ChangeNpcSayTag(source, "<$CASTLEWARDATE>", data);
@@ -297,7 +296,7 @@ namespace GameSvr
             }
             if (tag == "$LISTOFWAR")
             {
-                data = svMain.UserCastle.GetListOfWars();
+                data = M2Share.UserCastle.GetListOfWars();
                 // 葛电 傍己 老沥
                 if (data != "")
                 {
@@ -398,7 +397,7 @@ namespace GameSvr
                             break;
                         // Modify the A .. B: 100 .. 109
                         case 100:
-                            source = ChangeNpcSayTag(source, "<" + tag + ">", svMain.GrobalQuestParams[n - 100].ToString());
+                            source = ChangeNpcSayTag(source, "<" + tag + ">", M2Share.GrobalQuestParams[n - 100].ToString());
                             break;
                         // Modify the A .. B: 200 .. 209
                         case 200:
@@ -418,10 +417,10 @@ namespace GameSvr
         {
             bool result;
             int i;
-            string str;
+            string str = String.Empty;
             ArrayList strlist;
             result = false;
-            listfile = svMain.EnvirDir + listfile;
+            listfile = M2Share.EnvirDir + listfile;
             if (File.Exists(listfile))
             {
                 strlist = new ArrayList();
@@ -431,11 +430,11 @@ namespace GameSvr
                 }
                 catch
                 {
-                    svMain.MainOutMessage("loading fail.... => " + listfile);
+                    M2Share.MainOutMessage("loading fail.... => " + listfile);
                 }
                 for (i = 0; i < strlist.Count; i++)
                 {
-                    str = strlist[i].Trim();
+                    //str = strlist[i].Trim();
                     if (str == uname)
                     {
                         strlist.Remove(i);
@@ -449,13 +448,13 @@ namespace GameSvr
                 }
                 catch
                 {
-                    svMain.MainOutMessage("saving fail.... => " + listfile);
+                    M2Share.MainOutMessage("saving fail.... => " + listfile);
                 }
                 strlist.Free();
             }
             else
             {
-                svMain.MainOutMessage("file not found => " + listfile);
+                M2Share.MainOutMessage("file not found => " + listfile);
             }
             return result;
         }
@@ -465,10 +464,10 @@ namespace GameSvr
         {
             bool result;
             int i;
-            string str;
+            string str = String.Empty;
             ArrayList strlist;
             result = false;
-            listfile = svMain.EnvirDir + listfile;
+            listfile = M2Share.EnvirDir + listfile;
             if (File.Exists(listfile))
             {
                 strlist = new ArrayList();
@@ -478,11 +477,11 @@ namespace GameSvr
                 }
                 catch
                 {
-                    svMain.MainOutMessage("loading fail.... => " + listfile);
+                    M2Share.MainOutMessage("loading fail.... => " + listfile);
                 }
                 for (i = 0; i < strlist.Count; i++)
                 {
-                    str = strlist[i].Trim();
+                    //str = strlist[i].Trim();
                     if (str == uname)
                     {
                         result = true;
@@ -493,7 +492,7 @@ namespace GameSvr
             }
             else
             {
-                svMain.MainOutMessage("file not found => " + listfile);
+                M2Share.MainOutMessage("file not found => " + listfile);
             }
             return result;
         }
@@ -501,7 +500,7 @@ namespace GameSvr
         public void NpcSayTitle_AddNameFromFileList(string uname, string listfile)
         {
             ArrayList strlist;
-            listfile = svMain.EnvirDir + listfile;
+            listfile = M2Share.EnvirDir + listfile;
             strlist = new ArrayList();
             if (File.Exists(listfile))
             {
@@ -511,7 +510,7 @@ namespace GameSvr
                 }
                 catch
                 {
-                    svMain.MainOutMessage("loading fail.... => " + listfile);
+                    M2Share.MainOutMessage("loading fail.... => " + listfile);
                 }
             }
             strlist.Add(uname);
@@ -521,7 +520,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("saving fail.... => " + listfile);
+                M2Share.MainOutMessage("saving fail.... => " + listfile);
             }
             strlist.Free();
         }
@@ -529,9 +528,9 @@ namespace GameSvr
         public void NpcSayTitle_DeleteNameFromFileList(string uname, string listfile)
         {
             int i;
-            string str;
+            string str = String.Empty;
             ArrayList strlist;
-            listfile = svMain.EnvirDir + listfile;
+            listfile = M2Share.EnvirDir + listfile;
             if (File.Exists(listfile))
             {
                 strlist = new ArrayList();
@@ -541,11 +540,11 @@ namespace GameSvr
                 }
                 catch
                 {
-                    svMain.MainOutMessage("loading fail.... => " + listfile);
+                    M2Share.MainOutMessage("loading fail.... => " + listfile);
                 }
                 for (i = 0; i < strlist.Count; i++)
                 {
-                    str = strlist[i].Trim();
+                    //str = strlist[i].Trim();
                     if (str == uname)
                     {
                         strlist.Remove(i);
@@ -558,13 +557,13 @@ namespace GameSvr
                 }
                 catch
                 {
-                    svMain.MainOutMessage("saving fail.... => " + listfile);
+                    M2Share.MainOutMessage("saving fail.... => " + listfile);
                 }
                 strlist.Free();
             }
             else
             {
-                svMain.MainOutMessage("file not found => " + listfile);
+                M2Share.MainOutMessage("file not found => " + listfile);
             }
         }
 
@@ -593,7 +592,7 @@ namespace GameSvr
             return result;
         }
 
-        public TUserItem NpcSayTitle_FindItemFromState(TCreature who, string iname, int count=0)
+        public TUserItem NpcSayTitle_FindItemFromState(TCreature who, string iname, int count = 0)
         {
             int n = 0;
             TUserItem result = null;
@@ -796,28 +795,28 @@ namespace GameSvr
                     case Grobal2.QI_DAYTIME:
                         if (pqc.IfParam.ToLower().CompareTo("SUNRAISE".ToLower()) == 0)
                         {
-                            if (svMain.MirDayTime != 0)
+                            if (M2Share.MirDayTime != 0)
                             {
                                 result = false;
                             }
                         }
                         if (pqc.IfParam.ToLower().CompareTo("DAY".ToLower()) == 0)
                         {
-                            if (svMain.MirDayTime != 1)
+                            if (M2Share.MirDayTime != 1)
                             {
                                 result = false;
                             }
                         }
                         if (pqc.IfParam.ToLower().CompareTo("SUNSET".ToLower()) == 0)
                         {
-                            if (svMain.MirDayTime != 2)
+                            if (M2Share.MirDayTime != 2)
                             {
                                 result = false;
                             }
                         }
                         if (pqc.IfParam.ToLower().CompareTo("NIGHT".ToLower()) == 0)
                         {
-                            if (svMain.MirDayTime != 3)
+                            if (M2Share.MirDayTime != 3)
                             {
                                 result = false;
                             }
@@ -826,42 +825,42 @@ namespace GameSvr
                     case Grobal2.QI_DAYOFWEEK:
                         if (HUtil32.CompareLStr(pqc.IfParam, "Sun", 3))
                         {
-                            if (DateTime.Today.DayOfWeek !=  DayOfWeek.Monday)
+                            if (DateTime.Today.DayOfWeek != DayOfWeek.Monday)
                             {
                                 result = false;
                             }
                         }
                         if (HUtil32.CompareLStr(pqc.IfParam, "Mon", 3))
                         {
-                            if (DateTime.Today.DayOfWeek !=  DayOfWeek.Tuesday)
+                            if (DateTime.Today.DayOfWeek != DayOfWeek.Tuesday)
                             {
                                 result = false;
                             }
                         }
                         if (HUtil32.CompareLStr(pqc.IfParam, "Tue", 3))
                         {
-                            if (DateTime.Today.DayOfWeek !=  DayOfWeek.Wednesday)
+                            if (DateTime.Today.DayOfWeek != DayOfWeek.Wednesday)
                             {
                                 result = false;
                             }
                         }
                         if (HUtil32.CompareLStr(pqc.IfParam, "Wed", 3))
                         {
-                            if (DateTime.Today.DayOfWeek !=  DayOfWeek.Thursday)
+                            if (DateTime.Today.DayOfWeek != DayOfWeek.Thursday)
                             {
                                 result = false;
                             }
                         }
                         if (HUtil32.CompareLStr(pqc.IfParam, "Thu", 3))
                         {
-                            if (DateTime.Today.DayOfWeek !=  DayOfWeek.Friday)
+                            if (DateTime.Today.DayOfWeek != DayOfWeek.Friday)
                             {
                                 result = false;
                             }
                         }
                         if (HUtil32.CompareLStr(pqc.IfParam, "Fri", 3))
                         {
-                            if (DateTime.Today.DayOfWeek !=  DayOfWeek.Saturday)
+                            if (DateTime.Today.DayOfWeek != DayOfWeek.Saturday)
                             {
                                 result = false;
                             }
@@ -910,7 +909,7 @@ namespace GameSvr
                         }
                         break;
                     case Grobal2.QI_CHECKITEMW:
-                        sayParams.pcheckitem = NpcSayTitle_FindItemFromState(pqc.IfParam, pqc.IfTagVal);
+                        //sayParams.pcheckitem = NpcSayTitle_FindItemFromState(pqc.IfParam, pqc.IfTagVal);
                         if (sayParams.pcheckitem == null)
                         {
                             result = false;
@@ -958,14 +957,14 @@ namespace GameSvr
                         }
                         break;
                     case Grobal2.QI_CHECKDURA:
-                        pcheckitem = who.FindItemNameEx(pqc.IfParam, ref count, ref durasum, ref duratop);
+                        //pcheckitem = who.FindItemNameEx(pqc.IfParam, ref count, ref durasum, ref duratop);
                         if (HUtil32.MathRound(duratop / 1000) < pqc.IfTagVal)
                         {
                             result = false;
                         }
                         break;
                     case Grobal2.QI_CHECKDURAEVA:
-                        pcheckitem = who.FindItemNameEx(pqc.IfParam, ref count, ref durasum, ref duratop);
+                        //pcheckitem = who.FindItemNameEx(pqc.IfParam, ref count, ref durasum, ref duratop);
                         if (count > 0)
                         {
                             if (HUtil32.MathRound(durasum / count / 1000) < pqc.IfTagVal)
@@ -991,20 +990,20 @@ namespace GameSvr
                         }
                         break;
                     case Grobal2.QI_CHECKMON_MAP:
-                        penv = svMain.GrobalEnvir.GetEnvir(pqc.IfParam);
+                        penv = M2Share.GrobalEnvir.GetEnvir(pqc.IfParam);
                         if (penv != null)
                         {
-                            if (svMain.UserEngine.GetMapMons(penv, null) < pqc.IfTagVal)
+                            if (M2Share.UserEngine.GetMapMons(penv, null) < pqc.IfTagVal)
                             {
                                 result = false;
                             }
                         }
                         break;
                     case Grobal2.QI_CHECKMON_NORECALLMOB_MAP:
-                        penv = svMain.GrobalEnvir.GetEnvir(pqc.IfParam);
+                        penv = M2Share.GrobalEnvir.GetEnvir(pqc.IfParam);
                         if (penv != null)
                         {
-                            if (svMain.UserEngine.GetMapMonsNoRecallMob(penv, null) < pqc.IfTagVal)
+                            if (M2Share.UserEngine.GetMapMonsNoRecallMob(penv, null) < pqc.IfTagVal)
                             {
                                 result = false;
                             }
@@ -1013,7 +1012,7 @@ namespace GameSvr
                     case Grobal2.QI_CHECKMON_AREA:
                         break;
                     case Grobal2.QI_CHECKHUM:
-                        if (svMain.UserEngine.GetHumCount(pqc.IfParam) < pqc.IfTagVal)
+                        if (M2Share.UserEngine.GetHumCount(pqc.IfParam) < pqc.IfTagVal)
                         {
                             result = false;
                         }
@@ -1024,7 +1023,7 @@ namespace GameSvr
                             if (pqc.IfParam != "")
                             {
                                 result = false;
-                                ps = svMain.UserEngine.GetStdItemFromName(pqc.IfParam);
+                                ps = M2Share.UserEngine.GetStdItemFromName(pqc.IfParam);
                                 if (ps != null)
                                 {
                                     if (who.IsAddWeightAvailable(ps.Weight))
@@ -1122,7 +1121,7 @@ namespace GameSvr
                                     break;
                                 // Modify the A .. B: 100 .. 109
                                 case 100:
-                                    equalvar = svMain.GrobalQuestParams[m - 100];
+                                    equalvar = M2Share.GrobalQuestParams[m - 100];
                                     break;
                                 // Modify the A .. B: 200 .. 209
                                 case 200:
@@ -1148,7 +1147,7 @@ namespace GameSvr
                                 // Modify the A .. B: 100 .. 109
                                 case 100:
                                     // 傈开函荐
-                                    if (svMain.GrobalQuestParams[n - 100] != equalvar)
+                                    if (M2Share.GrobalQuestParams[n - 100] != equalvar)
                                     {
                                         result = false;
                                     }
@@ -1191,7 +1190,7 @@ namespace GameSvr
                                 // Modify the A .. B: 100 .. 109
                                 case 100:
                                     // 傈开函荐
-                                    if (svMain.GrobalQuestParams[n - 100] != pqc.IfTagVal)
+                                    if (M2Share.GrobalQuestParams[n - 100] != pqc.IfTagVal)
                                     {
                                         result = false;
                                     }
@@ -1233,7 +1232,7 @@ namespace GameSvr
                                     break;
                                 // Modify the A .. B: 100 .. 109
                                 case 100:
-                                    if (svMain.GrobalQuestParams[n - 100] <= pqc.IfTagVal)
+                                    if (M2Share.GrobalQuestParams[n - 100] <= pqc.IfTagVal)
                                     {
                                         result = false;
                                     }
@@ -1274,7 +1273,7 @@ namespace GameSvr
                                     break;
                                 // Modify the A .. B: 100 .. 109
                                 case 100:
-                                    if (svMain.GrobalQuestParams[n - 100] >= pqc.IfTagVal)
+                                    if (M2Share.GrobalQuestParams[n - 100] >= pqc.IfTagVal)
                                     {
                                         result = false;
                                     }
@@ -1329,7 +1328,7 @@ namespace GameSvr
                     case Grobal2.QI_CHECKLOVERFLAG:
                         if (((TUserHuman)who).fLover != null)
                         {
-                            hum = svMain.UserEngine.GetUserHuman(((TUserHuman)who).fLover.GetLoverName);
+                            hum = M2Share.UserEngine.GetUserHuman(((TUserHuman)who).fLover.GetLoverName());
                             if (hum != null)
                             {
                                 param = HUtil32.Str_ToInt(pqc.IfParam, 0);
@@ -1360,7 +1359,7 @@ namespace GameSvr
                     case Grobal2.QI_CHECKLOVERRANGE:
                         if (((TUserHuman)who).fLover != null)
                         {
-                            hum = svMain.UserEngine.GetUserHuman(((TUserHuman)who).fLover.GetLoverName);
+                            hum = M2Share.UserEngine.GetUserHuman(((TUserHuman)who).fLover.GetLoverName());
                             if (hum != null)
                             {
                                 param = HUtil32.Str_ToInt(pqc.IfParam, 0);
@@ -1384,7 +1383,7 @@ namespace GameSvr
                         {
                             param = HUtil32.Str_ToInt(pqc.IfParam, 0);
                             // MainOutMessage('GetLoverDays(3) : ' + TUserHuman(who).fLover.GetLoverDays);
-                            if (HUtil32.Str_ToInt(((TUserHuman)who).fLover.GetLoverDays, 0) < param)
+                            if (HUtil32.Str_ToInt(((TUserHuman)who).fLover.GetLoverDays(), 0) < param)
                             {
                                 result = false;
                             }
@@ -1429,7 +1428,7 @@ namespace GameSvr
                         CheckMap = "";
                         for (k = 0; k < who.GroupMembers.Count; k++)
                         {
-                            hum = svMain.UserEngine.GetUserHuman(who.GroupMembers[k].UserName);
+                            hum = M2Share.UserEngine.GetUserHuman(who.GroupMembers[k].UserName);
                             if (hum != null)
                             {
                                 // 鞍篮 甘俊 乐绰瘤 眉农
@@ -1475,7 +1474,7 @@ namespace GameSvr
                             if ((cret != null) && (cret.RaceServer == Grobal2.RC_USERHUMAN))
                             {
                                 hum = (TUserHuman)cret;
-                                if ((hum.fLover != null) && (hum.fLover.GetLoverName != "") && (hum != who))
+                                if ((hum.fLover != null) && (hum.fLover.GetLoverName() != "") && (hum != who))
                                 {
                                     flag = true;
                                     break;
@@ -1510,7 +1509,7 @@ namespace GameSvr
                         }
                         break;
                     case Grobal2.QI_CHECKMARRY:
-                        if (((TUserHuman)who).fLover.GetLoverName == "")
+                        if (((TUserHuman)who).fLover.GetLoverName() == "")
                         {
                             result = false;
                         }
@@ -1519,7 +1518,7 @@ namespace GameSvr
                         cret = ((TUserHuman)who).GetFrontCret();
                         if ((cret != null) && (cret.RaceServer == Grobal2.RC_USERHUMAN))
                         {
-                            if (((TUserHuman)cret).fLover.GetLoverName == "")
+                            if (((TUserHuman)cret).fLover.GetLoverName() == "")
                             {
                                 result = false;
                             }
@@ -1772,7 +1771,7 @@ namespace GameSvr
             }
         }
 
-        public void NpcSayTitle_GotoSay(string saystr)
+        public void NpcSayTitle_GotoSay(TCreature who, string saystr)
         {
             NpcSayTitle(who, saystr);
         }
@@ -1785,7 +1784,7 @@ namespace GameSvr
             string data = string.Empty;
             string str = string.Empty;
             int listCount = 0;
-            if (who.fLover.GetLoverName != "")
+            if (who.fLover.GetLoverName() != "")
             {
                 return;
             }
@@ -1813,22 +1812,22 @@ namespace GameSvr
                             sSayMsg = M2Share.g_sStartMarryManMsg.Replace("%n", this.UserName);
                             sSayMsg = sSayMsg.Replace("%s", who.UserName);
                             sSayMsg = sSayMsg.Replace("%d", PoseHuman.UserName);
-                            svMain.UserEngine.SendBroadCastMsg(sSayMsg, 0);
+                            M2Share.UserEngine.SendBroadCastMsg(sSayMsg, 0);
                             sSayMsg = M2Share.g_sStartMarryManAskQuestionMsg.Replace("%n", this.UserName);
                             sSayMsg = sSayMsg.Replace("%s", who.UserName);
                             sSayMsg = sSayMsg.Replace("%d", PoseHuman.UserName);
-                            svMain.UserEngine.SendBroadCastMsg(sSayMsg, 0);
+                            M2Share.UserEngine.SendBroadCastMsg(sSayMsg, 0);
                         }
                         else if ((who.Sex == 1) && (PoseHuman.Sex == 0))
                         {
                             sSayMsg = M2Share.g_sStartMarryWoManMsg.Replace("%n", this.UserName);
                             sSayMsg = sSayMsg.Replace("%s", who.UserName);
                             sSayMsg = sSayMsg.Replace("%d", PoseHuman.UserName);
-                            svMain.UserEngine.SendBroadCastMsg(sSayMsg, 0);
+                            M2Share.UserEngine.SendBroadCastMsg(sSayMsg, 0);
                             sSayMsg = M2Share.g_sStartMarryWoManAskQuestionMsg.Replace("%n", this.UserName);
                             sSayMsg = sSayMsg.Replace("%s", who.UserName);
                             sSayMsg = sSayMsg.Replace("%d", PoseHuman.UserName);
-                            svMain.UserEngine.SendBroadCastMsg(sSayMsg, 0);
+                            M2Share.UserEngine.SendBroadCastMsg(sSayMsg, 0);
                         }
                         who.m_boStartMarry = true;
                         PoseHuman.m_boStartMarry = true;
@@ -1856,11 +1855,11 @@ namespace GameSvr
                         sSayMsg = M2Share.g_sMarryManAnswerQuestionMsg.Replace("%n", this.UserName);
                         sSayMsg = sSayMsg.Replace("%s", who.UserName);
                         sSayMsg = sSayMsg.Replace("%d", PoseHuman.UserName);
-                        svMain.UserEngine.SendBroadCastMsg(sSayMsg, 0);
+                        M2Share.UserEngine.SendBroadCastMsg(sSayMsg, 0);
                         sSayMsg = M2Share.g_sMarryManAskQuestionMsg.Replace("%n", this.UserName);
                         sSayMsg = sSayMsg.Replace("%s", who.UserName);
                         sSayMsg = sSayMsg.Replace("%d", PoseHuman.UserName);
-                        svMain.UserEngine.SendBroadCastMsg(sSayMsg, 0);
+                        M2Share.UserEngine.SendBroadCastMsg(sSayMsg, 0);
                         NpcSayTitle(who, "@WateMarry");
                         NpcSayTitle(PoseHuman, "@RevMarry");
                     }
@@ -1879,30 +1878,30 @@ namespace GameSvr
                             sSayMsg = M2Share.g_sMarryWoManAnswerQuestionMsg.Replace("%n", this.UserName);
                             sSayMsg = sSayMsg.Replace("%s", who.UserName);
                             sSayMsg = sSayMsg.Replace("%d", PoseHuman.UserName);
-                            svMain.UserEngine.SendBroadCastMsg(sSayMsg, 0);
+                            M2Share.UserEngine.SendBroadCastMsg(sSayMsg, 0);
                             sSayMsg = M2Share.g_sMarryWoManGetMarryMsg.Replace("%n", this.UserName);
                             sSayMsg = sSayMsg.Replace("%s", who.UserName);
                             sSayMsg = sSayMsg.Replace("%d", PoseHuman.UserName);
-                            svMain.UserEngine.SendBroadCastMsg(sSayMsg, 0);
+                            M2Share.UserEngine.SendBroadCastMsg(sSayMsg, 0);
                             NpcSayTitle(who, "@EndMarry");
                             NpcSayTitle(PoseHuman, "@EndMarry");
                             who.m_boStartMarry = false;
                             PoseHuman.m_boStartMarry = false;
                             data = "";
                             who.fLover.ReqSequence = Grobal2.RsReq_None;
-                            who.fLover.Add(who.UserName, PoseHuman.UserName, Grobal2.RsState_Lover, PoseHuman.WAbil.Level, PoseHuman.Sex, data, "");
-                            msgstr = who.fLover.GetListmsg(Grobal2.RsState_Lover, listCount);
+                            who.fLover.Add(who.UserName, PoseHuman.UserName, Grobal2.RsState_Lover, PoseHuman.WAbil.Level, PoseHuman.Sex, ref data, "");
+                            msgstr = who.fLover.GetListMsg(Grobal2.RsState_Lover, ref listCount);
                             who.SendDefMessage(Grobal2.SM_LM_LIST, 0, listCount, 0, 0, msgstr);
                             who.SendDefMessage(Grobal2.SM_LM_RESULT, 0, Grobal2.RsState_Lover, Grobal2.RsError_SuccessJoin, 0, PoseHuman.UserName);
                             PoseHuman.fLover.ReqSequence = Grobal2.RsReq_None;
-                            PoseHuman.fLover.Add(PoseHuman.UserName, who.UserName, Grobal2.RsState_Lover, who.WAbil.Level, who.Sex, data, "");
-                            msgstr = PoseHuman.fLover.GetListmsg(Grobal2.RsState_Lover, listCount);
+                            PoseHuman.fLover.Add(PoseHuman.UserName, who.UserName, Grobal2.RsState_Lover, who.WAbil.Level, who.Sex, ref data, "");
+                            msgstr = PoseHuman.fLover.GetListMsg(Grobal2.RsState_Lover, ref listCount);
                             PoseHuman.SendDefMessage(Grobal2.SM_LM_LIST, 0, listCount, 0, 0, msgstr);
                             PoseHuman.SendDefMessage(Grobal2.SM_LM_RESULT, 0, Grobal2.RsState_Lover, Grobal2.RsError_SuccessJoined, 0, who.UserName);
                             who.SendMsg(who, Grobal2.RM_LM_DBADD, 0, 0, 0, 0, PoseHuman.UserName + ":" + 10.ToString() + ":" + data + "/");
                             str = "恭喜！\"" + who.UserName + "\"与\"" + PoseHuman.UserName + "\"成为情侣。";
-                            svMain.UserEngine.CryCry(Grobal2.RM_SYSMSG_PINK, this.PEnvir, this.CX, this.CY, 300, ":)" + str);
-                            svMain.AddUserLog("47\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + who.UserName + "\09" + "0\09" + "0\09" + "0\09" + PoseHuman.UserName);
+                            M2Share.UserEngine.CryCry(Grobal2.RM_SYSMSG_PINK, this.PEnvir, this.CX, this.CY, 300, ":)" + str);
+                            M2Share.AddUserLog("47\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + who.UserName + "\09" + "0\09" + "0\09" + "0\09" + PoseHuman.UserName);
                             who.UserNameChanged();
                             PoseHuman.UserNameChanged();
                         }
@@ -1918,11 +1917,11 @@ namespace GameSvr
                             sSayMsg = M2Share.g_sMarryWoManDenyMsg.Replace("%n", this.UserName);
                             sSayMsg = sSayMsg.Replace("%s", who.UserName);
                             sSayMsg = sSayMsg.Replace("%d", PoseHuman.UserName);
-                            svMain.UserEngine.SendBroadCastMsg(sSayMsg, 0);
+                            M2Share.UserEngine.SendBroadCastMsg(sSayMsg, 0);
                             sSayMsg = M2Share.g_sMarryWoManCancelMsg.Replace("%n", this.UserName);
                             sSayMsg = sSayMsg.Replace("%s", who.UserName);
                             sSayMsg = sSayMsg.Replace("%d", PoseHuman.UserName);
-                            svMain.UserEngine.SendBroadCastMsg(sSayMsg, 0);
+                            M2Share.UserEngine.SendBroadCastMsg(sSayMsg, 0);
                         }
                     }
                 }
@@ -1934,7 +1933,7 @@ namespace GameSvr
         {
             TUserHuman PoseHuman;
             int svidx = 0;
-            if (who.fLover.GetLoverName == "")
+            if (who.fLover.GetLoverName() == "")
             {
                 NpcSayTitle(who, "@ExeMarryFail");
                 // 你都没结过婚，跑来做什么？ \ \
@@ -1958,7 +1957,7 @@ namespace GameSvr
                     }
                     if (PoseHuman.GetFrontCret() == who)
                     {
-                        if (who.fLover.GetLoverName == PoseHuman.UserName)
+                        if (who.fLover.GetLoverName() == PoseHuman.UserName)
                         {
                             NpcSayTitle(who, "@StartUnMarry");
                             // 开始离婚
@@ -1983,10 +1982,10 @@ namespace GameSvr
                             {
                                 this.MakePoison(Grobal2.POISON_SLOW, 3, 1);
                                 // HP, MP 函版(50%)
-                                who.WAbil.HP = (ushort)_MAX(1, who.WAbil.HP / 2);
-                                who.WAbil.MP = (ushort)_MAX(1, who.WAbil.MP / 2);
+                                who.WAbil.HP = (short)_MAX(1, who.WAbil.HP / 2);
+                                who.WAbil.MP = (short)_MAX(1, who.WAbil.MP / 2);
                                 this.SysMsg("情侣关系破裂了，将造成自身的冲击。", 0);
-                                svMain.AddUserLog("47\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + "0\09" + "0\09" + "2\09" + PoseHuman.UserName);
+                                M2Share.AddUserLog("47\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + "0\09" + "0\09" + "2\09" + PoseHuman.UserName);
                                 who.UserNameChanged();
                                 if (PoseHuman != null)
                                 {
@@ -1994,18 +1993,18 @@ namespace GameSvr
                                     {
                                         PoseHuman.MakePoison(Grobal2.POISON_SLOW, 3, 1);
                                         // HP, MP 函版(50%)
-                                        PoseHuman.WAbil.HP = (ushort)_MAX(1, PoseHuman.WAbil.HP / 2);
-                                        PoseHuman.WAbil.MP = (ushort)_MAX(1, PoseHuman.WAbil.MP / 2);
+                                        PoseHuman.WAbil.HP = (short)_MAX(1, PoseHuman.WAbil.HP / 2);
+                                        PoseHuman.WAbil.MP = (short)_MAX(1, PoseHuman.WAbil.MP / 2);
                                         PoseHuman.SysMsg("情侣关系破裂了，将造成自身的冲击。", 0);
-                                        svMain.AddUserLog("47\09" + PoseHuman.MapName + "\09" + PoseHuman.CX.ToString() + "\09" + PoseHuman.CY.ToString() + "\09" + PoseHuman.UserName + "\09" + "0\09" + "0\09" + "2\09" + who.UserName);
+                                        M2Share.AddUserLog("47\09" + PoseHuman.MapName + "\09" + PoseHuman.CX.ToString() + "\09" + PoseHuman.CY.ToString() + "\09" + PoseHuman.UserName + "\09" + "0\09" + "0\09" + "2\09" + who.UserName);
                                     }
                                     PoseHuman.UserNameChanged();
                                 }
                                 else
                                 {
-                                    if (svMain.UserEngine.FindOtherServerUser(PoseHuman.UserName, ref svidx))
+                                    if (M2Share.UserEngine.FindOtherServerUser(PoseHuman.UserName, ref svidx))
                                     {
-                                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_LM_DELETE, svidx, PoseHuman.UserName + "/" + this.UserName + "/" + Grobal2.RsState_Lover.ToString());
+                                        M2Share.UserEngine.SendInterMsg(Grobal2.ISM_LM_DELETE, svidx, PoseHuman.UserName + "/" + this.UserName + "/" + Grobal2.RsState_Lover.ToString());
                                     }
                                 }
                             }
@@ -2029,17 +2028,17 @@ namespace GameSvr
                     // 强行离婚
                     if (pqa.ActTag.ToLower().CompareTo("FORCE".ToLower()) == 0)
                     {
-                        PoseHuman = svMain.UserEngine.GetUserHuman(who.fLover.GetLoverName);
+                        PoseHuman = M2Share.UserEngine.GetUserHuman(who.fLover.GetLoverName());
                         if (PoseHuman != null)
                         {
                             if (who.RelationShipDeleteOther(Grobal2.RsState_Lover, PoseHuman.UserName))
                             {
                                 this.MakePoison(Grobal2.POISON_SLOW, 3, 1);
                                 // HP, MP 函版(50%)
-                                who.WAbil.HP = (ushort)_MAX(1, who.WAbil.HP / 2);
-                                who.WAbil.MP = (ushort)_MAX(1, who.WAbil.MP / 2);
+                                who.WAbil.HP = (short)_MAX(1, who.WAbil.HP / 2);
+                                who.WAbil.MP = (short)_MAX(1, who.WAbil.MP / 2);
                                 this.SysMsg("情侣关系破裂了，将造成自身的冲击。", 0);
-                                svMain.AddUserLog("47\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + "0\09" + "0\09" + "2\09" + PoseHuman.UserName);
+                                M2Share.AddUserLog("47\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + "0\09" + "0\09" + "2\09" + PoseHuman.UserName);
                                 who.UserNameChanged();
                                 if (PoseHuman != null)
                                 {
@@ -2047,18 +2046,18 @@ namespace GameSvr
                                     {
                                         PoseHuman.MakePoison(Grobal2.POISON_SLOW, 3, 1);
                                         // HP, MP 函版(50%)
-                                        PoseHuman.WAbil.HP = (ushort)_MAX(1, PoseHuman.WAbil.HP / 2);
-                                        PoseHuman.WAbil.MP = (ushort)_MAX(1, PoseHuman.WAbil.MP / 2);
+                                        PoseHuman.WAbil.HP = (short)_MAX(1, PoseHuman.WAbil.HP / 2);
+                                        PoseHuman.WAbil.MP = (short)_MAX(1, PoseHuman.WAbil.MP / 2);
                                         PoseHuman.SysMsg("情侣关系破裂了，将造成自身的冲击。", 0);
-                                        svMain.AddUserLog("47\09" + PoseHuman.MapName + "\09" + PoseHuman.CX.ToString() + "\09" + PoseHuman.CY.ToString() + "\09" + PoseHuman.UserName + "\09" + "0\09" + "0\09" + "2\09" + who.UserName);
+                                        M2Share.AddUserLog("47\09" + PoseHuman.MapName + "\09" + PoseHuman.CX.ToString() + "\09" + PoseHuman.CY.ToString() + "\09" + PoseHuman.UserName + "\09" + "0\09" + "0\09" + "2\09" + who.UserName);
                                     }
                                     PoseHuman.UserNameChanged();
                                 }
                                 else
                                 {
-                                    if (svMain.UserEngine.FindOtherServerUser(PoseHuman.UserName, ref svidx))
+                                    if (M2Share.UserEngine.FindOtherServerUser(PoseHuman.UserName, ref svidx))
                                     {
-                                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_LM_DELETE, svidx, PoseHuman.UserName + "/" + who.UserName + "/" + Grobal2.RsState_Lover.ToString());
+                                        M2Share.UserEngine.SendInterMsg(Grobal2.ISM_LM_DELETE, svidx, PoseHuman.UserName + "/" + who.UserName + "/" + Grobal2.RsState_Lover.ToString());
                                     }
                                 }
                             }
@@ -2069,14 +2068,14 @@ namespace GameSvr
                         }
                         else
                         {
-                            if (who.RelationShipDeleteOther(Grobal2.RsState_Lover, who.fLover.GetLoverName))
+                            if (who.RelationShipDeleteOther(Grobal2.RsState_Lover, who.fLover.GetLoverName()))
                             {
                                 this.MakePoison(Grobal2.POISON_SLOW, 3, 1);
                                 // HP, MP 函版(50%)
-                                who.WAbil.HP = (ushort)_MAX(1, who.WAbil.HP / 2);
-                                who.WAbil.MP = (ushort)_MAX(1, who.WAbil.MP / 2);
+                                who.WAbil.HP = (short)_MAX(1, who.WAbil.HP / 2);
+                                who.WAbil.MP = (short)_MAX(1, who.WAbil.MP / 2);
                                 this.SysMsg("情侣关系破裂了，将造成自身的冲击。", 0);
-                                svMain.AddUserLog("47\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + "0\09" + "0\09" + "2\09" + who.UserName);
+                                M2Share.AddUserLog("47\09" + this.MapName + "\09" + this.CX.ToString() + "\09" + this.CY.ToString() + "\09" + this.UserName + "\09" + "0\09" + "0\09" + "2\09" + who.UserName);
                                 who.UserNameChanged();
                             }
                         }
@@ -2258,7 +2257,7 @@ namespace GameSvr
                         ForceIndex = Convert.ToInt32(pqa.ActExtra);
                         if (ForceIndex < 0)
                         {
-                            PoseHuman = svMain.UserEngine.GetUserHuman(who.m_sMasterName);
+                            PoseHuman = M2Share.UserEngine.GetUserHuman(who.m_sMasterName);
                             if (PoseHuman != null)
                             {
                                 PoseHuman.m_nMasterCount -= 1;
@@ -2280,7 +2279,7 @@ namespace GameSvr
                         else
                         {
                             TempMasterName = who.m_MasterRanking[ForceIndex - 1].sMasterName;
-                            PoseHuman = svMain.UserEngine.GetUserHuman(TempMasterName);
+                            PoseHuman = M2Share.UserEngine.GetUserHuman(TempMasterName);
                             if (PoseHuman != null)
                             {
                                 PoseHuman.m_nMasterCount -= 1;
@@ -2315,9 +2314,9 @@ namespace GameSvr
             //    // ScriptActionError(who, '', pqa, sSC_SETHUMICON);
             //    return;
             //}
-            who.m_IconInfo[nIndex].wStart = (ushort)Convert.ToInt32(pqa.ActTag);
+            who.m_IconInfo[nIndex].wStart = (short)Convert.ToInt32(pqa.ActTag);
             who.m_IconInfo[nIndex].btFrame = (byte)Convert.ToInt32(pqa.ActExtra);
-            who.m_IconInfo[nIndex].wFrameTime = (ushort)Convert.ToInt32(pqa.ActParam4);
+            who.m_IconInfo[nIndex].wFrameTime = (short)Convert.ToInt32(pqa.ActParam4);
             who.m_IconInfo[nIndex].bo01 = (byte)Convert.ToInt32(pqa.ActParam5);
             who.m_IconInfo[nIndex].nx = Convert.ToInt32(pqa.ActParam6);
             who.m_IconInfo[nIndex].ny = Convert.ToInt32(pqa.ActParam7);
@@ -2336,7 +2335,7 @@ namespace GameSvr
                 who.DecGold(count);
                 who.GoldChanged();
                 sayParams.latesttakeitem = "金币";
-                svMain.AddUserLog("10\09" + who.MapName + "\09" + who.CX.ToString() + "\09" + who.CY.ToString() + "\09" + who.UserName + "\09" + Envir.NAME_OF_GOLD + "\09" + count.ToString() + "\09" + "1\09" + this.UserName);
+                M2Share.AddUserLog("10\09" + who.MapName + "\09" + who.CX.ToString() + "\09" + who.CY.ToString() + "\09" + who.UserName + "\09" + Envir.NAME_OF_GOLD + "\09" + count.ToString() + "\09" + "1\09" + this.UserName);
             }
             else
             {
@@ -2347,17 +2346,17 @@ namespace GameSvr
                         break;
                     }
                     pu = who.ItemList[i];
-                    ps = svMain.UserEngine.GetStdItem(pu.Index);
+                    ps = M2Share.UserEngine.GetStdItem(pu.Index);
                     if (ps != null)
                     {
                         if (ps.Name.ToLower().CompareTo(iname.ToLower()) == 0)
                         {
                             if (ps.OverlapItem >= 1)
                             {
-                                svMain.AddUserLog("10\09" + who.MapName + "\09" + who.CX.ToString() + "\09" + who.CY.ToString() + "\09" + who.UserName + "\09" + pu.Index.ToString() + "\09" + count.ToString() + "\09" + "1\09" + this.UserName);
+                                M2Share.AddUserLog("10\09" + who.MapName + "\09" + who.CX.ToString() + "\09" + who.CY.ToString() + "\09" + who.UserName + "\09" + pu.Index.ToString() + "\09" + count.ToString() + "\09" + "1\09" + this.UserName);
                                 if (pu.Dura >= count)
                                 {
-                                    pu.Dura = (ushort)(pu.Dura - count);
+                                    pu.Dura = (short)(pu.Dura - count);
                                     if (pu.Dura <= 0)
                                     {
                                         if (who.RaceServer == Grobal2.RC_USERHUMAN)
@@ -2381,21 +2380,21 @@ namespace GameSvr
                                     Dispose(pu);
                                     who.ItemList.RemoveAt(i);
                                 }
-                                sayParams.latesttakeitem = svMain.UserEngine.GetStdItemName(pu.Index);
+                                sayParams.latesttakeitem = M2Share.UserEngine.GetStdItemName(pu.Index);
                                 break;
                             }
                             else
                             {
-                                if (iname == svMain.GetUnbindItemName(ObjBase.SHAPE_AMULET_BUNCH))
+                                if (iname == M2Share.GetUnbindItemName(ObjBase.SHAPE_AMULET_BUNCH))
                                 {
                                     if (pu.Dura < pu.DuraMax)
                                     {
                                         continue;
                                     }
                                 }
-                                svMain.AddUserLog("10\09" + who.MapName + "\09" + who.CX.ToString() + "\09" + who.CY.ToString() + "\09" + who.UserName + "\09" + iname + "\09" + pu.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
+                                M2Share.AddUserLog("10\09" + who.MapName + "\09" + who.CX.ToString() + "\09" + who.CY.ToString() + "\09" + who.UserName + "\09" + iname + "\09" + pu.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
                                 ((TUserHuman)who).SendDelItem(pu);
-                                sayParams.latesttakeitem = svMain.UserEngine.GetStdItemName(pu.Index);
+                                sayParams.latesttakeitem = M2Share.UserEngine.GetStdItemName(pu.Index);
                                 Dispose(pu);
                                 who.ItemList.RemoveAt(i);
                                 count -= 1;
@@ -2415,16 +2414,16 @@ namespace GameSvr
                 pu = who.ItemList[i];
                 if (pu != null)
                 {
-                    ps = svMain.UserEngine.GetStdItem(pu.Index);
+                    ps = M2Share.UserEngine.GetStdItem(pu.Index);
                     if (ps != null)
                     {
                         if (ps.EffType2 == Grobal2.EFFTYPE2_EVENT_GRADE)
                         {
                             if (ps.EffValue2 <= grade)
                             {
-                                svMain.AddUserLog("10\09" + who.MapName + "\09" + who.CX.ToString() + "\09" + who.CY.ToString() + "\09" + who.UserName + "\09" + ps.Name + "\09" + pu.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
+                                M2Share.AddUserLog("10\09" + who.MapName + "\09" + who.CX.ToString() + "\09" + who.CY.ToString() + "\09" + who.UserName + "\09" + ps.Name + "\09" + pu.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
                                 ((TUserHuman)who).SendDelItem(pu);
-                                sayParams.latesttakeitem = svMain.UserEngine.GetStdItemName(pu.Index);
+                                sayParams.latesttakeitem = M2Share.UserEngine.GetStdItemName(pu.Index);
                                 Dispose(pu);
                                 who.ItemList.RemoveAt(i);
                             }
@@ -2434,14 +2433,14 @@ namespace GameSvr
             }
         }
 
-        public void NpcSayTitle_TakeWItemFromUser(TCreature who,ref NpcSayParams sayParams, string iname, int count = 0)
+        public void NpcSayTitle_TakeWItemFromUser(TCreature who, ref NpcSayParams sayParams, string iname, int count = 0)
         {
             if (HUtil32.CompareLStr(iname, "[NECKLACE]", 4))
             {
                 if (who.UseItems[Grobal2.U_NECKLACE].Index > 0)
                 {
                     ((TUserHuman)who).SendDelItem(who.UseItems[Grobal2.U_NECKLACE]);
-                    sayParams.latesttakeitem = svMain.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_NECKLACE].Index);
+                    sayParams.latesttakeitem = M2Share.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_NECKLACE].Index);
                     who.UseItems[Grobal2.U_NECKLACE].Index = 0;
                 }
                 return;
@@ -2451,14 +2450,14 @@ namespace GameSvr
                 if (who.UseItems[Grobal2.U_RINGL].Index > 0)
                 {
                     ((TUserHuman)who).SendDelItem(who.UseItems[Grobal2.U_RINGL]);
-                    sayParams.latesttakeitem = svMain.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_RINGL].Index);
+                    sayParams.latesttakeitem = M2Share.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_RINGL].Index);
                     who.UseItems[Grobal2.U_RINGL].Index = 0;
                     return;
                 }
                 if (who.UseItems[Grobal2.U_RINGR].Index > 0)
                 {
                     ((TUserHuman)who).SendDelItem(who.UseItems[Grobal2.U_RINGR]);
-                    sayParams.latesttakeitem = svMain.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_RINGR].Index);
+                    sayParams.latesttakeitem = M2Share.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_RINGR].Index);
                     who.UseItems[Grobal2.U_RINGR].Index = 0;
                     return;
                 }
@@ -2469,14 +2468,14 @@ namespace GameSvr
                 if (who.UseItems[Grobal2.U_ARMRINGL].Index > 0)
                 {
                     ((TUserHuman)who).SendDelItem(who.UseItems[Grobal2.U_ARMRINGL]);
-                    sayParams.latesttakeitem = svMain.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_ARMRINGL].Index);
+                    sayParams.latesttakeitem = M2Share.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_ARMRINGL].Index);
                     who.UseItems[Grobal2.U_ARMRINGL].Index = 0;
                     return;
                 }
                 if (who.UseItems[Grobal2.U_ARMRINGR].Index > 0)
                 {
                     ((TUserHuman)who).SendDelItem(who.UseItems[Grobal2.U_ARMRINGR]);
-                    sayParams.latesttakeitem = svMain.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_ARMRINGR].Index);
+                    sayParams.latesttakeitem = M2Share.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_ARMRINGR].Index);
                     who.UseItems[Grobal2.U_ARMRINGR].Index = 0;
                     return;
                 }
@@ -2487,7 +2486,7 @@ namespace GameSvr
                 if (who.UseItems[Grobal2.U_WEAPON].Index > 0)
                 {
                     ((TUserHuman)who).SendDelItem(who.UseItems[Grobal2.U_WEAPON]);
-                    sayParams.latesttakeitem = svMain.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_WEAPON].Index);
+                    sayParams.latesttakeitem = M2Share.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_WEAPON].Index);
                     who.UseItems[Grobal2.U_WEAPON].Index = 0;
                 }
                 return;
@@ -2497,7 +2496,7 @@ namespace GameSvr
                 if (who.UseItems[Grobal2.U_HELMET].Index > 0)
                 {
                     ((TUserHuman)who).SendDelItem(who.UseItems[Grobal2.U_HELMET]);
-                    sayParams.latesttakeitem = svMain.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_HELMET].Index);
+                    sayParams.latesttakeitem = M2Share.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_HELMET].Index);
                     who.UseItems[Grobal2.U_HELMET].Index = 0;
                 }
                 return;
@@ -2507,7 +2506,7 @@ namespace GameSvr
                 if (who.UseItems[Grobal2.U_BUJUK].Index > 0)
                 {
                     ((TUserHuman)who).SendDelItem(who.UseItems[Grobal2.U_BUJUK]);
-                    sayParams.latesttakeitem = svMain.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_BUJUK].Index);
+                    sayParams.latesttakeitem = M2Share.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_BUJUK].Index);
                     who.UseItems[Grobal2.U_BUJUK].Index = 0;
                 }
                 return;
@@ -2517,7 +2516,7 @@ namespace GameSvr
                 if (who.UseItems[Grobal2.U_BELT].Index > 0)
                 {
                     ((TUserHuman)who).SendDelItem(who.UseItems[Grobal2.U_BELT]);
-                    sayParams.latesttakeitem = svMain.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_BELT].Index);
+                    sayParams.latesttakeitem = M2Share.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_BELT].Index);
                     who.UseItems[Grobal2.U_BELT].Index = 0;
                 }
                 return;
@@ -2527,7 +2526,7 @@ namespace GameSvr
                 if (who.UseItems[Grobal2.U_BOOTS].Index > 0)
                 {
                     ((TUserHuman)who).SendDelItem(who.UseItems[Grobal2.U_BOOTS]);
-                    sayParams.latesttakeitem = svMain.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_BOOTS].Index);
+                    sayParams.latesttakeitem = M2Share.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_BOOTS].Index);
                     who.UseItems[Grobal2.U_BOOTS].Index = 0;
                 }
                 return;
@@ -2537,7 +2536,7 @@ namespace GameSvr
                 if (who.UseItems[Grobal2.U_CHARM].Index > 0)
                 {
                     ((TUserHuman)who).SendDelItem(who.UseItems[Grobal2.U_CHARM]);
-                    sayParams.latesttakeitem = svMain.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_CHARM].Index);
+                    sayParams.latesttakeitem = M2Share.UserEngine.GetStdItemName(who.UseItems[Grobal2.U_CHARM].Index);
                     who.UseItems[Grobal2.U_CHARM].Index = 0;
                 }
                 return;
@@ -2550,10 +2549,10 @@ namespace GameSvr
                 }
                 if (who.UseItems[i].Index > 0)
                 {
-                    if (svMain.UserEngine.GetStdItemName(who.UseItems[i].Index).ToLower().CompareTo(iname.ToLower()) == 0)
+                    if (M2Share.UserEngine.GetStdItemName(who.UseItems[i].Index).ToLower().CompareTo(iname.ToLower()) == 0)
                     {
                         ((TUserHuman)who).SendDelItem(who.UseItems[i]);
-                        sayParams.latesttakeitem = svMain.UserEngine.GetStdItemName(who.UseItems[i].Index);
+                        sayParams.latesttakeitem = M2Share.UserEngine.GetStdItemName(who.UseItems[i].Index);
                         who.UseItems[i].Index = 0;
                         count -= 1;
                     }
@@ -2572,13 +2571,13 @@ namespace GameSvr
             {
                 receivewho.IncGold(count);
                 receivewho.GoldChanged();
-                svMain.AddUserLog("9\09" + receivewho.MapName + "\09" + receivewho.CX.ToString() + "\09" + receivewho.CY.ToString() + "\09" + receivewho.UserName + "\09" + Envir.NAME_OF_GOLD + "\09" + count.ToString() + "\09" + "1\09" + this.UserName);
+                M2Share.AddUserLog("9\09" + receivewho.MapName + "\09" + receivewho.CX.ToString() + "\09" + receivewho.CY.ToString() + "\09" + receivewho.UserName + "\09" + Envir.NAME_OF_GOLD + "\09" + count.ToString() + "\09" + "1\09" + this.UserName);
             }
             else
             {
                 idx = 0;
-                idx = svMain.UserEngine.GetStdItemIndex(iname);
-                pstd = svMain.UserEngine.GetStdItem(idx);
+                idx = M2Share.UserEngine.GetStdItemIndex(iname);
+                pstd = M2Share.UserEngine.GetStdItem(idx);
                 if ((idx > 0) && (pstd != null))
                 {
                     for (var i = 0; i < count; i++)
@@ -2587,7 +2586,7 @@ namespace GameSvr
                         {
                             if (receivewho.UserCounterItemAdd(pstd.StdMode, pstd.Looks, count, iname, false))
                             {
-                                svMain.AddUserLog("9\09" + receivewho.MapName + "\09" + receivewho.CX.ToString() + "\09" + receivewho.CY.ToString() + "\09" + receivewho.UserName + "\09" + idx.ToString() + "\09" + count.ToString() + "\09" + "1\09" + this.UserName);
+                                M2Share.AddUserLog("9\09" + receivewho.MapName + "\09" + receivewho.CX.ToString() + "\09" + receivewho.CY.ToString() + "\09" + receivewho.UserName + "\09" + idx.ToString() + "\09" + count.ToString() + "\09" + "1\09" + this.UserName);
                                 receivewho.WeightChanged();
                                 return;
                             }
@@ -2607,15 +2606,15 @@ namespace GameSvr
                         if (receivewho.CanAddItem())
                         {
                             pu = new TUserItem();
-                            if (svMain.UserEngine.CopyToUserItemFromName(iname, ref pu))
+                            if (M2Share.UserEngine.CopyToUserItemFromName(iname, ref pu))
                             {
                                 if (pstd.OverlapItem >= 1)
                                 {
-                                    pu.Dura = (ushort)count;
+                                    pu.Dura = (short)count;
                                 }
                                 receivewho.ItemList.Add(pu);
                                 ((TUserHuman)receivewho).SendAddItem(pu);
-                                svMain.AddUserLog("9\09" + receivewho.MapName + "\09" + receivewho.CX.ToString() + "\09" + receivewho.CY.ToString() + "\09" + receivewho.UserName + "\09" + iname + "\09" + pu.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
+                                M2Share.AddUserLog("9\09" + receivewho.MapName + "\09" + receivewho.CX.ToString() + "\09" + receivewho.CY.ToString() + "\09" + receivewho.UserName + "\09" + iname + "\09" + pu.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
                                 receivewho.WeightChanged();
                                 if (pstd.OverlapItem >= 1)
                                 {
@@ -2630,16 +2629,16 @@ namespace GameSvr
                         else
                         {
                             pu = new TUserItem();
-                            if (svMain.UserEngine.CopyToUserItemFromName(iname, ref pu))
+                            if (M2Share.UserEngine.CopyToUserItemFromName(iname, ref pu))
                             {
-                                pstd2 = svMain.UserEngine.GetStdItem(svMain.UserEngine.GetStdItemIndex(iname));
+                                pstd2 = M2Share.UserEngine.GetStdItem(M2Share.UserEngine.GetStdItemIndex(iname));
                                 if (pstd2 != null)
                                 {
                                     if (pstd2.OverlapItem >= 1)
                                     {
-                                        pu.Dura = (ushort)count;
+                                        pu.Dura = (short)count;
                                     }
-                                    svMain.AddUserLog("9\09" + receivewho.MapName + "\09" + receivewho.CX.ToString() + "\09" + receivewho.CY.ToString() + "\09" + receivewho.UserName + "\09" + iname + "\09" + pu.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
+                                    M2Share.AddUserLog("9\09" + receivewho.MapName + "\09" + receivewho.CX.ToString() + "\09" + receivewho.CY.ToString() + "\09" + receivewho.UserName + "\09" + iname + "\09" + pu.MakeIndex.ToString() + "\09" + "1\09" + this.UserName);
                                     receivewho.DropItemDown(pu, 3, false, receivewho, null, 2);
                                 }
                             }
@@ -2653,26 +2652,23 @@ namespace GameSvr
             }
         }
 
-        public bool NpcSayTitle_DoActionList(TCreature who, ArrayList alist)
+        public bool NpcSayTitle_DoActionList(TCreature who, ref NpcSayParams sayParams, ArrayList alist)
         {
             bool result;
-            int i;
             int k;
             int n;
             int n1;
             int n2;
-            int ixx;
-            int iyy;
             int param;
             int tag;
             int iparam1;
             int iparam2;
             int iparam3;
             int iparam4;
-            string sparam1 = String.Empty;
-            string sparam2 = String.Empty;
-            string sparam3 = String.Empty;
-            string sparam4 = String.Empty;
+            string sparam1 = string.Empty;
+            string sparam2 = string.Empty;
+            string sparam3 = string.Empty;
+            string sparam4 = string.Empty;
             TQuestActionInfo pqa;
             ArrayList list;
             TUserHuman hum;
@@ -2680,7 +2676,7 @@ namespace GameSvr
             iparam2 = 0;
             iparam3 = 0;
             result = true;
-            for (i = 0; i < alist.Count; i++)
+            for (var i = 0; i < alist.Count; i++)
             {
                 pqa = alist[i] as TQuestActionInfo;
                 switch (pqa.ActIdent)
@@ -2701,10 +2697,10 @@ namespace GameSvr
                         who.SetQuestFinIndexMark(param, tag);
                         break;
                     case Grobal2.QA_TAKE:
-                        NpcSayTitle_TakeItemFromUser(pqa.ActParam, pqa.ActTagVal);
+                        // NpcSayTitle_TakeItemFromUser(pqa.ActParam, pqa.ActTagVal);
                         break;
                     case Grobal2.QA_TAKEW:
-                        NpcSayTitle_TakeWItemFromUser(pqa.ActParam, pqa.ActTagVal);
+                        //  NpcSayTitle_TakeWItemFromUser(pqa.ActParam, pqa.ActTagVal);
                         break;
                     case Grobal2.QA_GIVE:
                         NpcSayTitle_GiveItemToUser(who, pqa.ActParam, pqa.ActTagVal);
@@ -2726,12 +2722,12 @@ namespace GameSvr
                     case Grobal2.QA_MAPMOVE:
                         who.SendRefMsg(Grobal2.RM_SPACEMOVE_HIDE, 0, 0, 0, 0, "");
                         who.SpaceMove(pqa.ActParam, (short)pqa.ActTagVal, (short)pqa.ActExtraVal, 0);
-                        bosaynow = true;
+                        sayParams.bosaynow = true;
                         break;
                     case Grobal2.QA_MAPRANDOM:
                         who.SendRefMsg(Grobal2.RM_SPACEMOVE_HIDE, 0, 0, 0, 0, "");
                         who.RandomSpaceMove(pqa.ActParam, 0);
-                        bosaynow = true;
+                        sayParams.bosaynow = true;
                         break;
                     case Grobal2.QA_BREAK:
                         result = false;
@@ -2746,7 +2742,7 @@ namespace GameSvr
                     case Grobal2.QA_TIMERECALLGROUP:
                         for (k = 0; k < who.GroupMembers.Count; k++)
                         {
-                            hum = svMain.UserEngine.GetUserHuman(who.GroupMembers[k].UserName);
+                            hum = M2Share.UserEngine.GetUserHuman(who.GroupMembers[k].UserName);
                             if (hum != null)
                             {
                                 hum.BoTimeRecall = false;
@@ -2779,22 +2775,22 @@ namespace GameSvr
                         sparam4 = pqa.ActParam;
                         break;
                     case Grobal2.QA_TAKECHECKITEM:
-                        if (pcheckitem != null)
+                        if (sayParams.pcheckitem != null)
                         {
-                            who.DeletePItemAndSend(pcheckitem);
+                            who.DeletePItemAndSend(sayParams.pcheckitem);
                         }
                         break;
                     case Grobal2.QA_MONGEN:
                         for (k = 0; k < pqa.ActTagVal; k++)
                         {
-                            ixx = iparam2 - pqa.ActExtraVal + new System.Random(pqa.ActExtraVal * 2 + 1).Next();
-                            iyy = iparam3 - pqa.ActExtraVal + new System.Random(pqa.ActExtraVal * 2 + 1).Next();
-                            svMain.UserEngine.AddCreatureSysop(sparam1, ixx, iyy, pqa.ActParam);
+                            var ixx = (short)(iparam2 - pqa.ActExtraVal + new System.Random(pqa.ActExtraVal * 2 + 1).Next());
+                            var iyy = (short)(iparam3 - pqa.ActExtraVal + new System.Random(pqa.ActExtraVal * 2 + 1).Next());
+                            M2Share.UserEngine.AddCreatureSysop(sparam1, ixx, iyy, pqa.ActParam);
                         }
                         break;
                     case Grobal2.QA_MONCLEAR:
                         list = new ArrayList();
-                        svMain.UserEngine.GetMapMons(svMain.GrobalEnvir.GetEnvir(pqa.ActParam), list);
+                        M2Share.UserEngine.GetMapMons(M2Share.GrobalEnvir.GetEnvir(pqa.ActParam), list);
                         for (k = 0; k < list.Count; k++)
                         {
                             ((TCreature)list[k]).BoNoItem = true;
@@ -2814,7 +2810,7 @@ namespace GameSvr
                                     break;
                                 // Modify the A .. B: 100 .. 109
                                 case 100:
-                                    svMain.GrobalQuestParams[n - 100] = pqa.ActTagVal;
+                                    M2Share.GrobalQuestParams[n - 100] = pqa.ActTagVal;
                                     break;
                                 // Modify the A .. B: 200 .. 209
                                 case 200:
@@ -2848,11 +2844,11 @@ namespace GameSvr
                                 case 100:
                                     if (pqa.ActTagVal > 1)
                                     {
-                                        svMain.GrobalQuestParams[n - 100] = svMain.GrobalQuestParams[n - 100] + pqa.ActTagVal;
+                                        M2Share.GrobalQuestParams[n - 100] = M2Share.GrobalQuestParams[n - 100] + pqa.ActTagVal;
                                     }
                                     else
                                     {
-                                        svMain.GrobalQuestParams[n - 100] = svMain.GrobalQuestParams[n - 100] + 1;
+                                        M2Share.GrobalQuestParams[n - 100] = M2Share.GrobalQuestParams[n - 100] + 1;
                                     }
                                     break;
                                 // Modify the A .. B: 200 .. 209
@@ -2901,11 +2897,11 @@ namespace GameSvr
                                 case 100:
                                     if (pqa.ActTagVal > 1)
                                     {
-                                        svMain.GrobalQuestParams[n - 100] = svMain.GrobalQuestParams[n - 100] - pqa.ActTagVal;
+                                        M2Share.GrobalQuestParams[n - 100] = M2Share.GrobalQuestParams[n - 100] - pqa.ActTagVal;
                                     }
                                     else
                                     {
-                                        svMain.GrobalQuestParams[n - 100] = svMain.GrobalQuestParams[n - 100] - 1;
+                                        M2Share.GrobalQuestParams[n - 100] = M2Share.GrobalQuestParams[n - 100] - 1;
                                     }
                                     break;
                                 // Modify the A .. B: 200 .. 209
@@ -2946,7 +2942,7 @@ namespace GameSvr
                                     break;
                                 // Modify the A .. B: 100 .. 109
                                 case 100:
-                                    n1 = svMain.GrobalQuestParams[n - 100];
+                                    n1 = M2Share.GrobalQuestParams[n - 100];
                                     break;
                                 // Modify the A .. B: 200 .. 209
                                 case 200:
@@ -2970,7 +2966,7 @@ namespace GameSvr
                                     break;
                                 // Modify the A .. B: 100 .. 109
                                 case 100:
-                                    n2 = svMain.GrobalQuestParams[n - 100];
+                                    n2 = M2Share.GrobalQuestParams[n - 100];
                                     break;
                                 // Modify the A .. B: 200 .. 209
                                 case 200:
@@ -2993,7 +2989,7 @@ namespace GameSvr
                                     break;
                                 // Modify the A .. B: 100 .. 109
                                 case 100:
-                                    svMain.GrobalQuestParams[9] = svMain.GrobalQuestParams[9] + n1 + n2;
+                                    M2Share.GrobalQuestParams[9] = M2Share.GrobalQuestParams[9] + n1 + n2;
                                     break;
                                 // Modify the A .. B: 200 .. 209
                                 case 200:
@@ -3019,7 +3015,7 @@ namespace GameSvr
                                     break;
                                 // Modify the A .. B: 100 .. 109
                                 case 100:
-                                    svMain.GrobalQuestParams[n - 100] = new System.Random(pqa.ActTagVal).Next();
+                                    M2Share.GrobalQuestParams[n - 100] = new System.Random(pqa.ActTagVal).Next();
                                     break;
                                 // Modify the A .. B: 200 .. 209
                                 case 200:
@@ -3034,11 +3030,11 @@ namespace GameSvr
                         break;
                     case Grobal2.QA_EXCHANGEMAP:
                         // 何甫 荤恩
-                        envir = svMain.GrobalEnvir.GetEnvir(pqa.ActParam);
+                        envir = M2Share.GrobalEnvir.GetEnvir(pqa.ActParam);
                         if (envir != null)
                         {
                             list = new ArrayList();
-                            svMain.UserEngine.GetAreaUsers(envir, 0, 0, 1000, list);
+                            M2Share.UserEngine.GetAreaUsers(envir, 0, 0, 1000, list);
                             if (list.Count > 0)
                             {
                                 // 茄疙父 急琶
@@ -3055,11 +3051,11 @@ namespace GameSvr
                         break;
                     case Grobal2.QA_RECALLMAP:
                         // 何甫 荤恩
-                        envir = svMain.GrobalEnvir.GetEnvir(pqa.ActParam);
+                        envir = M2Share.GrobalEnvir.GetEnvir(pqa.ActParam);
                         if (envir != null)
                         {
                             list = new ArrayList();
-                            svMain.UserEngine.GetAreaUsers(envir, 0, 0, 1000, list);
+                            M2Share.UserEngine.GetAreaUsers(envir, 0, 0, 1000, list);
                             for (k = 0; k < list.Count; k++)
                             {
                                 hum = (TUserHuman)list[k];
@@ -3076,25 +3072,25 @@ namespace GameSvr
                         }
                         break;
                     case Grobal2.QA_BATCHDELAY:
-                        batchdelay = pqa.ActParamVal * 1000;
+                        sayParams.batchdelay = pqa.ActParamVal * 1000;
                         break;
                     case Grobal2.QA_ADDBATCH:
-                        batchlist.Add(pqa.ActParam, batchdelay as Object);
+                        //sayParams.batchlist.Add(pqa.ActParam, sayParams.batchdelay);
                         break;
                     case Grobal2.QA_BATCHMOVE:
-                        for (k = 0; k < batchlist.Count; k++)
-                        {
-                            who.SendDelayMsg(this, Grobal2.RM_RANDOMSPACEMOVE, 0, 0, 0, 0, batchlist[k], previousbatchdelay + ((int)batchlist.Values[k]));
-                            previousbatchdelay = previousbatchdelay + ((int)batchlist.Values[k]);
-                        }
+                        //for (k = 0; k < sayParams.batchlist.Count; k++)
+                        //{
+                        //    who.SendDelayMsg(this, Grobal2.RM_RANDOMSPACEMOVE, 0, 0, 0, 0, sayParams.batchlist[k], previousbatchdelay + ((int)sayParams.batchlist.Values[k]));
+                        //    previousbatchdelay = previousbatchdelay + ((int)sayParams.batchlist.Values[k]);
+                        //}
                         break;
                     case Grobal2.QA_PLAYDICE:
-                        who.SendMsg(this, Grobal2.RM_PLAYDICE, (ushort)pqa.ActParamVal, HUtil32.MakeLong(MakeWord(((TUserHuman)who).DiceParams[0], ((TUserHuman)who).DiceParams[1]), MakeWord(((TUserHuman)who).DiceParams[2], ((TUserHuman)who).DiceParams[3])), HUtil32.MakeLong(MakeWord(((TUserHuman)who).DiceParams[4], ((TUserHuman)who).DiceParams[5]), MakeWord(((TUserHuman)who).DiceParams[6], ((TUserHuman)who).DiceParams[7])), HUtil32.MakeLong(MakeWord(((TUserHuman)who).DiceParams[8], ((TUserHuman)who).DiceParams[9]), 0), pqa.ActTag);
-                        bosaynow = true;
+                        who.SendMsg(this, Grobal2.RM_PLAYDICE, (short)pqa.ActParamVal, HUtil32.MakeLong(MakeWord(((TUserHuman)who).DiceParams[0], ((TUserHuman)who).DiceParams[1]), MakeWord(((TUserHuman)who).DiceParams[2], ((TUserHuman)who).DiceParams[3])), HUtil32.MakeLong(MakeWord(((TUserHuman)who).DiceParams[4], ((TUserHuman)who).DiceParams[5]), MakeWord(((TUserHuman)who).DiceParams[6], ((TUserHuman)who).DiceParams[7])), HUtil32.MakeLong(MakeWord(((TUserHuman)who).DiceParams[8], ((TUserHuman)who).DiceParams[9]), 0), pqa.ActTag);
+                        sayParams.bosaynow = true;
                         break;
                     case Grobal2.QA_PLAYROCK:
-                        who.SendMsg(this, Grobal2.RM_PLAYROCK, (ushort)pqa.ActParamVal, HUtil32.MakeLong(MakeWord(((TUserHuman)who).DiceParams[0], ((TUserHuman)who).DiceParams[1]), MakeWord(((TUserHuman)who).DiceParams[2], ((TUserHuman)who).DiceParams[3])), HUtil32.MakeLong(MakeWord(((TUserHuman)who).DiceParams[4], ((TUserHuman)who).DiceParams[5]), MakeWord(((TUserHuman)who).DiceParams[6], ((TUserHuman)who).DiceParams[7])), HUtil32.MakeLong(MakeWord(((TUserHuman)who).DiceParams[8], ((TUserHuman)who).DiceParams[9]), 0), pqa.ActTag);
-                        bosaynow = true;
+                        who.SendMsg(this, Grobal2.RM_PLAYROCK, (short)pqa.ActParamVal, HUtil32.MakeLong(MakeWord(((TUserHuman)who).DiceParams[0], ((TUserHuman)who).DiceParams[1]), MakeWord(((TUserHuman)who).DiceParams[2], ((TUserHuman)who).DiceParams[3])), HUtil32.MakeLong(MakeWord(((TUserHuman)who).DiceParams[4], ((TUserHuman)who).DiceParams[5]), MakeWord(((TUserHuman)who).DiceParams[6], ((TUserHuman)who).DiceParams[7])), HUtil32.MakeLong(MakeWord(((TUserHuman)who).DiceParams[8], ((TUserHuman)who).DiceParams[9]), 0), pqa.ActTag);
+                        sayParams.bosaynow = true;
                         break;
                     case Grobal2.QA_ADDNAMELIST:
                         NpcSayTitle_AddNameFromFileList(who.UserName, NpcBaseDir + pqa.ActParam);
@@ -3109,23 +3105,21 @@ namespace GameSvr
                         who.SetDailyQuest(pqa.ActParamVal);
                         break;
                     case Grobal2.QA_TAKEGRADEITEM:
-                        NpcSayTitle_TakeEventGradeItemFromUser(pqa.ActParamVal);
+                        // sayParams.NpcSayTitle_TakeEventGradeItemFromUser(pqa.ActParamVal);
                         break;
                     case Grobal2.QA_GOTOQUEST:
-                        NpcSayTitle_GotoQuest(pqa.ActParamVal);
+                        // sayParams.NpcSayTitle_GotoQuest(pqa.ActParamVal);
                         break;
                     case Grobal2.QA_ENDQUEST:
                         ((TUserHuman)who).CurQuest = null;
                         break;
                     case Grobal2.QA_GOTO:
-                        NpcSayTitle_GotoSay(pqa.ActParam);
+                        NpcSayTitle_GotoSay(who, pqa.ActParam);
                         break;
                     case Grobal2.QA_SOUND:
                         who.SendMsg(this, Grobal2.RM_SOUND, 0, HUtil32.Str_ToInt(pqa.ActParam, 0), 0, 0, "");
                         break;
                     case Grobal2.QA_SOUNDALL:
-                        // 矫埃捞 瘤唱搁 敲贰弊 Reset
-                        // 25檬
                         if (HUtil32.GetTickCount() - SoundStartTime > 25 * 1000)
                         {
                             SoundStartTime = HUtil32.GetTickCount();
@@ -3134,7 +3128,6 @@ namespace GameSvr
                         if (!BoSoundPlaying)
                         {
                             BoSoundPlaying = true;
-                            // 荤款靛 敲饭捞 夸没
                             this.SendRefMsg(Grobal2.RM_DIGUP, this.Dir, this.CX, this.CY, 0, "");
                         }
                         break;
@@ -3157,11 +3150,11 @@ namespace GameSvr
                     case Grobal2.QA_MOVEALLMAP:
                         param = pqa.ActTagVal;
                         // 捞悼 矫懦 荤恩
-                        envir = svMain.GrobalEnvir.GetEnvir(this.MapName);
+                        envir = M2Share.GrobalEnvir.GetEnvir(this.MapName);
                         if (envir != null)
                         {
                             list = new ArrayList();
-                            svMain.UserEngine.GetAreaUsers(envir, 0, 0, 1000, list);
+                            M2Share.UserEngine.GetAreaUsers(envir, 0, 0, 1000, list);
                             for (k = 0; k < list.Count; k++)
                             {
                                 hum = (TUserHuman)list[k];
@@ -3169,7 +3162,6 @@ namespace GameSvr
                                 {
                                     hum.RandomSpaceMove(pqa.ActParam, 0);
                                 }
-                                // param疙 力茄
                                 if (k >= (param - 1))
                                 {
                                     break;
@@ -3194,7 +3186,7 @@ namespace GameSvr
                         {
                             for (k = 0; k < who.GroupMembers.Count; k++)
                             {
-                                hum = svMain.UserEngine.GetUserHuman(who.GroupMembers[k].UserName);
+                                hum = M2Share.UserEngine.GetUserHuman(who.GroupMembers[k].UserName);
                                 if (hum != null)
                                 {
                                     if (hum.MapName == this.MapName)
@@ -3217,7 +3209,7 @@ namespace GameSvr
                         who.CGHIstart = who.CGHIstart + ((long)n * 1000);
                         if (who.CGHIUseTime > n)
                         {
-                            who.CGHIUseTime = (ushort)(who.CGHIUseTime - n);
+                            who.CGHIUseTime = (short)(who.CGHIUseTime - n);
                         }
                         else
                         {
@@ -3262,11 +3254,11 @@ namespace GameSvr
                         param = HUtil32.Str_ToInt(pqa.ActParam, 0);
                         tag = HUtil32.Str_ToInt(pqa.ActTag, 0);
                         // 甘俊 乐绰 葛电 荤恩
-                        envir = svMain.GrobalEnvir.GetEnvir(this.MapName);
+                        envir = M2Share.GrobalEnvir.GetEnvir(this.MapName);
                         if (envir != null)
                         {
                             list = new ArrayList();
-                            svMain.UserEngine.GetAreaUsers(envir, 0, 0, 1000, list);
+                            M2Share.UserEngine.GetAreaUsers(envir, 0, 0, 1000, list);
                             for (k = 0; k < list.Count; k++)
                             {
                                 hum = (TUserHuman)list[k];
@@ -3290,9 +3282,9 @@ namespace GameSvr
                         // 楷牢 菊栏肺 捞悼
                         if (((TUserHuman)who).fLover != null)
                         {
-                            if (((TUserHuman)who).fLover.GetLoverName != "")
+                            if (((TUserHuman)who).fLover.GetLoverName() != "")
                             {
-                                ((TUserHuman)who).CmdCharSpaceMove(((TUserHuman)who).fLover.GetLoverName);
+                                ((TUserHuman)who).CmdCharSpaceMove(((TUserHuman)who).fLover.GetLoverName());
                             }
                         }
                         break;
@@ -3318,32 +3310,27 @@ namespace GameSvr
                         {
                             case 1:
                                 // 捞棋飘 辆幅
-                                who.SendRefMsg(Grobal2.RM_LOOPNORMALEFFECT, (ushort)this.ActorId, tag, 0, Grobal2.NE_JW_EFFECT1, "");
+                                who.SendRefMsg(Grobal2.RM_LOOPNORMALEFFECT, (short)this.ActorId, tag, 0, Grobal2.NE_JW_EFFECT1, "");
                                 break;
                             default:
-                                who.SendRefMsg(Grobal2.RM_LOOPNORMALEFFECT, (ushort)this.ActorId, tag, 0, Grobal2.NE_JW_EFFECT1, "");
+                                who.SendRefMsg(Grobal2.RM_LOOPNORMALEFFECT, (short)this.ActorId, tag, 0, Grobal2.NE_JW_EFFECT1, "");
                                 break;
                         }
                         break;
                     case Grobal2.QA_MONGENAROUND:
-                        // 某腐 林困俊 阁胶磐 哩
-                        for (ixx = who.CX - 2; ixx <= who.CX + 2; ixx++)
+                        for (var ixx = who.CX - 2; ixx <= who.CX + 2; ixx++)
                         {
-                            for (iyy = who.CY - 2; iyy <= who.CY + 2; iyy++)
+                            for (var iyy = who.CY - 2; iyy <= who.CY + 2; iyy++)
                             {
-                                // sparam1 : map
                                 if (sparam1 == "")
                                 {
                                     sparam1 = who.MapName;
                                 }
                                 if (((Math.Abs(who.CX - ixx) == 2) || (Math.Abs(who.CY - iyy) == 2)) && (Math.Abs(who.CX - ixx) % 2 == 0) && (Math.Abs(who.CY - iyy) % 2 == 0))
                                 {
-                                    // 甘涅胶飘甫 困秦 PEnvir 措脚俊 who.PEnvir甫 荤侩茄促.
                                     if (who.PEnvir.CanWalk(ixx, iyy, false))
                                     {
-                                        // map
-                                        svMain.UserEngine.AddCreatureSysop(sparam1, ixx, iyy, pqa.ActParam);
-                                        // mon-name
+                                        M2Share.UserEngine.AddCreatureSysop(sparam1, (short)ixx, (short)iyy, pqa.ActParam);
                                     }
                                 }
                             }
@@ -3355,7 +3342,7 @@ namespace GameSvr
                     case Grobal2.QA_SETLOVERFLAG:
                         if (((TUserHuman)who).fLover != null)
                         {
-                            hum = svMain.UserEngine.GetUserHuman(((TUserHuman)who).fLover.GetLoverName);
+                            hum = M2Share.UserEngine.GetUserHuman(((TUserHuman)who).fLover.GetLoverName());
                             if (hum != null)
                             {
                                 param = HUtil32.Str_ToInt(pqa.ActParam, 0);
@@ -3373,7 +3360,7 @@ namespace GameSvr
                     case Grobal2.QA_GIVETOLOVER:
                         if (((TUserHuman)who).fLover != null)
                         {
-                            hum = svMain.UserEngine.GetUserHuman(((TUserHuman)who).fLover.GetLoverName);
+                            hum = M2Share.UserEngine.GetUserHuman(((TUserHuman)who).fLover.GetLoverName());
                             if (hum != null)
                             {
                                 if ((Math.Abs(hum.CX - who.CX) <= 7) && (Math.Abs(hum.CY - who.CY) <= 7))
@@ -3427,13 +3414,12 @@ namespace GameSvr
 
         public void NpcSayTitle_NpcSayProc(TCreature who, string str, bool fast)
         {
-            int k;
-            string tag = String.Empty;
-            string rst = String.Empty;
+            string tag = string.Empty;
+            string rst = string.Empty;
             rst = str;
-            for (k = 0; k <= 100; k++)
+            for (var k = 0; k <= 100; k++)
             {
-                if (CharCount(rst, ">") >= 1)
+                if (HUtil32.CharCount(rst, '>') >= 1)
                 {
                     rst = HUtil32.ArrestStringEx(rst, "<", ">", ref tag);
                     CheckNpcSayCommand((TUserHuman)who, ref str, tag);
@@ -3456,12 +3442,14 @@ namespace GameSvr
         public class NpcSayParams
         {
             public string latesttakeitem;
-            public string pcheckitem;
+            public TUserItem pcheckitem;
+            public ArrayList batchlist;
+            public bool bosaynow;
+            public int batchdelay;
         }
 
         public void NpcSayTitle(TCreature who, string title)
         {
-            bool bosaynow;
             int i;
             int j;
             int m;
@@ -3470,7 +3458,6 @@ namespace GameSvr
             TQuestRecord pquest = null;
             TSayingProcedure psayproc = null;
             ArrayList batchlist = new ArrayList();
-            string latesttakeitem;
             if (((TUserHuman)who).CurQuestNpc != this)
             {
                 ((TUserHuman)who).CurQuestNpc = null;
@@ -3515,13 +3502,12 @@ namespace GameSvr
                 {
                     for (i = Sayings.Count - 1; i >= 0; i--)
                     {
-                        // 涅胶飘狼 炼扒阑 八荤 茄促.
-                        if (NpcSayTitle_CheckQuestCondition(Sayings[i] as TQuestRecord))
-                        {
-                            pquest = Sayings[i] as TQuestRecord;
-                            ((TUserHuman)who).CurQuest = pquest;
-                            ((TUserHuman)who).CurQuestNpc = this;
-                        }
+                        //if (NpcSayTitle_CheckQuestCondition(Sayings[i] as TQuestRecord))
+                        //{
+                        //    pquest = Sayings[i] as TQuestRecord;
+                        //    ((TUserHuman)who).CurQuest = pquest;
+                        //    ((TUserHuman)who).CurQuestNpc = this;
+                        //}
                     }
                 }
             }
@@ -3540,33 +3526,32 @@ namespace GameSvr
                             {
                                 continue;
                             }
-                            bosaynow = false;
-                            if (NpcSayTitle_CheckSayingCondition(who, psayproc.ConditionList))
-                            {
-                                str = str + psayproc.Saying;
-                                if (!NpcSayTitle_DoActionList(who, psayproc.ActionList))
-                                {
-                                    break;
-                                }
-                                if (bosaynow)
-                                {
-                                    NpcSayTitle_NpcSayProc(who, str, true);
-                                    ((TUserHuman)who).CurSayProc = psayproc;
-                                }
-                            }
-                            else
-                            {
-                                str = str + psayproc.ElseSaying;
-                                if (!NpcSayTitle_DoActionList(who, psayproc.ElseActionList))
-                                {
-                                    break;
-                                }
-                                if (bosaynow)
-                                {
-                                    NpcSayTitle_NpcSayProc(who, str, true);
-                                    ((TUserHuman)who).CurSayProc = psayproc;
-                                }
-                            }
+                            //if (NpcSayTitle_CheckSayingCondition(who, psayproc.ConditionList))
+                            //{
+                            //    str = str + psayproc.Saying;
+                            //    if (!NpcSayTitle_DoActionList(who, psayproc.ActionList))
+                            //    {
+                            //        break;
+                            //    }
+                            //    if (bosaynow)
+                            //    {
+                            //        NpcSayTitle_NpcSayProc(who, str, true);
+                            //        ((TUserHuman)who).CurSayProc = psayproc;
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    str = str + psayproc.ElseSaying;
+                            //    if (!NpcSayTitle_DoActionList(who, psayproc.ElseActionList))
+                            //    {
+                            //        break;
+                            //    }
+                            //    if (bosaynow)
+                            //    {
+                            //        NpcSayTitle_NpcSayProc(who, str, true);
+                            //        ((TUserHuman)who).CurSayProc = psayproc;
+                            //    }
+                            //}
                         }
                         if (str != "")
                         {

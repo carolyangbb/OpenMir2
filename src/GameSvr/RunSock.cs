@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Net.Sockets;
 using SystemModule;
@@ -45,14 +44,14 @@ namespace GameSvr
         public int UserGateIndex;
         public int Certification;
         public int ClientVersion;
-        public Object UEngine;
-        public Object FEngine;
-        public Object UCret;
+        public object UEngine;
+        public object FEngine;
+        public object UCret;
         public long OpenTime;
         public bool Enabled;
     }
 
-    public struct TRunCmdInfo
+    public class TRunCmdInfo
     {
         public int idx;
         public string pbuff;
@@ -66,7 +65,7 @@ namespace GameSvr
         private readonly int DecGateIndex = 0;
         private long gateloadtesttime = 0;
         private readonly ArrayList FCmdList = null;
-        private object FCmdCS = null;
+        private readonly object FCmdCS = null;
         public TRunGateInfo[] GateArr;
 
         public TRunSocket()
@@ -88,28 +87,27 @@ namespace GameSvr
             FCmdList = new ArrayList();
             FCmdCS = new object();
         }
-     
+
         ~TRunSocket()
         {
             int i;
-            TRunCmdInfo pInfo;
-            svMain.ruLock.Free();
-            svMain.socstrLock.Free();
+            M2Share.ruLock.Free();
+            M2Share.socstrLock.Free();
             RunAddressList.Free();
             if (FCmdList != null)
             {
                 for (i = 0; i < FCmdList.Count; i++)
                 {
-                    pInfo = (TRunCmdInfo)FCmdList[0];
-                    if (pInfo != null)
-                    {
-                        if (pInfo.pbuff != null)
-                        {
-                            freeMem(pInfo.pbuff);
-                        }
-                        dispose(pInfo);
-                    }
-                    FCmdList.RemoveAt(0);
+                    //pInfo = (TRunCmdInfo)FCmdList[0];
+                    //if (pInfo != null)
+                    //{
+                    //    if (pInfo.pbuff != null)
+                    //    {
+                    //        freeMem(pInfo.pbuff);
+                    //    }
+                    //    dispose(pInfo);
+                    //}
+                    //FCmdList.RemoveAt(0);
                 }
                 FCmdList.Free();
             }
@@ -118,8 +116,8 @@ namespace GameSvr
 
         private void LoadRunAddress()
         {
-            RunAddressList.LoadFromFile(RunSock.GATEADDRFILE);
-            CheckListValid(RunAddressList);
+            //RunAddressList.LoadFromFile(RunSock.GATEADDRFILE);
+            //CheckListValid(RunAddressList);
         }
 
         public bool IsValidGateAddr(string addr)
@@ -129,7 +127,7 @@ namespace GameSvr
             try
             {
                 result = false;
-                svMain.ruLock.Enter();
+                M2Share.ruLock.Enter();
                 for (i = 0; i < RunAddressList.Count; i++)
                 {
                     if (RunAddressList[i] == addr)
@@ -141,17 +139,15 @@ namespace GameSvr
             }
             finally
             {
-                svMain.ruLock.Leave();
+                M2Share.ruLock.Leave();
             }
             return result;
         }
 
         private string GetPublicAddr(string raddr)
         {
-            string result;
-            int i;
-            result = raddr;
-            for (i = 0; i < MaxPubAddr; i++)
+            string result = raddr;
+            for (var i = 0; i < MaxPubAddr; i++)
             {
                 if (PubAddrTable[i].RemoteAddr == raddr)
                 {
@@ -164,37 +160,35 @@ namespace GameSvr
 
         public void Connect(Socket Socket)
         {
-            int i;
-            string remote;
-            if (svMain.ServerReady)
-            {
-                remote = Socket.RemoteAddress;
-                for (i = 0; i < RunSock.MAXGATE; i++)
-                {
-                    if (!GateArr[i].Connected)
-                    {
-                        GateArr[i].Connected = true;
-                        GateArr[i].Socket = Socket;
-                        GateArr[i].PublicAddress = GetPublicAddr(remote);
-                        GateArr[i].Status = 1;
-                        GateArr[i].UserList = new ArrayList();
-                        GateArr[i].ReceiveBuffer = null;
-                        GateArr[i].ReceiveLen = 0;
-                        GateArr[i].SendBuffers = new ArrayList();
-                        GateArr[i].NeedCheck = false;
-                        GateArr[i].GateSyncMode = 0;
-                        GateArr[i].SendDataCount = 0;
-                        GateArr[i].SendDataTime  =  HUtil32.GetTickCount();
-                        svMain.MainOutMessage("Gate " + i.ToString() + " Opened..");
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                svMain.MainOutMessage("Not ready " + Socket.RemoteAddress);
-                Socket.Close;
-            }
+            //if (svMain.ServerReady)
+            //{
+            //    remote = Socket.RemoteAddress;
+            //    for (var i = 0; i < RunSock.MAXGATE; i++)
+            //    {
+            //        if (!GateArr[i].Connected)
+            //        {
+            //            GateArr[i].Connected = true;
+            //            GateArr[i].Socket = Socket;
+            //            GateArr[i].PublicAddress = GetPublicAddr(remote);
+            //            GateArr[i].Status = 1;
+            //            GateArr[i].UserList = new ArrayList();
+            //            GateArr[i].ReceiveBuffer = null;
+            //            GateArr[i].ReceiveLen = 0;
+            //            GateArr[i].SendBuffers = new ArrayList();
+            //            GateArr[i].NeedCheck = false;
+            //            GateArr[i].GateSyncMode = 0;
+            //            GateArr[i].SendDataCount = 0;
+            //            GateArr[i].SendDataTime  =  HUtil32.GetTickCount();
+            //            svMain.MainOutMessage("Gate " + i.ToString() + " Opened..");
+            //            break;
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    svMain.MainOutMessage("Not ready " + Socket.RemoteAddress);
+            //    //Socket.Close;
+            //}
         }
 
         public void Disconnect(Socket Socket)
@@ -206,7 +200,7 @@ namespace GameSvr
         {
             if (Socket.Connected)
             {
-                Socket.Close;
+                //Socket.Close;
             }
             ErrorCode = 0;
         }
@@ -214,23 +208,21 @@ namespace GameSvr
         public void SocketRead(Socket Socket)
         {
             int i;
-            int len;
-            string p;
             for (i = 0; i < RunSock.MAXGATE; i++)
             {
                 if (GateArr[i].Socket == Socket)
                 {
                     try
                     {
-                        len = Socket.ReceiveLength;
-                        GetMem(p, len);
-                        Socket.ReceiveBuf(p, len);
-                        ExecGateBuffers(i, GateArr[i], p, len);
-                        FreeMem(p);
+                        //len = Socket.ReceiveLength;
+                        //GetMem(p, len);
+                        //Socket.ReceiveBuf(p, len);
+                        //ExecGateBuffers(i, GateArr[i], p, len);
+                        //FreeMem(p);
                     }
                     catch
                     {
-                        svMain.MainOutMessage("Exception] SocketRead");
+                        M2Share.MainOutMessage("Exception] SocketRead");
                     }
                     break;
                 }
@@ -257,7 +249,7 @@ namespace GameSvr
             TGateUserInfo uinf;
             try
             {
-                svMain.ruLock.Enter();
+                M2Share.ruLock.Enter();
                 for (i = 0; i < RunSock.MAXGATE; i++)
                 {
                     if (GateArr[i].Socket == Socket)
@@ -283,26 +275,26 @@ namespace GameSvr
                         }
                         if (GateArr[i].ReceiveBuffer != null)
                         {
-                            FreeMem(GateArr[i].ReceiveBuffer);
+                            // FreeMem(GateArr[i].ReceiveBuffer);
                         }
                         GateArr[i].ReceiveBuffer = null;
                         GateArr[i].ReceiveLen = 0;
                         for (j = 0; j < GateArr[i].SendBuffers.Count; j++)
                         {
-                            FreeMem(GateArr[i].SendBuffers[j]);
+                            //FreeMem(GateArr[i].SendBuffers[j]);
                         }
                         GateArr[i].SendBuffers.Free();
                         GateArr[i].SendBuffers = null;
                         GateArr[i].Connected = false;
                         GateArr[i].Socket = null;
-                        svMain.MainOutMessage("Gate " + i.ToString() + " Closed..");
+                        M2Share.MainOutMessage("Gate " + i.ToString() + " Closed..");
                         break;
                     }
                 }
             }
             finally
             {
-                svMain.ruLock.Leave();
+                M2Share.ruLock.Leave();
             }
         }
 
@@ -323,7 +315,7 @@ namespace GameSvr
             uinfo.UEngine = null;
             uinfo.FEngine = null;
             uinfo.UCret = null;
-            uinfo.OpenTime  =  HUtil32.GetTickCount();
+            uinfo.OpenTime = HUtil32.GetTickCount();
             uinfo.Enabled = false;
             for (i = 0; i < ulist.Count; i++)
             {
@@ -354,7 +346,7 @@ namespace GameSvr
             }
             try
             {
-                svMain.ruLock.Enter();
+                M2Share.ruLock.Enter();
                 try
                 {
                     for (i = 0; i < GateArr[gateindex].UserList.Count; i++)
@@ -376,7 +368,7 @@ namespace GameSvr
                             }
                             catch
                             {
-                                svMain.MainOutMessage("[RunSock] TRunSocket.CloseUser exception 1");
+                                M2Share.MainOutMessage("[RunSock] TRunSocket.CloseUser exception 1");
                             }
                             try
                             {
@@ -388,7 +380,7 @@ namespace GameSvr
                             }
                             catch
                             {
-                                svMain.MainOutMessage("[RunSock] TRunSocket.CloseUser exception 2");
+                                M2Share.MainOutMessage("[RunSock] TRunSocket.CloseUser exception 2");
                             }
                             try
                             {
@@ -408,7 +400,7 @@ namespace GameSvr
                             }
                             catch
                             {
-                                svMain.MainOutMessage("[RunSock] TRunSocket.CloseUser exception 3");
+                                M2Share.MainOutMessage("[RunSock] TRunSocket.CloseUser exception 3");
                             }
                             try
                             {
@@ -419,7 +411,7 @@ namespace GameSvr
                             }
                             catch
                             {
-                                svMain.MainOutMessage("[RunSock] TRunSocket.CloseUser exception 4");
+                                M2Share.MainOutMessage("[RunSock] TRunSocket.CloseUser exception 4");
                             }
                             break;
                         }
@@ -427,21 +419,18 @@ namespace GameSvr
                 }
                 catch
                 {
-                    svMain.MainOutMessage("[RunSock] TRunSocket.CloseUser exception");
+                    M2Share.MainOutMessage("[RunSock] TRunSocket.CloseUser exception");
                 }
             }
             finally
             {
-                svMain.ruLock.Leave();
+                M2Share.ruLock.Leave();
             }
         }
 
         public void SendGateLoadTest(int gindex)
         {
-            TDefaultMessage Def=null;
-            int packetlen;
-            TMsgHeader header;
-            string pbuf;
+            string pbuf = string.Empty;
             //header.Code = (int)0xaa55aa55;
             //header.SNumber = 0;
             //header.Ident = Grobal2.GM_TEST;
@@ -458,8 +447,6 @@ namespace GameSvr
         // 悼扁拳 嘎苗具窃
         public void SendForcedClose(int gindex, int uhandle)
         {
-            int packetlen;
-            TMsgHeader header;
             TDefaultMessage def = Grobal2.MakeDefaultMsg(Grobal2.SM_OUTOFCONNECTION, 0, 0, 0, 0);
             string pbuf = null;
             //header.Code = (int)0xaa55aa55;
@@ -476,12 +463,11 @@ namespace GameSvr
 
         public void SendGateCheck(Socket socket, int msg)
         {
-            TMsgHeader header;
             if (socket.Connected)
             {
                 //header.Code = (int)0xaa55aa55;
                 //header.SNumber = 0;
-                //header.Ident = (ushort)msg;
+                //header.Ident = (short)msg;
                 //header.length = 0;
                 //if (socket != null)
                 //{
@@ -492,14 +478,13 @@ namespace GameSvr
 
         public void SendServerUserIndex(Socket socket, int shandle, int gindex, int index)
         {
-            TMsgHeader header;
             if (socket.Connected)
             {
                 //header.Code = (int)0xaa55aa55;
                 //header.SNumber = shandle;
-                //header.UserGateIndex = (ushort)gindex;
+                //header.UserGateIndex = (short)gindex;
                 //header.Ident = Grobal2.GM_SERVERUSERINDEX;
-                //header.UserListIndex = (ushort)index;
+                //header.UserListIndex = (short)index;
                 //header.length = 0;
                 //if (socket != null)
                 //{
@@ -520,7 +505,7 @@ namespace GameSvr
                 {
                     try
                     {
-                        svMain.ruCloseLock.Enter();
+                        M2Share.ruCloseLock.Enter();
                         for (k = 0; k < GateArr[gi].UserList.Count; k++)
                         {
                             pu = GateArr[gi].UserList[k] as TGateUserInfo;
@@ -550,7 +535,7 @@ namespace GameSvr
                     }
                     finally
                     {
-                        svMain.ruCloseLock.Leave();
+                        M2Share.ruCloseLock.Leave();
                     }
                 }
             }
@@ -567,7 +552,7 @@ namespace GameSvr
             }
             try
             {
-                svMain.ruSendLock.Enter();
+                M2Share.ruSendLock.Enter();
                 if (gindex >= 0 && gindex <= RunSock.MAXGATE - 1)
                 {
                     if (GateArr[gindex].SendBuffers != null)
@@ -582,13 +567,13 @@ namespace GameSvr
             }
             finally
             {
-                svMain.ruSendLock.Leave();
+                M2Share.ruSendLock.Leave();
             }
             if (!flag)
             {
                 try
                 {
-                    FreeMem(pbuf);
+                    //FreeMem(pbuf);
                 }
                 finally
                 {
@@ -597,7 +582,7 @@ namespace GameSvr
             }
         }
 
-        public void UserLoadingOk(int gateindex, int shandle, Object cret)
+        public void UserLoadingOk(int gateindex, int shandle, object cret)
         {
             int i;
             TGateUserInfo puser;
@@ -609,10 +594,10 @@ namespace GameSvr
                 }
                 try
                 {
-                    svMain.ruLock.Enter();
+                    M2Share.ruLock.Enter();
                     for (i = 0; i < GateArr[gateindex].UserList.Count; i++)
                     {
-                        puser = GateArr[gateindex].UserList[i];
+                        puser = (TGateUserInfo)GateArr[gateindex].UserList[i];
                         if (puser == null)
                         {
                             continue;
@@ -620,7 +605,7 @@ namespace GameSvr
                         if (puser.UserHandle == shandle)
                         {
                             puser.FEngine = null;
-                            puser.UEngine = svMain.UserEngine;
+                            puser.UEngine = M2Share.UserEngine;
                             puser.UCret = cret;
                             break;
                         }
@@ -628,7 +613,7 @@ namespace GameSvr
                 }
                 finally
                 {
-                    svMain.ruLock.Leave();
+                    M2Share.ruLock.Leave();
                 }
             }
         }
@@ -636,13 +621,13 @@ namespace GameSvr
         public bool DoClientCertification_GetCertification(string body, ref string uid, ref string chrname, ref int certify, ref int clversion, ref int clientchecksum, ref bool startnew)
         {
             bool result;
-            string str = String.Empty;
-            string scert = String.Empty;
-            string sver = String.Empty;
-            string start = String.Empty;
-            string sxorcert = String.Empty;
-            string checksum = String.Empty;
-            string sxor2 = String.Empty;
+            string str = string.Empty;
+            string scert = string.Empty;
+            string sver = string.Empty;
+            string start = string.Empty;
+            string sxorcert = string.Empty;
+            string checksum = string.Empty;
+            string sxor2 = string.Empty;
             long checkcert;
             long xor1;
             long xor2;
@@ -686,7 +671,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[RunSock] TRunSocket.DoClientCertification.GetCertification exception ");
+                M2Share.MainOutMessage("[RunSock] TRunSocket.DoClientCertification.GetCertification exception ");
             }
             return result;
         }
@@ -694,8 +679,8 @@ namespace GameSvr
         // ruLock 救俊辑 龋免登绰 窃荐 烙.
         private void DoClientCertification(int gindex, TGateUserInfo puser, int shandle, string data)
         {
-            string uid = String.Empty;
-            string chrname = String.Empty;
+            string uid = string.Empty;
+            string chrname = string.Empty;
             int certify = 0;
             int clversion = 0;
             int loginclientversion = 0;
@@ -709,7 +694,7 @@ namespace GameSvr
             {
                 if (puser.UserId == "")
                 {
-                    if (CharCount(data, "!") >= 1)
+                    if (HUtil32.CharCount(data, '!') >= 1)
                     {
                         HUtil32.ArrestStringEx(data, "#", "!", ref data);
                         data = data.Substring(2 - 1, data.Length - 1);
@@ -726,11 +711,11 @@ namespace GameSvr
                                 puser.ClientVersion = clversion;
                                 try
                                 {
-                                    svMain.FrontEngine.LoadPlayer(uid, chrname, puser.UserAddress, startnew, certify, certmode, availmode, clversion, loginclientversion, clcheck, shandle, puser.UserGateIndex, gindex);
+                                    M2Share.FrontEngine.LoadPlayer(uid, chrname, puser.UserAddress, startnew, certify, certmode, availmode, clversion, loginclientversion, clcheck, shandle, puser.UserGateIndex, gindex);
                                 }
                                 catch
                                 {
-                                    svMain.MainOutMessage("[RunSock] LoadPlay... TRunSocket.DoClientCertification exception");
+                                    M2Share.MainOutMessage("[RunSock] LoadPlay... TRunSocket.DoClientCertification exception");
                                 }
                             }
                             else
@@ -740,14 +725,14 @@ namespace GameSvr
                                 puser.Enabled = false;
                                 CloseUser(gindex, shandle);
                                 bugstep = 3;
-                                svMain.MainOutMessage("Fail admission:1<" + puser.UserAddress + "><" + availmode.ToString() + ">");
+                                M2Share.MainOutMessage("Fail admission:1<" + puser.UserAddress + "><" + availmode.ToString() + ">");
                                 if (startnew)
                                 {
-                                    svMain.MainOutMessage("Fail admission:2<" + certmode.ToString() + "><" + uid + "><" + chrname + "><" + certify.ToString() + "><" + clversion.ToString() + "><" + clcheck.ToString() + "><T>");
+                                    M2Share.MainOutMessage("Fail admission:2<" + certmode.ToString() + "><" + uid + "><" + chrname + "><" + certify.ToString() + "><" + clversion.ToString() + "><" + clcheck.ToString() + "><T>");
                                 }
                                 else
                                 {
-                                    svMain.MainOutMessage("Fail admission:2<" + certmode.ToString() + "><" + uid + "><" + chrname + "><" + certify.ToString() + "><" + clversion.ToString() + "><" + clcheck.ToString() + "><F>");
+                                    M2Share.MainOutMessage("Fail admission:2<" + certmode.ToString() + "><" + uid + "><" + chrname + "><" + certify.ToString() + "><" + clversion.ToString() + "><" + clcheck.ToString() + "><F>");
                                 }
                             }
                         }
@@ -758,14 +743,14 @@ namespace GameSvr
                             puser.Enabled = false;
                             CloseUser(gindex, shandle);
                             bugstep = 5;
-                            svMain.MainOutMessage("invalid admission: \"" + data + "\"");
+                            M2Share.MainOutMessage("invalid admission: \"" + data + "\"");
                         }
                     }
                 }
             }
             catch
             {
-                svMain.MainOutMessage("[RunSock] TRunSocket.DoClientCertification exception " + bugstep.ToString());
+                M2Share.MainOutMessage("[RunSock] TRunSocket.DoClientCertification exception " + bugstep.ToString());
             }
         }
 
@@ -793,7 +778,7 @@ namespace GameSvr
                             if (puser != null)
                             {
                                 if (puser.UserHandle == pheader.SNumber)
-                                { 
+                                {
 
                                 }
                             }
@@ -853,11 +838,11 @@ namespace GameSvr
                                     {
                                         if (len == TDefaultMessage.PacketSize)
                                         {
-                                            svMain.UserEngine.ProcessUserMessage((TUserHuman)puser.UCret, (TDefaultMessage)pdata, null);
+                                            // svMain.UserEngine.ProcessUserMessage((TUserHuman)puser.UCret, (TDefaultMessage)pdata, null);
                                         }
                                         else
                                         {
-                                            svMain.UserEngine.ProcessUserMessage((TUserHuman)puser.UCret, (TDefaultMessage)pdata, pdata[TDefaultMessage.PacketSize]);
+                                            // svMain.UserEngine.ProcessUserMessage((TUserHuman)puser.UCret, (TDefaultMessage)pdata, pdata[TDefaultMessage.PacketSize]);
                                         }
                                     }
                                 }
@@ -872,7 +857,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] ExecGateMsg.. " + debug.ToString());
+                M2Share.MainOutMessage("[Exception] ExecGateMsg.. " + debug.ToString());
             }
         }
 
@@ -880,9 +865,6 @@ namespace GameSvr
         {
             int len;
             string pwork;
-            string pbody;
-            string ptemp;
-            TMsgHeader pheader;
             pwork = null;
             len = 0;
             try
@@ -895,7 +877,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("Exception] ExecGateBuffers->pBuffer");
+                M2Share.MainOutMessage("Exception] ExecGateBuffers->pBuffer");
             }
             try
             {
@@ -924,7 +906,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("Exception] ExecGateBuffers->@pwork,ExecGateMsg");
+                M2Share.MainOutMessage("Exception] ExecGateBuffers->@pwork,ExecGateMsg");
             }
             try
             {
@@ -945,7 +927,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("Exception] ExecGateBuffers->FreeMem");
+                M2Share.MainOutMessage("Exception] ExecGateBuffers->FreeMem");
             }
         }
 
@@ -953,20 +935,15 @@ namespace GameSvr
         {
             bool result;
             int curn;
-            int len;
-            int newlen;
-            int totlen;
-            int sendlen;
+            int sendlen = 0;
             string psend;
-            string pnew;
-            string pwork;
             long start;
             result = true;
             if (slist.Count == 0)
             {
                 return result;
             }
-            start  =  HUtil32.GetTickCount();
+            start = HUtil32.GetTickCount();
             if (CGate.GateSyncMode > 0)
             {
                 if (HUtil32.GetTickCount() - CGate.WaitTime > 2000)
@@ -1012,9 +989,8 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("Exception SendGateBuffers(1)..");
+                M2Share.MainOutMessage("Exception SendGateBuffers(1)..");
             }
-            // 焊郴扁
             try
             {
                 while (slist.Count > 0)
@@ -1025,15 +1001,15 @@ namespace GameSvr
                         slist.RemoveAt(0);
                         continue;
                     }
-                    Move(psend, sendlen, 4);
-                    if ((CGate.GateSyncMode == 0) && (sendlen + CGate.SendDataCount >= svMain.SENDCHECKBLOCK))
+                    //Move(psend, sendlen, 4);
+                    if ((CGate.GateSyncMode == 0) && (sendlen + CGate.SendDataCount >= M2Share.SENDCHECKBLOCK))
                     {
-                        if ((CGate.SendDataCount == 0) && (sendlen >= svMain.SENDCHECKBLOCK))
+                        if ((CGate.SendDataCount == 0) && (sendlen >= M2Share.SENDCHECKBLOCK))
                         {
                             slist.RemoveAt(0);
                             try
                             {
-                                FreeMem(psend);
+                                //FreeMem(psend);
                             }
                             catch
                             {
@@ -1045,7 +1021,7 @@ namespace GameSvr
                         {
                             SendGateCheck(CGate.Socket, Grobal2.GM_RECEIVE_OK);
                             CGate.GateSyncMode = 1;
-                            CGate.WaitTime  =  HUtil32.GetTickCount();
+                            CGate.WaitTime = HUtil32.GetTickCount();
                         }
                         break;
                     }
@@ -1054,42 +1030,42 @@ namespace GameSvr
                         continue;
                     }
                     slist.RemoveAt(0);
-                    pwork = psend[4];
-                    while (sendlen > 0)
-                    {
-                        if (sendlen >= svMain.SENDBLOCK)
-                        {
-                            if (CGate.Socket != null)
-                            {
-                                if (CGate.Socket.Connected)
-                                {
-                                    CGate.Socket.SendBuf(pwork, svMain.SENDBLOCK);
-                                }
-                                CGate.worksendsoccount = CGate.worksendsoccount + 1;
-                                CGate.worksendbytes = CGate.worksendbytes + svMain.SENDBLOCK;
-                            }
-                            CGate.SendDataCount = CGate.SendDataCount + svMain.SENDBLOCK;
-                            pwork = pwork[svMain.SENDBLOCK];
-                            sendlen = sendlen - svMain.SENDBLOCK;
-                        }
-                        else
-                        {
-                            if (CGate.Socket != null)
-                            {
-                                if (CGate.Socket.Connected)
-                                {
-                                    CGate.Socket.SendBuf(pwork, sendlen);
-                                }
-                                CGate.worksendsoccount = CGate.worksendsoccount + 1;
-                                CGate.worksendbytes = CGate.worksendbytes + sendlen;
-                                CGate.SendDataCount = CGate.SendDataCount + sendlen;
-                            }
-                            sendlen = 0;
-                            break;
-                        }
-                    }
-                    FreeMem(psend);
-                    if (HUtil32.GetTickCount() - start > svMain.SocLimitTime)
+                    //pwork = psend[4];
+                    //while (sendlen > 0)
+                    //{
+                    //    if (sendlen >= svMain.SENDBLOCK)
+                    //    {
+                    //        if (CGate.Socket != null)
+                    //        {
+                    //            if (CGate.Socket.Connected)
+                    //            {
+                    //                CGate.Socket.SendBuf(pwork, svMain.SENDBLOCK);
+                    //            }
+                    //            CGate.worksendsoccount = CGate.worksendsoccount + 1;
+                    //            CGate.worksendbytes = CGate.worksendbytes + svMain.SENDBLOCK;
+                    //        }
+                    //        CGate.SendDataCount = CGate.SendDataCount + svMain.SENDBLOCK;
+                    //        pwork = pwork[svMain.SENDBLOCK];
+                    //        sendlen = sendlen - svMain.SENDBLOCK;
+                    //    }
+                    //    else
+                    //    {
+                    //        if (CGate.Socket != null)
+                    //        {
+                    //            if (CGate.Socket.Connected)
+                    //            {
+                    //                CGate.Socket.SendBuf(pwork, sendlen);
+                    //            }
+                    //            CGate.worksendsoccount = CGate.worksendsoccount + 1;
+                    //            CGate.worksendbytes = CGate.worksendbytes + sendlen;
+                    //            CGate.SendDataCount = CGate.SendDataCount + sendlen;
+                    //        }
+                    //        sendlen = 0;
+                    //        break;
+                    //    }
+                    //}
+                    //FreeMem(psend);
+                    if (HUtil32.GetTickCount() - start > M2Share.SocLimitTime)
                     {
                         result = false;
                         break;
@@ -1098,7 +1074,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("Exception SendGateBuffers(2)..");
+                M2Share.MainOutMessage("Exception SendGateBuffers(2)..");
             }
             return result;
         }
@@ -1142,11 +1118,11 @@ namespace GameSvr
                     try
                     {
                         SendUserSocket(pInfo.idx, pInfo.pbuff);
-                        dispose(pInfo);
+                        //dispose(pInfo);
                     }
                     catch
                     {
-                        svMain.MainOutMessage("[EXCEPT] PAtchSendDate");
+                        M2Share.MainOutMessage("[EXCEPT] PAtchSendDate");
                     }
                     pInfo = null;
                 }
@@ -1159,23 +1135,23 @@ namespace GameSvr
             int k;
             long start;
             TRunGateInfo pgate;
-            start  =  HUtil32.GetTickCount();
-            if (svMain.ServerReady)
+            start = HUtil32.GetTickCount();
+            if (M2Share.ServerReady)
             {
                 try
                 {
                     PatchSendData();
-                    if (svMain.GATELOAD > 0)
+                    if (M2Share.GATELOAD > 0)
                     {
                         if (HUtil32.GetTickCount() - gateloadtesttime >= 100)
                         {
-                            gateloadtesttime  =  HUtil32.GetTickCount();
+                            gateloadtesttime = HUtil32.GetTickCount();
                             for (i = 0; i < RunSock.MAXGATE; i++)
                             {
                                 pgate = GateArr[i];
                                 if (pgate.SendBuffers != null)
                                 {
-                                    for (k = 0; k < svMain.GATELOAD; k++)
+                                    for (k = 0; k < M2Share.GATELOAD; k++)
                                     {
                                         SendGateLoadTest(i);
                                     }
@@ -1208,7 +1184,7 @@ namespace GameSvr
                             pgate = GateArr[i];
                             if (HUtil32.GetTickCount() - pgate.sendchecktime >= 1000)
                             {
-                                pgate.sendchecktime  =  HUtil32.GetTickCount();
+                                pgate.sendchecktime = HUtil32.GetTickCount();
                                 pgate.sendbytes = pgate.worksendbytes;
                                 pgate.sendsoccount = pgate.worksendsoccount;
                                 pgate.worksendbytes = 0;
@@ -1224,13 +1200,13 @@ namespace GameSvr
                 }
                 catch
                 {
-                    svMain.MainOutMessage("[RunSock] TRunSocket.Run exception");
+                    M2Share.MainOutMessage("[RunSock] TRunSocket.Run exception");
                 }
             }
-            svMain.cursoctime = HUtil32.GetTickCount() - start;
-            if (svMain.cursoctime > svMain.maxsoctime)
+            M2Share.cursoctime = (int)(HUtil32.GetTickCount() - start);
+            if (M2Share.cursoctime > M2Share.maxsoctime)
             {
-                svMain.maxsoctime = svMain.cursoctime;
+                M2Share.maxsoctime = M2Share.cursoctime;
             }
         }
 

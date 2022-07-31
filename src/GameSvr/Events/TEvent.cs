@@ -28,11 +28,11 @@ namespace GameSvr
         public long runtick = 0;
         public bool IsAddToMap = false;
         protected bool FVisible = false;
-        protected bool Active = false;
+        public bool Active = false;
 
         public TEvent(TEnvirnoment penv, int ax, int ay, int etype, int etime, bool bovisible)
         {
-            OpenStartTime  =  HUtil32.GetTickCount();
+            OpenStartTime = HUtil32.GetTickCount();
             EventType = etype;
             EventParam = 0;
             ContinueTime = etime;
@@ -44,14 +44,14 @@ namespace GameSvr
             Active = true;
             Damage = 0;
             OwnCret = null;
-            runstart  =  HUtil32.GetTickCount();
+            runstart = HUtil32.GetTickCount();
             runtick = 500;
             AddToMap();
         }
- 
+
         ~TEvent()
         {
- 
+
         }
         public virtual void AddToMap()
         {
@@ -71,7 +71,7 @@ namespace GameSvr
 
         public void Close()
         {
-            CloseTime  =  HUtil32.GetTickCount();
+            CloseTime = HUtil32.GetTickCount();
             if (FVisible)
             {
                 FVisible = false;

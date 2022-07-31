@@ -90,8 +90,8 @@ namespace GameSvr
             if (new System.Random(3).Next() < 2)
             {
                 n = (1 + up) * 2000;
-                pu.DuraMax = (ushort)HUtil32._MIN(65000, pu.DuraMax + n);
-                pu.Dura = (ushort)HUtil32._MIN(65000, pu.Dura + n);
+                pu.DuraMax = (short)HUtil32._MIN(65000, pu.DuraMax + n);
+                pu.Dura = (short)HUtil32._MIN(65000, pu.Dura + n);
             }
             up = GetUpgrade(12, 15);
             if (new System.Random(10).Next() == 0)
@@ -100,53 +100,40 @@ namespace GameSvr
             }
         }
 
-        // 무기를 랜덤하게 업그레이드 한다.
         public void UpgradeRandomDress(TUserItem pu)
         {
-            int n;
-            int up;
-            // 방어
+            int up = GetUpgrade(6, 15);
+            if (new System.Random(30).Next() == 0)
+            {
+                pu.Desc[0] = (byte)(1 + up);// AC
+            }
             up = GetUpgrade(6, 15);
             if (new System.Random(30).Next() == 0)
             {
-                pu.Desc[0] = (byte)(1 + up);
+                pu.Desc[1] = (byte)(1 + up); // MAC
             }
-            // AC
-            // 마항
-            up = GetUpgrade(6, 15);
-            if (new System.Random(30).Next() == 0)
-            {
-                pu.Desc[1] = (byte)(1 + up);
-            }
-            // MAC
-            // 파괴
             up = GetUpgrade(6, 20);
             if (new System.Random(40).Next() == 0)
             {
-                pu.Desc[2] = (byte)(1 + up);
+                pu.Desc[2] = (byte)(1 + up);// DC
             }
-            // DC
-            // 마법
+
             up = GetUpgrade(6, 20);
             if (new System.Random(40).Next() == 0)
             {
-                pu.Desc[3] = (byte)(1 + up);
+                pu.Desc[3] = (byte)(1 + up); // MC
             }
-            // MC
-            // 도력
             up = GetUpgrade(6, 20);
             if (new System.Random(40).Next() == 0)
             {
-                pu.Desc[4] = (byte)(1 + up);
+                pu.Desc[4] = (byte)(1 + up);// SC
             }
-            // SC
-            // 내구
             up = GetUpgrade(6, 10);
             if (new System.Random(8).Next() < 6)
             {
-                n = (1 + up) * 2000;
-                pu.DuraMax = (ushort)HUtil32._MIN(65000, pu.DuraMax + n);
-                pu.Dura = (ushort)HUtil32._MIN(65000, pu.Dura + n);
+                var n = (1 + up) * 2000;
+                pu.DuraMax = (short)HUtil32._MIN(65000, pu.DuraMax + n);
+                pu.Dura = (short)HUtil32._MIN(65000, pu.Dura + n);
             }
         }
 
@@ -196,8 +183,8 @@ namespace GameSvr
             {
                 // 내구
                 n = (1 + up) * 1000;
-                pu.DuraMax = (ushort)HUtil32._MIN(65000, pu.DuraMax + n);
-                pu.Dura = (ushort)HUtil32._MIN(65000, pu.Dura + n);
+                pu.DuraMax = (short)HUtil32._MIN(65000, pu.DuraMax + n);
+                pu.Dura = (short)HUtil32._MIN(65000, pu.Dura + n);
             }
         }
 
@@ -246,8 +233,8 @@ namespace GameSvr
             {
                 // 내구
                 n = (1 + up) * 1000;
-                pu.DuraMax = (ushort)HUtil32._MIN(65000, pu.DuraMax + n);
-                pu.Dura = (ushort)HUtil32._MIN(65000, pu.Dura + n);
+                pu.DuraMax = (short)HUtil32._MIN(65000, pu.DuraMax + n);
+                pu.Dura = (short)HUtil32._MIN(65000, pu.Dura + n);
             }
         }
 
@@ -283,8 +270,8 @@ namespace GameSvr
             if (new System.Random(4).Next() < 3)
             {
                 n = (1 + up) * 1000;
-                pu.DuraMax = (ushort)HUtil32._MIN(65000, pu.DuraMax + n);
-                pu.Dura = (ushort)HUtil32._MIN(65000, pu.Dura + n);
+                pu.DuraMax = (short)HUtil32._MIN(65000, pu.DuraMax + n);
+                pu.Dura = (short)HUtil32._MIN(65000, pu.Dura + n);
             }
         }
 
@@ -319,8 +306,8 @@ namespace GameSvr
             {
                 // 내구성 업그레이드
                 n = (1 + up) * 1000;
-                pu.DuraMax = (ushort)HUtil32._MIN(65000, pu.DuraMax + n);
-                pu.Dura = (ushort)HUtil32._MIN(65000, pu.Dura + n);
+                pu.DuraMax = (short)HUtil32._MIN(65000, pu.DuraMax + n);
+                pu.Dura = (short)HUtil32._MIN(65000, pu.Dura + n);
             }
         }
 
@@ -368,8 +355,8 @@ namespace GameSvr
             if (new System.Random(4).Next() < 3)
             {
                 n = (1 + up) * 1000;
-                pu.DuraMax = (ushort)HUtil32._MIN(65000, pu.DuraMax + n);
-                pu.Dura = (ushort)HUtil32._MIN(65000, pu.Dura + n);
+                pu.DuraMax = (short)HUtil32._MIN(65000, pu.DuraMax + n);
+                pu.Dura = (short)HUtil32._MIN(65000, pu.Dura + n);
             }
         }
 
@@ -417,8 +404,8 @@ namespace GameSvr
             if (new System.Random(4).Next() < 3)
             {
                 n = (1 + up) * 1000;
-                pu.DuraMax = (ushort)HUtil32._MIN(65000, pu.DuraMax + n);
-                pu.Dura = (ushort)HUtil32._MIN(65000, pu.Dura + n);
+                pu.DuraMax = (short)HUtil32._MIN(65000, pu.DuraMax + n);
+                pu.Dura = (short)HUtil32._MIN(65000, pu.Dura + n);
             }
         }
 
@@ -473,8 +460,8 @@ namespace GameSvr
             if (up > 0)
             {
                 n = (1 + up) * 1000;
-                pu.DuraMax = (ushort)HUtil32._MIN(65000, pu.DuraMax + n);
-                pu.Dura = (ushort)HUtil32._MIN(65000, pu.Dura + n);
+                pu.DuraMax = (short)HUtil32._MIN(65000, pu.DuraMax + n);
+                pu.Dura = (short)HUtil32._MIN(65000, pu.Dura + n);
             }
             // 떨어지지 않는 아이템
             if (new System.Random(30).Next() == 0)
@@ -558,8 +545,8 @@ namespace GameSvr
             if (up > 0)
             {
                 n = (1 + up) * 1000;
-                pu.DuraMax = (ushort)HUtil32._MIN(65000, pu.DuraMax + n);
-                pu.Dura = (ushort)HUtil32._MIN(65000, pu.Dura + n);
+                pu.DuraMax = (short)HUtil32._MIN(65000, pu.DuraMax + n);
+                pu.Dura = (short)HUtil32._MIN(65000, pu.Dura + n);
             }
             if (new System.Random(30).Next() == 0)
             {
@@ -628,8 +615,8 @@ namespace GameSvr
             if (up > 0)
             {
                 n = (1 + up) * 1000;
-                pu.DuraMax = (ushort)HUtil32._MIN(65000, pu.DuraMax + n);
-                pu.Dura = (ushort)HUtil32._MIN(65000, pu.Dura + n);
+                pu.DuraMax = (short)HUtil32._MIN(65000, pu.DuraMax + n);
+                pu.Dura = (short)HUtil32._MIN(65000, pu.Dura + n);
             }
             if (new System.Random(30).Next() == 0)
             {
@@ -1096,16 +1083,16 @@ namespace GameSvr
 
         // -10~15의 값을 갖는 실제 공속
         // 실제 공속(-10~15)값을 양수 공속값으로 변환해주는 함수.
-        public ushort NaturalAttackSpeed(int iAtkSpd)
+        public short NaturalAttackSpeed(int iAtkSpd)
         {
-            ushort result;
+            short result;
             if (iAtkSpd <= 0)
             {
-                result = (ushort)-iAtkSpd;
+                result = (short)-iAtkSpd;
             }
             else
             {
-                result = (ushort)(iAtkSpd + 10);
+                result = (short)(iAtkSpd + 10);
             }
             return result;
         }

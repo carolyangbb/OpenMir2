@@ -6,9 +6,7 @@ namespace GameSvr
     public class TAngelMon : TATMonster
     {
         private bool bofirst = false;
-        // ---------------------------------------------------------------------------
-        // 玫赤(岿飞):  家券荐
-        //Constructor  Create()
+
         public TAngelMon() : base()
         {
             bofirst = true;
@@ -16,18 +14,11 @@ namespace GameSvr
             this.RaceServer = Grobal2.RC_ANGEL;
             this.ViewRange = 10;
         }
-        //@ Destructor  Destroy()
-        ~TAngelMon()
-        {
-            base.Destroy();
-        }
+
         public override void RecalcAbilitys()
         {
             BeforeRecalcAbility();
             base.RecalcAbilitys();
-            // AfterRecalcAbility;   //瘤盔 付过矫 掉饭捞 滚弊 荐沥
-            // ResetLevel;   //瘤盔 付过阑 静搁 俊呈瘤 瞒绰 滚弊 荐沥(20031216)
-
         }
 
         protected void BeforeRecalcAbility()
@@ -68,16 +59,12 @@ namespace GameSvr
 
         protected void ResetLevel()
         {
-            // 贸澜 檬扁拳 登绰何盒...
             this.WAbil.HP = this.WAbil.MaxHP;
         }
 
-        // 馆靛矫 target <> nil
         public int RangeAttackTo_GetPower1(int power, int trainrate)
         {
-            int result;
-            result = HUtil32.MathRound((10 + trainrate * 0.9) * (power / 100));
-            return result;
+            return HUtil32.MathRound((10 + trainrate * 0.9) * (power / 100));
         }
 
         public int RangeAttackTo_CalcMagicPower()
@@ -108,7 +95,7 @@ namespace GameSvr
                 if (dam > 0)
                 {
                     targ.StruckDamage(dam, this);
-                    targ.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 800);
+                    targ.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 800);
                 }
             }
         }
@@ -155,7 +142,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("EXCEPTION TANGEL");
+                M2Share.MainOutMessage("EXCEPTION TANGEL");
             }
         }
 

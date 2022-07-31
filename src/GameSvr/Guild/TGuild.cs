@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using SystemModule;
@@ -9,7 +8,7 @@ namespace GameSvr
 {
     public class TGuild
     {
-        public string GuildName = String.Empty;
+        public string GuildName = string.Empty;
         public ArrayList NoticeList = null;
         public IList<TGuildWarInfo> KillGuilds = null;
         public IList<TGuild> AllyGuilds = null;
@@ -87,7 +86,7 @@ namespace GameSvr
             TGuild aguild;
             result = false;
             pgrank = null;
-            if (File.Exists(svMain.GuildDir + flname))
+            if (File.Exists(M2Share.GuildDir + flname))
             {
                 FreeMemberList();
                 NoticeList.Clear();
@@ -101,7 +100,7 @@ namespace GameSvr
                 rank = 0;
                 rankname = "";
                 strlist = new StringList();
-                strlist.LoadFromFile(svMain.GuildDir + flname);
+                strlist.LoadFromFile(M2Share.GuildDir + flname);
                 for (var i = 0; i < strlist.Count; i++)
                 {
                     str = strlist[i];
@@ -154,10 +153,10 @@ namespace GameSvr
                                         if (data != "")
                                         {
                                             pgw = new TGuildWarInfo();
-                                            pgw.WarGuild = svMain.GuildMan.GetGuild(data);
+                                            pgw.WarGuild = M2Share.GuildMan.GetGuild(data);
                                             if (pgw.WarGuild != null)
                                             {
-                                                pgw.WarStartTime  =  HUtil32.GetTickCount();
+                                                pgw.WarStartTime = HUtil32.GetTickCount();
                                                 pgw.WarRemain = HUtil32.Str_ToInt(rtstr.Trim(), 0);
                                                 KillGuilds.Add(pgw);
                                             }
@@ -178,7 +177,7 @@ namespace GameSvr
                                         str = HUtil32.GetValidStr3(str, ref data, new string[] { ",", " " });
                                         if (data != "")
                                         {
-                                            aguild = svMain.GuildMan.GetGuild(data);
+                                            aguild = M2Share.GuildMan.GetGuild(data);
                                             if (aguild != null)
                                             {
                                                 AllyGuilds.Add(aguild);
@@ -206,7 +205,7 @@ namespace GameSvr
                                             str = HUtil32.GetValidStr3(str, ref data, new string[] { ",", " " });
                                             if (data != "")
                                             {
-                                                pgrank.MemList.Add(data);
+                                                // pgrank.MemList.Add(data);
                                             }
                                             else
                                             {
@@ -267,27 +266,27 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage(flname + "Saving error...");
+                M2Share.MainOutMessage(flname + "Saving error...");
             }
             strlist.Free();
         }
 
         public void SaveGuild()
         {
-            if (svMain.ServerIndex == 0)
+            if (M2Share.ServerIndex == 0)
             {
-                BackupGuild(svMain.GuildDir + GuildName + ".txt");
+                BackupGuild(M2Share.GuildDir + GuildName + ".txt");
             }
             else
             {
-                BackupGuild(svMain.GuildDir + GuildName + "." + svMain.ServerIndex.ToString());
+                BackupGuild(M2Share.GuildDir + GuildName + "." + M2Share.ServerIndex.ToString());
             }
         }
 
         public void GuildInfoChange()
         {
             dosave = true;
-            guildsavetime  =  HUtil32.GetTickCount();
+            guildsavetime = HUtil32.GetTickCount();
             SaveGuild();
         }
 
@@ -395,7 +394,7 @@ namespace GameSvr
                     pgrank.Rank = 1;
                     pgrank.RankName = "门派门主";
                     pgrank.MemList = new List<TCreature>();
-                    pgrank.MemList.Add(who);
+                    //pgrank.MemList.Add(who);
                     MemberList.Add(pgrank);
                     SaveGuild();
                     result = true;
@@ -430,9 +429,9 @@ namespace GameSvr
         {
             TGuildRank pgrank;
             TUserHuman hum;
-            if (svMain.ServerIndex == 0)
+            if (M2Share.ServerIndex == 0)
             {
-                BackupGuild(svMain.GuildDir + GuildName + "." + HUtil32.GetCurrentTime + ".bak");
+                BackupGuild(M2Share.GuildDir + GuildName + "." + HUtil32.GetCurrentTime + ".bak");
             }
             if (MemberList != null)
             {
@@ -532,7 +531,7 @@ namespace GameSvr
             return done;
         }
 
-        public void MemberLogout(Object who)
+        public void MemberLogout(object who)
         {
             TGuildRank pgrank;
             if (this == null)
@@ -698,7 +697,7 @@ namespace GameSvr
                                 data = HUtil32.GetValidStr3(data, ref mname, new string[] { " ", "," });
                                 if (mname != "")
                                 {
-                                    pgr.MemList.Add(mname);
+                                    //pgr.MemList.Add(mname);
                                 }
                             }
                         }
@@ -766,7 +765,7 @@ namespace GameSvr
                     m = pgr.MemList.Count;
                     for (i = 0; i < pgr.MemList.Count; i++)
                     {
-                        if (svMain.UserEngine.GetUserHuman(pgr.MemList[i].UserName) == null)
+                        if (M2Share.UserEngine.GetUserHuman(pgr.MemList[i].UserName) == null)
                         {
                             m -= 1;
                             break;
@@ -894,7 +893,7 @@ namespace GameSvr
                     pgr = MemberList[i];
                     for (k = 0; k < pgr.MemList.Count; k++)
                     {
-                        hum = svMain.UserEngine.GetUserHuman(pgr.MemList[k].UserName);
+                        hum = M2Share.UserEngine.GetUserHuman(pgr.MemList[k].UserName);
                         if (hum != null)
                         {
                             pgr.MemList[k] = hum;
@@ -947,8 +946,8 @@ namespace GameSvr
                                     pgw.WarRemain = pgw.WarStartTime + pgw.WarRemain - currenttime + 3 * timeunit;
                                     pgw.WarStartTime = currenttime;
                                     GuildMsg("***" + aguild.GuildName + "门派战争将持续三个小时。");
-                                    svMain.UserEngine.SendInterMsg(Grobal2.ISM_GUILDMSG, svMain.ServerIndex, GuildName + "/" + "***" + aguild.GuildName + "苞(客)狼 巩颇傈捞 3矫埃 楷厘登菌嚼聪促.(巢篮 矫埃 : 距 " + (pgw.WarRemain / timeunit).ToString() + "矫埃)");
-                                    svMain.UserEngine.SendInterMsg(Grobal2.ISM_GUILDWAR, svMain.ServerIndex, GuildName + "/" + aguild.GuildName + "/" + pgw.WarStartTime.ToString() + "/" + pgw.WarRemain.ToString());
+                                    M2Share.UserEngine.SendInterMsg(Grobal2.ISM_GUILDMSG, M2Share.ServerIndex, GuildName + "/" + "***" + aguild.GuildName + "苞(客)狼 巩颇傈捞 3矫埃 楷厘登菌嚼聪促.(巢篮 矫埃 : 距 " + (pgw.WarRemain / timeunit).ToString() + "矫埃)");
+                                    M2Share.UserEngine.SendInterMsg(Grobal2.ISM_GUILDWAR, M2Share.ServerIndex, GuildName + "/" + aguild.GuildName + "/" + pgw.WarStartTime.ToString() + "/" + pgw.WarRemain.ToString());
                                     backresult = 2;
                                     break;
                                 }
@@ -961,10 +960,10 @@ namespace GameSvr
                         pgw.WarGuild = aguild;
                         pgw.WarStartTime = currenttime;
                         pgw.WarRemain = 3 * timeunit;
-                        KillGuilds.Add(aguild.GuildName, pgw);
+                        //KillGuilds.Add(aguild.GuildName, pgw);
                         GuildMsg("***" + aguild.GuildName + "门派战争开始(三个小时)。");
-                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_GUILDMSG, svMain.ServerIndex, GuildName + "/" + "***" + aguild.GuildName + "苞(客) 巩颇傈捞 矫累登菌嚼聪促.(3矫埃)");
-                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_GUILDWAR, svMain.ServerIndex, GuildName + "/" + aguild.GuildName + "/" + pgw.WarStartTime.ToString() + "/" + pgw.WarRemain.ToString());
+                        M2Share.UserEngine.SendInterMsg(Grobal2.ISM_GUILDMSG, M2Share.ServerIndex, GuildName + "/" + "***" + aguild.GuildName + "苞(客) 巩颇傈捞 矫累登菌嚼聪促.(3矫埃)");
+                        M2Share.UserEngine.SendInterMsg(Grobal2.ISM_GUILDWAR, M2Share.ServerIndex, GuildName + "/" + aguild.GuildName + "/" + pgw.WarStartTime.ToString() + "/" + pgw.WarRemain.ToString());
                         backresult = 1;
                     }
                     result = pgw;
@@ -1009,9 +1008,9 @@ namespace GameSvr
             {
                 if (AllyGuilds[i] == aguild)
                 {
-                    for (var j = 0; j < svMain.UserCastle.RushGuildList.Count; j++)
+                    for (var j = 0; j < M2Share.UserCastle.RushGuildList.Count; j++)
                     {
-                        if (svMain.UserCastle.RushGuildList[j] == aguild)
+                        if (M2Share.UserCastle.RushGuildList[j] == aguild)
                         {
                             result = true;
                             break;

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Threading;
 using SystemModule;
 
 namespace GameSvr
@@ -25,7 +24,7 @@ namespace GameSvr
             TReadyUserInfo pu;
             try
             {
-                svMain.fuLock.Enter();
+                M2Share.fuLock.Enter();
                 for (var i = 0; i < ReadyUsers.Count; i++)
                 {
                     pu = (TReadyUserInfo)ReadyUsers[i];
@@ -39,7 +38,7 @@ namespace GameSvr
             }
             finally
             {
-                svMain.fuLock.Leave();
+                M2Share.fuLock.Leave();
             }
         }
 
@@ -58,18 +57,18 @@ namespace GameSvr
             pu.ApprovalMode = certmode;
             pu.AvailableMode = availmode;
             pu.Shandle = shandle;
-            pu.UserGateIndex = (ushort)userremotegateindex;
+            pu.UserGateIndex = (short)userremotegateindex;
             pu.GateIndex = gateindex;
-            pu.ReadyStartTime  =  HUtil32.GetTickCount();
+            pu.ReadyStartTime = HUtil32.GetTickCount();
             pu.Closed = false;
             try
             {
-                svMain.fuLock.Enter();
+                M2Share.fuLock.Enter();
                 ReadyUsers.Add(pu);
             }
             finally
             {
-                svMain.fuLock.Leave();
+                M2Share.fuLock.Leave();
             }
         }
 
@@ -82,12 +81,12 @@ namespace GameSvr
             pc.ChangeGold = chggold;
             try
             {
-                svMain.fuLock.Enter();
+                M2Share.fuLock.Enter();
                 ChangeUsers.Add(pc);
             }
             finally
             {
-                svMain.fuLock.Leave();
+                M2Share.fuLock.Leave();
             }
         }
 
@@ -97,7 +96,7 @@ namespace GameSvr
             result = false;
             try
             {
-                svMain.fuLock.Enter();
+                M2Share.fuLock.Enter();
                 if (SavePlayers.Count == 0)
                 {
                     result = true;
@@ -105,7 +104,7 @@ namespace GameSvr
             }
             finally
             {
-                svMain.fuLock.Leave();
+                M2Share.fuLock.Leave();
             }
             return result;
         }
@@ -117,7 +116,7 @@ namespace GameSvr
             result = false;
             try
             {
-                svMain.fuLock.Enter();
+                M2Share.fuLock.Enter();
                 if (SavePlayers.Count >= 1000)
                 {
                     result = true;
@@ -125,7 +124,7 @@ namespace GameSvr
             }
             finally
             {
-                svMain.fuLock.Leave();
+                M2Share.fuLock.Leave();
             }
             return result;
         }
@@ -135,13 +134,13 @@ namespace GameSvr
             int result = -1;
             try
             {
-                svMain.fuLock.Enter();
+                M2Share.fuLock.Enter();
                 SavePlayers.Add(psr);
                 result = SavePlayers.Count;
             }
             finally
             {
-                svMain.fuLock.Leave();
+                M2Share.fuLock.Leave();
             }
             return result;
         }
@@ -150,12 +149,12 @@ namespace GameSvr
         {
             try
             {
-                svMain.fuLock.Enter();
+                M2Share.fuLock.Enter();
                 fDBDatas.Add(Data);
             }
             finally
             {
-                svMain.fuLock.Leave();
+                M2Share.fuLock.Leave();
             }
         }
 
@@ -166,7 +165,7 @@ namespace GameSvr
             result = false;
             try
             {
-                svMain.fuLock.Enter();
+                M2Share.fuLock.Enter();
                 for (i = 0; i < SavePlayers.Count; i++)
                 {
                     if (((TSaveRcd)SavePlayers[i]).uname == chrname)
@@ -178,45 +177,40 @@ namespace GameSvr
             }
             finally
             {
-                svMain.fuLock.Leave();
+                M2Share.fuLock.Leave();
             }
             return result;
         }
 
         private bool OpenUserCharactor(TReadyUserInfo pu)
         {
-            bool result;
             TUserOpenInfo pui;
-            FDBRecord rcd;
-            result = false;
+            FDBRecord rcd = null;
             if (!RunDB.LoadHumanCharacter(pu.UserId, pu.UserName, pu.UserAddress, pu.Certification, ref rcd))
             {
-                // 努扼捞攫飘俊 俊矾 皋技瘤甫 焊辰促.
-                svMain.fuOpenLock.Enter();
+                M2Share.fuOpenLock.Enter();
                 try
                 {
-                    svMain.RunSocket.SendForcedClose(pu.GateIndex, pu.Shandle);
+                    M2Share.RunSocket.SendForcedClose(pu.GateIndex, pu.Shandle);
                 }
                 finally
                 {
-                    svMain.fuOpenLock.Leave();
+                    M2Share.fuOpenLock.Leave();
                 }
-                return result;
+                return false;
             }
             pui = new TUserOpenInfo();
             pui.Name = pu.UserName;
             pui.readyinfo = pu;
             pui.rcd = rcd;
-            svMain.UserEngine.AddNewUser(pui);
-            result = true;
-            return result;
+            M2Share.UserEngine.AddNewUser(pui);
+            return true;
         }
 
         private bool OpenChangeSaveUserInfo(TChangeUserInfo pc)
         {
-            bool result;
-            FDBRecord rcd;
-            result = false;
+            FDBRecord rcd = null;
+            bool result = false;
             if (RunDB.LoadHumanCharacter("1", pc.UserName, "1", 1, ref rcd))
             {
                 if ((rcd.Block.DBHuman.Gold + pc.ChangeGold > 0) && (rcd.Block.DBHuman.Gold + pc.ChangeGold < ObjBase.MAXGOLD))
@@ -224,8 +218,7 @@ namespace GameSvr
                     rcd.Block.DBHuman.Gold = rcd.Block.DBHuman.Gold + pc.ChangeGold;
                     if (RunDB.SaveHumanCharacter("1", pc.UserName, 1, rcd))
                     {
-                        svMain.UserEngine.ChangeAndSaveOk(pc);
-                        // 己傍沁澜阑 舅赴促.
+                        M2Share.UserEngine.ChangeAndSaveOk(pc);
                         result = true;
                     }
                 }
@@ -247,14 +240,14 @@ namespace GameSvr
             long listtime;
             int listcount;
             long totaltime;
-            totaltime  =  HUtil32.GetTickCount();
+            totaltime = HUtil32.GetTickCount();
             loadlist = null;
             savelist = null;
             chglist = null;
             datalist = null;
             try
             {
-                svMain.fuLock.Enter();
+                M2Share.fuLock.Enter();
                 if (SavePlayers.Count > 0)
                 {
                     savelist = new ArrayList();
@@ -296,12 +289,12 @@ namespace GameSvr
             }
             finally
             {
-                svMain.fuLock.Leave();
+                M2Share.fuLock.Leave();
             }
             if (savelist != null)
             {
                 // n := 0;
-                listtime  =  HUtil32.GetTickCount();
+                listtime = HUtil32.GetTickCount();
                 listcount = savelist.Count;
                 for (i = 0; i < savelist.Count; i++)
                 {
@@ -313,42 +306,40 @@ namespace GameSvr
                         {
                             if (p.savefail > 20)
                             {
-                                svMain.MainOutMessage("[Warning] SavePlayers was deleted because of timeover... " + p.uname);
+                                M2Share.MainOutMessage("[Warning] SavePlayers was deleted because of timeover... " + p.uname);
                             }
                             try
                             {
-                                svMain.fuLock.Enter();
+                                M2Share.fuLock.Enter();
                                 try
                                 {
                                     if (p.hum != null)
                                     {
                                         p.hum.BoSaveOk = true;
                                     }
-                                    // 静饭靛 林狼
                                 }
                                 catch
                                 {
-                                    svMain.MainOutMessage("NOT BoSaveOK ... ");
+                                    M2Share.MainOutMessage("NOT BoSaveOK ... ");
                                 }
                                 for (k = 0; k < SavePlayers.Count; k++)
                                 {
-                                    // 历厘 己傍茄 巴父 瘤款促.
-                                    if (SavePlayers[k] == p)
-                                    {
-                                        SavePlayers.RemoveAt(k);
-                                        Dispose(p);
-                                        break;
-                                    }
+                                    //if (SavePlayers[k] == p)
+                                    //{
+                                    //    SavePlayers.RemoveAt(k);
+                                    //    Dispose(p);
+                                    //    break;
+                                    //}
                                 }
                             }
                             finally
                             {
-                                svMain.fuLock.Leave();
+                                M2Share.fuLock.Leave();
                             }
                         }
                         else
                         {
-                            p.savetime  =  HUtil32.GetTickCount();
+                            p.savetime = HUtil32.GetTickCount();
                             p.savefail++;
                         }
                     }
@@ -357,7 +348,7 @@ namespace GameSvr
             }
             if (loadlist != null)
             {
-                listtime  =  HUtil32.GetTickCount();
+                listtime = HUtil32.GetTickCount();
                 listcount = loadlist.Count;
                 for (i = 0; i < loadlist.Count; i++)
                 {
@@ -367,14 +358,14 @@ namespace GameSvr
                     pu = (TReadyUserInfo)loadlist[i];
                     if (!OpenUserCharactor(pu))
                     {
-                        svMain.fuCloseLock.Enter();
+                        M2Share.fuCloseLock.Enter();
                         try
                         {
-                            svMain.RunSocket.CloseUser(pu.GateIndex, pu.Shandle);
+                            M2Share.RunSocket.CloseUser(pu.GateIndex, pu.Shandle);
                         }
                         finally
                         {
-                            svMain.fuCloseLock.Leave();
+                            M2Share.fuCloseLock.Leave();
                         }
                     }
                     Dispose(loadlist[i]);
@@ -384,7 +375,7 @@ namespace GameSvr
             }
             if (chglist != null)
             {
-                listtime  =  HUtil32.GetTickCount();
+                listtime = HUtil32.GetTickCount();
                 listcount = chglist.Count;
                 for (i = 0; i < chglist.Count; i++)
                 {
@@ -396,18 +387,18 @@ namespace GameSvr
             }
             if (datalist != null)
             {
-                listtime  =  HUtil32.GetTickCount();
+                listtime = HUtil32.GetTickCount();
                 listcount = datalist.Count;
                 for (i = 0; i < datalist.Count; i++)
                 {
-                    svMain.fuLock.Enter();
+                    M2Share.fuLock.Enter();
                     try
                     {
                         RunDB.SendNonBlockDatas((string)datalist[i]);
                     }
                     finally
                     {
-                        svMain.fuLock.Leave();
+                        M2Share.fuLock.Leave();
                     }
                 }
                 datalist.Clear();
@@ -430,22 +421,22 @@ namespace GameSvr
                 case 23:
                 case 11:
                     // 0: 货寒, 1: 撤, 2: 历翅 3: 广
-                    svMain.MirDayTime = 2;
+                    M2Share.MirDayTime = 2;
                     break;
                 case 4:
                 case 15:
                     // 历翅
-                    svMain.MirDayTime = 0;
+                    M2Share.MirDayTime = 0;
                     break;
                 // 货寒
                 // Modify the A .. B: 0 .. 3, 12 .. 14
                 case 0:
                 case 12:
-                    svMain.MirDayTime = 3;
+                    M2Share.MirDayTime = 3;
                     break;
                 default:
                     // 广
-                    svMain.MirDayTime = 1;
+                    M2Share.MirDayTime = 1;
                     break;
                     // 撤
             }
@@ -461,7 +452,7 @@ namespace GameSvr
                 }
                 catch
                 {
-                    svMain.MainOutMessage("[FrnEngn] raise exception1..");
+                    M2Share.MainOutMessage("[FrnEngn] raise exception1..");
                 }
                 try
                 {
@@ -469,13 +460,13 @@ namespace GameSvr
                 }
                 catch
                 {
-                    svMain.MainOutMessage("[FrnEngn] raise exception2..");
+                    M2Share.MainOutMessage("[FrnEngn] raise exception2..");
                 }
-                this.Sleep(1);
-                if (this.Terminated)
-                {
-                    return;
-                }
+                //this.Sleep(1);
+                //if (this.Terminated)
+                //{
+                //    return;
+                //}
             }
         }
 

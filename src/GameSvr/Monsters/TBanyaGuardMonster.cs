@@ -52,7 +52,7 @@ namespace GameSvr
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
+                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                         }
                     }
                 }
@@ -62,7 +62,7 @@ namespace GameSvr
 
         protected override bool AttackTarget()
         {
-            byte targdir=0;
+            byte targdir = 0;
             bool result = false;
             if (this.TargetCret != null)
             {
@@ -73,7 +73,7 @@ namespace GameSvr
                     {
                         if (this.TargetInAttackRange(this.TargetCret, ref targdir) && (new System.Random(3).Next() != 0))
                         {
-                            this.TargetFocusTime  =  HUtil32.GetTickCount();
+                            this.TargetFocusTime = HUtil32.GetTickCount();
                             Attack(this.TargetCret, targdir);
                             result = true;
                         }
@@ -82,7 +82,7 @@ namespace GameSvr
                             if (this.ChainShot < this.ChainShotCount - 1)
                             {
                                 this.ChainShot++;
-                                this.TargetFocusTime  =  HUtil32.GetTickCount();
+                                this.TargetFocusTime = HUtil32.GetTickCount();
                                 RangeAttack(this.TargetCret);
                             }
                             else

@@ -50,12 +50,12 @@ namespace GameSvr
         private readonly StringDictionary FInfos = null;
         private TLoadType FLoadType;
         private readonly Dictionary<object, string> FLinkInfo = null;
-        private IDataReader FQuery = null;
-        private string FCompareStr = String.Empty;
-        private IDbConnection FDataBase = null;
-        private bool FConnected = false;
-        private string FTableName = String.Empty;
-        public string FTableNameIndex = String.Empty;
+        private readonly IDataReader FQuery = null;
+        private string FCompareStr = string.Empty;
+        private readonly IDbConnection FDataBase = null;
+        private readonly bool FConnected = false;
+        private readonly string FTableName = string.Empty;
+        public string FTableNameIndex = string.Empty;
 
         public TDataMgr() : base()
         {
@@ -155,11 +155,11 @@ namespace GameSvr
                     pItem = OnMakeData(DataName, DataIndex, FQuery);
                     if ((TableKind == 0) && (i != DataIndex))
                     {
-                        svMain.MainOutMessage("CRITICAL ERROR!!! Record Index does not match in StdItem DB " + DataIndex.ToString());
+                        M2Share.MainOutMessage("CRITICAL ERROR!!! Record Index does not match in StdItem DB " + DataIndex.ToString());
                     }
                     else if ((TableKind == 1) && (i + 1 != DataIndex))
                     {
-                        svMain.MainOutMessage("CRITICAL ERROR!!! Record Index does not match in StdItem DB " + DataIndex.ToString());
+                        M2Share.MainOutMessage("CRITICAL ERROR!!! Record Index does not match in StdItem DB " + DataIndex.ToString());
                     }
                     if (pItem != null)
                     {
@@ -218,7 +218,6 @@ namespace GameSvr
 
         private bool DBConnect()
         {
-            TSQLDetails SQLDetails;
             bool result = false;
             if (GetLinkInfo(FLinkInfo))
             {
@@ -252,8 +251,8 @@ namespace GameSvr
 
         private void DBDisConnect()
         {
-           // FQuery.Active = false;
-           // FDataBase.Connected = false;
+            // FQuery.Active = false;
+            // FDataBase.Connected = false;
         }
     }
 
@@ -270,58 +269,58 @@ namespace GameSvr
             //Query.Add("SELECT * FROM " + TableName);
         }
 
-        public override object OnMakeData(string pDataName, int pDataIndex,IDataReader  Fields)
+        public override object OnMakeData(string pDataName, int pDataIndex, IDataReader Fields)
         {
             TStdItem pitem = new TStdItem();
-           /* pDataIndex = Fields.FieldByName("ID").AsInteger;
-            pitem.Name = Fields.FieldByName("NAME").AsString;
-            pitem.StdMode = Fields.FieldByName("STDMode").AsInteger;
-            pitem.Shape = Fields.FieldByName("SHAPE").AsInteger;
-            pitem.Weight = Fields.FieldByName("WEIGHT").AsInteger;
-            pitem.AniCount = Fields.FieldByName("ANICOUNT").AsInteger;
-            pitem.SpecialPwr = Fields.FieldByName("SOURCE").AsInteger;
-            pitem.ItemDesc = Fields.FieldByName("RESERVED").AsInteger;
-            pitem.Looks = Fields.FieldByName("IMGINDEX").AsInteger;
-            pitem.DuraMax = Fields.FieldByName("DURAMAX").AsInteger;
-            pitem.AC = HUtil32.MakeWord(Fields.FieldByName("AC").AsInteger, Fields.FieldByName("ACMAX").AsInteger);
-            pitem.MAC = HUtil32.MakeWord(Fields.FieldByName("MAC").AsInteger, Fields.FieldByName("MACMAX").AsInteger);
-            pitem.DC = HUtil32.MakeWord(Fields.FieldByName("DC").AsInteger, Fields.FieldByName("DCMAX").AsInteger);
-            pitem.MC = HUtil32.MakeWord(Fields.FieldByName("MC").AsInteger, Fields.FieldByName("MCMAX").AsInteger);
-            pitem.SC = HUtil32.MakeWord(Fields.FieldByName("SC").AsInteger, Fields.FieldByName("SCMAX").AsInteger);
-            pitem.Need = Fields.FieldByName("NEED").AsInteger;
-            pitem.NeedLevel = Fields.FieldByName("NEEDLEVEL").AsInteger;
-            pitem.NeedIdentify = 0;
-            pitem.Price = Fields.FieldByName("PRICE").AsInteger;
-            pitem.Stock = Fields.FieldByName("STOCK").AsInteger;
-            pitem.AtkSpd = Fields.FieldByName("ATKSPD").AsInteger;
-            pitem.Agility = Fields.FieldByName("AGILITY").AsInteger;
-            pitem.Accurate = Fields.FieldByName("ACCURATE").AsInteger;
-            pitem.MgAvoid = Fields.FieldByName("MGAVOID").AsInteger;
-            pitem.Strong = Fields.FieldByName("STRONG").AsInteger;
-            pitem.Undead = Fields.FieldByName("UNDEAD").AsInteger;
-            pitem.HpAdd = Fields.FieldByName("HPADD").AsInteger;
-            pitem.MpAdd = Fields.FieldByName("MPADD").AsInteger;
-            pitem.ExpAdd = Fields.FieldByName("EXPADD").AsInteger;
-            pitem.EffType1 = Fields.FieldByName("EFFTYPE1").AsInteger;
-            pitem.EffRate1 = Fields.FieldByName("EFFRATE1").AsInteger;
-            pitem.EffValue1 = Fields.FieldByName("EFFVALUE1").AsInteger;
-            pitem.EffType2 = Fields.FieldByName("EFFTYPE2").AsInteger;
-            pitem.EffRate2 = Fields.FieldByName("EFFRATE2").AsInteger;
-            pitem.EffValue2 = Fields.FieldByName("EFFVALUE2").AsInteger;
-            pitem.Slowdown = Fields.FieldByName("SLOWDOWN").AsInteger;
-            pitem.Tox = Fields.FieldByName("TOX").AsInteger;
-            pitem.ToxAvoid = Fields.FieldByName("TOXAVOID").AsInteger;
-            pitem.UniqueItem = Fields.FieldByName("UNIQUEITEM").AsInteger;
-            pitem.OverlapItem = Fields.FieldByName("OVERLAPITEM").AsInteger;
-            pitem.light = Fields.FieldByName("LIGHT").AsInteger;
-            pitem.ItemType = Fields.FieldByName("ITEMTYPE").AsInteger;
-            pitem.ItemSet = Fields.FieldByName("ITEMSET").AsInteger;
-            pitem.Reference = Fields.FieldByName("REFERENCE").AsString;*/
+            /* pDataIndex = Fields.FieldByName("ID").AsInteger;
+             pitem.Name = Fields.FieldByName("NAME").AsString;
+             pitem.StdMode = Fields.FieldByName("STDMode").AsInteger;
+             pitem.Shape = Fields.FieldByName("SHAPE").AsInteger;
+             pitem.Weight = Fields.FieldByName("WEIGHT").AsInteger;
+             pitem.AniCount = Fields.FieldByName("ANICOUNT").AsInteger;
+             pitem.SpecialPwr = Fields.FieldByName("SOURCE").AsInteger;
+             pitem.ItemDesc = Fields.FieldByName("RESERVED").AsInteger;
+             pitem.Looks = Fields.FieldByName("IMGINDEX").AsInteger;
+             pitem.DuraMax = Fields.FieldByName("DURAMAX").AsInteger;
+             pitem.AC = HUtil32.MakeWord(Fields.FieldByName("AC").AsInteger, Fields.FieldByName("ACMAX").AsInteger);
+             pitem.MAC = HUtil32.MakeWord(Fields.FieldByName("MAC").AsInteger, Fields.FieldByName("MACMAX").AsInteger);
+             pitem.DC = HUtil32.MakeWord(Fields.FieldByName("DC").AsInteger, Fields.FieldByName("DCMAX").AsInteger);
+             pitem.MC = HUtil32.MakeWord(Fields.FieldByName("MC").AsInteger, Fields.FieldByName("MCMAX").AsInteger);
+             pitem.SC = HUtil32.MakeWord(Fields.FieldByName("SC").AsInteger, Fields.FieldByName("SCMAX").AsInteger);
+             pitem.Need = Fields.FieldByName("NEED").AsInteger;
+             pitem.NeedLevel = Fields.FieldByName("NEEDLEVEL").AsInteger;
+             pitem.NeedIdentify = 0;
+             pitem.Price = Fields.FieldByName("PRICE").AsInteger;
+             pitem.Stock = Fields.FieldByName("STOCK").AsInteger;
+             pitem.AtkSpd = Fields.FieldByName("ATKSPD").AsInteger;
+             pitem.Agility = Fields.FieldByName("AGILITY").AsInteger;
+             pitem.Accurate = Fields.FieldByName("ACCURATE").AsInteger;
+             pitem.MgAvoid = Fields.FieldByName("MGAVOID").AsInteger;
+             pitem.Strong = Fields.FieldByName("STRONG").AsInteger;
+             pitem.Undead = Fields.FieldByName("UNDEAD").AsInteger;
+             pitem.HpAdd = Fields.FieldByName("HPADD").AsInteger;
+             pitem.MpAdd = Fields.FieldByName("MPADD").AsInteger;
+             pitem.ExpAdd = Fields.FieldByName("EXPADD").AsInteger;
+             pitem.EffType1 = Fields.FieldByName("EFFTYPE1").AsInteger;
+             pitem.EffRate1 = Fields.FieldByName("EFFRATE1").AsInteger;
+             pitem.EffValue1 = Fields.FieldByName("EFFVALUE1").AsInteger;
+             pitem.EffType2 = Fields.FieldByName("EFFTYPE2").AsInteger;
+             pitem.EffRate2 = Fields.FieldByName("EFFRATE2").AsInteger;
+             pitem.EffValue2 = Fields.FieldByName("EFFVALUE2").AsInteger;
+             pitem.Slowdown = Fields.FieldByName("SLOWDOWN").AsInteger;
+             pitem.Tox = Fields.FieldByName("TOX").AsInteger;
+             pitem.ToxAvoid = Fields.FieldByName("TOXAVOID").AsInteger;
+             pitem.UniqueItem = Fields.FieldByName("UNIQUEITEM").AsInteger;
+             pitem.OverlapItem = Fields.FieldByName("OVERLAPITEM").AsInteger;
+             pitem.light = Fields.FieldByName("LIGHT").AsInteger;
+             pitem.ItemType = Fields.FieldByName("ITEMTYPE").AsInteger;
+             pitem.ItemSet = Fields.FieldByName("ITEMSET").AsInteger;
+             pitem.Reference = Fields.FieldByName("REFERENCE").AsString;*/
             pDataName = pitem.Name;
             return pitem;
         }
     }
-    
+
     public class TMonsterMgr : TDataMgr
     {
         public TMonsterMgr() : base()
@@ -377,7 +376,7 @@ namespace GameSvr
             pDataName = pitem.Name;
             return pitem;
         }
-    } 
+    }
 
     public class TMonsterItemMgr : TDataMgr
     {
@@ -448,7 +447,7 @@ namespace GameSvr
             pDataName = pitem.MagicName;
             return pitem;
         }
-    } 
+    }
 
     public enum TLoadType
     {

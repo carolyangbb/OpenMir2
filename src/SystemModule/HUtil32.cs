@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Text;
 using System.Threading;
 
@@ -122,19 +123,19 @@ namespace SystemModule
         //    return (ushort)(bLow | (bHigh << 8));
         //}
 
-        public static ushort MakeWord(int bLow, int bHigh)
+        public static short MakeWord(int bLow, int bHigh)
         {
-            return (ushort)(bLow | (bHigh << 8));
+            return (short)(bLow | (bHigh << 8));
         }
 
-        public static ushort HiWord(int dword)
+        public static short HiWord(int dword)
         {
-            return (ushort)(dword >> 16);
+            return (short)(dword >> 16);
         }
 
-        public static ushort LoWord(int dword)
+        public static short LoWord(int dword)
         {
-            return (ushort)dword;
+            return (short)dword;
         }
 
         public static byte HiByte(short W)
@@ -598,6 +599,57 @@ namespace SystemModule
                 result = "";
             }
             return result;
+        }
+
+        public static string GetValidStrNoVal(string Str, ref string Dest)
+        {
+            Dest = "";
+            string result = "";
+            bool flag = false;
+            for (var i = 0; i <= Str.Length; i++)
+            {
+                if ((((byte)Str[i]) >= (byte)'0') && (((byte)Str[i]) <= (byte)'9') || (Str[i] == '-'))
+                {
+                    Dest = Str.Substring(0, i - 1);
+                    result = Str.Substring(i - 1, Str.Length);
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag)
+            {
+                Dest = Str;
+                result = "";
+            }
+            return result;
+        }
+
+        public static int CharCount(string str, char chr)
+        {
+            int result = 0;
+            for (var i = 1; i <= str.Length; i++)
+            {
+                if (str[i] == chr)
+                {
+                    result++;
+                }
+            }
+            return result;
+        }
+
+        public static short GetGoldLooks(int count)
+        {
+            short result = 112;
+            if (count >= 30) result = 113;
+            if (count >= 70) result = 114;
+            if (count >= 300) result = 115;
+            if (count >= 1000) result = 116;
+            return result;
+        }
+
+        public static short GetRandomLook(int looks,int rand)
+        {
+            return (short)(looks + new Random().Next(rand));
         }
 
         public static bool CompareLStr(string src, string targ, int compn)

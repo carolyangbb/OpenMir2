@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 
 namespace GameSvr
@@ -10,14 +9,14 @@ namespace GameSvr
 
         }
 
-        public void EditExpErienceLevelChange(System.Object Sender, System.EventArgs _e1)
+        public void EditExpErienceLevelChange(object Sender, System.EventArgs _e1)
         {
             // n := StrToInt(Text);
             // if n > 255 then n := 255;
             // if n < 1 then n := 1;
         }
 
-        public void EditExpErienceLevelKeyPress(Object Sender, ref char Key)
+        public void EditExpErienceLevelKeyPress(object Sender, ref char Key)
         {
             if (!new ArrayList(new string[] { "0", "\08" }).Contains(Key))
             {

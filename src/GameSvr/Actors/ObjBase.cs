@@ -1,5 +1,3 @@
-using System;
-
 namespace GameSvr
 {
     public struct TUpgradeProb
@@ -21,7 +19,7 @@ namespace GameSvr
 
     public class TPkHiterInfo
     {
-        public Object hiter;
+        public object hiter;
         public long hittime;
     }
 }

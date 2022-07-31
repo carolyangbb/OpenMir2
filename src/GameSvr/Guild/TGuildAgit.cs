@@ -7,18 +7,18 @@ namespace GameSvr
     public class TGuildAgit
     {
         public int GuildAgitNumber = 0;
-        public string GuildName = String.Empty;
-        public string GuildMasterName = String.Empty;
-        public string GuildMasterNameSecond = String.Empty;
-        public string RegistrationTime = String.Empty;
+        public string GuildName = string.Empty;
+        public string GuildMasterName = string.Empty;
+        public string GuildMasterNameSecond = string.Empty;
+        public string RegistrationTime = string.Empty;
         public int ContractPeriod = 0;
         public int GuildAgitTotalGold = 0;
         public int ForSaleFlag = 0;
         public int ForSaleMoney = 0;
         public int ForSaleWait = 0;
-        public string ForSaleGuildName = String.Empty;
-        public string ForSaleGuildMasterName = String.Empty;
-        public string ForSaleTime = String.Empty;
+        public string ForSaleGuildName = string.Empty;
+        public string ForSaleGuildMasterName = string.Empty;
+        public string ForSaleTime = string.Empty;
 
         public TGuildAgit() : base()
         {
@@ -59,7 +59,7 @@ namespace GameSvr
             RegistrationTime = regtime;
             ContractPeriod = period;
             GuildAgitTotalGold = agittotalgold;
-            TGuild aguild = svMain.GuildMan.GetGuild(gname);
+            TGuild aguild = M2Share.GuildMan.GetGuild(gname);
             if (aguild != null)
             {
                 GuildMasterNameSecond = aguild.GetAnotherGuildMaster();
@@ -103,17 +103,15 @@ namespace GameSvr
         public DateTime GetGuildAgitRemainDateTime()
         {
             DateTime regdatetime;
-            DateTime enddatetime;
-            DateTime remaindatetime;
-            DateTime result = -100;
+            DateTime result = DateTime.Now;
             if (this == null)
             {
                 return result;
             }
             regdatetime = ConvertStringToDatetime(RegistrationTime);
-            enddatetime = regdatetime + (ContractPeriod / 60 / 24);
-            remaindatetime = enddatetime - DateTime.Now;
-            result = remaindatetime;
+            //enddatetime = regdatetime + (ContractPeriod / 60 / 24);
+            //remaindatetime = enddatetime - DateTime.Now;
+            //result = remaindatetime;
             return result;
         }
 
@@ -135,7 +133,7 @@ namespace GameSvr
                 list = new ArrayList();
                 for (i = 0; i <= 3; i++)
                 {
-                    env = svMain.GrobalEnvir.GetEnvir(svMain.GuildAgitMan.GuildAgitMapName[i] + GuildAgitNumber.ToString());
+                    env = M2Share.GrobalEnvir.GetEnvir(M2Share.GuildAgitMan.GuildAgitMapName[i] + GuildAgitNumber.ToString());
                     if (env != null)
                     {
                         for (ix = 0; ix < env.MapWidth; ix++)
@@ -165,7 +163,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception]TGuildAgit.ExpulsionMembers");
+                M2Share.MainOutMessage("[Exception]TGuildAgit.ExpulsionMembers");
             }
         }
 
@@ -177,10 +175,10 @@ namespace GameSvr
                 result = true;
                 return result;
             }
-            if (GetGuildAgitRemainDateTime() <= -(Guild.GUILDAGIT_DAYUNIT / 60 / 24))
-            {
-                result = true;
-            }
+            //if (GetGuildAgitRemainDateTime() <= -(Guild.GUILDAGIT_DAYUNIT / 60 / 24))
+            //{
+            //    result = true;
+            //}
             return result;
         }
 
@@ -193,22 +191,21 @@ namespace GameSvr
                 return result;
             }
             DateTime RemainDateTime = GetGuildAgitRemainDateTime();
-            if (RemainDateTime < 0)
-            {
-                result = 0;
-                if (RemainDateTime <= -(Guild.GUILDAGIT_DAYUNIT / 60 / 24))
-                {
-                    result = -1;
-                }
-            }
+            //if (RemainDateTime < 0)
+            //{
+            //    result = 0;
+            //    if (RemainDateTime <= -(Guild.GUILDAGIT_DAYUNIT / 60 / 24))
+            //    {
+            //        result = -1;
+            //    }
+            //}
             return result;
         }
 
         public DateTime GetGuildAgitRegDateTime()
         {
-            DateTime result;
+            DateTime result = DateTime.Now;
             DateTime regdatetime;
-            result = -100;
             if (this == null)
             {
                 return result;
@@ -220,10 +217,8 @@ namespace GameSvr
 
         public DateTime ConvertStringToDatetime(string datestring)
         {
-            DateTime result;
-            DateTime regdatetime;
-            DateTime regdate;
-            DateTime regtime;
+            DateTime result = DateTime.Now;
+            DateTime regdatetime = DateTime.Now;
             string str;
             string data = string.Empty;
             short Year;
@@ -233,7 +228,6 @@ namespace GameSvr
             short Min;
             short Sec;
             short MSec;
-            result = -100;
             try
             {
                 str = datestring;
@@ -251,14 +245,14 @@ namespace GameSvr
                 Sec = (short)HUtil32.Str_ToInt(data, 0);
                 str = HUtil32.GetValidStr3(str, ref data, new string[] { ".", ":" });
                 MSec = (short)HUtil32.Str_ToInt(data, 0);
-                regdate = Convert.ToInt64(new DateTime(Year, Month, Day));
-                regtime = new DateTime(0, 0, 0, Hour, Min, Sec, MSec);
-                regdatetime = regdate + regtime;
+                //regdate = Convert.ToInt64(new DateTime(Year, Month, Day));
+                //regtime = new DateTime(0, 0, 0, Hour, Min, Sec, MSec);
+                //regdatetime = regdate + regtime;
                 result = regdatetime;
             }
             catch
             {
-                svMain.MainOutMessage("[Exception]TGuildAgit.ConvertStringToDatetime");
+                M2Share.MainOutMessage("[Exception]TGuildAgit.ConvertStringToDatetime");
             }
             return result;
         }
@@ -287,7 +281,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception]TGuildAgit.ConvertDateTimeToString");
+                M2Share.MainOutMessage("[Exception]TGuildAgit.ConvertDateTimeToString");
             }
             return result;
         }
@@ -324,10 +318,10 @@ namespace GameSvr
             if (IsSoldOut())
             {
                 SaleDateTime = ConvertStringToDatetime(ForSaleTime);
-                if (DateTime.Now > SaleDateTime + (ForSaleWait / 24 / 60))
-                {
-                    result = true;
-                }
+                //if (DateTime.Now > SaleDateTime + (ForSaleWait / 24 / 60))
+                //{
+                //    result = true;
+                //}
             }
             return result;
         }
@@ -356,14 +350,14 @@ namespace GameSvr
             GuildMasterName = ForSaleGuildMasterName;
             GuildMasterNameSecond = "";
             RegistrationTime = ConvertDateTimeToString(DateTime.Now);
-            if (RemainDateTime <= 0)
-            {
-                ContractPeriod = 0;
-            }
-            else
-            {
-                ContractPeriod = HUtil32.MathRound(RemainDateTime.ToOADate());
-            }
+            //if (RemainDateTime <= 0)
+            //{
+            //    ContractPeriod = 0;
+            //}
+            //else
+            //{
+            //    ContractPeriod = HUtil32.MathRound(RemainDateTime.ToOADate());
+            //}
             GuildAgitTotalGold = GuildAgitTotalGold;
             result = true;
             return result;
@@ -371,11 +365,11 @@ namespace GameSvr
 
         public string UpdateGuildMaster()
         {
-            string result = String.Empty;
+            string result = string.Empty;
             TGuild aguild;
             if (GuildName != "")
             {
-                aguild = svMain.GuildMan.GetGuild(GuildName);
+                aguild = M2Share.GuildMan.GetGuild(GuildName);
                 if (aguild != null)
                 {
                     GuildMasterName = aguild.GetGuildMaster();

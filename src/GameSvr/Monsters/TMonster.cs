@@ -13,18 +13,18 @@ namespace GameSvr
         {
             DupMode = false;
             RunDone = false;
-            thinktime  =  HUtil32.GetTickCount();
+            thinktime = HUtil32.GetTickCount();
             this.ViewRange = 5;
             this.RunNextTick = 250;
             this.SearchRate = 3000 + ((long)new System.Random(2000).Next());
-            this.SearchTime  =  HUtil32.GetTickCount();
+            this.SearchTime = HUtil32.GetTickCount();
             this.RaceServer = Grobal2.RC_MONSTER;
         }
 
         public TCreature MakeClone(string mname, TCreature src)
         {
             TCreature result = null;
-            TCreature mon = svMain.UserEngine.AddCreatureSysop(src.PEnvir.MapName, src.CX, src.CY, mname);
+            TCreature mon = M2Share.UserEngine.AddCreatureSysop(src.PEnvir.MapName, src.CX, src.CY, mname);
             if (mon != null)
             {
                 mon.Master = src.Master;
@@ -63,7 +63,7 @@ namespace GameSvr
             result = false;
             if (HUtil32.GetTickCount() - thinktime > 3000)
             {
-                thinktime  =  HUtil32.GetTickCount();
+                thinktime = HUtil32.GetTickCount();
                 if (this.PEnvir.GetDupCount(this.CX, this.CY) >= 2)
                 {
                     DupMode = true;
@@ -100,7 +100,7 @@ namespace GameSvr
                         if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                         {
                             this.HitTime = GetCurrentTime;
-                            this.TargetFocusTime  =  HUtil32.GetTickCount();
+                            this.TargetFocusTime = HUtil32.GetTickCount();
                             this.Attack(this.TargetCret, targdir);
                             this.BreakHolySeize();
                         }
@@ -148,7 +148,7 @@ namespace GameSvr
                     {
                         this.WalkCurStep = 0;
                         this.BoWalkWaitMode = true;
-                        this.WalkWaitCurTime  =  HUtil32.GetTickCount();
+                        this.WalkWaitCurTime = HUtil32.GetTickCount();
                     }
                     if (!this.BoRunAwayMode)
                     {
@@ -202,9 +202,9 @@ namespace GameSvr
                                     {
                                         if (this.PEnvir.GetCreature(bx, by, true) != null)
                                         {
-                                            this.TargetX = this.CX;
+                                            this.TargetX = CX;
                                             // 歹 捞惑 框流捞瘤 臼绰促.
-                                            this.TargetY = this.CY;
+                                            this.TargetY = CY;
                                         }
                                     }
                                 }
@@ -333,8 +333,8 @@ namespace GameSvr
             this.Luck = this.Luck + this.AddAbil.Luck;
             this.Luck = this.Luck - this.AddAbil.UnLuck;
             this.HitSpeed = this.AddAbil.HitSpeed;
-            this.WAbil.MaxHP = (ushort)(this.Abil.MaxHP + this.AddAbil.HP);
-            this.WAbil.MaxMP = (ushort)(this.Abil.MaxMP + this.AddAbil.MP);
+            this.WAbil.MaxHP = (short)(this.Abil.MaxHP + this.AddAbil.HP);
+            this.WAbil.MaxMP = (short)(this.Abil.MaxMP + this.AddAbil.MP);
             this.WAbil.AC = MakeWord(LoByte(this.AddAbil.AC) + LoByte(this.Abil.AC), HiByte(this.AddAbil.AC) + HiByte(this.Abil.AC));
             this.WAbil.MAC = MakeWord(LoByte(this.AddAbil.MAC) + LoByte(this.Abil.MAC), HiByte(this.AddAbil.MAC) + HiByte(this.Abil.MAC));
             this.WAbil.DC = MakeWord(LoByte(this.AddAbil.DC) + LoByte(this.Abil.DC), HiByte(this.AddAbil.DC) + HiByte(this.Abil.DC));
@@ -362,20 +362,20 @@ namespace GameSvr
             }
             if (this.ExtraAbil[Grobal2.EABIL_HITSPEEDUP] > 0)
             {
-                this.HitSpeed = (ushort)(this.HitSpeed + this.ExtraAbil[Grobal2.EABIL_HITSPEEDUP]);
+                this.HitSpeed = (short)(this.HitSpeed + this.ExtraAbil[Grobal2.EABIL_HITSPEEDUP]);
             }
             if (this.ExtraAbil[Grobal2.EABIL_HPUP] > 0)
             {
-                this.WAbil.MaxHP = (ushort)(this.WAbil.MaxHP + this.ExtraAbil[Grobal2.EABIL_HPUP]);
+                this.WAbil.MaxHP = (short)(this.WAbil.MaxHP + this.ExtraAbil[Grobal2.EABIL_HPUP]);
             }
             if (this.ExtraAbil[Grobal2.EABIL_MPUP] > 0)
             {
-                this.WAbil.MaxMP = (ushort)(this.WAbil.MaxMP + this.ExtraAbil[Grobal2.EABIL_MPUP]);
+                this.WAbil.MaxMP = (short)(this.WAbil.MaxMP + this.ExtraAbil[Grobal2.EABIL_MPUP]);
             }
             if (this.RaceServer >= Grobal2.RC_ANIMAL)
             {
                 this.ApplySlaveLevelAbilitys();
             }
         }
-    } 
+    }
 }

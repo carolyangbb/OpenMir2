@@ -1,5 +1,4 @@
-﻿using System;
-using SystemModule;
+﻿using SystemModule;
 
 namespace GameSvr
 {
@@ -134,7 +133,7 @@ namespace GameSvr
         public override void Die()
         {
             base.Die();
-            BrokenTime  =  HUtil32.GetTickCount();
+            BrokenTime = HUtil32.GetTickCount();
             ActiveDoorWall(TDoorState.dsBroken);
             // 捞悼啊瓷窍霸
 
@@ -145,7 +144,7 @@ namespace GameSvr
             int newdir;
             if (this.Death && (this.Castle != null))
             {
-                this.DeathTime  =  HUtil32.GetTickCount();
+                this.DeathTime = HUtil32.GetTickCount();
                 // 绝绢瘤瘤 臼绰促.
             }
             else

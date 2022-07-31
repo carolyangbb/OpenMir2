@@ -63,7 +63,7 @@ namespace GameSvr
                                         // lparam1
                                         // lparam2
                                         // hiter
-                                        cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 300);
+                                        cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 300);
                                         if (BoUsePoison)
                                         {
                                             // 眉仿捞 皑家窍绰 刀俊 吝刀 等促.
@@ -87,7 +87,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir=0;
+            byte targdir = 0;
             result = false;
             if (this.TargetCret != null)
             {
@@ -96,7 +96,7 @@ namespace GameSvr
                     if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                     {
                         this.HitTime = GetCurrentTime;
-                        this.TargetFocusTime  =  HUtil32.GetTickCount();
+                        this.TargetFocusTime = HUtil32.GetTickCount();
                         SpitAttack(targdir);
                         this.BreakHolySeize();
                     }

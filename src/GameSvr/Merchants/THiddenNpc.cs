@@ -42,7 +42,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] THiddenNpc VisbleActors Dispose(..)");
+                M2Share.MainOutMessage("[Exception] THiddenNpc VisbleActors Dispose(..)");
             }
             this.HideMode = true;
         }

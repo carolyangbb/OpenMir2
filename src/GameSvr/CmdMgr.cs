@@ -7,7 +7,7 @@ namespace GameSvr
 {
     public class TCmdMsg
     {
-        public ushort CmdNum;
+        public short CmdNum;
         public int TagetSvrIdx;
         public int GateIdx;
         public int UserGateIdx;
@@ -23,7 +23,7 @@ namespace GameSvr
     {
         public ICommand() : base()
         {
-            
+
         }
 
         public virtual void OnCmdChange(ref TCmdMsg Msg)
@@ -32,18 +32,18 @@ namespace GameSvr
 
         public void ErrMsg(string Msg)
         {
-            svMain.MainOutMessage(Msg);
+            M2Share.MainOutMessage(Msg);
         }
     }
 
     public class TCmdMgr : ICommand
     {
         private readonly ArrayList FItems = null;
-        private string FDBBuffer = String.Empty;
-        private string FDBBufferBack = String.Empty;
+        private string FDBBuffer = string.Empty;
+        private string FDBBufferBack = string.Empty;
         private readonly IList<string> FDBList = null;
-        private object FInterCS = null;
-        private object FExternCS = null;
+        private readonly object FInterCS = null;
+        private readonly object FExternCS = null;
 
         public TCmdMgr() : base()
         {
@@ -62,7 +62,7 @@ namespace GameSvr
                 pItem = (TCmdMsg)FItems[i];
                 if (pItem != null)
                 {
-                    Dispose(pItem);
+                    //Dispose(pItem);
                 }
             }
             FItems.Clear();
@@ -101,10 +101,8 @@ namespace GameSvr
 
         private void SendToClient(TCmdMsg Msg)
         {
-            int packetlen;
             TMsgHeader header;
             string pbuf;
-            string EncodeBody;
             pbuf = null;
             if (Msg.Userhandle == 0)
             {
@@ -112,7 +110,7 @@ namespace GameSvr
             }
             header.Code = 0xaa55aa55;
             header.SNumber = Msg.Userhandle;
-            header.UserGateIndex = (ushort)Msg.UserGateIdx;
+            header.UserGateIndex = (short)Msg.UserGateIdx;
             header.Ident = Grobal2.GM_DATA;
             if (Msg.body != "")
             {
@@ -137,7 +135,7 @@ namespace GameSvr
             FInterCS.Enter();
             try
             {
-                svMain.RunSocket.SendCmdSocket(Msg.GateIdx, pbuf);
+                M2Share.RunSocket.SendCmdSocket(Msg.GateIdx, pbuf);
             }
             finally
             {
@@ -157,13 +155,13 @@ namespace GameSvr
             FInterCS.Enter();
             try
             {
-                svMain.UserEngine.SendInterMsg(Msg.CmdNum, svMain.ServerIndex, str);
+                M2Share.UserEngine.SendInterMsg(Msg.CmdNum, M2Share.ServerIndex, str);
             }
             finally
             {
                 FInterCS.Leave();
             }
-            SendMsgQueue(TSendTarget.stInterServer, svMain.ServerIndex, 0, 0, 0, Msg.UserName, Msg.Msg, Msg.body);
+            SendMsgQueue(TSendTarget.stInterServer, M2Share.ServerIndex, 0, 0, 0, Msg.UserName, Msg.Msg, Msg.body);
         }
 
         private void SendToDBServer(TCmdMsg Msg)
@@ -172,7 +170,7 @@ namespace GameSvr
             FInterCS.Enter();
             try
             {
-                svMain.FrontEngine.AddDBData(str);
+                M2Share.FrontEngine.AddDBData(str);
             }
             finally
             {
@@ -197,7 +195,7 @@ namespace GameSvr
             FItems.Add(pItem);
         }
 
-        public void SendMsgQueue1(TSendTarget SendTarget, int TargetSvrIdx, int GateIdx, int UserGateIdx, int UserHandle, string UserName, int Recog, ushort Ident, ushort Param, ushort Tag, ushort Series, string Body)
+        public void SendMsgQueue1(TSendTarget SendTarget, int TargetSvrIdx, int GateIdx, int UserGateIdx, int UserHandle, string UserName, int Recog, short Ident, short Param, short Tag, short Series, string Body)
         {
             TCmdMsg pItem;
             pItem = new TCmdMsg();
@@ -365,7 +363,7 @@ namespace GameSvr
     }
 }
 
-    namespace GameSvr
+namespace GameSvr
 {
     public class CmdMgr
     {

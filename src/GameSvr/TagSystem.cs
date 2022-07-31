@@ -18,7 +18,7 @@ namespace GameSvr
                 FSender = value;
             }
         }
-        
+
         public string SendDate
         {
             get
@@ -30,7 +30,7 @@ namespace GameSvr
                 FSendDate = value;
             }
         }
-        
+
         public string Msg
         {
             get
@@ -42,7 +42,7 @@ namespace GameSvr
                 FMsg = value;
             }
         }
-        
+
         public int State
         {
             get
@@ -54,7 +54,7 @@ namespace GameSvr
                 FState = value;
             }
         }
-        
+
         public bool DBSaved
         {
             get
@@ -66,7 +66,7 @@ namespace GameSvr
                 FDBSaved = value;
             }
         }
-        
+
         public bool Client
         {
             get
@@ -78,10 +78,10 @@ namespace GameSvr
                 FClient = value;
             }
         }
-        
-        private string FSender = String.Empty;
-        public string FSendDate = String.Empty;
-        private string FMsg = String.Empty;
+
+        private string FSender = string.Empty;
+        public string FSendDate = string.Empty;
+        private string FMsg = string.Empty;
         public int FState = 0;
         private bool FDBSaved = false;
         private bool FClient = false;
@@ -98,7 +98,7 @@ namespace GameSvr
 
         public string GetMsgList()
         {
-            return  FState.ToString() + ":" + FSendDate + ":" + FSender + ":" + FMsg;
+            return FState.ToString() + ":" + FSendDate + ":" + FSender + ":" + FMsg;
         }
 
     }
@@ -127,7 +127,7 @@ namespace GameSvr
             FWantRejectListFlag = false;
             FNotReadCount = 0;
         }
-        
+
         ~TTagMgr()
         {
             RemoveAll();
@@ -138,19 +138,19 @@ namespace GameSvr
 
         public void OnUserOpen()
         {
-            
+
         }
-        
+
         public void OnUserClose()
         {
-            
+
         }
 
         public int GetTagCount()
         {
             return FItems.Count;
         }
-        
+
         public bool IsTagAddAble()
         {
             var result = false;
@@ -287,7 +287,7 @@ namespace GameSvr
         public bool IsRejecterAddAble(string Name)
         {
             bool result;
-            string Str = String.Empty;
+            string Str = string.Empty;
             if ((Name != "") && (false == FindRejecter(Name, Str)) && (GetRejecterCount() < TagSystem.MAX_REJECTER_COUNT))
             {
                 result = true;
@@ -473,10 +473,10 @@ namespace GameSvr
         public void OnCmdCMAdd(TCmdMsg Cmd)
         {
             TUserInfo recieverinfo = null;
-            string reciever = String.Empty;
+            string reciever = string.Empty;
             string tagmsg = HUtil32.GetValidStr3(Cmd.body, ref reciever, new string[] { "/" });
             string senddate = GenerateSendDate();
-            if (svMain.UserMgrEngine.InterGetUserInfo(reciever, ref recieverinfo))
+            if (M2Share.UserMgrEngine.InterGetUserInfo(reciever, ref recieverinfo))
             {
                 OnCmdOSMSend(reciever, recieverinfo.ConnState - Grobal2.CONNSTATE_CONNECT_0, Cmd.UserName, senddate, 0, tagmsg);
             }
@@ -485,18 +485,18 @@ namespace GameSvr
 
         public void OnCmdCMAddDouble(TCmdMsg Cmd)
         {
-            string receiver=String.Empty;
-            string receiver2=String.Empty;
-            string tagmsg=String.Empty;
-            string senddate=String.Empty;
+            string receiver = string.Empty;
+            string receiver2 = string.Empty;
+            string tagmsg = string.Empty;
+            string senddate = string.Empty;
             TUserInfo receiverinfo = null;
             TUserInfo receiverinfo2 = null;
-            tagmsg  =  HUtil32.GetValidStr3(Cmd.body, ref receiver, new string[] { "/" });
-            tagmsg  =  HUtil32.GetValidStr3(tagmsg, ref receiver2, new string[] { "/" });
+            tagmsg = HUtil32.GetValidStr3(Cmd.body, ref receiver, new string[] { "/" });
+            tagmsg = HUtil32.GetValidStr3(tagmsg, ref receiver2, new string[] { "/" });
             senddate = GenerateSendDate();
             if (receiver != Cmd.UserName)
             {
-                if (svMain.UserMgrEngine.InterGetUserInfo(receiver, ref receiverinfo))
+                if (M2Share.UserMgrEngine.InterGetUserInfo(receiver, ref receiverinfo))
                 {
                     OnCmdOSMSend(receiver, receiverinfo.ConnState - Grobal2.CONNSTATE_CONNECT_0, Cmd.UserName, senddate, 0, tagmsg);
                 }
@@ -508,7 +508,7 @@ namespace GameSvr
                 {
                     return;
                 }
-                if (svMain.UserMgrEngine.InterGetUserInfo(receiver2, ref receiverinfo2))
+                if (M2Share.UserMgrEngine.InterGetUserInfo(receiver2, ref receiverinfo2))
                 {
                     OnCmdOSMSend(receiver2, receiverinfo2.ConnState - Grobal2.CONNSTATE_CONNECT_0, Cmd.UserName, senddate, 0, tagmsg);
                 }
@@ -574,7 +574,7 @@ namespace GameSvr
             TUserInfo rejectinfo = null;
             var rejecter = Cmd.body;
             var userinfo = Cmd.pInfo;
-            if (!svMain.UserMgrEngine.InterGetUserInfo(rejecter, ref rejectinfo))
+            if (!M2Share.UserMgrEngine.InterGetUserInfo(rejecter, ref rejectinfo))
             {
                 OnCmdSMResult(userinfo, Grobal2.CM_TAG_REJECT_ADD, Grobal2.CR_DONTADD);
                 return;
@@ -635,62 +635,62 @@ namespace GameSvr
         public void OnCmdSMList(TUserInfo UserInfo, int PageNum, int ListCount, string TagList)
         {
             var str = TagList;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_LIST, (ushort)PageNum, (ushort)ListCount, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_LIST, (short)PageNum, (short)ListCount, 0, str);
         }
 
         public void OnCmdSMInfo(TUserInfo UserInfo, string SendDate, int State)
         {
             var str = SendDate;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_INFO, (ushort)State, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_INFO, (short)State, 0, 0, str);
         }
 
         public void OnCmdSMAdd(TUserInfo UserInfo, string Sender, string SendDate, int State, string SendMsg)
         {
             var str = State.ToString() + ":" + SendDate + ":" + Sender + ":" + SendMsg;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_LIST, 0, 1, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_LIST, 0, 1, 0, str);
         }
-        
+
         public void OnCmdSMDelete(TUserInfo UserInfo, string SendDate, int State)
         {
             var str = SendDate;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_INFO, (ushort)State, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_INFO, (short)State, 0, 0, str);
         }
-        
+
         public void OnCmdSMRejectList(TUserInfo UserInfo, int ListCount, string RejectList)
         {
             var str = RejectList;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_REJECT_LIST, (ushort)ListCount, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_REJECT_LIST, (short)ListCount, 0, 0, str);
         }
-        
+
         public void OnCmdSMRejectAdd(TUserInfo UserInfo, string Rejecter)
         {
             var str = Rejecter;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_REJECT_ADD, 0, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_REJECT_ADD, 0, 0, 0, str);
         }
-        
+
         public void OnCmdSMRejectDelete(TUserInfo UserInfo, string Rejecter)
         {
             var str = Rejecter;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_REJECT_DELETE, 0, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_REJECT_DELETE, 0, 0, 0, str);
         }
-        
+
         public void OnCmdSMNotReadCount(TUserInfo UserInfo, int NotReadCount)
         {
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_ALARM, (ushort)NotReadCount, 0, 0, "");
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_ALARM, (short)NotReadCount, 0, 0, "");
         }
 
         public void OnCmdSMResult(TUserInfo UserInfo, short CmdNum, short ResultValue)
         {
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_RESULT, (ushort)CmdNum, (ushort)ResultValue, 0, "");
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_TAG_RESULT, CmdNum, ResultValue, 0, "");
         }
-        
+
         public void OnCmdISMSend(TCmdMsg Cmd)
         {
-            string sender=String.Empty;
-            string senddate=String.Empty;
-            string statestr=String.Empty;
-            string sendmsg=String.Empty;
-            string tempstr=String.Empty;
+            string sender = string.Empty;
+            string senddate = string.Empty;
+            string statestr = string.Empty;
+            string sendmsg = string.Empty;
+            string tempstr = string.Empty;
             tempstr = HUtil32.GetValidStr3(Cmd.body, ref statestr, new string[] { ":" });
             tempstr = HUtil32.GetValidStr3(tempstr, ref senddate, new string[] { ":" });
             sendmsg = HUtil32.GetValidStr3(tempstr, ref sender, new string[] { ":" });
@@ -708,31 +708,31 @@ namespace GameSvr
                 }
             }
         }
-        
+
         public void OnCmdISMResult(TCmdMsg Cmd)
         {
         }
-        
+
         public void OnCmdOSMSend(string UserName, int SvrIndex, string Sender, string SendDate, int State, string SendMsg)
         {
             var str = State.ToString() + ":" + SendDate + ":" + Sender + ":" + SendMsg;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_TAG_SEND, (ushort)SvrIndex, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_TAG_SEND, (short)SvrIndex, 0, 0, str);
         }
-        
+
         public void OnCmdOSMResult(string UserName, int SvrIndex, short CmdNum, short ResultValue)
         {
             var str = CmdNum.ToString() + ":" + ResultValue.ToString();
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_TAG_RESULT, (ushort)SvrIndex, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_TAG_RESULT, (short)SvrIndex, 0, 0, str);
         }
 
         public void OnCmdDBRList(TCmdMsg Cmd)
         {
-            string tagcountstr = String.Empty;
-            string sender = String.Empty;
-            string senddate = String.Empty;
-            string statestr = String.Empty;
-            string sendmsg = String.Empty;
-            string tagstr = String.Empty;
+            string tagcountstr = string.Empty;
+            string sender = string.Empty;
+            string senddate = string.Empty;
+            string statestr = string.Empty;
+            string sendmsg = string.Empty;
+            string tagstr = string.Empty;
             string tempstr = HUtil32.GetValidStr3(Cmd.body, ref tagcountstr, new string[] { "/" });
             int tagcount = HUtil32.Str_ToInt(tagcountstr, 0);
             TUserInfo userinfo = Cmd.pInfo;
@@ -755,17 +755,17 @@ namespace GameSvr
                 FWantTagListFlag = false;
             }
         }
-        
+
         public void OnCmdDBRRejectList(TCmdMsg Cmd)
         {
-            string rejecter=String.Empty;
-            string rejectcountstr=String.Empty;
-            string  tempstr  =  HUtil32.GetValidStr3(Cmd.body, ref rejectcountstr, new string[] { "/" });
-            int   rejectcount = HUtil32.Str_ToInt(rejectcountstr, 0);
-            TUserInfo    userinfo = Cmd.pInfo;
+            string rejecter = string.Empty;
+            string rejectcountstr = string.Empty;
+            string tempstr = HUtil32.GetValidStr3(Cmd.body, ref rejectcountstr, new string[] { "/" });
+            int rejectcount = HUtil32.Str_ToInt(rejectcountstr, 0);
+            TUserInfo userinfo = Cmd.pInfo;
             for (var i = 0; i < rejectcount; i++)
             {
-                tempstr  =  HUtil32.GetValidStr3(tempstr, ref rejecter, new string[] { "/" });
+                tempstr = HUtil32.GetValidStr3(tempstr, ref rejecter, new string[] { "/" });
                 if (!AddRejecter(rejecter))
                 {
                     // 眠啊救登绰 捞蜡甫 钎矫窍磊
@@ -778,19 +778,19 @@ namespace GameSvr
                 FWantRejectListFlag = false;
             }
         }
-        
+
         public void OnCmdDBRNotReadCount(TCmdMsg Cmd)
         {
             var notreadcountstr = Cmd.body;
             var userinfo = Cmd.pInfo;
             OnCmdSMNotReadCount(userinfo, HUtil32.Str_ToInt(notreadcountstr, 0));
         }
-        
+
         public void OnCmdDBRResult(TCmdMsg Cmd)
         {
-            string ErrCode = String.Empty;
+            string ErrCode = string.Empty;
             this.ErrMsg("CmdDBRResult[Tag] :" + Cmd.body);
-            string CmdNum  =  HUtil32.GetValidStr3(Cmd.body, ref ErrCode, new string[] { "/" });
+            string CmdNum = HUtil32.GetValidStr3(Cmd.body, ref ErrCode, new string[] { "/" });
             switch (HUtil32.Str_ToInt(CmdNum, 0))
             {
                 case Grobal2.DB_TAG_ADD:
@@ -817,51 +817,51 @@ namespace GameSvr
         public void OnCmdDBAdd(TUserInfo UserInfo, string Reciever, string SendDate, int State, string SendMsg)
         {
             string str = State.ToString() + ":" + SendDate + ":" + Reciever + ":" + SendMsg + "/";
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_ADD, 0, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, M2Share.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_ADD, 0, 0, 0, str);
         }
 
         public void OnCmdDBInfo(TUserInfo UserInfo, string SendDate, int State)
         {
             string str = State.ToString() + ":" + SendDate + "/";
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_SETINFO, 0, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, M2Share.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_SETINFO, 0, 0, 0, str);
         }
-        
+
         public void OnCmdDBDelete(TUserInfo UserInfo, string SendDate)
         {
             string str = SendDate + "/";
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_DELETE, 0, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, M2Share.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_DELETE, 0, 0, 0, str);
         }
-        
+
         public void OnCmdDBDeleteAll(TUserInfo UserInfo)
         {
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_DELETEALL, 0, 0, 0, "");
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, M2Share.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_DELETEALL, 0, 0, 0, "");
         }
-        
+
         public void OnCmdDBList(TUserInfo UserInfo)
         {
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_LIST, 0, 0, 0, "");
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, M2Share.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_LIST, 0, 0, 0, "");
         }
-        
+
         public void OnCmdDBRejectAdd(TUserInfo UserInfo, string Rejecter)
         {
             string str = Rejecter + "/";
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_REJECT_ADD, 0, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, M2Share.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_REJECT_ADD, 0, 0, 0, str);
         }
 
         public void OnCmdDBRejectDelete(TUserInfo UserInfo, string Rejecter)
         {
             string str = Rejecter + "/";
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_REJECT_DELETE, 0, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, M2Share.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_REJECT_DELETE, 0, 0, 0, str);
         }
 
         public void OnCmdDBRejectList(TUserInfo UserInfo)
         {
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_REJECT_LIST, 0, 0, 0, "");
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, M2Share.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_REJECT_LIST, 0, 0, 0, "");
         }
 
         public void OnCmdDBNotReadCount(TUserInfo UserInfo)
         {
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_NOTREADCOUNT, 0, 0, 0, "");
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, M2Share.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_TAG_NOTREADCOUNT, 0, 0, 0, "");
         }
 
     }

@@ -36,15 +36,13 @@ namespace GameSvr
             Caller = null;
             OldTargetCret = null;
             this.BoAnimal = false;
-            // 戒府瘤 臼档废...
-
         }
-        //@ Destructor  Destroy()
+
         ~TStickBlockMonster()
         {
             childlist.Free();
-            base.Destroy();
         }
+
         protected bool FindTarget()
         {
             bool result;
@@ -110,7 +108,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir=0;
+            byte targdir = 0;
             result = false;
             if (DontAttack)
             {
@@ -176,10 +174,10 @@ namespace GameSvr
         public void CallFollower()
         {
             const int MAX_FOLLOWERS = 2;
-            int nx=0;
-            int ny=0;
-            int dx=0;
-            int dy=0;
+            int nx = 0;
+            int ny = 0;
+            int dx = 0;
+            int dy = 0;
             string monname;
             TCreature mon;
             string[] followers = new string[MAX_FOLLOWERS - 1 + 1];
@@ -199,7 +197,6 @@ namespace GameSvr
                         {
                             continue;
                         }
-                        // 措阿急
                         if (Math.Abs(dx) == Math.Abs(dy))
                         {
                             monname = followers[1];
@@ -210,14 +207,12 @@ namespace GameSvr
                         }
                         if (this.PEnvir.CanWalk(nx + dx, ny + dy, false))
                         {
-                            mon = svMain.UserEngine.AddCreatureSysop(this.MapName, nx + dx, ny + dy, monname);
+                            mon = M2Share.UserEngine.AddCreatureSysop(this.MapName, (short)(nx + dx), (short)(ny + dy), monname);
                             if (mon != null)
                             {
-                                // 鞍篮 辆幅狼 阁胶磐捞搁
                                 if (mon.RaceServer == Grobal2.RC_STICKBLOCK)
                                 {
                                     (mon as TStickBlockMonster).BoCallFollower = false;
-                                    // 捧疙阁胶磐 汲沥
                                     if (mon.UserName == followers[1])
                                     {
                                         (mon as TStickBlockMonster).BoTransparent = true;
@@ -254,23 +249,20 @@ namespace GameSvr
 
         public override void RunMsg(TMessageInfo msg)
         {
-            int i;
             bool check;
-            TCreature hiter;
-            hiter = null;
+            TCreature hiter = null;
             switch (msg.Ident)
             {
                 case Grobal2.RM_REFMESSAGE:
                     if (((int)msg.sender) == Grobal2.RM_STRUCK)
                     {
                         check = false;
-                        hiter = (TCreature)msg.lParam3;
+                        hiter = M2Share.ObjectMgr.Get(msg.lParam3);
                         if ((hiter != null) && (hiter.RaceServer == Grobal2.RC_USERHUMAN))
                         {
-                            // 皋牢 各捞 嘎疽阑 锭 follower甸 吝俊 刚历 嘎篮 逞捞 绝栏搁 官肺 磷澜
                             if (BoCallFollower)
                             {
-                                for (i = 0; i < childlist.Count; i++)
+                                for (var i = 0; i < childlist.Count; i++)
                                 {
                                     if ((childlist[i] as TStickBlockMonster).FirstStruck)
                                     {
@@ -292,12 +284,9 @@ namespace GameSvr
                                 this.WAbil.HP = this.WAbil.MaxHP;
                                 if (!BoTransparent)
                                 {
-                                    // follower啊 嘎疽阑 锭 皋牢 各捞 刚历 嘎瘤 臼疽栏搁 FirstStruck TRUE肺 悸泼
-                                    // (汾去拜栏肺 部寂瘤绰啊?)
                                     if ((Caller != null) && (Caller.RaceServer == Grobal2.RC_STICKBLOCK) && !(Caller as TStickBlockMonster).FirstStruck)
                                     {
                                         FirstStruck = true;
-                                        // 皋牢 各 傍拜 葛靛肺
                                         (Caller as TStickBlockMonster).DontAttack = false;
                                     }
                                 }
@@ -334,9 +323,9 @@ namespace GameSvr
 
         public override void Run()
         {
-            int nx=0;
-            int ny=0;
-            byte targdir=0;
+            int nx = 0;
+            int ny = 0;
+            byte targdir = 0;
             // 贸澜 鸥百阑 官操瘤 臼澜.
             if (OldTargetCret != this.TargetCret)
             {
@@ -377,7 +366,7 @@ namespace GameSvr
                             this.SpaceMove(this.MapName, (short)(this.TargetCret.CX + nx), (short)(this.TargetCret.CY + ny), 2);
                             CallFollower();
                             // 何窍甸阑 阂矾晨
-                            ComeoutTime  =  HUtil32.GetTickCount();
+                            ComeoutTime = HUtil32.GetTickCount();
                         }
                         // 矫埃捞 儒福搁
                         if ((ComeoutTime != 0) && (HUtil32.GetTickCount() - ComeoutTime > 10000))
@@ -399,7 +388,7 @@ namespace GameSvr
                                 {
                                     if ((ComeoutTime != 0) && (HUtil32.GetTickCount() - ComeoutTime > 15000))
                                     {
-                                        TargetDisappearTime  =  HUtil32.GetTickCount();
+                                        TargetDisappearTime = HUtil32.GetTickCount();
                                     }
                                 }
                             }
@@ -410,7 +399,7 @@ namespace GameSvr
                             {
                                 if ((ComeoutTime != 0) && (HUtil32.GetTickCount() - ComeoutTime > 15000))
                                 {
-                                    TargetDisappearTime  =  HUtil32.GetTickCount();
+                                    TargetDisappearTime = HUtil32.GetTickCount();
                                 }
                             }
                         }

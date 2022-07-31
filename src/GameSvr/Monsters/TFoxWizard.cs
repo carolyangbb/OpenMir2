@@ -51,9 +51,6 @@ namespace GameSvr
 
         public void RangeAttack(TCreature targ)
         {
-            int i;
-            int pwr;
-            int dam;
             short sx = 0;
             short sy = 0;
             short tx = 0;
@@ -70,19 +67,19 @@ namespace GameSvr
             {
                 M2Share.GetNextPosition(this.PEnvir, this.CX, this.CY, this.Dir, 9, ref tx, ref ty);
                 TAbility _wvar1 = this.WAbil;
-                pwr = HUtil32._MAX(0, HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next());
+                int pwr = HUtil32._MAX(0, HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next());
                 list = new ArrayList();
                 this.PEnvir.GetAllCreature(targ.CX, targ.CY, true, list);
-                for (i = 0; i < list.Count; i++)
+                for (var i = 0; i < list.Count; i++)
                 {
                     cret = (TCreature)list[i];
                     if (this.IsProperTarget(cret))
                     {
-                        dam = cret.GetMagStruckDamage(this, pwr);
+                        int dam = cret.GetMagStruckDamage(this, pwr);
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
+                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                         }
                     }
                 }

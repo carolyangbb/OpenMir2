@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using SystemModule;
 
 namespace GameSvr
@@ -35,7 +36,7 @@ namespace GameSvr
         public int LoginClientVersion;
         public int ClientCheckSum;
         public int Shandle;
-        public ushort UserGateIndex;
+        public short UserGateIndex;
         public int GateIndex;
         public long ReadyStartTime;
         public bool Closed;
@@ -57,20 +58,238 @@ namespace GameSvr
 
     public class THolySeizeInfo
     {
-        public Object[] earr;
+        public object[] earr;
         public ArrayList seizelist;
         public long OpenTime;
         public long SeizeTime;
     }
-}
 
-namespace GameSvr
-{
     public class M2Share
     {
         public static string GateClass = "Config";
-        public static TGameConfig g_GameConfig = new TGameConfig() { true, true, true, false, true, true, true, false, false, true };
 
+        public static TGameConfig g_GameConfig = new TGameConfig()
+        {
+            boGameAssist = true,
+            boWhisperRecord = true,
+            boMaketSystem = true,
+            boNoFog = false,
+            boStallSystem = true,
+            boShowHpBar = true,
+            boShowHpNumber = true,
+            boNoStruck = false,
+            boFastMove = false,
+            boNoWeight = true
+        };
+        public static GameHost FrmMain = null;
+        public static TRunSocket RunSocket = null;
+        public static ObjectManager ObjectMgr;
+        public static TFrontEngine FrontEngine = null;
+        public static TUserEngine UserEngine = null;
+        public static TUserMgrEngine UserMgrEngine = null;
+        public static TEnvirList GrobalEnvir = null;
+        public static ItemUnitSystem ItemMan = null;
+        public static TMagicManager MagicMan = null;
+        public static TNoticeManager NoticeMan = null;
+        public static TGuildManager GuildMan = null;
+        public static TGuildAgitManager GuildAgitMan = null;
+        public static TGuildAgitBoardManager GuildAgitBoardMan = null;
+        public static int GuildAgitStartNumber = 0;
+        public static int GuildAgitMaxNumber = 0;
+        public static TEventManager EventMan = null;
+        public static TUserCastle UserCastle = null;
+        public static bool boUserCastleInitialized = false;
+        public static TDragonSystem gFireDragon = null;
+        public static ArrayList DecoItemList = null;
+        public static IList<string> MakeItemList = null;
+        public static ArrayList MakeItemIndexList = null;
+        public static IList<TSafePoint> StartPoints = null;
+        public static IList<TSafePoint> SafePoints = null;
+        public static ArrayList MultiServerList = null;
+        public static ArrayList ShutUpList = null;
+        public static ArrayList MiniMapList = null;
+        public static IList<string> UnbindItemList = null;
+        public static ArrayList LineNoticeList = null;
+        public static ArrayList LineHelpList = null;
+        public static ArrayList QuestDiaryList = null;
+        public static TMerchant DefaultNpc = null;
+        public static ArrayList DropItemNoticeList = null;
+        public static IList<TShopItem> ShopItemList = null;
+        public static ArrayList EventItemList = null;
+        public static int EventItemGifeBaseNumber = 0;
+        public static int[] GrobalQuestParams = new int[9 + 1];
+        public static int MirDayTime;
+        public static string ErrorLogFile = string.Empty;
+        public static int ServerIndex = 0;
+        public static string ServerName = string.Empty;
+        public static int ServerNumber = 0;
+        public static bool BoVentureServer = false;
+        public static bool BoTestServer = false;
+        public static bool BoClientTest = false;
+        public static int TestLevel = 0;
+        public static int TestGold = 0;
+        public static int TestServerMaxUser = 0;
+        public static bool BoServiceMode = false;
+        public static bool BoNonPKServer = false;
+        public static bool BoViewHackCode = false;
+        public static bool BoViewAdmissionfail = false;
+        public static bool BoGetGetNeedNotice = false;
+        public static long GetGetNoticeTime = 0;
+        public static int UserFullCount = 0;
+        public static int ZenFastStep = 0;
+        public static bool BoSysHasMission = false;
+        public static string SysMission_Map = string.Empty;
+        public static int SysMission_X = 0;
+        public static int SysMission_Y = 0;
+        public static int TotalUserCount = 0;
+        public static object csMsgLock = null;
+        public static object csTimerLock = null;
+        public static object csObjMsgLock = null;
+        public static object csSendMsgLock = null;
+        public static object csShare = null;
+        public static object csDelShare = null;
+        public static object csSocLock = null;
+        public static object usLock = null;
+        public static object usIMLock = null;
+        public static object ruLock = null;
+        public static object ruSendLock = null;
+        public static object ruCloseLock = null;
+        public static object socstrLock = null;
+        public static object fuLock = null;
+        public static object fuOpenLock = null;
+        public static object fuCloseLock = null;
+        public static object humanLock = null;
+        public static object umLock = null;
+        public static ArrayList MainMsg = null;
+        public static ArrayList UserLogs = null;
+        public static ArrayList UserConLogs = null;
+        public static ArrayList UserChatLog = null;
+        public static bool DiscountForNightTime = false;
+        public static int HalfFeeStart = 0;
+        public static int HalfFeeEnd = 0;
+        public static bool ServerReady = false;
+        public static bool ServerClosing = false;
+        public static int FCertify = 0;
+        public static int FItemNumber = 0;
+        public static string RDBSocData = string.Empty;
+        public static bool ReadyDBReceive = false;
+        public static int RunFailCount = 0;
+        public static int MirUserLoadCount = 0;
+        public static int MirUserSaveCount = 0;
+        public static long CurrentDBloadingTime = 0;
+        public static bool BoEnableAbusiveFilter = false;
+        public static int LottoSuccess = 0;
+        public static int LottoFail = 0;
+        public static int Lotto1 = 0;
+        public static int Lotto2 = 0;
+        public static int Lotto3 = 0;
+        public static int Lotto4 = 0;
+        public static int Lotto5 = 0;
+        public static int Lotto6 = 0;
+        public static string MsgServerAddress = string.Empty;
+        public static int MsgServerPort = 0;
+        public static string LogServerAddress = string.Empty;
+        public static int LogServerPort = 0;
+        public static string ShareBaseDir = string.Empty;
+        public static string ShareBaseDirCopy = string.Empty;
+        public static string ShareVentureDir = string.Empty;
+        public static int ShareFileNameNum = 0;
+        public static string ConLogBaseDir = string.Empty;
+        public static string ChatLogBaseDir = string.Empty;
+        public static string DefHomeMap = string.Empty;
+        public static short DefHomeX = 0;
+        public static short DefHomeY = 0;
+        public static string GuildDir = string.Empty;
+        public static string GuildFile = string.Empty;
+        public static string GuildBaseDir = string.Empty;
+        public static string GuildAgitFile = string.Empty;
+        public static string CastleDir = string.Empty;
+        public static string EnvirDir = string.Empty;
+        public static string MapDir = string.Empty;
+        public static int CurrentMonthlyCard = 0;
+        public static int TotalTimeCardUsage = 0;
+        public static int LastMonthTotalTimeCardUsage = 0;
+        public static int GrossTimeCardUsage = 0;
+        public static int GrossResetCount = 0;
+        public static long serverruntime = 0;
+        public static long runstart = 0;
+        public static int rcount = 0;
+        public static int minruncount = 0;
+        public static int curruncount = 0;
+        public static int maxsoctime = 0;
+        public static int cursoctime = 0;
+        public static int maxusrtime = 0;
+        public static int curusrcount = 0;
+        public static int curhumtime = 0;
+        public static int maxhumtime = 0;
+        public static int curmontime = 0;
+        public static int maxmontime = 0;
+        public static long humrotatetime = 0;
+        public static int curhumrotatetime = 0;
+        public static int maxhumrotatetime = 0;
+        public static int humrotatecount = 0;
+        public static string LatestGenStr;
+        public static string LatestMonStr;
+        public static long HumLimitTime = 0;
+        public static long MonLimitTime = 0;
+        public static long ZenLimitTime = 0;
+        public static long NpcLimitTime = 0;
+        public static long SocLimitTime = 0;
+        public static long DecLimitTime = 0;
+        public static string __ClothsForMan = string.Empty;
+        public static string __ClothsForWoman = string.Empty;
+        public static string __WoodenSword = string.Empty;
+        public static string __Candle = string.Empty;
+        public static string __BasicDrug = string.Empty;
+        public static string __GoldStone = string.Empty;
+        public static string __SilverStone = string.Empty;
+        public static string __SteelStone = string.Empty;
+        public static string __CopperStone = string.Empty;
+        public static string __BlackStone = string.Empty;
+        public static string __Gem1Stone = string.Empty;
+        public static string __Gem2Stone = string.Empty;
+        public static string __Gem3Stone = string.Empty;
+        public static string __Gem4Stone = string.Empty;
+        public static string __ZumaMonster1 = string.Empty;
+        public static string __ZumaMonster2 = string.Empty;
+        public static string __ZumaMonster3 = string.Empty;
+        public static string __ZumaMonster4 = string.Empty;
+        public static string __Bee = string.Empty;
+        public static string __Spider = string.Empty;
+        public static string __WhiteSkeleton = string.Empty;
+        public static string __ShinSu = string.Empty;
+        public static string __ShinSu1 = string.Empty;
+        public static string __AngelMob = string.Empty;
+        public static string __CloneMob = string.Empty;
+        public static string __WomaHorn = string.Empty;
+        public static string __ZumaPiece = string.Empty;
+        public static string __GoldenImugi = string.Empty;
+        public static string __WhiteSnake = string.Empty;
+        public static string ClientFileName1 = string.Empty;
+        public static string ClientFileName2 = string.Empty;
+        public static string ClientFileName3 = string.Empty;
+        public static int ClientCheckSumValue1 = 0;
+        public static int ClientCheckSumValue2 = 0;
+        public static int ClientCheckSumValue3 = 0;
+        public static int gErrorCount = 0;
+        public static int CurrentMerchantIndex = 0;
+        public static long ServerTickDifference = 0;
+        public static int INDEX_CHOCOLATE = 0;
+        public static int INDEX_CANDY = 0;
+        public static int INDEX_LOLLIPOP = 0;
+        public static int INDEX_MIRBOOTS = 0;
+        public const bool ENGLISHVERSION = true;
+        public const bool PHILIPPINEVERSION = false;
+        public const bool CHINAVERSION = false;
+        public const bool TAIWANVERSION = false;
+        public const bool KOREANVERSION = false;
+        public const int SENDBLOCK = 1024;
+        public const int SENDCHECKBLOCK = 4096;
+        public const int SENDAVAILABLEBLOCK = 7999;
+        public const int GATELOAD = 10;
+        public const string LINENOTICEFILE = "Notice\\LineNotice.txt";
+        public const string LINEHELPFILE = "LineHelp.txt";
+        public const int BUILDGUILDFEE = 1000000;
         public static string g_sStartMarryManMsg = "[%n]: %s 与 %d 的婚礼现在开始..";
         public static string g_sStartMarryWoManMsg = "[%n]: %d 与 %s 的婚礼现在开始..";
         public static string g_sStartMarryManAskQuestionMsg = "[%n]: %s 你愿意娶 %d 小姐为妻，并照顾她一生一世吗？";
@@ -123,10 +342,9 @@ namespace GameSvr
         public static bool boSecondCardSystem = false;
         public static int g_nExpErienceLevel = 7;
         public static string BADMANHOMEMAP = "3";
-        public static int BADMANSTARTX = 845;
-        public static int BADMANSTARTY = 674;
+        public static short BADMANSTARTX = 845;
+        public static short BADMANSTARTY = 674;
         public static string RECHARGINGMAP = "kaiqu";
-        // 充值地图名称
         public static bool boSafeZoneStall = false;
         public const int MAXKINGLEVEL = 61;
         public const int MAXLEVEL = 101;
@@ -137,7 +355,355 @@ namespace GameSvr
         public static TNakedAbility PriestBonus = new TNakedAbility() { DC = 20, MC = 30, SC = 17, AC = 20, MAC = 15, HP = 2, MP = 1, Hit = 30, Speed = 30 };
         public static byte[,,] SpitMap = { { { 0, 0, 1, 0, 0 }, { 0, 0, 1, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } }, { { 0, 0, 0, 0, 1 }, { 0, 0, 0, 1, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } }, { { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 1, 1 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } }, { { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 1, 0 }, { 0, 0, 0, 0, 1 } }, { { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 1, 0, 0 }, { 0, 0, 1, 0, 0 } }, { { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 1, 0, 0, 0 }, { 1, 0, 0, 0, 0 } }, { { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 1, 1, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } }, { { 1, 0, 0, 0, 0 }, { 0, 1, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } } };
         public static byte[,,] CrossMap = { { { 0, 1, 1, 1, 0 }, { 0, 0, 1, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } }, { { 0, 0, 0, 1, 1 }, { 0, 0, 0, 1, 1 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } }, { { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 1 }, { 0, 0, 0, 1, 1 }, { 0, 0, 0, 0, 1 }, { 0, 0, 0, 0, 0 } }, { { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 1, 1 }, { 0, 0, 0, 1, 1 } }, { { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 1, 0, 0 }, { 0, 1, 1, 1, 0 } }, { { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 1, 1, 0, 0, 0 }, { 1, 1, 0, 0, 0 } }, { { 0, 0, 0, 0, 0 }, { 1, 0, 0, 0, 0 }, { 1, 1, 0, 0, 0 }, { 1, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } }, { { 1, 1, 0, 0, 0 }, { 1, 1, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } } };
-        
+
+        public static string IntTo_Str(int val)
+        {
+            string result;
+            if (val < 10)
+            {
+                result = "0" + val.ToString();
+            }
+            else
+            {
+                result = val.ToString();
+            }
+            return result;
+        }
+
+        public static int CheckFileCheckSum(string flname)
+        {
+            int result = 0;
+            //NativeInt i;
+            //NativeInt handle;
+            //NativeInt bsize;
+            //NativeInt cval;
+            //NativeInt csum;
+            //result = 0;
+            //if (File.Exists(flname))
+            //{
+            //    handle = File.Open(flname, (FileMode)FileAccess.Read | FileShare.ReadWrite);
+            //    if (handle > 0)
+            //    {
+            //        bsize = FileSeek(handle, 0, 2);
+            //        GetMem(pbuf, (bsize + 3) / 4 * 4);
+            //        FillChar(pbuf, (bsize + 3) / 4 * 4, 0);
+            //        FileSeek(handle, 0, 0);
+            //        FileRead(handle, pbuf, bsize);
+            //        handle.Close();
+            //        csum = 0;
+            //        for (i = 0; i < (bsize + 3) / 4; i++)
+            //        {
+            //            cval = ((pbuf) as NativeInt);
+            //            pbuf = (NativeInt(pbuf) + 4 as string);
+            //            csum = csum ^ cval;
+            //        }
+            //        result = csum;
+            //    }
+            //}
+            return result;
+        }
+
+        public static int GetCertifyNumber()
+        {
+            int result;
+            FCertify++;
+            if (FCertify > 0x7FFE)
+            {
+                FCertify = 1;
+            }
+            result = FCertify;
+            return result;
+        }
+
+        public static int GetItemServerIndex()
+        {
+            int result;
+            FItemNumber++;
+            if (FItemNumber > 0x7FFFFFFE)
+            {
+                FItemNumber = 1;
+            }
+            result = FItemNumber;
+            return result;
+        }
+
+        public static void LoadMultiServerTables()
+        {
+            //int i;
+            //int k;
+            //string str;
+            //string snum;
+            //string saddr;
+            //string sport;
+            //ArrayList strlist;
+            //ArrayList slist;
+            //for (i = 0; i < MultiServerList.Count; i++)
+            //{
+            //    ((MultiServerList[i]) as ArrayList).Free();
+            //}
+            //MultiServerList.Clear();
+            //if (File.Exists("!servertable.txt"))
+            //{
+            //    strlist = new ArrayList();
+            //    strlist.LoadFromFile("!servertable.txt");
+            //    for (i = 0; i < strlist.Count; i++)
+            //    {
+            //        str = strlist[i].Trim();
+            //        if (str != "")
+            //        {
+            //            if (str[1] == ";")
+            //            {
+            //                continue;
+            //            }
+            //            str  =  HUtil32.GetValidStr3(str, snum, new string[] { " ", "\09" });
+            //            if (str != "")
+            //            {
+            //                slist = new ArrayList();
+            //                for (k = 0; k <= 30; k++)
+            //                {
+            //                    if (str == "")
+            //                    {
+            //                        break;
+            //                    }
+            //                    str  =  HUtil32.GetValidStr3(str, saddr, new string[] { " ", "\09" });
+            //                    str  =  HUtil32.GetValidStr3(str, sport, new string[] { " ", "\09" });
+            //                    if ((saddr != "") && (sport != ""))
+            //                    {
+            //                        slist.Add(saddr, ((HUtil32.Str_ToInt(sport, 0)) as Object));
+            //                    }
+            //                }
+            //                MultiServerList.Add(slist);
+            //            }
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    OutMainMessage("File not found... <!servertable.txt>");
+            //}
+        }
+
+        public static bool LoadLineNotice(string flname)
+        {
+            bool result = false;
+            if (File.Exists(flname))
+            {
+                //LineNoticeList.LoadFromFile(flname);
+                //CheckListValid(LineNoticeList);
+                result = true;
+            }
+            return result;
+        }
+
+        public static bool LoadLineHelp(string flname)
+        {
+            bool result = false;
+            if (File.Exists(flname))
+            {
+                //LineHelpList.LoadFromFile(flname);
+                //CheckListValid(LineHelpList);
+                result = true;
+            }
+            return result;
+        }
+
+        public static bool GetMultiServerAddrPort(byte servernum, ref string addr, ref int port)
+        {
+            ArrayList slist;
+            bool result = false;
+            if (servernum < MultiServerList.Count)
+            {
+                slist = MultiServerList[servernum] as ArrayList;
+                int n = new System.Random(slist.Count).Next();
+                //addr = slist[n];
+                //port = ((int)slist.Values[n]);
+                result = true;
+            }
+            else
+            {
+                MainOutMessage("GetMultiServerAddrPort Fail..:" + servernum.ToString());
+            }
+            return result;
+        }
+
+        public static string GetUnbindItemName(int shape)
+        {
+            string result = "";
+            for (var i = 0; i < UnbindItemList.Count; i++)
+            {
+                //if (((int)UnbindItemList.Values[i]) == shape)
+                //{
+                //    result = UnbindItemList[i];
+                //    break;
+                //}
+            }
+            return result;
+        }
+
+        public static void MainOutMessage(string str)
+        {
+            try
+            {
+                csMsgLock.Enter();
+                MainMsg.Add(str);
+            }
+            finally
+            {
+                csMsgLock.Leave();
+            }
+        }
+
+        public static void AddUserLog(string str)
+        {
+            try
+            {
+                csMsgLock.Enter();
+                UserLogs.Add(str);
+            }
+            finally
+            {
+                csMsgLock.Leave();
+            }
+        }
+
+        // 敲贰捞绢狼 青悼阑 扁废
+        public static void AddConLog(string str)
+        {
+            try
+            {
+                csMsgLock.Enter();
+                UserConLogs.Add(str);
+            }
+            finally
+            {
+                csMsgLock.Leave();
+            }
+        }
+
+        // 立加 扁废阑 肺弊肺 巢辫
+        public static void AddChatLog(string str)
+        {
+            try
+            {
+                csMsgLock.Enter();
+                UserChatLog.Add(str);
+            }
+            finally
+            {
+                csMsgLock.Leave();
+            }
+        }
+
+        public static void WriteConLogs(ArrayList slist)
+        {
+            //short ayear;
+            //short amon;
+            //short aday;
+            //short ahour;
+            //short amin;
+            //short asec;
+            //short amsec;
+            //string dirname;
+            //string flname;
+            //char[] dir256 = new char[255 + 1];
+            //System.IO.FileInfo f;
+            //int i;
+            //if (slist.Count == 0)
+            //{
+            //    return;
+            //}
+            //ayear = DateTime.Today.Year;
+            //amon = DateTime.Today.Month;
+            //aday = DateTime.Today.Day;
+            //ahour = DateTime.Now.Hour;
+            //amin = DateTime.Now.Minute;
+            //asec = DateTime.Now.Second;
+            //amsec = DateTime.Now.Millisecond;
+            //dirname = ConLogBaseDir + (ayear).ToString() + "-" + IntTo_Str(amon) + "-" + IntTo_Str(aday);
+            //if (!File.Exists(dirname))
+            //{
+            //    StrPCopy(dir256, dirname);
+            //    CreateDirectory(dir256, null);
+            //}
+            //flname = dirname + "\\C-" + (ServerIndex).ToString() + "-" + IntTo_Str(ahour) + "H" + IntTo_Str(amin / 10 * 10) + "M.txt";
+            //f = new FileInfo(flname);
+            //if (!File.Exists(flname))
+            //{
+            //    _W_0 = f.CreateText();
+            //}
+            //else
+            //{
+            //    _W_0 = f.AppendText();
+            //}
+            //for (i = 0; i < slist.Count; i++)
+            //{
+            //    _W_0.WriteLine("1\09" + slist[i] + "\09" + "0");
+            //}
+            //_W_0.Close();
+        }
+
+        public static void WriteChatLogs(ArrayList slist)
+        {
+            //short ayear;
+            //short amon;
+            //short aday;
+            //short ahour;
+            //short amin;
+            //short asec;
+            //short amsec;
+            //string dirname;
+            //string flname;
+            //char[] dir256 = new char[255 + 1];
+            //System.IO.FileInfo f;
+            //int i;
+            //if (slist.Count == 0)
+            //{
+            //    return;
+            //}
+            //ayear = DateTime.Today.Year;
+            //amon = DateTime.Today.Month;
+            //aday = DateTime.Today.Day;
+            //ahour = DateTime.Now.Hour;
+            //amin = DateTime.Now.Minute;
+            //asec = DateTime.Now.Second;
+            //amsec = DateTime.Now.Millisecond;
+            //dirname = ChatLogBaseDir + (ayear).ToString() + "-" + IntTo_Str(amon) + "-" + IntTo_Str(aday);
+            //if (!File.Exists(dirname))
+            //{
+            //    StrPCopy(dir256, dirname);
+            //    CreateDirectory(dir256, null);
+            //}
+            //flname = dirname + "\\C-" + IntTo_Str(ahour) + "H" + "M.txt";
+            //f = new FileInfo(flname);
+            //if (!File.Exists(flname))
+            //{
+            //    _W_0 = f.CreateText();
+            //}
+            //else
+            //{
+            //    _W_0 = f.AppendText();
+            //}
+            //for (i = 0; i < slist.Count; i++)
+            //{
+            //    _W_0.WriteLine((ServerIndex).ToString() + "\09" + slist[i] + "\09" + "0");
+            //}
+            //_W_0.Close();
+        }
+
+        public static bool DBConnected()
+        {
+            bool result = false;
+            //if (FrmMain.DBSocket.Active)
+            //{
+            //    result = FrmMain.DBSocket.Socket.Connected;
+            //}
+            //else
+            //{
+            //    result = false;
+            //}
+            return result;
+        }
+
         public int GetBonusPoint_adjlowlv(int lv)
         {
             int result;
@@ -602,9 +1168,9 @@ namespace GameSvr
             return result;
         }
 
-        public static ushort GetHpMpRate(TCreature cret)
+        public static short GetHpMpRate(TCreature cret)
         {
-            ushort result;
+            short result;
             byte hrate;
             byte srate;
             if ((cret.Abil.MaxHP != 0) && (cret.Abil.MaxMP != 0))
@@ -730,7 +1296,7 @@ namespace GameSvr
         {
             bool result;
             TStdItem pstd;
-            pstd = svMain.UserEngine.GetStdItem(uindex);
+            pstd = M2Share.UserEngine.GetStdItem(uindex);
             if (new ArrayList(new int[] { 5, 6, 10, 11, 15, 19, 20, 21, 22, 23, 24, 26, 52, 53, 54 }).Contains(pstd.StdMode))
             {
                 result = true;
@@ -746,7 +1312,7 @@ namespace GameSvr
         {
             bool result;
             TStdItem pstd;
-            pstd = svMain.UserEngine.GetStdItem(uindex);
+            pstd = M2Share.UserEngine.GetStdItem(uindex);
             // ,52,53,54 sonmg
             if (new ArrayList(new int[] { 19, 20, 21, 22, 23, 24, 26 }).Contains(pstd.StdMode))
             {
@@ -764,12 +1330,12 @@ namespace GameSvr
             string sMakeItemName = string.Empty;
             string sMakeItemPrice = string.Empty;
             List<string> result = null;
-            for (var i = 0; i < svMain.MakeItemList.Count; i++)
+            for (var i = 0; i < M2Share.MakeItemList.Count; i++)
             {
-                sMakeItemPrice = HUtil32.GetValidStr3(svMain.MakeItemList[i], ref sMakeItemName, new string[] { ":" });
+                sMakeItemPrice = HUtil32.GetValidStr3(M2Share.MakeItemList[i], ref sMakeItemName, new string[] { ":" });
                 if (sMakeItemName == itemname)
                 {
-                    result = svMain.MakeItemList[i];
+                    //result = svMain.MakeItemList[i];
                     iPrice = HUtil32.Str_ToInt(sMakeItemPrice, 0);
                     break;
                 }
@@ -1009,4 +1575,3 @@ namespace GameSvr
         }
     }
 }
-

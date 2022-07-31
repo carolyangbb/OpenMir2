@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace GameSvr
+﻿namespace GameSvr
 {
     public class TSoccerBall : TAnimal
     {
@@ -16,8 +14,8 @@ namespace GameSvr
 
         public override void Struck(TCreature hiter)
         {
-            short nx =0;
-            short ny =0;
+            short nx = 0;
+            short ny = 0;
             if (hiter != null)
             {
                 this.Dir = hiter.Dir;
@@ -31,8 +29,8 @@ namespace GameSvr
 
         public override void Run()
         {
-            short nx =0;
-            short ny =0;
+            short nx = 0;
+            short ny = 0;
             bool bohigh;
             bohigh = false;
             if (GoPower > 0)

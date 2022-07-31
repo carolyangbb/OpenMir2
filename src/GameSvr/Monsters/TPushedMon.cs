@@ -105,7 +105,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir=0;
+            byte targdir = 0;
             int TargX;
             int TargY;
             bool Flag;

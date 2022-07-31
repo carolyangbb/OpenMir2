@@ -19,16 +19,16 @@ namespace GameSvr
                 FAutoConnectable = value;
             }
         }
-        private IDbConnection FADOConnection = null;
-        private IDataReader FADOQuery = null;
+        private readonly IDbConnection FADOConnection = null;
+        private readonly IDataReader FADOQuery = null;
         private bool FAutoConnectable = false;
         private readonly StringList FConnFile = null;
-        private string FConnInfo = String.Empty;
-        private string FFileName = String.Empty;
-        private string FServerName = String.Empty;
-        private DateTime FLastConnTime;
+        private readonly string FConnInfo = string.Empty;
+        private string FFileName = string.Empty;
+        private string FServerName = string.Empty;
+        private readonly DateTime FLastConnTime;
         private int FLastConnMsec = 0;
- 
+
         public TDBSql()
         {
             //FADOConnection = new TADOConnection(null);
@@ -39,7 +39,7 @@ namespace GameSvr
             FLastConnMsec = 0;
             FAutoConnectable = false;
         }
- 
+
         ~TDBSql()
         {
             DisConnect();
@@ -85,9 +85,9 @@ namespace GameSvr
             if ((FLastConnMsec + 15 * 1000) < HUtil32.GetTickCount())
             {
                 DisConnect();
-                svMain.MainOutMessage("[TestCode]Try to reconnect with DBSQL");
+                M2Share.MainOutMessage("[TestCode]Try to reconnect with DBSQL");
                 result = Connect(FServerName, FFileName);
-                svMain.MainOutMessage("CAUTION! DBSQL RECONNECTION");
+                M2Share.MainOutMessage("CAUTION! DBSQL RECONNECTION");
             }
             return result;
         }
@@ -107,11 +107,9 @@ namespace GameSvr
 
         private void LoadItemFromDB(TMarketLoad pItem, IDataReader SqlDB)
         {
-            int k;
-            string prefix;
             if (SqlDB == null)
             {
-                svMain.MainOutMessage("[Exception] SqlDB = nil");
+                M2Share.MainOutMessage("[Exception] SqlDB = nil");
             }
             /*pItem.Index = SqlDB.FieldByName("FLD_SELLINDEX").AsInteger;
             pItem.SellState = SqlDB.FieldByName("FLD_SELLOK").AsInteger;
@@ -136,9 +134,6 @@ namespace GameSvr
 
         public int LoadPageUserMarket(string marketname, string sellwho, string itemname, int itemtype, int itemset, ArrayList sellitemlist)
         {
-            string SearchStr;
-            TMarketLoad pSellItem;
-            int i;
             int result = Grobal2.UMResult_Fail;
             //if (itemname != "")
             //{
@@ -234,7 +229,6 @@ namespace GameSvr
 
         public int ReadyToSell(ref TMarketLoad Readyitem)
         {
-            int i;
             int result = Grobal2.UMResult_Fail;
             string SearchStr = "EXEC UM_READYTOSELL_NEW \'" + Readyitem.MarketName + "\',\'" + Readyitem.SellWho + "\'";
             //try
@@ -297,7 +291,6 @@ namespace GameSvr
             int CheckType;
             int ChangeTYpe;
             int ItemIndex;
-            int i;
             result = Grobal2.UMResult_Fail;
             CheckType = Grobal2.MARKET_DBSELLTYPE_SELL;
             ChangeTYpe = Grobal2.MARKET_DBSELLTYPE_READYBUY;
@@ -345,7 +338,6 @@ namespace GameSvr
             int CheckType;
             int ChangeTYpe;
             int ItemIndex;
-            int i;
             result = Grobal2.UMResult_Fail;
             CheckType = Grobal2.MARKET_DBSELLTYPE_SELL;
             ChangeTYpe = Grobal2.MARKET_DBSELLTYPE_READYCANCEL;
@@ -393,7 +385,6 @@ namespace GameSvr
             int CheckType;
             int ChangeTYpe;
             int ItemIndex;
-            int i;
             result = Grobal2.UMResult_Fail;
             CheckType = Grobal2.MARKET_DBSELLTYPE_BUY;
             ChangeTYpe = Grobal2.MARKET_DBSELLTYPE_READYGETPAY;
@@ -443,7 +434,6 @@ namespace GameSvr
             int MakeIndex;
             string sellwho;
             string marketname;
-            int i;
             result = Grobal2.UMResult_Fail;
             CheckType = Grobal2.MARKET_DBSELLTYPE_READYSELL;
             if (IsSucess)
@@ -491,7 +481,6 @@ namespace GameSvr
             int Index;
             string sellwho;
             string marketname;
-            int i;
             result = Grobal2.UMResult_Fail;
             CheckType = Grobal2.MARKET_DBSELLTYPE_READYBUY;
             if (IsSucess)
@@ -634,7 +623,6 @@ namespace GameSvr
         public int LoadPageGaBoardList(string gname, int nKind, ArrayList BoardList)
         {
             string SearchStr;
-            TGaBoardArticleLoad pArticle;
             int result = Grobal2.UMResult_Fail;
             if (gname == "")
             {
@@ -765,7 +753,6 @@ namespace GameSvr
         {
             int result;
             string SearchStr;
-            int i;
             result = Grobal2.UMResult_Fail;
             if (pArticleLoad == null)
             {
@@ -818,7 +805,7 @@ namespace GameSvr
             //}
             return result;
         }
-    } 
+    }
 }
 
 namespace GameSvr

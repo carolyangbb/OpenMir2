@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Sockets;
 using SystemModule;
 
@@ -12,19 +10,17 @@ namespace GameSvr
         private IList<TAdmission> AdmissionList = null;
         private ArrayList ShareIPList = null;
         private long LoginServerCheckTime = 0;
-        public string ServerAddress = String.Empty;
+        public string ServerAddress = string.Empty;
         public int ServerPort = 0;
-        public string IDSocStr = String.Empty;
+        public string IDSocStr = string.Empty;
 
         public TFrmIDSoc()
         {
 
         }
 
-        public void FormCreate(System.Object Sender, System.EventArgs _e1)
+        public void FormCreate(object Sender, System.EventArgs _e1)
         {
-            FileStream ini;
-            string fname = ".\\!setup.txt";
             //IDSocket.Address = "";
             //if (File.Exists(fname))
             //{
@@ -46,9 +42,9 @@ namespace GameSvr
             LoginServerCheckTime = HUtil32.GetTickCount();
         }
 
-        public void FormDestroy(Object Sender)
+        public void FormDestroy(object Sender)
         {
-           
+
         }
 
         public void LoadShareIPList()
@@ -56,7 +52,7 @@ namespace GameSvr
 
         }
 
-        public void Timer1Timer(System.Object Sender, System.EventArgs _e1)
+        public void Timer1Timer(object Sender, System.EventArgs _e1)
         {
             //if (IDSocket.Address != "")
             //{
@@ -67,30 +63,30 @@ namespace GameSvr
             //}
         }
 
-        public void IDSocketConnect(Object Sender, Socket Socket)
+        public void IDSocketConnect(object Sender, Socket Socket)
         {
         }
 
-        public void IDSocketDisconnect(Object Sender, Socket Socket)
+        public void IDSocketDisconnect(object Sender, Socket Socket)
         {
         }
 
-        public void IDSocketError(Object Sender, Socket Socket, ref int ErrorCode)
+        public void IDSocketError(object Sender, Socket Socket, ref int ErrorCode)
         {
             ErrorCode = 0;
             Socket.Close();
         }
 
-        public void IDSocketRead(Object Sender, Socket Socket)
+        public void IDSocketRead(object Sender, Socket Socket)
         {
             try
             {
-                svMain.csShare.Enter();
+                M2Share.csShare.Enter();
                 //IDSocStr = IDSocStr + Socket.ReceiveText;
             }
             finally
             {
-                svMain.csShare.Leave();
+                M2Share.csShare.Leave();
             }
         }
 
@@ -133,14 +129,14 @@ namespace GameSvr
 
         public void DecodeSocStr()
         {
-            string BufStr = String.Empty;
-            string str = String.Empty;
-            string head = String.Empty;
-            string body = String.Empty;
-            int ident=0;
+            string BufStr = string.Empty;
+            string str = string.Empty;
+            string head = string.Empty;
+            string body = string.Empty;
+            int ident = 0;
             try
             {
-                svMain.csShare.Enter();
+                M2Share.csShare.Enter();
                 if (IDSocStr.IndexOf(")") <= 0)
                 {
                     return;
@@ -150,7 +146,7 @@ namespace GameSvr
             }
             finally
             {
-                svMain.csShare.Leave();
+                M2Share.csShare.Leave();
             }
             try
             {
@@ -170,7 +166,7 @@ namespace GameSvr
                                 GetCancelAdmission(body);
                                 break;
                             case Grobal2.ISM_SHIFTVENTURESERVER:
-                                if (svMain.BoVentureServer)
+                                if (M2Share.BoVentureServer)
                                 {
                                     // 葛氰辑滚肺 捞悼秦咳
                                 }
@@ -190,28 +186,28 @@ namespace GameSvr
                 }
                 try
                 {
-                    svMain.csShare.Enter();
+                    M2Share.csShare.Enter();
                     IDSocStr = BufStr + IDSocStr;
                 }
                 finally
                 {
-                    svMain.csShare.Leave();
+                    M2Share.csShare.Leave();
                 }
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] FrmIdSoc.DecodeSocStr");
+                M2Share.MainOutMessage("[Exception] FrmIdSoc.DecodeSocStr");
             }
         }
 
         private void GetPasswdSuccess(string body)
         {
-            string uid = String.Empty;
-            string certstr = String.Empty;
-            string paystr = String.Empty;
-            string uaddr = String.Empty;
-            string availablestr = String.Empty;
-            string cversion = String.Empty;
+            string uid = string.Empty;
+            string certstr = string.Empty;
+            string paystr = string.Empty;
+            string uaddr = string.Empty;
+            string availablestr = string.Empty;
+            string cversion = string.Empty;
             int avail;
             try
             {
@@ -226,13 +222,13 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] FrmIdSoc.GetPasswdSuccess");
+                M2Share.MainOutMessage("[Exception] FrmIdSoc.GetPasswdSuccess");
             }
         }
 
         private void GetCancelAdmission(string body)
         {
-            string uid=String.Empty;
+            string uid = string.Empty;
             string certstr;
             int cert;
             try
@@ -243,7 +239,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] FrmIdSoc.GetCancelAdmission");
+                M2Share.MainOutMessage("[Exception] FrmIdSoc.GetCancelAdmission");
             }
         }
 
@@ -259,12 +255,12 @@ namespace GameSvr
             pa.ClientVersion = clversion;
             try
             {
-                svMain.csShare.Enter();
+                M2Share.csShare.Enter();
                 AdmissionList.Add(pa);
             }
             finally
             {
-                svMain.csShare.Leave();
+                M2Share.csShare.Leave();
             }
         }
 
@@ -275,7 +271,7 @@ namespace GameSvr
             kickid = "";
             try
             {
-                svMain.csShare.Enter();
+                M2Share.csShare.Enter();
                 for (i = 0; i < AdmissionList.Count; i++)
                 {
                     if (AdmissionList[i].Certification == certify)
@@ -289,18 +285,18 @@ namespace GameSvr
             }
             finally
             {
-                svMain.csShare.Leave();
+                M2Share.csShare.Leave();
             }
             if (kickid != "")
             {
-                svMain.csDelShare.Enter();
+                M2Share.csDelShare.Enter();
                 try
                 {
-                    svMain.RunSocket.CloseUserId(kickid, certify);
+                    M2Share.RunSocket.CloseUserId(kickid, certify);
                 }
                 finally
                 {
-                    svMain.csDelShare.Leave();
+                    M2Share.csDelShare.Leave();
                 }
             }
         }
@@ -334,7 +330,7 @@ namespace GameSvr
             {
                 try
                 {
-                    svMain.csShare.Enter();
+                    M2Share.csShare.Enter();
                     for (i = 0; i < AdmissionList.Count; i++)
                     {
                         if (AdmissionList[i].Certification == cert)
@@ -359,19 +355,19 @@ namespace GameSvr
                 }
                 finally
                 {
-                    svMain.csShare.Leave();
+                    M2Share.csShare.Leave();
                 }
             }
             catch
             {
-                svMain.MainOutMessage("[RunSock->FrmIdSoc] GetAdmission exception");
+                M2Share.MainOutMessage("[RunSock->FrmIdSoc] GetAdmission exception");
             }
             return result;
         }
 
         private void GetTotalUserCount(string body)
         {
-            svMain.TotalUserCount = HUtil32.Str_ToInt(body, 0);
+            M2Share.TotalUserCount = HUtil32.Str_ToInt(body, 0);
         }
 
         private void GetAccountExpired(string body)
@@ -383,35 +379,35 @@ namespace GameSvr
             {
                 certstr = HUtil32.GetValidStr3(body, ref uid, new string[] { "/" });
                 cert = HUtil32.Str_ToInt(certstr, 0);
-                if (!svMain.BoTestServer && !svMain.BoServiceMode)
+                if (!M2Share.BoTestServer && !M2Share.BoServiceMode)
                 {
-                    svMain.UserEngine.AccountExpired(uid);
+                    M2Share.UserEngine.AccountExpired(uid);
                     DelAdmission(cert);
                 }
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] FrmIdSoc.GetCancelAdmission");
+                M2Share.MainOutMessage("[Exception] FrmIdSoc.GetCancelAdmission");
             }
         }
 
         private void GetUsageInformation(string body)
         {
-            string scurmon = String.Empty;
-            string stotalmon = String.Empty;
-            string slastmon = String.Empty;
-            string sgross = String.Empty;
-            string sgrosscount = String.Empty;
+            string scurmon = string.Empty;
+            string stotalmon = string.Empty;
+            string slastmon = string.Empty;
+            string sgross = string.Empty;
+            string sgrosscount = string.Empty;
             body = HUtil32.GetValidStr3(body, ref scurmon, new string[] { "/" });
             body = HUtil32.GetValidStr3(body, ref stotalmon, new string[] { "/" });
             body = HUtil32.GetValidStr3(body, ref slastmon, new string[] { "/" });
             body = HUtil32.GetValidStr3(body, ref sgross, new string[] { "/" });
             body = HUtil32.GetValidStr3(body, ref sgrosscount, new string[] { "/" });
-            svMain.CurrentMonthlyCard = HUtil32.Str_ToInt(scurmon, 0);
-            svMain.TotalTimeCardUsage = HUtil32.Str_ToInt(stotalmon, 0);
-            svMain.LastMonthTotalTimeCardUsage = HUtil32.Str_ToInt(slastmon, 0);
-            svMain.GrossTimeCardUsage = HUtil32.Str_ToInt(sgross, 0);
-            svMain.GrossResetCount = HUtil32.Str_ToInt(sgrosscount, 0);
+            M2Share.CurrentMonthlyCard = HUtil32.Str_ToInt(scurmon, 0);
+            M2Share.TotalTimeCardUsage = HUtil32.Str_ToInt(stotalmon, 0);
+            M2Share.LastMonthTotalTimeCardUsage = HUtil32.Str_ToInt(slastmon, 0);
+            M2Share.GrossTimeCardUsage = HUtil32.Str_ToInt(sgross, 0);
+            M2Share.GrossResetCount = HUtil32.Str_ToInt(sgrosscount, 0);
         }
     }
 
@@ -431,6 +427,6 @@ namespace GameSvr
     public class IdSrvClient
     {
         public static TFrmIDSoc FrmIDSoc = null;
-    } 
+    }
 }
 

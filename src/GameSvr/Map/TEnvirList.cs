@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Windows.Forms;
 using SystemModule;
 
@@ -25,7 +24,7 @@ namespace GameSvr
         // gameroom  : TRUE (措访厘, 磷绢档 公秦窃)
         // ghost : TRUE (蜡飞狼笼, 荤恩捞 捧疙烙)
         // norecon : 犁立 啊瓷 咯何
-        public TEnvirnoment AddEnvir(string mapname, string newmapname, string title, int serverindex, int needlevel, bool lawful, bool fightzone, bool fight2zone, bool fight3zone, bool fight4zone, bool dark, bool dawn, bool sunny, bool quiz, bool norecon, bool needhole, bool norecall, bool norandommove, bool NoEscapeMove, bool NoTeleportMove, bool nodrug, int minemap, bool nopositionmove, string backmap, Object npc, int setnumber, int setvalue, int autoAttack, int GuildAgit, bool nochat, bool nogroup, bool nothrowitem, bool nodropitem, bool dostall, bool nodeal)
+        public TEnvirnoment AddEnvir(string mapname, string newmapname, string title, int serverindex, int needlevel, bool lawful, bool fightzone, bool fight2zone, bool fight3zone, bool fight4zone, bool dark, bool dawn, bool sunny, bool quiz, bool norecon, bool needhole, bool norecall, bool norandommove, bool NoEscapeMove, bool NoTeleportMove, bool nodrug, int minemap, bool nopositionmove, string backmap, object npc, int setnumber, int setvalue, int autoAttack, int GuildAgit, bool nochat, bool nogroup, bool nothrowitem, bool nodropitem, bool dostall, bool nodeal)
         {
             TEnvirnoment result;
             TEnvirnoment envir;
@@ -73,17 +72,17 @@ namespace GameSvr
             envir.NoDropItem = nodropitem;
             envir.BoStall = dostall;
             envir.NoDeal = nodeal;
-            for (i = 0; i < svMain.MiniMapList.Count; i++)
+            for (i = 0; i < M2Share.MiniMapList.Count; i++)
             {
-                if (svMain.MiniMapList[i].ToLower().CompareTo(mapname.ToLower()) == 0)
-                {
-                    envir.MiniMap = (int)svMain.MiniMapList.Values[i];
-                    break;
-                }
+                //if (svMain.MiniMapList[i].ToLower().CompareTo(mapname.ToLower()) == 0)
+                //{
+                //    envir.MiniMap = (int)svMain.MiniMapList.Values[i];
+                //    break;
+                //}
             }
             if (GuildAgit > -1)
             {
-                if (envir.LoadMap(svMain.MapDir + envir.GetGuildAgitRealMapName() + ".map"))
+                if (envir.LoadMap(M2Share.MapDir + envir.GetGuildAgitRealMapName() + ".map"))
                 {
                     result = envir;
                     this.Add(envir);
@@ -91,14 +90,14 @@ namespace GameSvr
                 else
                 {
                     // envir.ResizeMap (1, 1);
-                    MessageBox.Show("file not found..  " + svMain.MapDir + mapname + ".map");
+                    MessageBox.Show("file not found..  " + M2Share.MapDir + mapname + ".map");
                 }
             }
             else
             {
                 if (newmapname != "")
                 {
-                    if (envir.LoadMap(svMain.MapDir + envir.GetGuildAgitRealMapName() + ".map"))
+                    if (envir.LoadMap(M2Share.MapDir + envir.GetGuildAgitRealMapName() + ".map"))
                     {
                         result = envir;
                         this.Add(envir);
@@ -106,12 +105,12 @@ namespace GameSvr
                     else
                     {
                         // envir.ResizeMap (1, 1);
-                        MessageBox.Show("file not found..  " + svMain.MapDir + mapname + ".map");
+                        MessageBox.Show("file not found..  " + M2Share.MapDir + mapname + ".map");
                     }
                 }
                 else
                 {
-                    if (envir.LoadMap(svMain.MapDir + mapname + ".map"))
+                    if (envir.LoadMap(M2Share.MapDir + mapname + ".map"))
                     {
                         result = envir;
                         this.Add(envir);
@@ -119,22 +118,19 @@ namespace GameSvr
                     else
                     {
                         // envir.ResizeMap (1, 1);
-                        MessageBox.Show("file not found..  " + svMain.MapDir + mapname + ".map");
+                        MessageBox.Show("file not found..  " + M2Share.MapDir + mapname + ".map");
                     }
                 }
             }
             return result;
         }
 
-        public bool AddGate(string map, int x, int y, string entermap, int enterx, int entery)
+        public bool AddGate(string map, int x, int y, string entermap, short enterx, short entery)
         {
-            bool result;
-            TEnvirnoment envir;
-            TEnvirnoment enter;
             TGateInfo pg;
-            result = false;
-            envir = GetEnvir(map);
-            enter = GetEnvir(entermap);
+            bool result = false;
+            TEnvirnoment envir = GetEnvir(map);
+            TEnvirnoment enter = GetEnvir(entermap);
             if ((envir != null) && (enter != null))
             {
                 pg = new TGateInfo();
@@ -150,7 +146,7 @@ namespace GameSvr
                 {
                     if (pg != null)
                     {
-                        dispose(pg);
+                        pg = null;
                     }
                     result = false;
                 }
@@ -158,16 +154,13 @@ namespace GameSvr
             return result;
         }
 
-        // map 捞抚狼 Envirnoment甫 掘绢咳   (one Map, one Envirnoment)
         public TEnvirnoment GetEnvir(string mapname)
         {
-            TEnvirnoment result;
-            int i;
-            result = null;
+            TEnvirnoment result = null;
             try
             {
-                svMain.csShare.Enter();
-                for (i = 0; i < this.Count; i++)
+                M2Share.csShare.Enter();
+                for (var i = 0; i < this.Count; i++)
                 {
                     if ((this[i] as TEnvirnoment).MapName.ToLower().CompareTo(mapname.ToLower()) == 0)
                     {
@@ -178,20 +171,18 @@ namespace GameSvr
             }
             finally
             {
-                svMain.csShare.Leave();
+                M2Share.csShare.Leave();
             }
             return result;
         }
 
         public TEnvirnoment ServerGetEnvir(int server, string mapname)
         {
-            TEnvirnoment result;
-            int i;
-            result = null;
+            TEnvirnoment result = null;
             try
             {
-                svMain.csShare.Enter();
-                for (i = 0; i < this.Count; i++)
+                M2Share.csShare.Enter();
+                for (var i = 0; i < this.Count; i++)
                 {
                     if (((this[i] as TEnvirnoment).Server == server) && ((this[i] as TEnvirnoment).MapName.ToLower().CompareTo(mapname.ToLower()) == 0))
                     {
@@ -202,20 +193,18 @@ namespace GameSvr
             }
             finally
             {
-                svMain.csShare.Leave();
+                M2Share.csShare.Leave();
             }
             return result;
         }
 
         public int GetServer(string mapname)
         {
-            int result;
-            int i;
-            result = 0;
+            int result = 0;
             try
             {
-                svMain.csShare.Enter();
-                for (i = 0; i < this.Count; i++)
+                M2Share.csShare.Enter();
+                for (var i = 0; i < this.Count; i++)
                 {
                     if ((this[i] as TEnvirnoment).MapName.ToLower().CompareTo(mapname.ToLower()) == 0)
                     {
@@ -226,7 +215,7 @@ namespace GameSvr
             }
             finally
             {
-                svMain.csShare.Leave();
+                M2Share.csShare.Leave();
             }
             return result;
         }

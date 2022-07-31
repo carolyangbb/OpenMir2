@@ -1,14 +1,12 @@
 using System;
-using System.IO;
 using System.Net.Sockets;
-using System.Windows.Forms;
 using SystemModule;
 
 namespace GameSvr
 {
     public class TFrmSrvMsg
     {
-        private TServerMsgInfo PCur = null;
+        private readonly TServerMsgInfo PCur = null;
         public TUserHuman WorkHum = null;
         public TServerMsgInfo[] ServerArr;
 
@@ -17,25 +15,25 @@ namespace GameSvr
 
         }
 
-        public void FormCreate(System.Object Sender, System.EventArgs _e1)
+        public void FormCreate(object Sender, System.EventArgs _e1)
         {
             //FillChar(ServerArr, sizeof(TServerMsgInfo) * InterServerMsg.MAXSERVER, '\0');
             WorkHum = new TUserHuman();
         }
 
-        public void FormDestroy(Object Sender)
+        public void FormDestroy(object Sender)
         {
             WorkHum.Free();
         }
 
         public void Initialize()
         {
-            this.Active = false;
-            MsgServer.Port = svMain.MsgServerPort;
-            this.Active = true;
+            //this.Active = false;
+            //MsgServer.Port = svMain.MsgServerPort;
+            //this.Active = true;
         }
 
-        public void MsgServerClientConnect(Object Sender, Socket Socket)
+        public void MsgServerClientConnect(object Sender, Socket Socket)
         {
             int i;
             for (i = 0; i < InterServerMsg.MAXSERVER; i++)
@@ -45,13 +43,13 @@ namespace GameSvr
                     ServerArr[i].Socket = Socket;
                     ServerArr[i].SocData = "";
                     // ServerArr[i].SendData := '';
-                    Socket.Data = i as object;
+                    //Socket.Data = i as object;
                     break;
                 }
             }
         }
 
-        public void MsgServerClientDisconnect(Object Sender, Socket Socket)
+        public void MsgServerClientDisconnect(object Sender, Socket Socket)
         {
             int i;
             for (i = 0; i < InterServerMsg.MAXSERVER; i++)
@@ -66,30 +64,30 @@ namespace GameSvr
             }
         }
 
-        public void MsgServerClientError(Object Sender, Socket Socket, ref int ErrorCode)
+        public void MsgServerClientError(object Sender, Socket Socket, ref int ErrorCode)
         {
             ErrorCode = 0;
             Socket.Close();
         }
 
-        public void MsgServerClientRead(Object Sender, Socket Socket)
+        public void MsgServerClientRead(object Sender, Socket Socket)
         {
-            int idx;
-            idx = (int)Socket.Data;
-            if (idx >= 0 && idx <= InterServerMsg.MAXSERVER - 1)
-            {
-                if (ServerArr[idx].Socket == Socket)
-                {
-                    ServerArr[idx].SocData = ServerArr[idx].SocData + Socket.ReceiveText;
-                }
-            }
+            //int idx;
+            //idx = (int)Socket.Data;
+            //if (idx >= 0 && idx <= InterServerMsg.MAXSERVER - 1)
+            //{
+            //    if (ServerArr[idx].Socket == Socket)
+            //    {
+            //        ServerArr[idx].SocData = ServerArr[idx].SocData + Socket.ReceiveText;
+            //    }
+            //}
         }
 
         public void SendSocket(Socket Socket, string str)
         {
             if (Socket.Connected)
             {
-                Socket.SendText("(" + str + ")");
+                // Socket.SendText("(" + str + ")");
             }
         }
 
@@ -107,15 +105,14 @@ namespace GameSvr
 
         public void DecodeSocStr_SendOtherServer(string msgstr)
         {
-            int i;
-            for (i = 0; i < InterServerMsg.MAXSERVER; i++)
+            for (var i = 0; i < InterServerMsg.MAXSERVER; i++)
             {
                 if (ServerArr[i].Socket != null)
                 {
-                    if (ServerArr[i].Socket != ps.Socket)
-                    {
-                        SendSocket(ServerArr[i].Socket, msgstr);
-                    }
+                    //if (ServerArr[i].Socket != ps.Socket)
+                    //{
+                    //    SendSocket(ServerArr[i].Socket, msgstr);
+                    //}
                 }
             }
         }
@@ -266,25 +263,19 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] FrmIdSoc.DecodeSocStr");
+                M2Share.MainOutMessage("[Exception] FrmIdSoc.DecodeSocStr");
             }
         }
 
         public void MsgGetUserServerChange(int snum, string body)
         {
             string ufilename;
-            int i;
-            int fhandle;
-            int checksum;
-            int filechecksum;
-            TServerShiftUserInfo psui;
-            if (svMain.ShareBaseDir != svMain.ShareBaseDirCopy)
+            if (M2Share.ShareBaseDir != M2Share.ShareBaseDirCopy)
             {
-                svMain.ShareBaseDir = svMain.ShareBaseDirCopy;
+                M2Share.ShareBaseDir = M2Share.ShareBaseDirCopy;
             }
             ufilename = EDcode.DecodeString(body);
-            psui = null;
-            if (svMain.ServerIndex == snum)
+            if (M2Share.ServerIndex == snum)
             {
                 try
                 {
@@ -314,7 +305,7 @@ namespace GameSvr
                 }
                 catch
                 {
-                    svMain.MainOutMessage("[Exception] MsgGetUserServerChange.." + svMain.ShareBaseDir + ufilename);
+                    M2Share.MainOutMessage("[Exception] MsgGetUserServerChange.." + M2Share.ShareBaseDir + ufilename);
                 }
             }
         }
@@ -322,29 +313,29 @@ namespace GameSvr
         public void MsgGetUserChangeServerRecieveOk(int snum, string body)
         {
             string ufilename = EDcode.DecodeString(body);
-            svMain.UserEngine.GetISMChangeServerReceive(ufilename);
+            M2Share.UserEngine.GetISMChangeServerReceive(ufilename);
         }
 
         public void MsgGetUserLogon(int snum, string body)
         {
             string uname = EDcode.DecodeString(body);
-            svMain.UserEngine.OtherServerUserLogon(snum, uname);
+            M2Share.UserEngine.OtherServerUserLogon(snum, uname);
         }
 
         public void MsgGetUserLogout(int snum, string body)
         {
             string uname = EDcode.DecodeString(body);
-            svMain.UserEngine.OtherServerUserLogout(snum, uname);
+            M2Share.UserEngine.OtherServerUserLogout(snum, uname);
         }
 
         public void MsgGetWhisper(int snum, string body)
         {
             string uname = string.Empty;
-            if (snum == svMain.ServerIndex)
+            if (snum == M2Share.ServerIndex)
             {
                 string str = EDcode.DecodeString(body);
                 str = HUtil32.GetValidStr3(str, ref uname, new string[] { "/" });
-                TUserHuman hum = svMain.UserEngine.GetUserHuman(uname);
+                TUserHuman hum = M2Share.UserEngine.GetUserHuman(uname);
                 if (hum != null)
                 {
                     if (!hum.bStealth)
@@ -358,11 +349,11 @@ namespace GameSvr
         public void MsgGetGMWhisper(int snum, string body)
         {
             string uname = string.Empty;
-            if (snum == svMain.ServerIndex)
+            if (snum == M2Share.ServerIndex)
             {
                 string str = EDcode.DecodeString(body);
                 str = HUtil32.GetValidStr3(str, ref uname, new string[] { "/" });
-                TUserHuman hum = svMain.UserEngine.GetUserHuman(uname);
+                TUserHuman hum = M2Share.UserEngine.GetUserHuman(uname);
                 if (hum != null)
                 {
                     if (!hum.bStealth)
@@ -378,11 +369,11 @@ namespace GameSvr
             string str;
             string uname = string.Empty;
             TUserHuman hum;
-            if (snum == svMain.ServerIndex)
+            if (snum == M2Share.ServerIndex)
             {
                 str = EDcode.DecodeString(body);
                 str = HUtil32.GetValidStr3(str, ref uname, new string[] { "/" });
-                hum = svMain.UserEngine.GetUserHuman(uname);
+                hum = M2Share.UserEngine.GetUserHuman(uname);
                 if (hum != null)
                 {
                     //      ӼӸ      
@@ -400,12 +391,12 @@ namespace GameSvr
             string uname = string.Empty;
             string reqType = string.Empty;
             TUserHuman hum;
-            if (snum == svMain.ServerIndex)
+            if (snum == M2Share.ServerIndex)
             {
                 str = EDcode.DecodeString(body);
                 str = HUtil32.GetValidStr3(str, ref uname, new string[] { "/" });
                 str = HUtil32.GetValidStr3(str, ref reqType, new string[] { "/" });
-                hum = svMain.UserEngine.GetUserHuman(uname);
+                hum = M2Share.UserEngine.GetUserHuman(uname);
                 if (hum != null)
                 {
                     hum.RelationShipDeleteOther(HUtil32.Str_ToInt(reqType, 0), uname);
@@ -415,7 +406,7 @@ namespace GameSvr
 
         public void MsgGetSysopMsg(int snum, string body)
         {
-            svMain.UserEngine.SysMsgAll(EDcode.DecodeString(body));
+            M2Share.UserEngine.SysMsgAll(EDcode.DecodeString(body));
         }
 
         public void MsgGetAddGuild(int snum, string body)
@@ -423,13 +414,13 @@ namespace GameSvr
             string gname = string.Empty;
             body = EDcode.DecodeString(body);
             string mname = HUtil32.GetValidStr3(body, ref gname, new string[] { "/" });
-            svMain.GuildMan.AddGuild(gname, mname);
+            M2Share.GuildMan.AddGuild(gname, mname);
         }
 
         public void MsgGetDelGuild(int snum, string body)
         {
             string gname = EDcode.DecodeString(body);
-            svMain.GuildMan.DelGuild(gname);
+            M2Share.GuildMan.DelGuild(gname);
         }
 
         public void MsgGetReloadGuild(int snum, string body)
@@ -439,22 +430,22 @@ namespace GameSvr
             gname = EDcode.DecodeString(body);
             if (snum == 0)
             {
-                g = svMain.GuildMan.GetGuild(gname);
+                g = M2Share.GuildMan.GetGuild(gname);
                 if (g != null)
                 {
                     g.LoadGuild();
-                    svMain.UserEngine.GuildMemberReLogin(g);
+                    M2Share.UserEngine.GuildMemberReLogin(g);
                 }
             }
             else
             {
-                if (svMain.ServerIndex != snum)
+                if (M2Share.ServerIndex != snum)
                 {
-                    g = svMain.GuildMan.GetGuild(gname);
+                    g = M2Share.GuildMan.GetGuild(gname);
                     if (g != null)
                     {
                         g.LoadGuildFile(gname + "." + snum.ToString());
-                        svMain.UserEngine.GuildMemberReLogin(g);
+                        M2Share.UserEngine.GuildMemberReLogin(g);
                         g.SaveGuild();
                     }
                 }
@@ -469,7 +460,7 @@ namespace GameSvr
             str = HUtil32.GetValidStr3(str, ref gname, new string[] { "/" });
             if (gname != "")
             {
-                g = svMain.GuildMan.GetGuild(gname);
+                g = M2Share.GuildMan.GetGuild(gname);
                 if (g != null)
                 {
                     g.GuildMsg(str);
@@ -498,37 +489,37 @@ namespace GameSvr
                 remaintime = str;
                 if ((gname != "") && (warguildname != ""))
                 {
-                    g = svMain.GuildMan.GetGuild(gname);
-                    warguild = svMain.GuildMan.GetGuild(warguildname);
+                    g = M2Share.GuildMan.GetGuild(gname);
+                    warguild = M2Share.GuildMan.GetGuild(warguildname);
                     if ((g != null) && (warguild != null))
                     {
                         currenttick = HUtil32.GetTickCount();
-                        if (svMain.ServerTickDifference == 0)
+                        if (M2Share.ServerTickDifference == 0)
                         {
-                            svMain.ServerTickDifference = Convert.ToInt64(starttime) - currenttick;
+                            M2Share.ServerTickDifference = Convert.ToInt64(starttime) - currenttick;
                         }
                         pgw = null;
                         for (i = 0; i < g.KillGuilds.Count; i++)
                         {
-                            if (((TGuildWarInfo)g.KillGuilds.Values[i]).WarGuild == warguild)
-                            {
-                                pgw = (TGuildWarInfo)g.KillGuilds.Values[i];
-                                if (pgw != null)
-                                {
-                                    pgw.WarGuild = warguild;
-                                    pgw.WarStartTime = Convert.ToInt64(starttime) - svMain.ServerTickDifference;
-                                    pgw.WarRemain = Convert.ToInt64(remaintime);
-                                    break;
-                                }
-                            }
+                            //if (((TGuildWarInfo)g.KillGuilds.Values[i]).WarGuild == warguild)
+                            //{
+                            //    pgw = (TGuildWarInfo)g.KillGuilds.Values[i];
+                            //    if (pgw != null)
+                            //    {
+                            //        pgw.WarGuild = warguild;
+                            //        pgw.WarStartTime = Convert.ToInt64(starttime) - svMain.ServerTickDifference;
+                            //        pgw.WarRemain = Convert.ToInt64(remaintime);
+                            //        break;
+                            //    }
+                            //}
                         }
                         if (pgw == null)
                         {
                             pgw = new TGuildWarInfo();
                             pgw.WarGuild = warguild;
-                            pgw.WarStartTime = Convert.ToInt64(starttime) - svMain.ServerTickDifference;
+                            pgw.WarStartTime = Convert.ToInt64(starttime) - M2Share.ServerTickDifference;
                             pgw.WarRemain = Convert.ToInt64(remaintime);
-                            g.KillGuilds.Add(warguild.GuildName, pgw as Object);
+                            //g.KillGuilds.Add(warguild.GuildName, pgw as Object);
                         }
                         g.MemberNameChanged();
                         g.GuildInfoChange();
@@ -539,10 +530,9 @@ namespace GameSvr
 
         public void MsgGetChatProhibition(int snum, string body)
         {
-            string str;
-            string whostr;
-            string minstr;
-            str = EDcode.DecodeString(body);
+            string whostr = string.Empty;
+            string minstr = string.Empty;
+            string str = EDcode.DecodeString(body);
             str = HUtil32.GetValidStr3(str, ref whostr, new string[] { "/" });
             str = HUtil32.GetValidStr3(str, ref minstr, new string[] { "/" });
             if (whostr != "")
@@ -553,8 +543,7 @@ namespace GameSvr
 
         public void MsgGetChatProhibitionCancel(int snum, string body)
         {
-            string whostr;
-            whostr = EDcode.DecodeString(body);
+            string whostr = EDcode.DecodeString(body);
             if (whostr != "")
             {
                 WorkHum.CmdDelShutUpList(whostr, false);
@@ -563,14 +552,13 @@ namespace GameSvr
 
         public void MsgGetChangeCastleOwner(int snum, string body)
         {
-            string gldstr;
-            gldstr = EDcode.DecodeString(body);
+            string gldstr = EDcode.DecodeString(body);
             WorkHum.CmdChangeUserCastleOwner(gldstr, false);
         }
 
         public void MsgGetReloadCastleAttackers(int snum)
         {
-            svMain.UserCastle.LoadAttackerList();
+            M2Share.UserCastle.LoadAttackerList();
         }
 
         public void MsgGetReloadAdmin()
@@ -585,12 +573,10 @@ namespace GameSvr
 
         public void MsgGetUserMgr(int snum, string body, int Ident_)
         {
-            string username;
-            string msgbody;
-            string str;
-            str = EDcode.DecodeString(body);
-            msgbody = HUtil32.GetValidStr3(str, ref username, new string[] { "/" });
-            svMain.UserMgrEngine.OnExternInterMsg(snum, Ident_, username, msgbody);
+            string username = string.Empty;
+            string str = EDcode.DecodeString(body);
+            string msgbody = HUtil32.GetValidStr3(str, ref username, new string[] { "/" });
+            M2Share.UserMgrEngine.OnExternInterMsg(snum, Ident_, username, msgbody);
         }
 
         public void MsgGetReloadMakeItemList()
@@ -607,7 +593,7 @@ namespace GameSvr
             string dystr = string.Empty;
             string str = string.Empty;
             string uname = string.Empty;
-            if (snum == svMain.ServerIndex)
+            if (snum == M2Share.ServerIndex)
             {
                 str = EDcode.DecodeString(body);
                 str = HUtil32.GetValidStr3(str, ref uname, new string[] { "/" });
@@ -615,7 +601,7 @@ namespace GameSvr
                 str = HUtil32.GetValidStr3(str, ref dystr, new string[] { "/" });
                 dx = HUtil32.Str_ToInt(dxstr, 0);
                 dy = HUtil32.Str_ToInt(dystr, 0);
-                hum = svMain.UserEngine.GetUserHuman(uname);
+                hum = M2Share.UserEngine.GetUserHuman(uname);
                 if (hum != null)
                 {
                     if (hum.BoEnableAgitRecall)
@@ -630,8 +616,8 @@ namespace GameSvr
 
         public void MsgGetReloadGuildAgit(int snum, string body)
         {
-            svMain.GuildAgitMan.ClearGuildAgitList();
-            svMain.GuildAgitMan.LoadGuildAgitList();
+            M2Share.GuildAgitMan.ClearGuildAgitList();
+            M2Share.GuildAgitMan.LoadGuildAgitList();
         }
 
         public void MsgGetLoverLogin(int snum, string body)
@@ -641,18 +627,18 @@ namespace GameSvr
             string str;
             string uname = string.Empty;
             string lovername = string.Empty;
-            if (snum == svMain.ServerIndex)
+            if (snum == M2Share.ServerIndex)
             {
                 str = EDcode.DecodeString(body);
                 str = HUtil32.GetValidStr3(str, ref uname, new string[] { "/" });
                 str = HUtil32.GetValidStr3(str, ref lovername, new string[] { "/" });
-                humlover = svMain.UserEngine.GetUserHuman(lovername);
+                humlover = M2Share.UserEngine.GetUserHuman(lovername);
                 if (humlover != null)
                 {
                     humlover.SysMsg(uname + " has entered " + str + ".", 6);
-                    if (svMain.UserEngine.FindOtherServerUser(uname, ref svidx))
+                    if (M2Share.UserEngine.FindOtherServerUser(uname, ref svidx))
                     {
-                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_LM_LOGIN_REPLY, svidx, lovername + "/" + uname + "/" + humlover.PEnvir.MapTitle);
+                        M2Share.UserEngine.SendInterMsg(Grobal2.ISM_LM_LOGIN_REPLY, svidx, lovername + "/" + uname + "/" + humlover.PEnvir.MapTitle);
                     }
                 }
             }
@@ -664,12 +650,12 @@ namespace GameSvr
             string str;
             string uname = string.Empty;
             string lovername;
-            if (snum == svMain.ServerIndex)
+            if (snum == M2Share.ServerIndex)
             {
                 str = EDcode.DecodeString(body);
                 str = HUtil32.GetValidStr3(str, ref uname, new string[] { "/" });
                 lovername = str;
-                hum = svMain.UserEngine.GetUserHuman(lovername);
+                hum = M2Share.UserEngine.GetUserHuman(lovername);
                 if (hum != null)
                 {
                     hum.SysMsg(uname + " has exited from the game.", 5);
@@ -683,12 +669,12 @@ namespace GameSvr
             string str;
             string uname = string.Empty;
             string lovername = string.Empty;
-            if (snum == svMain.ServerIndex)
+            if (snum == M2Share.ServerIndex)
             {
                 str = EDcode.DecodeString(body);
                 str = HUtil32.GetValidStr3(str, ref uname, new string[] { "/" });
                 str = HUtil32.GetValidStr3(str, ref lovername, new string[] { "/" });
-                humlover = svMain.UserEngine.GetUserHuman(lovername);
+                humlover = M2Share.UserEngine.GetUserHuman(lovername);
                 if (humlover != null)
                 {
                     humlover.SysMsg(uname + " is currently in " + str + ".", 6);
@@ -701,11 +687,11 @@ namespace GameSvr
             TUserHuman hum;
             string str;
             string uname = string.Empty;
-            if (snum == svMain.ServerIndex)
+            if (snum == M2Share.ServerIndex)
             {
                 str = EDcode.DecodeString(body);
                 str = HUtil32.GetValidStr3(str, ref uname, new string[] { "/" });
-                hum = svMain.UserEngine.GetUserHuman(uname);
+                hum = M2Share.UserEngine.GetUserHuman(uname);
                 if (hum != null)
                 {
                     hum.SysMsg(str, 0);
@@ -716,25 +702,25 @@ namespace GameSvr
         public void MsgGetRecall(int snum, string body)
         {
             TUserHuman hum;
-            int dx = 0;
-            int dy = 0;
+            short dx = 0;
+            short dy = 0;
             string dxstr = string.Empty;
             string dystr = string.Empty;
             string str = string.Empty;
             string uname = string.Empty;
-            if (snum == svMain.ServerIndex)
+            if (snum == M2Share.ServerIndex)
             {
                 str = EDcode.DecodeString(body);
                 str = HUtil32.GetValidStr3(str, ref uname, new string[] { "/" });
                 str = HUtil32.GetValidStr3(str, ref dxstr, new string[] { "/" });
                 str = HUtil32.GetValidStr3(str, ref dystr, new string[] { "/" });
-                dx = HUtil32.Str_ToInt(dxstr, 0);
-                dy = HUtil32.Str_ToInt(dystr, 0);
-                hum = svMain.UserEngine.GetUserHuman(uname);
+                dx = (short)HUtil32.Str_ToInt(dxstr, 0);
+                dy = (short)HUtil32.Str_ToInt(dystr, 0);
+                hum = M2Share.UserEngine.GetUserHuman(uname);
                 if (hum != null)
                 {
                     hum.SendRefMsg(Grobal2.RM_SPACEMOVE_HIDE, 0, 0, 0, 0, "");
-                    hum.SpaceMove(str, (short)dx, (short)dy, 0);
+                    hum.SpaceMove(str, dx, dy, 0);
                 }
             }
         }
@@ -744,11 +730,11 @@ namespace GameSvr
             TUserHuman hum;
             string str;
             string uname = string.Empty;
-            if (snum == svMain.ServerIndex)
+            if (snum == M2Share.ServerIndex)
             {
                 str = EDcode.DecodeString(body);
                 str = HUtil32.GetValidStr3(str, ref uname, new string[] { "/" });
-                hum = svMain.UserEngine.GetUserHuman(uname);
+                hum = M2Share.UserEngine.GetUserHuman(uname);
                 if (hum != null)
                 {
                     hum.CmdRecallMan(str, "");
@@ -761,11 +747,11 @@ namespace GameSvr
             TUserHuman hum;
             string str;
             string uname = string.Empty;
-            if (snum == svMain.ServerIndex)
+            if (snum == M2Share.ServerIndex)
             {
                 str = EDcode.DecodeString(body);
                 str = HUtil32.GetValidStr3(str, ref uname, new string[] { "/" });
-                hum = svMain.UserEngine.GetUserHuman(uname);
+                hum = M2Share.UserEngine.GetUserHuman(uname);
                 if (hum != null)
                 {
                     if (!hum.PEnvir.NoRecall)
@@ -778,7 +764,7 @@ namespace GameSvr
 
         public void MsgGetMarketOpen(bool WantOpen)
         {
-            SqlEngn.SqlEngn.SqlEngine.Open(WantOpen);
+            SqlEngn.SqlEngine.Open(WantOpen);
         }
 
         public void Run()
@@ -797,7 +783,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("EXCEPT TFrmSrvMsg.Run");
+                M2Share.MainOutMessage("EXCEPT TFrmSrvMsg.Run");
             }
         }
     }
@@ -823,7 +809,7 @@ namespace GameSvr
         public long[] ExtraAbilTimes;
     }
 
-    public struct TServerMsgInfo
+    public class TServerMsgInfo
     {
         public Socket Socket;
         public string SocData;

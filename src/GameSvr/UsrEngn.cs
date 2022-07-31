@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using SystemModule;
 using SystemModule.Common;
 
@@ -14,7 +13,7 @@ namespace GameSvr
         public byte size;
         public byte count;
         public byte race;
-    } 
+    }
 
     public class TUserEngine
     {
@@ -23,7 +22,7 @@ namespace GameSvr
         private readonly ArrayList OtherUserNameList = null;
         private readonly ArrayList ClosePlayers = null;
         private readonly ArrayList SaveChangeOkList = null;
-        private object FUserCS = null;
+        private readonly object FUserCS = null;
         private long timer10min = 0;
         private long timer10sec = 0;
         private long timer1min = 0;
@@ -74,7 +73,7 @@ namespace GameSvr
             SaveChangeOkList = new ArrayList();
             GenMsgList = new ArrayList();
             MonList = new ArrayList();
-            MonDefList = new ArrayList();
+            MonDefList = new List<TMonsterInfo>();
             ReadyList = new List<TUserHuman>();
             StdItemList = new ArrayList();
             DefMagicList = new List<TDefMagic>();
@@ -253,8 +252,8 @@ namespace GameSvr
             itmindex = itmindex - 1;
             if ((itmindex >= 0) && (itmindex < StdItemList.Count))
             {
-                uitem.Index = (ushort)(itmindex + 1);
-                uitem.MakeIndex = svMain.GetItemServerIndex();
+                uitem.Index = (short)(itmindex + 1);
+                uitem.MakeIndex = M2Share.GetItemServerIndex();
                 uitem.Dura = ((TStdItem)StdItemList[itmindex]).DuraMax;
                 uitem.DuraMax = ((TStdItem)StdItemList[itmindex]).DuraMax;
                 result = true;
@@ -274,8 +273,8 @@ namespace GameSvr
                 if (((TStdItem)StdItemList[i]).Name.ToLower().CompareTo(itmname.ToLower()) == 0)
                 {
                     uitem = new TUserItem();
-                    uitem.Index = (ushort)(i + 1);
-                    uitem.MakeIndex = svMain.GetItemServerIndex();
+                    uitem.Index = (short)(i + 1);
+                    uitem.MakeIndex = M2Share.GetItemServerIndex();
                     if (((TStdItem)StdItemList[i]).OverlapItem >= 1)
                     {
                         if (((TStdItem)StdItemList[i]).DuraMax == 0)
@@ -324,9 +323,9 @@ namespace GameSvr
             // svMain.ShopItemList.Lock;
             try
             {
-                for (var i = 0; i < svMain.ShopItemList.Count; i++)
+                for (var i = 0; i < M2Share.ShopItemList.Count; i++)
                 {
-                    pShopItem = svMain.ShopItemList[i];
+                    pShopItem = M2Share.ShopItemList[i];
                     if (sItemName.ToLower().CompareTo(pShopItem.sItemName.ToLower()) == 0)
                     {
                         result = pShopItem;
@@ -379,7 +378,7 @@ namespace GameSvr
                                             {
                                                 if (cret.RaceServer == Grobal2.RC_USERHUMAN)
                                                 {
-                                                    cret.SendMsg(cret, (ushort)msg, (ushort)wparam, lParam1, lParam2, lParam3, str);
+                                                    cret.SendMsg(cret, msg, wparam, lParam1, lParam2, lParam3, str);
                                                 }
                                             }
                                         }
@@ -430,11 +429,11 @@ namespace GameSvr
             TEnvirnoment e;
             try
             {
-                for (var k = 0; k < svMain.GrobalEnvir.Count; k++)
+                for (var k = 0; k < M2Share.GrobalEnvir.Count; k++)
                 {
-                    for (var i = 0; i < ((TEnvirnoment)svMain.GrobalEnvir[k]).DoorList.Count; i++)
+                    for (var i = 0; i < ((TEnvirnoment)M2Share.GrobalEnvir[k]).DoorList.Count; i++)
                     {
-                        e = (TEnvirnoment)svMain.GrobalEnvir[k];
+                        e = (TEnvirnoment)M2Share.GrobalEnvir[k];
                         if (e.DoorList[i].PCore.DoorOpenState)
                         {
                             pd = e.DoorList[i];
@@ -448,7 +447,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("EXCEPTION : CHECKOPENDOORS");
+                M2Share.MainOutMessage("EXCEPTION : CHECKOPENDOORS");
             }
         }
 
@@ -490,17 +489,17 @@ namespace GameSvr
         public void InitializeMerchants()
         {
             TMerchant m;
-           // frmcap = svMain.FrmMain.Text;
+            // frmcap = svMain.FrmMain.Text;
             for (var i = MerchantList.Count - 1; i >= 0; i--)
             {
                 m = (TMerchant)MerchantList[i];
-                m.PEnvir = svMain.GrobalEnvir.GetEnvir(m.MapName);
+                m.PEnvir = M2Share.GrobalEnvir.GetEnvir(m.MapName);
                 if (m.PEnvir != null)
                 {
                     m.Initialize();
                     if (m.ErrorOnInit)
                     {
-                        svMain.MainOutMessage("Merchant Initalize fail... " + m.UserName);
+                        M2Share.MainOutMessage("Merchant Initalize fail... " + m.UserName);
                         m.Free();
                         MerchantList.RemoveAt(i);
                     }
@@ -513,12 +512,11 @@ namespace GameSvr
                 }
                 else
                 {
-                    svMain.MainOutMessage("Merchant Initalize fail... (m.PEnvir=nil) " + m.UserName);
+                    M2Share.MainOutMessage("Merchant Initalize fail... (m.PEnvir=nil) " + m.UserName);
                     m.Free();
                     MerchantList.RemoveAt(i);
                 }
                 //svMain.FrmMain.Text = "Merchant Loading.. " + (MerchantList.Count - i + 1).ToString() + "/" + MerchantList.Count.ToString();
-                svMain.FrmMain.RefreshForm();
             }
             //svMain.FrmMain.Text = frmcap;
         }
@@ -560,13 +558,13 @@ namespace GameSvr
             for (var i = NpcList.Count - 1; i >= 0; i--)
             {
                 npc = (TNormNpc)NpcList[i];
-                npc.PEnvir = svMain.GrobalEnvir.GetEnvir(npc.MapName);
+                npc.PEnvir = M2Share.GrobalEnvir.GetEnvir(npc.MapName);
                 if (npc.PEnvir != null)
                 {
                     npc.Initialize();
                     if (npc.ErrorOnInit && !npc.BoInvisible)
                     {
-                        svMain.MainOutMessage("Npc Initalize fail... " + npc.UserName);
+                        M2Share.MainOutMessage("Npc Initalize fail... " + npc.UserName);
                         npc.Free();
                         NpcList.RemoveAt(i);
                     }
@@ -578,12 +576,11 @@ namespace GameSvr
                 }
                 else
                 {
-                    svMain.MainOutMessage("Npc Initalize fail... [Mapinfo or Map] (npc.PEnvir=nil) " + npc.UserName);
+                    M2Share.MainOutMessage("Npc Initalize fail... [Mapinfo or Map] (npc.PEnvir=nil) " + npc.UserName);
                     npc.Free();
                     NpcList.RemoveAt(i);
                 }
                 //svMain.FrmMain.Text = "Npc loading.. " + (NpcList.Count - i + 1).ToString() + "/" + NpcList.Count.ToString();
-                svMain.FrmMain.RefreshForm();
             }
             //svMain.FrmMain.Text = frmcap;
         }
@@ -591,9 +588,9 @@ namespace GameSvr
         public TCreature GetDefaultNpc(int npcid)
         {
             TCreature result = null;
-            if (svMain.DefaultNpc.ActorId == npcid)
+            if (M2Share.DefaultNpc.ActorId == npcid)
             {
-                result = svMain.DefaultNpc;
+                result = M2Share.DefaultNpc;
             }
             return result;
         }
@@ -601,14 +598,14 @@ namespace GameSvr
         public void InitializeDefaultNpcs()
         {
             TNormNpc npc;
-            npc = svMain.DefaultNpc;
-            npc.PEnvir = svMain.GrobalEnvir.GetEnvir(npc.MapName);
+            npc = M2Share.DefaultNpc;
+            npc.PEnvir = M2Share.GrobalEnvir.GetEnvir(npc.MapName);
             if (npc.PEnvir != null)
             {
                 npc.Initialize();
                 if (npc.ErrorOnInit && !npc.BoInvisible)
                 {
-                    svMain.MainOutMessage("DefaultNpc Initalize fail... " + npc.UserName);
+                    M2Share.MainOutMessage("DefaultNpc Initalize fail... " + npc.UserName);
                     npc.Free();
                 }
                 else
@@ -618,7 +615,7 @@ namespace GameSvr
             }
             else
             {
-                svMain.MainOutMessage("DefaultNpc Initalize fail... [Mapinfo or Map] (npc.PEnvir=nil) " + npc.UserName);
+                M2Share.MainOutMessage("DefaultNpc Initalize fail... [Mapinfo or Map] (npc.PEnvir=nil) " + npc.UserName);
                 npc.Free();
             }
         }
@@ -708,37 +705,37 @@ namespace GameSvr
                     case 5:
                     case 6:
                         // 公扁
-                        svMain.ItemMan.UpgradeRandomWeapon(pu);
+                        M2Share.ItemMan.UpgradeRandomWeapon(pu);
                         break;
                     case 10:
                     case 11:
                         // 巢磊渴, 咯磊渴
-                        svMain.ItemMan.UpgradeRandomDress(pu);
+                        M2Share.ItemMan.UpgradeRandomDress(pu);
                         break;
                     case 19:
                         // 格吧捞 (付过雀乔, 青款)
-                        svMain.ItemMan.UpgradeRandomNecklace19(pu);
+                        M2Share.ItemMan.UpgradeRandomNecklace19(pu);
                         break;
                     case 20:
                     case 21:
                     case 24:
                         // 格吧捞 迫骂
-                        svMain.ItemMan.UpgradeRandomNecklace(pu);
+                        M2Share.ItemMan.UpgradeRandomNecklace(pu);
                         break;
                     case 26:
-                        svMain.ItemMan.UpgradeRandomBarcelet(pu);
+                        M2Share.ItemMan.UpgradeRandomBarcelet(pu);
                         break;
                     case 22:
                         // 馆瘤
-                        svMain.ItemMan.UpgradeRandomRings(pu);
+                        M2Share.ItemMan.UpgradeRandomRings(pu);
                         break;
                     case 23:
                         // 馆瘤
-                        svMain.ItemMan.UpgradeRandomRings23(pu);
+                        M2Share.ItemMan.UpgradeRandomRings23(pu);
                         break;
                     case 15:
                         // 秋镐
-                        svMain.ItemMan.UpgradeRandomHelmet(pu);
+                        M2Share.ItemMan.UpgradeRandomHelmet(pu);
                         break;
                 }
             }
@@ -754,17 +751,17 @@ namespace GameSvr
                 {
                     case 15:
                         // 捧备
-                        svMain.ItemMan.RandomSetUnknownHelmet(pu);
+                        M2Share.ItemMan.RandomSetUnknownHelmet(pu);
                         break;
                     case 22:
                     case 23:
                         // 馆瘤
-                        svMain.ItemMan.RandomSetUnknownRing(pu);
+                        M2Share.ItemMan.RandomSetUnknownRing(pu);
                         break;
                     case 24:
                     case 26:
                         // 迫骂
-                        svMain.ItemMan.RandomSetUnknownBracelet(pu);
+                        M2Share.ItemMan.RandomSetUnknownBracelet(pu);
                         break;
                 }
             }
@@ -773,13 +770,13 @@ namespace GameSvr
         public bool GetUniqueEvnetItemName(ref string iname, ref int numb)
         {
             bool result = false;
-            if ((HUtil32.GetTickCount() - eventitemtime > UniqueItemEventInterval) && (svMain.EventItemList.Count > 0))
+            if ((HUtil32.GetTickCount() - eventitemtime > UniqueItemEventInterval) && (M2Share.EventItemList.Count > 0))
             {
                 eventitemtime = HUtil32.GetTickCount();
-                int n = new System.Random(svMain.EventItemList.Count).Next();
-                iname = (string)svMain.EventItemList[n];
-                numb = (int)svMain.EventItemList.Values[n];
-                svMain.EventItemList.Remove(n);
+                int n = new System.Random(M2Share.EventItemList.Count).Next();
+                iname = (string)M2Share.EventItemList[n];
+                //numb = (int)svMain.EventItemList.Values[n];
+                M2Share.EventItemList.Remove(n);
                 result = true;
             }
             return result;
@@ -840,7 +837,7 @@ namespace GameSvr
                             if (CopyToUserItemFromName(iname, ref pu))
                             {
                                 // 郴备己捞 函版登绢 乐澜..
-                                pu.Dura = (ushort)HUtil32.MathRound(pu.DuraMax / 100 * (20 + new System.Random(80).Next()));
+                                pu.Dura = (short)HUtil32.MathRound(pu.DuraMax / 100 * (20 + new System.Random(80).Next()));
                                 pstd = GetStdItem(pu.Index);
                                 // //if pstd <> nil then
                                 // //   if pstd.StdMode = 50 then begin  //惑前鼻
@@ -859,7 +856,7 @@ namespace GameSvr
                                     {
                                         if ((pstd.Shape == ObjBase.RING_OF_UNKNOWN) || (pstd.Shape == ObjBase.BRACELET_OF_UNKNOWN) || (pstd.Shape == ObjBase.HELMET_OF_UNKNOWN))
                                         {
-                                            svMain.UserEngine.RandomSetUnknownItem(pu);
+                                            M2Share.UserEngine.RandomSetUnknownItem(pu);
                                         }
                                     }
                                     if (pstd.OverlapItem >= 1)
@@ -893,7 +890,7 @@ namespace GameSvr
             object outofrange;
             result = null;
             cret = null;
-            env = svMain.GrobalEnvir.GetEnvir(map);
+            env = M2Share.GrobalEnvir.GetEnvir(map);
             if (env == null)
             {
                 return result;
@@ -1352,7 +1349,7 @@ namespace GameSvr
                         if ((race == Grobal2.RC_SKELETONKING) || (race == Grobal2.RC_DEADCOWKING) || (race == Grobal2.RC_FEATHERKINGOFKING) || (race == Grobal2.RC_PBKING))
                         {
                             cret.RandomSpaceMoveInRange(0, 0, 5);
-                            svMain.MainOutMessage("Outofrange Nil - Race : " + race.ToString());
+                            M2Share.MainOutMessage("Outofrange Nil - Race : " + race.ToString());
                         }
                         else
                         {
@@ -1366,14 +1363,12 @@ namespace GameSvr
             return result;
         }
 
-        public TCreature AddCreatureSysop(string map, int x, int y, string monname)
+        public TCreature AddCreatureSysop(string map, short x, short y, string monname)
         {
             TCreature result;
-            TCreature cret;
             int n;
-            int race;
-            race = svMain.UserEngine.GetMonRace(monname);
-            cret = AddCreature(map, (short)x, (short)y, race, monname);
+            int race = M2Share.UserEngine.GetMonRace(monname);
+            TCreature cret = AddCreature(map, x, y, race, monname);
             if (cret != null)
             {
                 n = MonList.Count - 1;
@@ -1389,32 +1384,25 @@ namespace GameSvr
 
         public bool RegenMonsters(TZenInfo pz, int zcount)
         {
-            bool result;
-            int i;
-            int n;
-            int zzx;
-            int zzy;
-            long start;
+            short zzx;
+            short zzy;
             TCreature cret;
             string str;
-            result = true;
-            start = HUtil32.GetTickCount();
+            bool result = true;
+            long start = HUtil32.GetTickCount();
+            int n = 0;
             try
             {
                 n = zcount;
-                // pz.Count - pz.Mons.Count;
-                // race := GetMonRace (pz.MonName);
                 if (pz.MonRace > 0)
                 {
                     if (new System.Random(100).Next() < pz.SmallZenRate)
                     {
-                        // 哩捞 隔妨辑 等促.
-                        zzx = pz.X - pz.Area + new System.Random(pz.Area * 2 + 1).Next();
-                        zzy = pz.Y - pz.Area + new System.Random(pz.Area * 2 + 1).Next();
-                        for (i = 0; i < n; i++)
+                        zzx = (short)(pz.X - pz.Area + new System.Random(pz.Area * 2 + 1).Next());
+                        zzy = (short)(pz.Y - pz.Area + new System.Random(pz.Area * 2 + 1).Next());
+                        for (var i = 0; i < n; i++)
                         {
                             cret = AddCreature(pz.MapName, (short)(zzx - 10 + new System.Random(20).Next()), (short)(zzy - 10 + new System.Random(20).Next()), pz.MonRace, pz.MonName);
-                            // 2003/06/20
                             if (cret != null)
                             {
                                 pz.Mons.Add(cret);
@@ -1423,7 +1411,6 @@ namespace GameSvr
                                     cret.BoHasMission = true;
                                     cret.Mission_X = pz.TX;
                                     cret.Mission_Y = pz.TY;
-                                    // 哩矫 寇摹绰 沥焊啊 0焊促 目具凳
                                     if (pz.ZenShoutMsg < GenMsgList.Count)
                                     {
                                         str = (string)GenMsgList[pz.ZenShoutMsg];
@@ -1437,19 +1424,16 @@ namespace GameSvr
                                         switch (pz.ZenShoutType)
                                         {
                                             case 1:
-                                                // 辑滚 傈眉 寇摹扁
                                                 SysMsgAll(str);
                                                 break;
                                             case 2:
-                                                // 弊成 寇摹扁
-                                                // wide
                                                 CryCry(Grobal2.RM_CRY, cret.PEnvir, cret.CX, cret.CY, 50, str);
                                                 break;
                                         }
                                     }
                                 }
                             }
-                            if (HUtil32.GetTickCount() - start > svMain.ZenLimitTime)
+                            if (HUtil32.GetTickCount() - start > M2Share.ZenLimitTime)
                             {
                                 result = false;
                                 break;
@@ -1458,11 +1442,11 @@ namespace GameSvr
                     }
                     else
                     {
-                        for (i = 0; i < n; i++)
+                        for (var i = 0; i < n; i++)
                         {
-                            zzx = pz.X - pz.Area + new System.Random(pz.Area * 2 + 1).Next();
-                            zzy = pz.Y - pz.Area + new System.Random(pz.Area * 2 + 1).Next();
-                            cret = AddCreature(pz.MapName, (short)zzx, (short)zzy, pz.MonRace, pz.MonName);
+                            zzx = (short)(pz.X - pz.Area + new System.Random(pz.Area * 2 + 1).Next());
+                            zzy = (short)(pz.Y - pz.Area + new System.Random(pz.Area * 2 + 1).Next());
+                            cret = AddCreature(pz.MapName, zzx, zzy, pz.MonRace, pz.MonName);
                             if (cret != null)
                             {
                                 pz.Mons.Add(cret);
@@ -1497,26 +1481,26 @@ namespace GameSvr
                             {
                                 if (pz.MonRace == Grobal2.RC_SKELETONKING)
                                 {
-                                    svMain.MainOutMessage("RegenMon Nil : 秦榜馆空-NIL");
-                                    svMain.MainOutMessage(pz.MapName + " " + zzx.ToString() + "," + zzy.ToString() + " " + pz.MonRace.ToString() + " " + pz.MonName);
+                                    M2Share.MainOutMessage("RegenMon Nil : 秦榜馆空-NIL");
+                                    M2Share.MainOutMessage(pz.MapName + " " + zzx.ToString() + "," + zzy.ToString() + " " + pz.MonRace.ToString() + " " + pz.MonName);
                                 }
                                 if (pz.MonRace == Grobal2.RC_DEADCOWKING)
                                 {
-                                    svMain.MainOutMessage("RegenMon Nil : 荤快玫空-NIL");
-                                    svMain.MainOutMessage(pz.MapName + " " + zzx.ToString() + "," + zzy.ToString() + " " + pz.MonRace.ToString() + " " + pz.MonName);
+                                    M2Share.MainOutMessage("RegenMon Nil : 荤快玫空-NIL");
+                                    M2Share.MainOutMessage(pz.MapName + " " + zzx.ToString() + "," + zzy.ToString() + " " + pz.MonRace.ToString() + " " + pz.MonName);
                                 }
                                 if (pz.MonRace == Grobal2.RC_FEATHERKINGOFKING)
                                 {
-                                    svMain.MainOutMessage("RegenMon Nil : 孺玫付空-NIL");
-                                    svMain.MainOutMessage(pz.MapName + " " + zzx.ToString() + "," + zzy.ToString() + " " + pz.MonRace.ToString() + " " + pz.MonName);
+                                    M2Share.MainOutMessage("RegenMon Nil : 孺玫付空-NIL");
+                                    M2Share.MainOutMessage(pz.MapName + " " + zzx.ToString() + "," + zzy.ToString() + " " + pz.MonRace.ToString() + " " + pz.MonName);
                                 }
                                 if (pz.MonRace == Grobal2.RC_PBKING)
                                 {
-                                    svMain.MainOutMessage("RegenMon Nil : 颇炔付脚-NIL");
-                                    svMain.MainOutMessage(pz.MapName + " " + zzx.ToString() + "," + zzy.ToString() + " " + pz.MonRace.ToString() + " " + pz.MonName);
+                                    M2Share.MainOutMessage("RegenMon Nil : 颇炔付脚-NIL");
+                                    M2Share.MainOutMessage(pz.MapName + " " + zzx.ToString() + "," + zzy.ToString() + " " + pz.MonRace.ToString() + " " + pz.MonName);
                                 }
                             }
-                            if (HUtil32.GetTickCount() - start > svMain.ZenLimitTime)
+                            if (HUtil32.GetTickCount() - start > M2Share.ZenLimitTime)
                             {
                                 result = false;
                                 break;
@@ -1527,7 +1511,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[TUserEngine] RegenMonsters exception");
+                M2Share.MainOutMessage("[TUserEngine] RegenMonsters exception");
             }
             return result;
         }
@@ -1659,19 +1643,16 @@ namespace GameSvr
             return result;
         }
 
-        // User
-        // ---------------------------------------------------------
         public void AddNewUser(TUserOpenInfo ui)
         {
-            // (hum: TUserHuman);
             try
             {
-                svMain.usLock.Enter();
-                ReadyList.Add(ui.Name, ui as Object);
+                M2Share.usLock.Enter();
+                // ReadyList.Add(ui);
             }
             finally
             {
-                svMain.usLock.Leave();
+                M2Share.usLock.Leave();
             }
         }
 
@@ -1691,7 +1672,7 @@ namespace GameSvr
             p.certify = hum.Certification;
             p.hum = hum;
             RunDB.FDBMakeHumRcd(hum, p.rcd);
-            int savelistcount = svMain.FrontEngine.AddSavePlayer(p);
+            int savelistcount = M2Share.FrontEngine.AddSavePlayer(p);
         }
 
         public void ChangeAndSaveOk(TChangeUserInfo pc)
@@ -1701,12 +1682,12 @@ namespace GameSvr
             // 货肺 汗荤秦具 窃
             try
             {
-                svMain.usLock.Enter();
+                M2Share.usLock.Enter();
                 SaveChangeOkList.Add(pcu);
             }
             finally
             {
-                svMain.usLock.Leave();
+                M2Share.usLock.Leave();
             }
         }
 
@@ -1715,11 +1696,11 @@ namespace GameSvr
             int result = Grobal2.UD_USER;
             for (var i = 0; i < AdminList.Count; i++)
             {
-                if (AdminList[i].ToLower().CompareTo(uname.ToLower()) == 0)
-                {
-                    result = (int)AdminList.Values[i];
-                    break;
-                }
+                //if (AdminList[i].ToLower().CompareTo(uname.ToLower()) == 0)
+                //{
+                //    result = (int)AdminList.Values[i];
+                //    break;
+                //}
             }
             return result;
         }
@@ -1748,12 +1729,12 @@ namespace GameSvr
             bool result = false;
             for (var i = 0; i < OtherUserNameList.Count; i++)
             {
-                if (OtherUserNameList[i].ToLower().CompareTo(who.ToLower()) == 0)
-                {
-                    svindex = (int)OtherUserNameList.Values[i];
-                    result = true;
-                    break;
-                }
+                //if (OtherUserNameList[i].ToLower().CompareTo(who.ToLower()) == 0)
+                //{
+                //    svindex = (int)OtherUserNameList.Values[i];
+                //    result = true;
+                //    break;
+                //}
             }
             return result;
         }
@@ -1845,7 +1826,7 @@ namespace GameSvr
                 {
                     if ((Math.Abs(hum.CX - x) < wide) && (Math.Abs(hum.CY - y) < wide))
                     {
-                        hum.SendMsg(null, msgtype, 0, System.Drawing.Color.Black, System.Drawing.Color.Yellow, 0, saying);
+                        // hum.SendMsg(null, (short)msgtype, 0, System.Drawing.Color.Black, System.Drawing.Color.Yellow, 0, saying);
                     }
                 }
             }
@@ -1860,7 +1841,7 @@ namespace GameSvr
                 hum = RunUserList[i];
                 if ((!hum.BoGhost) && hum.BoHearCry)
                 {
-                    if ((env.GetGuildAgitRealMapName() == svMain.GuildAgitMan.GuildAgitMapName[0]) || (env.GetGuildAgitRealMapName() == svMain.GuildAgitMan.GuildAgitMapName[1]) || (env.GetGuildAgitRealMapName() == svMain.GuildAgitMan.GuildAgitMapName[2]) || (env.GetGuildAgitRealMapName() == svMain.GuildAgitMan.GuildAgitMapName[3]))
+                    if ((env.GetGuildAgitRealMapName() == M2Share.GuildAgitMan.GuildAgitMapName[0]) || (env.GetGuildAgitRealMapName() == M2Share.GuildAgitMan.GuildAgitMapName[1]) || (env.GetGuildAgitRealMapName() == M2Share.GuildAgitMan.GuildAgitMapName[2]) || (env.GetGuildAgitRealMapName() == M2Share.GuildAgitMan.GuildAgitMapName[3]))
                     {
                         if (hum.PEnvir.GuildAgit == env.GuildAgit)
                         {
@@ -1898,9 +1879,8 @@ namespace GameSvr
 
         public void GuildMemberReLogin(TGuild guild)
         {
-            int i;
-            int n;
-            for (i = 0; i < RunUserList.Count; i++)
+            int n = 0;
+            for (var i = 0; i < RunUserList.Count; i++)
             {
                 if (RunUserList[i].MyGuild == guild)
                 {
@@ -1980,7 +1960,6 @@ namespace GameSvr
 
         public void MakeServerShiftData(TUserHuman hum, ref TServerShiftUserInfo sui)
         {
-            int i;
             TCreature cret;
             //FillChar(sui, sizeof(TServerShiftUserInfo), '\0');
             sui.UserName = hum.UserName;
@@ -1989,9 +1968,9 @@ namespace GameSvr
             if (hum.GroupOwner != null)
             {
                 sui.GroupOwner = hum.GroupOwner.UserName;
-                for (i = 0; i < hum.GroupOwner.GroupMembers.Count; i++)
+                for (var i = 0; i < hum.GroupOwner.GroupMembers.Count; i++)
                 {
-                    sui.GroupMembers[i] = hum.GroupOwner.GroupMembers[i];
+                    //sui.GroupMembers[i] = hum.GroupOwner.GroupMembers[i];
                 }
             }
             sui.BoHearCry = hum.BoHearCry;
@@ -2000,14 +1979,14 @@ namespace GameSvr
             sui.BoSysopMode = hum.BoSysopMode;
             sui.BoSuperviserMode = hum.BoSuperviserMode;
             sui.BoSlaveRelax = hum.BoSlaveRelax;
-            for (i = 0; i < hum.WhisperBlockList.Count; i++)
+            for (var i = 0; i < hum.WhisperBlockList.Count; i++)
             {
                 if (i <= 9)
                 {
                     sui.WhisperBlockNames[i] = (string)hum.WhisperBlockList[i];
                 }
             }
-            for (i = 0; i < hum.SlaveList.Count; i++)
+            for (var i = 0; i < hum.SlaveList.Count; i++)
             {
                 cret = hum.SlaveList[i];
                 if (i <= 4)
@@ -2021,17 +2000,15 @@ namespace GameSvr
                     sui.Slaves[i].MP = cret.WAbil.MP;
                 }
             }
-            // 眠啊 (sonmg 2005/06/03)
-            for (i = 0; i < Grobal2.STATUSARR_SIZE; i++)
+            for (var i = 0; i < Grobal2.STATUSARR_SIZE; i++)
             {
                 sui.StatusValue[i] = hum.StatusValue[i];
             }
-            for (i = 0; i < Grobal2.EXTRAABIL_SIZE; i++)
+            for (var i = 0; i < Grobal2.EXTRAABIL_SIZE; i++)
             {
                 sui.ExtraAbil[i] = hum.ExtraAbil[i];
                 if (hum.ExtraAbilTimes[i] > GetTickCount)
                 {
-                    // 巢篮 矫埃父 历厘窃
                     sui.ExtraAbilTimes[i] = hum.ExtraAbilTimes[i] - GetTickCount;
                 }
                 else
@@ -2109,17 +2086,13 @@ namespace GameSvr
         {
             string result;
             string flname;
-            int i;
-            int fhandle;
-            int checksum;
             long shifttime;
             shifttime = HUtil32.GetTickCount();
             result = "";
-            flname = "$_" + svMain.ServerIndex.ToString() + "_$_" + svMain.ShareFileNameNum.ToString() + ".shr";
-            svMain.ShareFileNameNum++;
+            flname = "$_" + M2Share.ServerIndex.ToString() + "_$_" + M2Share.ShareFileNameNum.ToString() + ".shr";
+            M2Share.ShareFileNameNum++;
             try
             {
-                checksum = 0;
                 //for (i = 0; i < sizeof(TServerShiftUserInfo); i++)
                 //{
                 //    checksum = checksum + ((byte)psui + i);
@@ -2135,17 +2108,17 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] WriteShiftUserData..");
+                M2Share.MainOutMessage("[Exception] WriteShiftUserData..");
             }
             return result;
         }
 
         public void SendInterServerMsg(string msgstr)
         {
-            svMain.usIMLock.Enter();
+            M2Share.usIMLock.Enter();
             try
             {
-                if (svMain.ServerIndex == 0)
+                if (M2Share.ServerIndex == 0)
                 {
                     // 付胶磐 辑滚牢版快
                     InterServerMsg.FrmSrvMsg.SendServerSocket(msgstr);
@@ -2158,17 +2131,17 @@ namespace GameSvr
             }
             finally
             {
-                svMain.usIMLock.Leave();
+                M2Share.usIMLock.Leave();
             }
         }
 
         // 鞍篮 辑滚焙俊辑 辑滚甸 荤捞狼 皋技瘤 傈崔
         public void SendInterMsg(int ident, int svidx, string msgstr)
         {
-            svMain.usIMLock.Enter();
+            M2Share.usIMLock.Enter();
             try
             {
-                if (svMain.ServerIndex == 0)
+                if (M2Share.ServerIndex == 0)
                 {
                     // 付胶磐 辑滚牢版快
                     InterServerMsg.FrmSrvMsg.SendServerSocket(ident.ToString() + "/" + EDcode.EncodeString(svidx.ToString()) + "/" + EDcode.EncodeString(msgstr));
@@ -2181,22 +2154,19 @@ namespace GameSvr
             }
             finally
             {
-                svMain.usIMLock.Leave();
+                M2Share.usIMLock.Leave();
             }
         }
 
         public bool UserServerChange(TUserHuman hum, int svindex)
         {
-            bool result;
-            string flname;
-            TServerShiftUserInfo sui;
-            result = false;
+            TServerShiftUserInfo sui = null;
+            bool result = false;
             MakeServerShiftData(hum, ref sui);
-            flname = WriteShiftUserData(sui);
+            string flname = WriteShiftUserData(sui);
             if (flname != "")
             {
                 hum.TempStr = flname;
-                // 唱吝俊 捞悼窍妨绰 辑滚俊辑 肋 罐疽绰瘤 犬牢窍绰单 静烙
                 SendInterServerMsg(Grobal2.ISM_USERSERVERCHANGE.ToString() + "/" + EDcode.EncodeString(svindex.ToString()) + "/" + EDcode.EncodeString(flname));
                 result = true;
             }
@@ -2221,10 +2191,10 @@ namespace GameSvr
 
         public bool DoUserChangeServer(TUserHuman hum, int svindex)
         {
-            string naddr = String.Empty;
+            string naddr = string.Empty;
             int nport = 0;
             bool result = false;
-            if (svMain.GetMultiServerAddrPort((byte)svindex, ref naddr, ref nport))
+            if (M2Share.GetMultiServerAddrPort((byte)svindex, ref naddr, ref nport))
             {
                 hum.SendDefMessage(Grobal2.SM_RECONNECT, 0, 0, 0, 0, naddr + "/" + nport.ToString());
                 result = true;
@@ -2234,35 +2204,35 @@ namespace GameSvr
 
         public void OtherServerUserLogon(int snum, string uname)
         {
-            string name = String.Empty;
+            string name = string.Empty;
             string apmode = HUtil32.GetValidStr3(uname, ref name, new string[] { ":" });
             for (var i = OtherUserNameList.Count - 1; i >= 0; i--)
             {
-                if (OtherUserNameList[i].ToLower().CompareTo(name.ToLower()) == 0)
-                {
-                    OtherUserNameList.Remove(i);
-                }
+                //if (OtherUserNameList[i].ToLower().CompareTo(name.ToLower()) == 0)
+                //{
+                //    OtherUserNameList.Remove(i);
+                //}
             }
-            OtherUserNameList.Add(name, snum as Object);
+            // OtherUserNameList.Add(name, snum as Object);
             if (HUtil32.Str_ToInt(apmode, 0) == 1)
             {
                 FreeUserCount++;
             }
-            svMain.UserMgrEngine.AddUser(name, 0, snum + 4, 0, 0, 0);
+            M2Share.UserMgrEngine.AddUser(name, 0, snum + 4, 0, 0, 0);
         }
 
         public void OtherServerUserLogout(int snum, string uname)
         {
-            string name = String.Empty;
+            string name = string.Empty;
             string apmode = HUtil32.GetValidStr3(uname, ref name, new string[] { ":" });
             for (var i = 0; i < OtherUserNameList.Count; i++)
             {
-                if ((OtherUserNameList[i].ToLower().CompareTo(name.ToLower()) == 0) && (((int)OtherUserNameList.Values[i]) == snum))
-                {
-                    OtherUserNameList.Remove(i);
-                    svMain.UserMgrEngine.DeleteUser(name);
-                    break;
-                }
+                //if ((OtherUserNameList[i].ToLower().CompareTo(name.ToLower()) == 0) && (((int)OtherUserNameList.Values[i]) == snum))
+                //{
+                //    OtherUserNameList.Remove(i);
+                //    svMain.UserMgrEngine.DeleteUser(name);
+                //    break;
+                //}
             }
             if (HUtil32.Str_ToInt(apmode, 0) == 1)
             {
@@ -2299,7 +2269,7 @@ namespace GameSvr
         public bool ProcessUserHumans_OnUse(string uname)
         {
             bool result = false;
-            if (svMain.FrontEngine.IsDoingSave(uname))
+            if (M2Share.FrontEngine.IsDoingSave(uname))
             {
                 result = true;
                 return result;
@@ -2321,7 +2291,7 @@ namespace GameSvr
             int i;
             TEnvirnoment mapenvir;
             TUserHuman hum;
-            string hmap;
+            string hmap = string.Empty;
             TServerShiftUserInfo pshift;
             result = null;
             try
@@ -2329,9 +2299,9 @@ namespace GameSvr
                 hum = new TUserHuman();
                 if (hum == null)
                 {
-                    svMain.MainOutMessage("[TUserEngine.ProcessUserHumans]TUserHuman.Create Error");
+                    M2Share.MainOutMessage("[TUserEngine.ProcessUserHumans]TUserHuman.Create Error");
                 }
-                if (!svMain.BoVentureServer)
+                if (!M2Share.BoVentureServer)
                 {
                     pshift = GetServerShiftInfo(pui.Name, pui.readyinfo.Certification);
                 }
@@ -2346,11 +2316,11 @@ namespace GameSvr
                     if (hum.HomeMap == "")
                     {
                     ERROR_MAP:
-                        GetRandomDefStart(ref hmap, ref (int)hum.HomeX, ref (int)hum.HomeY);
+                        GetRandomDefStart(ref hmap, ref hum.HomeX, ref hum.HomeY);
                         hum.HomeMap = hmap;
                         hum.MapName = hum.HomeMap;
-                        hum.CX = (short)hum.GetStartX();
-                        hum.CY = (short)hum.GetStartY();
+                        hum.CX = hum.GetStartX();
+                        hum.CY = hum.GetStartY();
                         if (hum.Abil.Level == 0)
                         {
                             TAbility _wvar1 = hum.Abil;
@@ -2371,7 +2341,7 @@ namespace GameSvr
                             hum.FirstTimeConnection = true;
                         }
                     }
-                    mapenvir = svMain.GrobalEnvir.ServerGetEnvir(svMain.ServerIndex, hum.MapName);
+                    mapenvir = M2Share.GrobalEnvir.ServerGetEnvir(M2Share.ServerIndex, hum.MapName);
                     if (mapenvir != null)
                     {
                         // 巩颇 措访 捞亥飘 规俊 乐绰 版快 八荤
@@ -2394,12 +2364,12 @@ namespace GameSvr
                             hum.FightZoneDieCount = 0;
                         }
                     }
-                    hum.MyGuild = svMain.GuildMan.GetGuildFromMemberName(hum.UserName);
+                    hum.MyGuild = M2Share.GuildMan.GetGuildFromMemberName(hum.UserName);
                     if (mapenvir != null)
                     {
-                        if ((svMain.UserCastle.CorePEnvir == mapenvir) || (svMain.UserCastle.BoCastleUnderAttack && svMain.UserCastle.IsCastleWarArea(mapenvir, hum.CX, hum.CY)))
+                        if ((M2Share.UserCastle.CorePEnvir == mapenvir) || (M2Share.UserCastle.BoCastleUnderAttack && M2Share.UserCastle.IsCastleWarArea(mapenvir, hum.CX, hum.CY)))
                         {
-                            if (!svMain.UserCastle.IsCastleMember(hum))
+                            if (!M2Share.UserCastle.IsCastleMember(hum))
                             {
                                 hum.MapName = hum.HomeMap;
                                 hum.CX = (short)(hum.HomeX - 2 + new System.Random(5).Next());
@@ -2407,11 +2377,11 @@ namespace GameSvr
                             }
                             else
                             {
-                                if (svMain.UserCastle.CorePEnvir == mapenvir)
+                                if (M2Share.UserCastle.CorePEnvir == mapenvir)
                                 {
-                                    hum.MapName = svMain.UserCastle.GetCastleStartMap();
-                                    hum.CX = svMain.UserCastle.GetCastleStartX();
-                                    hum.CY = svMain.UserCastle.GetCastleStartY();
+                                    hum.MapName = M2Share.UserCastle.GetCastleStartMap();
+                                    hum.CX = M2Share.UserCastle.GetCastleStartX();
+                                    hum.CY = M2Share.UserCastle.GetCastleStartY();
                                 }
                             }
                         }
@@ -2435,7 +2405,7 @@ namespace GameSvr
                         hum.CY = hum.HomeY - 2 + (new System.Random(5)).Next();
                     }
 #endif
-                    if (svMain.GrobalEnvir.GetEnvir(hum.MapName) == null)
+                    if (M2Share.GrobalEnvir.GetEnvir(hum.MapName) == null)
                     {
                         hum.Abil.HP = 0;
                     }
@@ -2444,11 +2414,11 @@ namespace GameSvr
                         hum.ResetCharForRevival();
                         if (hum.PKLevel() < 2)
                         {
-                            if (svMain.UserCastle.BoCastleUnderAttack && svMain.UserCastle.IsCastleMember(hum))
+                            if (M2Share.UserCastle.BoCastleUnderAttack && M2Share.UserCastle.IsCastleMember(hum))
                             {
-                                hum.MapName = svMain.UserCastle.CastleMap;
-                                hum.CX = svMain.UserCastle.GetCastleStartX();
-                                hum.CY = svMain.UserCastle.GetCastleStartY();
+                                hum.MapName = M2Share.UserCastle.CastleMap;
+                                hum.CX = M2Share.UserCastle.GetCastleStartX();
+                                hum.CY = M2Share.UserCastle.GetCastleStartY();
                             }
                             else
                             {
@@ -2466,7 +2436,7 @@ namespace GameSvr
                         hum.Abil.HP = 14;
                     }
                     hum.InitValues();
-                    mapenvir = svMain.GrobalEnvir.ServerGetEnvir(svMain.ServerIndex, hum.MapName);
+                    mapenvir = M2Share.GrobalEnvir.ServerGetEnvir(M2Share.ServerIndex, hum.MapName);
                     if (mapenvir == null)
                     {
                         hum.Certification = pui.readyinfo.Certification;
@@ -2474,10 +2444,10 @@ namespace GameSvr
                         hum.GateIndex = pui.readyinfo.GateIndex;
                         hum.UserGateIndex = pui.readyinfo.UserGateIndex;
                         hum.WAbil = hum.Abil;
-                        hum.ChangeToServerNumber = svMain.GrobalEnvir.GetServer(hum.MapName);
+                        hum.ChangeToServerNumber = M2Share.GrobalEnvir.GetServer(hum.MapName);
                         if (hum.Abil.HP != 14)
                         {
-                            svMain.MainOutMessage("chg-server-fail-1 [" + svMain.ServerIndex.ToString() + "] -> [" + hum.ChangeToServerNumber.ToString() + "] [" + hum.MapName);
+                            M2Share.MainOutMessage("chg-server-fail-1 [" + M2Share.ServerIndex.ToString() + "] -> [" + hum.ChangeToServerNumber.ToString() + "] [" + hum.MapName);
                         }
                         UserServerChange(hum, hum.ChangeToServerNumber);
                         DoUserChangeServer(hum, hum.ChangeToServerNumber);
@@ -2501,18 +2471,18 @@ namespace GameSvr
                         }
                         if (!mapenvir.CanWalk(hum.CX, hum.CY, true))
                         {
-                            svMain.MainOutMessage("chg-server-fail-2 [" + svMain.ServerIndex.ToString() + "] " + hum.CX.ToString() + ":" + hum.CY.ToString() + " [" + hum.MapName);
-                            hum.MapName = svMain.DefHomeMap;
-                            mapenvir = svMain.GrobalEnvir.GetEnvir(svMain.DefHomeMap);
-                            hum.CX = svMain.DefHomeX;
-                            hum.CY = svMain.DefHomeY;
+                            M2Share.MainOutMessage("chg-server-fail-2 [" + M2Share.ServerIndex.ToString() + "] " + hum.CX.ToString() + ":" + hum.CY.ToString() + " [" + hum.MapName);
+                            hum.MapName = M2Share.DefHomeMap;
+                            mapenvir = M2Share.GrobalEnvir.GetEnvir(M2Share.DefHomeMap);
+                            hum.CX = M2Share.DefHomeX;
+                            hum.CY = M2Share.DefHomeY;
                         }
                     }
                     hum.PEnvir = mapenvir;
                     if (hum.PEnvir == null)
                     {
-                        svMain.MainOutMessage("[Error] hum.PEnvir = nil");
-                        goto ERROR_MAP;
+                        M2Share.MainOutMessage("[Error] hum.PEnvir = nil");
+                        // goto ERROR_MAP;
                     }
                     hum.ReadyRun = false;
                 }
@@ -2525,35 +2495,35 @@ namespace GameSvr
                     hum.Abil.Level = pshift.rcd.Block.DBHuman.Abil_Level;
                     hum.Abil.HP = pshift.rcd.Block.DBHuman.Abil_HP;
                     hum.Abil.MP = pshift.rcd.Block.DBHuman.Abil_MP;
-                    hum.Abil.Exp = pshift.rcd.Block.DBHuman.Abil_EXP;
+                    hum.Abil.Exp = pshift.rcd.Block.DBHuman.Abil_Exp;
                     LoadServerShiftData(pshift, ref hum);
                     ClearServerShiftData(pshift);
-                    mapenvir = svMain.GrobalEnvir.ServerGetEnvir(svMain.ServerIndex, hum.MapName);
+                    mapenvir = M2Share.GrobalEnvir.ServerGetEnvir(M2Share.ServerIndex, hum.MapName);
                     if (mapenvir == null)
                     {
-                        svMain.MainOutMessage("chg-server-fail-3 [" + svMain.ServerIndex.ToString() + "]  " + hum.CX.ToString() + ":" + hum.CY.ToString() + " [" + hum.MapName);
-                        hum.MapName = svMain.DefHomeMap;
-                        mapenvir = svMain.GrobalEnvir.GetEnvir(svMain.DefHomeMap);
-                        hum.CX = svMain.DefHomeX;
-                        hum.CY = svMain.DefHomeY;
+                        M2Share.MainOutMessage("chg-server-fail-3 [" + M2Share.ServerIndex.ToString() + "]  " + hum.CX.ToString() + ":" + hum.CY.ToString() + " [" + hum.MapName);
+                        hum.MapName = M2Share.DefHomeMap;
+                        mapenvir = M2Share.GrobalEnvir.GetEnvir(M2Share.DefHomeMap);
+                        hum.CX = M2Share.DefHomeX;
+                        hum.CY = M2Share.DefHomeY;
                     }
                     else
                     {
                         if (!mapenvir.CanWalk(hum.CX, hum.CY, true))
                         {
-                            svMain.MainOutMessage("chg-server-fail-4 [" + svMain.ServerIndex.ToString() + "]  " + hum.CX.ToString() + ":" + hum.CY.ToString() + " [" + hum.MapName);
-                            hum.MapName = svMain.DefHomeMap;
-                            mapenvir = svMain.GrobalEnvir.GetEnvir(svMain.DefHomeMap);
-                            hum.CX = svMain.DefHomeX;
-                            hum.CY = svMain.DefHomeY;
+                            M2Share.MainOutMessage("chg-server-fail-4 [" + M2Share.ServerIndex.ToString() + "]  " + hum.CX.ToString() + ":" + hum.CY.ToString() + " [" + hum.MapName);
+                            hum.MapName = M2Share.DefHomeMap;
+                            mapenvir = M2Share.GrobalEnvir.GetEnvir(M2Share.DefHomeMap);
+                            hum.CX = M2Share.DefHomeX;
+                            hum.CY = M2Share.DefHomeY;
                         }
                     }
                     hum.InitValues();
                     hum.PEnvir = mapenvir;
                     if (hum.PEnvir == null)
                     {
-                        svMain.MainOutMessage("[Error] hum.PEnvir = nil");
-                        goto ERROR_MAP;
+                        M2Share.MainOutMessage("[Error] hum.PEnvir = nil");
+                        //  goto ERROR_MAP;
                     }
                     hum.ReadyRun = false;
                     hum.LoginSign = true;
@@ -2575,7 +2545,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[TUserEngine] MakeNewHuman exception");
+                M2Share.MainOutMessage("[TUserEngine] MakeNewHuman exception");
             }
             return result;
         }
@@ -2585,8 +2555,7 @@ namespace GameSvr
             int i;
             long k;
             long start;
-            int tcount;
-            TUserOpenInfo pui;
+            long tcount;
             TChangeUserInfo pc;
             TUserHuman hum;
             ArrayList newlist;
@@ -2606,28 +2575,28 @@ namespace GameSvr
                     cuhlist = null;
                     try
                     {
-                        svMain.usLock.Enter();
+                        M2Share.usLock.Enter();
                         for (i = 0; i < ReadyList.Count; i++)
                         {
-                            if (!svMain.FrontEngine.HasServerHeavyLoad() && !ProcessUserHumans_OnUse(ReadyList[i].UserName))
+                            if (!M2Share.FrontEngine.HasServerHeavyLoad() && !ProcessUserHumans_OnUse(ReadyList[i].UserName))
                             {
-                                pui = ReadyList[i];
-                                hum = ProcessUserHumans_MakeNewHuman(pui);
-                                if (hum != null)
-                                {
-                                    RunUserList.Add(ReadyList[i], hum);
-                                    SendInterMsg(Grobal2.ISM_USERLOGON, svMain.ServerIndex, hum.UserName + ":" + hum.ApprovalMode.ToString());
-                                    if (hum.ApprovalMode == 1)
-                                    {
-                                        svMain.UserEngine.FreeUserCount++;
-                                    }
-                                    if (newlist == null)
-                                    {
-                                        newlist = new ArrayList();
-                                    }
-                                    newlist.Add(hum);
-                                    svMain.UserMgrEngine.AddUser(hum.UserName, hum, svMain.ServerIndex + 4, hum.GateIndex, hum.UserGateIndex, hum.UserHandle);
-                                }
+                                //pui = ReadyList[i];
+                                //hum = ProcessUserHumans_MakeNewHuman(pui);
+                                //if (hum != null)
+                                //{
+                                //    RunUserList.Add(ReadyList[i], hum);
+                                //    SendInterMsg(Grobal2.ISM_USERLOGON, svMain.ServerIndex, hum.UserName + ":" + hum.ApprovalMode.ToString());
+                                //    if (hum.ApprovalMode == 1)
+                                //    {
+                                //        svMain.UserEngine.FreeUserCount++;
+                                //    }
+                                //    if (newlist == null)
+                                //    {
+                                //        newlist = new ArrayList();
+                                //    }
+                                //    newlist.Add(hum);
+                                //    svMain.UserMgrEngine.AddUser(hum.UserName, hum, svMain.ServerIndex + 4, hum.GateIndex, hum.UserGateIndex, hum.UserHandle);
+                                //}
                             }
                             else
                             {
@@ -2640,7 +2609,7 @@ namespace GameSvr
                                 cuglist.Add(ReadyList[i].GateIndex);
                                 cuhlist.Add(ReadyList[i].UserHandle);
                             }
-                            Dispose((TUserOpenInfo)ReadyList[i]);
+                            // Dispose((TUserOpenInfo)ReadyList[i]);
                         }
                         ReadyList.Clear();
                         for (i = 0; i < SaveChangeOkList.Count; i++)
@@ -2657,38 +2626,38 @@ namespace GameSvr
                     }
                     finally
                     {
-                        svMain.usLock.Leave();
+                        M2Share.usLock.Leave();
                     }
                     if (newlist != null)
                     {
-                        svMain.usLock.Enter();
+                        M2Share.usLock.Enter();
                         try
                         {
                             for (i = 0; i < newlist.Count; i++)
                             {
                                 hum = (TUserHuman)newlist[i];
-                                svMain.RunSocket.UserLoadingOk(hum.GateIndex, hum.UserHandle, hum);
+                                M2Share.RunSocket.UserLoadingOk(hum.GateIndex, hum.UserHandle, hum);
                             }
                         }
                         finally
                         {
-                            svMain.usLock.Leave();
+                            M2Share.usLock.Leave();
                         }
                         newlist.Free();
                     }
                     if (cuglist != null)
                     {
-                        svMain.usLock.Enter();
+                        M2Share.usLock.Enter();
                         try
                         {
                             for (i = 0; i < cuglist.Count; i++)
                             {
-                                svMain.RunSocket.CloseUser((int)cuglist[i], (int)cuhlist[i]);
+                                M2Share.RunSocket.CloseUser((int)cuglist[i], (int)cuhlist[i]);
                             }
                         }
                         finally
                         {
-                            svMain.usLock.Leave();
+                            M2Share.usLock.Leave();
                         }
                         cuglist.Free();
                         cuhlist.Free();
@@ -2696,7 +2665,7 @@ namespace GameSvr
                 }
                 catch
                 {
-                    svMain.MainOutMessage("[UsrEngn] Exception Ready, Save, Load... ");
+                    M2Share.MainOutMessage("[UsrEngn] Exception Ready, Save, Load... ");
                 }
             }
             try
@@ -2714,7 +2683,7 @@ namespace GameSvr
                         }
                         catch
                         {
-                            svMain.MainOutMessage("[UsrEngn] ClosePlayer.Delete - Free");
+                            M2Share.MainOutMessage("[UsrEngn] ClosePlayer.Delete - Free");
                         }
                         ClosePlayers.RemoveAt(i);
                         break;
@@ -2754,12 +2723,12 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[UsrEngn] ClosePlayer.Delete");
+                M2Share.MainOutMessage("[UsrEngn] ClosePlayer.Delete");
             }
             lack = false;
             try
             {
-                tcount = GetCurrentTime;
+                tcount = HUtil32.GetCurrentTime;
                 i = HumCur;
                 while (true)
                 {
@@ -2783,7 +2752,7 @@ namespace GameSvr
                                 }
                                 catch
                                 {
-                                    svMain.MainOutMessage("[UsrEngn] Exception RunNotice in ProcessHumans");
+                                    M2Share.MainOutMessage("[UsrEngn] Exception RunNotice in ProcessHumans");
                                 }
                             }
                             else
@@ -2807,21 +2776,21 @@ namespace GameSvr
                                         if (HUtil32.GetTickCount() - hum.LineNoticeTime > 5 * 60 * 1000)
                                         {
                                             hum.LineNoticeTime = HUtil32.GetTickCount();
-                                            if (hum.LineNoticeNumber < svMain.LineNoticeList.Count)
+                                            if (hum.LineNoticeNumber < M2Share.LineNoticeList.Count)
                                             {
                                                 // LineNoticeList客 Hum捞 鞍篮 胶贰靛 捞扁 锭巩俊 惑包 绝促
                                                 // 窍瘤父 促弗 胶贰靛啊 等促搁 LineNoticeList绰 馆靛矫 lock 矫难具 茄促.
-                                                hum.SysMsg((string)svMain.LineNoticeList[hum.LineNoticeNumber], 2);
+                                                hum.SysMsg((string)M2Share.LineNoticeList[hum.LineNoticeNumber], 2);
                                             }
                                             hum.LineNoticeNumber++;
-                                            if (hum.LineNoticeNumber >= svMain.LineNoticeList.Count)
+                                            if (hum.LineNoticeNumber >= M2Share.LineNoticeList.Count)
                                             {
                                                 hum.LineNoticeNumber = 0;
                                             }
                                         }
                                         hum.Operate();
                                         // 历厘埃拜 10盒俊辑 15盒 函版 ->30盒 函版
-                                        if ((!svMain.FrontEngine.HasServerHeavyLoad()) && (HUtil32.GetTickCount() > (30 * 60 * 1000 + hum.LastSaveTime)))
+                                        if ((!M2Share.FrontEngine.HasServerHeavyLoad()) && (HUtil32.GetTickCount() > (30 * 60 * 1000 + hum.LastSaveTime)))
                                         {
                                             // 澜荐啊  唱棵荐 乐栏骨肺 函版
                                             hum.LastSaveTime = GetTickCount + ((long)new System.Random(10 * 60 * 1000).Next());
@@ -2833,7 +2802,7 @@ namespace GameSvr
                                 }
                                 catch
                                 {
-                                    svMain.MainOutMessage("[UsrEngn] Exception Hum.Operate in ProcessHumans");
+                                    M2Share.MainOutMessage("[UsrEngn] Exception Hum.Operate in ProcessHumans");
                                 }
                             }
                         }
@@ -2841,48 +2810,48 @@ namespace GameSvr
                         {
                             try
                             {
-                                RunUserList.Remove(i);
+                                RunUserList.RemoveAt(i);
                                 bugcount = 2;
                                 hum.Finalize();
                                 bugcount = 3;
                             }
                             catch
                             {
-                                svMain.MainOutMessage("[UsrEngn] Exception Hum.Finalize in ProcessHumans " + bugcount.ToString());
+                                M2Share.MainOutMessage("[UsrEngn] Exception Hum.Finalize in ProcessHumans " + bugcount.ToString());
                             }
                             try
                             {
                                 // TO PDS: Delete User From UserMgr...
-                                svMain.UserMgrEngine.DeleteUser(hum.UserName);
+                                M2Share.UserMgrEngine.DeleteUser(hum.UserName);
                                 ClosePlayer(hum);
                                 bugcount = 4;
                                 hum.ReadySave();
                                 SavePlayer(hum);
-                                svMain.usLock.Enter();
+                                M2Share.usLock.Enter();
                                 try
                                 {
-                                    svMain.RunSocket.CloseUser(hum.GateIndex, hum.UserHandle);
+                                    M2Share.RunSocket.CloseUser(hum.GateIndex, hum.UserHandle);
                                 }
                                 finally
                                 {
-                                    svMain.usLock.Leave();
+                                    M2Share.usLock.Leave();
                                 }
                             }
                             catch
                             {
-                                svMain.MainOutMessage("[UsrEngn] Exception RunSocket.CloseUser in ProcessHumans " + bugcount.ToString());
+                                M2Share.MainOutMessage("[UsrEngn] Exception RunSocket.CloseUser in ProcessHumans " + bugcount.ToString());
                             }
-                            SendInterMsg(Grobal2.ISM_USERLOGOUT, svMain.ServerIndex, hum.UserName + ":" + hum.ApprovalMode.ToString());
+                            SendInterMsg(Grobal2.ISM_USERLOGOUT, M2Share.ServerIndex, hum.UserName + ":" + hum.ApprovalMode.ToString());
                             // 3
                             if (hum.ApprovalMode == 1)
                             {
-                                svMain.UserEngine.FreeUserCount -= 1;
+                                M2Share.UserEngine.FreeUserCount -= 1;
                             }
                             continue;
                         }
                     }
                     i++;
-                    if (HUtil32.GetTickCount() - start > svMain.HumLimitTime)
+                    if (HUtil32.GetTickCount() - start > M2Share.HumLimitTime)
                     {
                         // 泛 惯积, 促澜栏肺 固烽促.
                         lack = true;
@@ -2897,26 +2866,26 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[UsrEngn] ProcessHumans");
+                M2Share.MainOutMessage("[UsrEngn] ProcessHumans");
             }
             HumRotCount++;
             if (HumCur == 0)
             {
                 // 茄官柠 档绰单 吧府绰 矫埃
                 HumRotCount = 0;
-                svMain.humrotatecount = HumRotCount;
-                k = GetTickCount - svMain.humrotatetime;
-                svMain.curhumrotatetime = (int)k;
-                svMain.humrotatetime = HUtil32.GetTickCount();
-                if (svMain.maxhumrotatetime < k)
+                M2Share.humrotatecount = HumRotCount;
+                k = GetTickCount - M2Share.humrotatetime;
+                M2Share.curhumrotatetime = (int)k;
+                M2Share.humrotatetime = HUtil32.GetTickCount();
+                if (M2Share.maxhumrotatetime < k)
                 {
-                    svMain.maxhumrotatetime = (int)k;
+                    M2Share.maxhumrotatetime = (int)k;
                 }
             }
-            svMain.curhumtime = (int)(HUtil32.GetTickCount() - start);
-            if (svMain.maxhumtime < svMain.curhumtime)
+            M2Share.curhumtime = (int)(HUtil32.GetTickCount() - start);
+            if (M2Share.maxhumtime < M2Share.curhumtime)
             {
-                svMain.maxhumtime = svMain.curhumtime;
+                M2Share.maxhumtime = M2Share.curhumtime;
             }
         }
 
@@ -2927,7 +2896,7 @@ namespace GameSvr
             double r;
             if (ztime < 30 * 60 * 1000)
             {
-                r = (GetUserCount() - svMain.UserFullCount) / svMain.ZenFastStep;
+                r = (GetUserCount() - M2Share.UserFullCount) / M2Share.ZenFastStep;
                 // 概 200疙捞 疵锭付促 10%究 各阑 歹 哩 矫糯
                 if (r > 0)
                 {
@@ -2955,7 +2924,7 @@ namespace GameSvr
             int k;
             int zcount;
             long start;
-            int tcount;
+            long tcount;
             TCreature cret;
             TZenInfo pz;
             bool lack;
@@ -2965,8 +2934,7 @@ namespace GameSvr
             try
             {
                 lack = false;
-                tcount = GetCurrentTime;
-                // GetTickCount;
+                tcount = HUtil32.GetCurrentTime;
                 pz = null;
                 if (HUtil32.GetTickCount() - onezentime > 200)
                 {
@@ -2985,9 +2953,8 @@ namespace GameSvr
                     }
                     if (pz != null)
                     {
-                        if ((pz.MonName != "") && (!svMain.BoVentureServer))
+                        if ((pz.MonName != "") && (!M2Share.BoVentureServer))
                         {
-                            // 葛氰辑滚俊辑绰 篱捞 救等促.
                             if ((pz.StartTime == 0) || (HUtil32.GetTickCount() - pz.StartTime > ProcessMonsters_GetZenTime(pz.MonZenTime)))
                             {
                                 zcount = GetMonCount(pz);
@@ -3015,7 +2982,7 @@ namespace GameSvr
                                     }
                                 }
                             }
-                            svMain.LatestGenStr = pz.MonName + "," + GenCur.ToString() + "/" + MonList.Count.ToString();
+                            M2Share.LatestGenStr = pz.MonName + "," + GenCur.ToString() + "/" + MonList.Count.ToString();
                         }
                     }
                 }
@@ -3047,7 +3014,6 @@ namespace GameSvr
                                 if (HUtil32.GetTickCount() > (cret.SearchRate + cret.SearchTime))
                                 {
                                     cret.SearchTime = HUtil32.GetTickCount();
-                                    // 2003/03/18
                                     if ((cret.RefObjCount > 0) || cret.HideMode)
                                     {
                                         cret.SearchViewRange();
@@ -3059,7 +3025,6 @@ namespace GameSvr
                                 }
                                 try
                                 {
-                                    // 2003-09-09  PDS 俊矾惯积矫 阁胶磐 府胶飘俊辑 昏力
                                     cret.Run();
                                     MonCurRunCount++;
                                 }
@@ -3074,7 +3039,6 @@ namespace GameSvr
                         }
                         else
                         {
-                            // 5盒捞 瘤唱搁 free 矫挪促.
                             if (HUtil32.GetTickCount() > (5 * 60 * 1000 + cret.GhostTime))
                             {
                                 pz.Mons.RemoveAt(k);
@@ -3084,10 +3048,9 @@ namespace GameSvr
                             }
                         }
                         k++;
-                        if ((cret != null) && (HUtil32.GetTickCount() - start > svMain.MonLimitTime))
+                        if ((cret != null) && (HUtil32.GetTickCount() - start > M2Share.MonLimitTime))
                         {
-                            // 泛 惯积, 阁胶飘 框流烙篮 快急鉴困啊 撤澜
-                            svMain.LatestMonStr = cret.UserName + "/" + i.ToString() + "/" + k.ToString();
+                            M2Share.LatestMonStr = cret.UserName + "/" + i.ToString() + "/" + k.ToString();
                             lack = true;
                             MonSubCur = k;
                             break;
@@ -3118,28 +3081,28 @@ namespace GameSvr
             {
                 if (pz != null)
                 {
-                    svMain.MainOutMessage("[UsrEngn] ProcessMonsters : " + pz.MonName + "/" + pz.MapName + "/" + pz.X.ToString() + "," + pz.Y.ToString());
+                    M2Share.MainOutMessage("[UsrEngn] ProcessMonsters : " + pz.MonName + "/" + pz.MapName + "/" + pz.X.ToString() + "," + pz.Y.ToString());
                 }
                 else
                 {
-                    svMain.MainOutMessage("[UsrEngn] ProcessMonsters");
+                    M2Share.MainOutMessage("[UsrEngn] ProcessMonsters");
                 }
             }
-            svMain.curmontime = (int)(HUtil32.GetTickCount() - start);
-            if (svMain.maxmontime < svMain.curmontime)
+            M2Share.curmontime = (int)(HUtil32.GetTickCount() - start);
+            if (M2Share.maxmontime < M2Share.curmontime)
             {
-                svMain.maxmontime = svMain.curmontime;
+                M2Share.maxmontime = M2Share.curmontime;
             }
         }
 
         protected void ProcessDefaultNpcs()
         {
-            int tcount;
+            long tcount;
             TCreature cret;
             try
             {
-                tcount = GetCurrentTime;
-                cret = svMain.DefaultNpc;
+                tcount = HUtil32.GetCurrentTime;
+                cret = M2Share.DefaultNpc;
                 if (!cret.BoGhost)
                 {
                     if (tcount - cret.RunTime > cret.RunNextTick)
@@ -3159,23 +3122,20 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[UsrEngn] ProcessDefaultNpcs");
+                M2Share.MainOutMessage("[UsrEngn] ProcessDefaultNpcs");
             }
         }
 
         protected void ProcessMerchants()
         {
-            int i;
-            long start;
-            int tcount;
+            long tcount;
             TCreature cret;
-            bool lack;
-            start = HUtil32.GetTickCount();
-            lack = false;
+            long start = HUtil32.GetTickCount();
+            bool lack = false;
             try
             {
-                tcount = GetCurrentTime;
-                for (i = MerCur; i < MerchantList.Count; i++)
+                tcount = HUtil32.GetCurrentTime;
+                for (var i = MerCur; i < MerchantList.Count; i++)
                 {
                     cret = (TCreature)MerchantList[i];
                     if (!cret.BoGhost)
@@ -3194,7 +3154,7 @@ namespace GameSvr
                             }
                         }
                     }
-                    if (HUtil32.GetTickCount() - start > svMain.NpcLimitTime)
+                    if (HUtil32.GetTickCount() - start > M2Share.NpcLimitTime)
                     {
                         // 矫累 檬苞 促澜俊 贸府
                         MerCur = i;
@@ -3209,25 +3169,21 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[UsrEngn] ProcessMerchants");
+                M2Share.MainOutMessage("[UsrEngn] ProcessMerchants");
             }
         }
 
         protected void ProcessNpcs()
         {
-            int i;
-            int tcount;
-            long start;
-            TCreature cret;
-            bool lack;
-            start = HUtil32.GetTickCount();
-            lack = false;
+            long tcount;
+            long start = HUtil32.GetTickCount();
+            bool lack = false;
             try
             {
-                tcount = GetCurrentTime;
-                for (i = NpcCur; i < NpcList.Count; i++)
+                tcount = HUtil32.GetCurrentTime;
+                for (var i = NpcCur; i < NpcList.Count; i++)
                 {
-                    cret = (TCreature)NpcList[i];
+                    TCreature cret = (TCreature)NpcList[i];
                     if (!cret.BoGhost)
                     {
                         if (tcount - cret.RunTime > cret.RunNextTick)
@@ -3244,9 +3200,8 @@ namespace GameSvr
                             }
                         }
                     }
-                    if (HUtil32.GetTickCount() - start > svMain.NpcLimitTime)
+                    if (HUtil32.GetTickCount() - start > M2Share.NpcLimitTime)
                     {
-                        // 矫累 檬苞 促澜俊 贸府
                         NpcCur = i;
                         lack = true;
                         break;
@@ -3259,12 +3214,10 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[UsrEngn] ProcessNpcs");
+                M2Share.MainOutMessage("[UsrEngn] ProcessNpcs");
             }
         }
 
-        // 固记
-        // -------------------------- Missions ----------------------------
         public bool LoadMission(string flname)
         {
             bool result;
@@ -3300,12 +3253,12 @@ namespace GameSvr
             return result;
         }
 
-        public void GetRandomDefStart(ref string map, ref int sx, ref int sy)
+        public void GetRandomDefStart(ref string map, ref short sx, ref short sy)
         {
             int n;
-            if (svMain.StartPoints.Count > 0)
+            if (M2Share.StartPoints.Count > 0)
             {
-                if (svMain.StartPoints.Count > 1)
+                if (M2Share.StartPoints.Count > 1)
                 {
                     n = new System.Random(2).Next();
                 }
@@ -3313,15 +3266,15 @@ namespace GameSvr
                 {
                     n = 0;
                 }
-                map = svMain.StartPoints[n].mapName;
-                sx = svMain.StartPoints[n].nY;
-                sy = svMain.StartPoints[n].nY;
+                map = M2Share.StartPoints[n].mapName;
+                sx = M2Share.StartPoints[n].nY;
+                sy = M2Share.StartPoints[n].nY;
             }
             else
             {
-                map = svMain.DefHomeMap;
-                sx = svMain.DefHomeX;
-                sy = svMain.DefHomeY;
+                map = M2Share.DefHomeMap;
+                sx = M2Share.DefHomeX;
+                sy = M2Share.DefHomeY;
             }
         }
 
@@ -3345,13 +3298,13 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[UsrEngn] ProcessMissions");
+                M2Share.MainOutMessage("[UsrEngn] ProcessMissions");
             }
         }
 
         protected void ProcessDragon()
         {
-            svMain.gFireDragon.Run();
+            M2Share.gFireDragon.Run();
         }
 
         // ----------------------- ExecuteRun --------------------------
@@ -3404,9 +3357,9 @@ namespace GameSvr
                 {
                     // 10盒俊 茄 锅
                     timer10min = HUtil32.GetTickCount();
-                    svMain.NoticeMan.RefreshNoticeList();
-                    svMain.MainOutMessage(DateTime.Now.ToString() + " User = " + GetUserCount().ToString());
-                    svMain.UserCastle.SaveAll();
+                    M2Share.NoticeMan.RefreshNoticeList();
+                    M2Share.MainOutMessage(DateTime.Now.ToString() + " User = " + GetUserCount().ToString());
+                    M2Share.UserCastle.SaveAll();
                     // 厘盔操固扁 酒捞袍 郴备 诀单捞飘
                     gaDecoItemCount++;
                     if (gaDecoItemCount >= 6)
@@ -3416,7 +3369,7 @@ namespace GameSvr
                     // 6*10盒 = 1矫埃俊 茄 锅
                     if (gaDecoItemCount == 0)
                     {
-                        svMain.GuildAgitMan.DecreaseDecoMonDurability();
+                        M2Share.GuildAgitMan.DecreaseDecoMonDurability();
                     }
 #if DEBUG
                     // sonmg
@@ -3429,8 +3382,8 @@ namespace GameSvr
                 {
                     timer10sec = HUtil32.GetTickCount();
                     IdSrvClient.FrmIDSoc.SendUserCount(GetRealUserCount());
-                    svMain.GuildMan.CheckGuildWarTimeOut();
-                    svMain.UserCastle.Run();
+                    M2Share.GuildMan.CheckGuildWarTimeOut();
+                    M2Share.UserCastle.Run();
                     if (HUtil32.GetTickCount() - timer1min > 60 * 1000)
                     {
                         // 1盒俊 茄 锅
@@ -3440,32 +3393,29 @@ namespace GameSvr
                         {
                             gaCount = 0;
                         }
-                        if (svMain.GuildAgitMan.CheckGuildAgitTimeOut(gaCount))
+                        if (M2Share.GuildAgitMan.CheckGuildAgitTimeOut(gaCount))
                         {
-                            // 厘盔霸矫魄 府肺靛.
-                            svMain.GuildAgitBoardMan.LoadAllGaBoardList("");
+                            M2Share.GuildAgitBoardMan.LoadAllGaBoardList("");
                         }
                     }
-                    // 盲陛 矫埃捞 场车绰瘤 八荤
-                    for (i = svMain.ShutUpList.Count - 1; i >= 0; i--)
+                    for (i = M2Share.ShutUpList.Count - 1; i >= 0; i--)
                     {
-                        if (GetCurrentTime > ((int)svMain.ShutUpList.Objects[i]))
-                        {
-                            svMain.ShutUpList.Delete(i);
-                        }
+                        //if (HUtil32.GetCurrentTime > ((int)svMain.ShutUpList.Objects[i]))
+                        //{
+                        //    svMain.ShutUpList.Delete(i);
+                        //}
                     }
                 }
-                // if
-                svMain.gFireDragon.Run();
+                M2Share.gFireDragon.Run();
             }
             catch
             {
-                svMain.MainOutMessage("[UsrEngn] Raise Exception..");
+                M2Share.MainOutMessage("[UsrEngn] Raise Exception..");
             }
-            svMain.curusrcount = (int)(HUtil32.GetTickCount() - runonetime);
-            if (svMain.maxusrtime < svMain.curusrcount)
+            M2Share.curusrcount = (int)(HUtil32.GetTickCount() - runonetime);
+            if (M2Share.maxusrtime < M2Share.curusrcount)
             {
-                svMain.maxusrtime = svMain.curusrcount;
+                M2Share.maxusrtime = M2Share.curusrcount;
             }
         }
 
@@ -3635,9 +3585,9 @@ namespace GameSvr
                         // --------------------------------------------------------
                         if (pmsg.Ident == Grobal2.CM_FRIEND_DELETE)
                         {
-                            if (hum.fLover.GetLoverName != EDcode.DecodeString(body))
+                            if (hum.fLover.GetLoverName() != EDcode.DecodeString(body))
                             {
-                                svMain.UserMgrEngine.ExternSendMsg(TSendTarget.stInterServer, svMain.ServerIndex, hum.GateIndex, hum.UserGateIndex, hum.UserHandle, hum.UserName, pmsg, EDcode.DecodeString(body));
+                                M2Share.UserMgrEngine.ExternSendMsg(TSendTarget.stInterServer, M2Share.ServerIndex, hum.GateIndex, hum.UserGateIndex, hum.UserHandle, hum.UserName, pmsg, EDcode.DecodeString(body));
                             }
                             else
                             {
@@ -3646,7 +3596,7 @@ namespace GameSvr
                         }
                         else
                         {
-                            svMain.UserMgrEngine.ExternSendMsg(TSendTarget.stInterServer, svMain.ServerIndex, hum.GateIndex, hum.UserGateIndex, hum.UserHandle, hum.UserName, pmsg, EDcode.DecodeString(body));
+                            M2Share.UserMgrEngine.ExternSendMsg(TSendTarget.stInterServer, M2Share.ServerIndex, hum.GateIndex, hum.UserGateIndex, hum.UserHandle, hum.UserName, pmsg, EDcode.DecodeString(body));
                         }
                         break;
                     default:
@@ -3679,7 +3629,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] ProcessUserMessage..");
+                M2Share.MainOutMessage("[Exception] ProcessUserMessage..");
             }
         }
 
@@ -3693,7 +3643,7 @@ namespace GameSvr
                 hum = GetUserHuman(UserName);
                 if (hum != null)
                 {
-                    hum.SendMsg(hum, (ushort)Ident, (ushort)wparam, lParam1, lParam2, lParam3, str);
+                    hum.SendMsg(hum, Ident, wparam, lParam1, lParam2, lParam3, str);
                 }
             }
             finally
@@ -3733,7 +3683,7 @@ namespace GameSvr
                         {
                             pmi.Name = Envir.NAME_OF_GOLD;
                             pmi.Count = Amount;
-                            pmi.Looks = GetGoldLooks(Amount);
+                            pmi.Looks = HUtil32.GetGoldLooks(Amount);
                             pmi.Ownership = null;
                             pmi.Droptime = HUtil32.GetTickCount();
                             pmi.Droper = null;
@@ -3759,7 +3709,7 @@ namespace GameSvr
                             pmi.Looks = ps.Looks;
                             if (ps.StdMode == 45)
                             {
-                                pmi.Looks = GetRandomLook(pmi.Looks, ps.Shape);
+                                pmi.Looks = HUtil32.GetRandomLook(pmi.Looks, ps.Shape);
                             }
                             pmi.AniCount = ps.AniCount;
                             pmi.Reserved = 0;
@@ -3768,12 +3718,12 @@ namespace GameSvr
                             pmi.Droptime = HUtil32.GetTickCount();
                             pmi.Droper = null;
                         }
-                        dropenvir = svMain.GrobalEnvir.GetEnvir(DropMapName);
+                        dropenvir = M2Share.GrobalEnvir.GetEnvir(DropMapName);
                         pr = (TMapItem)dropenvir.AddToMap(dx, dy, Grobal2.OS_ITEMOBJECT, pmi);
                         if (pr == pmi)
                         {
                             result = pmi.UserItem.MakeIndex;
-                            svMain.MainOutMessage("[DragonItemGen] " + pmi.Name + "(" + dx.ToString() + "," + dy.ToString());
+                            M2Share.MainOutMessage("[DragonItemGen] " + pmi.Name + "(" + dx.ToString() + "," + dy.ToString());
                         }
                         else
                         {
@@ -3788,7 +3738,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] TUserEngine.MakeItemToMap");
+                M2Share.MainOutMessage("[Exception] TUserEngine.MakeItemToMap");
             }
             return result;
         }

@@ -20,7 +20,7 @@ namespace GameSvr
     public class TQuestRequire
     {
         public int RandomCount;
-        public ushort CheckIndex;
+        public short CheckIndex;
         public byte CheckValue;
     }
 
@@ -105,7 +105,7 @@ namespace GameSvr
             int result = -1;
             if (str.Length == 2)
             {
-                if (Char.ToUpper(str[0]) == 'P')
+                if (char.ToUpper(str[0]) == 'P')
                 {
                     n = HUtil32.Str_ToInt(str[1].ToString(), -1);
                     if (n >= 0 && n <= 9)
@@ -113,7 +113,7 @@ namespace GameSvr
                         result = n;
                     }
                 }
-                if (Char.ToUpper(str[0]) == 'G')
+                if (char.ToUpper(str[0]) == 'G')
                 {
                     n = HUtil32.Str_ToInt(str[1].ToString(), -1);
                     if (n >= 0 && n <= 9)
@@ -121,7 +121,7 @@ namespace GameSvr
                         result = 100 + n;
                     }
                 }
-                if (Char.ToUpper(str[0]) == 'D')
+                if (char.ToUpper(str[0]) == 'D')
                 {
                     n = HUtil32.Str_ToInt(str[1].ToString(), -1);
                     if (n >= 0 && n <= 9)
@@ -129,7 +129,7 @@ namespace GameSvr
                         result = 200 + n;
                     }
                 }
-                if (Char.ToUpper(str[0]) == 'M')
+                if (char.ToUpper(str[0]) == 'M')
                 {
                     n = HUtil32.Str_ToInt(str[1].ToString(), -1);
                     if (n >= 0 && n <= 9)

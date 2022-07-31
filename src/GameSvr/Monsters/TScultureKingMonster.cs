@@ -32,7 +32,7 @@ namespace GameSvr
                 this.CharStatus = this.GetCharStatus();
                 this.SendRefMsg(Grobal2.RM_DIGUP, this.Dir, this.CX, this.CY, 0, "");
                 this.BoStoneMode = false;
-                svMain.EventMan.AddEvent(__event);
+                M2Share.EventMan.AddEvent(__event);
                 return;
             }
             if (__event != null)
@@ -53,16 +53,16 @@ namespace GameSvr
             string[] followers = new string[MAX_FOLLOWERS - 1 + 1];
             count = 6 + new System.Random(6).Next();
             M2Share.GetFrontPosition(this, ref nx, ref ny);
-            followers[0] = svMain.__ZumaMonster1;
-            followers[1] = svMain.__ZumaMonster2;
-            followers[2] = svMain.__ZumaMonster3;
-            followers[3] = svMain.__ZumaMonster4;
+            followers[0] = M2Share.__ZumaMonster1;
+            followers[1] = M2Share.__ZumaMonster2;
+            followers[2] = M2Share.__ZumaMonster3;
+            followers[3] = M2Share.__ZumaMonster4;
             for (i = 1; i <= count; i++)
             {
                 if (childlist.Count < 30)
                 {
                     monname = followers[new System.Random(MAX_FOLLOWERS).Next()];
-                    mon = svMain.UserEngine.AddCreatureSysop(this.MapName, nx, ny, monname);
+                    mon = M2Share.UserEngine.AddCreatureSysop(this.MapName, nx, ny, monname);
                     if (mon != null)
                     {
                         childlist.Add(mon);
@@ -108,7 +108,7 @@ namespace GameSvr
                     {
                         if ((HUtil32.GetTickCount() - this.SearchEnemyTime > 8000) || ((HUtil32.GetTickCount() - this.SearchEnemyTime > 1000) && (this.TargetCret == null)))
                         {
-                            this.SearchEnemyTime  =  HUtil32.GetTickCount();
+                            this.SearchEnemyTime = HUtil32.GetTickCount();
                             this.MonsterNormalAttack();
                         }
                         if (BoCallFollower)

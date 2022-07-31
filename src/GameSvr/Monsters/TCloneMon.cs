@@ -16,7 +16,7 @@ namespace GameSvr
             this.RaceServer = Grobal2.RC_CLONE;
             this.ViewRange = 10;
         }
-        
+
         public override void RecalcAbilitys()
         {
             BeforeRecalcAbility();
@@ -48,7 +48,7 @@ namespace GameSvr
             this.NextHitTime = 3300 - (this.SlaveMakeLevel * 300);
             this.NextWalkTime = 500;
             this.WalkTime = GetCurrentTime + 2000;
-            NextMPSpendTime  =  HUtil32.GetTickCount();
+            NextMPSpendTime = HUtil32.GetTickCount();
             MPSpendTickTime = 600 * 30;
             if (this.Master != null)
             {
@@ -93,7 +93,7 @@ namespace GameSvr
                     {
                         pwr = HUtil32.MathRound(pwr * 1.5);
                     }
-                    this.SendDelayMsg(this, Grobal2.RM_DELAYMAGIC, (ushort)pwr, HUtil32.MakeLong(targ.CX, targ.CY), 2, targ.ActorId, "", 600);
+                    this.SendDelayMsg(this, Grobal2.RM_DELAYMAGIC, (short)pwr, HUtil32.MakeLong(targ.CX, targ.CY), 2, targ.ActorId, "", 600);
                     this.SendRefMsg(Grobal2.RM_MAGICFIRE, 0, MakeWord(7, 9), HUtil32.MakeLong(targ.CX, targ.CY), targ.ActorId, "");
                 }
             }
@@ -167,7 +167,7 @@ namespace GameSvr
                         }
                         if (HUtil32.GetTickCount() >= NextMPSpendTime + MPSpendTickTime)
                         {
-                            NextMPSpendTime  =  HUtil32.GetTickCount();
+                            NextMPSpendTime = HUtil32.GetTickCount();
                             // 170
                             if (this.Master.WAbil.MP >= 200)
                             {
@@ -187,7 +187,7 @@ namespace GameSvr
                                     }
                                     else
                                     {
-                                        this.Master.WAbil.MP = (ushort)(this.Master.WAbil.MP + finalplus);
+                                        this.Master.WAbil.MP = (short)(this.Master.WAbil.MP + finalplus);
                                     }
                                 }
                                 else
@@ -198,7 +198,7 @@ namespace GameSvr
                                     }
                                     else
                                     {
-                                        this.Master.WAbil.MP = (ushort)(this.Master.WAbil.MP + finalplus);
+                                        this.Master.WAbil.MP = (short)(this.Master.WAbil.MP + finalplus);
                                     }
                                 }
                             }
@@ -214,9 +214,9 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("EXCEPT TCLONE");
+                M2Share.MainOutMessage("EXCEPT TCLONE");
             }
         }
-    } 
+    }
 }
 

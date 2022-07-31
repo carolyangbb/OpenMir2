@@ -12,8 +12,8 @@ namespace SystemModule
 
     public class TIconInfo
     {
-        public ushort wStart;
-        public ushort wFrameTime;
+        public short wStart;
+        public short wFrameTime;
         public byte btFrame;
         public byte bo01;
         public int nx = 0;
@@ -51,20 +51,20 @@ namespace SystemModule
     {
         public uint Code;
         public int SNumber;
-        public ushort UserGateIndex;
-        public ushort Ident;
-        public ushort UserListIndex;
-        public ushort temp;
+        public short UserGateIndex;
+        public short Ident;
+        public short UserListIndex;
+        public short temp;
         public int length;
     }
 
     public class TDefaultMessage
     {
         public int Recog;
-        public ushort Ident;
-        public ushort Param;
-        public ushort Tag;
-        public ushort Series;
+        public short Ident;
+        public short Param;
+        public short Tag;
+        public short Series;
 
         public const int PacketSize = 12;
     }
@@ -83,8 +83,8 @@ namespace SystemModule
 
     public class TMessageInfo
     {
-        public ushort Ident;
-        public ushort wParam;
+        public short Ident;
+        public short wParam;
         public int lParam1;
         public int lParam2;
         public int lParam3;
@@ -95,8 +95,8 @@ namespace SystemModule
 
     public struct TMessageInfoPtr
     {
-        public ushort Ident;
-        public ushort wParam;
+        public short Ident;
+        public short wParam;
         public int lParam1;
         public int lParam2;
         public int lParam3;
@@ -107,16 +107,16 @@ namespace SystemModule
 
     public class TShortMessage : ClientPacket
     {
-        public ushort Ident;
-        public ushort msg;
+        public short Ident;
+        public short msg;
     }
 
     public class TMessageBodyW : ClientPacket
     {
-        public ushort Param1;
-        public ushort Param2;
-        public ushort Tag1;
-        public ushort Tag2;
+        public short Param1;
+        public short Param2;
+        public short Tag1;
+        public short Tag2;
     }
 
     public class TMessageBodyWL : ClientPacket
@@ -143,16 +143,16 @@ namespace SystemModule
 
     public class TNakedAbility : ClientPacket
     {
-        public ushort DC;
-        public ushort MC;
-        public ushort SC;
-        public ushort AC;
-        public ushort MAC;
-        public ushort HP;
-        public ushort MP;
-        public ushort Hit;
-        public ushort Speed;
-        public ushort Reserved;
+        public short DC;
+        public short MC;
+        public short SC;
+        public short AC;
+        public short MAC;
+        public short HP;
+        public short MP;
+        public short Hit;
+        public short Speed;
+        public short Reserved;
     }
 
     public struct TChgAttr
@@ -177,7 +177,7 @@ namespace SystemModule
         public byte Weight;
         public byte AniCount;
         // 1焊促 农搁 局聪皋捞记 登绰 酒捞袍 (促弗 侩档肺 腹捞 静烙)
-        public ushort SpecialPwr;
+        public short SpecialPwr;
         // +捞搁 积拱傍拜+瓷仿, -捞搁 攫单靛傍拜+
         // 1~10 碍档
         // -50~-1 攫单靛 瓷仿摹 氢惑
@@ -188,13 +188,13 @@ namespace SystemModule
         // $04 IDC_NEVERTAKEOFF  (颊俊辑 冻绢瘤瘤 臼澜, 固瘤荐 荤侩 阂啊瓷)
         // $08 IDC_DIEANDBREAK   (馒侩酒捞袍俊辑 磷栏搁 柄瘤绰 加己)
         // $10 IDC_NEVERLOSE     (馒侩酒捞袍俊辑 磷绢档 冻绢瘤瘤 臼澜)
-        public ushort Looks;
-        public ushort DuraMax;
-        public ushort AC;
-        public ushort MAC;
-        public ushort DC;
-        public ushort MC;
-        public ushort SC;
+        public short Looks;
+        public short DuraMax;
+        public short AC;
+        public short MAC;
+        public short DC;
+        public short MC;
+        public short SC;
         public byte Need;
         // 0:Level, 1:DC, 2:MC, 3:SC
         public byte NeedLevel;
@@ -248,7 +248,7 @@ namespace SystemModule
         // --------------------
         public byte ItemType;
         // 酒捞袍狼 备盒
-        public ushort ItemSet;
+        public short ItemSet;
         // 悸飘 酒捞袍 备盒
         public string Reference;
     }
@@ -257,10 +257,10 @@ namespace SystemModule
     {
         public int MakeIndex;
         // 辑滚俊辑狼 酒捞袍 牢郸胶(父甸绢 龙锭 牢郸胶 概败咙, 吝汗啊瓷)
-        public ushort Index;
+        public short Index;
         // 钎霖酒捞袍狼 牢郸胶  0:绝澜, 1何磐 矫累窃..
-        public ushort Dura;
-        public ushort DuraMax;
+        public short Dura;
+        public short DuraMax;
         // 函版等 郴备己 弥措蔼
         public byte[] Desc;
         // 0..7 酒捞袍 诀弊饭捞靛 惑怕
@@ -280,29 +280,29 @@ namespace SystemModule
     {
         public byte Level;
         public byte reserved1;
-        public ushort AC;
+        public short AC;
         // armor class
-        public ushort MAC;
+        public short MAC;
         // magic armor class
-        public ushort DC;
+        public short DC;
         // damage class  -> makeword(min/max)
-        public ushort MC;
+        public short MC;
         // magic power class   -> makeword(min/max)
-        public ushort SC;
+        public short SC;
         // sprite energy class    -> makeword(min/max)
-        public ushort HP;
+        public short HP;
         // health point
-        public ushort MP;
+        public short MP;
         // magic point
-        public ushort MaxHP;
+        public short MaxHP;
         // max health point
-        public ushort MaxMP;
+        public short MaxMP;
         // max magic point
         public byte ExpCount;
         public byte ExpMaxCount;
         public int Exp;
         public int MaxExp;
-        public ushort Weight;
+        public short Weight;
         public ushort MaxWeight;
         public byte WearWeight;
         public byte MaxWearWeight;
@@ -310,46 +310,34 @@ namespace SystemModule
         public byte MaxHandWeight;
     }
 
-    // 固福2
-    public struct TAddAbility
+    public class TAddAbility
     {
-        // 酒捞袍 馒侩栏肺 疵绢唱绰 瓷仿摹
-        public ushort HP;
-        public ushort MP;
-        public ushort HIT;
-        // 沥犬
-        public ushort SPEED;
-        // 刮酶
-        public ushort AC;
-        public ushort MAC;
-        public ushort DC;
-        public ushort MC;
-        public ushort SC;
-        public ushort AntiPoison;
-        // %  // 吝刀历亲
+        public short HP;
+        public short MP;
+        public short HIT;
+        public short SPEED;
+        public short AC;
+        public short MAC;
+        public short DC;
+        public short MC;
+        public short SC;
+        public short AntiPoison;
         public ushort PoisonRecover;
-        // %
         public ushort HealthRecover;
-        // %
         public ushort SpellRecover;
-        // %
         public ushort AntiMagic;
-        // 付过 雀乔啦 % // => 付过历亲
         public byte Luck;
-        // 青款 器牢飘
         public byte UnLuck;
-        // 阂青 器牢飘
         public byte WeaponStrong;
         public byte UndeadPower;
-        public ushort HitSpeed;
-        // added by sonmg
+        public short HitSpeed;
         public byte Slowdown;
         public byte Poison;
     }
 
     public struct TPricesInfo
     {
-        public ushort Index;
+        public short Index;
         public int SellPrice;
     }
 
@@ -362,7 +350,7 @@ namespace SystemModule
         // 俺喊酒捞袍牢版快, Item狼 ServerIndex 烙
         // Dura        : word;
         // DuraMax     : word;
-        public ushort Grade;
+        public short Grade;
     }
 
     public struct TClientJangwon
@@ -404,32 +392,29 @@ namespace SystemModule
     {
         public TStdItem S;
         public int MakeIndex;
-        public ushort Dura;
-        public ushort DuraMax;
+        public short Dura;
+        public short DuraMax;
         public byte[] Desc;
     }
 
-    public struct TUserStateInfo
+    public class TUserStateInfo : ClientPacket
     {
         public int Feature;
         public string UserName;
         public int NameColor;
         public string GuildName;
-        // [14]; //荐沥(2004/12/22)
         public string GuildRankName;
         public TClientItem[] UseItems;
-        // 8->12
         public bool bExistLover;
-        // 楷牢 惑怕(2004/10/27)
         public string LoverName;
     }
 
     public struct TDropItem
     {
         public int Id;
-        public ushort X;
-        public ushort Y;
-        public ushort Looks;
+        public short X;
+        public short Y;
+        public short Looks;
         public long FlashTime;
         public bool BoFlash;
         public long FlashStepTime;
@@ -443,13 +428,13 @@ namespace SystemModule
 
     public class TDefMagic
     {
-        public ushort MagicId;
+        public short MagicId;
         public string MagicName;
         // 沫 疵副巴 12->14(努扼捞攫飘客 窃膊 荤侩)
         public byte EffectType;
         public byte Effect;
-        public ushort Spell;
-        public ushort MinPower;
+        public short Spell;
+        public short MinPower;
         public byte[] NeedLevel;
         public int[] MaxTrain;
         public byte MaxTrainLevel;
@@ -460,7 +445,7 @@ namespace SystemModule
         // 茄规 金促澜俊 促澜 付过阑 镜 荐 乐绰单 吧府绰 矫埃
         public byte DefSpell;
         public byte DefMinPower;
-        public ushort MaxPower;
+        public short MaxPower;
         public byte DefMaxPower;
         public string Desc;
     }
@@ -469,7 +454,7 @@ namespace SystemModule
     {
         public TDefMagic pDef;
         // 馆靛矫 nil捞 酒聪绢具 茄促.
-        public ushort MagicId;
+        public short MagicId;
         // Magic Index 历厘. 蜡聪农秦具窍哥, 函悼登搁 救凳, 亲惑 0焊促 农促.
         public byte Level;
         public char Key;
@@ -510,8 +495,8 @@ namespace SystemModule
 
     public struct TSkillInfo
     {
-        public ushort SkillIndex;
-        public ushort Reserved;
+        public short SkillIndex;
+        public short Reserved;
         public int CurTrain;
     }
 
@@ -520,7 +505,7 @@ namespace SystemModule
         public int ItemId;
         public TUserItem UserItem;
         public string Name;
-        public ushort Looks;
+        public short Looks;
         public byte AniCount;
         public byte Reserved;
         public int Count;
@@ -532,22 +517,22 @@ namespace SystemModule
     public class TAgitDecoItem
     {
         public string Name;
-        public ushort Looks;
+        public short Looks;
         public string MapName;
-        public ushort x;
-        public ushort y;
+        public short x;
+        public short y;
         public string Maker;
-        public ushort Dura;
+        public short Dura;
     }
 
     public class TVisibleItemInfo
     {
         public byte check;
-        public ushort x;
-        public ushort y;
+        public short x;
+        public short y;
         public long Id;
         public string Name;
-        public ushort looks;
+        public short looks;
     } 
 
     public class TVisibleActor
@@ -559,8 +544,8 @@ namespace SystemModule
     public struct TMapEventInfo
     {
         public byte check;
-        public int X;
-        public int Y;
+        public short X;
+        public short Y;
         public Object EventObject;
     }
 
@@ -568,8 +553,8 @@ namespace SystemModule
     {
         public byte GateType;
         public Object EnterEnvir;
-        public int EnterX;
-        public int EnterY;
+        public short EnterX;
+        public short EnterY;
     }
 
     public class TAThing
@@ -659,9 +644,9 @@ namespace SystemModule
         public byte Level;
         public byte LifeAttrib;
         public byte CoolEye;
-        public ushort Exp;
-        public ushort HP;
-        public ushort MP;
+        public short Exp;
+        public short HP;
+        public short MP;
         public byte AC;
         public byte MAC;
         public byte DC;
@@ -670,16 +655,16 @@ namespace SystemModule
         public byte SC;
         public byte Speed;
         public byte Hit;
-        public ushort WalkSpeed;
-        public ushort WalkStep;
-        public ushort WalkWait;
-        public ushort AttackSpeed;
+        public short WalkSpeed;
+        public short WalkStep;
+        public short WalkWait;
+        public short AttackSpeed;
         // newly added by sonmg.
-        public ushort Tame;
-        public ushort AntiPush;
-        public ushort AntiUndead;
-        public ushort SizeRate;
-        public ushort AntiStop;
+        public short Tame;
+        public short AntiPush;
+        public short AntiUndead;
+        public short SizeRate;
+        public short AntiStop;
         public ArrayList ItemList;
     }
 
@@ -721,7 +706,7 @@ namespace SystemModule
         public long ZenTime;
     }
 
-    public struct TQDDinfo
+    public class TQDDinfo
     {
         public int Index;
         public string Title;
@@ -737,7 +722,7 @@ namespace SystemModule
         public string SellWho;
         public string Selldate;
         // 1 = 魄概吝 , 2 = 魄概肯丰
-        public ushort SellState;
+        public short SellState;
     }
 
     public class TMarketLoad
@@ -761,7 +746,7 @@ namespace SystemModule
         // 魄概磊
         public string Selldate;
         // 魄概朝楼(0312311210 = 2003-12-31 12:10 )
-        public ushort SellState;
+        public short SellState;
         // 1 = 魄概吝 , 2 = 魄概肯丰
         public int IsOK;
     }
@@ -833,10 +818,10 @@ namespace SystemModule
     {
         public string sItemName;
         public byte btClass;
-        public ushort wLooks;
+        public short wLooks;
         public int wPrice;
-        public ushort wShape1;
-        public ushort wShape2;
+        public short wShape1;
+        public short wShape2;
         public string sExplain;
     }
 
@@ -2954,10 +2939,9 @@ namespace SystemModule
             return result;
         }
 
-        public static ushort APPRfeature(int feature)
+        public static short APPRfeature(int feature)
         {
-            ushort result = HUtil32.HiWord(feature);
-            return result;
+            return HUtil32.HiWord(feature);
         }
 
         public static long MakeFeature(byte race, byte dress, byte weapon, byte face)
@@ -2972,14 +2956,14 @@ namespace SystemModule
             return HUtil32.MakeLong(HUtil32.MakeWord(race, state), appear);
         }
 
-        public static TDefaultMessage MakeDefaultMsg(ushort msg, int soul, int wparam, int atag, int nseries)
+        public static TDefaultMessage MakeDefaultMsg(short msg, int soul, int wparam, int atag, int nseries)
         {
             TDefaultMessage result = new TDefaultMessage();
             result.Ident = msg;
             result.Recog = soul;
-            result.Param = (ushort)wparam;
-            result.Tag = (ushort)atag;
-            result.Series = (ushort)nseries;
+            result.Param = (short)wparam;
+            result.Tag = (short)atag;
+            result.Series = (short)nseries;
             return result;
         }
 

@@ -11,7 +11,7 @@ namespace GameSvr
             this.ChainShotCount = 6;
             this.BoCallFollower = false;
         }
-        
+
         public override void Attack(TCreature target, byte dir)
         {
             int pwr;
@@ -47,7 +47,7 @@ namespace GameSvr
                             if (dam > 0)
                             {
                                 cret.StruckDamage(dam, this);
-                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 200);
+                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 200);
                             }
                         }
                     }
@@ -68,10 +68,10 @@ namespace GameSvr
             int iyt;
             int pwr;
             int dam;
-            short sx =0;
-            short sy =0;
-            short tx =0;
-            short ty =0;
+            short sx = 0;
+            short sy = 0;
+            short tx = 0;
+            short ty = 0;
             ArrayList list;
             TCreature cret;
             if (targ == null)
@@ -104,7 +104,7 @@ namespace GameSvr
                                 if (dam > 0)
                                 {
                                     cret.StruckDamage(dam, this);
-                                    cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
+                                    cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                                 }
                             }
                         }
@@ -117,7 +117,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir=0;
+            byte targdir = 0;
             result = false;
             if (this.TargetCret != null)
             {
@@ -128,7 +128,7 @@ namespace GameSvr
                     {
                         if (this.TargetInAttackRange(this.TargetCret, ref targdir) && (new System.Random(3).Next() != 0))
                         {
-                            this.TargetFocusTime  =  HUtil32.GetTickCount();
+                            this.TargetFocusTime = HUtil32.GetTickCount();
                             Attack(this.TargetCret, targdir);
                             result = true;
                         }
@@ -137,7 +137,7 @@ namespace GameSvr
                             if (this.ChainShot < this.ChainShotCount - 1)
                             {
                                 this.ChainShot++;
-                                this.TargetFocusTime  =  HUtil32.GetTickCount();
+                                this.TargetFocusTime = HUtil32.GetTickCount();
                                 RangeAttack(this.TargetCret);
                             }
                             else

@@ -16,7 +16,7 @@ namespace GameSvr
         public TCowKingMonster() : base()
         {
             this.SearchRate = 500 + ((long)new System.Random(1500).Next());
-            JumpTime  =  HUtil32.GetTickCount();
+            JumpTime = HUtil32.GetTickCount();
             this.RushMode = true;
             CrazyCount = 0;
             CrazyReadyMode = false;
@@ -46,7 +46,7 @@ namespace GameSvr
             {
                 if (HUtil32.GetTickCount() - JumpTime > 30 * 1000)
                 {
-                    JumpTime  =  HUtil32.GetTickCount();
+                    JumpTime = HUtil32.GetTickCount();
                     if ((this.TargetCret != null) && (this.SiegeLockCount() >= 5))
                     {
                         M2Share.GetBackPosition(this.TargetCret, ref nx, ref ny);
@@ -66,7 +66,7 @@ namespace GameSvr
                 if ((CrazyCount >= 2) && (CrazyCount != old))
                 {
                     CrazyReadyMode = true;
-                    crazyready  =  HUtil32.GetTickCount();
+                    crazyready = HUtil32.GetTickCount();
                 }
                 if (CrazyReadyMode)
                 {
@@ -78,7 +78,7 @@ namespace GameSvr
                     {
                         CrazyReadyMode = false;
                         CrazyKingMode = true;
-                        crazytime  =  HUtil32.GetTickCount();
+                        crazytime = HUtil32.GetTickCount();
                     }
                 }
                 if (CrazyKingMode)

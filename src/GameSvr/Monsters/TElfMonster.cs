@@ -66,7 +66,7 @@ namespace GameSvr
                 }
                 if (bochangeface)
                 {
-                    TCreature cret = this.MakeClone(svMain.__ShinSu1, this);
+                    TCreature cret = this.MakeClone(M2Share.__ShinSu1, this);
                     if (cret != null)
                     {
                         if (cret is TElfWarriorMonster)

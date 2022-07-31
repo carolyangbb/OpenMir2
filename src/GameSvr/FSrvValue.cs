@@ -14,18 +14,18 @@ namespace GameSvr
         {
             bool result;
             result = false;
-            EHum.Value = svMain.HumLimitTime;
-            EMon.Value = svMain.MonLimitTime;
-            EZen.Value = svMain.ZenLimitTime;
-            ESoc.Value = svMain.SocLimitTime;
-            EDec.Value = svMain.DecLimitTime;
-            ENpc.Value = svMain.NpcLimitTime;
-            ESendBlock.Value = svMain.SENDBLOCK;
-            ECheckBlock.Value = svMain.SENDCHECKBLOCK;
-            EAvailableBlock.Value = svMain.SENDAVAILABLEBLOCK;
-            EGateLoad.Value = svMain.GATELOAD;
-            CbViewHack.Checked = svMain.BoViewHackCode;
-            CkViewAdmfail.Checked = svMain.BoViewAdmissionfail;
+            EHum.Value = M2Share.HumLimitTime;
+            EMon.Value = M2Share.MonLimitTime;
+            EZen.Value = M2Share.ZenLimitTime;
+            ESoc.Value = M2Share.SocLimitTime;
+            EDec.Value = M2Share.DecLimitTime;
+            ENpc.Value = M2Share.NpcLimitTime;
+            ESendBlock.Value = M2Share.SENDBLOCK;
+            ECheckBlock.Value = M2Share.SENDCHECKBLOCK;
+            EAvailableBlock.Value = M2Share.SENDAVAILABLEBLOCK;
+            EGateLoad.Value = M2Share.GATELOAD;
+            CbViewHack.Checked = M2Share.BoViewHackCode;
+            CkViewAdmfail.Checked = M2Share.BoViewAdmissionfail;
             //if (this.ShowModal == System.Windows.Forms.DialogResult.OK)
             //{
             //    svMain.HumLimitTime = HUtil32._MIN(150, EHum.Value);
@@ -46,7 +46,7 @@ namespace GameSvr
         }
 
         // Note: the original parameters are Object Sender, ref char Key
-        public void EHumKeyPress(System.Object Sender, System.Windows.Forms.KeyPressEventArgs _e1)
+        public void EHumKeyPress(object Sender, System.Windows.Forms.KeyPressEventArgs _e1)
         {
             if (Sender is NumericUpDown)
             {

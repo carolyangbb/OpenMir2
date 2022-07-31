@@ -89,7 +89,7 @@ namespace GameSvr
     public class TUserMgr : TCmdMgr
     {
         private readonly ArrayList FItems = null;
-        private object FHumanCS = null;
+        private readonly object FHumanCS = null;
 
         public TUserMgr() : base()
         {
@@ -434,7 +434,7 @@ namespace GameSvr
             FHumanCS.Enter();
             try
             {
-                svMain.UserEngine.ExternSendMessage(Cmd.UserName, Grobal2.RM_LM_DBGETLIST, 0, 0, 0, 0, Cmd.body);
+                M2Share.UserEngine.ExternSendMessage(Cmd.UserName, Grobal2.RM_LM_DBGETLIST, 0, 0, 0, 0, Cmd.body);
             }
             finally
             {
@@ -445,7 +445,7 @@ namespace GameSvr
         public void OnSendInfoToOthers(string UserName, int ConnState, string MapInfo, string LinkedFriend)
         {
             string str = UserName + "/" + ConnState.ToString() + "/" + MapInfo + "/";
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, svMain.ServerIndex, 0, 0, 0, LinkedFriend, 0, Grobal2.ISM_USER_INFO, (ushort)svMain.ServerIndex, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, M2Share.ServerIndex, 0, 0, 0, LinkedFriend, 0, Grobal2.ISM_USER_INFO, (short)M2Share.ServerIndex, 0, 0, str);
         }
     }
 

@@ -56,7 +56,7 @@ namespace GameSvr
                     }
                     catch
                     {
-                        svMain.MainOutMessage("Error in loading notice text. file name is " + flname);
+                        M2Share.MainOutMessage("Error in loading notice text. file name is " + flname);
                     }
                 }
             }
@@ -98,7 +98,7 @@ namespace GameSvr
                             }
                             catch
                             {
-                                svMain.MainOutMessage("Error in loading notice text. file name is " + flname);
+                                M2Share.MainOutMessage("Error in loading notice text. file name is " + flname);
                             }
                             Notices[i].Name = nname;
                             result = true;
@@ -118,6 +118,6 @@ namespace GameSvr
     {
         public const int MAXNOTICE = 100;
         public const string NoticeDir = ".\\Notice\\";
-    } 
+    }
 }
 

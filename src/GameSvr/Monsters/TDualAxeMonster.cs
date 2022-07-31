@@ -17,40 +17,29 @@ namespace GameSvr
             this.SearchRate = 3000;
             ChainShot = 0;
             ChainShotCount = 2;
-            this.SearchTime  =  HUtil32.GetTickCount();
+            this.SearchTime = HUtil32.GetTickCount();
             this.RaceServer = Grobal2.RC_DUALAXESKELETON;
         }
 
         protected void FlyAxeAttack(TCreature targ)
         {
-            // 馆靛矫 target <> nil
-            int dam;
             if (targ == null)
             {
                 return;
             }
             if (this.PEnvir.CanFly(this.CX, this.CY, targ.CX, targ.CY))
             {
-                // 档尝啊 朝酒哎荐 乐绰瘤.
                 this.Dir = M2Share.GetNextDirection(this.CX, this.CY, targ.CX, targ.CY);
                 TAbility _wvar1 = this.WAbil;
-                dam = HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next();
+                int dam = HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next();
                 if (dam > 0)
                 {
-                    // armor := (LoByte(targ.WAbil.AC) + Random(ShortInt(HiByte(targ.WAbil.AC)-LoByte(targ.WAbil.AC)) + 1));
-                    // dam := dam - armor;
-                    // if dam <= 0 then
-                    // if dam > -10 then dam := 1;
                     dam = targ.GetHitStruckDamage(this, dam);
                 }
                 if (dam > 0)
                 {
                     targ.StruckDamage(dam, this);
-                    // wparam
-                    // lparam1
-                    // lparam2
-                    // hiter
-                    targ.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - targ.CX), Math.Abs(this.CY - targ.CY)) * 50);
+                    targ.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - targ.CX), Math.Abs(this.CY - targ.CY)) * 50);
                 }
                 this.SendRefMsg(Grobal2.RM_FLYAXE, this.Dir, this.CX, this.CY, targ.ActorId, "");
             }
@@ -58,8 +47,7 @@ namespace GameSvr
 
         protected override bool AttackTarget()
         {
-            bool result;
-            result = false;
+            bool result = false;
             if (this.TargetCret != null)
             {
                 if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
@@ -70,7 +58,7 @@ namespace GameSvr
                         if (ChainShot < ChainShotCount - 1)
                         {
                             ChainShot++;
-                            this.TargetFocusTime  =  HUtil32.GetTickCount();
+                            this.TargetFocusTime = HUtil32.GetTickCount();
                             FlyAxeAttack(this.TargetCret);
                         }
                         else
@@ -88,7 +76,6 @@ namespace GameSvr
                         {
                             if ((Math.Abs(this.CX - this.TargetCret.CX) <= 11) && (Math.Abs(this.CY - this.TargetCret.CY) <= 11))
                             {
-                                // 距埃 冻绢柳 版快 蝶扼埃促.
                                 this.SetTargetXY(this.TargetCret.CX, this.TargetCret.CY);
                             }
                         }
@@ -96,7 +83,6 @@ namespace GameSvr
                         {
                             this.LoseTarget();
                         }
-                        // <!!林狼> TargetCret := nil肺 官柴
                     }
                 }
             }
@@ -105,28 +91,19 @@ namespace GameSvr
 
         public override void Run()
         {
-            int i;
-            int dis;
-            int d;
-            TCreature cret;
-            TCreature nearcret;
-            dis = 9999;
-            nearcret = null;
-            // if not Death and not RunDone and not BoGhost and
-            // (StatusArr[POISON_STONE] = 0) and (StatusArr[POISON_ICE] = 0) and
-            // (StatusArr[POISON_STUN] = 0) then begin
+            int dis = 9999;
+            TCreature nearcret = null;
             if (!RunDone && this.IsMoveAble())
             {
                 if (HUtil32.GetTickCount() - this.SearchEnemyTime > 5000)
                 {
-                    this.SearchEnemyTime  =  HUtil32.GetTickCount();
-                    // 惑加罐篮 run 俊辑 HitTime 犁汲沥窃.
-                    for (i = 0; i < this.VisibleActors.Count; i++)
+                    this.SearchEnemyTime = HUtil32.GetTickCount();
+                    for (var i = 0; i < this.VisibleActors.Count; i++)
                     {
-                        cret = (TCreature)this.VisibleActors[i].cret;
+                        TCreature cret = (TCreature)this.VisibleActors[i].cret;
                         if ((!cret.Death) && this.IsProperTarget(cret) && (!cret.BoHumHideMode || this.BoViewFixedHide))
                         {
-                            d = Math.Abs(this.CX - cret.CX) + Math.Abs(this.CY - cret.CY);
+                            int d = Math.Abs(this.CX - cret.CX) + Math.Abs(this.CY - cret.CY);
                             if (d < dis)
                             {
                                 dis = d;
@@ -163,6 +140,5 @@ namespace GameSvr
             base.Run();
         }
     }
-    
 }
 

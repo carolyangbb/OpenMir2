@@ -31,7 +31,7 @@ namespace GameSvr
                     {
                         if ((Math.Abs(this.CX - cret.CX) <= this.ViewRange) && (Math.Abs(this.CY - cret.CY) <= this.ViewRange))
                         {
-                            this.SendDelayMsg(this, Grobal2.RM_DELAYMAGIC, pwr, HUtil32.MakeLong(cret.CX, cret.CY), 1, cret.ActorId, "", 200);
+                            this.SendDelayMsg(this, Grobal2.RM_DELAYMAGIC, (short)pwr, HUtil32.MakeLong(cret.CX, cret.CY), 1, cret.ActorId, "", 200);
                             this.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, cret.CX, cret.CY, Grobal2.NE_HEARTPALP, "");
                         }
                     }

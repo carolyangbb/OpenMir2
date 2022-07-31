@@ -1,5 +1,4 @@
-﻿using System;
-using SystemModule;
+﻿using SystemModule;
 
 namespace GameSvr
 {
@@ -49,7 +48,7 @@ namespace GameSvr
         public override void Die()
         {
             base.Die();
-            BrokenTime  =  HUtil32.GetTickCount();
+            BrokenTime = HUtil32.GetTickCount();
         }
 
         public override void Run()
@@ -57,7 +56,7 @@ namespace GameSvr
             int newdir;
             if (this.Death)
             {
-                this.DeathTime  =  HUtil32.GetTickCount();
+                this.DeathTime = HUtil32.GetTickCount();
                 // 绝绢瘤瘤 臼绰促.
                 if (BoBlockPos)
                 {

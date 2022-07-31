@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.IO;
-using SystemModule;
+using SystemModule.Common;
 
 namespace GameSvr
 {
@@ -16,7 +16,6 @@ namespace GameSvr
         ~TGuildManager()
         {
             GuildList.Free();
-            base.Destroy();
         }
 
         public void ClearGuildList()
@@ -31,15 +30,14 @@ namespace GameSvr
 
         public void LoadGuildList()
         {
-            ArrayList strlist;
-            int i;
+            StringList strlist;
             string gname;
             TGuild guild;
-            if (File.Exists(svMain.GuildFile))
+            if (File.Exists(M2Share.GuildFile))
             {
-                strlist = new ArrayList();
-                strlist.LoadFromFile(svMain.GuildFile);
-                for (i = 0; i < strlist.Count; i++)
+                strlist = new StringList();
+                strlist.LoadFromFile(M2Share.GuildFile);
+                for (var i = 0; i < strlist.Count; i++)
                 {
                     gname = strlist[i].Trim();
                     if (gname != "")
@@ -49,18 +47,18 @@ namespace GameSvr
                     }
                 }
                 strlist.Free();
-                for (i = 0; i < GuildList.Count; i++)
+                for (var i = 0; i < GuildList.Count; i++)
                 {
                     if (!(GuildList[i] as TGuild).LoadGuild())
                     {
-                        svMain.MainOutMessage((GuildList[i] as TGuild).GuildName + " Information reading failure.");
+                        M2Share.MainOutMessage((GuildList[i] as TGuild).GuildName + " Information reading failure.");
                     }
                 }
-                svMain.MainOutMessage("Guild information " + GuildList.Count.ToString() + " read .");
+                M2Share.MainOutMessage("Guild information " + GuildList.Count.ToString() + " read .");
             }
             else
             {
-                svMain.MainOutMessage("no guild file loaded...");
+                M2Share.MainOutMessage("no guild file loaded...");
             }
         }
 
@@ -68,7 +66,7 @@ namespace GameSvr
         {
             ArrayList strlist;
             int i;
-            if (svMain.ServerIndex == 0)
+            if (M2Share.ServerIndex == 0)
             {
                 // 付胶磐 辑滚父 历厘阑 茄促.
                 strlist = new ArrayList();
@@ -78,11 +76,11 @@ namespace GameSvr
                 }
                 try
                 {
-                    strlist.SaveToFile(svMain.GuildFile);
+                    //strlist.SaveToFile(svMain.GuildFile);
                 }
                 catch
                 {
-                    svMain.MainOutMessage(svMain.GuildFile + "Saving error...");
+                    M2Share.MainOutMessage(M2Share.GuildFile + "Saving error...");
                 }
                 strlist.Free();
             }
@@ -122,20 +120,18 @@ namespace GameSvr
 
         public bool AddGuild(string gname, string mastername)
         {
-            bool result;
-            TGuild guild;
-            result = false;
-            if (IsValidFileName(gname))
-            {
-                if (GetGuild(gname) == null)
-                {
-                    guild = new TGuild(gname);
-                    guild.AddGuildMaster(mastername);
-                    GuildList.Add(guild);
-                    SaveGuildList();
-                    result = true;
-                }
-            }
+            bool result = false;
+            //if (IsValidFileName(gname))
+            //{
+            //    if (GetGuild(gname) == null)
+            //    {
+            //        guild = new TGuild(gname);
+            //        guild.AddGuildMaster(mastername);
+            //        GuildList.Add(guild);
+            //        SaveGuildList();
+            //        result = true;
+            //    }
+            //}
             return result;
         }
 
@@ -151,7 +147,7 @@ namespace GameSvr
                     if ((GuildList[i] as TGuild).MemberList.Count <= 1)
                     {
                         // 厘盔 馆券 饶 巩颇昏力.
-                        svMain.GuildAgitMan.DelGuildAgit(gname);
+                        M2Share.GuildAgitMan.DelGuildAgit(gname);
                         (GuildList[i] as TGuild).BreakGuild();
                         // Guild绰 老何矾 皋葛府甫 秦力窍瘤 臼澜
                         // TGuild(GuildList[i]).Free();  //Free救茄 版快 皋葛府 穿利捞 积变促...
@@ -167,25 +163,20 @@ namespace GameSvr
 
         public void CheckGuildWarTimeOut()
         {
-            int i;
-            int k;
-            TGuild g;
-            TGuildWarInfo pgw;
-            bool changed;
-            for (i = 0; i < GuildList.Count; i++)
+            for (var i = 0; i < GuildList.Count; i++)
             {
-                g = GuildList[i] as TGuild;
-                changed = false;
-                for (k = g.KillGuilds.Count - 1; k >= 0; k--)
+                TGuild g = GuildList[i] as TGuild;
+                bool changed = false;
+                for (var k = g.KillGuilds.Count - 1; k >= 0; k--)
                 {
-                    pgw = g.KillGuilds.Values[k] as TGuildWarInfo;
-                    if (HUtil32.GetTickCount() - pgw.WarStartTime > pgw.WarRemain)
-                    {
-                        g.CanceledGuildWar(pgw.WarGuild);
-                        g.KillGuilds.Remove(k);
-                        Dispose(pgw);
-                        changed = true;
-                    }
+                    //TGuildWarInfo pgw = g.KillGuilds.Values[k] as TGuildWarInfo;
+                    //if (HUtil32.GetTickCount() - pgw.WarStartTime > pgw.WarRemain)
+                    //{
+                    //    g.CanceledGuildWar(pgw.WarGuild);
+                    //    g.KillGuilds.Remove(k);
+                    //    Dispose(pgw);
+                    //    changed = true;
+                    //}
                 }
                 if (changed)
                 {

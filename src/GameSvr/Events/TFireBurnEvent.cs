@@ -20,7 +20,7 @@ namespace GameSvr
             ArrayList list;
             if (HUtil32.GetTickCount() - ticktime > 3000)
             {
-                ticktime  =  HUtil32.GetTickCount();
+                ticktime = HUtil32.GetTickCount();
                 list = new ArrayList();
                 if (this.PEnvir != null)
                 {

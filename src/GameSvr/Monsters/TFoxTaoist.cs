@@ -7,13 +7,12 @@ namespace GameSvr
     public class TFoxTaoist : TATMonster
     {
         private bool BoRecallComplete = false;
-        // ---------------------------------------------------------------------------
-        // TFoxTaoist    厚岿咯快(档荤)
-        //Constructor  Create()
+
         public TFoxTaoist() : base()
         {
             this.SearchRate = 2500 + ((long)new System.Random(1500).Next());
         }
+
         public override void Initialize()
         {
             BoRecallComplete = false;
@@ -23,10 +22,9 @@ namespace GameSvr
 
         public override void Attack(TCreature target, byte dir)
         {
-            int pwr;
             this.Dir = dir;
             TAbility _wvar1 = this.WAbil;
-            pwr = this.GetAttackPower(HUtil32.LoByte(_wvar1.DC), HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC));
+            int pwr = this.GetAttackPower(HUtil32.LoByte(_wvar1.DC), HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC));
             if (pwr <= 0)
             {
                 return;
@@ -35,26 +33,19 @@ namespace GameSvr
             if (this.IsProperTarget(target))
             {
                 target.StruckDamage(pwr, this);
-                // wparam
-                // lparam1
-                // lparam2
-                // hiter
-                target.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)pwr, target.WAbil.HP, target.WAbil.MaxHP, this.ActorId, "", 500);
+                target.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)pwr, target.WAbil.HP, target.WAbil.MaxHP, this.ActorId, "", 500);
             }
         }
 
         public void RangeAttack(TCreature targ)
         {
-            int pwr;
-            int sec;
-            int skilllevel;
             if (targ == null)
             {
                 return;
             }
-            sec = 60;
-            pwr = 70;
-            skilllevel = 3;
+            int sec = 60;
+            int pwr = 70;
+            int skilllevel = 3;
             this.MagMakeCurseArea(targ.CX, targ.CY, 2, sec, pwr, skilllevel, false);
             this.Dir = M2Share.GetNextDirection(this.CX, this.CY, targ.CX, targ.CY);
             this.SendRefMsg(Grobal2.RM_LIGHTING_1, this.Dir, this.CX, this.CY, targ.ActorId, "");
@@ -62,10 +53,6 @@ namespace GameSvr
 
         public void RangeAttack2(TCreature targ)
         {
-            // 馆靛矫 target <> nil
-            int i;
-            int pwr;
-            int dam;
             short sx = 0;
             short sy = 0;
             short tx = 0;
@@ -82,19 +69,19 @@ namespace GameSvr
             {
                 M2Share.GetNextPosition(this.PEnvir, this.CX, this.CY, this.Dir, 9, ref tx, ref ty);
                 TAbility _wvar1 = this.WAbil;
-                pwr = HUtil32._MAX(0, HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next());
+                int pwr = HUtil32._MAX(0, HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next());
                 list = new ArrayList();
                 this.PEnvir.GetAllCreature(targ.CX, targ.CY, true, list);
-                for (i = 0; i < list.Count; i++)
+                for (var i = 0; i < list.Count; i++)
                 {
                     cret = (TCreature)list[i];
                     if (this.IsProperTarget(cret))
                     {
-                        dam = cret.GetMagStruckDamage(this, pwr);
+                        int dam = cret.GetMagStruckDamage(this, pwr);
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
+                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                         }
                     }
                 }
@@ -104,39 +91,32 @@ namespace GameSvr
 
         public override void Run()
         {
-            TCreature cret;
-            cret = null;
+            TCreature cret = null;
             if (!BoRecallComplete)
             {
                 if (this.WAbil.HP <= this.WAbil.MaxHP / 2)
                 {
-                    this.SendRefMsg(Grobal2.RM_LIGHTING_2, this.Dir, this.CX, this.CY, this.ActorId.TargetCret, "");
-                    // 家券
-                    // '厚岿孺龋'
-                    cret = svMain.UserEngine.AddCreatureSysop(this.PEnvir.MapName, this.CX + 1, this.CY, "BlackFoxFolks");
+                    this.SendRefMsg(Grobal2.RM_LIGHTING_2, this.Dir, this.CX, this.CY, this.TargetCret.ActorId, "");
+                    cret = M2Share.UserEngine.AddCreatureSysop(this.PEnvir.MapName, (short)(this.CX + 1), this.CY, "BlackFoxFolks");
                     if (cret != null)
                     {
                         cret.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, cret.CX, cret.CY, Grobal2.NE_FOX_MOVESHOW, "");
                     }
-                    // '厚岿孺龋'
-                    cret = svMain.UserEngine.AddCreatureSysop(this.PEnvir.MapName, this.CX - 1, this.CY, "BlackFoxFolks");
+                    cret = M2Share.UserEngine.AddCreatureSysop(this.PEnvir.MapName, (short)(this.CX - 1), this.CY, "BlackFoxFolks");
                     if (cret != null)
                     {
                         cret.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, cret.CX, cret.CY, Grobal2.NE_FOX_MOVESHOW, "");
                     }
-                    // '厚岿利龋'
-                    cret = svMain.UserEngine.AddCreatureSysop(this.PEnvir.MapName, this.CX, this.CY + 1, "RedFoxFolks");
+                    cret = M2Share.UserEngine.AddCreatureSysop(this.PEnvir.MapName, this.CX, (short)(this.CY + 1), "RedFoxFolks");
                     if (cret != null)
                     {
                         cret.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, cret.CX, cret.CY, Grobal2.NE_FOX_MOVESHOW, "");
                     }
-                    // '厚岿利龋'
-                    cret = svMain.UserEngine.AddCreatureSysop(this.PEnvir.MapName, this.CX, this.CY - 1, "RedFoxFolks");
+                    cret = M2Share.UserEngine.AddCreatureSysop(this.PEnvir.MapName, this.CX, (short)(this.CY - 1), "RedFoxFolks");
                     if (cret != null)
                     {
                         cret.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, cret.CX, cret.CY, Grobal2.NE_FOX_MOVESHOW, "");
                     }
-                    // UserEngine.CryCry (RM_CRY, PEnvir, CX, CY, 10000, '家券 : ' + TargetCret.UserName);//test
                     BoRecallComplete = true;
                 }
             }
@@ -144,23 +124,19 @@ namespace GameSvr
             {
                 if (GetCurrentTime - this.WalkTime > this.GetNextWalkTime())
                 {
-                    // 惑加罐篮 run俊辑 WalkTime 犁汲沥窃
                     if (this.TargetCret != null)
                     {
                         if ((Math.Abs(this.CX - this.TargetCret.CX) <= 5) && (Math.Abs(this.CY - this.TargetCret.CY) <= 5))
                         {
                             if ((Math.Abs(this.CX - this.TargetCret.CX) <= 2) && (Math.Abs(this.CY - this.TargetCret.CY) <= 2))
                             {
-                                // 呈公 啊鳖快搁, 肋 档噶 救皑.
                                 if (new System.Random(3).Next() == 0)
                                 {
-                                    // 档噶皑.
                                     M2Share.GetBackPosition(this, ref this.TargetX, ref this.TargetY);
                                 }
                             }
                             else
                             {
-                                // 档噶皑.
                                 M2Share.GetBackPosition(this, ref this.TargetX, ref this.TargetY);
                             }
                         }
@@ -172,9 +148,8 @@ namespace GameSvr
 
         protected override bool AttackTarget()
         {
-            bool result;
-            byte targdir=0;
-            result = false;
+            byte targdir = 0;
+            bool result = false;
             if (this.TargetCret != null)
             {
                 if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
@@ -184,7 +159,7 @@ namespace GameSvr
                     {
                         if (this.TargetInAttackRange(this.TargetCret, ref targdir) && (new System.Random(10).Next() < 8))
                         {
-                            this.TargetFocusTime  =  HUtil32.GetTickCount();
+                            this.TargetFocusTime = HUtil32.GetTickCount();
                             Attack(this.TargetCret, targdir);
                             result = true;
                         }
@@ -194,13 +169,11 @@ namespace GameSvr
                             {
                                 if (new System.Random(10).Next() < 7)
                                 {
-                                    // 咯快_气混拌
                                     RangeAttack2(this.TargetCret);
                                     result = true;
                                 }
                                 else if (new System.Random(10).Next() < 6)
                                 {
-                                    // 咯快_历林贱
                                     RangeAttack(this.TargetCret);
                                     result = true;
                                 }
@@ -209,7 +182,6 @@ namespace GameSvr
                             {
                                 if (new System.Random(10).Next() < 6)
                                 {
-                                    // 咯快_历林贱
                                     RangeAttack(this.TargetCret);
                                     result = true;
                                 }
@@ -228,13 +200,11 @@ namespace GameSvr
                         else
                         {
                             this.LoseTarget();
-                            // <!!林狼> TargetCret := nil肺 官柴
                         }
                     }
                 }
             }
             return result;
         }
-
     }
 }

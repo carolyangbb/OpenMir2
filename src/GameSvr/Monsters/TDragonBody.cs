@@ -16,7 +16,7 @@ namespace GameSvr
             this.BoWalkWaitMode = true;
             this.BoDontMove = true;
         }
-        
+
         public override void RecalcAbilitys()
         {
             base.RecalcAbilitys();
@@ -25,7 +25,7 @@ namespace GameSvr
 
         protected void ResetLevel()
         {
-            
+
         }
 
         protected override bool AttackTarget()

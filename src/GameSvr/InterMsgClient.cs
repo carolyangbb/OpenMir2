@@ -1,4 +1,3 @@
-using System;
 using System.Net.Sockets;
 using SystemModule;
 
@@ -6,8 +5,8 @@ namespace GameSvr
 {
     public class TFrmMsgClient
     {
-        private long start = 0;
-        private string SocData = String.Empty;
+        private readonly long start = 0;
+        private string SocData = string.Empty;
         public TFrmMsgClient()
         {
 
@@ -21,22 +20,22 @@ namespace GameSvr
             start  =  HUtil32.GetTickCount();*/
         }
 
-        public void MsgClientConnect(Object Sender, Socket Socket)
+        public void MsgClientConnect(object Sender, Socket Socket)
         {
             SocData = "";
         }
 
-        public void MsgClientDisconnect(Object Sender, Socket Socket)
+        public void MsgClientDisconnect(object Sender, Socket Socket)
         {
         }
 
-        public void MsgClientError(Object Sender, Socket Socket, ref int ErrorCode)
+        public void MsgClientError(object Sender, Socket Socket, ref int ErrorCode)
         {
             ErrorCode = 0;
             Socket.Close();
         }
 
-        public void MsgClientRead(Object Sender, Socket Socket)
+        public void MsgClientRead(object Sender, Socket Socket)
         {
             //SocData = SocData + Socket.ReceiveText;
         }
@@ -52,11 +51,11 @@ namespace GameSvr
         private void DecodeSocStr()
         {
             string BufStr;
-            string str= string.Empty;
-            string head= string.Empty;
-            string body= string.Empty;
-            string snumstr= string.Empty;
-            int ident=0;
+            string str = string.Empty;
+            string head = string.Empty;
+            string body = string.Empty;
+            string snumstr = string.Empty;
+            int ident = 0;
             int snum;
             if (SocData.IndexOf(")") <= 0)
             {
@@ -72,7 +71,7 @@ namespace GameSvr
                     if (str != "")
                     {
                         body = HUtil32.GetValidStr3(str, ref head, new string[] { "/" });
-                        body =HUtil32. GetValidStr3(body, ref snumstr, new string[] { "/" });
+                        body = HUtil32.GetValidStr3(body, ref snumstr, new string[] { "/" });
                         ident = HUtil32.Str_ToInt(head, 0);
                         snum = HUtil32.Str_ToInt(EDcode.DecodeString(snumstr), -1);
                         switch (ident)
@@ -194,7 +193,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] FrmIdSoc.DecodeSocStr");
+                M2Share.MainOutMessage("[Exception] FrmIdSoc.DecodeSocStr");
             }
         }
 
@@ -214,7 +213,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("EXCEPT TFrmClient.Run");
+                M2Share.MainOutMessage("EXCEPT TFrmClient.Run");
             }
         }
     }

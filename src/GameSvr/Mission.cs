@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.IO;
 
@@ -6,7 +5,7 @@ namespace GameSvr
 {
     public class TMission
     {
-        public string MissionName = String.Empty;
+        public string MissionName = string.Empty;
         public bool BoPlay = false;
 
         public TMission(string mission)
@@ -47,6 +46,6 @@ namespace GameSvr
     public class Mission
     {
         public const string MISSIONBASE = ".\\MissionBase\\";
-    } 
+    }
 }
 

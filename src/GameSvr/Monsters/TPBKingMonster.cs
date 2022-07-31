@@ -6,29 +6,22 @@ namespace GameSvr
 {
     public class TPBKingMonster : TDeadCowKingMonster
     {
-        // 颇炔付脚 =====================================================================
-        //Constructor  Create()
         public TPBKingMonster() : base()
         {
             this.ChainShotCount = 3;
             this.ViewRange = 12;
         }
+
         public override void Run()
         {
-            // 颇炔付脚阑 甘啊厘磊府肺 单府备 啊辑磷捞绰芭 规瘤
             if (this.PEnvir != null)
             {
-                // 甘狼 寇胞局 困摹秦 乐促搁. 埃窜茄 拌魂捞骨肺 拌加 积阿窍霸 秦档等促.
-                // 颇炔付脚捞 乐绰 66 甘篮 300 x 300 甘捞促.
                 if ((this.CX < 50) || (this.CX > this.PEnvir.MapWidth - 70) || (this.CY < 40) || (this.CY > this.PEnvir.MapHeight - 70))
                 {
-                    // 鸥百捞 乐栏搁 绝浚饶俊
                     this.LoseTarget();
-                    // 郴何 救率栏肺 捞悼... 10鸥老 救率俊辑 唱鸥唱霸 窍磊. 版拌何盒篮 救亮澜
                     this.SpaceMove(this.PEnvir.MapName, (short)(new System.Random(this.PEnvir.MapWidth - 140).Next() + 60), (short)(new System.Random(this.PEnvir.MapHeight - 130).Next() + 50), 1);
                 }
             }
-            // 扁粮 角青阑 茄促.
             base.Run();
         }
 
@@ -75,7 +68,7 @@ namespace GameSvr
                                 // lparam1
                                 // lparam2
                                 // hiter
-                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 200);
+                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 200);
                                 if (new System.Random(10).Next() == 0)
                                 {
                                     cret.MakePoison(Grobal2.POISON_STONE, 5, 0);
@@ -200,7 +193,7 @@ namespace GameSvr
                     {
                         dam = cret.WAbil.HP / 4;
                         cret.DamageHealth(dam, 0);
-                        cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
+                        cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                     }
                 }
             }
@@ -209,7 +202,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir=0;
+            byte targdir = 0;
             result = false;
             if (this.TargetCret != null)
             {
@@ -220,7 +213,7 @@ namespace GameSvr
                     {
                         if (this.TargetInSpitRange(this.TargetCret, ref targdir) && (new System.Random(3).Next() != 0))
                         {
-                            this.TargetFocusTime  =  HUtil32.GetTickCount();
+                            this.TargetFocusTime = HUtil32.GetTickCount();
                             Attack(this.TargetCret, targdir);
                             try
                             {
@@ -235,7 +228,7 @@ namespace GameSvr
                             }
                             catch
                             {
-                                svMain.MainOutMessage("[Exception] TPBKingMonster.AttackTarget fail target change 1");
+                                M2Share.MainOutMessage("[Exception] TPBKingMonster.AttackTarget fail target change 1");
                             }
                             result = true;
                         }
@@ -244,7 +237,7 @@ namespace GameSvr
                             if (this.ChainShot < this.ChainShotCount - 1)
                             {
                                 this.ChainShot++;
-                                this.TargetFocusTime  =  HUtil32.GetTickCount();
+                                this.TargetFocusTime = HUtil32.GetTickCount();
                                 RangeAttack(this.TargetCret);
                             }
                             else
@@ -262,13 +255,13 @@ namespace GameSvr
                                         if (this.TargetCret != null)
                                         {
                                             this.SetTargetXY(this.TargetCret.CX, this.TargetCret.CY);
-                                            this.TargetFocusTime  =  HUtil32.GetTickCount();
+                                            this.TargetFocusTime = HUtil32.GetTickCount();
                                         }
                                     }
                                 }
                                 catch
                                 {
-                                    svMain.MainOutMessage("[Exception] TPBKingMonster.AttackTarget fail target change 2");
+                                    M2Share.MainOutMessage("[Exception] TPBKingMonster.AttackTarget fail target change 2");
                                 }
                             }
                             result = true;

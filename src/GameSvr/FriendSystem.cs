@@ -57,9 +57,9 @@ namespace GameSvr
 
         public TFriendInfo() : base()
         {
-        
+
         }
-    } 
+    }
 
     public class TFriendMgr : ICommand
     {
@@ -188,14 +188,14 @@ namespace GameSvr
         {
             string str;
             str = FriendName + "/" + Desc;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_INFO, (ushort)RegState, (ushort)ConnState, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_INFO, (short)RegState, (short)ConnState, 0, str);
         }
 
         public void OnMsgInfoToServer(TUserInfo UserInfo, string FriendName, int RegState, string Desc)
         {
             string str;
             str = RegState.ToString() + ":" + FriendName + ":" + Desc;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, 0, 0, 0, UserInfo.UserName, UserInfo.Recog, Grobal2.ISM_FRIEND_INFO, 0, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, 0, 0, 0, UserInfo.UserName, UserInfo.Recog, Grobal2.ISM_FRIEND_INFO, 0, 0, 0, str);
         }
 
         public void OnSendInfoToClient(TUserInfo UserInfo, string Friend)
@@ -259,7 +259,7 @@ namespace GameSvr
                 OnSendListToClient(Cmd.pInfo);
             }
         }
-  
+
         public void OnCmdCMAdd(TCmdMsg Cmd)
         {
             TUserInfo userinfo = null;
@@ -269,7 +269,7 @@ namespace GameSvr
 #if DEBUG
             this.ErrMsg("Cmd_CM_Add" + owner + "/" + friend + "/" + (regstate).ToString());
 #endif
-            if (svMain.UserMgrEngine.InterGetUserInfo(friend, ref userinfo))
+            if (M2Share.UserMgrEngine.InterGetUserInfo(friend, ref userinfo))
             {
                 if (Add(Cmd.pInfo, friend, regstate, ""))
                 {
@@ -323,23 +323,23 @@ namespace GameSvr
             }
         }
 
-        public void OnCmdSMInfo(TUserInfo UserInfo, string FriendName, ushort RegState, ushort Conn, string Desc)
+        public void OnCmdSMInfo(TUserInfo UserInfo, string FriendName, short RegState, short Conn, string Desc)
         {
             string str;
             str = Desc;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_INFO, RegState, Conn, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_INFO, RegState, Conn, 0, str);
         }
 
         public void OnCmdSMDelete(TUserInfo UserInfo, string FriendName)
         {
             string str;
             str = FriendName;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_DELETE, 0, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_DELETE, 0, 0, 0, str);
         }
 
-        public void OnCmdSMResult(TUserInfo UserInfo, ushort CmdNum, ushort Value)
+        public void OnCmdSMResult(TUserInfo UserInfo, short CmdNum, short Value)
         {
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_RESULT, CmdNum, Value, 0, "");
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_FRIEND_RESULT, CmdNum, Value, 0, "");
         }
 
         public void OnCmdISMInfo(TCmdMsg Cmd)
@@ -369,55 +369,55 @@ namespace GameSvr
             this.ErrMsg("OnCmdISMRsult :" + Cmd.body);
         }
 
-        public void OnCmdOSMInfo(string UserName, ushort SvrIndex, string FriendName, int RegState, int Conn, string Desc)
+        public void OnCmdOSMInfo(string UserName, short SvrIndex, string FriendName, int RegState, int Conn, string Desc)
         {
             string str = RegState.ToString() + ":" + Conn.ToString() + ":" + FriendName;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_FRIEND_INFO, SvrIndex, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_FRIEND_INFO, SvrIndex, 0, 0, str);
         }
 
-        public void OnCmdOSMDelete(string UserName, ushort SvrIndex, string FriendName)
+        public void OnCmdOSMDelete(string UserName, short SvrIndex, string FriendName)
         {
             string str = FriendName;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_FRIEND_DELETE, SvrIndex, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_FRIEND_DELETE, SvrIndex, 0, 0, str);
         }
 
-        public void OnCmdOSMResult(string UserName, ushort SvrIndex, ushort CmdNum, ushort ResultValue)
+        public void OnCmdOSMResult(string UserName, short SvrIndex, short CmdNum, short ResultValue)
         {
             string str;
             str = CmdNum.ToString() + ":" + ResultValue.ToString();
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_FRIEND_RESULT, SvrIndex, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stOtherServer, 0, 0, 0, 0, UserName, 0, Grobal2.ISM_FRIEND_RESULT, SvrIndex, 0, 0, str);
         }
 
         public void OnCmdDBList(TUserInfo UserInfo)
         {
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_LIST, 0, 0, 0, "");
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, M2Share.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_LIST, 0, 0, 0, "");
         }
 
-        public void OnCmdDBAdd(TUserInfo UserInfo, string Friend, ushort RegState, string Desc)
+        public void OnCmdDBAdd(TUserInfo UserInfo, string Friend, short RegState, string Desc)
         {
             string str = RegState.ToString() + ":" + Friend + ":" + Desc + "/";
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_ADD, RegState, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, M2Share.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_ADD, RegState, 0, 0, str);
         }
 
         public void OnCmdDBDelete(TUserInfo UserInfo, string Friend)
         {
             string str = Friend + "/";
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_DELETE, 0, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, M2Share.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_DELETE, 0, 0, 0, str);
         }
 
         public void OnCmdDBEdit(TUserInfo UserInfo, string Friend, string Desc)
         {
             string str = Friend + ":" + Desc + "/";
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, svMain.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_EDIT, 0, 0, 0, str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stDbServer, M2Share.ServerIndex, 0, 0, 0, UserInfo.UserName, 0, Grobal2.DB_FRIEND_EDIT, 0, 0, 0, str);
         }
-        
+
         public void OnCmdDBRList(TCmdMsg Cmd)
         {
             var Friend = string.Empty;
             var RegState = string.Empty;
             var Desc = string.Empty;
             var TempStr = string.Empty;
-            var  BodyStr = HUtil32.GetValidStr3(Cmd.body, ref TempStr, new string[] { "/" });
+            var BodyStr = HUtil32.GetValidStr3(Cmd.body, ref TempStr, new string[] { "/" });
             var ListCount = HUtil32.Str_ToInt(TempStr, 0);
             for (var i = 0; i < ListCount; i++)
             {

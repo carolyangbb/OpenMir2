@@ -13,7 +13,7 @@ namespace GameSvr
             this.DigupRange = 4;
             this.DigdownRange = 6;
             this.BoAnimal = false;
-            appeartime  =  HUtil32.GetTickCount();
+            appeartime = HUtil32.GetTickCount();
         }
         protected bool FindTarget()
         {
@@ -58,8 +58,8 @@ namespace GameSvr
                         {
                             if ((Math.Abs(this.CX - cret.CX) <= this.ViewRange) && (Math.Abs(this.CY - cret.CY) <= this.ViewRange))
                             {
-                                this.TargetFocusTime  =  HUtil32.GetTickCount();
-                                this.SendDelayMsg(this, Grobal2.RM_DELAYMAGIC, pwr, HUtil32.MakeLong(cret.CX, cret.CY), 2, (int)cret, "", 600);
+                                this.TargetFocusTime = HUtil32.GetTickCount();
+                                this.SendDelayMsg(this, Grobal2.RM_DELAYMAGIC, (short)pwr, HUtil32.MakeLong(cret.CX, cret.CY), 2, cret.ActorId, "", 600);
                                 if (new System.Random(4).Next() == 0)
                                 {
                                     if (new System.Random(3).Next() != 0)
@@ -110,7 +110,7 @@ namespace GameSvr
                                     {
                                         ComeOut();
                                         // 观栏肺 唱坷促. 焊牢促.
-                                        appeartime  =  HUtil32.GetTickCount();
+                                        appeartime = HUtil32.GetTickCount();
                                         break;
                                     }
                                 }
@@ -132,7 +132,7 @@ namespace GameSvr
                                 if (HUtil32.GetTickCount() - appeartime > 10 * 1000)
                                 {
                                     this.ComeDown();
-                                    appeartime  =  HUtil32.GetTickCount();
+                                    appeartime = HUtil32.GetTickCount();
                                 }
                             }
                         }

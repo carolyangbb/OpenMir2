@@ -13,11 +13,11 @@ namespace GameSvr
         public TEnvirnoment CorePEnvir = null;
         public TEnvirnoment BasementEnvir = null;
         public TDoorCore CoreCastlePDoorCore = null;
-        public string CastleMapName = String.Empty;
-        public string CastleName = String.Empty;
-        public string OwnerGuildName = String.Empty;
+        public string CastleMapName = string.Empty;
+        public string CastleName = string.Empty;
+        public string OwnerGuildName = string.Empty;
         public TGuild OwnerGuild = null;
-        public string CastleMap = String.Empty;
+        public string CastleMap = string.Empty;
         public int CastleStartX = 0;
         public int CastleStartY = 0;
         public DateTime LatestOwnerChangeDateTime;
@@ -63,34 +63,34 @@ namespace GameSvr
             AttackerList.Free();
             RushGuildList.Free();
         }
-        
+
         public void Initialize()
         {
             int i;
             TDoorInfo pd;
             LoadFromFile(CastleDef.CASTLEFILENAME);
             LoadAttackerList();
-            if (svMain.ServerIndex != svMain.GrobalEnvir.GetServer(CastleMapName))
+            if (M2Share.ServerIndex != M2Share.GrobalEnvir.GetServer(CastleMapName))
             {
                 return;
             }
-            CorePEnvir = svMain.GrobalEnvir.GetEnvir(CastleDef.CASTLECOREMAP);
+            CorePEnvir = M2Share.GrobalEnvir.GetEnvir(CastleDef.CASTLECOREMAP);
             if (CorePEnvir == null)
             {
                 OutMainMessage(CastleDef.CASTLECOREMAP + " No map found. ( No inner wall map of wall conquest war )");
             }
-            BasementEnvir = svMain.GrobalEnvir.GetEnvir(CastleDef.CASTLEBASEMAP);
+            BasementEnvir = M2Share.GrobalEnvir.GetEnvir(CastleDef.CASTLEBASEMAP);
             if (CorePEnvir == null)
             {
                 OutMainMessage(CastleDef.CASTLEBASEMAP + " - map not found !!");
             }
-            CastlePEnvir = svMain.GrobalEnvir.GetEnvir(CastleMapName);
+            CastlePEnvir = M2Share.GrobalEnvir.GetEnvir(CastleMapName);
             if (CastlePEnvir != null)
             {
-                MainDoor.UnitObj = svMain.UserEngine.AddCreatureSysop(CastleMapName, MainDoor.X, MainDoor.Y, MainDoor.UnitName);
+                MainDoor.UnitObj = M2Share.UserEngine.AddCreatureSysop(CastleMapName, MainDoor.X, MainDoor.Y, MainDoor.UnitName);
                 if (MainDoor.UnitObj != null)
                 {
-                    MainDoor.UnitObj.WAbil.HP = (ushort)MainDoor.HP;
+                    MainDoor.UnitObj.WAbil.HP = (short)MainDoor.HP;
                     ((TGuardUnit)MainDoor.UnitObj).Castle = this;
                     if (MainDoor.BoDoorOpen)
                     {
@@ -101,30 +101,30 @@ namespace GameSvr
                 {
                     OutMainMessage("[Error] UserCastle.Initialize MainDoor.UnitObj = nil");
                 }
-                LeftWall.UnitObj = svMain.UserEngine.AddCreatureSysop(CastleMapName, LeftWall.X, LeftWall.Y, LeftWall.UnitName);
+                LeftWall.UnitObj = M2Share.UserEngine.AddCreatureSysop(CastleMapName, LeftWall.X, LeftWall.Y, LeftWall.UnitName);
                 if (LeftWall.UnitObj != null)
                 {
-                    LeftWall.UnitObj.WAbil.HP = (ushort)LeftWall.HP;
+                    LeftWall.UnitObj.WAbil.HP = (short)LeftWall.HP;
                     ((TGuardUnit)LeftWall.UnitObj).Castle = this;
                 }
                 else
                 {
                     OutMainMessage("[Error] UserCastle.Initialize LeftWall.UnitObj = nil");
                 }
-                CenterWall.UnitObj = svMain.UserEngine.AddCreatureSysop(CastleMapName, CenterWall.X, CenterWall.Y, CenterWall.UnitName);
+                CenterWall.UnitObj = M2Share.UserEngine.AddCreatureSysop(CastleMapName, CenterWall.X, CenterWall.Y, CenterWall.UnitName);
                 if (CenterWall.UnitObj != null)
                 {
-                    CenterWall.UnitObj.WAbil.HP = (ushort)CenterWall.HP;
+                    CenterWall.UnitObj.WAbil.HP = (short)CenterWall.HP;
                     ((TGuardUnit)CenterWall.UnitObj).Castle = this;
                 }
                 else
                 {
                     OutMainMessage("[Error] UserCastle.Initialize CenterWall.UnitObj = nil");
                 }
-                RightWall.UnitObj = svMain.UserEngine.AddCreatureSysop(CastleMapName, RightWall.X, RightWall.Y, RightWall.UnitName);
+                RightWall.UnitObj = M2Share.UserEngine.AddCreatureSysop(CastleMapName, RightWall.X, RightWall.Y, RightWall.UnitName);
                 if (RightWall.UnitObj != null)
                 {
-                    RightWall.UnitObj.WAbil.HP = (ushort)RightWall.HP;
+                    RightWall.UnitObj.WAbil.HP = (short)RightWall.HP;
                     ((TGuardUnit)RightWall.UnitObj).Castle = this;
                 }
                 else
@@ -135,11 +135,11 @@ namespace GameSvr
                 {
                     if (Archers[i].HP > 0)
                     {
-                        Archers[i].UnitObj = svMain.UserEngine.AddCreatureSysop(CastleMapName, Archers[i].X, Archers[i].Y, Archers[i].UnitName);
+                        Archers[i].UnitObj = M2Share.UserEngine.AddCreatureSysop(CastleMapName, Archers[i].X, Archers[i].Y, Archers[i].UnitName);
                         if (Archers[i].UnitObj != null)
                         {
                             ((TGuardUnit)Archers[i].UnitObj).Castle = this;
-                            Archers[i].UnitObj.WAbil.HP = (ushort)Archers[i].HP;
+                            Archers[i].UnitObj.WAbil.HP = (short)Archers[i].HP;
                             ((TGuardUnit)Archers[i].UnitObj).OriginX = Archers[i].X;
                             ((TGuardUnit)Archers[i].UnitObj).OriginY = Archers[i].Y;
                             ((TGuardUnit)Archers[i].UnitObj).OriginDir = 3;
@@ -154,10 +154,10 @@ namespace GameSvr
                 {
                     if (Guards[i].HP > 0)
                     {
-                        Guards[i].UnitObj = svMain.UserEngine.AddCreatureSysop(CastleMapName, Guards[i].X, Guards[i].Y, Guards[i].UnitName);
+                        Guards[i].UnitObj = M2Share.UserEngine.AddCreatureSysop(CastleMapName, Guards[i].X, Guards[i].Y, Guards[i].UnitName);
                         if (Guards[i].UnitObj != null)
                         {
-                            Guards[i].UnitObj.WAbil.HP = (ushort)Guards[i].HP;
+                            Guards[i].UnitObj.WAbil.HP = (short)Guards[i].HP;
                             // TGuardUnit(UnitObj).OriginX := X;
                             // TGuardUnit(UnitObj).OriginY := Y;
                             // TGuardUnit(UnitObj).OriginDir := 3;
@@ -173,7 +173,7 @@ namespace GameSvr
             {
                 OutMainMessage("<Critical Error> UserCastle : [Defense]->CastleMap is invalid value");
             }
-            TEnvirList _wvar1 = svMain.GrobalEnvir;
+            TEnvirList _wvar1 = M2Share.GrobalEnvir;
             for (i = 0; i < CastlePEnvir.DoorList.Count; i++)
             {
                 pd = CastlePEnvir.DoorList[i];
@@ -196,7 +196,7 @@ namespace GameSvr
 
         private void SaveAttackerList()
         {
-            var flname = svMain.CastleDir + CastleDef.CASTLEATTACERS;
+            var flname = M2Share.CastleDir + CastleDef.CASTLEATTACERS;
             StringList strlist = new StringList();
             for (var i = 0; i < AttackerList.Count; i++)
             {
@@ -208,7 +208,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage(flname + "保存错误...");
+                M2Share.MainOutMessage(flname + "保存错误...");
             }
             strlist.Free();
         }
@@ -220,7 +220,7 @@ namespace GameSvr
             TGuild aguild;
             string gname = string.Empty;
             string adate = string.Empty;
-            string flname = svMain.CastleDir + CastleDef.CASTLEATTACERS;
+            string flname = M2Share.CastleDir + CastleDef.CASTLEATTACERS;
             if (!File.Exists(flname))
             {
                 return;
@@ -237,7 +237,7 @@ namespace GameSvr
                 for (var i = 0; i < strlist.Count; i++)
                 {
                     adate = HUtil32.GetValidStr3(strlist[i], ref gname, new string[] { " ", "\09" });
-                    aguild = svMain.GuildMan.GetGuild(gname);
+                    aguild = M2Share.GuildMan.GetGuild(gname);
                     if (aguild != null)
                     {
                         pattack = new TAttackerInfo();
@@ -258,72 +258,72 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage(flname + " 读取失败...");
+                M2Share.MainOutMessage(flname + " 读取失败...");
             }
             strlist.Free();
         }
 
         private void SaveToFile(string flname)
         {
-          /*  FileStream ini;
-            if (svMain.ServerIndex == svMain.GrobalEnvir.GetServer(CastleMapName))
-            {
-                ini = new FileStream(svMain.CastleDir + flname);
-                if (ini != null)
-                {
-                    ini.WriteString("setup", "CastleName", CastleName);
-                    ini.WriteString("setup", "OwnGuild", OwnerGuildName);
-                    ini.WriteDateTime("setup", "ChangeDate", LatestOwnerChangeDateTime);
-                    ini.WriteDateTime("setup", "WarDate", LatestWarDateTime);
-                    ini.WriteDateTime("setup", "IncomeToday", IncomeToday);
-                    ini.WriteInteger("setup", "TotalGold", TotalGold);
-                    ini.WriteInteger("setup", "TodayIncome", TodayIncome);
-                    if (MainDoor.UnitObj != null)
-                    {
-                        ini.WriteBool("defense", "MainDoorOpen", ((TCastleDoor)MainDoor.UnitObj).BoOpenState);
-                        ini.WriteInteger("defense", "MainDoorHP", ((TCastleDoor)MainDoor.UnitObj).WAbil.HP);
-                    }
-                    if (LeftWall.UnitObj != null)
-                    {
-                        ini.WriteInteger("defense", "LeftWallHP", ((TCastleDoor)LeftWall.UnitObj).WAbil.HP);
-                    }
-                    if (CenterWall.UnitObj != null)
-                    {
-                        ini.WriteInteger("defense", "CenterWallHP", ((TCastleDoor)CenterWall.UnitObj).WAbil.HP);
-                    }
-                    if (RightWall.UnitObj != null)
-                    {
-                        ini.WriteInteger("defense", "RightWallHP", ((TCastleDoor)RightWall.UnitObj).WAbil.HP);
-                    }
-                    for (var i = 0; i < Castle.MAXARCHER; i++)
-                    {
-                        ini.WriteInteger("defense", "Archer_" + (i + 1).ToString() + "_X", Archers[i].X);
-                        ini.WriteInteger("defense", "Archer_" + (i + 1).ToString() + "_Y", Archers[i].Y);
-                        if (Archers[i].UnitObj != null)
-                        {
-                            ini.WriteInteger("defense", "Archer_" + (i + 1).ToString() + "_HP", ((TArcherGuard)Archers[i].UnitObj).WAbil.HP);
-                        }
-                        else
-                        {
-                            ini.WriteInteger("defense", "Archer_" + (i + 1).ToString() + "_HP", 0);
-                        }
-                    }
-                    for (var i = 0; i < Castle.MAXGUARD; i++)
-                    {
-                        ini.WriteInteger("defense", "Guard_" + (i + 1).ToString() + "_X", Guards[i].X);
-                        ini.WriteInteger("defense", "Guard_" + (i + 1).ToString() + "_Y", Guards[i].Y);
-                        if (Guards[i].UnitObj != null)
-                        {
-                            ini.WriteInteger("defense", "Guard_" + (i + 1).ToString() + "_HP", ((TGuardUnit)Guards[i].UnitObj).WAbil.HP);
-                        }
-                        else
-                        {
-                            ini.WriteInteger("defense", "Guard_" + (i + 1).ToString() + "_HP", Guards[i].HP);
-                        }
-                    }
-                    ini.Free();
-                }
-            }*/
+            /*  FileStream ini;
+              if (svMain.ServerIndex == svMain.GrobalEnvir.GetServer(CastleMapName))
+              {
+                  ini = new FileStream(svMain.CastleDir + flname);
+                  if (ini != null)
+                  {
+                      ini.WriteString("setup", "CastleName", CastleName);
+                      ini.WriteString("setup", "OwnGuild", OwnerGuildName);
+                      ini.WriteDateTime("setup", "ChangeDate", LatestOwnerChangeDateTime);
+                      ini.WriteDateTime("setup", "WarDate", LatestWarDateTime);
+                      ini.WriteDateTime("setup", "IncomeToday", IncomeToday);
+                      ini.WriteInteger("setup", "TotalGold", TotalGold);
+                      ini.WriteInteger("setup", "TodayIncome", TodayIncome);
+                      if (MainDoor.UnitObj != null)
+                      {
+                          ini.WriteBool("defense", "MainDoorOpen", ((TCastleDoor)MainDoor.UnitObj).BoOpenState);
+                          ini.WriteInteger("defense", "MainDoorHP", ((TCastleDoor)MainDoor.UnitObj).WAbil.HP);
+                      }
+                      if (LeftWall.UnitObj != null)
+                      {
+                          ini.WriteInteger("defense", "LeftWallHP", ((TCastleDoor)LeftWall.UnitObj).WAbil.HP);
+                      }
+                      if (CenterWall.UnitObj != null)
+                      {
+                          ini.WriteInteger("defense", "CenterWallHP", ((TCastleDoor)CenterWall.UnitObj).WAbil.HP);
+                      }
+                      if (RightWall.UnitObj != null)
+                      {
+                          ini.WriteInteger("defense", "RightWallHP", ((TCastleDoor)RightWall.UnitObj).WAbil.HP);
+                      }
+                      for (var i = 0; i < Castle.MAXARCHER; i++)
+                      {
+                          ini.WriteInteger("defense", "Archer_" + (i + 1).ToString() + "_X", Archers[i].X);
+                          ini.WriteInteger("defense", "Archer_" + (i + 1).ToString() + "_Y", Archers[i].Y);
+                          if (Archers[i].UnitObj != null)
+                          {
+                              ini.WriteInteger("defense", "Archer_" + (i + 1).ToString() + "_HP", ((TArcherGuard)Archers[i].UnitObj).WAbil.HP);
+                          }
+                          else
+                          {
+                              ini.WriteInteger("defense", "Archer_" + (i + 1).ToString() + "_HP", 0);
+                          }
+                      }
+                      for (var i = 0; i < Castle.MAXGUARD; i++)
+                      {
+                          ini.WriteInteger("defense", "Guard_" + (i + 1).ToString() + "_X", Guards[i].X);
+                          ini.WriteInteger("defense", "Guard_" + (i + 1).ToString() + "_Y", Guards[i].Y);
+                          if (Guards[i].UnitObj != null)
+                          {
+                              ini.WriteInteger("defense", "Guard_" + (i + 1).ToString() + "_HP", ((TGuardUnit)Guards[i].UnitObj).WAbil.HP);
+                          }
+                          else
+                          {
+                              ini.WriteInteger("defense", "Guard_" + (i + 1).ToString() + "_HP", Guards[i].HP);
+                          }
+                      }
+                      ini.Free();
+                  }
+              }*/
         }
 
         private void LoadFromFile(string flname)
@@ -389,16 +389,16 @@ namespace GameSvr
             string str = string.Empty;
             string strRemainMinutes = string.Empty;
             long RemainMinutes;
-            if (svMain.ServerIndex != svMain.GrobalEnvir.GetServer(CastleMapName))
+            if (M2Share.ServerIndex != M2Share.GrobalEnvir.GetServer(CastleMapName))
             {
                 return;
             }
-           var ayear = DateTime.Today.Year;
-           var amon = DateTime.Today.Month;
-           var aday = DateTime.Today.Day;
-           var ayear2 = IncomeToday.Year;
-           var amon2 = IncomeToday.Month;
-           var aday2 = IncomeToday.Day;
+            var ayear = DateTime.Today.Year;
+            var amon = DateTime.Today.Month;
+            var aday = DateTime.Today.Day;
+            var ayear2 = IncomeToday.Year;
+            var amon2 = IncomeToday.Month;
+            var aday2 = IncomeToday.Day;
             // 促澜朝肺 逞绢啊搁 坷疵狼 荐劳篮 檬扁拳 矫糯
             if ((ayear != ayear2) || (amon != amon2) || (aday != aday2))
             {
@@ -437,10 +437,10 @@ namespace GameSvr
                         RushGuildList.Add(OwnerGuild);
                         StartCastleWar();
                         SaveAttackerList();
-                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADCASTLEINFO, svMain.ServerIndex, "");
+                        M2Share.UserEngine.SendInterMsg(Grobal2.ISM_RELOADCASTLEINFO, M2Share.ServerIndex, "");
                         str = "[Sabuk wall conquest war started.]";
-                        svMain.UserEngine.SysMsgAll(str);
-                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_SYSOPMSG, svMain.ServerIndex, str);
+                        M2Share.UserEngine.SysMsgAll(str);
+                        M2Share.UserEngine.SendInterMsg(Grobal2.ISM_SYSOPMSG, M2Share.ServerIndex, str);
                         ActivateMainDoor(true);
                     }
                 }
@@ -477,8 +477,8 @@ namespace GameSvr
                         BoCastleWarTimeOut10min = true;
                         BoCastleWarTimeOutRemainMinute = 10;
                         str = "[离沙巴克攻城战结束还有十分钟]";
-                        svMain.UserEngine.SysMsgAll(str);
-                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_SYSOPMSG, svMain.ServerIndex, str);
+                        M2Share.UserEngine.SysMsgAll(str);
+                        M2Share.UserEngine.SendInterMsg(Grobal2.ISM_SYSOPMSG, M2Share.ServerIndex, str);
                     }
                 }
                 else if (BoCastleWarTimeOutRemainMinute > 0)
@@ -542,9 +542,9 @@ namespace GameSvr
                     if (strRemainMinutes != "")
                     {
                         str = "[离沙巴克攻城战结还剩下" + strRemainMinutes + "分钟]";
-                        svMain.MainOutMessage(str);
-                        svMain.UserEngine.SysMsgAll(str);
-                        svMain.UserEngine.SendInterMsg(Grobal2.ISM_SYSOPMSG, svMain.ServerIndex, str);
+                        M2Share.MainOutMessage(str);
+                        M2Share.UserEngine.SysMsgAll(str);
+                        M2Share.UserEngine.SendInterMsg(Grobal2.ISM_SYSOPMSG, M2Share.ServerIndex, str);
                     }
                 }
                 if (HUtil32.GetTickCount() - CastleAttackStarted > 3 * 60 * 60 * 1000)
@@ -622,7 +622,7 @@ namespace GameSvr
                 result = false;
                 return result;
             }
-            result = (svMain.UserCastle.OwnerGuild == g) && (svMain.UserCastle.OwnerGuild != null);
+            result = (M2Share.UserCastle.OwnerGuild == g) && (M2Share.UserCastle.OwnerGuild != null);
             return result;
         }
 
@@ -735,7 +735,7 @@ namespace GameSvr
                 SaveCastleGoldTime = HUtil32.GetTickCount();
                 // 己捣逞_
                 // '陛傈'
-                svMain.AddUserLog("23\09" + "0\09" + "0\09" + "0\09" + "Autosaving\09" + Envir.NAME_OF_GOLD + "\09" + TotalGold.ToString() + "\09" + "0\09" + "0");
+                M2Share.AddUserLog("23\09" + "0\09" + "0\09" + "0\09" + "Autosaving\09" + Envir.NAME_OF_GOLD + "\09" + TotalGold.ToString() + "\09" + "0\09" + "0");
             }
         }
 
@@ -748,7 +748,7 @@ namespace GameSvr
         {
             int result;
             result = -1;
-            if ((hum.MyGuild == svMain.UserCastle.OwnerGuild) && (hum.GuildRank == 1))
+            if ((hum.MyGuild == M2Share.UserCastle.OwnerGuild) && (hum.GuildRank == 1))
             {
                 if (howmuch <= TotalGold)
                 {
@@ -759,7 +759,7 @@ namespace GameSvr
                         // 肺弊巢辫
                         // 己捣画_
                         // '陛傈'
-                        svMain.AddUserLog("22\09" + hum.MapName + "\09" + hum.CX.ToString() + "\09" + hum.CY.ToString() + "\09" + hum.UserName + "\09" + Envir.NAME_OF_GOLD + "\09" + howmuch.ToString() + "\09" + "1\09" + "0");
+                        M2Share.AddUserLog("22\09" + hum.MapName + "\09" + hum.CX.ToString() + "\09" + hum.CY.ToString() + "\09" + hum.UserName + "\09" + Envir.NAME_OF_GOLD + "\09" + howmuch.ToString() + "\09" + "1\09" + "0");
                         hum.GoldChanged();
                         result = 1;
                     }
@@ -785,7 +785,7 @@ namespace GameSvr
         {
             int result;
             result = -1;
-            if ((hum.MyGuild == svMain.UserCastle.OwnerGuild) && (hum.GuildRank == 1))
+            if ((hum.MyGuild == M2Share.UserCastle.OwnerGuild) && (hum.GuildRank == 1))
             {
                 if (howmuch <= hum.Gold)
                 {
@@ -796,7 +796,7 @@ namespace GameSvr
                         // 肺弊巢辫
                         // 己捣逞_
                         // '陛傈'
-                        svMain.AddUserLog("23\09" + hum.MapName + "\09" + hum.CX.ToString() + "\09" + hum.CY.ToString() + "\09" + hum.UserName + "\09" + Envir.NAME_OF_GOLD + "\09" + howmuch.ToString() + "\09" + "0\09" + "0");
+                        M2Share.AddUserLog("23\09" + hum.MapName + "\09" + hum.CX.ToString() + "\09" + hum.CY.ToString() + "\09" + hum.UserName + "\09" + Envir.NAME_OF_GOLD + "\09" + howmuch.ToString() + "\09" + "0\09" + "0");
                         hum.GoldChanged();
                         result = 1;
                     }
@@ -917,7 +917,7 @@ namespace GameSvr
                 pattack.Guild = aguild;
                 AttackerList.Add(pattack);
                 SaveAttackerList();
-                svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADCASTLEINFO, svMain.ServerIndex, "");
+                M2Share.UserEngine.SendInterMsg(Grobal2.ISM_RELOADCASTLEINFO, M2Share.ServerIndex, "");
                 result = true;
             }
             return result;
@@ -928,11 +928,11 @@ namespace GameSvr
             string result = "";
             if (AttackerList.Count > 0)
             {
-                if (svMain.ENGLISHVERSION)
+                if (M2Share.ENGLISHVERSION)
                 {
                     result = AttackerList[0].AttackDate.ToString();
                 }
-                else if (svMain.PHILIPPINEVERSION)
+                else if (M2Share.PHILIPPINEVERSION)
                 {
                     result = AttackerList[0].AttackDate.ToString();
                 }
@@ -969,11 +969,11 @@ namespace GameSvr
                     {
                         result = result + "\\";
                     }
-                    if (svMain.ENGLISHVERSION)
+                    if (M2Share.ENGLISHVERSION)
                     {
                         result = result + AttackerList[i].AttackDate.ToString() + "\\";
                     }
-                    else if (svMain.PHILIPPINEVERSION)
+                    else if (M2Share.PHILIPPINEVERSION)
                     {
                         result = result + AttackerList[i].AttackDate.ToString() + "\\";
                     }
@@ -998,7 +998,7 @@ namespace GameSvr
         public void StartCastleWar()
         {
             ArrayList ulist = new ArrayList();
-            svMain.UserEngine.GetAreaUsers(CastlePEnvir, CastleStartX, CastleStartY, 100, ulist);
+            M2Share.UserEngine.GetAreaUsers(CastlePEnvir, CastleStartX, CastleStartY, 100, ulist);
             for (var i = 0; i < ulist.Count; i++)
             {
                 TUserHuman hum = (TUserHuman)ulist[i];
@@ -1062,7 +1062,7 @@ namespace GameSvr
             if (HUtil32.GetTickCount() - CastleAttackStarted > 10 * 60 * 1000)
             {
                 ArrayList ulist = new ArrayList();
-                svMain.UserEngine.GetAreaUsers(CorePEnvir, 0, 0, 1000, ulist);
+                M2Share.UserEngine.GetAreaUsers(CorePEnvir, 0, 0, 1000, ulist);
                 flag = true;
                 for (var i = 0; i < ulist.Count; i++)
                 {
@@ -1094,9 +1094,9 @@ namespace GameSvr
                 OwnerGuild.MemberNameChanged();
             }
             string str = "(*)沙巴克已被\"" + OwnerGuildName + "\"占领！！";
-            svMain.UserEngine.SysMsgAll(str);
-            svMain.UserEngine.SendInterMsg(Grobal2.ISM_SYSOPMSG, svMain.ServerIndex, str);
-            svMain.MainOutMessage("[沙巴克]" + OwnerGuildName + "占领");
+            M2Share.UserEngine.SysMsgAll(str);
+            M2Share.UserEngine.SendInterMsg(Grobal2.ISM_SYSOPMSG, M2Share.ServerIndex, str);
+            M2Share.MainOutMessage("[沙巴克]" + OwnerGuildName + "占领");
         }
 
         public void FinishCastleWar()
@@ -1104,7 +1104,7 @@ namespace GameSvr
             BoCastleUnderAttack = false;
             RushGuildList.Clear();
             ArrayList ulist = new ArrayList();
-            svMain.UserEngine.GetAreaUsers(CastlePEnvir, CastleStartX, CastleStartY, 100, ulist);
+            M2Share.UserEngine.GetAreaUsers(CastlePEnvir, CastleStartX, CastleStartY, 100, ulist);
             for (var i = 0; i < ulist.Count; i++)
             {
                 TUserHuman hum = (TUserHuman)ulist[i];
@@ -1116,8 +1116,8 @@ namespace GameSvr
             }
             ulist.Free();
             string str = "[沙巴克攻城战已经结束]";
-            svMain.UserEngine.SysMsgAll(str);
-            svMain.UserEngine.SendInterMsg(Grobal2.ISM_SYSOPMSG, svMain.ServerIndex, str);
+            M2Share.UserEngine.SysMsgAll(str);
+            M2Share.UserEngine.SendInterMsg(Grobal2.ISM_SYSOPMSG, M2Share.ServerIndex, str);
         }
 
         public void Dispose(object obj)
@@ -1127,5 +1127,5 @@ namespace GameSvr
                 obj = null;
             }
         }
-    } 
+    }
 }

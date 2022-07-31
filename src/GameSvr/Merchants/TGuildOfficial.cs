@@ -1,5 +1,4 @@
-﻿using System;
-using SystemModule;
+﻿using SystemModule;
 
 namespace GameSvr
 {
@@ -28,12 +27,12 @@ namespace GameSvr
             }
             if (hum.MyGuild == null)
             {
-                if (hum.Gold >= svMain.BUILDGUILDFEE)
+                if (hum.Gold >= M2Share.BUILDGUILDFEE)
                 {
-                    pu = hum.FindItemName(svMain.__WomaHorn);
+                    pu = hum.FindItemName(M2Share.__WomaHorn);
                     if (pu != null)
                     {
-                       
+
                     }
                     else
                     {
@@ -51,14 +50,14 @@ namespace GameSvr
             }
             if (result == 0)
             {
-                if (svMain.GuildMan.AddGuild(gname, hum.UserName))
+                if (M2Share.GuildMan.AddGuild(gname, hum.UserName))
                 {
-                    svMain.UserEngine.SendInterMsg(Grobal2.ISM_ADDGUILD, svMain.ServerIndex, gname + "/" + hum.UserName);
+                    M2Share.UserEngine.SendInterMsg(Grobal2.ISM_ADDGUILD, M2Share.ServerIndex, gname + "/" + hum.UserName);
                     hum.SendDelItem(pu);
-                    hum.DelItem(pu.MakeIndex, svMain.__WomaHorn);
-                    hum.DecGold(svMain.BUILDGUILDFEE);
+                    hum.DelItem(pu.MakeIndex, M2Share.__WomaHorn);
+                    hum.DecGold(M2Share.BUILDGUILDFEE);
                     hum.GoldChanged();
-                    hum.MyGuild = svMain.GuildMan.GetGuildFromMemberName(hum.UserName);
+                    hum.MyGuild = M2Share.GuildMan.GetGuildFromMemberName(hum.UserName);
                     if (hum.MyGuild != null)
                     {
                         hum.GuildRankName = hum.MyGuild.MemberLogin(hum, ref hum.GuildRank);
@@ -84,7 +83,7 @@ namespace GameSvr
         private int UserDeclareGuildWarNow(TUserHuman hum, string gname)
         {
             int result;
-            if (svMain.GuildMan.GetGuild(gname) != null)
+            if (M2Share.GuildMan.GetGuild(gname) != null)
             {
                 if (hum.Gold >= ObjNpc.GUILDWARFEE)
                 {
@@ -120,16 +119,16 @@ namespace GameSvr
         private void UserRequestCastleWar(TUserHuman hum)
         {
             TUserItem pu;
-            if (hum.IsGuildMaster() && (!svMain.UserCastle.IsOurCastle(hum.MyGuild)))
+            if (hum.IsGuildMaster() && (!M2Share.UserCastle.IsOurCastle(hum.MyGuild)))
             {
-                pu = hum.FindItemName(svMain.__ZumaPiece);
+                pu = hum.FindItemName(M2Share.__ZumaPiece);
                 if (pu != null)
                 {
-                    if (svMain.UserCastle.ProposeCastleWar(hum.MyGuild))
+                    if (M2Share.UserCastle.ProposeCastleWar(hum.MyGuild))
                     {
                         hum.SendDelItem(pu);
-                        hum.DelItem(pu.MakeIndex, svMain.__ZumaPiece);
-                        svMain.AddUserLog("10\09" + hum.MapName + "\09" + hum.CX.ToString() + "\09" + hum.CY.ToString() + "\09" + hum.UserName + "\09" + svMain.__ZumaPiece + "\09" + "0" + "\09" + "1\09" + this.UserName);
+                        hum.DelItem(pu.MakeIndex, M2Share.__ZumaPiece);
+                        M2Share.AddUserLog("10\09" + hum.MapName + "\09" + hum.CX.ToString() + "\09" + hum.CY.ToString() + "\09" + hum.UserName + "\09" + M2Share.__ZumaPiece + "\09" + "0" + "\09" + "1\09" + this.UserName);
                         this.NpcSayTitle(hum, "~@request_ok");
                     }
                     else
@@ -151,7 +150,7 @@ namespace GameSvr
 
         public override void UserSelect(TCreature whocret, string selstr)
         {
-            string sel = String.Empty;
+            string sel = string.Empty;
             string body = string.Empty;
             try
             {
@@ -186,7 +185,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] TGuildOfficial.UserSelect... ");
+                M2Share.MainOutMessage("[Exception] TGuildOfficial.UserSelect... ");
             }
         }
 

@@ -1,4 +1,3 @@
-using System;
 using SystemModule;
 
 namespace GameSvr
@@ -82,13 +81,13 @@ namespace GameSvr
                 FMapInfo = value;
             }
         }
-        private string FUserName = String.Empty;
+        private string FUserName = string.Empty;
         private int FConnState = 0;
         private int FGateIdx = 0;
         private int FUserGateIdx = 0;
         private int FUserHandle = 0;
         private int FRecog = 0;
-        private string FMapInfo = String.Empty;
+        private string FMapInfo = string.Empty;
 
         public TUserInfo() : base()
         {
@@ -148,7 +147,7 @@ namespace GameSvr
             Str = HUtil32.GetValidStr3(Str, ref MapInfo, new string[] { "/" });
             TUserInfo UserInfo = Cmd.pInfo;
             Str = UserName + "/" + MapInfo;
-            svMain.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_USER_INFO, 0, 0, 0, Str);
+            M2Share.UserMgrEngine.InterSendMsg(TSendTarget.stClient, 0, UserInfo.GateIdx, UserInfo.UserGateIdx, UserInfo.UserHandle, UserInfo.UserName, UserInfo.Recog, Grobal2.SM_USER_INFO, 0, 0, 0, Str);
         }
     }
 }

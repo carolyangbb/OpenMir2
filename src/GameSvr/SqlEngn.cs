@@ -42,7 +42,7 @@ namespace GameSvr
 
         public void ExecuteSaveCommand()
         {
-            
+
         }
 
         public int ExecuteLoadCommand()
@@ -75,7 +75,7 @@ namespace GameSvr
                 }
                 catch
                 {
-                    svMain.MainOutMessage("[Exception]ExecuteLoadCommand - g_DBSQL.Connected");
+                    M2Share.MainOutMessage("[Exception]ExecuteLoadCommand - g_DBSQL.Connected");
                 }
                 result = 2;
                 // bug result
@@ -89,13 +89,13 @@ namespace GameSvr
                         {
                             if (SqlToDBList[0] == null)
                             {
-                                svMain.MainOutMessage("SQLToDBList.Items[0] = nil" + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
+                                M2Share.MainOutMessage("SQLToDBList.Items[0] = nil" + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
                             }
                             pload = (TSqlLoadRecord)SqlToDBList[0];
                             SqlToDBList.RemoveAt(0);
                             if (SqlEngn.g_UMDEBUG == 1000)
                             {
-                                svMain.MainOutMessage("SQLToDBList.Delete(0) count:" + SqlToDBList.Count.ToString() + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
+                                M2Share.MainOutMessage("SQLToDBList.Delete(0) count:" + SqlToDBList.Count.ToString() + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
                                 SqlEngn.g_UMDEBUG = 6;
                                 bExit = false;
                             }
@@ -117,7 +117,7 @@ namespace GameSvr
                     {
                         if (SqlEngn.g_UMDEBUG == 1000)
                         {
-                            svMain.MainOutMessage("not SQLToDBList <> nil" + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
+                            M2Share.MainOutMessage("not SQLToDBList <> nil" + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
                         }
                         SqlEngn.g_UMDEBUG = 4;
                         pload = null;
@@ -135,7 +135,7 @@ namespace GameSvr
                     loadtype = pload.loadType;
                     if ((SqlEngn.g_UMDEBUG > 0) && (SqlEngn.g_UMDEBUG != 2))
                     {
-                        svMain.MainOutMessage("[TestCode]ExecuteLoadCommand LoadType : " + loadtype.ToString() + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
+                        M2Share.MainOutMessage("[TestCode]ExecuteLoadCommand LoadType : " + loadtype.ToString() + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
                     }
                     SqlEngn.g_UMDEBUG = 5;
                     result = 30000 + loadtype;
@@ -152,12 +152,12 @@ namespace GameSvr
                                 SqlEngn.g_UMDEBUG = 21;
                                 if (DBSQL.g_DBSQL == null)
                                 {
-                                    svMain.MainOutMessage("[Exception] g_DBSql = nil");
+                                    M2Share.MainOutMessage("[Exception] g_DBSql = nil");
                                 }
                                 SqlResult = DBSQL.g_DBSQL.LoadPageUserMarket(pSearchInfo.MarketName, pSearchInfo.Who, pSearchInfo.ItemName, pSearchInfo.ItemType, pSearchInfo.ItemSet, rInfoList);
                                 if (rInfoList == null)
                                 {
-                                    svMain.MainOutMessage("[Exception] rInfoList = nil");
+                                    M2Share.MainOutMessage("[Exception] rInfoList = nil");
                                 }
                                 SqlEngn.g_UMDEBUG = 22;
                                 pSearchInfo.IsOK = SqlResult;
@@ -176,7 +176,7 @@ namespace GameSvr
                             {
                                 if (SqlEngn.g_UMDEBUG > 0)
                                 {
-                                    svMain.MainOutMessage("[TestCode]ExecuteLoadCommand : pSearchInfo = nil" + loadtype.ToString() + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
+                                    M2Share.MainOutMessage("[TestCode]ExecuteLoadCommand : pSearchInfo = nil" + loadtype.ToString() + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
                                 }
                                 SqlEngn.g_UMDEBUG = 15;
                             }
@@ -354,7 +354,7 @@ namespace GameSvr
                             result = 170000 + loadtype;
                             if (SqlEngn.g_UMDEBUG > 0)
                             {
-                                svMain.MainOutMessage("[TestCode]ExecuteLoadCommand : case else LoadType" + loadtype.ToString() + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
+                                M2Share.MainOutMessage("[TestCode]ExecuteLoadCommand : case else LoadType" + loadtype.ToString() + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
                             }
                             SqlEngn.g_UMDEBUG = 20;
                             break;
@@ -382,7 +382,7 @@ namespace GameSvr
                 }
                 catch
                 {
-                    svMain.MainOutMessage("EXCEPTION SQLEngine.ExecuteSaveCommand");
+                    M2Share.MainOutMessage("EXCEPTION SQLEngine.ExecuteSaveCommand");
                 }
                 try
                 {
@@ -390,7 +390,7 @@ namespace GameSvr
                 }
                 catch
                 {
-                    svMain.MainOutMessage("EXCEPTION SQLEngine.ExecuteLoadCommand" + buginfo.ToString() + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
+                    M2Share.MainOutMessage("EXCEPTION SQLEngine.ExecuteLoadCommand" + buginfo.ToString() + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
                     if (buginfo == 3)
                     {
                         SqlEngn.g_UMDEBUG = 1000;
@@ -457,7 +457,7 @@ namespace GameSvr
             AddToDBList(pload);
             if (SqlEngn.g_UMDEBUG == 1000)
             {
-                svMain.MainOutMessage("RequestLoadPageUserMarket-AddToDBList" + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
+                M2Share.MainOutMessage("RequestLoadPageUserMarket-AddToDBList" + " [" + SqlEngn.g_UMDEBUG.ToString() + "]");
             }
             SqlEngn.g_UMDEBUG = 1;
             result = true;
@@ -514,7 +514,7 @@ namespace GameSvr
             TSqlLoadRecord pload;
             if (!FActive)
             {
-                svMain.MainOutMessage("[TestCode2] TSqlEngine.CheckToDB FActive is FALSE");
+                M2Share.MainOutMessage("[TestCode2] TSqlEngine.CheckToDB FActive is FALSE");
             }
             pload = new TSqlLoadRecord();
             pload.loadType = SqlEngn.LOADTYPE_REQCHECKTODB;
@@ -661,7 +661,7 @@ namespace GameSvr
                             pSearchInfo = (TSearchSellItem)pLoad.pRcd;
                             if (pSearchInfo != null)
                             {
-                                hum = svMain.UserEngine.GetUserHuman(pLoad.UserName);
+                                hum = M2Share.UserEngine.GetUserHuman(pLoad.UserName);
                                 if (hum != null)
                                 {
                                     hum.GetMarketData(pSearchInfo);
@@ -669,7 +669,7 @@ namespace GameSvr
                                 }
                                 else
                                 {
-                                    svMain.MainOutMessage("INFO SQLENGINE DO NOT FIND USER FOR MARKETLIST!");
+                                    M2Share.MainOutMessage("INFO SQLENGINE DO NOT FIND USER FOR MARKETLIST!");
                                 }
                                 if (pSearchInfo.pList != null)
                                 {
@@ -690,14 +690,14 @@ namespace GameSvr
                             pLoadInfo = (TMarketLoad)pLoad.pRcd;
                             if (pLoadInfo != null)
                             {
-                                hum = svMain.UserEngine.GetUserHuman(pLoad.UserName);
+                                hum = M2Share.UserEngine.GetUserHuman(pLoad.UserName);
                                 if (hum != null)
                                 {
                                     hum.SellUserMarket(pLoadInfo);
                                 }
                                 else
                                 {
-                                    svMain.MainOutMessage("INFO SQLENGINE DO NOT FIND USER FOR SELLITEM!");
+                                    M2Share.MainOutMessage("INFO SQLENGINE DO NOT FIND USER FOR SELLITEM!");
                                 }
                             }
                             break;
@@ -705,14 +705,14 @@ namespace GameSvr
                             pLoadInfo = (TMarketLoad)pLoad.pRcd;
                             if (pLoadInfo != null)
                             {
-                                hum = svMain.UserEngine.GetUserHuman(pLoad.UserName);
+                                hum = M2Share.UserEngine.GetUserHuman(pLoad.UserName);
                                 if (hum != null)
                                 {
                                     hum.ReadyToSellUserMarket(pLoadInfo);
                                 }
                                 else
                                 {
-                                    svMain.MainOutMessage("INFO SQLENGINE DO NOT FIND USER FOR SELLITEM!");
+                                    M2Share.MainOutMessage("INFO SQLENGINE DO NOT FIND USER FOR SELLITEM!");
                                 }
                             }
                             break;
@@ -720,14 +720,14 @@ namespace GameSvr
                             pLoadInfo = (TMarketLoad)pLoad.pRcd;
                             if (pLoadInfo != null)
                             {
-                                hum = svMain.UserEngine.GetUserHuman(pLoad.UserName);
+                                hum = M2Share.UserEngine.GetUserHuman(pLoad.UserName);
                                 if (hum != null)
                                 {
                                     hum.BuyUserMarket(pLoadInfo);
                                 }
                                 else
                                 {
-                                    svMain.MainOutMessage("INFO SQLENGINE DO NOT FIND USER FOR SELLITEM!");
+                                    M2Share.MainOutMessage("INFO SQLENGINE DO NOT FIND USER FOR SELLITEM!");
                                 }
                             }
                             break;
@@ -735,14 +735,14 @@ namespace GameSvr
                             pLoadInfo = (TMarketLoad)pLoad.pRcd;
                             if (pLoadInfo != null)
                             {
-                                hum = svMain.UserEngine.GetUserHuman(pLoad.UserName);
+                                hum = M2Share.UserEngine.GetUserHuman(pLoad.UserName);
                                 if (hum != null)
                                 {
                                     hum.CancelUserMarket(pLoadInfo);
                                 }
                                 else
                                 {
-                                    svMain.MainOutMessage("INFO SQLENGINE DO NOT FIND USER FOR CANCEL!");
+                                    M2Share.MainOutMessage("INFO SQLENGINE DO NOT FIND USER FOR CANCEL!");
                                 }
                             }
                             break;
@@ -750,14 +750,14 @@ namespace GameSvr
                             pLoadInfo = (TMarketLoad)pLoad.pRcd;
                             if (pLoadInfo != null)
                             {
-                                hum = svMain.UserEngine.GetUserHuman(pLoad.UserName);
+                                hum = M2Share.UserEngine.GetUserHuman(pLoad.UserName);
                                 if (hum != null)
                                 {
                                     hum.GetPayUserMarket(pLoadInfo);
                                 }
                                 else
                                 {
-                                    svMain.MainOutMessage("INFO SQLENGINE DO NOT FIND USER FOR GETPAY!");
+                                    M2Share.MainOutMessage("INFO SQLENGINE DO NOT FIND USER FOR GETPAY!");
                                 }
                             }
                             break;
@@ -767,8 +767,8 @@ namespace GameSvr
                             {
                                 if (pBoardListInfo.GuildName != "")
                                 {
-                                    svMain.GuildAgitBoardMan.AddGaBoardList(pBoardListInfo);
-                                    hum = svMain.UserEngine.GetUserHuman(pBoardListInfo.UserName);
+                                    M2Share.GuildAgitBoardMan.AddGaBoardList(pBoardListInfo);
+                                    hum = M2Share.UserEngine.GetUserHuman(pBoardListInfo.UserName);
                                     if (hum != null)
                                     {
                                         hum.CmdReloadGaBoardList(pBoardListInfo.GuildName, 1);
@@ -821,7 +821,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("SQLEngnExcept ExecuteRun!");
+                M2Share.MainOutMessage("SQLEngnExcept ExecuteRun!");
             }
         }
 
@@ -947,8 +947,8 @@ namespace GameSvr
         }
 
         public void dispose(object obj)
-        { 
-            
+        {
+
         }
     }
 }

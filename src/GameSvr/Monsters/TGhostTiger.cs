@@ -25,26 +25,21 @@ namespace GameSvr
 
         protected void RangeAttack(TCreature targ)
         {
-            int i;
-            int pwr;
-            int dam;
-            ArrayList list;
             TCreature cret;
-            int slowtime;
             this.Dir = M2Share.GetNextDirection(this.CX, this.CY, targ.CX, targ.CY);
             this.SendRefMsg(Grobal2.RM_LIGHTING, this.Dir, this.CX, this.CY, targ.ActorId, "");
             TAbility _wvar1 = this.WAbil;
-            pwr = HUtil32._MAX(0, HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next());
-            list = new ArrayList();
+            int pwr = HUtil32._MAX(0, HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next());
+            ArrayList list = new ArrayList();
             this.GetMapCreatures(this.PEnvir, targ.CX, targ.CY, 1, list);
-            for (i = 0; i < list.Count; i++)
+            for (var i = 0; i < list.Count; i++)
             {
                 cret = (TCreature)list[i];
                 if (this.IsProperTarget(cret))
                 {
                     if (new System.Random(18).Next() > (cret.AntiMagic * 3))
                     {
-                        dam = cret.GetMagStruckDamage(this, pwr);
+                        int dam = cret.GetMagStruckDamage(this, pwr);
                         if (cret != targ)
                         {
                             dam = dam / 2;
@@ -52,12 +47,12 @@ namespace GameSvr
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            slowtime = dam / 10;
+                            int slowtime = dam / 10;
                             if (slowtime > 0)
                             {
                                 cret.MakePoison(Grobal2.POISON_SLOW, slowtime, 1);
                             }
-                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
+                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                         }
                     }
                 }
@@ -67,11 +62,8 @@ namespace GameSvr
 
         protected override bool AttackTarget()
         {
-            bool result;
-            byte targdir=0;
-            result = false;
-            // 辟立秦 老阑锭俊绰 辟立 塞 傍拜阑
-            // 盔芭府 老锭绰 盔芭府 付过傍拜阑 茄促.
+            byte targdir = 0;
+            bool result = false;
             if (this.TargetCret != null)
             {
                 if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
@@ -81,7 +73,7 @@ namespace GameSvr
                     {
                         if (this.TargetInAttackRange(this.TargetCret, ref targdir))
                         {
-                            this.TargetFocusTime  =  HUtil32.GetTickCount();
+                            this.TargetFocusTime = HUtil32.GetTickCount();
                             this.Attack(this.TargetCret, targdir);
                             if (fSitDown == false)
                             {
@@ -118,7 +110,6 @@ namespace GameSvr
                         else
                         {
                             this.LoseTarget();
-                            // <!!林狼> TargetCret := nil肺 官柴
                         }
                     }
                 }
@@ -159,7 +150,7 @@ namespace GameSvr
                 {
                     if ((HUtil32.GetTickCount() - this.SearchEnemyTime > 8000) || ((HUtil32.GetTickCount() - this.SearchEnemyTime > 1000) && (this.TargetCret == null)))
                     {
-                        this.SearchEnemyTime  =  HUtil32.GetTickCount();
+                        this.SearchEnemyTime = HUtil32.GetTickCount();
                         this.MonsterNormalAttack();
                     }
                 }
@@ -179,7 +170,6 @@ namespace GameSvr
             {
                 if (fSitDown)
                 {
-                    // 旧酒乐促.
                     this.SendRefMsg(Grobal2.RM_TURN, this.Dir, this.CX, this.CY, 0, "");
                     LastSitDownTime = GetTickCount + new System.Random(5000).Next() + 15000;
                     fSitDown = false;
@@ -187,7 +177,6 @@ namespace GameSvr
                 }
                 else
                 {
-                    // 辑乐促.
                     this.SendRefMsg(Grobal2.RM_DIGDOWN, this.Dir, this.CX, this.CY, 0, "");
                     LastSitDownTime = GetTickCount + new System.Random(3000).Next() + 9000;
                     fSitDown = true;

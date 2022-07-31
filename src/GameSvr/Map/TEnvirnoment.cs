@@ -8,16 +8,16 @@ namespace GameSvr
 {
     public class TEnvirnoment
     {
-        public string MapName = String.Empty;
-        public string NewMapName = String.Empty;
+        public string MapName = string.Empty;
+        public string NewMapName = string.Empty;
         public bool UseNewMap = false;
-        public string MapTitle = String.Empty;
+        public string MapTitle = string.Empty;
         public TMapInfo[] MMap;
         public int MiniMap = 0;
         public int Server = 0;
         public int NeedLevel = 0;
-        public ushort MapWidth = 0;
-        public ushort MapHeight = 0;
+        public short MapWidth = 0;
+        public short MapHeight = 0;
         public bool Darkness = false;
         public bool Dawn = false;
         public bool DayLight = false;
@@ -38,8 +38,8 @@ namespace GameSvr
         public bool NoDrug = false;
         public int MineMap = 0;
         public bool NoPositionMove = false;
-        public string BackMap = String.Empty;
-        public Object MapQuest = null;
+        public string BackMap = string.Empty;
+        public object MapQuest = null;
         public int NeedSetNumber = 0;
         public int NeedSetValue = 0;
         public int AutoAttack = 0;
@@ -99,8 +99,8 @@ namespace GameSvr
             //        FreeMem(MMap);
             //        MMap = null;
             //    }
-            //    MapWidth = (ushort)xsize;
-            //    MapHeight = (ushort)ysize;
+            //    MapWidth = (short)xsize;
+            //    MapHeight = (short)ysize;
             //    MMap = AllocMem(MapWidth * MapHeight * sizeof(TMapInfo));
             //}
         }
@@ -112,22 +112,16 @@ namespace GameSvr
             int j;
             int k;
             int fhandle = 0;
-            int t;
             int h;
             int door;
-            TMapHeader header;
-            TMapHeader_AntiHack header2;
             TMapFileInfo[] mbuf = null;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             TDoorInfo pd;
             string TempStr;
-            bool EncodeMap;
             result = false;
             TempStr = MapName.ToUpper();
-            EncodeMap = false;
             if ((TempStr == "LABY01") || (TempStr == "LABY02") || (TempStr == "LABY03") || (TempStr == "LABY04") || (TempStr == "SNAKE"))
             {
-                EncodeMap = true;
             }
             if (File.Exists(map))
             {
@@ -137,8 +131,8 @@ namespace GameSvr
                     //if (EncodeMap)
                     //{
                     //    FileRead(fhandle, header2, sizeof(TMapHeader_AntiHack));
-                    //    header2.Width = (ushort)(header2.Width ^ header2.CheckKey);
-                    //    header2.Height = (ushort)(header2.Height ^ header2.CheckKey);
+                    //    header2.Width = (short)(header2.Width ^ header2.CheckKey);
+                    //    header2.Height = (short)(header2.Height ^ header2.CheckKey);
                     //    MapWidth = header2.Width;
                     //    MapHeight = header2.Height;
                     //}
@@ -159,9 +153,9 @@ namespace GameSvr
                         {
                             //if (EncodeMap)
                             //{
-                            //    mbuf[h + j].BkImg = (ushort)(mbuf[h + j].BkImg ^ header2.CheckKey);
-                            //    mbuf[h + j].MidImg = (ushort)(mbuf[h + j].MidImg ^ header2.CheckKey);
-                            //    mbuf[h + j].FrImg = (ushort)(mbuf[h + j].FrImg ^ header2.CheckKey);
+                            //    mbuf[h + j].BkImg = (short)(mbuf[h + j].BkImg ^ header2.CheckKey);
+                            //    mbuf[h + j].MidImg = (short)(mbuf[h + j].MidImg ^ header2.CheckKey);
+                            //    mbuf[h + j].FrImg = (short)(mbuf[h + j].FrImg ^ header2.CheckKey);
                             //}
                             if ((mbuf[h + j].BkImg & 0x8000) != 0)
                             {
@@ -205,7 +199,7 @@ namespace GameSvr
                         }
                     }
                     Dispose(mbuf);
-                    fhandle.Close();
+                    //fhandle.Close();
                     result = true;
                 }
             }
@@ -228,10 +222,10 @@ namespace GameSvr
             return result;
         }
 
-        public Object GetCreature(int x, int y, bool aliveonly)
+        public object GetCreature(int x, int y, bool aliveonly)
         {
-            Object result;
-            TMapInfo pm=null;
+            object result;
+            TMapInfo pm = null;
             int i;
             bool inrange;
             TCreature cret;
@@ -264,7 +258,7 @@ namespace GameSvr
         public int GetAllCreature(int x, int y, bool aliveonly, ArrayList list)
         {
             int result;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             int i;
             bool inrange;
             TCreature cret;
@@ -311,10 +305,10 @@ namespace GameSvr
             return result;
         }
 
-        public bool IsValidCreature(int x, int y, int checkrange, Object cret)
+        public bool IsValidCreature(int x, int y, int checkrange, object cret)
         {
             bool result;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             int k;
             int m;
             int i;
@@ -348,10 +342,10 @@ namespace GameSvr
         }
 
         // (sonmg 2004/12/28 -> 2005/02/24 犁荐沥)
-        public bool IsValidFrontCreature(int x, int y, int checkrange, ref Object cret)
+        public bool IsValidFrontCreature(int x, int y, int checkrange, ref object cret)
         {
             bool result;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             int k;
             int m;
             int i;
@@ -402,10 +396,10 @@ namespace GameSvr
         public TMapItem GetItem(int x, int y)
         {
             TMapItem result;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             int i;
             bool inrange;
-            Object obj;
+            object obj;
             result = null;
             BoCanGetItem = false;
             inrange = GetMapXY(x, y, ref pm);
@@ -446,10 +440,10 @@ namespace GameSvr
         public TMapItem GetItemEx(int x, int y, ref int itemcount)
         {
             TMapItem result;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             int i;
             bool inrange;
-            Object obj;
+            object obj;
             result = null;
             itemcount = 0;
             BoCanGetItem = false;
@@ -489,10 +483,10 @@ namespace GameSvr
             return result;
         }
 
-        public Object GetEvent(int x, int y)
+        public object GetEvent(int x, int y)
         {
-            Object result;
-            TMapInfo pm=null;
+            object result;
+            TMapInfo pm = null;
             int i;
             bool inrange;
             result = null;
@@ -515,11 +509,11 @@ namespace GameSvr
         public int GetDupCount(int x, int y)
         {
             int result;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             int i;
             int arr;
             bool inrange;
-            Object obj;
+            object obj;
             result = 0;
             arr = 0;
             inrange = GetMapXY(x, y, ref pm);
@@ -550,7 +544,7 @@ namespace GameSvr
 
         public void GetMarkMovement(int x, int y, bool bocanmove)
         {
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             bool inrange;
             inrange = GetMapXY(x, y, ref pm);
             if (inrange)
@@ -571,7 +565,7 @@ namespace GameSvr
         public bool CanWalk(int x, int y, bool allowdup)
         {
             bool result;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             int i;
             TCreature cret;
             bool inrange;
@@ -615,7 +609,7 @@ namespace GameSvr
         public bool CanFireFly(int x, int y)
         {
             bool result;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             bool inrange;
             result = true;
             inrange = GetMapXY(x, y, ref pm);
@@ -652,7 +646,7 @@ namespace GameSvr
         public bool CanSafeWalk(int x, int y)
         {
             bool result;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             int i;
             bool inrange;
             TEvent __event;
@@ -676,10 +670,10 @@ namespace GameSvr
         }
 
         // -1: can't move(map don't movable),  0: can't move,  1: can move
-        public int MoveToMovingObject(int x, int y, Object obj, int nx, int ny, bool allowdup)
+        public int MoveToMovingObject(int x, int y, object obj, int nx, int ny, bool allowdup)
         {
             int result;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             TAThing pthing;
             bool inrange;
             bool canmove;
@@ -771,7 +765,7 @@ namespace GameSvr
                                         }
                                         catch
                                         {
-                                            svMain.MainOutMessage("DO NOT DISPOSE pthing");
+                                            M2Share.MainOutMessage("DO NOT DISPOSE pthing");
                                         }
                                         if (pm.OBJList.Count <= 0)
                                         {
@@ -808,7 +802,7 @@ namespace GameSvr
                             }
                             catch
                             {
-                                svMain.MainOutMessage("DO NOT MEW PTHING");
+                                M2Share.MainOutMessage("DO NOT MEW PTHING");
                                 pthing = null;
                             }
                             if (pthing != null)
@@ -816,7 +810,7 @@ namespace GameSvr
                                 pthing.Shape = Grobal2.OS_MOVINGOBJECT;
                                 Down = 18;
                                 pthing.AObject = obj;
-                                pthing.ATime  =  HUtil32.GetTickCount();
+                                pthing.ATime = HUtil32.GetTickCount();
                                 // 甘俊 眠啊等 矫埃
                                 Down = 19;
                                 pm.OBJList.Add(pthing);
@@ -829,15 +823,15 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[TEnvirnoment] MoveToMovingObject exception " + MapName + "<" + nx.ToString() + ":" + ny.ToString() + ">" + Down.ToString());
+                M2Share.MainOutMessage("[TEnvirnoment] MoveToMovingObject exception " + MapName + "<" + nx.ToString() + ":" + ny.ToString() + ">" + Down.ToString());
             }
             return result;
         }
 
-        public object AddToMap(int x, int y, byte objtype, Object obj)
+        public object AddToMap(int x, int y, byte objtype, object obj)
         {
             object result;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             TAThing pthing;
             TAThing pthingtemp;
             TMapItem pmitem;
@@ -875,20 +869,17 @@ namespace GameSvr
                                         if (pthing.Shape == Grobal2.OS_ITEMOBJECT)
                                         {
                                             pmitem = (TMapItem)((TAThing)pm.OBJList[i]).AObject;
-                                            // '陛傈'
                                             if (pmitem.Name == Envir.NAME_OF_GOLD)
                                             {
                                                 cnt = pmitem.Count + ((TMapItem)obj).Count;
                                                 if (cnt <= ObjBase.BAGGOLD)
                                                 {
                                                     pmitem.Count = cnt;
-                                                    pmitem.Looks = GetGoldLooks(cnt);
+                                                    pmitem.Looks = HUtil32.GetGoldLooks(cnt);
                                                     pmitem.AniCount = 0;
                                                     pmitem.Reserved = 0;
-                                                    pthing.ATime  =  HUtil32.GetTickCount();
-                                                    // 矫埃 犁汲沥
+                                                    pthing.ATime = HUtil32.GetTickCount();
                                                     result = pmitem;
-                                                    // 捞固 乐绰 巴捞搁 弊 器牢磐甫 搬苞蔼栏肺 焊晨
                                                     flag = true;
                                                 }
                                             }
@@ -897,7 +888,7 @@ namespace GameSvr
                                 }
                                 if (!flag)
                                 {
-                                    ps = svMain.UserEngine.GetStdItem(((TMapItem)obj).UserItem.Index);
+                                    ps = M2Share.UserEngine.GetStdItem(((TMapItem)obj).UserItem.Index);
                                 }
                                 if ((ps != null) && (ps.StdMode == ObjBase.STDMODE_OF_DECOITEM) && (ps.Shape == ObjBase.SHAPE_OF_DECOITEM))
                                 {
@@ -950,7 +941,7 @@ namespace GameSvr
                             pthing.Shape = objtype;
                             pthing.AObject = obj;
                             // TCreature(obj), PTUseItem(obj)
-                            pthing.ATime  =  HUtil32.GetTickCount();
+                            pthing.ATime = HUtil32.GetTickCount();
                             // 甘俊 眠啊等 矫埃
                             pm.OBJList.Add(pthing);
                             result = obj;
@@ -960,15 +951,15 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[TEnvirnoment] AddToMap exception");
+                M2Share.MainOutMessage("[TEnvirnoment] AddToMap exception");
             }
             return result;
         }
 
-        public object AddToMapMineEvnet(int x, int y, byte objtype, Object obj)
+        public object AddToMapMineEvnet(int x, int y, byte objtype, object obj)
         {
             object result;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             TAThing pthing;
             bool inrange;
             bool flag;
@@ -999,7 +990,7 @@ namespace GameSvr
                             pthing.Shape = objtype;
                             pthing.AObject = obj;
                             // TCreature(obj), PTUseItem(obj)
-                            pthing.ATime  =  HUtil32.GetTickCount();
+                            pthing.ATime = HUtil32.GetTickCount();
                             // 甘俊 眠啊等 矫埃
                             pm.OBJList.Add(pthing);
                             result = obj;
@@ -1009,15 +1000,15 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[TEnvirnoment] AddToMapMineEvent exception");
+                M2Share.MainOutMessage("[TEnvirnoment] AddToMapMineEvent exception");
             }
             return result;
         }
 
-        public object AddToMapTreasure(int x, int y, byte objtype, Object obj)
+        public object AddToMapTreasure(int x, int y, byte objtype, object obj)
         {
             object result;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             TAThing pthing;
             bool inrange;
             bool flag;
@@ -1046,7 +1037,7 @@ namespace GameSvr
                         pthing.Shape = objtype;
                         pthing.AObject = obj;
                         // TCreature(obj), PTUseItem(obj)
-                        pthing.ATime  =  HUtil32.GetTickCount();
+                        pthing.ATime = HUtil32.GetTickCount();
                         // 甘俊 眠啊等 矫埃
                         pm.OBJList.Add(pthing);
                         result = obj;
@@ -1055,15 +1046,15 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[TEnvirnoment] AddToMapMineEvent exception");
+                M2Share.MainOutMessage("[TEnvirnoment] AddToMapMineEvent exception");
             }
             return result;
         }
 
-        public int DeleteFromMap(int x, int y, byte objtype, Object obj)
+        public int DeleteFromMap(int x, int y, byte objtype, object obj)
         {
             int result;
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             int i;
             TAThing pthing;
             bool inrange;
@@ -1126,7 +1117,7 @@ namespace GameSvr
                         catch
                         {
                             pm = null;
-                            svMain.MainOutMessage("[TEnvirnoment] DeleteFromMap -> Except 1 **" + objtype.ToString());
+                            M2Share.MainOutMessage("[TEnvirnoment] DeleteFromMap -> Except 1 **" + objtype.ToString());
                         }
                     }
                     else
@@ -1141,14 +1132,14 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[TEnvirnoment] DeleteFromMap -> Except 2 **" + objtype.ToString());
+                M2Share.MainOutMessage("[TEnvirnoment] DeleteFromMap -> Except 2 **" + objtype.ToString());
             }
             return result;
         }
 
-        public void VerifyMapTime(int x, int y, Object obj)
+        public void VerifyMapTime(int x, int y, object obj)
         {
-            TMapInfo pm=null;
+            TMapInfo pm = null;
             int i;
             TAThing pthing;
             bool inrange;
@@ -1166,7 +1157,7 @@ namespace GameSvr
                                 pthing = (TAThing)pm.OBJList[i];
                                 if ((pthing.Shape == Grobal2.OS_MOVINGOBJECT) && (pthing.AObject == obj))
                                 {
-                                    pthing.ATime  =  HUtil32.GetTickCount();
+                                    pthing.ATime = HUtil32.GetTickCount();
                                     break;
                                 }
                             }
@@ -1176,7 +1167,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[TEnvirnoment] VerifyMapTime exception");
+                M2Share.MainOutMessage("[TEnvirnoment] VerifyMapTime exception");
             }
         }
 
@@ -1228,7 +1219,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[TEnvirnoment] AroundDoorOpened exception");
+                M2Share.MainOutMessage("[TEnvirnoment] AroundDoorOpened exception");
             }
             return result;
         }
@@ -1273,7 +1264,7 @@ namespace GameSvr
                 npc.DefineDirectory = LocalDB.MAPQUESTDIR;
                 npc.BoInvisible = true;
                 npc.BoUseMapFileName = false;
-                svMain.UserEngine.NpcList.Add(npc);
+                M2Share.UserEngine.NpcList.Add(npc);
                 mqi.QuestNpc = npc;
                 MapQuestList.Add(mqi);
                 result = true;
@@ -1295,9 +1286,9 @@ namespace GameSvr
             return result;
         }
 
-        public Object GetMapQuest(Object who, string monname, string itemname, bool groupcall)
+        public object GetMapQuest(object who, string monname, string itemname, bool groupcall)
         {
-            Object result;
+            object result;
             int i;
             int qval;
             TMapQuestInfo mqi;
@@ -1359,7 +1350,7 @@ namespace GameSvr
             string result = MapName;
             if (GuildAgit > -1)
             {
-                result = MapName[1] + MapName[2] + MapName[3];
+                // result = MapName[1] + MapName[2] + MapName[3];
             }
             if (UseNewMap)
             {
@@ -1370,7 +1361,7 @@ namespace GameSvr
 
         public object GetMovingObject(int x, int y, bool flag)
         {
-            TMapInfo pm =null;
+            TMapInfo pm = null;
             object result = null;
             bool inrange = GetMapXY(x, y, ref pm);
             if (inrange && (pm != null))

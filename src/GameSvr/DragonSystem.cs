@@ -93,7 +93,7 @@ namespace GameSvr
                 {
                     FLevelInfo[i].Level = i + 1;
                     FLevelInfo[i].DropExp = (i + 1) * 10000;
-                    FLevelInfo[i].DropItemList = new ArrayList();
+                    FLevelInfo[i].DropItemList = new List<TDropItemInfo>();
                 }
                 FAutoAttackMap = new ArrayList();
             }
@@ -173,7 +173,7 @@ namespace GameSvr
                     str = StrInfo[i].Trim();
                     if ((str != "") && (str[0] != ';'))
                     {
-                        infostr = str[1];
+                        //infostr = str[1];
                         if (infostr == "!")
                         {
                             str2 = HUtil32.GetValidStr3(str, ref str1, new string[] { " ", "\09" });
@@ -225,7 +225,7 @@ namespace GameSvr
                         else
                         {
                             pDropItemInfo = new TDropItemInfo();
-                            str2 = HUtil32.GetValidStr3(str,ref str1, new string[] { " ", "\09" });
+                            str2 = HUtil32.GetValidStr3(str, ref str1, new string[] { " ", "\09" });
                             pDropItemInfo.Name = str1.Trim();
                             str2 = HUtil32.GetValidStr3(str2, ref str1, new string[] { " ", "\09" });
                             pDropItemInfo.FirstRate = HUtil32.Str_ToInt(str1, 0);
@@ -331,10 +331,10 @@ namespace GameSvr
                         int LowValue = HUtil32._MAX(slope1 - px, px + slope3);
                         int HighValue = HUtil32._MIN(slope2 - px, px + slope4);
                         int py = new Random(HighValue - LowValue + 1).Next() + LowValue;
-                        int itemmakeindex = svMain.UserEngine.MakeItemToMap(FDropMapName, pinfo.Name, pinfo.Amount, px, py);
+                        int itemmakeindex = M2Share.UserEngine.MakeItemToMap(FDropMapName, pinfo.Name, pinfo.Amount, px, py);
                         if (itemmakeindex != 0)
                         {
-                            svMain.AddUserLog("15\09" + FDropMapName + "\09" + px.ToString() + "\09" + py.ToString() + "\09" + "EvilMir" + "\09" + pinfo.Name + "\09" + itemmakeindex.ToString() + "\09" + "0" + "\09" + "0");
+                            M2Share.AddUserLog("15\09" + FDropMapName + "\09" + px.ToString() + "\09" + py.ToString() + "\09" + "EvilMir" + "\09" + pinfo.Name + "\09" + itemmakeindex.ToString() + "\09" + "0" + "\09" + "0");
                         }
                     }
                 }
@@ -357,7 +357,7 @@ namespace GameSvr
                 int pwr = 20 * (new System.Random(3).Next() + 1);
                 int dam = user_.GetMagStruckDamage(null, pwr);
                 user_.StruckDamage(dam, null);
-                user_.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, user_.WAbil.HP, user_.WAbil.MaxHP, 0, "", 200);
+                user_.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, user_.WAbil.HP, user_.WAbil.MaxHP, 0, "", 200);
             }
         }
 
@@ -365,7 +365,7 @@ namespace GameSvr
         {
             TCreature Tempuser;
             ArrayList userlist = new ArrayList();
-            int usercount = svMain.UserEngine.GetAreaAllUsers(Envir_, userlist);
+            int usercount = M2Share.UserEngine.GetAreaAllUsers(Envir_, userlist);
             for (var i = 0; i < userlist.Count; i++)
             {
                 Tempuser = (TCreature)userlist[i];
@@ -406,7 +406,7 @@ namespace GameSvr
 
         public void SetItemDropMap(string MapName, Rectangle Area_)
         {
-            FDopItemEnvir = svMain.GrobalEnvir.GetEnvir(FDropMapName);
+            FDopItemEnvir = M2Share.GrobalEnvir.GetEnvir(FDropMapName);
             FDropItemRect = Area_;
         }
 
@@ -425,7 +425,7 @@ namespace GameSvr
                             FLevel = FLevel + 1;
                             FExp = 0;
                             OnLevelup(FLevel);
-                            svMain.MainOutMessage("DRAGON LEVELUP LEVEL:" + FLevel.ToString());
+                            M2Share.MainOutMessage("DRAGON LEVELUP LEVEL:" + FLevel.ToString());
                         }
                     }
                 }
@@ -453,7 +453,7 @@ namespace GameSvr
             {
                 FLevel = 1;
                 FExp = 0;
-                svMain.MainOutMessage("DRAGON RESET LEVEL");
+                M2Share.MainOutMessage("DRAGON RESET LEVEL");
             }
         }
 
@@ -474,7 +474,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("EXCEPTION DRAGON SYSTEM");
+                M2Share.MainOutMessage("EXCEPTION DRAGON SYSTEM");
             }
         }
 

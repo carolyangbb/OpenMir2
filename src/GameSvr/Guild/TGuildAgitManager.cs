@@ -10,7 +10,7 @@ namespace GameSvr
     public class TGuildAgitManager
     {
         public int GuildAgitFileVersion = 0;
-        public string ReturnMapName = String.Empty;
+        public string ReturnMapName = string.Empty;
         public int ReturnX = 0;
         public int ReturnY = 0;
         public int EntranceX = 0;
@@ -52,7 +52,7 @@ namespace GameSvr
 
         public void LoadGuildAgitList()
         {
-            ArrayList strlist;
+            StringList strlist;
             int i;
             string str;
             string data = string.Empty;
@@ -70,13 +70,13 @@ namespace GameSvr
             string saletime;
             int agittotalgold;
             agittotalgold = 0;
-            if (File.Exists(svMain.GuildAgitFile))
+            if (File.Exists(M2Share.GuildAgitFile))
             {
-                strlist = new ArrayList();
-                strlist.LoadFromFile(svMain.GuildAgitFile);
+                strlist = new StringList();
+                strlist.LoadFromFile(M2Share.GuildAgitFile);
                 for (i = 0; i < strlist.Count; i++)
                 {
-                    str = (string)strlist[i];
+                    str = strlist[i];
                     if (i == 0)
                     {
                         str = str.Trim();
@@ -121,7 +121,7 @@ namespace GameSvr
                     }
                     if (data == "")
                     {
-                        svMain.MainOutMessage("GuildAgitList " + i.ToString() + "th Line is error.");
+                        M2Share.MainOutMessage("GuildAgitList " + i.ToString() + "th Line is error.");
                         continue;
                         // 厘盔 沥焊 何练.
                     }
@@ -150,16 +150,16 @@ namespace GameSvr
                     }
                 }
                 strlist.Free();
-                svMain.MainOutMessage(GuildAgitList.Count.ToString() + " guildagits are loaded.");
+                M2Share.MainOutMessage(GuildAgitList.Count.ToString() + " guildagits are loaded.");
                 // 矫累且 锭 滚傈 眉农 0捞搁 1肺 棵府绊 货肺 归诀 棺 历厘窃
                 if (GuildAgitFileVersion <= 0)
                 {
-                    svMain.GuildAgitMan.SaveGuildAgitList(true);
+                    M2Share.GuildAgitMan.SaveGuildAgitList(true);
                 }
             }
             else
             {
-                svMain.MainOutMessage("No guildagit file loaded...");
+                M2Share.MainOutMessage("No guildagit file loaded...");
             }
         }
 
@@ -167,7 +167,7 @@ namespace GameSvr
         {
             ArrayList strlist;
             int i;
-            if (svMain.ServerIndex == 0)
+            if (M2Share.ServerIndex == 0)
             {
                 if (bBackup)
                 {
@@ -196,11 +196,11 @@ namespace GameSvr
                 }
                 try
                 {
-                    strlist.SaveToFile(svMain.GuildAgitFile);
+                    //strlist.SaveToFile(svMain.GuildAgitFile);
                 }
                 catch
                 {
-                    svMain.MainOutMessage(svMain.GuildAgitFile + " Saving error...");
+                    M2Share.MainOutMessage(M2Share.GuildAgitFile + " Saving error...");
                 }
                 strlist.Free();
             }
@@ -231,7 +231,7 @@ namespace GameSvr
             if (GetGuildAgit(gname) == null)
             {
                 // 巩颇厘盔 俺荐力茄.
-                if (GuildAgitList.Count >= svMain.GuildAgitMaxNumber)
+                if (GuildAgitList.Count >= M2Share.GuildAgitMaxNumber)
                 {
                     return result;
                 }
@@ -285,10 +285,10 @@ namespace GameSvr
             result = -1;
             if (GuildAgitList.Count == 0)
             {
-                result = svMain.GuildAgitStartNumber;
+                result = M2Share.GuildAgitStartNumber;
                 return result;
             }
-            for (j = svMain.GuildAgitStartNumber; j <= svMain.GuildAgitMaxNumber; j++)
+            for (j = M2Share.GuildAgitStartNumber; j <= M2Share.GuildAgitMaxNumber; j++)
             {
                 for (i = 0; i < GuildAgitList.Count; i++)
                 {
@@ -329,13 +329,13 @@ namespace GameSvr
                 {
                     if (guildagit.GuildAgitTotalGold >= Guild.GUILDAGITEXTENDFEE)
                     {
-                        agitnumber = svMain.GuildAgitMan.ExtendTime(1, guildagit.GuildName);
+                        agitnumber = M2Share.GuildAgitMan.ExtendTime(1, guildagit.GuildName);
                         if (agitnumber > -1)
                         {
                             guildagit.GuildAgitTotalGold = guildagit.GuildAgitTotalGold - Guild.GUILDAGITEXTENDFEE;
-                            svMain.AddUserLog("38\09" + "GUILDAGIT" + "\09" + "0" + "\09" + "0" + "\09" + "AUTOEXTEND" + "\09" + guildagit.GuildName + "\09" + agitnumber.ToString() + "\09" + "1\09" + Guild.GUILDAGITEXTENDFEE.ToString());
+                            M2Share.AddUserLog("38\09" + "GUILDAGIT" + "\09" + "0" + "\09" + "0" + "\09" + "AUTOEXTEND" + "\09" + guildagit.GuildName + "\09" + agitnumber.ToString() + "\09" + "1\09" + Guild.GUILDAGITEXTENDFEE.ToString());
                             SaveFlag = true;
-                            svMain.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILDAGIT, svMain.ServerIndex, "");
+                            M2Share.UserEngine.SendInterMsg(Grobal2.ISM_RELOADGUILDAGIT, M2Share.ServerIndex, "");
                         }
                     }
                 }
@@ -366,7 +366,6 @@ namespace GameSvr
         public int ExtendTime(int count, string gname)
         {
             int result;
-            const int LIMIT_DAY = 300;
             TGuildAgit guildagit;
             DateTime RegDateTime;
             DateTime NowDateTime;
@@ -382,27 +381,27 @@ namespace GameSvr
             {
                 RegDateTime = guildagit.GetGuildAgitRegDateTime();
                 NowDateTime = DateTime.Now;
-                if (NowDateTime - RegDateTime > LIMIT_DAY)
-                {
-                    if (guildagit.ContractPeriod > LIMIT_DAY)
-                    {
-                        RegDateTime = RegDateTime + LIMIT_DAY;
-                        guildagit.RegistrationTime = guildagit.ConvertDateTimeToString(RegDateTime);
-                        guildagit.ContractPeriod = guildagit.ContractPeriod - LIMIT_DAY;
-                        BackupFlag = true;
-                    }
-                    else
-                    {
-                        return result;
-                    }
-                }
-                else
-                {
-                    if (guildagit.ContractPeriod + (count * Guild.GUILDAGIT_DAYUNIT) > 365)
-                    {
-                        return result;
-                    }
-                }
+                //if (NowDateTime - RegDateTime > LIMIT_DAY)
+                //{
+                //    if (guildagit.ContractPeriod > LIMIT_DAY)
+                //    {
+                //        RegDateTime = RegDateTime + LIMIT_DAY;
+                //        guildagit.RegistrationTime = guildagit.ConvertDateTimeToString(RegDateTime);
+                //        guildagit.ContractPeriod = guildagit.ContractPeriod - LIMIT_DAY;
+                //        BackupFlag = true;
+                //    }
+                //    else
+                //    {
+                //        return result;
+                //    }
+                //}
+                //else
+                //{
+                //    if (guildagit.ContractPeriod + (count * Guild.GUILDAGIT_DAYUNIT) > 365)
+                //    {
+                //        return result;
+                //    }
+                //}
                 guildagit.ContractPeriod = guildagit.ContractPeriod + (count * Guild.GUILDAGIT_DAYUNIT);
                 SaveGuildAgitList(BackupFlag);
                 result = guildagit.GuildAgitNumber;
@@ -413,13 +412,13 @@ namespace GameSvr
         public DateTime GetRemainDateTime(string gname)
         {
             TGuildAgit guildagit;
-            DateTime result = -100;
+            //DateTime result = -100;
             guildagit = GetGuildAgit(gname);
-            if (guildagit != null)
-            {
-                result = guildagit.GetGuildAgitRemainDateTime();
-            }
-            return result;
+            //if (guildagit != null)
+            //{
+            //    result = guildagit.GetGuildAgitRemainDateTime();
+            //}
+            return DateTime.Now;
         }
 
         public int GetTradingRemainDate(string gname)
@@ -462,7 +461,6 @@ namespace GameSvr
         public void GetGuildAgitSaleList(ref ArrayList salelist)
         {
             DateTime RemainDateTime;
-            string RemainDay;
             salelist = null;
             string strStatus = "";
             string AnotherGuildMaster = "";
@@ -483,27 +481,27 @@ namespace GameSvr
                     salelist = new ArrayList();
                 }
                 RemainDateTime = guildagit.GetGuildAgitRemainDateTime();
-                if (RemainDateTime <= 0)
-                {
-                    RemainDay = "Arrear";
-                }
-                else
-                {
-                    RemainDateTime = Convert.ToInt64(RemainDateTime * 10);
-                    RemainDateTime = RemainDateTime / 10;
-                    RemainDateTime = Guild.GUILDAGIT_DAYUNIT - RemainDateTime;
-#if !DEBUG
-                    RemainDay = Convert.ToString(RemainDateTime) + "Day(s)";
-#else
-                    RemainDay = Convert.ToString(RemainDateTime) + "Min.";
-#endif
-                }
+                //                if (RemainDateTime <= 0)
+                //                {
+                //                    RemainDay = "Arrear";
+                //                }
+                //                else
+                //                {
+                //                    RemainDateTime = Convert.ToInt64(RemainDateTime * 10);
+                //                    RemainDateTime = RemainDateTime / 10;
+                //                    RemainDateTime = Guild.GUILDAGIT_DAYUNIT - RemainDateTime;
+                //#if !DEBUG
+                //                    RemainDay = Convert.ToString(RemainDateTime) + "Day(s)";
+                //#else
+                //                    RemainDay = Convert.ToString(RemainDateTime) + "Min.";
+                //#endif
+                //                }
                 string strtemp = guildagit.GuildAgitNumber.ToString();
                 if (strtemp.Length == 1)
                 {
                     strtemp = "0" + strtemp;
                 }
-                TGuild guild = svMain.GuildMan.GetGuild(guildagit.GuildName);
+                TGuild guild = M2Share.GuildMan.GetGuild(guildagit.GuildName);
                 if (guild != null)
                 {
                     AnotherGuildMaster = guildagit.GuildMasterNameSecond;
@@ -666,39 +664,39 @@ namespace GameSvr
             TEnvirnoment dropenvir;
             string pricestr = string.Empty;
             int result = 0;
-            if (svMain.DecoItemList.Count <= 0)
+            if (M2Share.DecoItemList.Count <= 0)
             {
                 return result;
             }
             try
             {
-                ps = svMain.UserEngine.GetStdItemFromName(ObjBase.NAME_OF_DECOITEM);
+                ps = M2Share.UserEngine.GetStdItemFromName(ObjBase.NAME_OF_DECOITEM);
                 if (ps != null)
                 {
                     newpu = new TUserItem();
-                    if (svMain.UserEngine.CopyToUserItemFromName(ps.Name, ref newpu))
+                    if (M2Share.UserEngine.CopyToUserItemFromName(ps.Name, ref newpu))
                     {
-                        newpu.Dura = (ushort)LookIndex;
-                        newpu.DuraMax = (ushort)Durability;
+                        newpu.Dura = (short)LookIndex;
+                        newpu.DuraMax = (short)Durability;
                         pmi = new TMapItem();
                         pmi.UserItem = newpu;
                         if ((ps.StdMode == ObjBase.STDMODE_OF_DECOITEM) && (ps.Shape == ObjBase.SHAPE_OF_DECOITEM))
                         {
                             pmi.Name = GetDecoItemName(LookIndex, ref pricestr) + "[" + HUtil32.MathRound(Durability / 1000).ToString() + "]" + "/" + "1";
                             pmi.Count = 1;
-                            pmi.Looks = (ushort)LookIndex;
+                            pmi.Looks = (short)LookIndex;
                             pmi.AniCount = ps.AniCount;
                             pmi.Reserved = 0;
                             pmi.Ownership = null;
-                            pmi.Droptime  =  HUtil32.GetTickCount();
+                            pmi.Droptime = HUtil32.GetTickCount();
                             pmi.Droper = null;
                         }
-                        dropenvir = svMain.GrobalEnvir.GetEnvir(DropMapName);
+                        dropenvir = M2Share.GrobalEnvir.GetEnvir(DropMapName);
                         pr = (TMapItem)dropenvir.AddToMap(dx, dy, Grobal2.OS_ITEMOBJECT, pmi);
                         if (pr == pmi)
                         {
                             result = pmi.UserItem.MakeIndex;
-                            svMain.MainOutMessage("[DecoItemGen] " + pmi.Name + "(" + dx.ToString() + "," + dy.ToString() + ")");
+                            M2Share.MainOutMessage("[DecoItemGen] " + pmi.Name + "(" + dx.ToString() + "," + dy.ToString() + ")");
                         }
                         else
                         {
@@ -713,21 +711,19 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] TGuildAgitManager.MakeDecoItemToMap");
+                M2Share.MainOutMessage("[Exception] TGuildAgitManager.MakeDecoItemToMap");
             }
             return result;
         }
 
         public bool DeleteAgitDecoMon(string mapname, short x, short y)
         {
-            bool result;
-            int i;
+            bool result = false;
             TAgitDecoItem tempitem;
             int agitnum;
-            result = false;
             try
             {
-                for (i = 0; i < AgitDecoMonList.Count; i++)
+                for (var i = 0; i < AgitDecoMonList.Count; i++)
                 {
                     tempitem = AgitDecoMonList[i];
                     if (tempitem != null)
@@ -748,7 +744,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] TGuildAgitManager.DeleteAgitDecoMon");
+                M2Share.MainOutMessage("[Exception] TGuildAgitManager.DeleteAgitDecoMon");
             }
             return result;
         }
@@ -769,7 +765,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] TGuildAgitManager.AddAgitDecoMon");
+                M2Share.MainOutMessage("[Exception] TGuildAgitManager.AddAgitDecoMon");
             }
             return result;
         }
@@ -790,7 +786,7 @@ namespace GameSvr
                     {
                         if ((tempitem.MapName == mapname) && (tempitem.x == x) && (tempitem.y == y))
                         {
-                            tempitem.Dura = (ushort)dura;
+                            tempitem.Dura = dura;
                             result = true;
                             break;
                         }
@@ -799,7 +795,7 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception] TGuildAgitManager.UpdateDuraAgitDecoMon");
+                M2Share.MainOutMessage("[Exception] TGuildAgitManager.UpdateDuraAgitDecoMon");
             }
             return result;
         }
@@ -817,13 +813,13 @@ namespace GameSvr
             string ystr = string.Empty;
             string maker = string.Empty;
             string durastr = string.Empty;
-            ArrayList strlist;
+            StringList strlist;
             TAgitDecoItem item;
             TAgitDecoItem pitem;
-            flname = svMain.GuildBaseDir + Guild.AGITDECOMONFILE;
+            flname = M2Share.GuildBaseDir + Guild.AGITDECOMONFILE;
             if (File.Exists(flname))
             {
-                strlist = new ArrayList();
+                strlist = new StringList();
                 strlist.LoadFromFile(flname);
                 for (i = 0; i < strlist.Count; i++)
                 {
@@ -845,12 +841,12 @@ namespace GameSvr
                     str = HUtil32.GetValidStr3(str, ref durastr, new string[] { " ", "\09" });
                     item = new TAgitDecoItem();
                     item.Name = decomonname.Substring(0 - 1, 20);
-                    item.Looks = (ushort)HUtil32.Str_ToInt(indexstr, 0);
+                    item.Looks = (short)HUtil32.Str_ToInt(indexstr, 0);
                     item.MapName = map.Substring(0 - 1, 14);
-                    item.x = (ushort)HUtil32.Str_ToInt(xstr, 0);
-                    item.y = (ushort)HUtil32.Str_ToInt(ystr, 0);
+                    item.x = (short)HUtil32.Str_ToInt(xstr, 0);
+                    item.y = (short)HUtil32.Str_ToInt(ystr, 0);
                     item.Maker = maker.Substring(0 - 1, 14);
-                    item.Dura = (ushort)HUtil32.Str_ToInt(durastr, 0);
+                    item.Dura = (short)HUtil32.Str_ToInt(durastr, 0);
                     pitem = new TAgitDecoItem();
                     pitem = item;
                     AgitDecoMonList.Add(pitem);
@@ -864,7 +860,7 @@ namespace GameSvr
         public void SaveAgitDecoMonList()
         {
             StringList strlist;
-            if (svMain.ServerIndex == 0)
+            if (M2Share.ServerIndex == 0)
             {
                 strlist = new StringList();
                 for (var i = 0; i < AgitDecoMonList.Count; i++)
@@ -873,11 +869,11 @@ namespace GameSvr
                 }
                 try
                 {
-                    strlist.SaveToFile(svMain.GuildBaseDir + Guild.AGITDECOMONFILE);
+                    strlist.SaveToFile(M2Share.GuildBaseDir + Guild.AGITDECOMONFILE);
                 }
                 catch
                 {
-                    svMain.MainOutMessage(Guild.AGITDECOMONFILE + " 历厘 坷幅...");
+                    M2Share.MainOutMessage(Guild.AGITDECOMONFILE + " 历厘 坷幅...");
                 }
                 strlist.Free();
             }
@@ -892,11 +888,11 @@ namespace GameSvr
             {
                 return result;
             }
-            if (svMain.DecoItemList.Count <= index)
+            if (M2Share.DecoItemList.Count <= index)
             {
                 return result;
             }
-            str = (string)svMain.DecoItemList[index];
+            str = (string)M2Share.DecoItemList[index];
             price = HUtil32.GetValidStr3(str, ref name, new string[] { "/" });
             result = name;
             return result;
@@ -1017,16 +1013,15 @@ namespace GameSvr
             result = false;
             kind = -1;
             floor = -1;
-            if (svMain.DecoItemList == null)
+            if (M2Share.DecoItemList == null)
             {
                 return result;
             }
-            if ((index < 0) || (index >= svMain.DecoItemList.Count))
+            if ((index < 0) || (index >= M2Share.DecoItemList.Count))
             {
                 return result;
             }
-            // 1:角郴, 2:角寇, 3:笛促
-            kind = Hiword((int)svMain.DecoItemList.Values[index]);
+            // kind = Hiword((int)svMain.DecoItemList.Values[index]);
             floor = GetGuildAgitMapFloor(mapname);
             if ((kind == 1) && (floor == 2))
             {
@@ -1050,7 +1045,7 @@ namespace GameSvr
             {
                 return result;
             }
-            return HUtil32.Str_ToInt(mapname[3], -1);
+            return HUtil32.Str_ToInt(mapname[3].ToString(), -1);
         }
 
         public int GetGuildAgitNumFromMapName(string gmapname)
@@ -1080,8 +1075,8 @@ namespace GameSvr
             bool result;
             ArrayList list;
             int i;
-            int ix;
-            int iy;
+            short ix;
+            short iy;
             TEnvirnoment env;
             TMapInfo pm = null;
             TMapItem pmapitem;
@@ -1089,24 +1084,18 @@ namespace GameSvr
             int k;
             byte ObjShape;
             int agitnum;
-            string pricestr;
+            string pricestr = string.Empty;
             TStdItem ps;
-            // (郴备 7,000 : 1矫埃俊 40究 皑家 => 老林老捞搁 6,720皑家)
             const int DEC_DURA = 40;
             result = false;
-            // 傈眉 厘盔阑 八荤窍咯
-            // 甘俊 乐绰 酒捞袍捞 厘盔操固扁 酒捞袍捞搁 郴备 皑家矫挪促.
-            // 府胶飘俊 诀单捞飘窍绊
-            // 府胶飘甫 历厘茄促.
             try
             {
                 list = new ArrayList();
-                // 厘盔 甘 傈眉 谅钎甫 八祸窍咯 阿 谅钎俊 乐绰 操固扁 酒捞袍狼 郴备甫 皑家矫挪促.
                 for (i = 0; i <= 3; i++)
                 {
-                    for (agitnum = 1; agitnum <= svMain.GuildAgitMaxNumber; agitnum++)
+                    for (agitnum = 1; agitnum <= M2Share.GuildAgitMaxNumber; agitnum++)
                     {
-                        env = svMain.GrobalEnvir.GetEnvir(GuildAgitMapName[i] + agitnum.ToString());
+                        env = M2Share.GrobalEnvir.GetEnvir(GuildAgitMapName[i] + agitnum.ToString());
                         if (env != null)
                         {
                             for (ix = 0; ix < env.MapWidth; ix++)
@@ -1139,7 +1128,7 @@ namespace GameSvr
                                                     catch
                                                     {
                                                         // 坷宏璃飘俊辑 哗滚府磊.
-                                                        svMain.MainOutMessage("[TGuildAgit.ExpulsionMembers] DELOBJ-WRONG MEMORY:" + env.MapName + "," + ix.ToString() + "," + iy.ToString());
+                                                        M2Share.MainOutMessage("[TGuildAgit.ExpulsionMembers] DELOBJ-WRONG MEMORY:" + env.MapName + "," + ix.ToString() + "," + iy.ToString());
                                                         pm.OBJList.RemoveAt(k);
                                                         continue;
                                                     }
@@ -1149,7 +1138,7 @@ namespace GameSvr
                                                         pmapitem = (TMapItem)((TAThing)pm.OBJList[k]).AObject;
                                                         // UpdateVisibleItems (i, j, pmapitem);
                                                         // 厘盔操固扁 酒捞袍牢瘤 犬牢
-                                                        ps = svMain.UserEngine.GetStdItem(pmapitem.UserItem.Index);
+                                                        ps = M2Share.UserEngine.GetStdItem(pmapitem.UserItem.Index);
                                                         if (ps != null)
                                                         {
                                                             if ((ps.StdMode == ObjBase.STDMODE_OF_DECOITEM) && (ps.Shape == ObjBase.SHAPE_OF_DECOITEM))
@@ -1157,10 +1146,10 @@ namespace GameSvr
                                                                 // 郴备啊 DEC_DURA焊促 农搁 DEC_DURA甫 皑家矫挪促.
                                                                 if (pmapitem.UserItem.DuraMax >= DEC_DURA)
                                                                 {
-                                                                    pmapitem.UserItem.DuraMax = (ushort)(pmapitem.UserItem.DuraMax - DEC_DURA);
+                                                                    pmapitem.UserItem.DuraMax = (short)(pmapitem.UserItem.DuraMax - DEC_DURA);
                                                                     pmapitem.Name = GetDecoItemName(pmapitem.Looks, ref pricestr) + "[" + HUtil32.MathRound(pmapitem.UserItem.DuraMax / 1000).ToString() + "]" + "/" + "1";
                                                                     // 郴备甫 皑家矫虐绊 历厘茄促.
-                                                                    if (UpdateDuraAgitDecoMon(env.MapName, (short)ix, (short)iy, (short)pmapitem.UserItem.DuraMax))
+                                                                    if (UpdateDuraAgitDecoMon(env.MapName, ix, iy, pmapitem.UserItem.DuraMax))
                                                                     {
                                                                         SaveAgitDecoMonList();
                                                                     }
@@ -1173,7 +1162,7 @@ namespace GameSvr
                                                                 if (pmapitem.UserItem.DuraMax <= 0)
                                                                 {
                                                                     // 府胶飘俊辑 昏力窍绊 历厘茄促.
-                                                                    if (DeleteAgitDecoMon(env.MapName, (short)ix, (short)iy))
+                                                                    if (DeleteAgitDecoMon(env.MapName, ix, iy))
                                                                     {
                                                                         SaveAgitDecoMonList();
                                                                     }
@@ -1234,16 +1223,16 @@ namespace GameSvr
             }
             catch
             {
-                svMain.MainOutMessage("[Exception]TGuildAgitManager.DecreaseDecoMonDurability");
+                M2Share.MainOutMessage("[Exception]TGuildAgitManager.DecreaseDecoMonDurability");
             }
             result = true;
             return result;
         }
 
         public void Dispose(object obj)
-        { 
-            
+        {
+
         }
-    } 
+    }
 }
 

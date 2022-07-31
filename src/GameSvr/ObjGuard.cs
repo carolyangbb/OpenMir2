@@ -24,9 +24,9 @@ namespace GameSvr
                 if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                 {
                     this.HitTime = GetCurrentTime;
-                    this.TargetFocusTime  =  HUtil32.GetTickCount();
-                    short ox = this.CX;
-                    short oy = this.CY;
+                    this.TargetFocusTime = HUtil32.GetTickCount();
+                    short ox = CX;
+                    short oy = CY;
                     byte olddir = this.Dir;
                     M2Share.GetBackPosition(this.TargetCret, ref this.CX, ref this.CY);
                     this.Dir = M2Share.GetNextDirection(this.CX, this.CY, this.TargetCret.CX, this.TargetCret.CY);

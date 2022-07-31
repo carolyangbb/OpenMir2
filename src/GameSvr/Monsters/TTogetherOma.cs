@@ -15,7 +15,7 @@ namespace GameSvr
         public TTogetherOma() : base()
         {
             RecentAttackTime = (int)GetTickCount;
-            TargetTime  =  HUtil32.GetTickCount();
+            TargetTime = HUtil32.GetTickCount();
             OldTargetCret = null;
             SameRaceCount = 0;
         }
@@ -30,7 +30,7 @@ namespace GameSvr
         protected override bool AttackTarget()
         {
             bool result;
-            byte targdir=0;
+            byte targdir = 0;
             result = false;
             if (GetCurrentTime < ((long)new System.Random(3000).Next() + 4000 + TargetTime))
             {
@@ -47,7 +47,7 @@ namespace GameSvr
                     if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                     {
                         this.HitTime = GetCurrentTime;
-                        this.TargetFocusTime  =  HUtil32.GetTickCount();
+                        this.TargetFocusTime = HUtil32.GetTickCount();
                         RecentAttackTime = (int)GetTickCount;
                         Attack(this.TargetCret, targdir);
                         this.BreakHolySeize();

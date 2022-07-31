@@ -5,7 +5,7 @@ namespace SystemModule
 
     public class TUseMagicInfo
     {
-        public ushort MagicId;
+        public short MagicId;
         public byte Level;
         public Char Key;
         public int Curtrain;
@@ -26,59 +26,38 @@ namespace SystemModule
         public byte Job;
         public int Gold;
         public int GameGold;
-        // Abil        : TAbility;
         public byte Abil_Level;
-        public ushort Abil_HP;
-        public ushort Abil_MP;
-        public long Abil_Exp;
+        public short Abil_HP;
+        public short Abil_MP;
+        public int Abil_Exp;
         public short[] StatusArr;
-        // 남은 시간 기록
         public string HomeMap;
-        // 16, 변경
         public short HomeX;
         public short HomeY;
-        // NeckName    : string[20];
-        // SkillArr    : array[0..7] of TSkillInfo;
         public int PKPoint;
         public byte AllowParty;
         public byte FreeGulityCount;
-        // 면죄해준 횟수
         public byte AttackMode;
-        // 대인 공격 방식
         public byte IncHealth;
         public byte IncSpell;
         public byte IncHealing;
         public byte FightZoneDie;
-        // 문파 대련장에서 죽은 카운트
         public string UserId;
         public byte DBVersion;
-        // DB의 일부데이터를 일정한 날을 기준으로 변경했는지 않했는지 알기 위해
         public byte BonusApply;
-        // BonusAbil   : TNakedAbility;  //렙업마다 올린 능력치
-        // CurBonusAbil: TNakedAbility;  //현재 올라가 있는 능력치
         public int BonusPoint;
-        // HungryState : longword;
         public long DailyQuest;
-        // TO PDS:INSERT Fileld
         public byte HorseRide;
-        // TestServerResetCount: byte;  //166
         public short CGHIUseTime;
         public Double BodyLuck;
-        // 8
         public bool BoEnableGRecall;
-        // DailyQuestNumber: word;
-        // DailyQuestGetDate: word;
         public byte[] bytes_1;
-        // Reserved    : array[0..23] of char; //216] of char;
         public byte[] QuestOpenIndex;
-        // 24,
         public byte[] QuestFinIndex;
-        // 24,
         public byte[] Quest;
-        // 176
         public byte HorseRace;
         public int SecondsCard;
-    } // end THuman
+    }
 
     public struct TBagItem
     {
@@ -129,7 +108,7 @@ namespace SystemModule
         public Double UpdateDateTime;
     }
 
-    public struct FDBRecord
+    public class FDBRecord
     {
         public bool Deleted;
         public Double UpdateDateTime;

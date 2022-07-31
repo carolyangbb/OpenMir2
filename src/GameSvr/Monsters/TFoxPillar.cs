@@ -14,7 +14,7 @@ namespace GameSvr
             this.ViewRange = 12;
             this.RunNextTick = 250;
             this.SearchRate = 2500 + ((long)new System.Random(1500).Next());
-            this.SearchTime  =  HUtil32.GetTickCount();
+            this.SearchTime = HUtil32.GetTickCount();
             this.HideMode = false;
             this.StickMode = true;
             this.BoDontMove = true;
@@ -23,8 +23,7 @@ namespace GameSvr
 
         protected override bool AttackTarget()
         {
-            bool result;
-            result = false;
+            bool result = false;
             if (FindTarget())
             {
                 if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
@@ -70,13 +69,10 @@ namespace GameSvr
 
         protected bool FindTarget()
         {
-            bool result;
-            int i;
-            TCreature cret;
-            result = false;
-            for (i = 0; i < this.VisibleActors.Count; i++)
+            bool result = false;
+            for (var i = 0; i < this.VisibleActors.Count; i++)
             {
-                cret = (TCreature)this.VisibleActors[i].cret;
+                TCreature cret = (TCreature)this.VisibleActors[i].cret;
                 if ((!cret.Death) && this.IsProperTarget(cret))
                 {
                     if ((Math.Abs(this.CX - cret.CX) <= this.ViewRange) && (Math.Abs(this.CY - cret.CY) <= this.ViewRange))
@@ -106,30 +102,26 @@ namespace GameSvr
 
         public void RangeAttack(TCreature targ)
         {
-            int levelgap;
-            int rushdir;
-            int rushDist;
             if (targ == null)
             {
                 return;
             }
-            // 钢府乐绰 利阑 缠绢寸变促.
             this.Dir = M2Share.GetNextDirection(this.CX, this.CY, targ.CX, targ.CY);
             this.SendRefMsg(Grobal2.RM_LIGHTING_1, this.Dir, this.CX, this.CY, targ.ActorId, "");
-            rushdir = (this.Dir + 4) % 8;
-            rushDist = _MAX(0, _MAX(Math.Abs(this.CX - targ.CX), Math.Abs(this.CY - targ.CY)) - 3);
+            int rushdir = (this.Dir + 4) % 8;
+            int rushDist = _MAX(0, _MAX(Math.Abs(this.CX - targ.CX), Math.Abs(this.CY - targ.CY)) - 3);
             if (this.IsProperTarget(targ))
             {
                 if (!((Math.Abs(this.CX - targ.CX) <= 2) && (Math.Abs(this.CY - targ.CY) <= 2)))
                 {
                     if ((!targ.Death) && ((targ.RaceServer == Grobal2.RC_USERHUMAN) || (targ.Master != null)))
                     {
-                        levelgap = (targ.AntiMagic * 5) + HiByte(targ.WAbil.AC) / 2;
+                        int levelgap = (targ.AntiMagic * 5) + HiByte(targ.WAbil.AC) / 2;
                         if (new System.Random(50).Next() > levelgap)
                         {
                             if ((Math.Abs(this.CX - targ.CX) <= 12) && (Math.Abs(this.CY - targ.CY) <= 12))
                             {
-                                targ.SendRefMsg(Grobal2.RM_LOOPNORMALEFFECT, (ushort)targ.ActorId, 1000, 0, Grobal2.NE_SIDESTONE_PULL, "");
+                                targ.SendRefMsg(Grobal2.RM_LOOPNORMALEFFECT, (short)targ.ActorId, 1000, 0, Grobal2.NE_SIDESTONE_PULL, "");
                                 targ.CharRushRush((byte)rushdir, rushDist, false);
                             }
                         }
@@ -140,29 +132,24 @@ namespace GameSvr
 
         public override void Attack(TCreature target, byte dir)
         {
-            int i;
-            int wide;
-            ArrayList rlist;
-            TCreature cret;
-            int pwr;
             if (target == null)
             {
                 return;
             }
-            wide = 2;
+            int wide = 2;
             this.Dir = M2Share.GetNextDirection(this.CX, this.CY, target.CX, target.CY);
             this.SendRefMsg(Grobal2.RM_LIGHTING, this.Dir, this.CX, this.CY, target.ActorId, "");
             TAbility _wvar1 = this.WAbil;
-            pwr = this.GetAttackPower(HUtil32.LoByte(_wvar1.DC), HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC));
+            int pwr = this.GetAttackPower(HUtil32.LoByte(_wvar1.DC), HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC));
             if (pwr <= 0)
             {
                 return;
             }
-            rlist = new ArrayList();
+            ArrayList rlist = new ArrayList();
             this.GetMapCreatures(this.PEnvir, this.CX, this.CY, wide, rlist);
-            for (i = 0; i < rlist.Count; i++)
+            for (var i = 0; i < rlist.Count; i++)
             {
-                cret = (TCreature)rlist[i];
+                TCreature cret = (TCreature)rlist[i];
                 if (this.IsProperTarget(cret))
                 {
                     this.SelectTarget(cret);

@@ -12,19 +12,16 @@ namespace GameSvr
 
         public virtual TCreature GasAttack(byte dir)
         {
-            TCreature result;
-            int dam;
-            TCreature cret;
-            result = null;
+            TCreature result = null;
             this.Dir = dir;
             TAbility _wvar1 = this.WAbil;
-            dam = HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next();
+            int dam = HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next();
             if (dam <= 0)
             {
                 return result;
             }
             this.SendRefMsg(Grobal2.RM_HIT, this.Dir, this.CX, this.CY, 0, "");
-            cret = this.GetFrontCret();
+            TCreature cret = this.GetFrontCret();
             if (cret != null)
             {
                 if (this.IsProperTarget(cret))
@@ -35,7 +32,7 @@ namespace GameSvr
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 300);
+                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (short)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 300);
                             if (this.RaceServer == Grobal2.RC_TOXICGHOST)
                             {
                                 if (new System.Random(20 + cret.AntiPoison).Next() == 0)
@@ -60,9 +57,8 @@ namespace GameSvr
 
         protected override bool AttackTarget()
         {
-            bool result;
-            byte targdir=0;
-            result = false;
+            byte targdir = 0;
+            bool result = false;
             if (this.TargetCret != null)
             {
                 if (this.TargetInAttackRange(this.TargetCret, ref targdir))
@@ -70,7 +66,7 @@ namespace GameSvr
                     if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
                     {
                         this.HitTime = GetCurrentTime;
-                        this.TargetFocusTime  =  HUtil32.GetTickCount();
+                        this.TargetFocusTime = HUtil32.GetTickCount();
                         GasAttack(targdir);
                         this.BreakHolySeize();
                     }
@@ -86,11 +82,9 @@ namespace GameSvr
                     {
                         this.LoseTarget();
                     }
-                    // <!!林狼> TargetCret := nil肺 官柴
                 }
             }
             return result;
         }
-
     }
 }
