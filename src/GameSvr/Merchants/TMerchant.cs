@@ -159,9 +159,9 @@ namespace GameSvr
                 if (((TPricesInfo)PriceList[i]).Index == index)
                 {
                     price = ((TPricesInfo)PriceList[i]).SellPrice;
-                    if (price > (decimal)HUtil32.MathRound(price / 1.1M))
+                    if (price > HUtil32.MathRound(price / 1.1M))
                     {
-                        price = (decimal)HUtil32.MathRound(price / 1.1M);
+                        price = HUtil32.MathRound(price / 1.1M);
                     }
                     else
                     {
@@ -2354,7 +2354,7 @@ namespace GameSvr
                 condition = ObjNpc.COND_SUCCESS;
                 for (k = 0; k < list.Count; k++)
                 {
-                    sourcename = (string)list[k];
+                    sourcename = list[k];
                     sourcecount = (int)list.Values[k];
                     for (i = 0; i < hum.ItemList.Count; i++)
                     {
@@ -2386,7 +2386,7 @@ namespace GameSvr
                     dellist = null;
                     for (k = 0; k < list.Count; k++)
                     {
-                        sourcename = (string)list[k];
+                        sourcename = list[k];
                         sourcecount = (int)list.Values[k];
                         for (i = hum.ItemList.Count - 1; i >= 0; i--)
                         {

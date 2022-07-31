@@ -34,7 +34,7 @@ namespace GameSvr
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 700);
+                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 700);
                         }
                     }
                 }

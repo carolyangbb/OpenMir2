@@ -5,7 +5,7 @@ using SystemModule;
 
 namespace GameSvr
 {
-    public struct TCmdMsg
+    public class TCmdMsg
     {
         public ushort CmdNum;
         public int TagetSvrIdx;
@@ -220,11 +220,8 @@ namespace GameSvr
 
         public void RunMsg()
         {
-            int i;
-            int Count;
             TCmdMsg pInfo;
-            int TempCmdNum;
-            TempCmdNum = 0;
+            int TempCmdNum = 0;
             try
             {
                 PatchDBBuffer();
@@ -233,8 +230,8 @@ namespace GameSvr
             {
                 this.ErrMsg("[Exception] PatchFBBuffer : " + E.Message);
             }
-            Count = FItems.Count;
-            for (i = 0; i < Count; i++)
+            int Count = FItems.Count;
+            for (var i = 0; i < Count; i++)
             {
                 FInterCS.Enter();
                 try
@@ -258,7 +255,7 @@ namespace GameSvr
                     {
                         this.ErrMsg("FT_EXCEPTION:[" + TempCmdNum.ToString() + "]:" + E.Message);
                     }
-                    dispose(pInfo);
+                    pInfo = null;
                 }
             }
         }
@@ -311,27 +308,23 @@ namespace GameSvr
 
         private void PatchDBBuffer()
         {
-            string Str;
             string Data = string.Empty;
-            int ListCount;
-            int len;
             string certify = string.Empty;
             string head = string.Empty;
             string Body = string.Empty;
-            TDefaultMessage msg= new TDefaultMessage();
             string rmsg = string.Empty;
             string username = string.Empty;
             string sendcmdnum = string.Empty;
             DivideBuffer();
-            ListCount = FDBList.Count;
+            int ListCount = FDBList.Count;
             if (ListCount == 0)
             {
                 return;
             }
             for (var i = 0; i < ListCount; i++)
             {
-                Str = FDBList[0];
-                FDBList.Remove(0);
+                string Str = FDBList[0];
+                FDBList.RemoveAt(0);
                 if (Str != "")
                 {
                     Data = "";
@@ -339,14 +332,14 @@ namespace GameSvr
                     if (Data != "")
                     {
                         Data = HUtil32.GetValidStr3(Data, ref certify, new string[] { "/" });
-                        len = Data.Length;
+                        int len = Data.Length;
                         if (HUtil32.Str_ToInt(certify, 0) == 0)
                         {
                             if (len != Grobal2.DEFBLOCKSIZE)
                             {
-                                head = Data.Substring(1 - 1, Grobal2.DEFBLOCKSIZE);
+                                head = Data.Substring(0, Grobal2.DEFBLOCKSIZE);
                                 Body = Data.Substring(Grobal2.DEFBLOCKSIZE + 2 - 1, Data.Length - Grobal2.DEFBLOCKSIZE - 7);
-                                msg = EDcode.DecodeMessage(head);
+                                TDefaultMessage msg = EDcode.DecodeMessage(head);
                                 rmsg = EDcode.DecodeString(Body);
                                 rmsg = HUtil32.GetValidStr3(rmsg, ref username, new string[] { "/" });
                                 rmsg = HUtil32.GetValidStr3(rmsg, ref sendcmdnum, new string[] { "/" });

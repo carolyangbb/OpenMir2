@@ -19,7 +19,7 @@ namespace GameSvr
         public int MP;
     }
 
-    public struct TPkHiterInfo
+    public class TPkHiterInfo
     {
         public Object hiter;
         public long hittime;

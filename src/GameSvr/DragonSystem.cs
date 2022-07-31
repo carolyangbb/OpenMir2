@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using SystemModule;
+using SystemModule.Common;
 
 namespace GameSvr
 {
-    public struct TDropItemInfo
+    public class TDropItemInfo
     {
         public string Name;
         public int FirstRate;
@@ -15,11 +17,11 @@ namespace GameSvr
         public int DropCount;
     }
 
-    public struct TDragonLevelInfo
+    public class TDragonLevelInfo
     {
         public int Level;
         public int DropExp;
-        public ArrayList DropItemList;
+        public IList<TDropItemInfo> DropItemList;
     }
 
     public struct TATMapInfo
@@ -55,21 +57,21 @@ namespace GameSvr
                 SetExpDivider(value);
             }
         }
-        private string FInitFileName = String.Empty;
+        private string FInitFileName = string.Empty;
         private readonly TDragonLevelInfo[] FLevelInfo;
         private int FLevel = 0;
         private int FExp = 0;
         private long FLastChangeExpTime = 0;
         private long FLastAttackTme = 0;
         private ArrayList FAutoAttackMap = null;
-        private string FDropMapName = String.Empty;
+        private string FDropMapName = string.Empty;
         private TEnvirnoment FDopItemEnvir = null;
-        private Rectangle FDropItemRect = null;
+        private Rectangle FDropItemRect;
         private int FExpDivider = 0;
 
         public TDragonSystem() : base()
         {
-            bool RetSuccess;
+            bool RetSuccess = false;
             InitFirst();
             Initialize(FInitFileName, ref RetSuccess);
             if (RetSuccess == false)
@@ -99,10 +101,10 @@ namespace GameSvr
             {
             }
             FDopItemEnvir = null;
-            FDropItemRect.Left = -1;
-            FDropItemRect.Top = -1;
-            FDropItemRect.Right = -1;
-            FDropItemRect.Bottom = -1;
+            FDropItemRect.X = -1;
+            FDropItemRect.Y = -1;
+            FDropItemRect.Width = -1;
+            FDropItemRect.Height = -1;
             FLevel = 1;
             FExp = 0;
             FExpDivider = 1;
@@ -149,35 +151,27 @@ namespace GameSvr
             }
         }
 
-        private string DecodeStrInfo(ArrayList StrInfo, ref bool IsSuccess)
+        private string DecodeStrInfo(StringList StrInfo, ref bool IsSuccess)
         {
-            string result;
-            int i;
-            string str;
-            string str1;
-            string str2;
-            string str3;
-            string infostr;
-            int CurrentLevel;
-            int CurrentExp;
-            TDropItemInfo pDropItemInfo;
-            int levelCount;
-            int expcount;
-            int itemcount;
-            result = "";
             IsSuccess = false;
-            levelCount = 0;
-            expcount = 0;
-            levelCount = 0;
-            itemcount = 0;
-            CurrentLevel = 1;
-            CurrentExp = 10000;
+            string str = string.Empty;
+            string str1 = string.Empty;
+            string str2 = string.Empty;
+            string str3 = string.Empty;
+            string infostr = string.Empty;
+            TDropItemInfo pDropItemInfo;
+            string result = "";
+            int levelCount = 0;
+            int expcount = 0;
+            int itemcount = 0;
+            int CurrentLevel = 1;
+            int CurrentExp = 10000;
             try
             {
-                for (i = 0; i < StrInfo.Count; i++)
+                for (var i = 0; i < StrInfo.Count; i++)
                 {
                     str = StrInfo[i].Trim();
-                    if ((str != "") && (str[1] != ";"))
+                    if ((str != "") && (str[0] != ';'))
                     {
                         infostr = str[1];
                         if (infostr == "!")
@@ -214,13 +208,13 @@ namespace GameSvr
                             else if (str1.ToLower().CompareTo("!DROPAREA".ToLower()) == 0)
                             {
                                 str2 = HUtil32.GetValidStr3(str2, ref str3, new string[] { " ", "\09" });
-                                FDropItemRect.Left = HUtil32.Str_ToInt(str3, -1);
+                                FDropItemRect.X = HUtil32.Str_ToInt(str3, -1);
                                 str2 = HUtil32.GetValidStr3(str2, ref str3, new string[] { " ", "\09" });
-                                FDropItemRect.Top = HUtil32.Str_ToInt(str3, -1);
+                                FDropItemRect.Y = HUtil32.Str_ToInt(str3, -1);
                                 str2 = HUtil32.GetValidStr3(str2, ref str3, new string[] { " ", "\09" });
-                                FDropItemRect.Right = HUtil32.Str_ToInt(str3, -1);
+                                FDropItemRect.Width = HUtil32.Str_ToInt(str3, -1);
                                 str2 = HUtil32.GetValidStr3(str2, ref str3, new string[] { " ", "\09" });
-                                FDropItemRect.Bottom = HUtil32.Str_ToInt(str3, -1);
+                                FDropItemRect.Height = HUtil32.Str_ToInt(str3, -1);
                             }
                             else
                             {
@@ -269,18 +263,15 @@ namespace GameSvr
 
         public string Initialize(string FileName, ref bool IsSuccess)
         {
-            string result;
-            ArrayList fileinfo;
-            result = "";
+            string result = "";
             IsSuccess = false;
             try
             {
                 if (!File.Exists(FileName))
                 {
-                    result = this.ClassName + "|Do not Find FileName:" + FileName;
-                    return result;
+                    return "Do not Find FileName:" + FileName;
                 }
-                fileinfo = new ArrayList();
+                StringList fileinfo = new StringList();
                 fileinfo.LoadFromFile(FileName);
                 result = DecodeStrInfo(fileinfo, ref IsSuccess);
                 fileinfo.Free();
@@ -321,42 +312,28 @@ namespace GameSvr
 
         public void OnDropItem(int changelevel)
         {
-            int i;
-            int j;
-            int px;
-            int py;
-            TDropItemInfo pinfo;
-            int slope1;
-            int slope2;
-            int slope3;
-            int slope4;
-            int LowValue;
-            int HighValue;
-            int itemmakeindex;
             if ((changelevel < 1) || (changelevel >= 13))
             {
                 return;
             }
-            for (i = 0; i < FLevelInfo[changelevel - 1].DropItemList.Count; i++)
+            for (var i = 0; i < FLevelInfo[changelevel - 1].DropItemList.Count; i++)
             {
-                pinfo = FLevelInfo[changelevel - 1].DropItemList[i] as TDropItemInfo;
-                for (j = 0; j < pinfo.DropCount; j++)
+                TDropItemInfo pinfo = FLevelInfo[changelevel - 1].DropItemList[i];
+                for (var j = 0; j < pinfo.DropCount; j++)
                 {
-                    if (new System.Random(pinfo.SecondRate).Next() < pinfo.FirstRate)
+                    if (new Random(pinfo.SecondRate).Next() < pinfo.FirstRate)
                     {
-                        px = new System.Random(Math.Abs(FDropItemRect.Right - FDropItemRect.Left) + 1).Next() + FDropItemRect.Left;
-                        slope1 = FDropItemRect.Left + FDropItemRect.Top + 4;
-                        slope2 = FDropItemRect.Right + FDropItemRect.Bottom - 4;
-                        slope3 = FDropItemRect.Top - FDropItemRect.Left - 4;
-                        slope4 = FDropItemRect.Bottom - FDropItemRect.Right + 4;
-                        LowValue = _MAX(slope1 - px, px + slope3);
-                        HighValue = _MIN(slope2 - px, px + slope4);
-                        py = new System.Random(HighValue - LowValue + 1).Next() + LowValue;
-                        itemmakeindex = 0;
-                        itemmakeindex = svMain.UserEngine.MakeItemToMap(FDropMapName, pinfo.Name, pinfo.Amount, px, py);
+                        int px = new Random(Math.Abs(FDropItemRect.Right - FDropItemRect.Left) + 1).Next() + FDropItemRect.Left;
+                        int slope1 = FDropItemRect.Left + FDropItemRect.Top + 4;
+                        int slope2 = FDropItemRect.Right + FDropItemRect.Bottom - 4;
+                        int slope3 = FDropItemRect.Top - FDropItemRect.Left - 4;
+                        int slope4 = FDropItemRect.Bottom - FDropItemRect.Right + 4;
+                        int LowValue = HUtil32._MAX(slope1 - px, px + slope3);
+                        int HighValue = HUtil32._MIN(slope2 - px, px + slope4);
+                        int py = new Random(HighValue - LowValue + 1).Next() + LowValue;
+                        int itemmakeindex = svMain.UserEngine.MakeItemToMap(FDropMapName, pinfo.Name, pinfo.Amount, px, py);
                         if (itemmakeindex != 0)
                         {
-                            // 冻崩_
                             svMain.AddUserLog("15\09" + FDropMapName + "\09" + px.ToString() + "\09" + py.ToString() + "\09" + "EvilMir" + "\09" + pinfo.Name + "\09" + itemmakeindex.ToString() + "\09" + "0" + "\09" + "0");
                         }
                     }
@@ -366,8 +343,6 @@ namespace GameSvr
 
         public void OnAttackTarget(TEnvirnoment Envir_, TCreature user_, int Mode_)
         {
-            int pwr;
-            int dam;
             if ((!user_.Death) && (!user_.BoGhost) && (!user_.BoSysopMode) && (!user_.BoSuperviserMode))
             {
                 switch (Mode_)
@@ -379,22 +354,19 @@ namespace GameSvr
                         user_.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, user_.CX, user_.CY, Grobal2.NE_FIRE, "");
                         break;
                 }
-                pwr = 20 * (new System.Random(3).Next() + 1);
-                dam = user_.GetMagStruckDamage(null, pwr);
+                int pwr = 20 * (new System.Random(3).Next() + 1);
+                int dam = user_.GetMagStruckDamage(null, pwr);
                 user_.StruckDamage(dam, null);
-                user_.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, user_.WAbil.HP, user_.WAbil.MaxHP, (long)null, "", 200);
+                user_.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, user_.WAbil.HP, user_.WAbil.MaxHP, 0, "", 200);
             }
         }
 
         public void OnAutoAttack(TEnvirnoment Envir_, int Mode_)
         {
-            ArrayList userlist;
-            int usercount;
-            int i;
             TCreature Tempuser;
-            userlist = new ArrayList();
-            usercount = svMain.UserEngine.GetAreaAllUsers(Envir_, userlist);
-            for (i = 0; i < userlist.Count; i++)
+            ArrayList userlist = new ArrayList();
+            int usercount = svMain.UserEngine.GetAreaAllUsers(Envir_, userlist);
+            for (var i = 0; i < userlist.Count; i++)
             {
                 Tempuser = (TCreature)userlist[i];
                 if (Tempuser.RaceServer == Grobal2.RC_USERHUMAN)

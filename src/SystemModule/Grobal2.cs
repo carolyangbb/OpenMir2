@@ -26,7 +26,7 @@ namespace SystemModule
         public long dwFrameTick;
     }
 
-    public class TGameConfig
+    public class TGameConfig : ClientPacket
     {
         public bool boGameAssist;
         public bool boWhisperRecord;
@@ -49,7 +49,6 @@ namespace SystemModule
 
     public struct TMsgHeader
     {
-        // 霸捞飘客 辑滚 烹脚俊 荤侩
         public uint Code;
         public int SNumber;
         public ushort UserGateIndex;
@@ -66,9 +65,10 @@ namespace SystemModule
         public ushort Param;
         public ushort Tag;
         public ushort Series;
+
+        public const int PacketSize = 12;
     }
 
-    // 努扼捞攫飘俊辑 荤侩
     public struct TChrMsg
     {
         public int ident;
@@ -79,9 +79,9 @@ namespace SystemModule
         public int state;
         public string saying;
         public int sound;
-    } // end TChrMsg
+    }
 
-    public struct TMessageInfo
+    public class TMessageInfo
     {
         public ushort Ident;
         public ushort wParam;
@@ -111,13 +111,13 @@ namespace SystemModule
         public ushort msg;
     }
 
-    public struct TMessageBodyW
+    public class TMessageBodyW : ClientPacket
     {
         public ushort Param1;
         public ushort Param2;
         public ushort Tag1;
         public ushort Tag2;
-    } // end TMessageBodyW
+    }
 
     public class TMessageBodyWL : ClientPacket
     {
@@ -139,7 +139,7 @@ namespace SystemModule
         public byte Ever;
         public byte Max;
         public byte dummy;
-    } // end TPowerClass
+    }
 
     public class TNakedAbility : ClientPacket
     {
@@ -158,21 +158,23 @@ namespace SystemModule
     public struct TChgAttr
     {
         public byte attr;
-        // 函版等 加己 侥喊 1:AC 2:MAC 3:DC 4:MC 5:SC
+        /// <summary>
+        /// 1:AC 2:MAC 3:DC 4:MC 5:SC
+        /// </summary>
         public byte min;
-        // DC,MC,SC狼 min/max  AC,MAC牢版快 MakeWord(min,max)蔼烙
+        /// <summary>
+        /// DC,MC,SC min/max  
+        /// AC,MAC MakeWord(min,max)蔼烙
+        /// </summary>
         public byte max;
-    } // end TChgAttr
+    }
 
     public class TStdItem
     {
         public string Name;
-        // 酒捞袍 捞抚 (玫窍力老八)
         public byte StdMode;
         public byte Shape;
-        // 屈怕喊 捞抚 (枚八)
         public byte Weight;
-        // 公霸
         public byte AniCount;
         // 1焊促 农搁 局聪皋捞记 登绰 酒捞袍 (促弗 侩档肺 腹捞 静烙)
         public ushort SpecialPwr;
@@ -187,18 +189,12 @@ namespace SystemModule
         // $08 IDC_DIEANDBREAK   (馒侩酒捞袍俊辑 磷栏搁 柄瘤绰 加己)
         // $10 IDC_NEVERLOSE     (馒侩酒捞袍俊辑 磷绢档 冻绢瘤瘤 臼澜)
         public ushort Looks;
-        // 弊覆 锅龋
         public ushort DuraMax;
         public ushort AC;
-        // 规绢仿
         public ushort MAC;
-        // 付亲仿
         public ushort DC;
-        // 单固瘤
         public ushort MC;
-        // 贱荤狼 付过 颇况
         public ushort SC;
-        // 档荤狼 沥脚仿
         public byte Need;
         // 0:Level, 1:DC, 2:MC, 3:SC
         public byte NeedLevel;
@@ -225,19 +221,12 @@ namespace SystemModule
         public int MpAdd;
         // 眠啊MP
         public int ExpAdd;
-        // 眠啊 版氰摹
         public byte EffType1;
-        // 瓤苞辆幅1
         public byte EffRate1;
-        // 瓤苞犬伏1
         public byte EffValue1;
-        // 瓤苞蔼1
         public byte EffType2;
-        // 瓤苞辆幅2
         public byte EffRate2;
-        // 瓤苞犬伏2
         public byte EffValue2;
-        // 瓤苞蔼2
         // --------------------
         // added by sonmg
         public byte Slowdown;
@@ -262,9 +251,8 @@ namespace SystemModule
         public ushort ItemSet;
         // 悸飘 酒捞袍 备盒
         public string Reference;
-    } // end TStdItem
+    }
 
-    // 固福2
     public class TUserItem
     {
         public int MakeIndex;
@@ -286,9 +274,8 @@ namespace SystemModule
         public byte ColorG;
         public byte ColorB;
         public byte[] Prefix;
-    } // end TUserItem
+    }
 
-    // 固福2
     public class TAbility : ClientPacket
     {
         public byte Level;
@@ -358,7 +345,7 @@ namespace SystemModule
         // added by sonmg
         public byte Slowdown;
         public byte Poison;
-    } // end TAddAbility
+    }
 
     public struct TPricesInfo
     {
@@ -376,22 +363,20 @@ namespace SystemModule
         // Dura        : word;
         // DuraMax     : word;
         public ushort Grade;
-    } // end TClientGoods
+    }
 
     public struct TClientJangwon
     {
-        // 厘盔 府胶飘
         public int Num;
         public string GuildName;
         public string CaptaineName1;
         public string CaptaineName2;
         public int SellPrice;
         public string SellState;
-    } // end TClientJangwon
+    }
 
     public struct TClientGABoard
     {
-        // 厘盔 霸矫魄 府胶飘
         public string WrigteUser;
         public string TitleMsg;
         public int IndexType1;
@@ -399,17 +384,16 @@ namespace SystemModule
         public int IndexType3;
         public int IndexType4;
         public int ReplyCount;
-    } // end TClientGABoard
+    }
 
     public struct TClientGADecoration
     {
-        // 厘盔 操固扁
         public int Num;
         public string Name;
         public int Price;
         public int ImgIndex;
         public int CaseNum;
-    } // end TClientGADecoration
+    }
 
     public class ClientPacket
     { 
@@ -438,17 +422,15 @@ namespace SystemModule
         public bool bExistLover;
         // 楷牢 惑怕(2004/10/27)
         public string LoverName;
-    } // end TUserStateInfo
+    }
 
     public struct TDropItem
     {
-        // 努扼捞攫飘俊辑 荤侩
         public int Id;
         public ushort X;
         public ushort Y;
         public ushort Looks;
         public long FlashTime;
-        // 付瘤阜栏肺 馆娄芭赴 矫埃
         public bool BoFlash;
         public long FlashStepTime;
         public int FlashStep;
@@ -457,7 +439,7 @@ namespace SystemModule
         public bool boNonSuch;
         public bool boPickUp;
         public bool boShowName;
-    } // end TDropItem
+    }
 
     public class TDefMagic
     {
@@ -481,7 +463,7 @@ namespace SystemModule
         public ushort MaxPower;
         public byte DefMaxPower;
         public string Desc;
-    } // end TDefMagic
+    }
 
     public class TUserMagic
     {
@@ -491,9 +473,8 @@ namespace SystemModule
         // Magic Index 历厘. 蜡聪农秦具窍哥, 函悼登搁 救凳, 亲惑 0焊促 农促.
         public byte Level;
         public char Key;
-        // 荤侩磊啊 瘤沥茄 虐
         public int CurTrain;
-    } // end TUserMagic
+    }
 
     public class TClientMagic : ClientPacket
     {
@@ -503,13 +484,12 @@ namespace SystemModule
         public TDefMagic Def;
     }
 
-    // 2003/04/15 模备, 率瘤
     public struct TFriend
     {
         public string CharID;
         public byte Status;
         public string Memo;
-    } // end TFriend
+    }
 
     public struct TMail
     {
@@ -517,7 +497,7 @@ namespace SystemModule
         public string Date;
         public string Mail;
         public byte Status;
-    } // end TMail
+    }
 
     public struct TRelationship
     {
@@ -526,14 +506,14 @@ namespace SystemModule
         public byte Sex;
         public byte Status;
         public string Date;
-    } // end TRelationship
+    }
 
     public struct TSkillInfo
     {
         public ushort SkillIndex;
         public ushort Reserved;
         public int CurTrain;
-    } // end TSkillInfo
+    }
 
     public class TMapItem
     {
@@ -576,16 +556,15 @@ namespace SystemModule
         public Object cret;
     } 
 
-    // 甘 俊辑 老绢唱绰 捞亥飘, activate矫难具父 捞亥飘啊 惯积茄促.
     public struct TMapEventInfo
     {
         public byte check;
         public int X;
         public int Y;
         public Object EventObject;
-    } // end TMapEventInfo
+    }
 
-    public struct TGateInfo
+    public class TGateInfo
     {
         public byte GateType;
         public Object EnterEnvir;
@@ -593,7 +572,7 @@ namespace SystemModule
         public int EnterY;
     }
 
-    public struct TAThing
+    public class TAThing
     {
         public byte Shape;
         public Object AObject;
@@ -630,7 +609,7 @@ namespace SystemModule
         public string Answer;
         // *
         public string EMail;
-    } // end TUserEntryInfo
+    }
 
     public struct TUserEntryAddInfo
     {
@@ -646,7 +625,7 @@ namespace SystemModule
         public string Memo1;
         // *
         public string Memo2;
-    } // end TUserEntryAddInfo
+    }
 
     public struct TUserCharacterInfo
     {
@@ -660,7 +639,7 @@ namespace SystemModule
         public byte Level;
         public int Feature;
         public string EncEncName;
-    } // end TUserCharacterInfo
+    }
 
     public struct TLoadHuman
     {
@@ -669,21 +648,17 @@ namespace SystemModule
         // 13 -> 19
         public Char[] UsrAddr;
         public int CertifyCode;
-    } // end TLoadHuman
+    }
 
-    public struct TMonsterInfo
+    public class TMonsterInfo
     {
         public string Name;
         public byte Race;
-        // 辑滚狼 AI 橇肺弊伐
         public byte RaceImg;
-        // 努扼捞攫飘 橇贰烙 侥喊
         public ushort Appr;
-        // 捞固瘤 锅龋
         public byte Level;
         public byte LifeAttrib;
         public byte CoolEye;
-        // 传狼 亮澜, 100% 捞搁 篮脚阑 航, 50%捞搁 篮脚阑 杭 犬伏捞 50%
         public ushort Exp;
         public ushort HP;
         public ushort MP;
@@ -699,16 +674,14 @@ namespace SystemModule
         public ushort WalkStep;
         public ushort WalkWait;
         public ushort AttackSpeed;
-        // ////////////////////////
         // newly added by sonmg.
         public ushort Tame;
         public ushort AntiPush;
         public ushort AntiUndead;
         public ushort SizeRate;
         public ushort AntiStop;
-        // ////////////////////////
         public ArrayList ItemList;
-    } // end TMonsterInfo
+    }
 
     public class TZenInfo
     {
@@ -730,7 +703,7 @@ namespace SystemModule
         public int TY;
         public int ZenShoutType;
         public int ZenShoutMsg;
-    } // end TZenInfo
+    }
 
     public struct TMonItemInfo
     {
@@ -738,24 +711,22 @@ namespace SystemModule
         public int MaxPoint;
         public string ItemName;
         public int Count;
-    } // end TMonItemInfo
+    }
 
     public struct TMarketProduct
     {
         public string GoodsName;
         public int Count;
         public int ZenHour;
-        // hour
         public long ZenTime;
-    } // end TMarketProduct
+    }
 
-    // QuestDiary侩
     public struct TQDDinfo
     {
         public int Index;
         public string Title;
         public ArrayList SList;
-    } // end TQDDinfo
+    }
 
     public class TMarketItem : ClientPacket
     {
@@ -769,7 +740,6 @@ namespace SystemModule
         public ushort SellState;
     }
 
-    // 困殴魄概 佬扁侩 ----------------------------------------------------------
     public class TMarketLoad
     {
         public TUserItem UserItem;
@@ -794,7 +764,7 @@ namespace SystemModule
         public ushort SellState;
         // 1 = 魄概吝 , 2 = 魄概肯丰
         public int IsOK;
-    } // end TMarketLoad
+    }
 
     // 酒捞袍 八祸侩 ------------------------------------------------------------
     public class TSearchSellItem
@@ -820,7 +790,7 @@ namespace SystemModule
         public int UserMode;
         // 1= 酒捞袍 荤扁  , 2= 磊脚狼 酒捞袍 八祸
         public ArrayList pList;
-    } // end TSearchSellItem
+    }
 
     public struct TMarKetReqInfo
     {
@@ -859,19 +829,17 @@ namespace SystemModule
         public string Content;
     }
 
-    public struct TShopItem
+    public class TShopItem : ClientPacket
     {
         public string sItemName;
         public byte btClass;
         public ushort wLooks;
-        // Items.wil
         public int wPrice;
         public ushort wShape1;
         public ushort wShape2;
         public string sExplain;
     }
 
-    // ==========内挂部分
     public struct TCItemRule
     {
         public string Name;
@@ -879,7 +847,7 @@ namespace SystemModule
         public bool rare;
         public bool pick;
         public bool Show;
-    } // end TCItemRule
+    }
 
     public struct TSetupFiltrate
     {
@@ -888,13 +856,13 @@ namespace SystemModule
         public bool boHintMsg;
         public bool boPickup;
         public bool boShowName;
-    } // end TSetupFiltrate
+    }
 
     public struct TMasterRanking
     {
         public string sMasterName;
         public int nRanking;
-    } // end TMasterRanking
+    }
 
     // 物品过滤
     public enum TItemType
@@ -905,8 +873,7 @@ namespace SystemModule
         i_Dress,
         i_Weapon,
         i_Jewelry
-    } // end TItemType
-
+    }
 }
 
 namespace SystemModule

@@ -87,7 +87,6 @@ namespace GameSvr
             svMain.fuCloseLock = new object();
             svMain.humanLock = new object();
             svMain.umLock = new object();
-            svMain.SQLock = new object();
             svMain.RDBSocData = "";
             svMain.ReadyDBReceive = false;
             svMain.RunFailCount = 0;
@@ -277,8 +276,8 @@ namespace GameSvr
             //LogUDP.Port = svMain.LogServerPort;
             //ConnectTimer.Enabled = true;
             //Application.ThreadException = OnProgramException;
-            //svMain.CurrentDBloadingTime = HUtil32.GetTickCount;
-            //svMain.serverruntime = HUtil32.GetTickCount;
+            //svMain.CurrentDBloadingTime = HUtil32.GetTickCount();
+            //svMain.serverruntime = HUtil32.GetTickCount();
             //StartTimer.Enabled = true;
             //Timer1.Enabled = true;
         }
@@ -348,15 +347,13 @@ namespace GameSvr
 
         public void SaveItemNumber()
         {
-            string fname;
-            FileStream ini;
-            fname = ".\\!setup.txt";
-            ini = new FileStream(fname);
-            if (ini != null)
-            {
-                ini.WriteInteger("Setup", "ItemNumber", svMain.FItemNumber);
-                ini.Free();
-            }
+            //string fname = ".\\!setup.txt";
+            //FileStream ini = new FileStream(fname);
+            //if (ini != null)
+            //{
+            //    ini.WriteInteger("Setup", "ItemNumber", svMain.FItemNumber);
+            //    ini.Free();
+            //}
         }
 
         private bool LoadClientFileCheckSum()
@@ -391,7 +388,6 @@ namespace GameSvr
         public void StartTimerTimer(System.Object Sender, System.EventArgs _e1)
         {
             int error;
-            int checkvalue;
             bool IsSuccess = false;
             int handle;
             int FileDate;
@@ -399,20 +395,12 @@ namespace GameSvr
             StartTimer.Enabled = false;
             try
             {
-                checkvalue = SIZEOFFDB;
-                if (sizeof(FDBRecord) != checkvalue)
-                {
-                    MessageBox.Show("sizeof(THuman) <> SIZEOFTHUMAN");
-                    this.Close();
-                    return;
-                }
                 if (!LoadClientFileCheckSum())
                 {
                     this.Close();
                     return;
                 }
                 OutMainMessage("loading StdItem.DB...");
-                // 扁夯 单捞鸥甫 肺爹 茄促.
                 error = LocalDB.FrmDB.LoadStdItems();
                 if (error < 0)
                 {
@@ -436,7 +424,6 @@ namespace GameSvr
                 {
                     OutMainMessage("MiniMap information loaded.");
                 }
-                // 侩带怜 矫胶袍 肺爹
                 OutMainMessage("Loading DragonSystem...");
                 OutMainMessage(svMain.gFireDragon.Initialize(svMain.EnvirDir + DragonSystem.DRAGONITEMFILE, ref IsSuccess));
                 if (!IsSuccess)
@@ -623,22 +610,22 @@ namespace GameSvr
                 }
                 if (File.Exists("M2Server.exe"))
                 {
-                    handle = File.Open("M2Server.exe", (FileMode)FileAccess.Read | FileShare.ReadWrite);
-                    if (handle > 0)
-                    {
-                        FileDate = File.GetCreationTime(handle);
-                        DateTime = new DateTime(FileDate);
-                        OutMainMessage("FileDateVersion : " + DateTime.ToString());
-                        handle.Close();
-                    }
+                    //handle = File.Open("M2Server.exe", (FileMode)FileAccess.Read | FileShare.ReadWrite);
+                    //if (handle > 0)
+                    //{
+                    //    FileDate = File.GetCreationTime(handle);
+                    //    DateTime = new DateTime(FileDate);
+                    //    OutMainMessage("FileDateVersion : " + DateTime.ToString());
+                    //    handle.Close();
+                    //}
                 }
                 StartServer();
                 svMain.ServerReady = true;
                 Thread.CurrentThread.Sleep(500);
                 ConnectTimer.Enabled = true;
-                svMain.runstart = HUtil32.GetTickCount;
+                svMain.runstart = HUtil32.GetTickCount();
                 svMain.rcount = 0;
-                svMain.humrotatetime = HUtil32.GetTickCount;
+                svMain.humrotatetime = HUtil32.GetTickCount();
                 RunTimer.Enabled = true;
             }
             catch
@@ -1010,13 +997,12 @@ namespace GameSvr
 
         public void ConnectTimerTimer(System.Object Sender, System.EventArgs _e1)
         {
-            if (!DBSocket.Active)
-            {
-                DBSocket.Active = true;
-            }
+            //if (!DBSocket.Active)
+            //{
+            //    DBSocket.Active = true;
+            //}
         }
 
-        // --------------- Gate狼 单捞鸥甫 贸府窃 --------------
         public void RunTimerTimer(System.Object Sender, System.EventArgs _e1)
         {
             if (svMain.ServerReady)
@@ -1024,12 +1010,10 @@ namespace GameSvr
                 svMain.RunSocket.Run();
                 IdSrvClient.FrmIDSoc.DecodeSocStr();
                 svMain.UserEngine.ExecuteRun();
-                // 困殴惑痢
                 SqlEngn.SqlEngine.ExecuteRun();
                 svMain.EventMan.Run();
                 if (svMain.ServerIndex == 0)
                 {
-                    // 0锅 辑滚啊 付胶磐啊 等促.
                     InterServerMsg.FrmSrvMsg.Run();
                 }
                 else
@@ -1040,7 +1024,7 @@ namespace GameSvr
             svMain.rcount++;
             if (HUtil32.GetTickCount() - svMain.runstart > 250)
             {
-                svMain.runstart = HUtil32.GetTickCount;
+                svMain.runstart = HUtil32.GetTickCount();
                 svMain.curruncount = svMain.rcount;
                 if (svMain.minruncount > svMain.curruncount)
                 {
@@ -1050,7 +1034,6 @@ namespace GameSvr
             }
         }
 
-        // ------------- Gate Socket 包访 窃荐 ----------------
         public void GateSocketClientConnect(Object Sender, Socket Socket)
         {
             svMain.RunSocket.Connect(Socket);
@@ -1087,22 +1070,22 @@ namespace GameSvr
 
         public void DBSocketRead(Object Sender, Socket Socket)
         {
-            string data = string.Empty;
-            try
-            {
-                svMain.csSocLock.Enter();
-                data = Socket.ReceiveText;
-                svMain.RDBSocData = svMain.RDBSocData + data;
-                if (!svMain.ReadyDBReceive)
-                {
-                    svMain.RDBSocData = "";
-                }
-            }
-            finally
-            {
-                svMain.csSocLock.Leave();
-            }
-            svMain.UserMgrEngine.OnDBRead(data);
+            //string data = string.Empty;
+            //try
+            //{
+            //    svMain.csSocLock.Enter();
+            //    data = Socket.ReceiveText;
+            //    svMain.RDBSocData = svMain.RDBSocData + data;
+            //    if (!svMain.ReadyDBReceive)
+            //    {
+            //        svMain.RDBSocData = "";
+            //    }
+            //}
+            //finally
+            //{
+            //    svMain.csSocLock.Leave();
+            //}
+            //svMain.UserMgrEngine.OnDBRead(data);
         }
 
         public void FormCloseQuery(System.Object Sender, System.ComponentModel.CancelEventArgs _e1)
@@ -1246,18 +1229,18 @@ namespace GameSvr
         public static ArrayList MultiServerList = null;
         public static ArrayList ShutUpList = null;
         public static ArrayList MiniMapList = null;
-        public static ArrayList UnbindItemList = null;
+        public static IList<string> UnbindItemList = null;
         public static ArrayList LineNoticeList = null;
         public static ArrayList LineHelpList = null;
         public static ArrayList QuestDiaryList = null;
         public static TMerchant DefaultNpc = null;
         public static ArrayList DropItemNoticeList = null;
-        public static ArrayList ShopItemList = null;
+        public static IList<TShopItem> ShopItemList = null;
         public static ArrayList EventItemList = null;
         public static int EventItemGifeBaseNumber = 0;
         public static int[] GrobalQuestParams = new int[9 + 1];
+        public static int MirDayTime;
         public static string ErrorLogFile = String.Empty;
-        // 固福狼 矫埃... 泅角 矫埃狼 2硅 狐抚
         public static int ServerIndex = 0;
         public static string ServerName = String.Empty;
         public static int ServerNumber = 0;
@@ -1644,7 +1627,7 @@ namespace GameSvr
             {
                 if (((int)UnbindItemList.Values[i]) == shape)
                 {
-                    result = (string)UnbindItemList[i];
+                    result = UnbindItemList[i];
                     break;
                 }
             }
@@ -1801,18 +1784,17 @@ namespace GameSvr
             //_W_0.Close();
         }
 
-        // ------------- DB Socket 包访 窃荐 ----------------
         public static bool DBConnected()
         {
-            bool result;
-            if (FrmMain.DBSocket.Active)
-            {
-                result = FrmMain.DBSocket.Socket.Connected;
-            }
-            else
-            {
-                result = false;
-            }
+            bool result = false;
+            //if (FrmMain.DBSocket.Active)
+            //{
+            //    result = FrmMain.DBSocket.Socket.Connected;
+            //}
+            //else
+            //{
+            //    result = false;
+            //}
             return result;
         }
     }

@@ -63,7 +63,7 @@ namespace GameSvr
                                         // lparam1
                                         // lparam2
                                         // hiter
-                                        cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 300);
+                                        cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 300);
                                         if (BoUsePoison)
                                         {
                                             // 眉仿捞 皑家窍绰 刀俊 吝刀 等促.

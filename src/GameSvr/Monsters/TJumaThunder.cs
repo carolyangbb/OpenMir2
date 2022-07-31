@@ -42,11 +42,7 @@ namespace GameSvr
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            // wparam
-                            // lparam1
-                            // lparam2
-                            // hiter
-                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
+                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                         }
                     }
                 }
@@ -56,11 +52,8 @@ namespace GameSvr
 
         protected override bool AttackTarget()
         {
-            bool result;
-            byte targdir=0;
-            result = false;
-            // 辟立秦 老阑锭俊绰 辟立 塞 傍拜阑
-            // 盔芭府 老锭绰 盔芭府 付过傍拜阑 茄促.
+            byte targdir =0;
+            bool result = false;
             if (this.TargetCret != null)
             {
                 if (GetCurrentTime - this.HitTime > this.GetNextHitTime())

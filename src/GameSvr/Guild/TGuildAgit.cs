@@ -7,29 +7,17 @@ namespace GameSvr
     public class TGuildAgit
     {
         public int GuildAgitNumber = 0;
-        // 厘盔锅龋(1-base)
         public string GuildName = String.Empty;
-        // 巩颇疙
         public string GuildMasterName = String.Empty;
-        // 巩林疙
         public string GuildMasterNameSecond = String.Empty;
-        // 滴锅掳 巩林疙
         public string RegistrationTime = String.Empty;
-        // 殿废老矫
         public int ContractPeriod = 0;
-        // 拌距扁埃(老)
         public int GuildAgitTotalGold = 0;
-        // 厘盔 扁何陛
         public int ForSaleFlag = 0;
-        // 魄概 敲贰弊(1,0)
         public int ForSaleMoney = 0;
-        // 魄概 陛咀
         public int ForSaleWait = 0;
-        // 备涝 蜡抗扁埃(老)
         public string ForSaleGuildName = String.Empty;
-        // 备涝 抗沥 巩颇疙
         public string ForSaleGuildMasterName = String.Empty;
-        // 备涝 抗沥 巩林疙
         public string ForSaleTime = String.Empty;
 
         public TGuildAgit() : base()
@@ -37,10 +25,6 @@ namespace GameSvr
             InitGuildAgitRecord();
         }
 
-        ~TGuildAgit()
-        {
-            base.Destroy();
-        }
         private void InitGuildAgitRecord()
         {
             if (this == null)
@@ -64,7 +48,6 @@ namespace GameSvr
 
         public void SetGuildAgitRecord(int agitnumber, string gname, string mastername, string regtime, int period, int agittotalgold)
         {
-            TGuild aguild;
             if (this == null)
             {
                 return;
@@ -76,8 +59,7 @@ namespace GameSvr
             RegistrationTime = regtime;
             ContractPeriod = period;
             GuildAgitTotalGold = agittotalgold;
-            // 滴锅掳 巩林 掘绢 坷扁.
-            aguild = svMain.GuildMan.GetGuild(gname);
+            TGuild aguild = svMain.GuildMan.GetGuild(gname);
             if (aguild != null)
             {
                 GuildMasterNameSecond = aguild.GetAnotherGuildMaster();
@@ -100,12 +82,8 @@ namespace GameSvr
 
         public bool AddGuildAgitRecord(int nextnumber, string gname, string mastername, string secondmastername)
         {
-            bool result;
             DateTime RegDateTime;
-            // RegDate, RegTime : TDateTime;
-            // Year, Month, Day : Word;
-            // Hour, Min, Sec, MSec : Word;
-            result = true;
+            bool result = true;
             if (this == null)
             {
                 result = false;
@@ -118,36 +96,22 @@ namespace GameSvr
             GuildMasterName = mastername;
             GuildMasterNameSecond = secondmastername;
             ContractPeriod = Guild.GUILDAGIT_DAYUNIT;
-            // 7老(扁夯窜困)
-            // 厘盔 扁何陛
             GuildAgitTotalGold = 0;
             return result;
         }
 
         public DateTime GetGuildAgitRemainDateTime()
         {
-            DateTime result;
             DateTime regdatetime;
-            // nowdatetime, nowdate, nowtime : TDateTime;
             DateTime enddatetime;
             DateTime remaindatetime;
-            // str, data: string;
-            // Year, Month, Day : Word;
-            // Hour, Min, Sec, MSec : Word;
-            // RemainSeconds : integer;
-            result = -100;
+            DateTime result = -100;
             if (this == null)
             {
                 return result;
             }
             regdatetime = ConvertStringToDatetime(RegistrationTime);
-            // 付皑老 拌魂
-            // {$IFNDEF UNDEF_DEBUG}   //sonmg
-            // enddatetime := regdatetime + ContractPeriod;
-            // {$ELSE}
             enddatetime = regdatetime + (ContractPeriod / 60 / 24);
-            // {$ENDIF}
-            // 巢篮矫埃 = 付皑老 - 泅犁矫阿.
             remaindatetime = enddatetime - DateTime.Now;
             result = remaindatetime;
             return result;
@@ -169,8 +133,6 @@ namespace GameSvr
             try
             {
                 list = new ArrayList();
-                // 厘盔 甘 傈眉 谅钎甫 八祸窍咯 阿 谅钎俊 乐绰
-                // 葛电 蜡历甸阑 瘤沥等 厘家肺 碍力 捞悼矫挪促.
                 for (i = 0; i <= 3; i++)
                 {
                     env = svMain.GrobalEnvir.GetEnvir(svMain.GuildAgitMan.GuildAgitMapName[i] + GuildAgitNumber.ToString());
@@ -189,9 +151,7 @@ namespace GameSvr
                                     {
                                         if (cret.RaceServer == Grobal2.RC_USERHUMAN)
                                         {
-                                            // 眠规.
                                             cret.SendRefMsg(Grobal2.RM_SPACEMOVE_HIDE, 0, 0, 0, 0, "");
-                                            // cret.SpaceMove (GuildAgitMan.ReturnMapName, GuildAgitMan.ReturnX, GuildAgitMan.ReturnY, 0); //傍埃捞悼
                                             cret.UserSpaceMove(cret.HomeMap, cret.HomeX.ToString(), cret.HomeY.ToString());
                                             cret.SysMsg("Your guild has been expelled due to rent term expiration.", 0);
                                         }
@@ -211,19 +171,14 @@ namespace GameSvr
 
         public bool IsExpired()
         {
-            bool result;
-            result = false;
+            bool result = false;
             if (this == null)
             {
                 result = true;
                 return result;
             }
-            // {$IFNDEF UNDEF_DEBUG}   //sonmg
-            // if GetGuildAgitRemainDateTime <= -GUILDAGIT_DAYUNIT then begin
-            // {$ELSE}
             if (GetGuildAgitRemainDateTime() <= -(Guild.GUILDAGIT_DAYUNIT / 60 / 24))
             {
-                // {$ENDIF}
                 result = true;
             }
             return result;
@@ -231,27 +186,18 @@ namespace GameSvr
 
         public int GetCurrentDelayStatus()
         {
-            int result;
-            DateTime RemainDateTime;
-            // 沥惑惑怕
-            result = 1;
+            int result = 1;
             if (this == null)
             {
                 result = -1;
                 return result;
             }
-            RemainDateTime = GetGuildAgitRemainDateTime();
+            DateTime RemainDateTime = GetGuildAgitRemainDateTime();
             if (RemainDateTime < 0)
             {
-                // 楷眉惑怕
                 result = 0;
-                // {$IFNDEF UNDEF_DEBUG}   //sonmg
-                // if RemainDateTime <= -GUILDAGIT_DAYUNIT then begin
-                // {$ELSE}
                 if (RemainDateTime <= -(Guild.GUILDAGIT_DAYUNIT / 60 / 24))
                 {
-                    // {$ENDIF}
-                    // 秦力惑怕
                     result = -1;
                 }
             }

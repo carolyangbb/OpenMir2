@@ -78,7 +78,7 @@ namespace GameSvr
                                     // lparam1
                                     // lparam2
                                     // hiter
-                                    cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, pwr, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 500);
+                                    cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)pwr, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 500);
                                     // {inherited} HitHit2 (cret, pwr, 0, TRUE);
                                 }
                             }

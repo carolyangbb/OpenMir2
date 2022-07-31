@@ -1429,7 +1429,7 @@ namespace GameSvr
                         CheckMap = "";
                         for (k = 0; k < who.GroupMembers.Count; k++)
                         {
-                            hum = svMain.UserEngine.GetUserHuman(who.GroupMembers[k]);
+                            hum = svMain.UserEngine.GetUserHuman(who.GroupMembers[k].UserName);
                             if (hum != null)
                             {
                                 // 鞍篮 甘俊 乐绰瘤 眉农
@@ -1780,11 +1780,11 @@ namespace GameSvr
         public void NpcSayTitle_ActionOfMarry(TUserHuman who, TQuestActionInfo pqa)
         {
             TUserHuman PoseHuman;
-            string sSayMsg;
-            string msgstr;
+            string sSayMsg = string.Empty;
+            string msgstr = string.Empty;
             string data = string.Empty;
-            string str;
-            int listCount;
+            string str = string.Empty;
+            int listCount = 0;
             if (who.fLover.GetLoverName != "")
             {
                 return;
@@ -2152,8 +2152,8 @@ namespace GameSvr
                             }
                             PoseHuman.m_sMasterName = who.UserName;// 师傅名字
                             PoseHuman.m_boMaster = false;// 为徒弟
-                            who.SendMsg(who, Grobal2.RM_MA_DBADD, 0, 0, 0, 0, PoseHuman.UserName + "1/" + BoolToInt(who.m_boMaster).ToString() + "/" + who.m_nMasterCount.ToString());// 发送的师傅数据
-                            PoseHuman.SendMsg(PoseHuman, Grobal2.RM_MA_DBADD, 0, 0, 0, 0, who.UserName + "1/" + BoolToInt(PoseHuman.m_boMaster).ToString() + "/" + PoseHuman.m_nMasterRanking.ToString());// 发送的徒弟数据
+                            who.SendMsg(who, Grobal2.RM_MA_DBADD, 0, 0, 0, 0, PoseHuman.UserName + "1/" + HUtil32.BoolToIntStr(who.m_boMaster).ToString() + "/" + who.m_nMasterCount.ToString());// 发送的师傅数据
+                            PoseHuman.SendMsg(PoseHuman, Grobal2.RM_MA_DBADD, 0, 0, 0, 0, who.UserName + "1/" + HUtil32.BoolToIntStr(PoseHuman.m_boMaster).ToString() + "/" + PoseHuman.m_nMasterRanking.ToString());// 发送的徒弟数据
                             who.SendMsg(who, Grobal2.RM_LM_DBMATLIST, 0, 0, 0, 0, "");
                             PoseHuman.SendDelayMsg(PoseHuman, Grobal2.RM_LM_REFMATLIST, 0, 0, 0, 0, "", 1500);
                         }
@@ -2229,8 +2229,8 @@ namespace GameSvr
                         if (who.m_boStartUnMaster && PoseHuman.m_boStartUnMaster)
                         {
                             who.m_nMasterCount -= 1;
-                            who.SendMsg(who, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, PoseHuman.UserName + "1/" + BoolToInt(who.m_boMaster).ToString() + "/" + who.m_nMasterCount.ToString());
-                            PoseHuman.SendMsg(PoseHuman, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, who.UserName + "1/" + BoolToInt(PoseHuman.m_boMaster).ToString() + "/" + PoseHuman.m_nMasterRanking.ToString());
+                            who.SendMsg(who, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, PoseHuman.UserName + "1/" + HUtil32.BoolToIntStr(who.m_boMaster).ToString() + "/" + who.m_nMasterCount.ToString());
+                            PoseHuman.SendMsg(PoseHuman, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, who.UserName + "1/" + HUtil32.BoolToIntStr(PoseHuman.m_boMaster).ToString() + "/" + PoseHuman.m_nMasterRanking.ToString());
                             who.m_sMasterName = "";
                             PoseHuman.m_sMasterName = "";
                             who.m_boStartUnMaster = false;
@@ -2262,8 +2262,8 @@ namespace GameSvr
                             if (PoseHuman != null)
                             {
                                 PoseHuman.m_nMasterCount -= 1;
-                                who.SendMsg(who, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, PoseHuman.UserName + "1/" + BoolToInt(who.m_boMaster).ToString() + "/" + who.m_nMasterCount.ToString());
-                                PoseHuman.SendMsg(PoseHuman, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, who.UserName + "1/" + BoolToInt(PoseHuman.m_boMaster).ToString() + "/" + PoseHuman.m_nMasterRanking.ToString());
+                                who.SendMsg(who, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, PoseHuman.UserName + "1/" + HUtil32.BoolToIntStr(who.m_boMaster).ToString() + "/" + who.m_nMasterCount.ToString());
+                                PoseHuman.SendMsg(PoseHuman, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, who.UserName + "1/" + HUtil32.BoolToIntStr(PoseHuman.m_boMaster).ToString() + "/" + PoseHuman.m_nMasterRanking.ToString());
                                 PoseHuman.m_sMasterName = "";
                                 who.SendMsg(who, Grobal2.RM_LM_DBMATLIST, 0, 0, 0, 0, "");
                                 PoseHuman.CheckMaster();
@@ -2271,7 +2271,7 @@ namespace GameSvr
                             }
                             else
                             {
-                                who.SendMsg(who, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, who.m_sMasterName + "1/" + BoolToInt(who.m_boMaster).ToString() + "/" + 4.ToString());
+                                who.SendMsg(who, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, who.m_sMasterName + "1/" + HUtil32.BoolToIntStr(who.m_boMaster).ToString() + "/" + 4.ToString());
                             }
                             who.m_sMasterName = "";
                             NpcSayTitle(who, "@UnMasterEnd");
@@ -2284,8 +2284,8 @@ namespace GameSvr
                             if (PoseHuman != null)
                             {
                                 PoseHuman.m_nMasterCount -= 1;
-                                who.SendMsg(who, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, PoseHuman.UserName + "1/" + BoolToInt(who.m_boMaster).ToString() + "/" + who.m_nMasterCount.ToString());
-                                PoseHuman.SendMsg(PoseHuman, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, who.UserName + "1/" + BoolToInt(PoseHuman.m_boMaster).ToString() + "/" + PoseHuman.m_nMasterRanking.ToString());
+                                who.SendMsg(who, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, PoseHuman.UserName + "1/" + HUtil32.BoolToIntStr(who.m_boMaster).ToString() + "/" + who.m_nMasterCount.ToString());
+                                PoseHuman.SendMsg(PoseHuman, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, who.UserName + "1/" + HUtil32.BoolToIntStr(PoseHuman.m_boMaster).ToString() + "/" + PoseHuman.m_nMasterRanking.ToString());
                                 PoseHuman.m_sMasterName = "";
                                 who.SendMsg(who, Grobal2.RM_LM_DBMATLIST, 0, 0, 0, 0, "");
                                 PoseHuman.CheckMaster();
@@ -2293,7 +2293,7 @@ namespace GameSvr
                             }
                             else
                             {
-                                who.SendMsg(who, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, TempMasterName + "1/" + BoolToInt(who.m_boMaster).ToString() + "/" + 4.ToString());
+                                who.SendMsg(who, Grobal2.RM_MA_DBDELETE, 0, 0, 0, 0, TempMasterName + "1/" + HUtil32.BoolToIntStr(who.m_boMaster).ToString() + "/" + 4.ToString());
                                 who.SendMsg(who, Grobal2.RM_LM_DBMATLIST, 0, 0, 0, 0, "");
                             }
                             who.m_sMasterName = "";
@@ -2746,7 +2746,7 @@ namespace GameSvr
                     case Grobal2.QA_TIMERECALLGROUP:
                         for (k = 0; k < who.GroupMembers.Count; k++)
                         {
-                            hum = svMain.UserEngine.GetUserHuman(who.GroupMembers[k]);
+                            hum = svMain.UserEngine.GetUserHuman(who.GroupMembers[k].UserName);
                             if (hum != null)
                             {
                                 hum.BoTimeRecall = false;
@@ -3181,7 +3181,6 @@ namespace GameSvr
                     case Grobal2.QA_MOVEALLMAPGROUP:
                         if (who.GroupOwner == null)
                         {
-                            // 弊缝捞 绝绊 磊扁 去磊父 乐阑 锭
                             if ((pqa.ActTag == "") && (pqa.ActExtra == ""))
                             {
                                 who.RandomSpaceMove(pqa.ActParam, 0);
@@ -3193,14 +3192,11 @@ namespace GameSvr
                         }
                         else if (who.GroupOwner == who)
                         {
-                            // 磊脚捞 弊缝炉
                             for (k = 0; k < who.GroupMembers.Count; k++)
                             {
-                                // 磊脚 器窃.
-                                hum = svMain.UserEngine.GetUserHuman(who.GroupMembers[k]);
+                                hum = svMain.UserEngine.GetUserHuman(who.GroupMembers[k].UserName);
                                 if (hum != null)
                                 {
-                                    // 泅犁 甘俊 乐绰 荤恩父 瘤沥 甘栏肺 捞悼.
                                     if (hum.MapName == this.MapName)
                                     {
                                         if ((pqa.ActTag == "") && (pqa.ActExtra == ""))
@@ -3231,16 +3227,12 @@ namespace GameSvr
                         {
                             if (who.GroupOwner == who)
                             {
-                                // 磊脚捞 弊缝炉
                                 for (k = 1; k < who.GroupMembers.Count; k++)
                                 {
-                                    // 磊脚 哗绊
-                                    // 瘤沥茄 甘俊 乐绰 荤恩父 家券
-                                    ((TUserHuman)who).CmdRecallMan(who.GroupMembers[k], pqa.ActParam);
+                                    ((TUserHuman)who).CmdRecallMan(who.GroupMembers[k].UserName, pqa.ActParam);
                                 }
                                 who.CGHIstart = HUtil32.GetTickCount();
                                 who.CGHIUseTime = 10;
-                                // 10檬 埃拜
                             }
                         }
                         else

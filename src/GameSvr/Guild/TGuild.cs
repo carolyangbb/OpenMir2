@@ -104,7 +104,7 @@ namespace GameSvr
                 strlist.LoadFromFile(svMain.GuildDir + flname);
                 for (var i = 0; i < strlist.Count; i++)
                 {
-                    str = (string)strlist[i];
+                    str = strlist[i];
                     if (str != "")
                     {
                         if (str[0] == ';')
@@ -314,7 +314,7 @@ namespace GameSvr
                     TGuildRank pgrank = MemberList[i];
                     for (var k = 0; k < pgrank.MemList.Count; k++)
                     {
-                        if (pgrank.MemList[k] == who)
+                        if (pgrank.MemList[k].UserName == who)
                         {
                             result = true;
                             return result;
@@ -325,7 +325,7 @@ namespace GameSvr
             return result;
         }
 
-        public string MemberLogin(Object who, ref int grank)
+        public string MemberLogin(TCreature who, ref int grank)
         {
             TGuildRank pgrank;
             string result = "";
@@ -336,7 +336,7 @@ namespace GameSvr
                     pgrank = MemberList[i];
                     for (var k = 0; k < pgrank.MemList.Count; k++)
                     {
-                        if (pgrank.MemList[k] == ((TCreature)who).UserName)
+                        if (pgrank.MemList[k].UserName == who.UserName)
                         {
                             pgrank.MemList[k] = who;
                             grank = pgrank.Rank;
@@ -353,33 +353,30 @@ namespace GameSvr
 
         public string GetGuildMaster()
         {
-            string result;
-            result = "";
+            string result = "";
             if (MemberList != null)
             {
                 if (MemberList.Count > 0)
                 {
                     if (MemberList[0].MemList.Count > 0)
                     {
-                        result = MemberList[0].MemList[0];
+                        result = MemberList[0].MemList[0].UserName;
                     }
                 }
             }
             return result;
         }
 
-        // 肚 促弗 巩林.
         public string GetAnotherGuildMaster()
         {
-            string result;
-            result = "";
+            string result = "";
             if (MemberList != null)
             {
                 if (MemberList.Count > 0)
                 {
                     if (MemberList[0].MemList.Count >= 2)
                     {
-                        result = MemberList[0].MemList[1];
+                        result = MemberList[0].MemList[1].UserName;
                     }
                 }
             }
@@ -388,9 +385,8 @@ namespace GameSvr
 
         public bool AddGuildMaster(string who)
         {
-            bool result;
             TGuildRank pgrank;
-            result = false;
+            bool result = false;
             if (MemberList != null)
             {
                 if (MemberList.Count == 0)
@@ -419,7 +415,7 @@ namespace GameSvr
                     pgrank = MemberList[0];
                     if (pgrank.MemList.Count == 1)
                     {
-                        if (pgrank.MemList[0] == who)
+                        if (pgrank.MemList[0].UserName == who)
                         {
                             BreakGuild();
                             result = true;
@@ -432,8 +428,6 @@ namespace GameSvr
 
         public void BreakGuild()
         {
-            int i;
-            int k;
             TGuildRank pgrank;
             TUserHuman hum;
             if (svMain.ServerIndex == 0)
@@ -442,10 +436,10 @@ namespace GameSvr
             }
             if (MemberList != null)
             {
-                for (i = 0; i < MemberList.Count; i++)
+                for (var i = 0; i < MemberList.Count; i++)
                 {
                     pgrank = MemberList[i];
-                    for (k = 0; k < pgrank.MemList.Count; k++)
+                    for (var k = 0; k < pgrank.MemList.Count; k++)
                     {
                         hum = (TUserHuman)pgrank.MemList[k];
                         if (hum != null)
@@ -464,7 +458,7 @@ namespace GameSvr
             }
             if (KillGuilds != null)
             {
-                for (i = 0; i < KillGuilds.Count; i++)
+                for (var i = 0; i < KillGuilds.Count; i++)
                 {
                     Dispose(KillGuilds[i]);
                 }
@@ -477,17 +471,14 @@ namespace GameSvr
             SaveGuild();
         }
 
-        public bool AddMember(Object who)
+        public bool AddMember(TCreature who)
         {
-            bool result;
-            int i;
             TGuildRank pgrank;
-            TGuildRank drank;
-            result = false;
-            drank = null;
+            bool result = false;
+            TGuildRank drank = null;
             if (MemberList != null)
             {
-                for (i = 0; i < MemberList.Count; i++)
+                for (var i = 0; i < MemberList.Count; i++)
                 {
                     pgrank = MemberList[i];
                     if (pgrank.Rank == Guild.DEFRANK)
@@ -504,7 +495,7 @@ namespace GameSvr
                     drank.MemList = new List<TCreature>();
                     MemberList.Add(drank);
                 }
-                drank.MemList.Add(((TCreature)who).UserName, who);
+                drank.MemList.Add(who);
                 GuildInfoChange();
                 result = true;
             }
@@ -513,23 +504,17 @@ namespace GameSvr
 
         public bool DelMember(string who)
         {
-            bool result;
-            int i;
-            int k;
-            TGuildRank pgrank;
-            bool done;
-            result = false;
-            done = false;
+            bool done = false;
             if (MemberList != null)
             {
-                for (i = 0; i < MemberList.Count; i++)
+                for (var i = 0; i < MemberList.Count; i++)
                 {
-                    pgrank = MemberList[i];
-                    for (k = 0; k < pgrank.MemList.Count; k++)
+                    TGuildRank pgrank = MemberList[i];
+                    for (var k = 0; k < pgrank.MemList.Count; k++)
                     {
-                        if (pgrank.MemList[k] == who)
+                        if (pgrank.MemList[k].UserName == who)
                         {
-                            pgrank.MemList.Remove(k);
+                            pgrank.MemList.RemoveAt(k);
                             done = true;
                             break;
                         }
@@ -544,15 +529,11 @@ namespace GameSvr
             {
                 GuildInfoChange();
             }
-            result = done;
-            return result;
+            return done;
         }
 
         public void MemberLogout(Object who)
         {
-            int i;
-            int k;
-            int j;
             TGuildRank pgrank;
             if (this == null)
             {
@@ -561,10 +542,10 @@ namespace GameSvr
             CheckSave();
             if (MemberList != null)
             {
-                for (i = 0; i < MemberList.Count; i++)
+                for (var i = 0; i < MemberList.Count; i++)
                 {
                     pgrank = MemberList[i];
-                    for (k = 0; k < pgrank.MemList.Count; k++)
+                    for (var k = 0; k < pgrank.MemList.Count; k++)
                     {
                         if (pgrank.MemList[k] == who)
                         {
@@ -572,7 +553,7 @@ namespace GameSvr
                             {
                                 if (((TCreature)who).MyGuild.KillGuilds != null)
                                 {
-                                    for (j = 0; j < KillGuilds.Count; j++)
+                                    for (var j = 0; j < KillGuilds.Count; j++)
                                     {
                                         if (KillGuilds[j].WarGuild != null)
                                         {
@@ -591,16 +572,14 @@ namespace GameSvr
 
         public void MemberNameChanged()
         {
-            int i;
-            int k;
             TGuildRank prank;
             TUserHuman hum;
             if (MemberList != null)
             {
-                for (i = 0; i < MemberList.Count; i++)
+                for (var i = 0; i < MemberList.Count; i++)
                 {
                     prank = MemberList[i];
-                    for (k = 0; k < prank.MemList.Count; k++)
+                    for (var k = 0; k < prank.MemList.Count; k++)
                     {
                         if (prank.MemList[k] != null)
                         {
@@ -614,16 +593,14 @@ namespace GameSvr
 
         public void GuildMsg(string str, string nameexcept = "")
         {
-            int i;
-            int k;
             TGuildRank prank;
             TUserHuman hum;
             if (MemberList != null)
             {
-                for (i = 0; i < MemberList.Count; i++)
+                for (var i = 0; i < MemberList.Count; i++)
                 {
                     prank = MemberList[i];
-                    for (k = 0; k < prank.MemList.Count; k++)
+                    for (var k = 0; k < prank.MemList.Count; k++)
                     {
                         if (prank.MemList[k] != null)
                         {
@@ -740,7 +717,7 @@ namespace GameSvr
                     for (i = 0; i < MemberList.Count; i++)
                     {
                         pgr = MemberList[i];
-                        pgr2 = nmembs[i] as TGuildRank;
+                        pgr2 = nmembs[i];
                         if ((pgr.Rank == pgr2.Rank) && (pgr.RankName == pgr2.RankName) && (pgr.MemList.Count == pgr2.MemList.Count))
                         {
                             for (k = 0; k < pgr.MemList.Count; k++)
@@ -769,9 +746,9 @@ namespace GameSvr
             result = -2;
             if (nmembs.Count > 0)
             {
-                if ((nmembs[0] as TGuildRank).Rank == 1)
+                if (nmembs[0].Rank == 1)
                 {
-                    if ((nmembs[0] as TGuildRank).RankName != "")
+                    if (nmembs[0].RankName != "")
                     {
                         result = 0;
                     }
@@ -783,13 +760,13 @@ namespace GameSvr
             }
             if (result == 0)
             {
-                pgr = nmembs[0] as TGuildRank;
+                pgr = nmembs[0];
                 if (pgr.MemList.Count <= 2)
                 {
                     m = pgr.MemList.Count;
                     for (i = 0; i < pgr.MemList.Count; i++)
                     {
-                        if (svMain.UserEngine.GetUserHuman((string)pgr.MemList[i]) == null)
+                        if (svMain.UserEngine.GetUserHuman(pgr.MemList[i].UserName) == null)
                         {
                             m -= 1;
                             break;
@@ -816,14 +793,14 @@ namespace GameSvr
                     for (j = 0; j < pgr.MemList.Count; j++)
                     {
                         flag = false;
-                        mname = (string)pgr.MemList[j];
+                        mname = pgr.MemList[j].UserName;
                         oldcount++;
                         for (k = 0; k < nmembs.Count; k++)
                         {
-                            pgr2 = nmembs[k] as TGuildRank;
+                            pgr2 = nmembs[k];
                             for (m = 0; m < pgr2.MemList.Count; m++)
                             {
-                                if (mname == pgr2.MemList[m])
+                                if (mname == pgr2.MemList[m].UserName)
                                 {
                                     flag = true;
                                     break;
@@ -847,19 +824,19 @@ namespace GameSvr
                 }
                 for (i = 0; i < nmembs.Count; i++)
                 {
-                    pgr = nmembs[i] as TGuildRank;
+                    pgr = nmembs[i];
                     flag = true;
                     for (j = 0; j < pgr.MemList.Count; j++)
                     {
                         flag = false;
-                        mname = (string)pgr.MemList[j];
+                        mname = pgr.MemList[j].UserName;
                         newcount++;
                         for (k = 0; k < MemberList.Count; k++)
                         {
                             pgr2 = MemberList[k];
                             for (m = 0; m < pgr2.MemList.Count; m++)
                             {
-                                if (mname == pgr2.MemList[m])
+                                if (mname == pgr2.MemList[m].UserName)
                                 {
                                     flag = true;
                                     break;
@@ -893,10 +870,10 @@ namespace GameSvr
             {
                 for (i = 0; i < nmembs.Count; i++)
                 {
-                    m = (nmembs[i] as TGuildRank).Rank;
+                    m = nmembs[i].Rank;
                     for (k = i + 1; k < nmembs.Count; k++)
                     {
-                        if ((m == (nmembs[k] as TGuildRank).Rank) || (m <= 0) || (m > 99))
+                        if ((m == nmembs[k].Rank) || (m <= 0) || (m > 99))
                         {
                             result = -7;
                             break;
@@ -917,7 +894,7 @@ namespace GameSvr
                     pgr = MemberList[i];
                     for (k = 0; k < pgr.MemList.Count; k++)
                     {
-                        hum = svMain.UserEngine.GetUserHuman((string)pgr.MemList[k]);
+                        hum = svMain.UserEngine.GetUserHuman(pgr.MemList[k].UserName);
                         if (hum != null)
                         {
                             pgr.MemList[k] = hum;
@@ -936,11 +913,8 @@ namespace GameSvr
 
         public bool IsHostileGuild(TGuild aguild)
         {
-            bool result;
-            int i;
-            // 利措巩颇牢瘤...
-            result = false;
-            for (i = 0; i < KillGuilds.Count; i++)
+            bool result = false;
+            for (var i = 0; i < KillGuilds.Count; i++)
             {
                 if (KillGuilds[i].WarGuild == aguild)
                 {
@@ -953,19 +927,15 @@ namespace GameSvr
 
         public TGuildWarInfo DeclareGuildWar(TGuild aguild, long currenttime, ref int backresult)
         {
-            TGuildWarInfo result;
-            int i;
-            TGuildWarInfo pgw;
-            long timeunit;
-            result = null;
+            TGuildWarInfo result = null;
             backresult = 0;
-            timeunit = 60 * 60 * 1000;
+            long timeunit = 60 * 60 * 1000;
             if (aguild != null)
             {
                 if (!IsAllyGuild(aguild))
                 {
-                    pgw = null;
-                    for (i = 0; i < KillGuilds.Count; i++)
+                    TGuildWarInfo pgw = null;
+                    for (var i = 0; i < KillGuilds.Count; i++)
                     {
                         if (KillGuilds[i].WarGuild == aguild)
                         {
@@ -1126,7 +1096,7 @@ namespace GameSvr
                     if (FightMemberList[i] == whostr)
                     {
                         var n = (int)FightMemberList[i];
-                        FightMemberList[i] = HUtil32.MakeLong(HUtil32.LoWord(n), HUtil32.HiWord(n) + point) as Object;
+                        FightMemberList[i] = HUtil32.MakeLong(HUtil32.LoWord(n), HUtil32.HiWord(n) + point);
                     }
                 }
             }
@@ -1141,7 +1111,7 @@ namespace GameSvr
                     if (FightMemberList[i] == whostr)
                     {
                         var n = (int)FightMemberList[i];
-                        FightMemberList[i] = HUtil32.MakeLong(HUtil32.LoWord(n) + 1, HUtil32.HiWord(n)) as Object;
+                        FightMemberList[i] = HUtil32.MakeLong(HUtil32.LoWord(n) + 1, HUtil32.HiWord(n));
                     }
                 }
             }

@@ -75,7 +75,7 @@ namespace GameSvr
                                 // lparam1
                                 // lparam2
                                 // hiter
-                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 200);
+                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 200);
                                 if (new System.Random(10).Next() == 0)
                                 {
                                     cret.MakePoison(Grobal2.POISON_STONE, 5, 0);
@@ -200,7 +200,7 @@ namespace GameSvr
                     {
                         dam = cret.WAbil.HP / 4;
                         cret.DamageHealth(dam, 0);
-                        cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
+                        cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                     }
                 }
             }

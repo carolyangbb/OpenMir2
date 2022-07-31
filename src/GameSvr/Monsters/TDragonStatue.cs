@@ -29,25 +29,15 @@ namespace GameSvr
             
         }
 
-        // 馆靛矫 target <> nil
         public int RangeAttack_MPow(TUserMagic pum)
         {
-            int result;
-            result = pum.pDef.MinPower + new System.Random(pum.pDef.MaxPower - pum.pDef.MinPower).Next();
-            return result;
+            return pum.pDef.MinPower + new System.Random(pum.pDef.MaxPower - pum.pDef.MinPower).Next();
         }
 
         protected void RangeAttack(TCreature targ)
         {
             int i;
-            int pwr;
             int dam;
-            int ix;
-            int iy;
-            int ixf;
-            int iyf;
-            int ixt;
-            int iyt;
             TCreature cret;
             ArrayList list;
             if (targ == null)
@@ -56,14 +46,14 @@ namespace GameSvr
             }
             this.SendRefMsg(Grobal2.RM_LIGHTING, this.Dir, this.CX, this.CY, targ.ActorId, "");
             TAbility _wvar1 = this.WAbil;
-            pwr = new System.Random(HiByte(this.WAbil.DC)).Next() + HUtil32.LoByte(this.WAbil.DC) + new System.Random(HUtil32.LoByte(this.WAbil.MC)).Next();
-            ixf = _MAX(0, targ.CX - 2);
-            ixt = _MIN(this.PEnvir.MapWidth - 1, targ.CX + 2);
-            iyf = _MAX(0, targ.CY - 2);
-            iyt = _MIN(this.PEnvir.MapHeight - 1, targ.CY + 2);
-            for (ix = ixf; ix <= ixt; ix++)
+            var pwr = new System.Random(HiByte(this.WAbil.DC)).Next() + HUtil32.LoByte(this.WAbil.DC) + new System.Random(HUtil32.LoByte(this.WAbil.MC)).Next();
+            var ixf = _MAX(0, targ.CX - 2);
+            var ixt = _MIN(this.PEnvir.MapWidth - 1, targ.CX + 2);
+            var iyf = _MAX(0, targ.CY - 2);
+            var iyt = _MIN(this.PEnvir.MapHeight - 1, targ.CY + 2);
+            for (var ix = ixf; ix <= ixt; ix++)
             {
-                for (iy = iyf; iy <= iyt; iy++)
+                for (var iy = iyf; iy <= iyt; iy++)
                 {
                     list = new ArrayList();
                     this.PEnvir.GetAllCreature(ix, iy, true, list);
@@ -80,7 +70,7 @@ namespace GameSvr
                             if (dam > 0)
                             {
                                 cret.StruckDamage(dam, this);
-                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - cret.CX), Math.Abs(this.CY - cret.CY)) * 50);
+                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - cret.CX), Math.Abs(this.CY - cret.CY)) * 50);
                             }
                         }
                     }
@@ -91,8 +81,7 @@ namespace GameSvr
 
         protected override bool AttackTarget()
         {
-            bool result;
-            result = false;
+            bool result = false;
             if ((this.TargetCret != null) && (this.TargetCret != this.Master))
             {
                 if (GetCurrentTime - this.HitTime > this.GetNextHitTime())
@@ -104,7 +93,6 @@ namespace GameSvr
                         result = true;
                     }
                     this.LoseTarget();
-                    // <!!林狼> TargetCret := nil肺 官柴
                 }
             }
             return result;
@@ -122,6 +110,5 @@ namespace GameSvr
             }
             base.Run();
         }
-
     }
 }

@@ -57,7 +57,7 @@ namespace GameSvr
                             {
                                 cret.MakePoison(Grobal2.POISON_SLOW, slowtime, 1);
                             }
-                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
+                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                         }
                     }
                 }

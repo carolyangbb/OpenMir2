@@ -80,29 +80,29 @@ namespace GameSvr
 
         private void ResizeMap(long xsize, long ysize)
         {
-            int i;
-            int j;
-            if ((xsize > 1) && (ysize > 1))
-            {
-                if (MMap != null)
-                {
-                    for (i = 0; i < MapWidth; i++)
-                    {
-                        for (j = 0; j < MapHeight; j++)
-                        {
-                            if (MMap[i * MapHeight + j].OBJList != null)
-                            {
-                                MMap[i * MapHeight + j].OBJList.Free();
-                            }
-                        }
-                    }
-                    FreeMem(MMap);
-                    MMap = null;
-                }
-                MapWidth = (ushort)xsize;
-                MapHeight = (ushort)ysize;
-                MMap = AllocMem(MapWidth * MapHeight * sizeof(TMapInfo));
-            }
+            //int i;
+            //int j;
+            //if ((xsize > 1) && (ysize > 1))
+            //{
+            //    if (MMap != null)
+            //    {
+            //        for (i = 0; i < MapWidth; i++)
+            //        {
+            //            for (j = 0; j < MapHeight; j++)
+            //            {
+            //                if (MMap[i * MapHeight + j].OBJList != null)
+            //                {
+            //                    MMap[i * MapHeight + j].OBJList.Free();
+            //                }
+            //            }
+            //        }
+            //        FreeMem(MMap);
+            //        MMap = null;
+            //    }
+            //    MapWidth = (ushort)xsize;
+            //    MapHeight = (ushort)ysize;
+            //    MMap = AllocMem(MapWidth * MapHeight * sizeof(TMapInfo));
+            //}
         }
 
         public bool LoadMap(string map)
@@ -111,13 +111,13 @@ namespace GameSvr
             int i;
             int j;
             int k;
-            int fhandle;
+            int fhandle = 0;
             int t;
             int h;
             int door;
             TMapHeader header;
             TMapHeader_AntiHack header2;
-            TMapFileInfo[] mbuf;
+            TMapFileInfo[] mbuf = null;
             TMapInfo pm=null;
             TDoorInfo pd;
             string TempStr;
@@ -131,38 +131,38 @@ namespace GameSvr
             }
             if (File.Exists(map))
             {
-                fhandle = File.Open(map, (FileMode)FileAccess.Read | FileShare.None);
+                //fhandle = File.Open(map, (FileMode)FileAccess.Read | FileShare.None);
                 if (fhandle > 0)
                 {
-                    if (EncodeMap)
-                    {
-                        FileRead(fhandle, header2, sizeof(TMapHeader_AntiHack));
-                        header2.Width = (ushort)(header2.Width ^ header2.CheckKey);
-                        header2.Height = (ushort)(header2.Height ^ header2.CheckKey);
-                        MapWidth = header2.Width;
-                        MapHeight = header2.Height;
-                    }
-                    else
-                    {
-                        FileRead(fhandle, header, sizeof(TMapHeader));
-                        MapWidth = header.Width;
-                        MapHeight = header.Height;
-                    }
-                    ResizeMap(MapWidth, MapHeight);
-                    t = sizeof(TMapFileInfo) * MapWidth * MapHeight;
-                    mbuf = AllocMem(t);
-                    FileRead(fhandle, mbuf, t);
+                    //if (EncodeMap)
+                    //{
+                    //    FileRead(fhandle, header2, sizeof(TMapHeader_AntiHack));
+                    //    header2.Width = (ushort)(header2.Width ^ header2.CheckKey);
+                    //    header2.Height = (ushort)(header2.Height ^ header2.CheckKey);
+                    //    MapWidth = header2.Width;
+                    //    MapHeight = header2.Height;
+                    //}
+                    //else
+                    //{
+                    //    FileRead(fhandle, header, sizeof(TMapHeader));
+                    //    MapWidth = header.Width;
+                    //    MapHeight = header.Height;
+                    //}
+                    //ResizeMap(MapWidth, MapHeight);
+                    //t = sizeof(TMapFileInfo) * MapWidth * MapHeight;
+                    //mbuf = AllocMem(t);
+                    //FileRead(fhandle, mbuf, t);
                     for (i = 0; i < MapWidth; i++)
                     {
                         h = i * MapHeight;
                         for (j = 0; j < MapHeight; j++)
                         {
-                            if (EncodeMap)
-                            {
-                                mbuf[h + j].BkImg = (ushort)(mbuf[h + j].BkImg ^ header2.CheckKey);
-                                mbuf[h + j].MidImg = (ushort)(mbuf[h + j].MidImg ^ header2.CheckKey);
-                                mbuf[h + j].FrImg = (ushort)(mbuf[h + j].FrImg ^ header2.CheckKey);
-                            }
+                            //if (EncodeMap)
+                            //{
+                            //    mbuf[h + j].BkImg = (ushort)(mbuf[h + j].BkImg ^ header2.CheckKey);
+                            //    mbuf[h + j].MidImg = (ushort)(mbuf[h + j].MidImg ^ header2.CheckKey);
+                            //    mbuf[h + j].FrImg = (ushort)(mbuf[h + j].FrImg ^ header2.CheckKey);
+                            //}
                             if ((mbuf[h + j].BkImg & 0x8000) != 0)
                             {
                                 pm = MMap[h + j];
@@ -185,7 +185,6 @@ namespace GameSvr
                                     pd.PCore = null;
                                     for (k = 0; k < DoorList.Count; k++)
                                     {
-                                        // 鞍篮 Door 贸府
                                         if ((Math.Abs(pd.DoorX - DoorList[k].DoorX) <= 10) && (Math.Abs(pd.DoorY - DoorList[k].DoorY) <= 10) && (door == DoorList[k].DoorNumber))
                                         {
                                             pd.PCore = DoorList[k].PCore;
@@ -1096,7 +1095,6 @@ namespace GameSvr
                                             pm.OBJList.RemoveAt(i);
                                             Dispose(pthing);
                                             result = 1;
-                                            // TRUE;
                                             if (pm.OBJList.Count <= 0)
                                             {
                                                 pm.OBJList.Free();

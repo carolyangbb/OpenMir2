@@ -14,7 +14,7 @@ namespace GameSvr
 
         public TFrmSrvMsg()
         {
- 
+
         }
 
         public void FormCreate(System.Object Sender, System.EventArgs _e1)
@@ -122,12 +122,12 @@ namespace GameSvr
 
         private void DecodeSocStr(TServerMsgInfo ps)
         {
-            string BufStr;
-            string str;
-            string snumstr;
-            string head;
-            string body= string.Empty;
-            int ident=0;
+            string BufStr = string.Empty;
+            string str = string.Empty;
+            string snumstr = string.Empty;
+            string head = string.Empty;
+            string body = string.Empty;
+            int ident = 0;
             int snum;
             if (ps.SocData.IndexOf(")") <= 0)
             {
@@ -139,7 +139,7 @@ namespace GameSvr
                 ps.SocData = "";
                 while (BufStr.IndexOf(")") > 0)
                 {
-                    BufStr = ArrestStringEx(BufStr, "(", ")", str);
+                    BufStr = HUtil32.ArrestStringEx(BufStr, "(", ")", ref str);
                     if (str != "")
                     {
                         DecodeSocStr_SendOtherServer(str);
@@ -463,10 +463,9 @@ namespace GameSvr
 
         public void MsgGetGuildMsg(int snum, string body)
         {
-            string str;
-            string gname;
+            string gname = string.Empty;
             TGuild g;
-            str = EDcode.DecodeString(body);
+            string str = EDcode.DecodeString(body);
             str = HUtil32.GetValidStr3(str, ref gname, new string[] { "/" });
             if (gname != "")
             {
@@ -481,10 +480,10 @@ namespace GameSvr
         public void MsgGetGuildWarInfo(int snum, string body)
         {
             string str;
-            string gname;
-            string warguildname;
-            string starttime;
-            string remaintime;
+            string gname = string.Empty;
+            string warguildname = string.Empty;
+            string starttime = string.Empty;
+            string remaintime = string.Empty;
             TGuild g;
             TGuild warguild;
             TGuildWarInfo pgw;
@@ -503,7 +502,7 @@ namespace GameSvr
                     warguild = svMain.GuildMan.GetGuild(warguildname);
                     if ((g != null) && (warguild != null))
                     {
-                        currenttick  =  HUtil32.GetTickCount();
+                        currenttick = HUtil32.GetTickCount();
                         if (svMain.ServerTickDifference == 0)
                         {
                             svMain.ServerTickDifference = Convert.ToInt64(starttime) - currenttick;
@@ -602,8 +601,8 @@ namespace GameSvr
         public void MsgGetGuildMemberRecall(int snum, string body)
         {
             TUserHuman hum;
-            int dx=0;
-            int dy=0;
+            int dx = 0;
+            int dy = 0;
             string dxstr = string.Empty;
             string dystr = string.Empty;
             string str = string.Empty;
@@ -638,10 +637,10 @@ namespace GameSvr
         public void MsgGetLoverLogin(int snum, string body)
         {
             TUserHuman humlover;
-            int svidx=0;
+            int svidx = 0;
             string str;
             string uname = string.Empty;
-            string lovername;
+            string lovername = string.Empty;
             if (snum == svMain.ServerIndex)
             {
                 str = EDcode.DecodeString(body);
@@ -683,7 +682,7 @@ namespace GameSvr
             TUserHuman humlover;
             string str;
             string uname = string.Empty;
-            string lovername;
+            string lovername = string.Empty;
             if (snum == svMain.ServerIndex)
             {
                 str = EDcode.DecodeString(body);
@@ -839,4 +838,3 @@ namespace GameSvr
         public const int MAXSERVER = 10;
     }
 }
-

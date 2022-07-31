@@ -2,19 +2,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <AssemblyKeyContainerName>
-    </AssemblyKeyContainerName>
     <AssemblyName>GameSvr</AssemblyName>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
     <RootNamespace>GameSvr</RootNamespace>
     <OutputType>WinExe</OutputType>
-    <StartupObject>M2Server.Units.M2Server</StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
+    <StartupObject>GameSvr.M2Server</StartupObject>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <ProjectGuid>{2502C2C4-69F2-4614-97F8-631B8FC5AB37}</ProjectGuid>
     <PublishUrl>publish\</PublishUrl>
@@ -45,6 +37,7 @@
     </StartArguments>
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
+    <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -57,6 +50,8 @@
     </StartArguments>
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
+    <Optimize>true</Optimize>
+    <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -89,6 +84,13 @@
     <Compile Include="Map\Envir.cs" />
     <Compile Include="Map\TEnvirList.cs" />
     <Compile Include="Map\TEnvirnoment.cs" />
+    <Compile Include="Merchants\ObjNpc.cs" />
+    <Compile Include="Merchants\TCastleManager.cs" />
+    <Compile Include="Merchants\TGuildOfficial.cs" />
+    <Compile Include="Merchants\THiddenNpc.cs" />
+    <Compile Include="Merchants\TMerchant.cs" />
+    <Compile Include="Merchants\TNormNpc.cs" />
+    <Compile Include="Merchants\TTrainer.cs" />
     <Compile Include="Monsters\TDualAxeMonster.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -236,9 +238,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Monsters\TCloneMon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ObjNpc.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RunDB.cs">

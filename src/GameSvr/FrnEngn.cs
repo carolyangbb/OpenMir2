@@ -403,7 +403,7 @@ namespace GameSvr
                     svMain.fuLock.Enter();
                     try
                     {
-                        RunDB.SendNonBlockDatas(datalist[i]);
+                        RunDB.SendNonBlockDatas((string)datalist[i]);
                     }
                     finally
                     {

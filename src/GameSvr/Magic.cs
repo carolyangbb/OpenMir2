@@ -586,7 +586,7 @@ namespace GameSvr
                 if (dam > 0)
                 {
                     target.StruckDamage(dam, user);
-                    target.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, target.WAbil.HP, target.WAbil.MaxHP, user.ActorId, "", 200);
+                    target.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, target.WAbil.HP, target.WAbil.MaxHP, user.ActorId, "", 200);
                 }
             }
         }

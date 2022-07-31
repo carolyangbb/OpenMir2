@@ -108,7 +108,7 @@ namespace GameSvr
                 if (dam > 0)
                 {
                     targ.StruckDamage(dam, this);
-                    targ.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 800);
+                    targ.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 800);
                 }
             }
         }

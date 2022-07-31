@@ -114,8 +114,8 @@ namespace GameSvr
                 FCmdList.Free();
             }
             FCmdCS.Free();
-            base.Destroy();
         }
+
         private void LoadRunAddress()
         {
             RunAddressList.LoadFromFile(RunSock.GATEADDRFILE);
@@ -711,7 +711,7 @@ namespace GameSvr
                 {
                     if (CharCount(data, "!") >= 1)
                     {
-                        ArrestStringEx(data, "#", "!", data);
+                        HUtil32.ArrestStringEx(data, "#", "!", ref data);
                         data = data.Substring(2 - 1, data.Length - 1);
                         bugstep = 1;
                         if (DoClientCertification_GetCertification(data, ref uid, ref chrname, ref certify, ref clversion, ref clcheck, ref startnew))
@@ -849,15 +849,15 @@ namespace GameSvr
                             {
                                 if (puser.Enabled)
                                 {
-                                    if (len >= sizeof(TDefaultMessage))
+                                    if (len >= TDefaultMessage.PacketSize)
                                     {
-                                        if (len == sizeof(TDefaultMessage))
+                                        if (len == TDefaultMessage.PacketSize)
                                         {
                                             svMain.UserEngine.ProcessUserMessage((TUserHuman)puser.UCret, (TDefaultMessage)pdata, null);
                                         }
                                         else
                                         {
-                                            svMain.UserEngine.ProcessUserMessage((TUserHuman)puser.UCret, (TDefaultMessage)pdata, pdata[sizeof(TDefaultMessage)]);
+                                            svMain.UserEngine.ProcessUserMessage((TUserHuman)puser.UCret, (TDefaultMessage)pdata, pdata[TDefaultMessage.PacketSize]);
                                         }
                                     }
                                 }

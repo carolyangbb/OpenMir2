@@ -58,8 +58,8 @@ namespace GameSvr
         public override void Run()
         {
             byte ndir;
-            int nx=0;
-            int ny=0;
+            short nx =0;
+            short ny =0;
             TCreature cret;
             cret = null;
             int snakecount = 0;
@@ -252,7 +252,7 @@ namespace GameSvr
             }
             this.SendRefMsg(Grobal2.RM_HIT, this.Dir, this.CX, this.CY, 0, "");
             TAbility _wvar2 = this.WAbil;
-            pwr = this.GetAttackPower(HUtil32.LoByte(_wvar2.DC), (short)HiByte(_wvar2.DC) - HUtil32.LoByte(_wvar2.DC));
+            pwr = this.GetAttackPower(HUtil32.LoByte(_wvar2.DC), HiByte(_wvar2.DC) - HUtil32.LoByte(_wvar2.DC));
             for (i = 0; i <= 4; i++)
             {
                 for (k = 0; k <= 4; k++)
@@ -314,7 +314,7 @@ namespace GameSvr
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
+                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                         }
                     }
                 }
@@ -324,25 +324,19 @@ namespace GameSvr
 
         public void RangeAttack2(TCreature targ)
         {
-            // 馆靛矫 target <> nil
-            int i;
-            TCreature cret;
             if (targ == null)
             {
                 return;
             }
-            // 刀救俺 NormalEffect
             this.SendRefMsg(Grobal2.RM_LIGHTING, this.Dir, this.CX, this.CY, this.ActorId, "");
             this.SendRefMsg(Grobal2.RM_NORMALEFFECT, 0, this.CX, this.CY, Grobal2.NE_POISONFOG, "");
-            // 矫具郴 葛电 某腐/家券各 吝刀
-            for (i = 0; i < this.VisibleActors.Count; i++)
+            for (var i = 0; i < this.VisibleActors.Count; i++)
             {
-                cret = (TCreature)this.VisibleActors[i].cret;
+                TCreature cret = (TCreature)this.VisibleActors[i].cret;
                 if ((!cret.Death) && this.IsProperTarget(cret))
                 {
                     if ((cret.RaceServer == Grobal2.RC_USERHUMAN) || (cret.Master != null))
                     {
-                        // 规绢仿捞 皑家窍绰 刀俊 吝刀 等促.
                         if (new System.Random(2 + cret.AntiPoison).Next() == 0)
                         {
                             cret.MakePoison(Grobal2.POISON_DAMAGEARMOR, 60, 5);

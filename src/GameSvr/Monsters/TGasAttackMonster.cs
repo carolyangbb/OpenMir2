@@ -35,7 +35,7 @@ namespace GameSvr
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 300);
+                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 300);
                             if (this.RaceServer == Grobal2.RC_TOXICGHOST)
                             {
                                 if (new System.Random(20 + cret.AntiPoison).Next() == 0)

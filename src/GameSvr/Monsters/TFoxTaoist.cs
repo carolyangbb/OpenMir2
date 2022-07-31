@@ -39,7 +39,7 @@ namespace GameSvr
                 // lparam1
                 // lparam2
                 // hiter
-                target.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, pwr, target.WAbil.HP, target.WAbil.MaxHP, this.ActorId, "", 500);
+                target.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)pwr, target.WAbil.HP, target.WAbil.MaxHP, this.ActorId, "", 500);
             }
         }
 
@@ -94,7 +94,7 @@ namespace GameSvr
                         if (dam > 0)
                         {
                             cret.StruckDamage(dam, this);
-                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
+                            cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 800);
                         }
                     }
                 }

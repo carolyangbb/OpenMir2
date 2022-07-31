@@ -145,7 +145,7 @@ namespace GameSvr
                                 // lparam1
                                 // lparam2
                                 // hiter
-                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - cret.CX), Math.Abs(this.CY - cret.CY)) * 70);
+                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - cret.CX), Math.Abs(this.CY - cret.CY)) * 70);
                             }
                         }
                     }
@@ -210,7 +210,7 @@ namespace GameSvr
                                 // lparam1
                                 // lparam2
                                 // hiter
-                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 600);
+                                cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 600);
                             }
                         }
                     }

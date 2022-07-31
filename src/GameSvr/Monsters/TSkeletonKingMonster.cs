@@ -20,20 +20,18 @@ namespace GameSvr
         public override void CallFollower()
         {
             const int MAX_SKELFOLLOWERS = 3;
-            int i;
-            int count;
-            int nx = 0;
-            int ny = 0;
+            short nx = 0;
+            short ny = 0;
             string monname;
             TCreature mon;
             string[] followers = new string[MAX_SKELFOLLOWERS - 1 + 1];
             this.SendRefMsg(Grobal2.RM_LIGHTING, this.Dir, this.CX, this.CY, 0, "");
-            count = 4 + new System.Random(4).Next();
+            int count = 4 + new System.Random(4).Next();
             M2Share.GetFrontPosition(this, ref nx, ref ny);
             followers[0] = "BoneCaptain";
             followers[1] = "BoneArcher";
             followers[2] = "BoneSpearman";
-            for (i = 1; i <= count; i++)
+            for (var i = 1; i <= count; i++)
             {
                 if (this.childlist.Count < 20)
                 {
@@ -49,10 +47,8 @@ namespace GameSvr
 
         public override void Attack(TCreature target, byte dir)
         {
-            int pwr;
             TAbility _wvar1 = this.WAbil;
-            pwr = this.GetAttackPower(HUtil32.LoByte(_wvar1.DC), HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC));
-            // inherited
+            int pwr = this.GetAttackPower(HUtil32.LoByte(_wvar1.DC), HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC));
             this.HitHit2(target, 0, pwr, true);
         }
 
@@ -63,7 +59,6 @@ namespace GameSvr
 
         public virtual void RangeAttack(TCreature targ)
         {
-            int dam;
             if (targ == null)
             {
                 return;
@@ -72,7 +67,7 @@ namespace GameSvr
             {
                 this.Dir = M2Share.GetNextDirection(this.CX, this.CY, targ.CX, targ.CY);
                 TAbility _wvar1 = this.WAbil;
-                dam = HUtil32._MAX(0, HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next());
+                int dam = HUtil32._MAX(0, HUtil32.LoByte(_wvar1.DC) + new System.Random(HiByte(_wvar1.DC) - HUtil32.LoByte(_wvar1.DC) + 1).Next());
                 if (dam > 0)
                 {
                     dam = targ.GetHitStruckDamage(this, dam);
@@ -80,7 +75,7 @@ namespace GameSvr
                 if (dam > 0)
                 {
                     targ.StruckDamage(dam, this);
-                    targ.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - targ.CX), Math.Abs(this.CY - targ.CY)) * 50);
+                    targ.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 600 + _MAX(Math.Abs(this.CX - targ.CX), Math.Abs(this.CY - targ.CY)) * 50);
                 }
                 this.SendRefMsg(Grobal2.RM_FLYAXE, this.Dir, this.CX, this.CY, targ.ActorId, "");
             }

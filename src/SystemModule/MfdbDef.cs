@@ -1,20 +1,15 @@
 using System;
-using System.Collections;
-using System.Collections.Specialized;
-using System.IO;
 
 namespace SystemModule
 {
 
-    public struct TUseMagicInfo
+    public class TUseMagicInfo
     {
-        // gadget (8byte)
-        public short MagicId;
-        // 항상 1보다 크다
+        public ushort MagicId;
         public byte Level;
         public Char Key;
         public int Curtrain;
-    } // end TUseMagicInfo
+    }
 
     public struct THuman
     {

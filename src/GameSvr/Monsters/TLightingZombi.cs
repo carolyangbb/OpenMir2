@@ -65,7 +65,7 @@ namespace GameSvr
                         {
                             this.HitTime = GetCurrentTime;
                             targdir = M2Share.GetNextDirection(this.CX, this.CY, this.TargetCret.CX, this.TargetCret.CY);
-                            LightingAttack(targdir);
+                            LightingAttack((byte)targdir);
                         }
                     }
                 }

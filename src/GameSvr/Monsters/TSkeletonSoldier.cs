@@ -27,7 +27,7 @@ namespace GameSvr
             }
             this.SendRefMsg(Grobal2.RM_HIT, this.Dir, this.CX, this.CY, 0, "");
             TAbility _wvar2 = this.WAbil;
-            pwr = this.GetAttackPower(HUtil32.LoByte(_wvar2.DC), (short)HiByte(_wvar2.DC) - HUtil32.LoByte(_wvar2.DC));
+            pwr = this.GetAttackPower(HUtil32.LoByte(_wvar2.DC), HiByte(_wvar2.DC) - HUtil32.LoByte(_wvar2.DC));
             for (i = 0; i <= 4; i++)
             {
                 for (k = 0; k <= 4; k++)

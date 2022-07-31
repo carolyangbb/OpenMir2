@@ -55,9 +55,8 @@ namespace GameSvr
         public TReadyUserInfo readyinfo;
     }
 
-    public struct THolySeizeInfo
+    public class THolySeizeInfo
     {
-        // °á°è
         public Object[] earr;
         public ArrayList seizelist;
         public long OpenTime;
@@ -72,62 +71,62 @@ namespace GameSvr
         public static string GateClass = "Config";
         public static TGameConfig g_GameConfig = new TGameConfig() { true, true, true, false, true, true, true, false, false, true };
 
-        public static string g_sStartMarryManMsg = "[%n]: %s Óë %d µÄ»éÀñÏÖÔÚ¿ªÊ¼..";
-        public static string g_sStartMarryWoManMsg = "[%n]: %d Óë %s µÄ»éÀñÏÖÔÚ¿ªÊ¼..";
-        public static string g_sStartMarryManAskQuestionMsg = "[%n]: %s ÄãÔ¸ÒâÈ¢ %d Ð¡½ãÎªÆÞ£¬²¢ÕÕ¹ËËýÒ»ÉúÒ»ÊÀÂð£¿";
-        public static string g_sStartMarryWoManAskQuestionMsg = "[%n]: %d ÄãÔ¸ÒâÈ¢ %s Ð¡½ãÎªÆÞ£¬²¢ÕÕ¹ËËýÒ»ÉúÒ»ÊÀÂð£¿";
-        public static string g_sMarryManAnswerQuestionMsg = "[%s]: ÎÒÔ¸Òâ£¬%d Ð¡½ãÎÒ»á¾¡ÎÒÒ»ÉúµÄÊ±¼äÀ´ÕÕ¹ËÄú£¬ÈÃÄú¹ýÉÏ¿ìÀÖÃÀÂúµÄÈÕ×ÓµÄ";
-        public static string g_sMarryManAskQuestionMsg = "[%n]: %d ÄãÔ¸Òâ¼Þ¸ø %s ÏÈÉúÎªÆÞ£¬²¢ÕÕ¹ËËûÒ»ÉúÒ»ÊÀÂð£¿";
-        public static string g_sMarryWoManAnswerQuestionMsg = "[%s]: ÎÒÔ¸Òâ£¬%d ÏÈÉúÎÒÔ¸ÒâÈÃÄãÀ´ÕÕ¹ËÎÒ£¬±£»¤ÎÒ";
-        public static string g_sMarryWoManGetMarryMsg = "[%n]: ÎÒÐû²¼ %d ÏÈÉúÓë %s Ð¡½ãÕýÊ½³ÉÎªºÏ·¨·òÆÞ";
-        public static string g_sMarryWoManDenyMsg = "[%s]: %d ÄãÕâ¸öºÃÉ«Ö®Í½£¬Ë­»áÔ¸Òâ¼Þ¸øÄãÑ½£¬ñ®¸òó¡Ïë³ÔÌì¶ìÈâ";
-        public static string g_sMarryWoManCancelMsg = "[%n]: ÕæÊÇ¿ÉÏ§£¬¶þ¸öÈËÕâ¸öÊ±ºò²Å·­Á³£¬ÄãÃÇÅàÑøºÃ¸ÐÇéºóÔÙÀ´ÕÒÎÒ°É";
-        public static string g_sfUnMarryManLoginMsg = "ÄãµÄÀÏÆÅ%dÒÑ¾­Ç¿ÐÐÓëÄãÍÑÀëÁË·òÆÞ¹ØÏµÁË";
-        public static string g_sfUnMarryWoManLoginMsg = "ÄãµÄÀÏ¹«%dÒÑ¾­Ç¿ÐÐÓëÄãÍÑÀëÁË·òÆÞ¹ØÏµÁË";
-        public static string g_sManLoginDearOnlineSelfMsg = "ÄãµÄÀÏÆÅ%dµ±Ç°Î»ÓÚ%m(%x:%y)";
-        public static string g_sManLoginDearOnlineDearMsg = "ÄãµÄÀÏ¹«%sÔÚ:%m(%x:%y)ÉÏÏßÁË";
-        public static string g_sWoManLoginDearOnlineSelfMsg = "ÄãµÄÀÏ¹«µ±Ç°Î»ÓÚ%m(%x:%y)";
-        public static string g_sWoManLoginDearOnlineDearMsg = "ÄãµÄÀÏÆÅ%sÔÚ:%m(%x:%y) ÉÏÏßÁË";
-        public static string g_sManLoginDearNotOnlineMsg = "ÄãµÄÀÏÆÅÏÖÔÚ²»ÔÚÏß";
-        public static string g_sWoManLoginDearNotOnlineMsg = "ÄãµÄÀÏ¹«ÏÖÔÚ²»ÔÚÏß";
-        public static string g_sManLongOutDearOnlineMsg = "ÄãµÄÀÏ¹«ÔÚ:%m(%x:%y)ÏÂÏßÁË";
-        public static string g_sWoManLongOutDearOnlineMsg = "ÄãµÄÀÏÆÅÔÚ:%m(%x:%y)ÏÂÏßÁË";
-        public static string g_sYouAreNotMarryedMsg = "Äã¶¼Ã»½á»é²éÊ²Ã´£¿";
-        public static string g_sYourWifeNotOnlineMsg = "ÄãµÄÀÏÆÅ»¹Ã»ÓÐÉÏÏß";
-        public static string g_sYourHusbandNotOnlineMsg = "ÄãµÄÀÏ¹«»¹Ã»ÓÐÉÏÏß";
-        public static string g_sYourWifeNowLocateMsg = "ÄãµÄÀÏÆÅÏÖÔÚÎ»ÓÚ:";
-        public static string g_sYourHusbandSearchLocateMsg = "ÄãµÄÀÏ¹«ÕýÔÚÕÒÄã£¬ËûÏÖÔÚÎ»ÓÚ:";
-        public static string g_sYourHusbandNowLocateMsg = "ÄãµÄÀÏ¹«ÏÖÔÚÎ»ÓÚ:";
-        public static string g_sYourWifeSearchLocateMsg = "ÄãµÄÀÏÆÅÕýÔÚÕÒÄã£¬ËûÏÖÔÚÎ»ÓÚ:";
-        public static string g_sfUnMasterLoginMsg = "ÄãµÄÒ»¸öÍ½µÜÒÑ¾­±³ÅÐÊ¦ÃÅÁË";
-        public static string g_sfUnMasterListLoginMsg = "ÄãµÄÊ¦¸¸%dÒÑ¾­½«ÄãÖð³öÊ¦ÃÅÁË";
-        public static string g_sMasterListOnlineSelfMsg = "ÄãµÄÊ¦¸¸%dµ±Ç°Î»ÓÚ%m(%x:%y)";
-        public static string g_sMasterListOnlineMasterMsg = "ÄãµÄÍ½µÜ%sÔÚ:%m(%x:%y)ÉÏÏßÁË";
-        public static string g_sMasterOnlineSelfMsg = "ÄãµÄÍ½µÜµ±Ç°Î»ÓÚ%m(%x:%y)";
-        public static string g_sMasterOnlineMasterListMsg = "ÄãµÄÊ¦¸¸%sÔÚ:%m(%x:%y) ÉÏÏßÁË";
-        public static string g_sMasterLongOutMasterListOnlineMsg = "ÄãµÄÊ¦¸¸ÔÚ:%m(%x:%y)ÏÂÏßÁË";
-        public static string g_sMasterListLongOutMasterOnlineMsg = "ÄãµÄÍ½µÜ%sÔÚ:%m(%x:%y)ÏÂÏßÁË";
-        public static string g_sMasterListNotOnlineMsg = "ÄãµÄÊ¦¸¸ÏÖ²»ÔÚÏß";
-        public static string g_sMasterNotOnlineMsg = "ÄãµÄÍ½µÜÏÖ²»ÔÚÏß";
-        public static string g_sYouAreNotMasterMsg = "Äã¶¼Ã»Ê¦Í½¹ØÏµ²éÊ²Ã´£¿";
-        public static string g_sYourMasterNotOnlineMsg = "ÄãµÄÊ¦¸¸»¹Ã»ÓÐÉÏÏß";
-        public static string g_sYourMasterListNotOnlineMsg = "ÄãµÄÍ½µÜ»¹Ã»ÓÐÉÏÏß";
-        public static string g_sYourMasterNowLocateMsg = "ÄãµÄÊ¦¸¸ÏÖÔÚÎ»ÓÚ:";
-        public static string g_sYourMasterListSearchLocateMsg = "ÄãµÄÍ½µÜÕýÔÚÕÒÄã£¬ËûÏÖÔÚÎ»ÓÚ:";
-        public static string g_sYourMasterListNowLocateMsg = "ÄãµÄÍ½µÜÏÖÔÚÎ»ÓÚ:";
-        public static string g_sYourMasterSearchLocateMsg = "ÄãµÄÊ¦¸¸ÕýÔÚÕÒÄã£¬ËûÏÖÔÚÎ»ÓÚ:";
-        public static string g_sYourMasterListUnMasterOKMsg = "ÄãµÄÍ½µÜ%dÒÑ¾­Ô²Âú³öÊ¦ÁË";
-        public static string g_sYouAreUnMasterOKMsg = "ÄãÒÑ¾­³öÊ¦ÁË";
-        public static string g_sUnMasterLoginMsg = "ÄãµÄÒ»¸öÍ½µÜÒÑ¾­Ô²Âú³öÊ¦ÁË";
-        public static string g_sNPCSayUnMasterOKMsg = "[%n]: ÎÒÐû²¼%dÓë%sÕýÊ½ÍÑÀëÊ¦Í½¹ØÏµ";
-        public static string g_sNPCSayForceUnMasterMsg = "[%n]: ÎÒÐû²¼%sÓë%dÒÑ¾­ÕýÊ½ÍÑÀëÊ¦Í½¹ØÏµ";
+        public static string g_sStartMarryManMsg = "[%n]: %s ä¸Ž %d çš„å©šç¤¼çŽ°åœ¨å¼€å§‹..";
+        public static string g_sStartMarryWoManMsg = "[%n]: %d ä¸Ž %s çš„å©šç¤¼çŽ°åœ¨å¼€å§‹..";
+        public static string g_sStartMarryManAskQuestionMsg = "[%n]: %s ä½ æ„¿æ„å¨¶ %d å°å§ä¸ºå¦»ï¼Œå¹¶ç…§é¡¾å¥¹ä¸€ç”Ÿä¸€ä¸–å—ï¼Ÿ";
+        public static string g_sStartMarryWoManAskQuestionMsg = "[%n]: %d ä½ æ„¿æ„å¨¶ %s å°å§ä¸ºå¦»ï¼Œå¹¶ç…§é¡¾å¥¹ä¸€ç”Ÿä¸€ä¸–å—ï¼Ÿ";
+        public static string g_sMarryManAnswerQuestionMsg = "[%s]: æˆ‘æ„¿æ„ï¼Œ%d å°å§æˆ‘ä¼šå°½æˆ‘ä¸€ç”Ÿçš„æ—¶é—´æ¥ç…§é¡¾æ‚¨ï¼Œè®©æ‚¨è¿‡ä¸Šå¿«ä¹ç¾Žæ»¡çš„æ—¥å­çš„";
+        public static string g_sMarryManAskQuestionMsg = "[%n]: %d ä½ æ„¿æ„å«ç»™ %s å…ˆç”Ÿä¸ºå¦»ï¼Œå¹¶ç…§é¡¾ä»–ä¸€ç”Ÿä¸€ä¸–å—ï¼Ÿ";
+        public static string g_sMarryWoManAnswerQuestionMsg = "[%s]: æˆ‘æ„¿æ„ï¼Œ%d å…ˆç”Ÿæˆ‘æ„¿æ„è®©ä½ æ¥ç…§é¡¾æˆ‘ï¼Œä¿æŠ¤æˆ‘";
+        public static string g_sMarryWoManGetMarryMsg = "[%n]: æˆ‘å®£å¸ƒ %d å…ˆç”Ÿä¸Ž %s å°å§æ­£å¼æˆä¸ºåˆæ³•å¤«å¦»";
+        public static string g_sMarryWoManDenyMsg = "[%s]: %d ä½ è¿™ä¸ªå¥½è‰²ä¹‹å¾’ï¼Œè°ä¼šæ„¿æ„å«ç»™ä½ å‘€ï¼Œç™žè›¤èŸ†æƒ³åƒå¤©é¹…è‚‰";
+        public static string g_sMarryWoManCancelMsg = "[%n]: çœŸæ˜¯å¯æƒœï¼ŒäºŒä¸ªäººè¿™ä¸ªæ—¶å€™æ‰ç¿»è„¸ï¼Œä½ ä»¬åŸ¹å…»å¥½æ„Ÿæƒ…åŽå†æ¥æ‰¾æˆ‘å§";
+        public static string g_sfUnMarryManLoginMsg = "ä½ çš„è€å©†%då·²ç»å¼ºè¡Œä¸Žä½ è„±ç¦»äº†å¤«å¦»å…³ç³»äº†";
+        public static string g_sfUnMarryWoManLoginMsg = "ä½ çš„è€å…¬%då·²ç»å¼ºè¡Œä¸Žä½ è„±ç¦»äº†å¤«å¦»å…³ç³»äº†";
+        public static string g_sManLoginDearOnlineSelfMsg = "ä½ çš„è€å©†%då½“å‰ä½äºŽ%m(%x:%y)";
+        public static string g_sManLoginDearOnlineDearMsg = "ä½ çš„è€å…¬%såœ¨:%m(%x:%y)ä¸Šçº¿äº†";
+        public static string g_sWoManLoginDearOnlineSelfMsg = "ä½ çš„è€å…¬å½“å‰ä½äºŽ%m(%x:%y)";
+        public static string g_sWoManLoginDearOnlineDearMsg = "ä½ çš„è€å©†%såœ¨:%m(%x:%y) ä¸Šçº¿äº†";
+        public static string g_sManLoginDearNotOnlineMsg = "ä½ çš„è€å©†çŽ°åœ¨ä¸åœ¨çº¿";
+        public static string g_sWoManLoginDearNotOnlineMsg = "ä½ çš„è€å…¬çŽ°åœ¨ä¸åœ¨çº¿";
+        public static string g_sManLongOutDearOnlineMsg = "ä½ çš„è€å…¬åœ¨:%m(%x:%y)ä¸‹çº¿äº†";
+        public static string g_sWoManLongOutDearOnlineMsg = "ä½ çš„è€å©†åœ¨:%m(%x:%y)ä¸‹çº¿äº†";
+        public static string g_sYouAreNotMarryedMsg = "ä½ éƒ½æ²¡ç»“å©šæŸ¥ä»€ä¹ˆï¼Ÿ";
+        public static string g_sYourWifeNotOnlineMsg = "ä½ çš„è€å©†è¿˜æ²¡æœ‰ä¸Šçº¿";
+        public static string g_sYourHusbandNotOnlineMsg = "ä½ çš„è€å…¬è¿˜æ²¡æœ‰ä¸Šçº¿";
+        public static string g_sYourWifeNowLocateMsg = "ä½ çš„è€å©†çŽ°åœ¨ä½äºŽ:";
+        public static string g_sYourHusbandSearchLocateMsg = "ä½ çš„è€å…¬æ­£åœ¨æ‰¾ä½ ï¼Œä»–çŽ°åœ¨ä½äºŽ:";
+        public static string g_sYourHusbandNowLocateMsg = "ä½ çš„è€å…¬çŽ°åœ¨ä½äºŽ:";
+        public static string g_sYourWifeSearchLocateMsg = "ä½ çš„è€å©†æ­£åœ¨æ‰¾ä½ ï¼Œä»–çŽ°åœ¨ä½äºŽ:";
+        public static string g_sfUnMasterLoginMsg = "ä½ çš„ä¸€ä¸ªå¾’å¼Ÿå·²ç»èƒŒåˆ¤å¸ˆé—¨äº†";
+        public static string g_sfUnMasterListLoginMsg = "ä½ çš„å¸ˆçˆ¶%då·²ç»å°†ä½ é€å‡ºå¸ˆé—¨äº†";
+        public static string g_sMasterListOnlineSelfMsg = "ä½ çš„å¸ˆçˆ¶%då½“å‰ä½äºŽ%m(%x:%y)";
+        public static string g_sMasterListOnlineMasterMsg = "ä½ çš„å¾’å¼Ÿ%såœ¨:%m(%x:%y)ä¸Šçº¿äº†";
+        public static string g_sMasterOnlineSelfMsg = "ä½ çš„å¾’å¼Ÿå½“å‰ä½äºŽ%m(%x:%y)";
+        public static string g_sMasterOnlineMasterListMsg = "ä½ çš„å¸ˆçˆ¶%såœ¨:%m(%x:%y) ä¸Šçº¿äº†";
+        public static string g_sMasterLongOutMasterListOnlineMsg = "ä½ çš„å¸ˆçˆ¶åœ¨:%m(%x:%y)ä¸‹çº¿äº†";
+        public static string g_sMasterListLongOutMasterOnlineMsg = "ä½ çš„å¾’å¼Ÿ%såœ¨:%m(%x:%y)ä¸‹çº¿äº†";
+        public static string g_sMasterListNotOnlineMsg = "ä½ çš„å¸ˆçˆ¶çŽ°ä¸åœ¨çº¿";
+        public static string g_sMasterNotOnlineMsg = "ä½ çš„å¾’å¼ŸçŽ°ä¸åœ¨çº¿";
+        public static string g_sYouAreNotMasterMsg = "ä½ éƒ½æ²¡å¸ˆå¾’å…³ç³»æŸ¥ä»€ä¹ˆï¼Ÿ";
+        public static string g_sYourMasterNotOnlineMsg = "ä½ çš„å¸ˆçˆ¶è¿˜æ²¡æœ‰ä¸Šçº¿";
+        public static string g_sYourMasterListNotOnlineMsg = "ä½ çš„å¾’å¼Ÿè¿˜æ²¡æœ‰ä¸Šçº¿";
+        public static string g_sYourMasterNowLocateMsg = "ä½ çš„å¸ˆçˆ¶çŽ°åœ¨ä½äºŽ:";
+        public static string g_sYourMasterListSearchLocateMsg = "ä½ çš„å¾’å¼Ÿæ­£åœ¨æ‰¾ä½ ï¼Œä»–çŽ°åœ¨ä½äºŽ:";
+        public static string g_sYourMasterListNowLocateMsg = "ä½ çš„å¾’å¼ŸçŽ°åœ¨ä½äºŽ:";
+        public static string g_sYourMasterSearchLocateMsg = "ä½ çš„å¸ˆçˆ¶æ­£åœ¨æ‰¾ä½ ï¼Œä»–çŽ°åœ¨ä½äºŽ:";
+        public static string g_sYourMasterListUnMasterOKMsg = "ä½ çš„å¾’å¼Ÿ%då·²ç»åœ†æ»¡å‡ºå¸ˆäº†";
+        public static string g_sYouAreUnMasterOKMsg = "ä½ å·²ç»å‡ºå¸ˆäº†";
+        public static string g_sUnMasterLoginMsg = "ä½ çš„ä¸€ä¸ªå¾’å¼Ÿå·²ç»åœ†æ»¡å‡ºå¸ˆäº†";
+        public static string g_sNPCSayUnMasterOKMsg = "[%n]: æˆ‘å®£å¸ƒ%dä¸Ž%sæ­£å¼è„±ç¦»å¸ˆå¾’å…³ç³»";
+        public static string g_sNPCSayForceUnMasterMsg = "[%n]: æˆ‘å®£å¸ƒ%sä¸Ž%då·²ç»æ­£å¼è„±ç¦»å¸ˆå¾’å…³ç³»";
         public static bool boSecondCardSystem = false;
         public static int g_nExpErienceLevel = 7;
         public static string BADMANHOMEMAP = "3";
         public static int BADMANSTARTX = 845;
         public static int BADMANSTARTY = 674;
         public static string RECHARGINGMAP = "kaiqu";
-        // ³äÖµµØÍ¼Ãû³Æ
+        // å……å€¼åœ°å›¾åç§°
         public static bool boSafeZoneStall = false;
         public const int MAXKINGLEVEL = 61;
         public const int MAXLEVEL = 101;
@@ -648,7 +647,7 @@ namespace GameSvr
                 case Grobal2.U_DRESS:
                     if (pstd.StdMode >= 10 && pstd.StdMode <= 11)
                     {
-                        // ³²ÀÚ ¿©ÀÚ¿Ê..
+                        // å·¢ç£Š å’¯ç£Šæ¸´..
                         result = true;
                     }
                     break;
@@ -661,7 +660,7 @@ namespace GameSvr
                 case Grobal2.U_RIGHTHAND:
                     if (pstd.StdMode == 30)
                     {
-                        // ÃÐºÒ, ÆÄ·Ð·¥ÇÁ
+                        // çœ¯é˜‚, é¢‡æ²¸ä¼æ©‡
                         result = true;
                     }
                     break;
@@ -685,21 +684,21 @@ namespace GameSvr
                     }
                     break;
                 case Grobal2.U_ARMRINGR:
-                    // ÆÈÂî¸¸..
+                    // è¿«éª‚çˆ¶..
                     if ((pstd.StdMode == 24) || (pstd.StdMode == 26))
                     {
                         result = true;
                     }
                     break;
                 case Grobal2.U_ARMRINGL:
-                    // ÆÈÂî, ºÎÀû/µ¶°¡·ç..
+                    // è¿«éª‚, ä½•åˆ©/åˆ€å•Šé£Ž..
                     if ((pstd.StdMode == 24) || (pstd.StdMode == 25) || (pstd.StdMode == 26))
                     {
                         result = true;
                     }
                     break;
                 case Grobal2.U_BUJUK:
-                    // 2003/03/15 ¾ÆÀÌÅÛ ÀÎº¥Åä¸® È®Àå
+                    // 2003/03/15 é…’æžè¢ ç‰¢äº¥é…åºœ çŠ¬åŽ˜
                     if (pstd.StdMode == 25)
                     {
                         result = true;
@@ -824,7 +823,7 @@ namespace GameSvr
             return result;
         }
 
-        // µ·¿¡ ÄÞ¸¶ ºÙÀÌ´Â ÇÔ¼ö.
+        // æ£ä¿Š éœ“ä»˜ å˜¿æžç»° çªƒè.
         public static string GetStrGoldStr(string strgold)
         {
             string result;
@@ -850,7 +849,7 @@ namespace GameSvr
             return result;
         }
 
-        // µ·¿¡ ÄÞ¸¶ ºÙÀÌ´Â ÇÔ¼ö.
+        // æ£ä¿Š éœ“ä»˜ å˜¿æžç»° çªƒè.
         public static void LoadConfig()
         {
             //FileStream Conf;
@@ -859,7 +858,7 @@ namespace GameSvr
             //string sString;
             //sConfigFileName = ".\\Config.ini";
             //Conf = new FileStream(sConfigFileName);
-            //nInteger = Conf.ReadInteger(GateClass, "WhisperRecord", -1);// ÓÎÏ·Ë½ÁÄ
+            //nInteger = Conf.ReadInteger(GateClass, "WhisperRecord", -1);// æ¸¸æˆç§èŠ
             //if (nInteger == -1)
             //{
             //    Conf.WriteBool(GateClass, "WhisperRecord", g_GameConfig.boWhisperRecord);
@@ -950,13 +949,13 @@ namespace GameSvr
             //    Conf.WriteInteger(GateClass, "BadManStartY", BADMANSTARTY);
             //}
             //sString = Conf.ReadString(GateClass, "RECHARGINGMAP", "");
-            //// ³äÖµµØÍ¼
+            //// å……å€¼åœ°å›¾
             //if (sString == "")
             //{
             //    Conf.WriteString(GateClass, "RECHARGINGMAP", "kaiqu");
             //}
             //g_GameConfig.boWhisperRecord = Conf.ReadBool(GateClass, "WhisperRecord", g_GameConfig.boWhisperRecord);
-            //// ÓÎÏ·Ë½ÁÄ
+            //// æ¸¸æˆç§èŠ
             //g_GameConfig.boNoFog = Conf.ReadBool(GateClass, "NoFog", g_GameConfig.boNoFog);
             //g_GameConfig.boStallSystem = Conf.ReadBool(GateClass, "StallSystem", g_GameConfig.boStallSystem);
             //boSafeZoneStall = Conf.ReadBool(GateClass, "SafeZoneStall", boSafeZoneStall);
@@ -975,7 +974,7 @@ namespace GameSvr
             //BADMANSTARTX = Conf.ReadInteger(GateClass, "BadManStartX", BADMANSTARTX);
             //BADMANSTARTY = Conf.ReadInteger(GateClass, "BadManStartY", BADMANSTARTY);
             //g_GameConfig.boGamepath = Conf.ReadBool(GateClass, "Gamepath", g_GameConfig.boGamepath);
-            //RECHARGINGMAP = Conf.ReadString(GateClass, "RECHARGINGMAP", RECHARGINGMAP);// ³äÖµ
+            //RECHARGINGMAP = Conf.ReadString(GateClass, "RECHARGINGMAP", RECHARGINGMAP);// å……å€¼
             //Conf.Free();
         }
 
@@ -986,7 +985,7 @@ namespace GameSvr
             //sConfigFileName = ".\\Config.ini";
             //Conf = new FileStream(sConfigFileName);
             //Conf.WriteBool(GateClass, "WhisperRecord", g_GameConfig.boWhisperRecord);
-            //// ÓÎÏ·Ë½ÁÄ
+            //// æ¸¸æˆç§èŠ
             //Conf.WriteBool(GateClass, "NoFog", g_GameConfig.boNoFog);
             //Conf.WriteBool(GateClass, "StallSystem", g_GameConfig.boStallSystem);
             //Conf.WriteBool(GateClass, "SafeZoneStall", boSafeZoneStall);
@@ -1005,7 +1004,7 @@ namespace GameSvr
             //Conf.WriteInteger(GateClass, "BadManStartX", BADMANSTARTX);
             //Conf.WriteInteger(GateClass, "BadManStartY", BADMANSTARTY);
             //Conf.WriteBool(GateClass, "Gamepath", g_GameConfig.boGamepath);
-            //Conf.WriteString(GateClass, "RECHARGINGMAP", RECHARGINGMAP);// ³äÖµµØÍ¼
+            //Conf.WriteString(GateClass, "RECHARGINGMAP", RECHARGINGMAP);// å……å€¼åœ°å›¾
             //Conf.Free();
         }
     }

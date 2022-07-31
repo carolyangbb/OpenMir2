@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using SystemModule;
+using SystemModule.Common;
 
 namespace GameSvr
 {
@@ -831,7 +832,7 @@ namespace GameSvr
                     {
                         continue;
                     }
-                    if (str[1] == ";")
+                    if (str[0] == ';')
                     {
                         continue;
                     }
@@ -842,6 +843,7 @@ namespace GameSvr
                     str = HUtil32.GetValidStr3(str, ref ystr, new string[] { " ", "\09" });
                     str = HUtil32.GetValidStrCap(str, ref maker, new string[] { " ", "\09" });
                     str = HUtil32.GetValidStr3(str, ref durastr, new string[] { " ", "\09" });
+                    item = new TAgitDecoItem();
                     item.Name = decomonname.Substring(0 - 1, 20);
                     item.Looks = (ushort)HUtil32.Str_ToInt(indexstr, 0);
                     item.MapName = map.Substring(0 - 1, 14);
@@ -851,7 +853,6 @@ namespace GameSvr
                     item.Dura = (ushort)HUtil32.Str_ToInt(durastr, 0);
                     pitem = new TAgitDecoItem();
                     pitem = item;
-                    // 捞抚捞 绝绰 酒捞袍篮 荤扼柳 酒捞袍烙...
                     AgitDecoMonList.Add(pitem);
                 }
                 strlist.Free();
@@ -862,13 +863,11 @@ namespace GameSvr
 
         public void SaveAgitDecoMonList()
         {
-            ArrayList strlist;
-            int i;
+            StringList strlist;
             if (svMain.ServerIndex == 0)
             {
-                // 付胶磐 辑滚父 历厘阑 茄促.
-                strlist = new ArrayList();
-                for (i = 0; i < AgitDecoMonList.Count; i++)
+                strlist = new StringList();
+                for (var i = 0; i < AgitDecoMonList.Count; i++)
                 {
                     strlist.Add(AgitDecoMonList[i].Name + "\09" + AgitDecoMonList[i].Looks.ToString() + "\09" + AgitDecoMonList[i].MapName + "\09" + AgitDecoMonList[i].x.ToString() + "\09" + AgitDecoMonList[i].y.ToString() + "\09" + AgitDecoMonList[i].Maker + "\09" + AgitDecoMonList[i].Dura.ToString());
                 }

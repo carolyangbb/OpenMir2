@@ -7,7 +7,7 @@ namespace GameSvr
     public class TScultureKingMonster : TMonster
     {
         private int DangerLevel = 0;
-        private readonly ArrayList childlist = null;
+        public readonly ArrayList childlist = null;
         public bool BoCallFollower = false;
 
         public TScultureKingMonster() : base()
@@ -46,8 +46,8 @@ namespace GameSvr
             const int MAX_FOLLOWERS = 4;
             int i;
             int count;
-            int nx = 0;
-            int ny = 0;
+            short nx = 0;
+            short ny = 0;
             string monname;
             TCreature mon;
             string[] followers = new string[MAX_FOLLOWERS - 1 + 1];

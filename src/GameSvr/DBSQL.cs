@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Data;
-using System.Windows.Forms.VisualStyles;
 using SystemModule;
 using SystemModule.Common;
 
@@ -36,7 +35,7 @@ namespace GameSvr
             //FADOQuery = new TADOQuery(null);
             FConnFile = new StringList();
             FConnInfo = "";
-            FLastConnTime = 0;
+            FLastConnTime = DateTime.Now;
             FLastConnMsec = 0;
             FAutoConnectable = false;
         }
@@ -56,27 +55,26 @@ namespace GameSvr
             FFileName = FileName;
             FServerName = ServerName;
             FConnFile.LoadFromFile(FileName);
-            FConnInfo = FConnFile[ServerName];
-            if (FConnInfo != "")
-            {
-                // Try Connect...
-                FADOConnection.ConnectionString = FConnInfo;
-                FADOConnection.LoginPrompt = false;
-                FADOConnection.Connected = true;
-                result = FADOConnection.Connected;
-                if (result == true)
-                {
-                    FADOQuery.Active = false;
-                    FADOQuery.Connection = FADOConnection;
-                    FLastConnTime = DateTime.Now;
-                    svMain.MainOutMessage("SUCCESS DBSQL CONNECTION ");
-                }
-            }
-            else
-            {
-                svMain.MainOutMessage(ServerName + " : DBSQL CONNECTION INFO IS NULL!");
-            }
-            FLastConnMsec = HUtil32.GetTickCount;
+            //FConnInfo = FConnFile[ServerName];
+            //if (FConnInfo != "")
+            //{
+            //    FADOConnection.ConnectionString = FConnInfo;
+            //    FADOConnection.LoginPrompt = false;
+            //    FADOConnection.Connected = true;
+            //    result = FADOConnection.Connected;
+            //    if (result == true)
+            //    {
+            //        FADOQuery.Active = false;
+            //        FADOQuery.Connection = FADOConnection;
+            //        FLastConnTime = DateTime.Now;
+            //        svMain.MainOutMessage("SUCCESS DBSQL CONNECTION ");
+            //    }
+            //}
+            //else
+            //{
+            //    svMain.MainOutMessage(ServerName + " : DBSQL CONNECTION INFO IS NULL!");
+            //}
+            FLastConnMsec = HUtil32.GetTickCount();
             return result;
         }
 
@@ -84,7 +82,7 @@ namespace GameSvr
         {
             bool result;
             result = false;
-            if ((FLastConnMsec + 15 * 1000) < HUtil32.GetTickCount)
+            if ((FLastConnMsec + 15 * 1000) < HUtil32.GetTickCount())
             {
                 DisConnect();
                 svMain.MainOutMessage("[TestCode]Try to reconnect with DBSQL");
@@ -96,15 +94,15 @@ namespace GameSvr
 
         public bool Connected()
         {
-            bool result;
-            result = FADOConnection.Connected;
-            return result;
+            //bool result;
+            //result = FADOConnection.Connected;
+            return false;
         }
 
         public void DisConnect()
         {
-            FADOQuery.Active = false;
-            FADOConnection.Connected = false;
+            //FADOQuery.Active = false;
+            //FADOConnection.Connected = false;
         }
 
         private void LoadItemFromDB(TMarketLoad pItem, IDataReader SqlDB)
@@ -138,160 +136,157 @@ namespace GameSvr
 
         public int LoadPageUserMarket(string marketname, string sellwho, string itemname, int itemtype, int itemset, ArrayList sellitemlist)
         {
-            int result;
             string SearchStr;
             TMarketLoad pSellItem;
             int i;
-            result = Grobal2.UMResult_Fail;
-            if (itemname != "")
-            {
-                SearchStr = "EXEC UM_LOAD_ITEMNAME \'" + marketname + "\',\'" + itemname + "\'";
-            }
-            else if (sellwho != "")
-            {
-                SearchStr = "EXEC UM_LOAD_USERNAME \'" + marketname + "\',\'" + sellwho + "\'";
-            }
-            else if (itemset != 0)
-            {
-                SearchStr = "EXEC UM_LOAD_ITEMSET \'" + marketname + "\'," + itemset.ToString();
-            }
-            else if (itemtype >= 0)
-            {
-                SearchStr = "EXEC UM_LOAD_ITEMTYPE \'" + marketname + "\'," + itemtype.ToString();
-            }
-            try
-            {
-                if (FADOQuery.Active)
-                {
-                    //VisualStyleElement.ToolTip.Close;
-                }
-                FADOQuery.SQL.Clear();
-                FADOQuery.SQL.ADD(SearchStr);
-                if (!FADOQuery.Active)
-                {
-                    FADOQuery.Open;
-                }
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TFrmSql.LoadPageUserMarket -> Open (" + FADOQuery.SQL.Count.ToString() + ")");
-                for (i = 0; i < FADOQuery.SQL.Count; i++)
-                {
-                    svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
-                }
-                result = Grobal2.UMResult_ReadFail;
-                return result;
-            }
-            try
-            {
-                FADOQuery.First;
-                for (i = 0; i < FADOQuery.RecordCount; i++)
-                {
-                    pSellItem = new TMarketLoad();
-                    LoadItemFromDB(pSellItem, FADOQuery);
-                    sellitemlist.Add(pSellItem);
-                    if (!EOF)
-                    {
-                        FADOQuery.Next;
-                    }
-                }
-                if (FADOQuery.Active)
-                {
-                    //VisualStyleElement.ToolTip.Close;
-                }
-                result = Grobal2.UMResult_Success;
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TFrmSql.LoadPageUserMarket -> LoadItemFromDB (" + FADOQuery.RecordCount.ToString() + ")");
-                result = Grobal2.UMResult_ReadFail;
-                if (FADOQuery.Active)
-                {
-                    //VisualStyleElement.ToolTip.Close;
-                }
-            }
+            int result = Grobal2.UMResult_Fail;
+            //if (itemname != "")
+            //{
+            //    SearchStr = "EXEC UM_LOAD_ITEMNAME \'" + marketname + "\',\'" + itemname + "\'";
+            //}
+            //else if (sellwho != "")
+            //{
+            //    SearchStr = "EXEC UM_LOAD_USERNAME \'" + marketname + "\',\'" + sellwho + "\'";
+            //}
+            //else if (itemset != 0)
+            //{
+            //    SearchStr = "EXEC UM_LOAD_ITEMSET \'" + marketname + "\'," + itemset.ToString();
+            //}
+            //else if (itemtype >= 0)
+            //{
+            //    SearchStr = "EXEC UM_LOAD_ITEMTYPE \'" + marketname + "\'," + itemtype.ToString();
+            //}
+            //try
+            //{
+            //    if (FADOQuery.Active)
+            //    {
+            //        //VisualStyleElement.ToolTip.Close;
+            //    }
+            //    FADOQuery.SQL.Clear();
+            //    FADOQuery.SQL.ADD(SearchStr);
+            //    if (!FADOQuery.Active)
+            //    {
+            //        FADOQuery.Open;
+            //    }
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TFrmSql.LoadPageUserMarket -> Open (" + FADOQuery.SQL.Count.ToString() + ")");
+            //    for (i = 0; i < FADOQuery.SQL.Count; i++)
+            //    {
+            //        svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
+            //    }
+            //    result = Grobal2.UMResult_ReadFail;
+            //    return result;
+            //}
+            //try
+            //{
+            //    FADOQuery.First;
+            //    for (i = 0; i < FADOQuery.RecordCount; i++)
+            //    {
+            //        pSellItem = new TMarketLoad();
+            //        LoadItemFromDB(pSellItem, FADOQuery);
+            //        sellitemlist.Add(pSellItem);
+            //        if (!EOF)
+            //        {
+            //            FADOQuery.Next;
+            //        }
+            //    }
+            //    if (FADOQuery.Active)
+            //    {
+            //        //VisualStyleElement.ToolTip.Close;
+            //    }
+            //    result = Grobal2.UMResult_Success;
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TFrmSql.LoadPageUserMarket -> LoadItemFromDB (" + FADOQuery.RecordCount.ToString() + ")");
+            //    result = Grobal2.UMResult_ReadFail;
+            //    if (FADOQuery.Active)
+            //    {
+            //        //VisualStyleElement.ToolTip.Close;
+            //    }
+            //}
             return result;
         }
 
         public int AddSellUserMarket(TMarketLoad psellitem)
         {
             int result = Grobal2.UMResult_Fail;
-            FADOQuery.SQL.Clear();
-            FADOQuery.SQL.Add("INSERT INTO TBL_ITEMMARKET (" + "FLD_MARKETNAME," + "FLD_SELLOK," + "FLD_ITEMTYPE," + "FLD_ITEMSET," + "FLD_ITEMNAME," + "FLD_SELLWHO," + "FLD_SELLPRICE," + "FLD_SELLDATE," + "FLD_MAKEINDEX," + "FLD_INDEX," + "FLD_DURA," + "FLD_DURAMAX," + "FLD_DESC0," + "FLD_DESC1," + "FLD_DESC2," + "FLD_DESC3," + "FLD_DESC4," + "FLD_DESC5," + "FLD_DESC6," + "FLD_DESC7," + "FLD_DESC8," + "FLD_DESC9," + "FLD_DESC10," + "FLD_DESC11," + "FLD_DESC12," + "FLD_DESC13," + "FLD_COLORR," + "FLD_COLORG," + "FLD_COLORB," + "FLD_PREFIX" + ")");
-            FADOQuery.SQL.Add(" Values(\'" + psellitem.MarketName + "\'," + Grobal2.MARKET_DBSELLTYPE_READYSELL.ToString() + "," + psellitem.MarketType.ToString() + "," + psellitem.SetType.ToString() + ",\'" + psellitem.ItemName + "\',\'" + psellitem.SellWho + "\'," + psellitem.SellPrice.ToString() + "," + "GETDATE()," + psellitem.UserItem.MakeIndex.ToString() + "," + psellitem.UserItem.Index.ToString() + "," + psellitem.UserItem.Dura.ToString() + "," + psellitem.UserItem.DuraMax.ToString() + "," + psellitem.UserItem.Desc[0].ToString() + "," + psellitem.UserItem.Desc[1].ToString() + "," + psellitem.UserItem.Desc[2].ToString() + "," + psellitem.UserItem.Desc[3].ToString() + "," + psellitem.UserItem.Desc[4].ToString() + "," + psellitem.UserItem.Desc[5].ToString() + "," + psellitem.UserItem.Desc[6].ToString() + "," + psellitem.UserItem.Desc[7].ToString() + "," + psellitem.UserItem.Desc[8].ToString() + "," + psellitem.UserItem.Desc[9].ToString() + "," + psellitem.UserItem.Desc[10].ToString() + "," + psellitem.UserItem.Desc[11].ToString() + "," + psellitem.UserItem.Desc[12].ToString() + "," + psellitem.UserItem.Desc[13].ToString() + "," + psellitem.UserItem.ColorR.ToString() + "," + psellitem.UserItem.ColorG.ToString() + "," + psellitem.UserItem.ColorB.ToString() + ",\'" + (psellitem.UserItem.Prefix as string) + "\'" + ")");
-            try
-            {
-                FADOQuery.ExecSQL;
-                result = Grobal2.UMResult_Success;
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TFrmSql.AddSellUserMarket -> ExecSQL");
-                for (var i = 0; i < FADOQuery.SQL.Count; i++)
-                {
-                    svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
-                }
-            }
+            //FADOQuery.SQL.Clear();
+            //FADOQuery.SQL.Add("INSERT INTO TBL_ITEMMARKET (" + "FLD_MARKETNAME," + "FLD_SELLOK," + "FLD_ITEMTYPE," + "FLD_ITEMSET," + "FLD_ITEMNAME," + "FLD_SELLWHO," + "FLD_SELLPRICE," + "FLD_SELLDATE," + "FLD_MAKEINDEX," + "FLD_INDEX," + "FLD_DURA," + "FLD_DURAMAX," + "FLD_DESC0," + "FLD_DESC1," + "FLD_DESC2," + "FLD_DESC3," + "FLD_DESC4," + "FLD_DESC5," + "FLD_DESC6," + "FLD_DESC7," + "FLD_DESC8," + "FLD_DESC9," + "FLD_DESC10," + "FLD_DESC11," + "FLD_DESC12," + "FLD_DESC13," + "FLD_COLORR," + "FLD_COLORG," + "FLD_COLORB," + "FLD_PREFIX" + ")");
+            //FADOQuery.SQL.Add(" Values(\'" + psellitem.MarketName + "\'," + Grobal2.MARKET_DBSELLTYPE_READYSELL.ToString() + "," + psellitem.MarketType.ToString() + "," + psellitem.SetType.ToString() + ",\'" + psellitem.ItemName + "\',\'" + psellitem.SellWho + "\'," + psellitem.SellPrice.ToString() + "," + "GETDATE()," + psellitem.UserItem.MakeIndex.ToString() + "," + psellitem.UserItem.Index.ToString() + "," + psellitem.UserItem.Dura.ToString() + "," + psellitem.UserItem.DuraMax.ToString() + "," + psellitem.UserItem.Desc[0].ToString() + "," + psellitem.UserItem.Desc[1].ToString() + "," + psellitem.UserItem.Desc[2].ToString() + "," + psellitem.UserItem.Desc[3].ToString() + "," + psellitem.UserItem.Desc[4].ToString() + "," + psellitem.UserItem.Desc[5].ToString() + "," + psellitem.UserItem.Desc[6].ToString() + "," + psellitem.UserItem.Desc[7].ToString() + "," + psellitem.UserItem.Desc[8].ToString() + "," + psellitem.UserItem.Desc[9].ToString() + "," + psellitem.UserItem.Desc[10].ToString() + "," + psellitem.UserItem.Desc[11].ToString() + "," + psellitem.UserItem.Desc[12].ToString() + "," + psellitem.UserItem.Desc[13].ToString() + "," + psellitem.UserItem.ColorR.ToString() + "," + psellitem.UserItem.ColorG.ToString() + "," + psellitem.UserItem.ColorB.ToString() + ",\'" + psellitem.UserItem.Prefix + "\'" + ")");
+            //try
+            //{
+            //    FADOQuery.ExecSQL;
+            //    result = Grobal2.UMResult_Success;
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TFrmSql.AddSellUserMarket -> ExecSQL");
+            //    for (var i = 0; i < FADOQuery.SQL.Count; i++)
+            //    {
+            //        svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
+            //    }
+            //}
             return result;
         }
 
         public int ReadyToSell(ref TMarketLoad Readyitem)
         {
-            int result;
-            string SearchStr;
             int i;
-            result = Grobal2.UMResult_Fail;
-            SearchStr = "EXEC UM_READYTOSELL_NEW \'" + Readyitem.MarketName + "\',\'" + Readyitem.SellWho + "\'";
-            try
-            {
-                if (FADOQuery.Active)
-                {
-                    //VisualStyleElement.ToolTip.Close;
-                }
-                FADOQuery.SQL.Clear();
-                FADOQuery.SQL.ADD(SearchStr);
-                if (!FADOQuery.Active)
-                {
-                    FADOQuery.Open;
-                }
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TFrmSql.ReadyToSell -> Open");
-                for (i = 0; i < FADOQuery.SQL.Count; i++)
-                {
-                    svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
-                }
-                result = Grobal2.UMResult_ReadFail;
-                return result;
-            }
-            try
-            {
-                if (FADOQuery.RecordCount >= 0)
-                {
-                    Readyitem.SellCount = FADOQuery.RecordCount;
-                    result = Grobal2.UMResult_Success;
-                }
-                else
-                {
-                    Readyitem.SellCount = 0;
-                    result = Grobal2.UMResult_Fail;
-                }
-                if (FADOQuery.Active)
-                {
-                    //VisualStyleElement.ToolTip.Close;
-                }
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TFrmSql.ReadyToSell -> RecordCount");
-                Readyitem.SellCount = 0;
-                result = Grobal2.UMResult_Fail;
-                if (FADOQuery.Active)
-                {
-                    //VisualStyleElement.ToolTip.Close;
-                }
-            }
+            int result = Grobal2.UMResult_Fail;
+            string SearchStr = "EXEC UM_READYTOSELL_NEW \'" + Readyitem.MarketName + "\',\'" + Readyitem.SellWho + "\'";
+            //try
+            //{
+            //    if (FADOQuery.Active)
+            //    {
+            //        //VisualStyleElement.ToolTip.Close;
+            //    }
+            //    FADOQuery.SQL.Clear();
+            //    FADOQuery.SQL.ADD(SearchStr);
+            //    if (!FADOQuery.Active)
+            //    {
+            //        FADOQuery.Open;
+            //    }
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TFrmSql.ReadyToSell -> Open");
+            //    for (i = 0; i < FADOQuery.SQL.Count; i++)
+            //    {
+            //        svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
+            //    }
+            //    result = Grobal2.UMResult_ReadFail;
+            //    return result;
+            //}
+            //try
+            //{
+            //    if (FADOQuery.RecordCount >= 0)
+            //    {
+            //        Readyitem.SellCount = FADOQuery.RecordCount;
+            //        result = Grobal2.UMResult_Success;
+            //    }
+            //    else
+            //    {
+            //        Readyitem.SellCount = 0;
+            //        result = Grobal2.UMResult_Fail;
+            //    }
+            //    if (FADOQuery.Active)
+            //    {
+            //        //VisualStyleElement.ToolTip.Close;
+            //    }
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TFrmSql.ReadyToSell -> RecordCount");
+            //    Readyitem.SellCount = 0;
+            //    result = Grobal2.UMResult_Fail;
+            //    if (FADOQuery.Active)
+            //    {
+            //        //VisualStyleElement.ToolTip.Close;
+            //    }
+            //}
             return result;
         }
 
@@ -308,38 +303,38 @@ namespace GameSvr
             ChangeTYpe = Grobal2.MARKET_DBSELLTYPE_READYBUY;
             ItemIndex = Buyitem.Index;
             SearchStr = "EXEC UM_LOAD_INDEX " + ItemIndex.ToString() + "," + CheckType.ToString() + "," + ChangeTYpe.ToString();
-            FADOQuery.SQL.Clear();
-            FADOQuery.SQL.ADD(SearchStr);
-            try
-            {
-                if (!FADOQuery.Active)
-                {
-                    FADOQuery.Open;
-                }
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TFrmSql.BuyOnUserMarket -> Open");
-                for (i = 0; i < FADOQuery.SQL.Count; i++)
-                {
-                    svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
-                }
-                result = Grobal2.UMResult_ReadFail;
-                return result;
-            }
-            if (FADOQuery.RecordCount == 1)
-            {
-                LoadItemFromDB(Buyitem.UserItem, FADOQuery);
-                result = Grobal2.UMResult_Success;
-            }
-            else
-            {
-                result = Grobal2.UMResult_Fail;
-            }
-            if (FADOQuery.Active)
-            {
-                //VisualStyleElement.ToolTip.Close;
-            }
+            //FADOQuery.SQL.Clear();
+            //FADOQuery.SQL.ADD(SearchStr);
+            //try
+            //{
+            //    if (!FADOQuery.Active)
+            //    {
+            //        FADOQuery.Open;
+            //    }
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TFrmSql.BuyOnUserMarket -> Open");
+            //    for (i = 0; i < FADOQuery.SQL.Count; i++)
+            //    {
+            //        svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
+            //    }
+            //    result = Grobal2.UMResult_ReadFail;
+            //    return result;
+            //}
+            //if (FADOQuery.RecordCount == 1)
+            //{
+            //    LoadItemFromDB(Buyitem.UserItem, FADOQuery);
+            //    result = Grobal2.UMResult_Success;
+            //}
+            //else
+            //{
+            //    result = Grobal2.UMResult_Fail;
+            //}
+            //if (FADOQuery.Active)
+            //{
+            //    //VisualStyleElement.ToolTip.Close;
+            //}
             return result;
         }
 
@@ -356,38 +351,38 @@ namespace GameSvr
             ChangeTYpe = Grobal2.MARKET_DBSELLTYPE_READYCANCEL;
             ItemIndex = Cancelitem.Index;
             SearchStr = "EXEC UM_LOAD_INDEX " + ItemIndex.ToString() + "," + CheckType.ToString() + "," + ChangeTYpe.ToString();
-            FADOQuery.SQL.Clear();
-            FADOQuery.SQL.ADD(SearchStr);
-            try
-            {
-                if (!FADOQuery.Active)
-                {
-                    FADOQuery.Open;
-                }
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TFrmSql.BuyOnUserMarket -> Open");
-                for (i = 0; i < FADOQuery.SQL.Count; i++)
-                {
-                    svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
-                }
-                result = Grobal2.UMResult_ReadFail;
-                return result;
-            }
-            if (FADOQuery.RecordCount == 1)
-            {
-                LoadItemFromDB(Cancelitem.UserItem, FADOQuery);
-                result = Grobal2.UMResult_Success;
-            }
-            else
-            {
-                result = Grobal2.UMResult_Fail;
-            }
-            if (FADOQuery.Active)
-            {
-                //VisualStyleElement.ToolTip.Close;
-            }
+            //FADOQuery.SQL.Clear();
+            //FADOQuery.SQL.ADD(SearchStr);
+            //try
+            //{
+            //    if (!FADOQuery.Active)
+            //    {
+            //        FADOQuery.Open;
+            //    }
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TFrmSql.BuyOnUserMarket -> Open");
+            //    for (i = 0; i < FADOQuery.SQL.Count; i++)
+            //    {
+            //        svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
+            //    }
+            //    result = Grobal2.UMResult_ReadFail;
+            //    return result;
+            //}
+            //if (FADOQuery.RecordCount == 1)
+            //{
+            //    LoadItemFromDB(Cancelitem.UserItem, FADOQuery);
+            //    result = Grobal2.UMResult_Success;
+            //}
+            //else
+            //{
+            //    result = Grobal2.UMResult_Fail;
+            //}
+            //if (FADOQuery.Active)
+            //{
+            //    //VisualStyleElement.ToolTip.Close;
+            //}
             return result;
         }
 
@@ -404,38 +399,38 @@ namespace GameSvr
             ChangeTYpe = Grobal2.MARKET_DBSELLTYPE_READYGETPAY;
             ItemIndex = GetPayitem.Index;
             SearchStr = "EXEC UM_LOAD_INDEX " + ItemIndex.ToString() + "," + CheckType.ToString() + "," + ChangeTYpe.ToString();
-            FADOQuery.SQL.Clear();
-            FADOQuery.SQL.ADD(SearchStr);
-            try
-            {
-                if (!FADOQuery.Active)
-                {
-                    FADOQuery.Open;
-                }
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TFrmSql.BuyOnUserMarket -> Open");
-                for (i = 0; i < FADOQuery.SQL.Count; i++)
-                {
-                    svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
-                }
-                result = Grobal2.UMResult_ReadFail;
-                return result;
-            }
-            if (FADOQuery.RecordCount == 1)
-            {
-                LoadItemFromDB(GetPayitem.UserItem, FADOQuery);
-                result = Grobal2.UMResult_Success;
-            }
-            else
-            {
-                result = Grobal2.UMResult_Fail;
-            }
-            if (FADOQuery.Active)
-            {
-                //VisualStyleElement.ToolTip.Close;
-            }
+            //FADOQuery.SQL.Clear();
+            //FADOQuery.SQL.ADD(SearchStr);
+            //try
+            //{
+            //    if (!FADOQuery.Active)
+            //    {
+            //        FADOQuery.Open;
+            //    }
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TFrmSql.BuyOnUserMarket -> Open");
+            //    for (i = 0; i < FADOQuery.SQL.Count; i++)
+            //    {
+            //        svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
+            //    }
+            //    result = Grobal2.UMResult_ReadFail;
+            //    return result;
+            //}
+            //if (FADOQuery.RecordCount == 1)
+            //{
+            //    LoadItemFromDB(GetPayitem.UserItem, FADOQuery);
+            //    result = Grobal2.UMResult_Success;
+            //}
+            //else
+            //{
+            //    result = Grobal2.UMResult_Fail;
+            //}
+            //if (FADOQuery.Active)
+            //{
+            //    //VisualStyleElement.ToolTip.Close;
+            //}
             return result;
         }
 
@@ -463,27 +458,27 @@ namespace GameSvr
             sellwho = pSearchInfo.Who;
             marketname = pSearchInfo.MarketName;
             SearchStr = "EXEC UM_CHECK_MAKEINDEX \'" + marketname + "\',\'" + sellwho + "\'," + MakeIndex.ToString() + "," + CheckType.ToString() + "," + ChangeTYpe.ToString();
-            FADOQuery.SQL.Clear();
-            FADOQuery.SQL.ADD(SearchStr);
-            try
-            {
-                FADOQuery.ExecSql;
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TFrmSql.ChkAddSellUserMarket -> Open");
-                for (i = 0; i < FADOQuery.SQL.Count; i++)
-                {
-                    svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
-                }
-                result = Grobal2.UMResult_ReadFail;
-                return result;
-            }
-            result = Grobal2.UMResult_Success;
-            if (FADOQuery.Active)
-            {
-                //VisualStyleElement.ToolTip.Close;
-            }
+            //FADOQuery.SQL.Clear();
+            //FADOQuery.SQL.ADD(SearchStr);
+            //try
+            //{
+            //    FADOQuery.ExecSql;
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TFrmSql.ChkAddSellUserMarket -> Open");
+            //    for (i = 0; i < FADOQuery.SQL.Count; i++)
+            //    {
+            //        svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
+            //    }
+            //    result = Grobal2.UMResult_ReadFail;
+            //    return result;
+            //}
+            //result = Grobal2.UMResult_Success;
+            //if (FADOQuery.Active)
+            //{
+            //    //VisualStyleElement.ToolTip.Close;
+            //}
             return result;
         }
 
@@ -511,27 +506,27 @@ namespace GameSvr
             sellwho = pSearchInfo.Who;
             marketname = pSearchInfo.MarketName;
             SearchStr = "EXEC UM_CHECK_INDEX_BUY \'" + marketname + "\',\'" + sellwho + "\'," + Index.ToString() + "," + CheckType.ToString() + "," + ChangeTYpe.ToString();
-            FADOQuery.SQL.Clear();
-            FADOQuery.SQL.ADD(SearchStr);
-            try
-            {
-                FADOQuery.ExecSql;
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TFrmSql.BuyOnUserMarket -> Open");
-                for (i = 0; i < FADOQuery.SQL.Count; i++)
-                {
-                    svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
-                }
-                result = Grobal2.UMResult_ReadFail;
-                return result;
-            }
-            result = Grobal2.UMResult_Success;
-            if (FADOQuery.Active)
-            {
-                //VisualStyleElement.ToolTip.Close;
-            }
+            //FADOQuery.SQL.Clear();
+            //FADOQuery.SQL.ADD(SearchStr);
+            //try
+            //{
+            //    FADOQuery.ExecSql;
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TFrmSql.BuyOnUserMarket -> Open");
+            //    for (i = 0; i < FADOQuery.SQL.Count; i++)
+            //    {
+            //        svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
+            //    }
+            //    result = Grobal2.UMResult_ReadFail;
+            //    return result;
+            //}
+            //result = Grobal2.UMResult_Success;
+            //if (FADOQuery.Active)
+            //{
+            //    //VisualStyleElement.ToolTip.Close;
+            //}
             return result;
         }
 
@@ -557,27 +552,27 @@ namespace GameSvr
             sellwho = pSearchInfo.Who;
             marketname = pSearchInfo.MarketName;
             SearchStr = "EXEC UM_CHECK_INDEX \'" + marketname + "\',\'" + sellwho + "\'," + Index.ToString() + "," + CheckType.ToString() + "," + ChangeTYpe.ToString();
-            FADOQuery.SQL.Clear();
-            FADOQuery.SQL.ADD(SearchStr);
-            try
-            {
-                FADOQuery.ExecSql;
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TFrmSql.BuyOnUserMarket -> Open");
-                for (var i = 0; i < FADOQuery.SQL.Count; i++)
-                {
-                    svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
-                }
-                result = Grobal2.UMResult_ReadFail;
-                return result;
-            }
-            result = Grobal2.UMResult_Success;
-            if (FADOQuery.Active)
-            {
-                //VisualStyleElement.ToolTip.Close;
-            }
+            //FADOQuery.SQL.Clear();
+            //FADOQuery.SQL.ADD(SearchStr);
+            //try
+            //{
+            //    FADOQuery.ExecSql;
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TFrmSql.BuyOnUserMarket -> Open");
+            //    for (var i = 0; i < FADOQuery.SQL.Count; i++)
+            //    {
+            //        svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
+            //    }
+            //    result = Grobal2.UMResult_ReadFail;
+            //    return result;
+            //}
+            //result = Grobal2.UMResult_Success;
+            //if (FADOQuery.Active)
+            //{
+            //    //VisualStyleElement.ToolTip.Close;
+            //}
             return result;
         }
 
@@ -598,27 +593,27 @@ namespace GameSvr
             string sellwho = pSearchInfo.Who;
             string marketname = pSearchInfo.MarketName;
             string SearchStr = "EXEC UM_CHECK_INDEX \'" + marketname + "\',\'" + sellwho + "\'," + Index.ToString() + "," + CheckType.ToString() + "," + ChangeTYpe.ToString();
-            FADOQuery.SQL.Clear();
-            FADOQuery.SQL.ADD(SearchStr);
-            try
-            {
-                FADOQuery.ExecSql;
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TFrmSql.BuyOnUserMarket -> Open");
-                for (var i = 0; i < FADOQuery.SQL.Count; i++)
-                {
-                    svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
-                }
-                result = Grobal2.UMResult_ReadFail;
-                return result;
-            }
-            result = Grobal2.UMResult_Success;
-            if (FADOQuery.Active)
-            {
-                //VisualStyleElement.ToolTip.Close;
-            }
+            //FADOQuery.SQL.Clear();
+            //FADOQuery.SQL.ADD(SearchStr);
+            //try
+            //{
+            //    FADOQuery.ExecSql;
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TFrmSql.BuyOnUserMarket -> Open");
+            //    for (var i = 0; i < FADOQuery.SQL.Count; i++)
+            //    {
+            //        svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
+            //    }
+            //    result = Grobal2.UMResult_ReadFail;
+            //    return result;
+            //}
+            //result = Grobal2.UMResult_Success;
+            //if (FADOQuery.Active)
+            //{
+            //    //VisualStyleElement.ToolTip.Close;
+            //}
             return result;
         }
 
@@ -646,123 +641,123 @@ namespace GameSvr
                 return result;
             }
             SearchStr = "EXEC GABOARD_LOAD \'" + gname + "\'," + DBSQL.KIND_NOTICE.ToString();
-            FADOQuery.SQL.Clear();
-            FADOQuery.SQL.ADD(SearchStr);
-            try
-            {
-                if (!FADOQuery.Active)
-                {
-                    FADOQuery.Open;
-                }
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TDBSql.LoadPageGaBoardList -> Open");
-                for (var i = 0; i < FADOQuery.SQL.Count; i++)
-                {
-                    svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
-                }
-                return Grobal2.UMResult_ReadFail;
-            }
-            FADOQuery.First;
-            if (FADOQuery.RecordCount <= DBSQL.GABOARD_NOTICE_LINE)
-            {
-                for (var i = 0; i < FADOQuery.RecordCount; i++)
-                {
-                    pArticle = new TGaBoardArticleLoad();
-                    LoadBoardListFromDB(pArticle, FADOQuery);
-                    BoardList.Add(pArticle);
-                    if (!EOF)
-                    {
-                        FADOQuery.Next;
-                    }
-                }
-                for (var i = FADOQuery.RecordCount; i < DBSQL.GABOARD_NOTICE_LINE; i++)
-                {
-                    pArticle = new TGaBoardArticleLoad();
-                    pArticle.AgitNum = 0;
-                    pArticle.OrgNum = 0;
-                    pArticle.SrcNum1 = 0;
-                    pArticle.SrcNum2 = 0;
-                    pArticle.SrcNum3 = 0;
-                    pArticle.Kind = DBSQL.KIND_NOTICE;
-                    pArticle.UserName = "巩林";
-                    pArticle.Content = "巩林 傍瘤荤亲捞 厚绢 乐嚼聪促.";
-                    BoardList.Add(pArticle);
-                }
-            }
-            else
-            {
-                for (var i = 0; i < DBSQL.GABOARD_NOTICE_LINE; i++)
-                {
-                    pArticle = new TGaBoardArticleLoad();
-                    LoadBoardListFromDB(pArticle, FADOQuery);
-                    BoardList.Add(pArticle);
-                    if (!EOF)
-                    {
-                        FADOQuery.Next;
-                    }
-                }
-            }
-            if (FADOQuery.Active)
-            {
-                //VisualStyleElement.ToolTip.Close;
-            }
-            SearchStr = "EXEC GABOARD_LOAD \'" + gname + "\'," + nKind.ToString();
-            FADOQuery.SQL.Clear();
-            FADOQuery.SQL.ADD(SearchStr);
-            try
-            {
-                if (!FADOQuery.Active)
-                {
-                    FADOQuery.Open;
-                }
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TDBSql.LoadPageGaBoardList -> Open");
-                for (var i = 0; i < FADOQuery.SQL.Count; i++)
-                {
-                    svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
-                }
-                return Grobal2.UMResult_ReadFail;
-            }
-            FADOQuery.First;
-            for (var i = 0; i < FADOQuery.RecordCount; i++)
-            {
-                pArticle = new TGaBoardArticleLoad();
-                LoadBoardListFromDB(pArticle, FADOQuery);
-                BoardList.Add(pArticle);
-                if (!EOF)
-                {
-                    FADOQuery.Next;
-                }
-            }
-            if (FADOQuery.Active)
-            {
-                //VisualStyleElement.ToolTip.Close;
-            }
+            //FADOQuery.SQL.Clear();
+            //FADOQuery.SQL.ADD(SearchStr);
+            //try
+            //{
+            //    if (!FADOQuery.Active)
+            //    {
+            //        FADOQuery.Open;
+            //    }
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TDBSql.LoadPageGaBoardList -> Open");
+            //    for (var i = 0; i < FADOQuery.SQL.Count; i++)
+            //    {
+            //        svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
+            //    }
+            //    return Grobal2.UMResult_ReadFail;
+            //}
+            //FADOQuery.First;
+            //if (FADOQuery.RecordCount <= DBSQL.GABOARD_NOTICE_LINE)
+            //{
+            //    for (var i = 0; i < FADOQuery.RecordCount; i++)
+            //    {
+            //        pArticle = new TGaBoardArticleLoad();
+            //        LoadBoardListFromDB(pArticle, FADOQuery);
+            //        BoardList.Add(pArticle);
+            //        if (!EOF)
+            //        {
+            //            FADOQuery.Next;
+            //        }
+            //    }
+            //    for (var i = FADOQuery.RecordCount; i < DBSQL.GABOARD_NOTICE_LINE; i++)
+            //    {
+            //        pArticle = new TGaBoardArticleLoad();
+            //        pArticle.AgitNum = 0;
+            //        pArticle.OrgNum = 0;
+            //        pArticle.SrcNum1 = 0;
+            //        pArticle.SrcNum2 = 0;
+            //        pArticle.SrcNum3 = 0;
+            //        pArticle.Kind = DBSQL.KIND_NOTICE;
+            //        pArticle.UserName = "巩林";
+            //        pArticle.Content = "巩林 傍瘤荤亲捞 厚绢 乐嚼聪促.";
+            //        BoardList.Add(pArticle);
+            //    }
+            //}
+            //else
+            //{
+            //    for (var i = 0; i < DBSQL.GABOARD_NOTICE_LINE; i++)
+            //    {
+            //        pArticle = new TGaBoardArticleLoad();
+            //        LoadBoardListFromDB(pArticle, FADOQuery);
+            //        BoardList.Add(pArticle);
+            //        if (!EOF)
+            //        {
+            //            FADOQuery.Next;
+            //        }
+            //    }
+            //}
+            //if (FADOQuery.Active)
+            //{
+            //    //VisualStyleElement.ToolTip.Close;
+            //}
+            //SearchStr = "EXEC GABOARD_LOAD \'" + gname + "\'," + nKind.ToString();
+            //FADOQuery.SQL.Clear();
+            //FADOQuery.SQL.ADD(SearchStr);
+            //try
+            //{
+            //    if (!FADOQuery.Active)
+            //    {
+            //        FADOQuery.Open;
+            //    }
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TDBSql.LoadPageGaBoardList -> Open");
+            //    for (var i = 0; i < FADOQuery.SQL.Count; i++)
+            //    {
+            //        svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
+            //    }
+            //    return Grobal2.UMResult_ReadFail;
+            //}
+            //FADOQuery.First;
+            //for (var i = 0; i < FADOQuery.RecordCount; i++)
+            //{
+            //    pArticle = new TGaBoardArticleLoad();
+            //    LoadBoardListFromDB(pArticle, FADOQuery);
+            //    BoardList.Add(pArticle);
+            //    if (!EOF)
+            //    {
+            //        FADOQuery.Next;
+            //    }
+            //}
+            //if (FADOQuery.Active)
+            //{
+            //    //VisualStyleElement.ToolTip.Close;
+            //}
             return Grobal2.UMResult_Success;
         }
 
         public int AddGaBoardArticle(TGaBoardArticleLoad pArticleLoad)
         {
             int result = Grobal2.UMResult_Fail;
-            FADOQuery.SQL.Clear();
-            FADOQuery.SQL.Add("INSERT INTO TBL_GABOARD Values(" + pArticleLoad.AgitNum.ToString() + ",\'" + pArticleLoad.GuildName + "\'," + pArticleLoad.OrgNum.ToString() + "," + pArticleLoad.SrcNum1.ToString() + "," + pArticleLoad.SrcNum2.ToString() + "," + pArticleLoad.SrcNum3.ToString() + "," + pArticleLoad.Kind.ToString() + ",\'" + pArticleLoad.UserName + "\',\'" + pArticleLoad.Content + "\'" + ")");
-            try
-            {
-                FADOQuery.ExecSQL;
-                result = Grobal2.UMResult_Success;
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TDBSql.AddGaBoardArticle -> ExecSQL");
-                for (var i = 0; i < FADOQuery.SQL.Count; i++)
-                {
-                    svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
-                }
-            }
+            //FADOQuery.SQL.Clear();
+            //FADOQuery.SQL.Add("INSERT INTO TBL_GABOARD Values(" + pArticleLoad.AgitNum.ToString() + ",\'" + pArticleLoad.GuildName + "\'," + pArticleLoad.OrgNum.ToString() + "," + pArticleLoad.SrcNum1.ToString() + "," + pArticleLoad.SrcNum2.ToString() + "," + pArticleLoad.SrcNum3.ToString() + "," + pArticleLoad.Kind.ToString() + ",\'" + pArticleLoad.UserName + "\',\'" + pArticleLoad.Content + "\'" + ")");
+            //try
+            //{
+            //    FADOQuery.ExecSQL;
+            //    result = Grobal2.UMResult_Success;
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TDBSql.AddGaBoardArticle -> ExecSQL");
+            //    for (var i = 0; i < FADOQuery.SQL.Count; i++)
+            //    {
+            //        svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
+            //    }
+            //}
             return result;
         }
 
@@ -785,42 +780,42 @@ namespace GameSvr
                 return result;
             }
             SearchStr = "EXEC GABOARD_DEL \'" + pArticleLoad.GuildName + "\'," + pArticleLoad.OrgNum.ToString() + "," + pArticleLoad.SrcNum1.ToString() + "," + pArticleLoad.SrcNum2.ToString() + "," + pArticleLoad.SrcNum3.ToString();
-            FADOQuery.SQL.Clear();
-            FADOQuery.SQL.ADD(SearchStr);
-            try
-            {
-                FADOQuery.ExecSQL;
-                result = Grobal2.UMResult_Success;
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TDBSql.DelGaBoardArticle -> ExecSQL");
-                for (i = 0; i < FADOQuery.SQL.Count; i++)
-                {
-                    svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
-                }
-            }
+            //FADOQuery.SQL.Clear();
+            //FADOQuery.SQL.ADD(SearchStr);
+            //try
+            //{
+            //    FADOQuery.ExecSQL;
+            //    result = Grobal2.UMResult_Success;
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TDBSql.DelGaBoardArticle -> ExecSQL");
+            //    for (i = 0; i < FADOQuery.SQL.Count; i++)
+            //    {
+            //        svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
+            //    }
+            //}
             return result;
         }
 
         public int EditGaBoardArticle(TGaBoardArticleLoad pArticleLoad)
         {
             int result = Grobal2.UMResult_Fail;
-            FADOQuery.SQL.Clear();
-            FADOQuery.SQL.Add("UPDATE TBL_GABOARD SET FLD_CONTENT = \'" + pArticleLoad.Content + "\' WHERE " + "FLD_GUILDNAME = \'" + pArticleLoad.GuildName + "\' AND " + "FLD_ORGNUM = " + pArticleLoad.OrgNum.ToString() + " AND " + "FLD_SRCNUM1 = " + pArticleLoad.SrcNum1.ToString() + " AND " + "FLD_SRCNUM2 = " + pArticleLoad.SrcNum2.ToString() + " AND " + "FLD_SRCNUM3 = " + pArticleLoad.SrcNum3.ToString());
-            try
-            {
-                FADOQuery.ExecSQL;
-                result = Grobal2.UMResult_Success;
-            }
-            catch
-            {
-                svMain.MainOutMessage("Exception) TDBSql.EditGaBoardArticle -> ExecSQL");
-                for (var i = 0; i < FADOQuery.SQL.Count; i++)
-                {
-                    svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
-                }
-            }
+            //FADOQuery.SQL.Clear();
+            //FADOQuery.SQL.Add("UPDATE TBL_GABOARD SET FLD_CONTENT = \'" + pArticleLoad.Content + "\' WHERE " + "FLD_GUILDNAME = \'" + pArticleLoad.GuildName + "\' AND " + "FLD_ORGNUM = " + pArticleLoad.OrgNum.ToString() + " AND " + "FLD_SRCNUM1 = " + pArticleLoad.SrcNum1.ToString() + " AND " + "FLD_SRCNUM2 = " + pArticleLoad.SrcNum2.ToString() + " AND " + "FLD_SRCNUM3 = " + pArticleLoad.SrcNum3.ToString());
+            //try
+            //{
+            //    FADOQuery.ExecSQL;
+            //    result = Grobal2.UMResult_Success;
+            //}
+            //catch
+            //{
+            //    svMain.MainOutMessage("Exception) TDBSql.EditGaBoardArticle -> ExecSQL");
+            //    for (var i = 0; i < FADOQuery.SQL.Count; i++)
+            //    {
+            //        svMain.MainOutMessage(" :" + FADOQuery.SQL[i]);
+            //    }
+            //}
             return result;
         }
     } 

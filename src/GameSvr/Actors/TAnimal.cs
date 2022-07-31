@@ -30,16 +30,17 @@ namespace GameSvr
             switch (msg.Ident)
             {
                 case Grobal2.RM_STRUCK:
-                    if ((msg.sender == this) && (msg.lParam3 != 0))
+                    if ((msg.sender == this) && (msg.lParam3 > 0))
                     {
-                        this.SetLastHiter(msg.lParam3 as TCreature);
-                        Struck(msg.lParam3 as TCreature);
+                        var struck = svMain.ObjectMgr.Get(msg.lParam3);
+                        this.SetLastHiter(struck);
+                        Struck(struck);
                         this.BreakHolySeize();
-                        if ((this.Master != null) && ((msg.lParam3 as TCreature) != this.Master))
+                        if ((this.Master != null) && ((struck) != this.Master))
                         {
-                            if ((msg.lParam3 as TCreature).RaceServer == Grobal2.RC_USERHUMAN)
+                            if ((struck).RaceServer == Grobal2.RC_USERHUMAN)
                             {
-                                this.Master.AddPkHiter(msg.lParam3 as TCreature);
+                                this.Master.AddPkHiter(struck);
                             }
                         }
                     }

@@ -281,7 +281,7 @@ namespace GameSvr
         public IList<TUserItem> DealList = null;
         public int DealGold = 0;
         public bool BoDealSelect = false;
-        public ArrayList MagicList = null;
+        public IList<TUserMagic> MagicList = null;
         public TUserItem[] UseItems;
         public ArrayList SaveItems = null;
         public int NextWalkTime = 0;
@@ -845,10 +845,8 @@ namespace GameSvr
 
         public bool CheckUnbindItem(string itemname)
         {
-            bool result;
-            int i;
-            result = false;
-            for (i = 0; i < svMain.UnbindItemList.Count; i++)
+            bool result = false;
+            for (var i = 0; i < svMain.UnbindItemList.Count; i++)
             {
                 if (itemname.ToLower().CompareTo(svMain.UnbindItemList[i].ToLower()) == 0)
                 {
@@ -861,17 +859,15 @@ namespace GameSvr
 
         public void DeleteItemFromBag(TStdItem psDel, TUserItem puDel)
         {
-            int i;
             TStdItem ps;
             TUserItem pu;
             TUserHuman hum;
-            for (i = 0; i < ItemList.Count; i++)
+            for (var i = 0; i < ItemList.Count; i++)
             {
                 if (ItemList[i].MakeIndex == puDel.MakeIndex)
                 {
                     ps = svMain.UserEngine.GetStdItem(ItemList[i].Index);
                     pu = ItemList[i];
-                    // 肮荐 酒捞袍牢 版快
                     if (ps.OverlapItem >= 1)
                     {
                         if (pu.Dura > 0)
@@ -905,7 +901,6 @@ namespace GameSvr
                     }
                     else
                     {
-                        // 肮荐 酒捞袍捞 酒囱 版快.
                         if (RaceServer == Grobal2.RC_USERHUMAN)
                         {
                             hum = this as TUserHuman;
@@ -920,19 +915,16 @@ namespace GameSvr
             WeightChanged();
         }
 
-        // 2004/03/17(sonmg)
-        // 2004/03/17 (sonmg)
         public int FindItemToBindFromBag(int count, string itemname, ref ArrayList dellist)
         {
-            int result;
             int i;
             int j;
             TUserItem pu;
             TStdItem pstd;
             int itemcount;
             int delcount;
-            string strItemName;
-            result = -1;
+            string strItemName = string.Empty;
+            int result = -1;
             dellist = null;
             if (itemname != "")
             {
@@ -943,12 +935,11 @@ namespace GameSvr
             }
             try
             {
-                // UnbindItemList俊 秦寸窍绰 酒捞袍捞 割 俺 乐绰瘤 啊规芒俊辑 八荤.
                 for (i = 0; i < svMain.UnbindItemList.Count; i++)
                 {
                     if (itemname != "")
                     {
-                        if (itemname.ToLower().CompareTo(svMain.UnbindItemList[i].ToLower()) != 0)
+                        if (itemname.ToLower().CompareTo(svMain.UnbindI-temList[i].ToLower()) != 0)
                         {
                             continue;
                         }
@@ -965,15 +956,13 @@ namespace GameSvr
                             }
                         }
                     }
-                    // Bind且 酒捞袍 俺荐甫 面练窍搁...
                     if (itemcount >= count)
                     {
-                        strItemName = (string)svMain.UnbindItemList[i];
+                        strItemName = svMain.UnbindItemList[i];
                         result = (int)svMain.UnbindItemList.Values[i];
                         break;
                     }
                 }
-                // Bind且 酒捞袍 昏力.
                 if (result >= 0)
                 {
                     delcount = 0;
@@ -988,7 +977,6 @@ namespace GameSvr
                                 {
                                     dellist = new ArrayList();
                                 }
-                                // 冻绢哆赴 酒捞袍阑 努扼捞攫飘俊 舅覆.
                                 dellist.Add(svMain.UserEngine.GetStdItemName(pu.Index), pu.MakeIndex as Object);
                             }
                             delcount++;
@@ -1134,10 +1122,8 @@ namespace GameSvr
 
         public string UpgradeResultToStr(int iSum, string strOpt, int iBefore, int iAfter, double fProb, int iJewelStdMode)
         {
-            string result;
-            string rtstr;
-            string strJewelType;
-            rtstr = "";
+            string rtstr = String.Empty;
+            string strJewelType = String.Empty;
             if (iJewelStdMode == 60)
             {
                 strJewelType = "宝石";
@@ -1149,18 +1135,12 @@ namespace GameSvr
             try
             {
                 rtstr = iSum.ToString() + "," + strJewelType + "," + strOpt + "," + iBefore.ToString() + "," + iAfter.ToString() + "," + Convert.ToString(fProb);
-#if DEBUG
-                // sonmg
-                // For Debug
-                SysMsg(rtstr, 0);
-#endif
             }
             catch
             {
                 svMain.MainOutMessage("[Exception!] TCreature.UpgradeResultToStr Cannot Make Log String");
             }
-            result = rtstr;
-            return result;
+            return rtstr;
         }
 
         public void SendFastMsg(TCreature sender, ushort Ident, ushort wparam, long lParam1, long lParam2, long lParam3, string str)
@@ -1185,7 +1165,7 @@ namespace GameSvr
                         try
                         {
                             //GetMem(pmsg.descptr, ansistr.Length + 1);
-                            Move(ansistr[1], pmsg.descptr, ansistr.Length + 1);
+                            //Move(ansistr[1], pmsg.descptr, ansistr.Length + 1);
                         }
                         catch
                         {
@@ -1228,7 +1208,7 @@ namespace GameSvr
                         try
                         {
                             //GetMem(pmsg.descptr, ansistr.Length + 1);
-                            Move(ansistr[1], pmsg.descptr, ansistr.Length + 1);
+                            //Move(ansistr[1], pmsg.descptr, ansistr.Length + 1);
                         }
                         catch
                         {
@@ -1277,7 +1257,7 @@ namespace GameSvr
                         try
                         {
                             //GetMem(pmsg.descptr, ansistr.Length + 1);
-                            Move(ansistr[1], pmsg.descptr, ansistr.Length + 1);
+                            //Move(ansistr[1], pmsg.descptr, ansistr.Length + 1);
                         }
                         catch
                         {
@@ -1763,7 +1743,7 @@ namespace GameSvr
                         catch
                         {
                             svMain.MainOutMessage("[Exception] TCreatre.SendRefMsg : Target Wrong :" + this.UserName);
-                            MsgTargetList.Remove(i);
+                            MsgTargetList.RemoveAt(i);
                             break;
                         }
                     }
@@ -2281,7 +2261,7 @@ namespace GameSvr
                                 {
                                     if (__event.Check == 2)
                                     {
-                                        SendMsg(this, Grobal2.RM_SHOWEVENT, __event.EventType, __event.EventId, HUtil32.MakeLong(__event.X, __event.EventParam), __event.Y, "");
+                                        SendMsg(this, Grobal2.RM_SHOWEVENT, (ushort)__event.EventType, __event.EventId, HUtil32.MakeLong(__event.X, __event.EventParam), __event.Y, "");
                                     }
                                 }
                             }
@@ -2388,10 +2368,10 @@ namespace GameSvr
             // 付过 八荤
             for (i = 0; i < MagicList.Count; i++)
             {
-                n = ((TUserMagic)MagicList[i]).Level;
+                n = MagicList[i].Level;
                 if (!(n >= 0 && n <= 3))
                 {
-                    ((TUserMagic)MagicList[i]).Level = 0;
+                    MagicList[i].Level = 0;
                 }
             }
             // 甘俊 殿厘
@@ -2495,17 +2475,14 @@ namespace GameSvr
 
         public bool Walk(int msg)
         {
-            bool result;
-            int i;
             TMapInfo pm = null;
             TAThing pat;
             TGateInfo pgate;
             bool inrange;
             TUserHuman hum;
             TEvent __event;
-            int down;
-            result = true;
-            down = 0;
+            int down = 0;
+            bool result = true;
             try
             {
                 inrange = PEnvir.GetMapXY(CX, CY, ref pm);
@@ -2517,7 +2494,7 @@ namespace GameSvr
                     if (pm.OBJList != null)
                     {
                         down = 2;
-                        for (i = 0; i < pm.OBJList.Count; i++)
+                        for (var i = 0; i < pm.OBJList.Count; i++)
                         {
                             down = 3;
                             pat = (TAThing)pm.OBJList[i];
@@ -2565,15 +2542,13 @@ namespace GameSvr
                     down = 21;
                     if (RaceServer == Grobal2.RC_USERHUMAN)
                     {
-                        // npc 绰 巩观栏肺 救 唱皑
                         if (PEnvir.AroundDoorOpened(CX, CY))
                         {
-                            // 备匡狼规 牢版快, 粱厚啊 唱柯 备港捞 乐绢具 甸绢 埃促.
                             if (((TEnvirnoment)pgate.EnterEnvir).NeedHole)
                             {
                                 if (svMain.EventMan.FindEvent(PEnvir, CX, CY, Grobal2.ET_DIGOUTZOMBI) == null)
                                 {
-                                    goto needholefinish; //@ Unsupport goto 
+                                    goto needholefinish; 
                                 }
                             }
                             if (svMain.ServerIndex == ((TEnvirnoment)pgate.EnterEnvir).Server)
@@ -2588,7 +2563,6 @@ namespace GameSvr
                                 hum = this as TUserHuman;
                                 if (HUtil32.GetTickCount() - hum.LatestDropTime > 1000)
                                 {
-                                    // 辑滚 捞悼 check disappear
                                     if (Disappear(1) == true)
                                     {
                                         SpaceMoved = true;
@@ -2598,10 +2572,8 @@ namespace GameSvr
                                         hum.ChangeCY = pgate.EnterY;
                                         hum.BoChangeServer = true;
                                         hum.ChangeToServerNumber = ((TEnvirnoment)pgate.EnterEnvir).Server;
-                                        // UserEngine.UserServerChange (hum, TEnvirnoment(pgate.EnterEnvir).Server);
                                         hum.EmergencyClose = true;
                                         hum.SoftClosed = true;
-                                        // Certifycation阑 父丰矫虐瘤 臼绰促.
                                         hum.FAlreadyDisapper = true;
                                     }
                                     else
@@ -2616,13 +2588,11 @@ namespace GameSvr
                             }
                             // needholefinish:
                         }
-                        // 巩捞 泪辫 Result=true 沥惑
                     }
                     else
                     {
                         result = false;
                     }
-                    // npc啊 巩阑 阜绰巴阑 规瘤窍扁 困秦辑
                 }
                 else
                 {
@@ -2822,8 +2792,6 @@ namespace GameSvr
         {
             if (RaceServer != Grobal2.RC_USERHUMAN)
             {
-                // 阁胶磐俊霸档 矫胶袍 皋矫瘤啊 傈价登绰 巴阑 阜澜(sonmg 2005/01/24)
-                // MainOutMessage('TCreature.SysMsg : not Human ' + IntToStr(RaceServer) + ', ' + IntToStr(mode) );
                 return;
             }
             switch (mode)
@@ -2856,7 +2824,6 @@ namespace GameSvr
         {
             if (RaceServer != Grobal2.RC_USERHUMAN)
             {
-                // 阁胶磐俊霸绰 皋矫瘤甫 傈价窍瘤 臼绰促.(sonmg 2005/01/24)
                 svMain.MainOutMessage("TCreature.BoxMsg : not Human");
                 return;
             }
@@ -3054,25 +3021,18 @@ namespace GameSvr
                     {
                         continue;
                     }
-                    // UNIQUEITEM 鞘靛啊 00000100(2柳荐)甫 器窃窍搁 冻奔 荐 绝绰 酒捞袍(sonmg 2005/03/14)
-                    // 措父 夸没栏肺 父电 何盒,
-                    // stdmode = 51锅篮 磷阑锭 馆靛矫 冻绢咙... 肚茄 立加谗菌阑锭 档 冻绢咙
                     if (BoTaiwanEventUser)
                     {
-                        // 措父 捞亥飘,  捞亥飘 蜡历啊 磷菌阑锭绰 捞亥飘 酒捞袍父 冻绢柳促.
-                        // 促弗 酒捞袍篮 冻绢瘤瘤 臼绰促.
                         if (pstd.StdMode == ObjBase.TAIWANEVENTITEM)
                         {
                             if (DropItemDown(ItemList[i], dropwide, true, itemownership, this, 0))
                             {
-                                // pu := PTUserItem(ItemList[i]);
                                 if (RaceServer == Grobal2.RC_USERHUMAN)
                                 {
                                     if (dellist == null)
                                     {
                                         dellist = new ArrayList();
                                     }
-                                    // 冻绢哆赴 酒捞袍阑 努扼捞攫飘俊 舅覆.
                                     dellist.Add(svMain.UserEngine.GetStdItemName(pu.Index), pu.MakeIndex as Object);
                                 }
                                 Dispose(ItemList[i]);
@@ -3084,14 +3044,11 @@ namespace GameSvr
                     {
                         if ((svMain.PHILIPPINEVERSION && (new System.Random(6).Next() == 0)) || (!svMain.PHILIPPINEVERSION && (new System.Random(3).Next() == 0)) || boDropall)
                         {
-                            // 肮荐 酒捞袍牢 版快 老何父 冻绢咙
                             if (pstd.OverlapItem >= 1)
                             {
                                 icount = pu.Dura;
                                 drcount = _MAX(1, new System.Random(icount / 2).Next());
-                                // 例措肺 促 冻绢瘤瘤 臼澜
                                 icount = _MAX(0, icount - drcount);
-                                // 荐沥(sonmg)
                                 if (drcount > 0)
                                 {
                                     newpu = new TUserItem();
@@ -3110,7 +3067,6 @@ namespace GameSvr
                                                     {
                                                         dellist = new ArrayList();
                                                     }
-                                                    // 巢篮俺荐 0牢 酒捞袍阑 瘤快扁 困秦 努扼捞攫飘俊 舅覆.
                                                     dellist.Add(svMain.UserEngine.GetStdItemName(pu.Index), pu.MakeIndex as Object);
                                                 }
                                                 Dispose(ItemList[i]);
@@ -3126,12 +3082,10 @@ namespace GameSvr
                                     {
                                         Dispose(newpu);
                                     }
-                                    // Memory Leak sonmg
                                 }
                             }
                             else
                             {
-                                // 阁胶磐 靛酚 堡籍 鉴档 炼例.
                                 pu = ItemList[i];
                                 if (RaceServer != Grobal2.RC_USERHUMAN)
                                 {
@@ -3142,14 +3096,12 @@ namespace GameSvr
                                 }
                                 if (DropItemDown(pu, dropwide, true, itemownership, this, 0))
                                 {
-                                    // pu := PTUserItem(ItemList[i]);
                                     if (RaceServer == Grobal2.RC_USERHUMAN)
                                     {
                                         if (dellist == null)
                                         {
                                             dellist = new ArrayList();
                                         }
-                                        // 冻绢哆赴 酒捞袍阑 努扼捞攫飘俊 舅覆.
                                         dellist.Add(svMain.UserEngine.GetStdItemName(pu.Index), pu.MakeIndex as Object);
                                     }
                                     Dispose(ItemList[i]);
@@ -3172,8 +3124,6 @@ namespace GameSvr
 
         public void DropEventItems()
         {
-            // 捞亥飘 酒捞袍捞 冻绢瘤歹扼档 某腐 祸篮 咯扁辑 官操瘤 臼绰促.
-            int i;
             int dropwide;
             TUserItem pu;
             TStdItem pstd;
@@ -3182,18 +3132,15 @@ namespace GameSvr
             dropwide = 3;
             try
             {
-                for (i = ItemList.Count - 1; i >= 0; i--)
+                for (var i = ItemList.Count - 1; i >= 0; i--)
                 {
                     pstd = svMain.UserEngine.GetStdItem(ItemList[i].Index);
-                    // 措父 夸没栏肺 父电 何盒,
-                    // stdmode = 51锅篮 磷阑锭 馆靛矫 冻绢咙... 肚茄 立加谗菌阑锭 档 冻绢咙
                     if (pstd != null)
                     {
                         if (pstd.StdMode == ObjBase.TAIWANEVENTITEM)
                         {
                             if (DropItemDown(ItemList[i], dropwide, true, null, this, 0))
                             {
-                                // 捞锭 冻绢柳 酒捞袍篮 林牢 绝绰 酒捞袍 烙
                                 pu = ItemList[i];
                                 if (RaceServer == Grobal2.RC_USERHUMAN)
                                 {
@@ -3201,7 +3148,6 @@ namespace GameSvr
                                     {
                                         dellist = new ArrayList();
                                     }
-                                    // 冻绢哆赴 酒捞袍阑 努扼捞攫飘俊 舅覆.
                                     dellist.Add(svMain.UserEngine.GetStdItemName(pu.Index), pu.MakeIndex as Object);
                                 }
                                 Dispose(ItemList[i]);
@@ -3213,7 +3159,6 @@ namespace GameSvr
                 if (dellist != null)
                 {
                     SendMsg(this, Grobal2.RM_DELITEMS, 0, (int)dellist, 0, 0, "");
-                    // dellist绰 rm_delitem俊辑 free 矫难具 茄促.
                 }
             }
             catch
@@ -3267,7 +3212,6 @@ namespace GameSvr
 
         public void DropUseItems(Object itemownership, bool DieFromMob)
         {
-            // 磷绢辑 甸绊 乐绰 酒捞袍阑 汝覆. 坊待栏肺 汝赴促.
             int i;
             int ran;
             ArrayList dellist;
@@ -3282,44 +3226,32 @@ namespace GameSvr
                 }
                 if ((RaceServer == Grobal2.RC_USERHUMAN) && !BoOldVersionUser_Italy)
                 {
-                    // 捞怕府 滚怜 昏力
                     if (svMain.KOREANVERSION || svMain.PHILIPPINEVERSION)
                     {
                         ps = svMain.UserEngine.GetStdItem(UseItems[Grobal2.U_CHARM].Index);
                         if (ps != null)
                         {
-                            // 惯坊鸥牢 捞亥飘
-                            // 檬妮房
-                            // 拳捞飘单捞 捞亥飘
                             if ((UseItems[Grobal2.U_CHARM].Index == svMain.INDEX_CHOCOLATE) || ((ps.StdMode == 53) && (ps.Shape == ObjBase.SHAPE_OF_LUCKYLADLE)) || (UseItems[Grobal2.U_CHARM].Index == svMain.INDEX_CANDY) || (UseItems[Grobal2.U_CHARM].Index == svMain.INDEX_LOLLIPOP))
                             {
-                                // 荤帕, 阜措荤帕
-                                // 檬妮房,荤帕,阜措荤帕档 各茄抛 磷篮霸 酒聪搁 救荤扼咙(sonmg 2004/06/24)
                                 if (DieFromMob)
                                 {
                                     if (dellist == null)
                                     {
                                         dellist = new ArrayList();
                                     }
-                                    // 滚弊 荐沥(sonmg 2005/03/17)
                                     dellist.Add(svMain.UserEngine.GetStdItemName(UseItems[Grobal2.U_CHARM].Index), UseItems[Grobal2.U_CHARM].MakeIndex as Object);
-                                    // 肺弊 巢败具 窃
-                                    // 磷颇_
-                                    svMain.AddUserLog("16\09" + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + ps.Name + "\09" + UseItems[Grobal2.U_CHARM].MakeIndex.ToString() + "\09" + BoolToInt(RaceServer == Grobal2.RC_USERHUMAN).ToString() + "\09" + "0");
+                                    svMain.AddUserLog("16\09" + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + ps.Name + "\09" + UseItems[Grobal2.U_CHARM].MakeIndex.ToString() + "\09" + HUtil32.BoolToIntStr(RaceServer == Grobal2.RC_USERHUMAN).ToString() + "\09" + "0");
                                     UseItems[Grobal2.U_CHARM].Index = 0;
                                 }
                                 DontBagItemDrop = true;
                                 if (dellist != null)
                                 {
                                     SendMsg(this, Grobal2.RM_DELITEMS, 0, (int)dellist, 0, 0, "");
-                                    // dellist绰 rm_delitem俊辑 free 矫难具 茄促.
                                 }
                                 return;
                             }
                         }
                     }
-                    // 檬去矫府令 荤扼咙
-                    // 2003/03/15 酒捞袍 牢亥配府 犬厘
                     for (i = 0; i <= 12; i++)
                     {
                         if ((i == Grobal2.U_CHARM) && !DieFromMob)
@@ -3331,7 +3263,6 @@ namespace GameSvr
                         {
                             if ((ps.ItemDesc & Grobal2.IDC_DIEANDBREAK) != 0)
                             {
-                                // 檬去矫府令档 各茄抛 磷篮霸 酒聪搁 救荤扼咙(sonmg 2004/06/24)
                                 if (!DieFromMob)
                                 {
                                     continue;
@@ -3340,17 +3271,13 @@ namespace GameSvr
                                 {
                                     dellist = new ArrayList();
                                 }
-                                // 滚弊 荐沥(sonmg 2005/03/14)
                                 dellist.Add(svMain.UserEngine.GetStdItemName(UseItems[i].Index), UseItems[i].MakeIndex as Object);
-                                // 肺弊 巢败具 窃
-                                // 磷颇_
-                                svMain.AddUserLog("16\09" + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + ps.Name + "\09" + UseItems[i].MakeIndex.ToString() + "\09" + BoolToInt(RaceServer == Grobal2.RC_USERHUMAN).ToString() + "\09" + "0");
+                                svMain.AddUserLog("16\09" + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + ps.Name + "\09" + UseItems[i].MakeIndex.ToString() + "\09" + HUtil32.BoolToIntStr(RaceServer == Grobal2.RC_USERHUMAN).ToString() + "\09" + "0");
                                 UseItems[i].Index = 0;
                             }
                         }
                     }
                 }
-                // 酒捞袍 冻崩(厩己 弧盎捞绰 冻绢龙 犬伏 滴 硅)
                 if (PKLevel() >= 3)
                 {
                     ran = 15;
@@ -3359,13 +3286,10 @@ namespace GameSvr
                 {
                     ran = 30;
                 }
-                // 2003/03/15 酒捞袍 牢亥配府 犬厘
                 for (i = 0; i <= 12; i++)
                 {
-                    // 8->12
                     if (new System.Random(ran).Next() == 0)
                     {
-                        // 厩己 弧盎捞啊 酒囱 荤恩狼 公扁老 版快 冻绢龙 犬伏 1/2父怒 撤勉(2005/03/09)
                         if ((i == Grobal2.U_WEAPON) && (PKLevel() < 3))
                         {
                             if (new System.Random(2).Next() == 0)
@@ -3397,7 +3321,6 @@ namespace GameSvr
                 if (dellist != null)
                 {
                     SendMsg(this, Grobal2.RM_DELITEMS, 0, (int)dellist, 0, 0, "");
-                    // dellist绰 rm_delitem俊辑 free 矫难具 茄促.
                 }
             }
             catch
@@ -3940,7 +3863,7 @@ namespace GameSvr
         {
             for (var i = 0; i < PKHiterList.Count; i++)
             {
-                Dispose(PKHiterList[i] as TPkHiterInfo);
+                Dispose(PKHiterList[i]);
             }
             PKHiterList.Clear();
         }
@@ -3955,7 +3878,6 @@ namespace GameSvr
             return result;
         }
 
-        // 沥寸规困 牢瘤
         public void SetAllowLongHit(bool boallow)
         {
             BoAllowLongHit = boallow;
@@ -3982,7 +3904,6 @@ namespace GameSvr
             }
         }
 
-        // 2003/03/15 脚痹公傍
         public void SetAllowCrossHit(bool boallow)
         {
             BoAllowCrossHit = boallow;
@@ -3998,9 +3919,7 @@ namespace GameSvr
 
         public bool SetAllowFireHit()
         {
-            bool result;
-            // 堪拳搬
-            result = false;
+            bool result = false;
             if (HUtil32.GetTickCount() - LatestFireHitTime > 10 * 1000)
             {
                 LatestFireHitTime  =  HUtil32.GetTickCount();
@@ -4017,22 +3936,16 @@ namespace GameSvr
 
         public bool SetAllowTwinHit()
         {
-            bool result;
-            // 街锋曼
-            result = false;
+            bool result = false;
             if (HUtil32.GetTickCount() - LatestTwinHitTime > 1000)
             {
                 LatestTwinHitTime  =  HUtil32.GetTickCount();
                 BoAllowTwinHit = 1;
-                // SysMsg ('街锋曼捞 惯悼登菌嚼聪促.', 1);
                 result = true;
-                // end else begin
-                // SysMsg ('街锋曼捞 惯悼登瘤 臼疽嚼聪促.', 0);
             }
             return result;
         }
 
-        // (+)父 倾侩
         public void IncHealthSpell(int hp, int mp)
         {
             if ((hp >= 0) && (mp >= 0))
@@ -4054,21 +3967,16 @@ namespace GameSvr
                     WAbil.MP = WAbil.MaxMP;
                 }
                 HealthSpellChanged();
-                // UpdateMsg (self, RM_HEALTHSPELLCHANGED, 0, 0, 0, 0, '');
             }
         }
 
-        // mapname狼 甘篮 亲惑 0锅甘 趣篮 酒付唱 哎 荐 乐绰 官帕甘捞促.
         public void RandomSpaceMove(string mname, int mtype)
         {
             int nx = 0;
             int ny = 0;
             int egdey;
-            TEnvirnoment nenvir;
-            TEnvirnoment oldenvir;
-            // hum: TUserHuman;
-            oldenvir = PEnvir;
-            nenvir = svMain.GrobalEnvir.GetEnvir(mname);
+            TEnvirnoment oldenvir = PEnvir;
+            TEnvirnoment nenvir = svMain.GrobalEnvir.GetEnvir(mname);
             if (nenvir != null)
             {
                 if (nenvir.MapHeight < 150)
@@ -4092,8 +4000,6 @@ namespace GameSvr
             }
         }
 
-        // mapname狼 甘篮 亲惑 0锅甘 趣篮 酒付唱 哎 荐 乐绰 官帕甘捞促.
-        // 泅犁 甘俊辑 馆版捞 InRange焊促 农绊 OutRange焊促 累篮 裹困肺 罚待窍霸 捞悼.
         public void RandomSpaceMoveInRange(int mtype, int InRange, int OutRange)
         {
             int ran;
@@ -4101,7 +4007,6 @@ namespace GameSvr
             int signY;
             int nx = 0;
             int ny = 0;
-            // 檬扁拳.
             signX = 1;
             signY = 1;
             if (PEnvir != null)
@@ -4128,8 +4033,6 @@ namespace GameSvr
                         break;
                 }
                 nx = CX + signX * (InRange + new System.Random(OutRange - InRange).Next() + 1);
-                // 瘤档狼 荤捞令焊促 努 版快俊 逞绢啊瘤 臼档废 荐沥...
-                // 逞绢啊搁 SpaceMove 窃荐 救俊辑 罚待窍霸 屁辨 荐 乐促.
                 if (nx >= PEnvir.MapWidth)
                 {
                     nx = PEnvir.MapWidth - 1;
@@ -4139,8 +4042,6 @@ namespace GameSvr
                     nx = 0;
                 }
                 ny = CY + signY * (InRange + new System.Random(OutRange - InRange).Next() + 1);
-                // 瘤档狼 荤捞令焊促 努 版快俊 逞绢啊瘤 臼档废 荐沥...
-                // 逞绢啊搁 SpaceMove 窃荐 救俊辑 罚待窍霸 屁辨 荐 乐促.
                 if (ny >= PEnvir.MapHeight)
                 {
                     ny = PEnvir.MapHeight - 1;
@@ -4663,14 +4564,13 @@ namespace GameSvr
 
         public bool RepaireWeaponNormaly()
         {
-            bool result;
             int repair;
             TStdItem ps;
-            string WeaponName;
-            result = false;
+            bool result = false;
             if (UseItems[Grobal2.U_WEAPON].Index > 0)
             {
                 ps = svMain.UserEngine.GetStdItem(UseItems[Grobal2.U_WEAPON].Index);
+                string WeaponName = String.Empty;
                 if (ps != null)
                 {
                     // 蜡聪农酒捞袍 鞘靛啊 3捞搁 荐府阂啊.
@@ -5553,24 +5453,21 @@ namespace GameSvr
             return result;
         }
 
-        // 巩颇傈阑 给窍绰 救傈 瘤措
         public bool InGuildWarSafeZone()
         {
-            bool result;
-            string map;
-            int i;
-            int sx=0;
-            int sy=0;
-            result = PEnvir.LawFull;
+            string map = string.Empty;
+            int sx = 0;
+            int sy = 0;
+            bool result = PEnvir.LawFull;
             if (!result)
             {
                 if (!result)
                 {
-                    for (i = 0; i < svMain.StartPoints.Count; i++)
+                    for (var i = 0; i < svMain.StartPoints.Count; i++)
                     {
-                        map = svMain.StartPoints[i];
-                        sx = HUtil32.Loword((int)svMain.StartPoints.Values[i]);
-                        sy = Hiword((int)svMain.StartPoints.Values[i]);
+                        //map = svMain.StartPoints[i];
+                        //sx = HUtil32.Loword((int)svMain.StartPoints.Values[i]);
+                        //sy = Hiword((int)svMain.StartPoints.Values[i]);
                         if ((map == PEnvir.MapName) && (Math.Abs(CX - sx) <= 60) && (Math.Abs(CY - sy) <= 60))
                         {
                             result = true;
@@ -5584,10 +5481,7 @@ namespace GameSvr
 
         public int PKLevel()
         {
-            int result;
-            // PK 饭骇 1捞惑栏搁 PK裹 捞促.
-            result = PlayerKillingPoint / 100;
-            return result;
+            return PlayerKillingPoint / 100;
         }
 
         public void UserNameChanged()
@@ -5602,19 +5496,15 @@ namespace GameSvr
 
         public byte MyColor()
         {
-            byte result;
-            result = DefNameColor;
+            byte result = DefNameColor;
             if (PKLevel() == 1)
             {
                 result = 251;
             }
-            // yellow
             if (PKLevel() >= 2)
             {
                 result = 249;
             }
-            // red
-
             return result;
         }
 
@@ -6275,7 +6165,7 @@ namespace GameSvr
             PStoneHitSkill = null;
             for (i = 0; i < MagicList.Count; i++)
             {
-                pum = (TUserMagic)MagicList[i];
+                pum = MagicList[i];
                 switch (pum.MagicId)
                 {
                     case 3:
@@ -6392,11 +6282,11 @@ namespace GameSvr
                 // PDS
                 for (i = MagicList.Count - 1; i >= 0; i--)
                 {
-                    if (((TUserMagic)MagicList[i]).pDef.MagicName == mname)
+                    if (MagicList[i].pDef.MagicName == mname)
                     {
                         hum = this as TUserHuman;
-                        hum.SendDelMagic((TUserMagic)MagicList[i]);
-                        Dispose((TUserMagic)MagicList[i]);
+                        hum.SendDelMagic(MagicList[i]);
+                        Dispose(MagicList[i]);
                         MagicList.RemoveAt(i);
                         break;
                     }
@@ -6460,14 +6350,14 @@ namespace GameSvr
                                         hum.SendDelItem(UseItems[i]);
                                         hum.SysMsg(pstd.Name + "is destroyed.", 0);
                                     }
-                                    svMain.AddUserLog("16\09" + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + pstd.Name + "\09" + UseItems[i].MakeIndex.ToString() + "\09" + BoolToInt(RaceServer == Grobal2.RC_USERHUMAN).ToString() + "\09" + "0");
+                                    svMain.AddUserLog("16\09" + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + pstd.Name + "\09" + UseItems[i].MakeIndex.ToString() + "\09" + HUtil32.BoolToIntStr(RaceServer == Grobal2.RC_USERHUMAN).ToString() + "\09" + "0");
                                     UseItems[i].Index = 0;
                                     RecalcAbilitys();
                                 }
                                 else
                                 {
                                     UseItems[i].Dura = (ushort)idura;
-                                    svMain.AddUserLog("11\09" + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + pstd.Name + "\09" + UseItems[i].MakeIndex.ToString() + "\09" + BoolToInt(RaceServer == Grobal2.RC_USERHUMAN).ToString() + "\09" + "1");
+                                    svMain.AddUserLog("11\09" + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + pstd.Name + "\09" + UseItems[i].MakeIndex.ToString() + "\09" + HUtil32.BoolToIntStr(RaceServer == Grobal2.RC_USERHUMAN).ToString() + "\09" + "1");
                                 }
                                 if (olddura != HUtil32.MathRound(idura / 1000))
                                 {
@@ -7197,7 +7087,7 @@ namespace GameSvr
                 if (hpp_necklace && hpp_bracelet && hpp_ring)
                 {
                     AddAbil.HP = (byte)(AddAbil.HP + (WAbil.MaxHP * 30 / 100));
-                    AddAbil.AC = AddAbil.AC + HUtil32.MakeWord(2, 2);
+                    AddAbil.AC = (ushort)(AddAbil.AC + HUtil32.MakeWord(2, 2));
                 }
                 if (cho_weapon && cho_necklace && cho_ring && cho_helmet && cho_bracelet)
                 {
@@ -8286,7 +8176,7 @@ namespace GameSvr
 
         public string GetUserName()
         {
-            string result;
+            string result = String.Empty;
             if (RaceServer != Grobal2.RC_USERHUMAN)
             {
                 GetValidStrNoVal(UserName, result);
@@ -8400,7 +8290,7 @@ namespace GameSvr
                 mcount = idx % 8;
                 if (dcount >= 0 && dcount <= Grobal2.MAXQUESTBYTE - 1)
                 {
-                    if (QuestStates[dcount] & (0x80 >> mcount) != 0)
+                    if ((QuestStates[dcount] & (0x80 >> mcount)) != 0)
                     {
                         result = 1;
                     }
@@ -8413,10 +8303,8 @@ namespace GameSvr
             return result;
         }
 
-        // 0 or not zero
         public void SetQuestMark(int idx, int value)
         {
-            // value: 0 or 1
             int dcount;
             int mcount;
             byte val;
@@ -8452,7 +8340,7 @@ namespace GameSvr
                 mcount = idx % 8;
                 if (dcount >= 0 && dcount <= Grobal2.MAXQUESTINDEXBYTE - 1)
                 {
-                    if (QuestIndexOpenStates[dcount] & (0x80 >> mcount) != 0)
+                    if ((QuestIndexOpenStates[dcount] & (0x80 >> mcount)) != 0)
                     {
                         result = 1;
                     }
@@ -8504,7 +8392,7 @@ namespace GameSvr
                 mcount = idx % 8;
                 if (dcount >= 0 && dcount <= Grobal2.MAXQUESTINDEXBYTE - 1)
                 {
-                    if (QuestIndexFinStates[dcount] & (0x80 >> mcount) != 0)
+                    if ((QuestIndexFinStates[dcount] & (0x80 >> mcount)) != 0)
                     {
                         result = 1;
                     }
@@ -8616,7 +8504,7 @@ namespace GameSvr
                 if (new System.Random(target.SpeedPoint).Next() < AccuracyPoint)
                 {
                     target.StruckDamage(damage, this);
-                    target.SendDelayMsg(Grobal2.RM_STRUCK as TCreature, Grobal2.RM_REFMESSAGE, damage, target.WAbil.HP, target.WAbil.MaxHP, this.ActorId, "", 500);
+                    target.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)damage, target.WAbil.HP, target.WAbil.MaxHP, this.ActorId, "", 500);
                     if (target.RaceServer != Grobal2.RC_USERHUMAN)
                     {
                         target.SendMsg(target, Grobal2.RM_STRUCK, (ushort)damage, target.WAbil.HP, target.WAbil.MaxHP, this.ActorId, "");
@@ -8714,7 +8602,7 @@ namespace GameSvr
             for (i = 0; i <= 2; i++)
             {
                 ndir = (Dir + valarr[i]) % 8;
-                if (M2Share.GetNextPosition(PEnvir, CX, CY, ndir, 1, ref xx, ref yy))
+                if (M2Share.GetNextPosition(PEnvir, CX, CY, (byte)ndir, 1, ref xx, ref yy))
                 {
                     target = PEnvir.GetCreature(xx, yy, true) as TCreature;
                     if ((damage > 0) && (target != null))
@@ -9022,7 +8910,7 @@ namespace GameSvr
                     if (hitmode != Grobal2.HM_STONEHIT)
                     {
                         targ.StruckDamage(dam, this);
-                        targ.SendDelayMsg(Grobal2.RM_STRUCK as TCreature, Grobal2.RM_REFMESSAGE, dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 200);
+                        targ.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, targ.WAbil.HP, targ.WAbil.MaxHP, this.ActorId, "", 200);
                         if (BoAbilMakeStone)
                         {
                             if (new System.Random(5 + targ.AntiPoison).Next() == 0)
@@ -9423,7 +9311,7 @@ namespace GameSvr
                     if (dam > 0)
                     {
                         cret.StruckDamage(dam, this);
-                        cret.SendDelayMsg(Grobal2.RM_STRUCK as TCreature, Grobal2.RM_REFMESSAGE, dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 200);
+                        cret.SendDelayMsg(Grobal2.RM_STRUCK, Grobal2.RM_REFMESSAGE, (ushort)dam, cret.WAbil.HP, cret.WAbil.MaxHP, this.ActorId, "", 200);
                     }
                 }
             }
@@ -9487,23 +9375,17 @@ namespace GameSvr
             {
                 Dir = (byte)M2Share.GetBack(ndir);
             }
-            // olddir;
-
             return result;
         }
 
-        // 公怕焊
-        public bool CharRushRush_CanPush(TCreature cret)
+        public bool CharRushRush_CanPush(TCreature cret,int rushlevel)
         {
-            bool result;
-            int levelgap;
-            result = false;
+            bool result = false;
             if ((Abil.Level > cret.Abil.Level) && (!cret.StickMode))
             {
-                levelgap = Abil.Level - cret.Abil.Level;
+                int levelgap = Abil.Level - cret.Abil.Level;
                 if (new System.Random(20).Next() < 6 + rushlevel * 3 + levelgap)
                 {
-                    // 荐访沥档俊 蝶扼辑
                     if (IsProperTarget(cret))
                     {
                         result = true;
@@ -9548,7 +9430,7 @@ namespace GameSvr
                     if (cret != null)
                     {
                         mydamagelevel = 0;
-                        if (CharRushRush_CanPush(cret))
+                        if (CharRushRush_CanPush(cret, rushlevel))
                         {
                             if (rushlevel >= 3)
                             {
@@ -9557,7 +9439,7 @@ namespace GameSvr
                                     cret2 = PEnvir.GetCreature(nx, ny, true) as TCreature;
                                     if (cret2 != null)
                                     {
-                                        if (CharRushRush_CanPush(cret2))
+                                        if (CharRushRush_CanPush(cret2, rushlevel))
                                         {
                                             cret2.CharPushed(Dir, 1);
                                             cret2.PushedCount++;
@@ -9607,17 +9489,14 @@ namespace GameSvr
                     }
                     else
                     {
-                        // 寒俊 何婰腮 版快
                         if (PEnvir.CanWalk(nx, ny, true))
                         {
-                            // 荤恩锭巩俊 给皑
                             mydamagelevel = 0;
                         }
                         else
                         {
                             crash = true;
                         }
-                        // 寒俊 何婰塞
                         break;
                     }
                 }
@@ -9639,10 +9518,8 @@ namespace GameSvr
             }
             if (crash)
             {
-                // 框流捞绰 矫纯茄促.
                 M2Share.GetFrontPosition(this, ref nx, ref ny);
                 SendRefMsg(Grobal2.RM_RUSHKUNG, Dir, nx, ny, 0, "");
-                // SendRefMsg (RM_TURN, Dir, CX, CY, 0, '');
                 if (isHumanSkill)
                 {
                     SysMsg("缺乏冲撞力量。", 0);
@@ -9661,17 +9538,12 @@ namespace GameSvr
                 {
                     LastHiter = null;
                 }
-                // wparam
-                // lparam1
-                // lparam2
-                // hiter
                 SendRefMsg(Grobal2.RM_STRUCK, (ushort)damage, WAbil.HP, WAbil.MaxHP, 0, "");
             }
             return result;
         }
 
-        // 缠绢寸辫
-        public bool CharDrawingRush_CanPush(TCreature cret)
+        public bool CharDrawingRush_CanPush(TCreature cret,int rushlevel)
         {
             bool result;
             int levelgap;
@@ -9681,7 +9553,6 @@ namespace GameSvr
                 levelgap = Abil.Level - cret.Abil.Level;
                 if (new System.Random(20).Next() < 6 + rushlevel * 3 + levelgap)
                 {
-                    // 荐访沥档俊 蝶扼辑
                     if (IsProperTarget(cret))
                     {
                         result = true;
@@ -10197,7 +10068,7 @@ namespace GameSvr
                     if (cret == who)
                     {
                         who.LeaveGroup();
-                        GroupMembers.Remove(i);
+                        GroupMembers.RemoveAt(i);
                         break;
                     }
                 }
@@ -10220,7 +10091,7 @@ namespace GameSvr
                     {
                         hum.SendMsg(this, Grobal2.RM_GROUPCANCEL, 0, 0, 0, 0, "");
                         hum.LeaveGroup();
-                        GroupMembers.Remove(i);
+                        GroupMembers.RemoveAt(i);
                     }
                 }
                 if (this.RaceServer == Grobal2.RC_USERHUMAN)
@@ -11075,7 +10946,7 @@ namespace GameSvr
             int i;
             int j;
             int k;
-            int dropcount;
+            int dropcount = 0;
             int icount;
             int ssx;
             int ssy;
@@ -11162,8 +11033,8 @@ namespace GameSvr
                     {
                         for (i = -k; i <= k; i++)
                         {
-                            dx = x + i;
-                            dy = y + j;
+                            dx = (short)(x + i);
+                            dy = (short)(y + j);
                             if (PEnvir.GetCreature(dx, dy, true) == null)
                             {
                                 result = true;
@@ -11191,31 +11062,25 @@ namespace GameSvr
 
         public bool DropItemDown(TUserItem ui, int scatterrange, bool diedrop, Object ownership, Object droper, int IsDropFromBag)
         {
-            bool result;
             int dx = 0;
             int dy = 0;
             int idura;
             int temp;
             TMapItem pmi;
             TMapItem pr;
-            TStdItem ps;
             string logcap;
-            TAgitDecoItem decoitem;
-            string pricestr;
-            string countstr;
-            string ShowName;
-            result = false;
-            countstr = "";
-            ps = svMain.UserEngine.GetStdItem(ui.Index);
+            TAgitDecoItem decoitem = null;
+            string pricestr = String.Empty;
+            string ShowName = String.Empty;
+            bool result = false;
+            string countstr = "";
+            TStdItem ps = svMain.UserEngine.GetStdItem(ui.Index);
             if (ps != null)
             {
                 if (ps.StdMode == 40)
                 {
-                    // 绊扁甫 顶俊 冻绢哆赴 版快 绊扁 前龙捞 冻绢柳促.
                     idura = ui.Dura;
-                    // word捞骨肺.
                     idura = idura - 2000;
-                    // 绊扁 前龙捞 冻绢柳促.
                     if (idura < 0)
                     {
                         idura = 0;
@@ -11224,16 +11089,13 @@ namespace GameSvr
                 }
                 pmi = new TMapItem();
                 pmi.UserItem = ui;
-                // 墨款飘 酒捞袍
                 if (ps.OverlapItem >= 1)
                 {
                     temp = ui.Dura;
                     if (temp > 1)
                     {
                         countstr = "(" + temp.ToString() + ")";
-                        // 肺弊甫 困茄 酒捞袍 俺荐(sonmg 2005/01/07)
                         pmi.Name = ps.Name + countstr;
-                        // gadget :墨款磐酒捞袍
                     }
                     else
                     {
@@ -11256,26 +11118,21 @@ namespace GameSvr
                 pmi.Droptime  =  HUtil32.GetTickCount();
                 pmi.Droper = droper;
                 GetDropPosition(CX, CY, scatterrange, ref dx, ref dy);
-                // -----------------------------------------
-                // 惑泅林赣聪甫 甘俊 冻绢哆府绰 版快
                 if ((ps.StdMode == ObjBase.STDMODE_OF_DECOITEM) && (ps.Shape == ObjBase.SHAPE_OF_DECOITEM))
                 {
                     if (ui.Dura <= svMain.DecoItemList.Count)
                     {
-                        // 靛酚 困摹绰 磊扁 磊脚狼 困摹肺 汲沥.
                         dx = CX;
                         dy = CY;
                         pmi.Name = svMain.GuildAgitMan.GetDecoItemName(ui.Dura, ref pricestr) + "[" + HUtil32.MathRound(ui.DuraMax / 1000).ToString() + "]" + "/" + "1";
-                        // 单内酒捞袍
                         pmi.Looks = ui.Dura;
                         pmi.AniCount = ps.AniCount;
                         pmi.Reserved = 0;
                         pmi.Count = 1;
                         pmi.Ownership = droper;
-                        // 冻绢哆赴 荤恩狼 家蜡...
                         pmi.Droptime  =  HUtil32.GetTickCount();
                         pmi.Droper = droper;
-                        // 惑泅林赣聪 加己 汲沥 棺 List俊 历厘
+                        decoitem = new TAgitDecoItem();
                         decoitem.Name = svMain.GuildAgitMan.GetDecoItemName(ui.Dura, ref pricestr);
                         decoitem.Looks = ui.Dura;
                         decoitem.MapName = PEnvir.MapName;
@@ -11292,14 +11149,10 @@ namespace GameSvr
                 else
                 {
                     pmi.Name = pmi.Name + "/" + "0";
-                    // 老馆酒捞袍(单内酒捞袍捞 酒丛)
                 }
-                // -----------------------------------------
                 pr = (TMapItem)PEnvir.AddToMap(dx, dy, Grobal2.OS_ITEMOBJECT, pmi);
-                // 茄伎俊 5俺 捞惑狼 酒捞袍捞 乐栏搁 角菩茄促.
                 if (pr == pmi)
                 {
-                    // 惑泅林赣聪牢 版快 甘俊 力措肺 眠啊啊 登菌栏搁...
                     if ((ps.StdMode == ObjBase.STDMODE_OF_DECOITEM) && (ps.Shape == ObjBase.SHAPE_OF_DECOITEM))
                     {
                         if (svMain.GuildAgitMan.AddAgitDecoMon(decoitem))
@@ -11312,7 +11165,7 @@ namespace GameSvr
                             svMain.MainOutMessage("[ErrorMsg]TCreature.DropItemDown : AddAgitDecoMon Failure!!!");
                         }
                     }
-                    SendRefMsg(Grobal2.RM_ITEMSHOW, pmi.Looks, pmi, dx, dy, pmi.Name);
+                    SendRefMsg(Grobal2.RM_ITEMSHOW, pmi.Looks, pmi.ItemId, dx, dy, pmi.Name);
                     if (diedrop)
                     {
                         logcap = "15\09";
@@ -11323,14 +11176,13 @@ namespace GameSvr
                         (this as TUserHuman).LatestDropTime  =  HUtil32.GetTickCount();
                     }
                     GetValidStrNoVal(UserName, ShowName);
-                    // 物品掉落提醒
                     if ((RaceServer != Grobal2.RC_USERHUMAN) && (svMain.DropItemNoticeList.IndexOf(svMain.UserEngine.GetStdItemName(ui.Index)) >= 0))
                     {
-                        svMain.UserEngine.SysMsgAll(PEnvir.MapTitle + "的 " + ShowName + " 死亡掉落: " + svMain.UserEngine.GetStdItemName(ui.Index));
+                        svMain.UserEngine.SysMsgAll(PEnvir.MapTitle + "的 " + ShowName + " 死亡掉落: " + svMain.UserEngine.GetStdItemName(ui.Index));// 物品掉落提醒
                     }
                     if (!M2Share.IsCheapStuff(ps.StdMode))
                     {
-                        svMain.AddUserLog(logcap + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + svMain.UserEngine.GetStdItemName(ui.Index) + "\09" + ui.MakeIndex.ToString() + "\09" + BoolToInt(RaceServer == Grobal2.RC_USERHUMAN).ToString() + "\09" + IsDropFromBag.ToString() + countstr);
+                        svMain.AddUserLog(logcap + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + svMain.UserEngine.GetStdItemName(ui.Index) + "\09" + ui.MakeIndex.ToString() + "\09" + HUtil32.BoolToIntStr(RaceServer == Grobal2.RC_USERHUMAN).ToString() + "\09" + IsDropFromBag.ToString() + countstr);
                     }
                     result = true;
                 }
@@ -11344,15 +11196,13 @@ namespace GameSvr
 
         public bool DropGoldDown(int goldcount, bool diedrop, Object ownership, Object droper)
         {
-            bool result;
             int dx = 0;
             int dy = 0;
             TMapItem pmi;
             TMapItem pr;
             string logcap;
-            result = false;
+            bool result = false;
             pmi = new TMapItem();
-            //FillChar(pmi, sizeof(TMapItem), '\0');
             pmi.Name = Envir.NAME_OF_GOLD;
             pmi.Count = goldcount;
             pmi.Looks = GetGoldLooks(goldcount);
@@ -11368,7 +11218,7 @@ namespace GameSvr
                     Dispose(pmi);
                     pmi = pr;
                 }
-                SendRefMsg(Grobal2.RM_ITEMSHOW, pmi.Looks, pmi, dx, dy, Envir.NAME_OF_GOLD + "/" + "0");
+                SendRefMsg(Grobal2.RM_ITEMSHOW, pmi.Looks, pmi.ItemId, dx, dy, Envir.NAME_OF_GOLD + "/" + "0");
                 if (RaceServer == Grobal2.RC_USERHUMAN)
                 {
                     if (diedrop)
@@ -11380,7 +11230,7 @@ namespace GameSvr
                         logcap = "7\09";
                         (this as TUserHuman).LatestDropTime  =  HUtil32.GetTickCount();
                     }
-                    svMain.AddUserLog(logcap + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + Envir.NAME_OF_GOLD + "\09" + goldcount.ToString() + "\09" + BoolToInt(RaceServer == Grobal2.RC_USERHUMAN).ToString() + "\09" + "0");
+                    svMain.AddUserLog(logcap + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + Envir.NAME_OF_GOLD + "\09" + goldcount.ToString() + "\09" + HUtil32.BoolToIntStr(RaceServer == Grobal2.RC_USERHUMAN).ToString() + "\09" + "0");
                 }
                 result = true;
             }
@@ -11761,13 +11611,11 @@ namespace GameSvr
 
         public bool PickUp_cangrouppickup(Object ownership)
         {
-            bool result;
-            int i;
             TCreature cret;
-            result = false;
+            bool result = false;
             if (GroupOwner != null)
             {
-                for (i = 0; i < GroupOwner.GroupMembers.Count; i++)
+                for (var i = 0; i < GroupOwner.GroupMembers.Count; i++)
                 {
                     cret = GroupOwner.GroupMembers[i];
                     if (cret == ownership)
@@ -11800,29 +11648,23 @@ namespace GameSvr
             {
                 return result;
             }
-            // 背券吝俊绰 拱扒阑 林匡 荐 绝促.
             hum = null;
             pmi = PEnvir.GetItem(CX, CY);
             if (pmi != null)
             {
-                // 冈磊 阜绰 风凭
                 if (HUtil32.GetTickCount() - pmi.Droptime > ObjBase.ANTI_MUKJA_DELAY)
                 {
                     pmi.Ownership = null;
                 }
                 if (PickUp_canpickup(pmi.Ownership) || PickUp_cangrouppickup(pmi.Ownership))
                 {
-                    // '陛傈'
                     if (pmi.Name.ToLower().CompareTo(Envir.NAME_OF_GOLD.ToLower()) == 0)
                     {
                         if (PEnvir.DeleteFromMap(CX, CY, Grobal2.OS_ITEMOBJECT, pmi) == 1)
                         {
                             if (IncGold(pmi.Count))
                             {
-                                SendRefMsg(Grobal2.RM_ITEMHIDE, 0, pmi, CX, CY, "");
-                                // 肺弊巢辫
-                                // 凛扁_
-                                // '陛傈'
+                                SendRefMsg(Grobal2.RM_ITEMHIDE, 0, pmi.ItemId, CX, CY, "");
                                 svMain.AddUserLog("4\09" + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + Envir.NAME_OF_GOLD + "\09" + pmi.Count.ToString() + "\09" + "1\09" + "0");
                                 GoldChanged();
                                 Dispose(pmi);
@@ -11837,23 +11679,18 @@ namespace GameSvr
                     {
                         ps = svMain.UserEngine.GetStdItem(pmi.UserItem.Index);
                     }
-                    // gadget: 墨款飘酒捞袍
                     if (ps != null)
                     {
-                        // 墨款飘 酒捞袍捞搁 扁粮 酒捞袍俊 俺荐父 歹茄促.
-                        // 扁粮 酒捞袍捞 绝栏搁 蝶肺 积己茄促.
                         if (ps.OverlapItem >= 1)
                         {
                             countstr = "(" + pmi.UserItem.Dura.ToString() + ")";
-                            // 肺弊甫 困茄 酒捞袍 俺荐(sonmg 2005/01/07)
                             if (PEnvir.DeleteFromMap(CX, CY, Grobal2.OS_ITEMOBJECT, pmi) == 1)
                             {
                                 if (UserCounterItemAdd(ps.StdMode, ps.Looks, pmi.UserItem.Dura, ps.Name, false))
                                 {
-                                    SendMsg(this, Grobal2.RM_ITEMHIDE, 0, pmi, CX, CY, "");
+                                    SendMsg(this, Grobal2.RM_ITEMHIDE, 0, pmi.ItemId, CX, CY, "");
                                     WeightChanged();
                                     Dispose(pmi);
-                                    // memory leak
                                     return result;
                                 }
                                 else
@@ -11865,39 +11702,25 @@ namespace GameSvr
                         if (IsEnoughBag())
                         {
                             flag = true;
-                            // ------惑泅林赣聪----------------------
                             if ((ps.StdMode == ObjBase.STDMODE_OF_DECOITEM) && (ps.Shape == ObjBase.SHAPE_OF_DECOITEM))
                             {
-                                // 家蜡磊啊 绝栏搁 巩林父 林匡 荐 乐绊, 家蜡磊啊 乐栏搁 家蜡磊父 林匡 荐 乐促.
                                 if (((pmi.Ownership == null) && IsMyGuildMaster()) || ((pmi.Ownership != null) && (pmi.Ownership == this)))
                                 {
-                                    // 郴备啊 1捞窍捞搁 凛瘤 给茄促.
-                                    // if Round(pmi.UserItem.DuraMax/1000) > 1 then begin
-                                    // 府胶飘俊辑 昏力茄促.
                                     if (svMain.GuildAgitMan.DeleteAgitDecoMon(PEnvir.MapName, CX, CY))
                                     {
                                         svMain.GuildAgitMan.SaveAgitDecoMonList();
-                                        // 惑泅林赣聪甫 凛绰 版快 郴备甫 1究 别绰促.
-                                        // pmi.UserItem.DuraMax := pmi.UserItem.DuraMax - 1000;
-                                        // 厘盔操固扁 坷宏璃飘 俺荐 皑家
-                                        // GuildAgitMan.DecAgitDecoMonCount( GetGuildNameHereAgit );
                                         flag = true;
                                     }
                                     else
                                     {
                                         flag = false;
                                     }
-                                    // end else begin
-                                    // SysMsg('郴备啊 撤酒辑 笼阑 荐 绝嚼聪促.', 0);
-                                    // flag := FALSE;
-                                    // end;
                                 }
                                 else
                                 {
                                     flag = false;
                                 }
                             }
-                            // --------------------------------------
                             if (flag)
                             {
                                 if (PEnvir.DeleteFromMap(CX, CY, Grobal2.OS_ITEMOBJECT, pmi) == 1)
@@ -11920,12 +11743,10 @@ namespace GameSvr
                                             wg = ps.Weight;
                                         }
                                     }
-                                    // and IsAddWeightAvailable (wg)
                                     if (ps != null)
                                     {
-                                        SendMsg(this, Grobal2.RM_ITEMHIDE, 0, pmi, CX, CY, "");
+                                        SendMsg(this, Grobal2.RM_ITEMHIDE, 0, pmi.ItemId, CX, CY, "");
                                         AddItem(pu);
-                                        // 甘涅胶飘啊 乐绰瘤
                                         if (PEnvir.HasMapQuest())
                                         {
                                             dropername = "";
@@ -11939,12 +11760,9 @@ namespace GameSvr
                                                 questnpc.UserCall(this);
                                             }
                                         }
-                                        // 肺弊巢辫
                                         if (!M2Share.IsCheapStuff(ps.StdMode))
                                         {
-                                            // 凛扁_
                                             svMain.AddUserLog("4\09" + MapName + "\09" + CX.ToString() + "\09" + CY.ToString() + "\09" + UserName + "\09" + svMain.UserEngine.GetStdItemName(pu.Index) + "\09" + pu.MakeIndex.ToString() + "\09" + "1\09" + "0" + countstr);
-                                            // 俺荐肺弊(sonmg 2005/01/07)
                                         }
                                         if (RaceServer == Grobal2.RC_USERHUMAN)
                                         {
@@ -11956,14 +11774,11 @@ namespace GameSvr
                                         }
                                         if (ps.StdMode == ObjBase.TAIWANEVENTITEM)
                                         {
-                                            // 措父 捞亥飘, 捞亥飘 酒捞袍阑 林栏搁 钎矫巢
                                             if (hum != null)
                                             {
                                                 hum.TaiwanEventItemName = ps.Name;
                                                 hum.BoTaiwanEventUser = true;
-                                                // 某腐狼 祸彬阑 官槽促.
                                                 StatusArr[Grobal2.STATE_BLUECHAR] = 60000;
-                                                // 鸥烙 酒眶 绝澜;
                                                 CharStatus = GetCharStatus();
                                                 CharStatusChanged();
                                                 Light = GetMyLight();
@@ -11980,9 +11795,7 @@ namespace GameSvr
                                         PEnvir.AddToMap(CX, CY, Grobal2.OS_ITEMOBJECT, pmi);
                                     }
                                 }
-                                // if PEnvir.DeleteFromMap
                             }
-                            // flag
                         }
                     }
                 }
@@ -11996,18 +11809,14 @@ namespace GameSvr
 
         public bool EatItem(TStdItem std, TUserItem pu)
         {
-            bool result;
             bool boneedrecalc;
             TUserHuman hum;
             TUserHuman humlover;
-            TStdItem pstd;
-            int i;
             bool flag;
-            pstd = null;
-            result = false;
+            TStdItem pstd = null;
+            bool result = false;
             if (PEnvir.NoDrug)
             {
-                // /MapName = '0137' then begin  //距阑 冈阑 荐 绝绰 措访 甘
                 SysMsg("在这里您无法使用。", 0);
                 return result;
             }
@@ -12018,28 +11827,19 @@ namespace GameSvr
                     switch (std.Shape)
                     {
                         case ObjBase.FASTFILL_ITEM:
-                            // 急拳荐
-                            // +hp
-                            // +mp
                             IncHealthSpell(std.AC, std.MAC);
-                            // +hp%
-                            // +mp%
                             IncHealthSpell(WAbil.MaxHP * std.DC / 100, WAbil.MaxMP * std.MC / 100);
-                            // 眉仿,付仿 %氢惑 眠啊(sonmg 2005/03/09)
                             result = true;
                             break;
                         case ObjBase.FREE_UNKNOWN_ITEM:
-                            // 固瘤狼酒捞袍阑 厘馒秦力 矫糯
                             BoNextTimeFreeCurseItem = true;
                             result = true;
                             break;
                         default:
-                            // 500 -> 1000  2003-11-3 :PDS
                             if ((IncHealth + std.AC < 1000) && (std.AC > 0))
                             {
                                 IncHealth = (byte)(IncHealth + std.AC);
                             }
-                            // 500 -> 1000
                             if ((IncSpell + std.MAC < 1000) && (std.MAC > 0))
                             {
                                 IncSpell = (byte)(IncSpell + std.MAC);
@@ -12125,12 +11925,10 @@ namespace GameSvr
                             {
                                 if (new System.Random(100).Next() < LoByte(std.DC))
                                 {
-                                    // 2-1.
                                     WinExp(LoByte(std.MAC) * 2 * 100);
                                 }
                                 else
                                 {
-                                    // 2.
                                     if (LoByte(std.MAC) >= LoByte(std.AC))
                                     {
                                         WinExp((new System.Random(LoByte(std.MAC) - LoByte(std.AC)).Next() + LoByte(std.AC)) * 100);
@@ -12149,7 +11947,7 @@ namespace GameSvr
                             break;
                         case ObjBase.SHAPE_COUPLE_ALIVE_STONE:
                             flag = false;
-                            for (i = 0; i <= 12; i++)
+                            for (var i = 0; i <= 12; i++)
                             {
                                 pstd = svMain.UserEngine.GetStdItem(UseItems[i].Index);
                                 if (pstd != null)
@@ -12258,7 +12056,7 @@ namespace GameSvr
             result = false;
             for (i = 0; i < MagicList.Count; i++)
             {
-                if (((TUserMagic)MagicList[i]).MagicId == magid)
+                if (MagicList[i].MagicId == magid)
                 {
                     result = true;
                     break;
@@ -12269,12 +12067,10 @@ namespace GameSvr
 
         public bool ReadBook(TStdItem std)
         {
-            bool result;
-            TDefMagic pdm;
             TUserMagic pum;
             TUserHuman hum;
-            result = false;
-            pdm = svMain.UserEngine.GetDefMagic(std.Name);
+            bool result = false;
+            TDefMagic pdm = svMain.UserEngine.GetDefMagic(std.Name);
             if (pdm != null)
             {
                 if (!IsMyMagic(pdm.MagicId))
@@ -12288,13 +12084,11 @@ namespace GameSvr
                         pum.Level = 0;
                         pum.CurTrain = 0;
                         MagicList.Add(pum);
-                        // 付过阑 货肺 硅框..
                         RecalcAbilitys();
                         if (RaceServer == Grobal2.RC_USERHUMAN)
                         {
                             hum = this as TUserHuman;
                             hum.SendAddMagic(pum);
-                            // 付过 眠啊甫 努扼捞攫飘俊 舅覆
                         }
                         result = true;
                     }
@@ -12305,8 +12099,7 @@ namespace GameSvr
 
         public int GetSpellPoint(TUserMagic pum)
         {
-            int result = HUtil32.MathRound(pum.pDef.Spell / (pum.pDef.MaxTrainLevel + 1) * (pum.Level + 1)) + pum.pDef.DefSpell;
-            return result;
+            return HUtil32.MathRound(pum.pDef.Spell / (pum.pDef.MaxTrainLevel + 1) * (pum.Level + 1)) + pum.pDef.DefSpell;
         }
 
         public bool DoSpell(TUserMagic pum, short xx, short yy, TCreature target)
@@ -12946,7 +12739,7 @@ namespace GameSvr
                     }
                     break;
                 case Grobal2.RM_MAKEPOISON:
-                    hiter = msg.lParam2 as TCreature;
+                    hiter = svMain.ObjectMgr.Get(msg.lParam2);
                     if (hiter != null)
                     {
                         if (IsProperTarget(hiter))
@@ -13011,24 +12804,19 @@ namespace GameSvr
                 if (UseItems[Grobal2.U_RIGHTHAND].Index > 0)
                 {
                     old = HUtil32.MathRound(UseItems[Grobal2.U_RIGHTHAND].Dura / 1000);
-                    // 2003/03/04 0.5檬俊辑 1檬肺 官柴俊 蝶扼 郴备甫 -1俊辑 -2肺 炼沥
                     dura = UseItems[Grobal2.U_RIGHTHAND].Dura - 2;
-                    // 1;
                     if (dura <= 0)
                     {
                         UseItems[Grobal2.U_RIGHTHAND].Dura = 0;
-                        // 檬啊 荤扼柳促.
                         if (RaceServer == Grobal2.RC_USERHUMAN)
                         {
                             hum = this as TUserHuman;
                             hum.SendDelItem(UseItems[Grobal2.U_RIGHTHAND]);
-                            // 努扼捞攫飘俊 绝绢柳芭 焊晨
                         }
                         UseItems[Grobal2.U_RIGHTHAND].Index = 0;
                         Light = GetMyLight();
                         SendRefMsg(Grobal2.RM_CHANGELIGHT, 0, 0, 0, 0, "");
                         SendMsg(this, Grobal2.RM_LAMPCHANGEDURA, 0, UseItems[Grobal2.U_RIGHTHAND].Dura, 0, 0, "");
-                        // 檬狼 瓷仿摹 函版 利侩(sonmg 2005/11/10)
                         RecalcAbilitys();
                         SendMsg(this, Grobal2.RM_ABILITY, 0, 0, 0, 0, "");
                     }
@@ -13038,7 +12826,6 @@ namespace GameSvr
                     }
                     if (old != HUtil32.MathRound(dura / 1000))
                     {
-                        // 郴备己捞 函窃
                         SendMsg(this, Grobal2.RM_LAMPCHANGEDURA, 0, UseItems[Grobal2.U_RIGHTHAND].Dura, 0, 0, "");
                     }
                 }
@@ -13464,7 +13251,7 @@ namespace GameSvr
                             cret = GroupOwner.GroupMembers[i];
                             if (cret.Death || cret.BoGhost)
                             {
-                                GroupMembers.Remove(i);
+                                GroupMembers.RemoveAt(i);
                             }
                         }
                     }
@@ -17226,13 +17013,11 @@ namespace GameSvr
             }
         }
 
-        // 发送服务端设置
         public void SendGameConfig()
         {
-            string str;
             if (RaceServer == Grobal2.RC_USERHUMAN)
             {
-                str = EDcode.EncodeBuffer(M2Share.g_GameConfig);
+                string str = EDcode.EncodeBuffer(M2Share.g_GameConfig);
                 SendMsg(this, Grobal2.RM_GAMECONFIG, 0, 0, 0, 0, str);
             }
         }

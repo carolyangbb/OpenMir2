@@ -113,7 +113,7 @@ namespace GameSvr
                     hum.ItemList.Add(pu);
                 }
             }
-            object _wvar3 = prcd.Block.DBUseMagic;
+            var _wvar3 = prcd.Block.DBUseMagic;
             for (i = 0; i < Grobal2.MAXUSERMAGIC; i++)
             {
                 if (_wvar3.Magics[i].MagicId > 0)
@@ -126,7 +126,7 @@ namespace GameSvr
                         pum.MagicId = _wvar3.Magics[i].MagicId;
                         pum.Level = _wvar3.Magics[i].Level;
                         pum.Key = _wvar3.Magics[i].Key;
-                        pum.CurTrain = _wvar3.Magics[i].CurTrain;
+                        pum.CurTrain = _wvar3.Magics[i].Curtrain;
                         hum.MagicList.Add(pum);
                     }
                 }
@@ -135,7 +135,7 @@ namespace GameSvr
                     break;
                 }
             }
-            object _wvar4 = prcd.Block.DBSaveItem;
+            var _wvar4 = prcd.Block.DBSaveItem;
             for (i = 0; i < Grobal2.MAXSAVEITEM; i++)
             {
                 if (_wvar4.Items[i].Index > 0)
@@ -243,10 +243,11 @@ namespace GameSvr
                 {
                     break;
                 }
-                umi.MagicId = (short)((TUserMagic)hum.MagicList[i]).MagicId;
-                umi.Level = ((TUserMagic)hum.MagicList[i]).Level;
-                umi.Key = ((TUserMagic)hum.MagicList[i]).Key;
-                umi.CurTrain = ((TUserMagic)hum.MagicList[i]).CurTrain;
+                umi = new TUseMagicInfo();
+                umi.MagicId = (short)hum.MagicList[i].MagicId;
+                umi.Level = hum.MagicList[i].Level;
+                umi.Key = hum.MagicList[i].Key;
+                umi.Curtrain = hum.MagicList[i].CurTrain;
                 prcd.Block.DBUseMagic.Magics[i] = umi;
             }
             object _wvar3 = prcd.Block.DBSaveItem;
@@ -361,7 +362,7 @@ namespace GameSvr
                 if (EndPosition > 0)
                 {
                     data = "";
-                    str = ArrestStringEx(str, "#", "!", data);
+                    str = HUtil32.ArrestStringEx(str, "#", "!", ref data);
                     waitcnt = 4;
                     if (data != "")
                     {
@@ -439,11 +440,11 @@ namespace GameSvr
             string str;
             string runame;
             TDefaultMessage Def = null;
-            TLoadHuman lhuman;
+            TLoadHuman lhuman = new TLoadHuman();
             cer = svMain.GetCertifyNumber();
             MakeDefMsg(ref Def, Grobal2.DB_LOADHUMANRCD, 0, 0, 0, 0);
             lhuman.CertifyCode = certify;
-            str = EDcode.EncodeMessage(Def) + EDcode.EncodeBuffer(lhuman, sizeof(TLoadHuman));
+            str = EDcode.EncodeMessage(Def) + EDcode.EncodeBuffer(lhuman);
             LatestDBSendMsg = Grobal2.DB_LOADHUMANRCD;
             SendRDBSocket(cer, str);
             if (RunDBWaitMsg(cer, ref ident, ref recog, ref body, 5000))
